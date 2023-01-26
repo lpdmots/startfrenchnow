@@ -1,0 +1,26 @@
+@tailwind components;
+:root {
+    --primary: #ffc431;
+    --secondary-1: #ffc431;
+    --secondary-2: #1c92ff;
+    --secondary-3: #5c42fb;
+    --secondary-4: #ff4a60;
+    --secondary-5: #fdb52a;
+    --neutral-100: #ffffff;
+    --neutral-200: #faf9f6;
+    --neutral-300: #f1f0ee;
+    --neutral-400: #eceae8;
+    --neutral-500: #878787;
+    --neutral-600: #5e5e5f;
+    --neutral-700: #393939;
+    --neutral-800: #0b0b0b;
+
+    --sm: 480px; /* A MODIFIER AUSSI DANS TAILWIND CONFIG */
+    --md: 768px;
+    --lg: 992px;
+}
+
+@import "./normalize.css";
+@import "./webflow.css";
+@import "./i-dont-speak-french.webflow.css";
+@import "./personnal.css";
