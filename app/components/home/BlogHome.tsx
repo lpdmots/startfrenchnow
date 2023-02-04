@@ -23,7 +23,9 @@ export default async function BlogHome() {
                         <div className="mg-bottom-56px">
                             <div className="text-center---tablet">
                                 <div data-w-id="a1ac5fbd-201a-a9b1-b1a1-3019f18603fe" className="w-layout-grid grid-2-columns title-and-buttons _1-col-tablet">
-                                    <h2 className="display-2 mg-bottom-0">Articles &amp; News</h2>
+                                    <h2 className="display-2 mg-bottom-0">
+                                        <span className="heading-span-secondary-1">Articles</span> &amp; News
+                                    </h2>
                                     <div className="buttons-row center-tablet">
                                         <Link href="/blog" className="btn-secondary w-button">
                                             <span className="line-rounded-icon link-icon-left"></span>Browse all articles

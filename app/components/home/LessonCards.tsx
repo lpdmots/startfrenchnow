@@ -95,7 +95,7 @@ function LessonCards() {
                     </Link>
                 ))}
 
-                <div className="card card-secondary-1 flex-vertical-center card-contact-featured lg:!hidden">
+                <div className="card card-secondary-1 flex-vertical-center card-contact-featured card-contact-sm">
                     <div className="mg-bottom-24px keep">
                         <Image src="/images/get-in-touch-image-paperfolio-webflow-template.svg" height={90} width={90} alt="get in touch" />
                     </div>
@@ -109,9 +109,9 @@ function LessonCards() {
                 </div>
             </div>
             <div className="flex justify-center">
-                <div className="max-[991px]:!hidden card card-secondary-1 flex !justify-around items-center card-contact-featured mt-16 shadow-2 !w-[70%]">
+                <div className="card-contact-lg card card-secondary-1 flex !justify-around items-center card-contact-featured mt-16 shadow-2">
                     <Image className="display-inline" src="/images/get-in-touch-image-paperfolio-webflow-template.svg" height={90} width={90} alt="get in touch" />
-                    <div className=" max-w-xl">
+                    <div className=" max-w-xl pl-6">
                         <h3 className="display-4">Not sure what to chose?</h3>
                         <p className="color-neutral-800 mg-bottom-24px ">Click here and send me a message!</p>
                         <div className="flex justify-center">

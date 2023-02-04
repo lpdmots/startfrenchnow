@@ -77,7 +77,7 @@ async function Post({ params: { slug } }: Props) {
                             </div>
                         </div>
                     </div>
-                    <div className="cms-featured-image-wrapper max-w-[800px] image-wrapper border-radius-30px mx-auto">
+                    <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto" style={{ maxWidth: "800px" }}>
                         <Image src={urlFor(post.mainImage).url()} height={800} width={800} loading="eager" alt={post.title} className="image object-contain rounded-lg" />
                     </div>
                 </div>

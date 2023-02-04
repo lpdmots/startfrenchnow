@@ -9,6 +9,7 @@ const StyledBurger = styled.div`
     width: 2.3rem;
     height: 2.3rem;
     display: none;
+    cursor: pointer;
     @media (max-width: 991px) {
         display: flex;
         justify-content: space-around;
@@ -52,8 +53,8 @@ const Burger = () => {
 
             <div
                 ref={ref}
-                style={open ? { height: ref.current.scrollHeight + "px" } : { height: "0px" }}
-                className="w-screen max-w-[600px] md:max-w-[778px] mx-auto px-6 absolute top-[108.72px] left-0 sm:top-[118.8px] md:top-[132px] lg:top-[144px] z-[10000] collapse-parent"
+                style={open ? { height: ref.current.scrollHeight + "px", zIndex: 1000 } : { height: "0px", zIndex: 1000 }}
+                className="w-screen nav-width mx-auto px-6 absolute left-0 nav-collapse-top collapse-parent"
             >
                 <div className="nav burgerCollapse !py-5 w-full mb-0">
                     <ul className="flex-col gap-5 !items-start list-none">

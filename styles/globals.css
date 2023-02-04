@@ -24,3 +24,6 @@
 @import "./webflow.css";
 @import "./i-dont-speak-french.webflow.css";
 @import "./personnal.css";
+
+/* @tailwind base; */
+@tailwind utilities;

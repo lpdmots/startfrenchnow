@@ -176,7 +176,80 @@ button {
     background-color: var(--neutral-100);
 }
 
-/* NavBar */
+.nav-logo {
+    font-size: 52px;
+}
+
+.nav-width {
+    max-width: 778px;
+}
+
+.padding-courses {
+    padding-top: 150px;
+}
+
+.max-w-500 {
+    max-width: 500px;
+}
+
+.nav-collapse-top {
+    top: 144px;
+}
+
+.image-comment {
+    height: 400px;
+}
+.card-contact-sm {
+    display: none !important;
+}
+
+@media screen and (max-width: 991px) {
+    .nav-logo {
+        font-size: 46.8px;
+    }
+    .nav-width {
+        max-width: 600px;
+    }
+    .padding-courses {
+        padding-top: 118px;
+    }
+    .nav-collapse-top {
+        top: 132px;
+    }
+    .image-comment {
+        height: 300px;
+    }
+    .card-contact-lg {
+        display: none !important;
+    }
+    .card-contact-sm {
+        display: flex !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .nav-logo {
+        font-size: 44.72px;
+    }
+    .padding-courses {
+        padding-top: 100px;
+    }
+    .nav-collapse-top {
+        top: 118.8px;
+    }
+    .image-comment {
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .padding-courses {
+        padding-top: 80px;
+    }
+    .nav-collapse-top {
+        top: 108.72px;
+    }
+}
 
 .nav-link {
     position: relative;
@@ -276,6 +349,3 @@ button {
     border-radius: 50%;
     animation: spin 1.2s linear infinite;
 }
-
-/* @tailwind base; */
-@tailwind utilities;

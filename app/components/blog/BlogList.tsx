@@ -22,8 +22,7 @@ function BlogList({ posts }: Props) {
                                     Articles &amp; <span className="heading-span-secondary-1 v2">Resources</span>
                                 </h2>
                                 <p className="mg-bottom-0">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ectus mattis nunc aliquam tincidunt est non viverra nec eu, in ridiculus egestas{" "}
-                                    <span className="text-no-wrap">vulputate tristique.</span>
+                                    In this section you will find articles and resources to help you <span className="text-no-wrap">learn French.</span>
                                 </p>
                             </div>
                         </div>

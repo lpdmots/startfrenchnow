@@ -5,11 +5,7 @@ import PreviewSuspense from "../../components/sanity/PreviewSuspense";
 import PreviewBlogListe from "../../components/sanity/PreviewBlogList";
 import BlogList from "../../components/blog/BlogList";
 import { Category, Post } from "../../types/blog";
-import ClientSideRoute from "../../components/common/ClientSideRoute";
-import Image from "next/image";
-import urlFor from "../../../lib/urlFor";
 import NewsletterBand from "../../components/common/NewsletterBand";
-import { removeDuplicates } from "../../../lib/utils";
 import SecondaryPost from "../../components/blog/SecondaryPost";
 import Link from "next/link";
 

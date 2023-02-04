@@ -8,7 +8,7 @@ const SecondaryPost = ({ post }: { post: Post }) => {
         <ClientSideRoute route={`/blog/post/${post.slug.current}`}>
             <div className="card blog-secondary-card link-card w-inline-block">
                 <div className="blog-card-image-wrapper inside-card blog-secondary-card-image ">
-                    <Image src={urlFor(post.mainImage).url()} width={200} height={200} loading="eager" alt={post.title} className="blog-card-image max-h-[200px] object-contain" />
+                    <Image src={urlFor(post.mainImage).url()} width={200} height={200} loading="eager" alt={post.title} className="blog-card-image object-contain" style={{ maxHeight: "200px" }} />
                     <div className="blog-card-badge-wrapper-top text-right">
                         {post.categories.map((category) => (
                             <div key={category.title} className="badge-primary small mb-2 ml-2">

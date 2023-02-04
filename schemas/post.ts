@@ -9,12 +9,14 @@ export default defineType({
             name: "title",
             title: "Title",
             type: "string",
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
             name: "description",
             description: "Enter a short snippet for the blog...",
             title: "Description",
             type: "string",
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
             name: "slug",
@@ -24,12 +26,7 @@ export default defineType({
                 source: "title",
                 maxLength: 96,
             },
-        }),
-        defineField({
-            name: "author",
-            title: "Author",
-            type: "reference",
-            to: { type: "author" },
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
             name: "mainImage",
@@ -38,12 +35,14 @@ export default defineType({
             options: {
                 hotspot: true,
             },
+            validation: (Rule) => Rule.required().warning("Une image ets requise"),
         }),
         defineField({
             name: "categories",
             title: "Categories",
             type: "array",
             of: [{ type: "reference", to: { type: "category" } }],
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
             name: "publishedAt",

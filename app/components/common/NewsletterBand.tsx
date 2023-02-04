@@ -35,8 +35,8 @@ function NewsletterBand() {
                                 <form className="form-3" onSubmit={handleSubmit}>
                                     <label className="field-label">Label</label>
                                     <div className="position-relative">
-                                        <input type="email" className="input small button-inside w-input" value={email} placeholder="Enter your email address" id="name" onChange={handleChange} />
-                                        <button className="btn-primary inside-input variant small w-button min-w-[140px]">{pending ? <Spinner radius maxHeight="40px" /> : "Subscribe"}</button>
+                                        <input type="email" className="input small button-inside w-input" value={email} placeholder="Enter your email address" onChange={handleChange} />
+                                        <button className="btn-primary inside-input variant small w-button min-w-36">{pending ? <Spinner radius maxHeight="40px" /> : "Subscribe"}</button>
                                     </div>
                                 </form>
                             )}

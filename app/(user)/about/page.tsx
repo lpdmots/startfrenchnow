@@ -1,3 +1,4 @@
+import Hobbies from "@/app/components/about/Hobbies";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -70,7 +71,7 @@ function About() {
                                     <p className="mg-bottom-24px keep w-clearfix">
                                         <span className="drop-cap-span">W</span>ell I started as primary school teacher and then decided to change audience and become an expert in teaching French as a
                                         foreign language. So I quickly wanted to work abroad and went to China first, then to London (England) and to New Zealand. I worked in different establishments,
-                                        language schools (Alliance française), universities, and business schools where I was teaching general french to a demanding public{" "}
+                                        language schools (Alliance française), universities, and business schools where I was teaching general French to a demanding public{" "}
                                         <span className="text-no-wrap">of varied level.</span>
                                     </p>
                                     <p className="mg-bottom-40px">
@@ -78,22 +79,20 @@ function About() {
                                         confidence that allows them to survive in their environment and manage everyday situations. <span className="text-no-wrap">It's very rewarding.</span>
                                     </p>
                                     <p className="mg-bottom-40px">
-                                        Creating courses and materials online, I'm now so happy to see that my students come from all part the world and I will always do my best to bring them answers
-                                        and guide them towards <span className="text-no-wrap">their objectives. </span>
+                                        Creating courses and materials online, I'm now so happy to see that my students come from different parts of the world and I will always do my best to bring
+                                        them answers and guide them towards <span className="text-no-wrap">their objectives. </span>
                                     </p>
                                     <p className="mg-bottom-40px">
-                                        So I hope you will be enjoying my courses and I’m looking forward hearing from you. Feel free to drop me a{" "}
+                                        So I hope you will be enjoying my courses and I’m looking forward to hearing from you. Feel free to drop me a{" "}
                                         <span className="text-no-wrap">message anytime.</span>
                                     </p>
-                                    <Link href="/contact" className="btn-primary button-row w-button">
-                                        <span className="line-rounded-icon link-icon-left text-medium"></span>Get in touch
-                                    </Link>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <Hobbies />
         </div>
     );
 }

@@ -1,12 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
-import { FaCommentDots, FaRegEnvelope, FaSignInAlt, FaStar, FaStarHalfAlt, FaUserGraduate } from "react-icons/fa";
+import { FaCommentDots, FaStar, FaStarHalfAlt, FaUserGraduate } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi";
 import BlogHome from "../components/home/BlogHome";
 import CommentsCarousel from "../components/home/CommentsCarousel";
 import CoreValuesMethod from "../components/home/CoreValuesMethod";
 import LessonCards from "../components/home/LessonCards";
+import UdemyBusiness from "../components/home/UdemyBusiness";
 import WhoIAm from "../components/home/WhoIAm";
 
 function Home() {
@@ -37,14 +37,8 @@ function Home() {
                                         </a>
                                     </div>
                                 </div>
-                                <div className="m-auto">
-                                    <Image
-                                        className=" shadow-3 rounded-full h-auto"
-                                        src="https://i-don-t-speak-french.s3.eu-central-1.amazonaws.com/character1.png"
-                                        height={500}
-                                        width={500}
-                                        alt="Le professeur"
-                                    />
+                                <div className="image-wrapper hero-image">
+                                    <Image src="/images/home-hero-image-paperfolio-webflow-template.svg" height={500} width={500} alt="The teacher" className="image" />
                                 </div>
                             </div>
                         </div>
@@ -80,10 +74,10 @@ function Home() {
                     </div>
                 </div>
             </section>
-            <section className="pt-[80px] sm:pt-[100px] md:pt-[118px] lg:pt-[150px] ">
+            <section className="padding-courses pb-0">
                 <div className="container-default w-container ">
-                    <div className="max-w-[500px] md:max-w-none m-auto">
-                        <div className="max-w-[600px] text-center m-auto mb-10">
+                    <div className="max-w-500 md:max-w-none m-auto">
+                        <div className="text-center m-auto mb-10" style={{ maxWidth: "600px" }}>
                             <h2 id="courses" className="display-2">
                                 Find a course that suits you and <span className="heading-span-secondary-4">get started</span>!
                             </h2>
@@ -97,11 +91,15 @@ function Home() {
                 </div>
             </section>
 
-            <section className="section pd-200px wf-section bg-neutral-800">
+            <section className="section pd-200px wf-section">
+                <UdemyBusiness />
+            </section>
+
+            <section className="section pt-0 wf-section">
                 <CoreValuesMethod />
             </section>
 
-            <section className="section pb-0 wf-section">
+            <section className="section py-0 wf-section">
                 <WhoIAm />
             </section>
             <CommentsCarousel />

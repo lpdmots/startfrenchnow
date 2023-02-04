@@ -38,7 +38,7 @@ module.exports = {
         },
         extend: {
             fontFamily: {
-                sans: ["var(--font-onest)", ...defaultTheme.fontFamily.sans],
+                sans: ["var(--font-poppins)", ...defaultTheme.fontFamily.sans],
             },
         },
     },

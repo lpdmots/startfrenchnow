@@ -38,7 +38,7 @@ function NewsletterCard() {
                     <form onSubmit={handleSubmit}>
                         <label className="field-label-3">Email Address</label>
                         <input type="email" className="input small mg-bottom-16px w-input" value={email} onChange={handleChange} placeholder="Enter email address" id="email" />
-                        <button type="submit" className="btn-primary full-width w-button  min-w-[140px]">
+                        <button type="submit" className="btn-primary full-width w-button  min-w-36">
                             {pending ? <Spinner radius maxHeight="40px" /> : "Subscribe"}
                         </button>
                     </form>

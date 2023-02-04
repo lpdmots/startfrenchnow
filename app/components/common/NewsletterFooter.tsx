@@ -37,7 +37,7 @@ function NewsletterFooter() {
                                     <label className="field-label">Label</label>
                                     <div className="position-relative">
                                         <input type="email" className="input button-inside w-input" value={email} placeholder="Enter your email address" id="Email" onChange={handleChange} />
-                                        <button type="submit" className="btn-primary inside-input default w-button min-w-[140px]">
+                                        <button type="submit" className="btn-primary inside-input default w-button min-w-36">
                                             {pending ? <Spinner radius maxHeight="40px" /> : "Subscribe"}
                                         </button>
                                     </div>

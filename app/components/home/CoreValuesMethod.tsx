@@ -11,12 +11,14 @@ function CoreValuesMethod() {
                                 <div className="inner-container _525px">
                                     <div className="inner-container _400px---mbl center">
                                         <div className="inner-container _350px---mbp center">
-                                            <h2 className="display-2 mg-bottom-0 text-neutral-100">The core values of my method</h2>
+                                            <h2 className="display-2 mg-bottom-0">
+                                                The core values of <span className="heading-span-secondary-4">my method</span>
+                                            </h2>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="inner-container _525px">
-                                    <p className="mg-bottom-0 text-neutral-300">
+                                    <p className="mg-bottom-0 text-neutral-700">
                                         A <span className="underline underline-offset-2">well structured</span> method with <span className="underline underline-offset-2">bite-sizedlessons</span> that
                                         enables you to acquire the <span className="underline underline-offset-2">fundamental</span> French language skills.
                                     </p>
@@ -36,7 +38,7 @@ function CoreValuesMethod() {
                         </div>
                         <div className="card image-left---text-rigth">
                             <div className="image-wrapper card-value-image-left-wrapper">
-                                <img src="/images/transparency-image-paperfolio-webflow-template.png" loading="eager" alt="Smart learning" className="image fit-cover" />
+                                <img src="/images/innovation-image-paperfolio-webflow-template.png" loading="eager" alt="Fun" className="image fit-cover" />
                             </div>
                             <div className="card-value-conter-left">
                                 <h3>Smart learning</h3>
@@ -45,7 +47,7 @@ function CoreValuesMethod() {
                         </div>
                         <div className="card image-left---text-rigth">
                             <div className="image-wrapper card-value-image-left-wrapper">
-                                <img src="/images/innovation-image-paperfolio-webflow-template.png" loading="eager" alt="Fun" className="image fit-cover" />
+                                <img src="/images/fun-image-paperfolio-webflow-template.png" loading="eager" alt="Smart learning" className="image fit-cover" />
                             </div>
                             <div className="card-value-conter-left">
                                 <h3>Fun</h3>

@@ -26,7 +26,7 @@ function CommentsCarousel() {
                                     <div className="inner-container _400px---mbl center">
                                         <div className="inner-container _350px---mbp center">
                                             <h2 className="display-2">
-                                                What my students say about <span className="heading-span-secondary-2">my work</span>
+                                                What my students say <span className="heading-span-secondary-4">about my work</span>
                                             </h2>
                                         </div>
                                     </div>

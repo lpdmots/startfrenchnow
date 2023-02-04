@@ -2842,7 +2842,7 @@
 }
 
 body {
-    font-family: Onest, sans-serif;
+    /* font-family: Onest, sans-serif; */
     color: var(--neutral-700);
     font-size: 18px;
     line-height: 1.667em;
@@ -7167,6 +7167,8 @@ figcaption {
     border-radius: 50%;
 }
 
+/* purgecss start ignore */
+
 .pd---content-inside-card {
     padding: 35px 40px 40px;
 }
@@ -7201,6 +7203,8 @@ figcaption {
 .pd---content-inside-card.template-pages---sidebar {
     padding: 32px 16px 24px;
 }
+
+/* purgecss end ignore */
 
 .image {
     width: 100%;
@@ -7415,7 +7419,7 @@ figcaption {
     min-width: 190px;
 }
 
-.image-wrapper.hero-image {
+.hero-image {
     max-width: 500px;
     border-style: solid;
     border-width: 4px;
@@ -14412,7 +14416,7 @@ figcaption {
     }
 }
 
-@font-face {
+/* @font-face {
     font-family: "Social Icons Font";
     src: url("../fonts/social-icon-font.woff2") format("woff2"), url("../fonts/social-icon-font.eot") format("embedded-opentype"), url("../fonts/social-icon-font.woff") format("woff"),
         url("../fonts/social-icon-font.ttf") format("truetype"), url("../fonts/social-icon-font.svg") format("svg");
@@ -14464,4 +14468,4 @@ figcaption {
     font-weight: 700;
     font-style: normal;
     font-display: swap;
-}
+} */

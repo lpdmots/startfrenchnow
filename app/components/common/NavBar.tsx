@@ -25,11 +25,11 @@ function NavBar() {
     );
 
     return (
-        <div className="w-full bg-neutral-200 py-[20px] sm:py-[24px] md:py-[28px] lg:py-[34px]">
-            <div className="max-w-[600px] md:max-w-[778px] mx-auto px-6 position-relative">
+        <div className="w-full bg-neutral-200 py-5 sm:py-6 md:py-7 lg:py-8">
+            <div className="nav-width mx-auto px-6 position-relative">
                 <div className="nav shadow-1">
                     <Link href="/" className="flex items-center">
-                        <HiAcademicCap className="text-[44.72px] sm:text-[46.8px] md:text-[52px] text-neutral-800" />
+                        <HiAcademicCap className="nav-logo text-neutral-800" />
                     </Link>
                     <nav>
                         <ul className="header-nav-menu-list onNav">{links}</ul>

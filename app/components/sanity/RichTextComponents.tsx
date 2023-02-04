@@ -6,7 +6,7 @@ export const RichTextComponents = {
     types: {
         image: ({ value }: any) => {
             return (
-                <div className="cms-featured-image-wrapper max-w-[700px] image-wrapper border-radius-30px mx-auto my-12">
+                <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto my-12" style={{ maxWidth: "700px" }}>
                     <Image src={urlFor(value).url()} height={700} width={700} loading="eager" alt="Blog Post Image" className="image object-contain rounded-lg" />
                 </div>
             );

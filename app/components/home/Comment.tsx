@@ -37,7 +37,7 @@ function Comment({ slideIndex }: { slideIndex: any }) {
                                 <div className="mg-bottom-24px mg-top--80px keep position-absolute top-0">
                                     <Image src="/images/quote-sign-paperflow-webflow-template.svg" height={77} width={77} loading="eager" alt="" />
                                 </div>
-                                <p className={` ${selectedSlide.comment.length > 300 && "text-[16px]"}`}>{selectedSlide.comment}</p>
+                                <p className={` ${selectedSlide.comment.length > 300 && "text-base"}`}>{selectedSlide.comment}</p>
                                 <div className="flex-horizontal space-between wrap-24px">
                                     <div className="full-width-mobile">
                                         <div className="text-200 bold color-neutral-800">{selectedSlide.userName}</div>
@@ -45,7 +45,7 @@ function Comment({ slideIndex }: { slideIndex: any }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="testimonial-image-wrapper h-[200px] sm:h-[300px] md:h-[400px] lg:h-auto">
+                        <div className="testimonial-image-wrapper image-comment lg:h-auto">
                             <Image src={selectedSlide.userImage} height={500} width={500} alt={selectedSlide.userName} className="image object-contain" />
                         </div>
                     </div>
