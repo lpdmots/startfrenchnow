@@ -43,9 +43,9 @@ export default defineType({
             options: {
                 list: [
                     { value: "a1", title: "A1" },
-                    { value: "a1Plus", title: "A1+" },
                     { value: "a2", title: "A2" },
-                    { value: "a2Plus", title: "A2+" },
+                    { value: "b1", title: "B1" },
+                    { value: "b2", title: "B2" },
                 ],
             },
         }),

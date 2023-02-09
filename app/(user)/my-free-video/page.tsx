@@ -26,7 +26,7 @@ const initialValue = {
 function MyFreeVideo() {
     const [state, setState] = useState<State>(initialValue);
     const { subscriberId, unknownSub, video, error } = state;
-    console.log({ state });
+
     if (video) return <FreeVideo video={video} />;
     if (error)
         return (
@@ -110,8 +110,8 @@ const EmailInput = ({ setState }: { setState: Dispatch<SetStateAction<State>> })
     return (
         <form onSubmit={handleSubmit}>
             <div className="mg-bottom-54px flex justify-center w-full">
-                <div className="image-wrapper rigth-shadow-circle password-page-icon relative">
-                    <Image src="/images/home-hero-image-paperfolio-webflow-template.svg" loading="eager" height={184} width={184} alt="password protected" />
+                <div className="image-wrapper rigth-shadow-circle password-page-icon">
+                    <Image src="/images/home-hero-image-paperfolio-webflow-template.svg" loading="eager" height={184} width={184} alt="password protected" style={{ height: "100%" }} />
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">Hello subscriber</h1>
@@ -135,7 +135,7 @@ const UnknownSub = ({ setState }: { setState: Dispatch<SetStateAction<State>> })
         <>
             <div className="mg-bottom-54px flex justify-center w-full">
                 <div className="image-wrapper rigth-shadow-circle password-page-icon">
-                    <img src="/images/password-protected-paperfolio-webflow-template.svg" loading="eager" alt="password protected" />
+                    <img src="/images/password-protected-paperfolio-webflow-template.svg" loading="eager" alt="password protected" style={{ height: "100%" }} />
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">Unknown address</h1>
@@ -163,7 +163,7 @@ const ErrorLayout = ({ setState }: { setState: Dispatch<SetStateAction<State>> }
         <>
             <div className="mg-bottom-54px flex justify-center w-full">
                 <div className="image-wrapper rigth-shadow-circle password-page-icon">
-                    <Image src="/images/page-not-found-icon-paperfolio-webflow-template.svg" height={184} width={184} alt="password protected" className="p-8" />
+                    <Image src="/images/page-not-found-icon-paperfolio-webflow-template.svg" height={184} width={184} alt="password protected" className="p-8" style={{ height: "100%" }} />
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">Oops! Something went wrong...</h1>
@@ -201,7 +201,7 @@ const VideoChoice = ({ state, setState }: { state: State; setState: Dispatch<Set
         <div>
             <div className="mg-bottom-54px flex justify-center w-full">
                 <div className="image-wrapper rigth-shadow-circle password-page-icon relative bg-secondary-2">
-                    <Image src="/images/about-me-image-paperfolio-webflow-template.svg" loading="eager" height={184} width={184} alt="password protected" />
+                    <Image src="/images/about-me-image-paperfolio-webflow-template.svg" loading="eager" height={184} width={184} alt="password protected" style={{ height: "100%" }} />
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">Make your choice</h1>

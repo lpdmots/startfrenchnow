@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+import { AiOutlineUser } from "react-icons/ai";
 
 function WhoIAm() {
     return (
@@ -9,7 +11,7 @@ function WhoIAm() {
                     <div id="whoami" className="w-layout-grid grid-2-columns text-left-short">
                         <div className="inner-container _620px">
                             <div className="image-wrapper bg-secondary-4 left-shadow-circle">
-                                <Image src="/images/about-me-image-paperfolio-webflow-template.svg" alt="experience image" height={600} width={600} className="image" />
+                                <Image src="/images/about-me-image-paperfolio-webflow-template.svg" alt="experience image" priority={false} height={600} width={600} className="image" />
                             </div>
                         </div>
                         <div className="inner-container _535px">
@@ -69,9 +71,12 @@ function WhoIAm() {
                                             </div>
                                         </div>
                                         <div className="buttons-row center-tablet">
-                                            <a href="about" className="btn-primary w-button">
-                                                <span className="line-rounded-icon link-icon-left text-medium"></span>More about me
-                                            </a>
+                                            <Link href="about" className="btn-primary w-button">
+                                                <div className="flex items-center justify-center">
+                                                    <AiOutlineUser className="mr-2" />
+                                                    More about me
+                                                </div>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

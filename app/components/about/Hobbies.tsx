@@ -2,6 +2,8 @@ import { GiCroissant, GiMountainRoad, GiRunningShoe } from "react-icons/gi";
 import { IoBeer, IoLanguageSharp } from "react-icons/io5";
 import { SiYourtraveldottv } from "react-icons/si";
 import { ImFilm } from "react-icons/im";
+import { MdOutlineEmail } from "react-icons/md";
+import Link from "next/link";
 
 const HOBBIES = [
     {
@@ -117,9 +119,12 @@ function Hobbies() {
                         </div>
                     </div>
                     <div className="buttons-row center">
-                        <a href="contact.html" className="btn-primary w-button">
-                            <span className="line-rounded-icon link-icon-left text-medium"></span>Get in touch
-                        </a>
+                        <Link href="/contact" className="btn-primary button-row w-button">
+                            <div className="flex items-center justify-center">
+                                <MdOutlineEmail className="mr-2" />
+                                Get in touch
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -61,8 +61,8 @@ function CoreValuesMethod() {
                             <div className="card-value-conter-left">
                                 <h3>A full method</h3>
                                 <p className="mg-bottom-0">
-                                    A complete method with access to extensive resources: extra exercises and vocabulary sheets, quizzes, a quality blog and amazing French stories where you are the
-                                    hero.
+                                    A complete method with access to extensive resources: extra exercises, vocabulary sheets and a quality blog. Quizzes, and amazing French stories where you are the
+                                    hero are coming soon.
                                 </p>
                             </div>
                         </div>

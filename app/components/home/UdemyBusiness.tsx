@@ -76,8 +76,15 @@ function UdemyBusiness() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="inner-container position-relative h-72 sm:h-96 lg:h-full w-full col-span-4 mt-12 lg:mt-0">
-                                <Image src="/images/world-map.png" fill alt="worl map image" className="object-contain" />
+                            <div className="flex items-center col-span-4 mt-12 lg:mt-0">
+                                <div className="inner-container w-full">
+                                    <img
+                                        src="/images/world-map.png"
+                                        alt="worl map image"
+                                        className="object-contain"
+                                        style={{ border: "solid 4px #0b0b0b", borderRadius: "32px", boxShadow: "13px 13px 0 0 var(--neutral-100)" }}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

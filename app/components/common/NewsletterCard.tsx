@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import { BsCheckCircle } from "react-icons/bs";
+import { FiGift } from "react-icons/fi";
 import useSubscribe from "../../hooks/useSubscribe";
 import Spinner from "./Spinner";
 
@@ -16,7 +18,11 @@ function NewsletterCard() {
                 <div className="inner-container _400px---tablet center">
                     <div className="inner-container _350px---mbl center">
                         <h2 className="display-4 mg-bottom-8px">Subscribe to our newsletter</h2>
-                        <p className="color-neutral-800 mg-bottom-0">... and be sure not to miss new posts.</p>
+                        <div className="flex items-center">
+                            <span className="mb-0">
+                                Stay informed and get a free video <FiGift />
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -24,10 +30,8 @@ function NewsletterCard() {
                 {success ? (
                     <div className="success-message w-form-done">
                         <div className="flex-horizontal success-message-vertical">
-                            <div className="line-rounded-icon success-message-check"></div>
-                            <div>
-                                Thanks for joining <span>our newsletter.</span>
-                            </div>
+                            <BsCheckCircle style={{ fontSize: 28 }} />
+                            <div className="ml-2">Thanks for joining our newsletter. Check your emails and start French now!</div>
                         </div>
                     </div>
                 ) : error ? (

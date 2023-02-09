@@ -1,11 +1,11 @@
 @tailwind components;
 :root {
     --primary: #ffc431;
-    --secondary-1: #ffc431;
+    --secondary-1: #ffc224;
     --secondary-2: #1c92ff;
     --secondary-3: #5c42fb;
     --secondary-4: #ff4a60;
-    --secondary-5: #fdb52a;
+    --secondary-5: #81e644;
     --neutral-100: #ffffff;
     --neutral-200: #faf9f6;
     --neutral-300: #f1f0ee;
@@ -19,6 +19,19 @@
     --md: 768px;
     --lg: 992px;
 }
+
+/*! purgecss start ignore */
+[data-theme="dark"] {
+    --neutral-800: #f1f0ee;
+    --neutral-700: #f1f0ee;
+    --neutral-600: #f1f0ee;
+    --neutral-500: #eceae8;
+    --neutral-400: #878787;
+    --neutral-300: #5e5e5f;
+    --neutral-200: #1d1d1d;
+    --neutral-100: #1d1d1d;
+}
+/*! purgecss end ignore */
 
 @import "./normalize.css";
 @import "./webflow.css";

@@ -19,6 +19,20 @@ export default defineType({
             validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
+            name: "level",
+            title: "Niveau",
+            type: "string",
+            options: {
+                list: [
+                    { value: "a1", title: "A1" },
+                    { value: "a2", title: "A2" },
+                    { value: "b1", title: "B1" },
+                    { value: "b2", title: "B2" },
+                ],
+            },
+            initialValue: "a1",
+        }),
+        defineField({
             name: "slug",
             title: "Slug",
             type: "slug",
@@ -35,7 +49,15 @@ export default defineType({
             options: {
                 hotspot: true,
             },
-            validation: (Rule) => Rule.required().warning("Une image ets requise"),
+            validation: (Rule) => Rule.required().warning("Une image est requise"),
+        }),
+        defineField({
+            name: "mainVideo",
+            title: "Main vidéo",
+            type: "videoBlog",
+            options: {
+                hotspot: true,
+            },
         }),
         defineField({
             name: "categories",
@@ -48,6 +70,7 @@ export default defineType({
             name: "publishedAt",
             title: "Published at",
             type: "datetime",
+            initialValue: new Date().toISOString(),
         }),
         defineField({
             name: "body",

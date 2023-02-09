@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { BsCheckCircle } from "react-icons/bs";
 import { sendContactForm, subscribeNewsletter } from "../../../lib/api";
 import Spinner from "../../components/common/Spinner";
 
@@ -80,7 +81,7 @@ function Contact() {
                                         <form onSubmit={handleSubmit}>
                                             <div className="w-layout-grid grid-2-columns form">
                                                 <div className="position-relative">
-                                                    <label htmlFor="name">Name (optional)</label>
+                                                    <label htmlFor="name">Name</label>
                                                     <input
                                                         onChange={handleChange}
                                                         type="text"
@@ -146,7 +147,7 @@ function Contact() {
                                     ) : (
                                         <div className="success-message w-form-done">
                                             <div>
-                                                <div className="line-rounded-icon success-message-check large"></div>
+                                                <BsCheckCircle className="mr-2" style={{ fontSize: 28 }} />
                                                 <div className="heading-h3-size mg-bottom-8px">Thank you</div>
                                                 <div>
                                                     Your message has been submitted{!!newsletterCheck && " and you have joined our newsletter"}. <br />

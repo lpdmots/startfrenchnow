@@ -447,7 +447,7 @@
 }
 
 .w-commerce-commercecartapplepaybutton {
-    background-color: #000;
+    background-color: var(--neutral-800);
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     border-top-left-radius: 2px;
@@ -486,7 +486,7 @@
 }
 
 .w-commerce-commercecartquickcheckoutbutton {
-    background-color: #000;
+    background-color: var(--neutral-800);
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     border-top-left-radius: 2px;
@@ -2267,22 +2267,22 @@
     border-bottom-width: 1px;
     border-left-width: 1px;
     border-right-width: 1px;
-    border-top-color: #000;
-    border-bottom-color: #000;
-    border-left-color: #000;
-    border-right-color: #000;
+    border-top-color: var(--neutral-800);
+    border-bottom-color: var(--neutral-800);
+    border-left-color: var(--neutral-800);
+    border-right-color: var(--neutral-800);
     border-top-style: solid;
     border-bottom-style: solid;
     border-left-style: solid;
     border-right-style: solid;
-    color: #000;
+    color: var(--neutral-800);
     background-color: var(--neutral-100);
     cursor: pointer;
 }
 
 .w-commerce-commerceaddtocartoptionpill.w--ecommerce-pill-selected {
     color: var(--neutral-100);
-    background-color: #000;
+    background-color: var(--neutral-800);
 }
 
 .w-commerce-commerceaddtocartoptionpill.w--ecommerce-pill-disabled {
@@ -3120,7 +3120,7 @@ figcaption {
     grid-row-gap: 0px;
     -ms-grid-columns: 1fr;
     grid-template-columns: 1fr;
-    border-bottom: 1px solid #eff0f6;
+    border-bottom: 1px solid var(--neutral-300);
     text-align: center;
 }
 
@@ -3736,7 +3736,7 @@ figcaption {
 }
 
 .bg-neutral-300 {
-    background-color: #eff0f6;
+    background-color: var(--neutral-300);
 }
 
 .bg-neutral-200 {
@@ -3810,7 +3810,7 @@ figcaption {
 }
 
 .color-neutral-300 {
-    color: #eff0f6;
+    color: var(--neutral-300);
 }
 
 .color-neutral-200 {
@@ -4571,7 +4571,6 @@ figcaption {
 }
 
 .inner-container.blog-secondary-card-content {
-    max-width: 305px;
     min-width: 205px;
     -webkit-box-flex: 1;
     -webkit-flex: 1;
@@ -4790,7 +4789,6 @@ figcaption {
 }
 
 .btn-primary.small.header-btn-hidde-on-mb {
-    margin-left: 24px;
     padding: 13px;
     border-radius: 12px;
     font-size: 24px;
@@ -5810,7 +5808,7 @@ figcaption {
     position: relative;
     padding-top: 24px;
     padding-bottom: 24px;
-    border-bottom: 1px solid #eff0f6;
+    border-bottom: 1px solid var(--neutral-300);
     background-color: var(--neutral-100);
 }
 
@@ -6102,7 +6100,7 @@ figcaption {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
-    color: #eff0f6;
+    color: var(--neutral-300);
     text-decoration: none;
 }
 
@@ -6292,7 +6290,7 @@ figcaption {
     width: 672px;
     border-style: solid;
     border-width: 0px;
-    border-color: #eff0f6;
+    border-color: var(--neutral-300);
     border-radius: 0px;
     background-color: transparent;
     box-shadow: none;
@@ -6786,7 +6784,7 @@ figcaption {
     transition: color 300ms ease, -webkit-transform 300ms ease;
     transition: transform 300ms ease, color 300ms ease;
     transition: transform 300ms ease, color 300ms ease, -webkit-transform 300ms ease;
-    color: #eff0f6;
+    color: var(--neutral-300);
     font-weight: 400;
     text-decoration: none;
     -webkit-transform-style: preserve-3d;
@@ -7483,7 +7481,7 @@ figcaption {
     border-width: 3px;
     border-color: var(--neutral-800);
     border-radius: 32px;
-    box-shadow: 7px 7px 0 0 #000;
+    box-shadow: 7px 7px 0 0 var(--neutral-800);
 }
 
 .image-wrapper.border-image {
@@ -7702,7 +7700,7 @@ figcaption {
     flex-wrap: wrap;
     grid-column-gap: 15px;
     border-width: 0px 0px 1px;
-    border-bottom-color: #eff0f6;
+    border-bottom-color: var(--neutral-300);
     background-color: transparent;
 }
 
@@ -7710,7 +7708,7 @@ figcaption {
     padding-right: 0px;
     padding-bottom: 0px;
     padding-left: 0px;
-    border: 0px solid #000;
+    border: 0px solid var(--neutral-800);
     background-color: transparent;
 }
 
@@ -7719,14 +7717,14 @@ figcaption {
 }
 
 .shipping-list {
-    border: 0px solid #000;
+    border: 0px solid var(--neutral-800);
 }
 
 .shipping-method {
     padding: 31px 0px;
     border-style: solid;
     border-width: 0px 0px 1px;
-    border-color: #000 #000 #eff0f6;
+    border-color: var(--neutral-800) var(--neutral-800) var(--neutral-300);
 }
 
 .shipping-price {
@@ -7743,7 +7741,7 @@ figcaption {
     margin-bottom: 18px;
     padding-top: 18px;
     padding-bottom: 18px;
-    border-bottom: 1px solid #eff0f6;
+    border-bottom: 1px solid var(--neutral-300);
 }
 
 .order-item:last-child {
@@ -7787,7 +7785,7 @@ figcaption {
     margin-top: 32px;
     padding: 32px 0px 0px;
     border-width: 1px 0px 0px;
-    border-top-color: #eff0f6;
+    border-top-color: var(--neutral-300);
 }
 
 .text-underline {
@@ -7906,7 +7904,7 @@ figcaption {
     -webkit-justify-content: flex-end;
     -ms-flex-pack: end;
     justify-content: flex-end;
-    border-left: 3px solid #000;
+    border-left: 3px solid var(--neutral-800);
 }
 
 .figma-file-text-wrapper {
@@ -8023,8 +8021,8 @@ figcaption {
 
 .footer-newsletter {
     margin-bottom: -1px;
-    background-image: -webkit-gradient(linear, left bottom, left top, from(var(--neutral-800)), color-stop(60%, #000), color-stop(0, var(--neutral-100)), color-stop(0, transparent));
-    background-image: linear-gradient(0deg, var(--neutral-800), #000 60%, var(--neutral-100) 0, transparent 0);
+    background-image: -webkit-gradient(linear, left bottom, left top, from(var(--neutral-800)), color-stop(60%, var(--neutral-800)), color-stop(0, var(--neutral-100)), color-stop(0, transparent));
+    background-image: linear-gradient(0deg, var(--neutral-800), var(--neutral-800) 60%, var(--neutral-100) 0, transparent 0);
 }
 
 .footer-newsletter.newsletter-section {
@@ -8035,10 +8033,10 @@ figcaption {
         from(transparent),
         color-stop(10%, transparent),
         color-stop(0, var(--neutral-800)),
-        color-stop(90%, #000),
+        color-stop(90%, var(--neutral-800)),
         color-stop(0, transparent)
     );
-    background-image: linear-gradient(0deg, transparent, transparent 10%, var(--neutral-800) 0, #000 90%, transparent 0);
+    background-image: linear-gradient(0deg, transparent, transparent 10%, var(--neutral-800) 0, var(--neutral-800) 90%, transparent 0);
 }
 
 .newsletter-wrapper {
@@ -8452,7 +8450,7 @@ figcaption {
     border-width: 3px;
     border-color: var(--neutral-800);
     border-radius: 50%;
-    box-shadow: -13px 13px 0 0 #000;
+    box-shadow: -13px 13px 0 0 var(--neutral-800);
 }
 
 .rigth-shadow-circle {
@@ -8885,7 +8883,7 @@ figcaption {
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    border-bottom: 1px solid #eff0f6;
+    border-bottom: 1px solid var(--neutral-300);
 }
 
 .cart-item:last-child {
@@ -9771,8 +9769,8 @@ figcaption {
         margin-right: auto;
         margin-left: auto;
         padding: 24px;
-        border-top: 0px solid #eff0f6;
-        border-bottom: 0px solid #eff0f6;
+        border-top: 0px solid var(--neutral-300);
+        border-bottom: 0px solid var(--neutral-300);
         background-color: transparent;
     }
 
@@ -10693,7 +10691,6 @@ figcaption {
     }
 
     .inner-container.blog-secondary-card-content {
-        max-width: 400px;
         min-width: auto;
     }
 
@@ -11531,13 +11528,13 @@ figcaption {
     }
 
     .footer-newsletter {
-        background-image: -webkit-gradient(linear, left bottom, left top, from(var(--neutral-800)), color-stop(50%, #000), color-stop(0, var(--neutral-100)), color-stop(0, transparent));
-        background-image: linear-gradient(0deg, var(--neutral-800), #000 50%, var(--neutral-100) 0, transparent 0);
+        background-image: -webkit-gradient(linear, left bottom, left top, from(var(--neutral-800)), color-stop(50%, var(--neutral-800)), color-stop(0, var(--neutral-100)), color-stop(0, transparent));
+        background-image: linear-gradient(0deg, var(--neutral-800), var(--neutral-800) 50%, var(--neutral-100) 0, transparent 0);
     }
 
     .footer-newsletter.newsletter-section {
-        background-image: -webkit-gradient(linear, left bottom, left top, from(transparent), color-stop(0%, var(--neutral-800)), color-stop(90%, #000), color-stop(0, transparent));
-        background-image: linear-gradient(0deg, transparent, var(--neutral-800) 0%, #000 90%, transparent 0);
+        background-image: -webkit-gradient(linear, left bottom, left top, from(transparent), color-stop(0%, var(--neutral-800)), color-stop(90%, var(--neutral-800)), color-stop(0, transparent));
+        background-image: linear-gradient(0deg, transparent, var(--neutral-800) 0%, var(--neutral-800) 90%, transparent 0);
     }
 
     .newsletter-wrapper {

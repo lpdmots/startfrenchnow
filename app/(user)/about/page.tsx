@@ -2,6 +2,7 @@ import Hobbies from "@/app/components/about/Hobbies";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { MdOutlineEmail } from "react-icons/md";
 
 function About() {
     return (
@@ -28,7 +29,10 @@ function About() {
                                                 </p>
                                             </div>
                                             <Link href="/contact" className="btn-primary button-row w-button">
-                                                <span className="line-rounded-icon link-icon-left text-medium"></span>Get in touch
+                                                <div className="flex items-center justify-center">
+                                                    <MdOutlineEmail className="mr-2" />
+                                                    Get in touch
+                                                </div>
                                             </Link>
                                         </div>
                                     </div>

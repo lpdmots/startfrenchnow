@@ -11,9 +11,11 @@ export interface Post extends Base {
     body: Block[];
     categories: Category[];
     mainImage: Image;
+    mainVideo: VideoBlog;
     slug: Slug;
     title: string;
     description: string;
+    level: "a1" | "a2" | "b1" | "b2";
 }
 
 export interface Author extends Base {
@@ -67,4 +69,10 @@ export interface MainImage {
 export interface Title {
     _type: "string";
     current: string;
+}
+
+export interface VideoBlog {
+    _type: "videoBlog";
+    title: string;
+    s3Key: string;
 }

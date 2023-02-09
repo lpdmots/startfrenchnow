@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import { FaCommentDots, FaStar, FaStarHalfAlt, FaUserGraduate } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
+import { FaCommentDots, FaRegSmileWink, FaStar, FaStarHalfAlt, FaUserGraduate } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi";
 import BlogHome from "../components/home/BlogHome";
 import CommentsCarousel from "../components/home/CommentsCarousel";
@@ -17,7 +18,12 @@ function Home() {
                     <div className="inner-container _600px---tablet center">
                         <div className="inner-container _500px---mbl center">
                             <div className="w-layout-grid grid-2-columns hero-v1">
-                                <div id="w-node-d6ab327c-c12b-e1a4-6a28-7aaa783883be-b9543dac" data-w-id="d6ab327c-c12b-e1a4-6a28-7aaa783883be" className="inner-container _600px test">
+                                <div
+                                    id="w-node-d6ab327c-c12b-e1a4-6a28-7aaa783883be-b9543dac"
+                                    data-w-id="d6ab327c-c12b-e1a4-6a28-7aaa783883be"
+                                    className="inner-container test"
+                                    style={{ maxWidth: 650 }}
+                                >
                                     <div className="text-center---tablet">
                                         <div className="inner-container _550px---tablet center">
                                             <h1 className="display-1">
@@ -32,8 +38,8 @@ function Home() {
                                             <HiAcademicCap className="mr-2" style={{ fontSize: 20 }} />
                                             Start French now
                                         </a>
-                                        <a href="#whoami" className="btn-secondary button-row w-button">
-                                            <span className="line-rounded-icon link-icon-left text-medium"></span>I am Yohann
+                                        <a href="#whoami" className="btn-secondary button-row w-button flex items-center justify-center">
+                                            <AiOutlineUser className="mr-2" />I am Yohann
                                         </a>
                                     </div>
                                 </div>

@@ -5,12 +5,13 @@ import PrimaryPost from "../blog/PrimaryPost";
 import SecondaryPost from "../blog/SecondaryPost";
 import { client } from "../../../lib/sanity.client";
 import Link from "next/link";
+import { BiPencil } from "react-icons/bi";
 
 const query = groq`
     *[_type=='post'] {
         ...,
         categories[]->
-    } | order(_createdAt desc)[0...3]
+    } | order(publishedAt desc)[0...3]
 `;
 
 export default async function BlogHome() {
@@ -28,7 +29,10 @@ export default async function BlogHome() {
                                     </h2>
                                     <div className="buttons-row center-tablet">
                                         <Link href="/blog" className="btn-secondary w-button">
-                                            <span className="line-rounded-icon link-icon-left"></span>Browse all articles
+                                            <span className="flex items-center">
+                                                <BiPencil className="mr-2" />
+                                                Browse all articles
+                                            </span>
                                         </Link>
                                     </div>
                                 </div>

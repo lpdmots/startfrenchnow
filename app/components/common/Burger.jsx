@@ -1,38 +1,8 @@
 "use client";
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-
-const StyledBurger = styled.div`
-    width: 2.3rem;
-    height: 2.3rem;
-    display: none;
-    cursor: pointer;
-    @media (max-width: 991px) {
-        display: flex;
-        justify-content: space-around;
-        flex-flow: column nowrap;
-    }
-    div {
-        width: 2.3rem;
-        height: 3px;
-        background-color: var(--neutral-800);
-        border-radius: 10px;
-        transform-origin: 1px;
-        transition: all 0.2s linear;
-        &:nth-child(1) {
-            transform: ${({ open }) => (open ? "rotate(45deg)" : "rotate(0)")};
-        }
-        &:nth-child(2) {
-            opacity: ${({ open }) => (open ? 0 : 1)};
-        }
-        &:nth-child(3) {
-            transform: ${({ open }) => (open ? "rotate(-45deg)" : "rotate(0)")};
-        }
-    }
-`;
 
 const Burger = () => {
     const [open, setOpen] = useState(false);
@@ -45,18 +15,14 @@ const Burger = () => {
 
     return (
         <>
-            <StyledBurger open={open} onClick={() => setOpen(!open)}>
-                <div />
-                <div />
-                <div />
-            </StyledBurger>
+            <Animation open={open} onClick={() => setOpen(!open)} />
 
             <div
                 ref={ref}
                 style={open ? { height: ref.current.scrollHeight + "px", zIndex: 1000 } : { height: "0px", zIndex: 1000 }}
                 className="w-screen nav-width mx-auto px-6 absolute left-0 nav-collapse-top collapse-parent"
             >
-                <div className="nav burgerCollapse !py-5 w-full mb-0">
+                <div className="nav burgerCollapse w-full mb-0 flex flex-col items-start py-6">
                     <ul className="flex-col gap-5 !items-start list-none">
                         <li className="header-nav-list-item middle">
                             <Link href="/" className={`nav-link header-nav-link ${pathname === "/" && "current"}`} onClick={() => setOpen(false)}>
@@ -86,3 +52,53 @@ const Burger = () => {
 };
 
 export default Burger;
+
+const Animation = ({ open, onClick }) => {
+    return (
+        <div
+            className="flex lg:hidden"
+            style={{
+                width: "2.3rem",
+                height: "2.3rem",
+                cursor: "pointer",
+                flexDirection: "column",
+                justifyContent: "space-around",
+            }}
+            onClick={onClick}
+        >
+            <div
+                style={{
+                    width: "2.3rem",
+                    height: "3px",
+                    backgroundColor: "var(--neutral-800)",
+                    borderRadius: "10px",
+                    transformOrigin: "1px",
+                    transition: "all 0.2s linear",
+                    transform: open ? "rotate(45deg)" : "rotate(0)",
+                }}
+            />
+            <div
+                style={{
+                    width: "2.3rem",
+                    height: "3px",
+                    backgroundColor: "var(--neutral-800)",
+                    borderRadius: "10px",
+                    transformOrigin: "1px",
+                    transition: "all 0.2s linear",
+                    opacity: open ? 0 : 1,
+                }}
+            />
+            <div
+                style={{
+                    width: "2.3rem",
+                    height: "3px",
+                    backgroundColor: "var(--neutral-800)",
+                    borderRadius: "10px",
+                    transformOrigin: "1px",
+                    transition: "all 0.2s linear",
+                    transform: open ? "rotate(-45deg)" : "rotate(0)",
+                }}
+            />
+        </div>
+    );
+};

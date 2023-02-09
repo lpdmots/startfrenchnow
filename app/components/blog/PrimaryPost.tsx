@@ -4,6 +4,8 @@ import ClientSideRoute from "../common/ClientSideRoute";
 import urlFor from "../../../lib/urlFor";
 
 const PrimaryPost = ({ post }: { post: Post }) => {
+    const level = post.level ? LEVELDATA[post.level] : LEVELDATA["a1"];
+
     return (
         <ClientSideRoute route={`/blog/post/${post.slug.current}`}>
             <div className="blog-card-wrapper card link-card w-inline-block">
@@ -24,7 +26,10 @@ const PrimaryPost = ({ post }: { post: Post }) => {
                     <div className="mg-top-auto">
                         <div className="flex-col gap-24px _15px---mbp">
                             <p className="line-clamp-4">{post.description}</p>
-                            <div className="text-300 medium color-neutral-600 text-right">{new Date(post._createdAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}</div>
+                            <div className="flex justify-end items-center text-300 medium color-neutral-600">
+                                <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: level.color }} />
+                                {level.label} - {new Date(post._createdAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -34,5 +39,7 @@ const PrimaryPost = ({ post }: { post: Post }) => {
 };
 
 import React from "react";
+import { AiFillSignal } from "react-icons/ai";
+import { LEVELDATA } from "@/lib/constantes";
 
 export default PrimaryPost;

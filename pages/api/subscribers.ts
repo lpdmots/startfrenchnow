@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                body: JSON.stringify({ email: data }),
+                body: JSON.stringify({ email: data, groups: ["79392045100173113"] }),
             });
             return res.status(200).json({ success: true });
         } catch (error: any) {

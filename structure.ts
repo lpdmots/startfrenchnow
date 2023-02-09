@@ -10,7 +10,7 @@ export const getDefaultDocumentNode: DefaultDocumentNodeResolver = (S, { schemaT
                 .component(Iframe)
                 .options({
                     // Required: Accepts an async function
-                    url: `${process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000"}/api/preview`,
+                    url: `${process.env.NEXT_PUBLIC_PRODUCTION_URL || process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000"}/api/preview`,
                     // Optional: Set the default size
                     defaultSize: `desktop`, // default `desktop`
                     // Optional: Add a reload button, or reload on new document revisions

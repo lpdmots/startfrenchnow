@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Comment from "./Comment";
 import { comments } from "./Comment";
 import Link from "next/link";
+import { HiOutlineArrowRight } from "react-icons/hi";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 function CommentsCarousel() {
     const [slideIndex, setSlideIndex] = useState(0);
@@ -35,8 +37,10 @@ function CommentsCarousel() {
                                         <span className="text-no-wrap">
                                             on{" "}
                                             <Link href="https://www.udemy.com/course/french-for-beginners-a1/" className="link-wrapper w-inline-block">
-                                                <span className="link-text underline">Udemy</span>
-                                                <span className="line-rounded-icon link-icon-right"></span>
+                                                <span className="flex items-center">
+                                                    <span className="link-text underline mr-1">Udemy</span>
+                                                    <HiOutlineArrowRight />
+                                                </span>
                                             </Link>
                                             .
                                         </span>
@@ -55,10 +59,10 @@ function CommentsCarousel() {
                         </AnimatePresence>
                     </div>
                     <div className="btn-circle-secondary slider-arrow left---center-center w-slider-arrow-left" onClick={() => handleSlide(-1)}>
-                        <div className="line-rounded-icon"></div>
+                        <AiOutlineArrowLeft />
                     </div>
                     <div className="btn-circle-secondary slider-arrow right---center-center w-slider-arrow-right" onClick={() => handleSlide(1)}>
-                        <div className="line-rounded-icon"></div>
+                        <AiOutlineArrowRight />
                     </div>
                     <div className="hidden-on-desktop w-slider-nav w-round"></div>
                 </div>

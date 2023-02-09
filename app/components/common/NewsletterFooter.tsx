@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import { BsCheckCircle } from "react-icons/bs";
+import { FiGift } from "react-icons/fi";
 import useSubscribe from "../../hooks/useSubscribe";
 import Spinner from "./Spinner";
 
@@ -15,17 +17,21 @@ function NewsletterFooter() {
                         <Image src="/images/newsletter-image-paperfolio-webflow-template.svg" height={189} width={190} alt="Newsletter Icon - Paperfolio Webflow Template" className="image" />
                     </div>
                     <div className="newsletter-wrapper">
-                        <div className="display-4 text-center-mbl">
-                            Subscribe to <span className="text-no-wrap">my newsletter</span>
+                        <div className="text-center-mbl">
+                            <p className="display-4 mb-0">
+                                Subscribe to <span className="text-no-wrap">my newsletter</span>
+                            </p>
+                            <div className="flex items-center">
+                                <p className="mb-0 mr-2">Stay informed and get a free video</p>
+                                <FiGift />
+                            </div>
                         </div>
                         <div className="footer-form-block w-form">
                             {success ? (
                                 <div className="success-message text-left w-form-done">
-                                    <div className="flex-horizontal success-message-horizontal">
-                                        <div className="line-rounded-icon success-message-check---left"></div>
-                                        <div>
-                                            Thanks for joining <span>our newsletter.</span>
-                                        </div>
+                                    <div className="flex-horizontal success-message-horizontal items-center">
+                                        <BsCheckCircle className="mr-2" style={{ fontSize: 28 }} />
+                                        <div>Thanks for joining our newsletter. Check your emails and start French now!</div>
                                     </div>
                                 </div>
                             ) : error ? (

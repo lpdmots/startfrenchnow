@@ -102,6 +102,22 @@ section {
     box-shadow: 25px 25px 0 0 var(--neutral-800);
 }
 
+.badge-secondaire {
+    display: inline-block;
+    padding: 18px 28px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--neutral-800);
+    border-radius: 14px;
+    background-color: var(--neutral-100);
+    color: var(--neutral-800);
+    font-size: 18px;
+    line-height: 1.111em;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+}
+
 @media screen and (max-width: 991px) {
     section {
         padding-top: 200px;
@@ -113,6 +129,11 @@ section {
     section {
         padding-top: 168px;
         padding-bottom: 168px;
+    }
+    .badge-secondaire {
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-size: 16px;
     }
 }
 
