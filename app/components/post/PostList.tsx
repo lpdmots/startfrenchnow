@@ -18,7 +18,7 @@ export default function PostsList({ posts, categories }: { posts: Post[]; catego
                                         </h2>
                                         <div className="card categories-card">
                                             <Link href="#" className="blog-categories-item-wrapper current w-inline-block pointer-events-none">
-                                                All
+                                                Tous
                                             </Link>
                                             <div className="w-dyn-list">
                                                 <div role="list" className="collection-list categories w-dyn-items">

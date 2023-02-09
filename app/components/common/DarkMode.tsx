@@ -17,7 +17,9 @@ function DarkMode() {
 
     useEffect(() => {
         const theme = localStorage.getItem("sfn-theme");
-        if (!theme || theme === "light") setToggle("light");
+        if (!theme || theme === "light") {
+            return setToggle("light");
+        }
         setToggle("dark");
     }, []);
 

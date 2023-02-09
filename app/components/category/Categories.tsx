@@ -33,7 +33,7 @@ function Categories({ allPosts, slug, categories }: { allPosts: Post[]; slug: st
                                         <div className="text-center---tablet">
                                             <div className="card categories-card">
                                                 <Link href="/blog" className="blog-categories-item-wrapper w-inline-block">
-                                                    All
+                                                    Tous
                                                 </Link>
                                                 <div className="w-dyn-list">
                                                     <div role="list" className="collection-list categories w-dyn-items">

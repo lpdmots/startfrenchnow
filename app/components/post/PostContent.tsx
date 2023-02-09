@@ -5,8 +5,8 @@ import { PortableText } from "@portabletext/react";
 import { RichTextComponents } from "../../components/sanity/RichTextComponents";
 import Link from "next/link";
 import NewsletterCard from "../../components/common/NewsletterCard";
-import { AiFillSignal } from "react-icons/ai";
 import { LEVELDATA } from "@/lib/constantes";
+import Helper from "./Helper";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -37,18 +37,20 @@ function PostContent({ post }: { post: Post }) {
                         </div>
                     </div>
                     {post.mainVideo ? (
-                        <div className=" my-12">
+                        <div className=" mt-12">
                             <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto" style={{ width: "100%", lineHeight: 0 }}>
                                 <video className="image-wrapper border-radius-30px" src={cloudFrontDomain + post.mainVideo.s3Key} height="auto" width="100%" controls></video>
                             </div>
                             {post.mainVideo.title && <p className="display-4 w-full text-center pt-6 mb-0">{post.mainVideo.title}</p>}
+                            <Helper post={post} level={level} />
                         </div>
                     ) : post.mainImage ? (
                         <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto" style={{ maxWidth: "800px" }}>
                             <Image src={urlFor(post.mainImage).url()} height={800} width={800} loading="eager" alt={post.title} className="image object-contain rounded-lg" />
+                            <Helper post={post} level={level} />
                         </div>
                     ) : (
-                        <></>
+                        <Helper post={post} level={level} />
                     )}
                 </div>
             </section>
@@ -62,15 +64,6 @@ function PostContent({ post }: { post: Post }) {
                                 </div>
                             </div>
                             <div id="w-node-_2efa5bda-72aa-9528-9385-590a86804244-6f543d60" className="sticky-top _48px-top">
-                                <div className="badge-secondaire w-full mb-12 text-300 medium color-neutral-600">
-                                    <p>{new Date(post._createdAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}</p>
-                                    <p className="flex justify-center items-end">
-                                        Difficulty:
-                                        <AiFillSignal className=" mx-2" style={{ fontSize: "1.5rem", color: level.color }} />
-                                        {level.label}
-                                    </p>
-                                    <p>I need help.</p>
-                                </div>
                                 <NewsletterCard />
                             </div>
                         </div>

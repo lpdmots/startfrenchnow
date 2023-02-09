@@ -1,6 +1,9 @@
 import { defineType, defineArrayMember } from "sanity";
 import { FaHighlighter } from "react-icons/fa";
 import { AiOutlineAlignCenter, AiOutlineAlignLeft, AiOutlineAlignRight } from "react-icons/ai";
+import { MdTranslate } from "react-icons/md";
+import { IoMdArrowDropright } from "react-icons/io";
+import { BsCaretRightFill } from "react-icons/bs";
 
 /**
  * This is the schema definition for the rich text fields used for
@@ -23,6 +26,19 @@ const HighlightDecoratorOrange = (props: any) => <span style={{ backgroundColor:
 const AlignLeft = (props: any) => <p style={{ textAlign: "center" }}>{props.children}</p>;
 const AlignCenter = (props: any) => <p style={{ textAlign: "center" }}>{props.children}</p>;
 const AlignRight = (props: any) => <p style={{ textAlign: "right" }}>{props.children}</p>;
+const TranslationBlock = (props: any) => (
+    <div className="translation pl-8 md:pl-12" style={{ borderLeft: "solid 8px var(--neutral-600)" }}>
+        <p className="italic">{props.children}</p>
+    </div>
+);
+const InlineTranslation = (props: any) => {
+    return (
+        <span className="translation italic underline ml-1">
+            <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2 }} />
+            {props.children}
+        </span>
+    );
+};
 
 export default defineType({
     title: "Block Content",
@@ -43,6 +59,7 @@ export default defineType({
                 { title: "H3", value: "h3" },
                 { title: "H4", value: "h4" },
                 { title: "Quote", value: "blockquote" },
+                { title: "Translation", value: "translation", component: TranslationBlock },
                 { title: "Hidden", value: "hidden" },
             ],
             lists: [{ title: "Bullet", value: "bullet" }],
@@ -56,9 +73,10 @@ export default defineType({
                     { title: "Hightlight Red", value: "hightlightRed", icon: hightLigthIcon("red"), component: HighlightDecoratorRed },
                     { title: "Hightlight Blue", value: "hightlightBlue", icon: hightLigthIcon("blue"), component: HighlightDecoratorBlue },
                     { title: "Hightlight Orange", value: "hightlightOrange", icon: hightLigthIcon("orange"), component: HighlightDecoratorOrange },
-                    { title: "Gauche", value: "left", icon: () => <AiOutlineAlignLeft />, component: AlignLeft },
-                    { title: "Centrer", value: "center", icon: () => <AiOutlineAlignCenter />, component: AlignCenter },
-                    { title: "Droite", value: "right", icon: () => <AiOutlineAlignRight />, component: AlignRight },
+                    { title: "Left", value: "left", icon: () => <AiOutlineAlignLeft />, component: AlignLeft },
+                    { title: "Center", value: "center", icon: () => <AiOutlineAlignCenter />, component: AlignCenter },
+                    { title: "Right", value: "right", icon: () => <AiOutlineAlignRight />, component: AlignRight },
+                    { title: "Inline translation", value: "inlineTranslation", icon: () => <MdTranslate />, component: InlineTranslation },
                 ],
                 // Annotations can be any object structure – e.g. a link or a footnote.
                 annotations: [
@@ -71,6 +89,18 @@ export default defineType({
                                 title: "URL",
                                 name: "href",
                                 type: "url",
+                            },
+                            {
+                                title: "New tab",
+                                name: "target",
+                                type: "boolean",
+                                initialValue: true,
+                            },
+                            {
+                                title: "Download",
+                                name: "download",
+                                type: "boolean",
+                                initialValue: false,
                             },
                         ],
                     },

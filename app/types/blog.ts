@@ -16,6 +16,7 @@ export interface Post extends Base {
     title: string;
     description: string;
     level: "a1" | "a2" | "b1" | "b2";
+    translation: boolean;
 }
 
 export interface Author extends Base {

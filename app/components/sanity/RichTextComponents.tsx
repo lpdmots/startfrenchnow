@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import urlFor from "../../../lib/urlFor";
+import { BsCaretLeftFill, BsCaretRightFill, BsFillChatRightTextFill } from "react-icons/bs";
+import { AiFillRightSquare } from "react-icons/ai";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -34,15 +36,25 @@ export const RichTextComponents = {
         h3: ({ children }: any) => <h3 className="display-3">{children}</h3>,
         h4: ({ children }: any) => <h4 className="display-4">{children}</h4>,
         blockquote: ({ children }: any) => <blockquote className="mt-12">{children}</blockquote>,
+        translation: ({ children }: any) => (
+            <div className="translation pl-8 md:pl-12" style={{ borderLeft: "solid 8px var(--neutral-600)" }}>
+                <p className="italic">{children}</p>
+            </div>
+        ),
         hidden: ({ children }: any) => <p className="hidden">{children}</p>,
     },
     marks: {
         link: ({ children, value }: any) => {
-            const rel = !value.href.startWith("/") ? "noreferrer noopener" : undefined;
+            console.log({ value });
+            console.log(typeof value.href, value.href);
+            const rel = value.href[0] !== "/" ? "noreferrer noopener" : undefined;
+            const target = value.target ? "_blank" : "_self";
             return (
-                <Link href={value.href} rel={rel}>
-                    {children}
-                </Link>
+                <span className="flex justify-center my-8">
+                    <Link className="btn-primary w-button" href={value.href} target={target} rel={rel} /* download={value.download} */>
+                        {children}
+                    </Link>
+                </span>
             );
         },
         hightlightRed: ({ children }: any) => <span className="heading-span-secondary-4">{children}</span>,
@@ -51,5 +63,11 @@ export const RichTextComponents = {
         left: ({ children }: any) => <p style={{ textAlign: "left" }}>{children}</p>,
         center: ({ children }: any) => <p style={{ textAlign: "center" }}>{children}</p>,
         right: ({ children }: any) => <p style={{ textAlign: "right" }}>{children}</p>,
+        inlineTranslation: ({ children }: any) => (
+            <span className="translation italic underline ml-1">
+                <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2 }} />
+                {children}
+            </span>
+        ),
     },
 };

@@ -77,6 +77,12 @@ export default defineType({
             title: "Body",
             type: "blockContent",
         }),
+        defineField({
+            name: "translation",
+            title: "Translation",
+            type: "boolean",
+            initialValue: true,
+        }),
     ],
 
     preview: {

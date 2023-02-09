@@ -3534,7 +3534,7 @@ figcaption {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    padding: 48px 35px;
+    padding: 48px 25px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
