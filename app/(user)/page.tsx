@@ -28,7 +28,7 @@ function Home() {
                                     <div className="text-center---tablet">
                                         <div className="inner-container _550px---tablet center">
                                             <h1 className="display-1">
-                                                <span className="heading-span-secondary-4">TESTLearn French</span> at your own pace with <span className="heading-span-secondary-2 ">high quality</span>{" "}
+                                                <span className="heading-span-secondary-4">Learn French</span> at your own pace with <span className="heading-span-secondary-2 ">high quality</span>{" "}
                                                 French lessons.
                                             </h1>
                                         </div>
