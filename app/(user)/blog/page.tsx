@@ -5,8 +5,8 @@ import PreviewSuspense from "../../components/sanity/PreviewSuspense";
 import PreviewBlogListe from "../../components/sanity/PreviewBlogList";
 import BlogList from "../../components/blog/BlogList";
 import { Category, Post } from "../../types/blog";
-import NewsletterBand from "../../components/common/NewsletterBand";
 import PostsList from "@/app/components/post/PostList";
+import CategoriesBand from "@/app/components/blog/CategoriesBand";
 
 const query = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now())] {
@@ -52,7 +52,7 @@ export default async function Blog() {
     ) : (
         <div className="page-wrapper">
             <BlogList posts={posts} />
-            <NewsletterBand />
+            <CategoriesBand />
             <PostsList posts={posts} categories={categories} />
         </div>
     );

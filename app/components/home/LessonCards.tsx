@@ -14,7 +14,7 @@ const lessons = [
         price: 100,
         reduction: 60,
         difficulty: "A1",
-        time: "15h30",
+        time: "16h10",
         label: (
             <>
                 Get <span className="heading-span-secondary-4">55% OFF</span> this month!
@@ -30,7 +30,7 @@ const lessons = [
         price: 120,
         reduction: 70,
         difficulty: "A2",
-        time: "16h30",
+        time: "11h40",
         label: (
             <>
                 Enroll with <span className="heading-span-secondary-4">40% discount</span>
@@ -46,7 +46,7 @@ const lessons = [
         price: 90,
         reduction: null,
         difficulty: "A2",
-        time: "12h00",
+        time: "1h30",
         label: (
             <>
                 Grab the <span className="heading-span-secondary-4">latest</span> course!
@@ -85,7 +85,7 @@ function LessonCards() {
                             </div>
                             <div className="flex justify-center items-center">
                                 <div className="flex items-center mr-2">
-                                    <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: difficulty === "A1" ? "var(--secondary-4)" : "var(--secondary-1)" }} />
+                                    <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: difficulty === "A1" ? "var(--secondary-5)" : "var(--secondary-1)" }} />
                                     <p className="m-0">{difficulty}</p>
                                 </div>
                                 <div className="flex items-center">

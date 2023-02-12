@@ -20,7 +20,7 @@ function UdemyBusiness() {
                                 className="inner-container _584px _100---tablet col-span-3"
                             >
                                 <p className="color-neutral-300 mg-bottom-24px">
-                                    One of my greatest pleasure is to see that my students come from over 140 different countries ! They all have their own objective towards the french language and my
+                                    One of my greatest pleasure is to see that my students come from over 140 different countries ! They all have their own objective towards the French language and my
                                     mission is to help
                                     <span className="text-no-wrap"> them reaching it.</span>
                                 </p>

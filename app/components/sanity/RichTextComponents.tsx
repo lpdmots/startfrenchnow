@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import urlFor from "../../../lib/urlFor";
-import { BsCaretLeftFill, BsCaretRightFill, BsFillChatRightTextFill } from "react-icons/bs";
-import { AiFillRightSquare } from "react-icons/ai";
+import { BsCaretRightFill } from "react-icons/bs";
+import TabelVoc from "./TabelVoc";
+import { FaFileDownload } from "react-icons/fa";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -25,6 +26,7 @@ export const RichTextComponents = {
                 </div>
             );
         },
+        tabelVoc: ({ value }: any) => <TabelVoc titles={value.titles} column1={value.column1} column2={value.column2} color={value.color} />,
     },
     list: {
         bullet: ({ children }: any) => <ul className="ml-4 sm:ml-10 py-5 list-disc space-y-5">{children}</ul>,
@@ -45,13 +47,13 @@ export const RichTextComponents = {
     },
     marks: {
         link: ({ children, value }: any) => {
-            console.log({ value });
-            console.log(typeof value.href, value.href);
+            const href = value.download ? cloudFrontDomain + value.href : value.href;
             const rel = value.href[0] !== "/" ? "noreferrer noopener" : undefined;
             const target = value.target ? "_blank" : "_self";
             return (
                 <span className="flex justify-center my-8">
-                    <Link className="btn-primary w-button" href={value.href} target={target} rel={rel} /* download={value.download} */>
+                    <Link className="btn-primary w-button" href={href} target={target} rel={rel} download={value.download}>
+                        {value.download && <FaFileDownload className="mr-2" />}
                         {children}
                     </Link>
                 </span>

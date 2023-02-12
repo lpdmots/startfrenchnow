@@ -73,9 +73,9 @@ function About() {
                                 </div>
                                 <div id="w-node-_8fce2975-a4c1-d75d-4e92-2f3e3dce47b0-c2543d52" data-w-id="8fce2975-a4c1-d75d-4e92-2f3e3dce47b0" className="inner-container _580px _100---tablet">
                                     <p className="mg-bottom-24px keep w-clearfix">
-                                        <span className="drop-cap-span">W</span>ell I started as primary school teacher and then decided to change audience and become an expert in teaching French as a
-                                        foreign language. So I quickly wanted to work abroad and went to China first, then to London (England) and to New Zealand. I worked in different establishments,
-                                        language schools (Alliance française), universities, and business schools where I was teaching general French to a demanding public{" "}
+                                        <span className="drop-cap-span">W</span>ell I started as a primary school teacher and then decided to change audience and become an expert in teaching French as
+                                        a foreign language. So I quickly wanted to work abroad and went to China first, then to London (England) and to New Zealand. I worked in different
+                                        establishments, language schools (Alliance française), universities, and business schools where I was teaching general French to a demanding public{" "}
                                         <span className="text-no-wrap">of varied level.</span>
                                     </p>
                                     <p className="mg-bottom-40px">

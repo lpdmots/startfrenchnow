@@ -35,7 +35,7 @@ const HOBBIES = [
         title: "Course à pied",
         description: (
             <p>
-                Sportif depuis toujours, j’ai commencé par la gymnastique puis le handball quand j’étais adolescent. Puis à l’âge adulte et avec mon mode de vie, il était plus facile de pratiquer des
+                Sportif depuis toujours, j’ai commencé par la gymnastique puis le handball quand j’étais adolescent. À l’âge adulte et avec mon mode de vie, il était plus facile de pratiquer des
                 activités individuelles donc je me suis naturellement orienté vers la course à pied et un peu l’escalade. En course à pied, ce que je préfère vraiment c’est le « trail », c’est-à-dire
                 courir dans la nature, dans les montagnes et avoir accès à des paysages magnifiques. Je dois dire que le choix de chaque nouvelle destination est fortement influencé par cette passion.
                 Je pratique aussi le padel, le tennis, le football et tout ce qui me

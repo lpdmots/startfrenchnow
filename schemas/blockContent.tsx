@@ -2,7 +2,6 @@ import { defineType, defineArrayMember } from "sanity";
 import { FaHighlighter } from "react-icons/fa";
 import { AiOutlineAlignCenter, AiOutlineAlignLeft, AiOutlineAlignRight } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
-import { IoMdArrowDropright } from "react-icons/io";
 import { BsCaretRightFill } from "react-icons/bs";
 
 /**
@@ -88,7 +87,7 @@ export default defineType({
                             {
                                 title: "URL",
                                 name: "href",
-                                type: "url",
+                                type: "string",
                             },
                             {
                                 title: "New tab",
@@ -116,6 +115,10 @@ export default defineType({
         }),
         defineArrayMember({
             type: "videoBlog",
+            options: { hotspot: true },
+        }),
+        defineArrayMember({
+            type: "tabelVoc",
             options: { hotspot: true },
         }),
     ],

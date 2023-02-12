@@ -9,6 +9,7 @@ import CoreValuesMethod from "../components/home/CoreValuesMethod";
 import LessonCards from "../components/home/LessonCards";
 import UdemyBusiness from "../components/home/UdemyBusiness";
 import WhoIAm from "../components/home/WhoIAm";
+import { BsCaretRightFill } from "react-icons/bs";
 
 function Home() {
     return (
@@ -27,11 +28,11 @@ function Home() {
                                     <div className="text-center---tablet">
                                         <div className="inner-container _550px---tablet center">
                                             <h1 className="display-1">
-                                                <span className="heading-span-secondary-4">Learn French</span> at your own pace with <span className="heading-span-secondary-2 ">high quality</span>{" "}
+                                                <span className="heading-span-secondary-4">TESTLearn French</span> at your own pace with <span className="heading-span-secondary-2 ">high quality</span>{" "}
                                                 French lessons.
                                             </h1>
                                         </div>
-                                        <p className="mg-bottom-48px">You want to be serious about learning French? Don't worry, it doesn't have to be boring. Check it out.</p>
+                                        <p className="mg-bottom-48px">You want to be serious about learning French? Don't worry, it doesn't have to be boring.</p>
                                     </div>
                                     <div className="buttons-row center-tablet ">
                                         <a href="#courses" className="btn-primary button-row w-button flex items-center">
@@ -39,7 +40,8 @@ function Home() {
                                             Start French now
                                         </a>
                                         <a href="#whoami" className="btn-secondary button-row w-button flex items-center justify-center">
-                                            <AiOutlineUser className="mr-2" />I am Yohann
+                                            <AiOutlineUser className="mr-2" />
+                                            Enchanté
                                         </a>
                                     </div>
                                 </div>

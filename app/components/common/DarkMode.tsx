@@ -26,11 +26,11 @@ function DarkMode() {
     return (
         <div className="flex justify-center">
             {["light", ""].includes(toggle) ? (
-                <button data-set-theme="dark" data-act-class="ACTIVECLASS" onClick={() => handleClick("dark")} className="btn p-0 flex items-center bg-neutral-100 mr-4 ">
+                <button aria-label="Dark mode" data-set-theme="dark" data-act-class="ACTIVECLASS" onClick={() => handleClick("dark")} className="btn p-0 flex items-center bg-neutral-100 mr-4 ">
                     <MdDarkMode className="fill-neutral-800 text-2xl sm:text-3xl" />
                 </button>
             ) : (
-                <button data-set-theme="" data-act-class="ACTIVECLASS" onClick={() => handleClick("light")} className="btn p-0 flex items-center bg-neutral-100 mr-4">
+                <button aria-label="Light mode" data-set-theme="" data-act-class="ACTIVECLASS" onClick={() => handleClick("light")} className="btn p-0 flex items-center bg-neutral-100 mr-4">
                     <MdWbSunny className="fill-neutral-800 text-2xl sm:text-3xl" />
                 </button>
             )}

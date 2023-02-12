@@ -19,8 +19,8 @@ function CoreValuesMethod() {
                                 </div>
                                 <div className="inner-container _525px">
                                     <p className="mg-bottom-0 text-neutral-700">
-                                        A <span className="underline underline-offset-2">well structured</span> method with <span className="underline underline-offset-2">bite-sizedlessons</span> that
-                                        enables you to acquire the <span className="underline underline-offset-2">fundamental</span> French language skills.
+                                        A <span className="underline underline-offset-2">well structured</span> method with <span className="underline underline-offset-2">bite-sized lessons</span>{" "}
+                                        that enables you to acquire the <span className="underline underline-offset-2">fundamental</span> French language skills.
                                     </p>
                                 </div>
                             </div>

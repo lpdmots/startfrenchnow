@@ -370,3 +370,30 @@ button {
     border-radius: 50%;
     animation: spin 1.2s linear infinite;
 }
+
+/* TABLEAU */
+#customers {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td,
+#customers th {
+    padding: 8px;
+}
+
+#customers tr:nth-child(even) {
+    background-color: var(--neutral-100);
+}
+
+#customers tr:hover {
+    background-color: var(--neutral-300);
+}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    color: var(--neutral-800);
+}
