@@ -397,3 +397,31 @@ button {
     text-align: left;
     color: var(--neutral-800);
 }
+
+/* Marquee */
+.marquee {
+    position: relative;
+    width: 110vw;
+    max-width: 110vw;
+    height: 155px;
+    overflow-x: hidden;
+}
+
+.track {
+    position: absolute;
+    white-space: nowrap;
+    right: -110vw;
+}
+
+.trackInitial {
+    position: absolute;
+    white-space: nowrap;
+    left: 0;
+}
+
+.track > div {
+    width: 110vw;
+}
+.trackInitial > div {
+    width: 110vw;
+}

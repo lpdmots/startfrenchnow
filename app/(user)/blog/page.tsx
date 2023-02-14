@@ -7,6 +7,7 @@ import BlogList from "../../components/blog/BlogList";
 import { Category, Post } from "../../types/blog";
 import PostsList from "@/app/components/post/PostList";
 import CategoriesBand from "@/app/components/blog/CategoriesBand";
+import Marquee from "@/app/components/animations/Marquee";
 
 const query = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now())] {
@@ -52,7 +53,7 @@ export default async function Blog() {
     ) : (
         <div className="page-wrapper">
             <BlogList posts={posts} />
-            <CategoriesBand />
+            <Marquee content={<CategoriesBand />} />
             <PostsList posts={posts} categories={categories} />
         </div>
     );

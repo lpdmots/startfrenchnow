@@ -4,6 +4,7 @@ import ClientSideRoute from "../common/ClientSideRoute";
 import urlFor from "../../../lib/urlFor";
 import { AiFillSignal } from "react-icons/ai";
 import { LEVELDATA } from "@/lib/constantes";
+import { ScaleChildren } from "../animations/ParentToChildrens";
 
 const SecondaryPost = ({ post }: { post: Post }) => {
     const level = post.level ? LEVELDATA[post.level] : LEVELDATA["a1"];
@@ -12,16 +13,17 @@ const SecondaryPost = ({ post }: { post: Post }) => {
         <ClientSideRoute route={`/blog/post/${post.slug.current}`}>
             <div className="card blog-secondary-card link-card w-inline-block">
                 <div className="blog-card-image-wrapper inside-card blog-secondary-card-image ">
-                    <Image
-                        src={urlFor(post.mainImage).url()}
-                        width="0"
-                        height="0"
-                        sizes="300px"
-                        loading="eager"
-                        alt={post.title}
-                        className="blog-card-image object-contain rounded-2xl sm:rounded-3xl"
-                        style={{ width: "auto", height: "auto", maxHeight: "200px" }}
-                    />
+                    <ScaleChildren>
+                        <Image
+                            src={urlFor(post.mainImage).url()}
+                            width={200}
+                            height={200}
+                            loading="lazy"
+                            alt={post.title}
+                            className="blog-card-image object-contain rounded-2xl sm:rounded-3xl"
+                            style={{ width: "auto", height: "auto", maxHeight: "200px" }}
+                        />
+                    </ScaleChildren>
                     <div className="blog-card-badge-wrapper-top text-right">
                         {post.categories.map((category) => (
                             <div key={category.title} className="badge-primary small mb-2 ml-2">

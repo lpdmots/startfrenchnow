@@ -10,7 +10,9 @@ const PrimaryPost = ({ post }: { post: Post }) => {
         <ClientSideRoute route={`/blog/post/${post.slug.current}`}>
             <div className="blog-card-wrapper card link-card w-inline-block">
                 <div className="blog-card-image-wrapper inside-card max-heigth-330px">
-                    <Image src={urlFor(post.mainImage).url()} width={400} height={400} loading="eager" alt={post.title} className="blog-card-image" />
+                    <ScaleChildren>
+                        <Image src={urlFor(post.mainImage).url()} width={400} height={400} loading="eager" alt={post.title} className="blog-card-image" />
+                    </ScaleChildren>
                     <div className="blog-card-badge-wrapper-top text-right">
                         {post.categories.map((category) => (
                             <div key={category.title} className="badge-primary small">
@@ -41,5 +43,6 @@ const PrimaryPost = ({ post }: { post: Post }) => {
 import React from "react";
 import { AiFillSignal } from "react-icons/ai";
 import { LEVELDATA } from "@/lib/constantes";
+import { ScaleChildren } from "../animations/ParentToChildrens";
 
 export default PrimaryPost;

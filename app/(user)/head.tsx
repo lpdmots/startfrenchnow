@@ -1,7 +1,7 @@
 export default function Head() {
     return (
         <>
-            <title>Start French Now: Master French Language with Expert-led Video Lessons</title>
+            <title>Learn French at Your Own Pace with Expert-led Video Lessons</title>
             <meta content="width=device-width, initial-scale=1" name="viewport" />
             <meta
                 name="description"

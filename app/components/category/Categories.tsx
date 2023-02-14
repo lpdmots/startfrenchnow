@@ -1,6 +1,7 @@
 import { Category, Post } from "../../types/blog";
 import SecondaryPost from "../../components/blog/SecondaryPost";
 import Link from "next/link";
+import { ParentToChildrens } from "../animations/ParentToChildrens";
 
 function Categories({ allPosts, slug, categories }: { allPosts: Post[]; slug: string; categories: Category[] }) {
     const posts = allPosts.filter((post) => post.categories.filter((category: Category) => category.slug.current === slug).length);
@@ -55,7 +56,9 @@ function Categories({ allPosts, slug, categories }: { allPosts: Post[]; slug: st
                                 </div>
                                 <div className="grid gap-12">
                                     {posts.map((post) => (
-                                        <SecondaryPost key={post.title} post={post} />
+                                        <ParentToChildrens>
+                                            <SecondaryPost key={post.title} post={post} />
+                                        </ParentToChildrens>
                                     ))}
                                 </div>
                             </div>

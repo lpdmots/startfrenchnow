@@ -1,8 +1,35 @@
+"use client";
 import React from "react";
+import { motion } from "framer-motion";
+import { fadeInOneByOneItem, fadeInOneByOneParent } from "@/lib/framerVariants";
+
+const coreValuesData = [
+    {
+        image: "/images/hard-work-image-paperfolio-webflow-template.png",
+        title: "Serious",
+        content: "A structured and serious method where the student feel guided and supported all along.",
+    },
+    {
+        image: "/images/innovation-image-paperfolio-webflow-template.png",
+        title: "Smart learning",
+        content: "New concepts are well identified, difficulties are isolated, explained, worked on and gradually integrated with your current knowledge.",
+    },
+    {
+        image: "/images/fun-image-paperfolio-webflow-template.png",
+        title: "Fun",
+        content: "Serious but fun! The courses are interactive and entertaining with attractive and modern visuals. Be prepared to actively participate.",
+    },
+    {
+        image: "/images/growth-image-paperfolio-webflow-template.png",
+        title: "A full method",
+        content:
+            "A complete method with access to extensive resources: extra exercises, vocabulary sheets and a quality blog. Quizzes, and amazing French stories where you are the hero are coming soon.",
+    },
+];
 
 function CoreValuesMethod() {
     return (
-        <div className="container-default w-container">
+        <motion.div className="container-default w-container" variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             <div className="inner-container _600px---tablet center">
                 <div className="inner-container _500px---mbl center">
                     <div className="mg-bottom-54px">
@@ -27,49 +54,21 @@ function CoreValuesMethod() {
                         </div>
                     </div>
                     <div className="w-layout-grid grid-2-columns values-grid">
-                        <div className="card image-left---text-rigth">
-                            <div className="image-wrapper card-value-image-left-wrapper">
-                                <img src="/images/hard-work-image-paperfolio-webflow-template.png" loading="eager" alt="Serious work" className="image fit-cover" />
-                            </div>
-                            <div className="card-value-conter-left">
-                                <h3>Serious</h3>
-                                <p className="mg-bottom-0">A structured and serious method where the student feel guided and supported all along.</p>
-                            </div>
-                        </div>
-                        <div className="card image-left---text-rigth">
-                            <div className="image-wrapper card-value-image-left-wrapper">
-                                <img src="/images/innovation-image-paperfolio-webflow-template.png" loading="eager" alt="Fun" className="image fit-cover" />
-                            </div>
-                            <div className="card-value-conter-left">
-                                <h3>Smart learning</h3>
-                                <p className="mg-bottom-0">New concepts are well identified, difficulties are isolated, explained, worked on and gradually integrated with your current knowledge.</p>
-                            </div>
-                        </div>
-                        <div className="card image-left---text-rigth">
-                            <div className="image-wrapper card-value-image-left-wrapper">
-                                <img src="/images/fun-image-paperfolio-webflow-template.png" loading="eager" alt="Smart learning" className="image fit-cover" />
-                            </div>
-                            <div className="card-value-conter-left">
-                                <h3>Fun</h3>
-                                <p className="mg-bottom-0">Serious but fun! The courses are interactive and entertaining with attractive and modern visuals. Be prepared to actively participate.</p>
-                            </div>
-                        </div>
-                        <div className="card image-left---text-rigth">
-                            <div className="image-wrapper card-value-image-left-wrapper">
-                                <img src="/images/growth-image-paperfolio-webflow-template.png" loading="eager" alt="A full method" className="image fit-cover" />
-                            </div>
-                            <div className="card-value-conter-left">
-                                <h3>A full method</h3>
-                                <p className="mg-bottom-0">
-                                    A complete method with access to extensive resources: extra exercises, vocabulary sheets and a quality blog. Quizzes, and amazing French stories where you are the
-                                    hero are coming soon.
-                                </p>
-                            </div>
-                        </div>
+                        {coreValuesData.map(({ image, title, content }) => (
+                            <motion.div key={title} variants={fadeInOneByOneItem} className="card image-left---text-rigth">
+                                <div className="image-wrapper card-value-image-left-wrapper">
+                                    <img src={image} loading="eager" alt={title} className="image fit-cover" />
+                                </div>
+                                <div className="card-value-conter-left">
+                                    <h3>{title}</h3>
+                                    <p className="mg-bottom-0">{content}</p>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
 

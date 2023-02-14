@@ -4,6 +4,8 @@ import { SiYourtraveldottv } from "react-icons/si";
 import { ImFilm } from "react-icons/im";
 import { MdOutlineEmail } from "react-icons/md";
 import Link from "next/link";
+import { SlideFromBottom } from "../animations/Slides";
+import { Scale } from "../animations/Scale";
 
 const HOBBIES = [
     {
@@ -98,23 +100,27 @@ function Hobbies() {
         <div className="section wf-section pt-0">
             <div className="container-default w-container">
                 <div className="inner-container _500px---mbl center">
-                    <h2 className="display-2 text-center mg-bottom-56px">
-                        Take a look at my <span className="heading-span-secondary-4">hobbies</span>
-                    </h2>
+                    <SlideFromBottom>
+                        <h2 className="display-2 text-center mg-bottom-56px">
+                            Take a look at my <span className="heading-span-secondary-4">hobbies</span>
+                        </h2>
+                    </SlideFromBottom>
                     <div className="inner-container _935px center">
                         <div className="grid-1-column gap-32px mg-bottom-64px">
                             {HOBBIES.map(({ title, description, icon, background }) => (
-                                <div key={title} className="card resume-card-v2">
-                                    <div className={`resume-card-left-content ${background} justify-center`}>
-                                        <div className="resume-card-period-v2">{icon}</div>
-                                    </div>
-                                    <div className="resume-card-content-rigth">
-                                        <div className="inner-container ">
-                                            <h3 className="display-4">{title}</h3>
-                                            {description}
+                                <Scale className="card resume-card-v2" key={title}>
+                                    <>
+                                        <div className={`resume-card-left-content ${background} justify-center`}>
+                                            <div className="resume-card-period-v2">{icon}</div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <div className="resume-card-content-rigth">
+                                            <div className="inner-container ">
+                                                <h3 className="display-4">{title}</h3>
+                                                {description}
+                                            </div>
+                                        </div>
+                                    </>
+                                </Scale>
                             ))}
                         </div>
                     </div>

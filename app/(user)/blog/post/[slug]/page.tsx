@@ -8,6 +8,7 @@ import PostContent from "@/app/components/post/PostContent";
 import PreviewSuspense from "../../../../components/sanity/PreviewSuspense";
 import PreviewPost from "../../../../components/sanity/PreviewPost";
 import { previewData } from "next/headers";
+import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
 
 type Props = {
     params: {
@@ -93,7 +94,9 @@ async function Post({ params: { slug } }: Props) {
                             <div className="w-dyn-list">
                                 <div role="list" className="grid-2-columns blog-post-section---grid w-dyn-items">
                                     {latestPosts.slice(0, 2).map((post) => (
-                                        <PrimaryPost key={post.title} post={post} />
+                                        <ParentToChildrens key={post.title}>
+                                            <PrimaryPost post={post} />
+                                        </ParentToChildrens>
                                     ))}
                                 </div>
                             </div>

@@ -2,7 +2,6 @@
 import Image from "next/image";
 import React from "react";
 import { BsCheckCircle } from "react-icons/bs";
-import { FiGift } from "react-icons/fi";
 import useSubscribe from "../../hooks/useSubscribe";
 import Spinner from "./Spinner";
 
@@ -19,9 +18,7 @@ function NewsletterCard() {
                     <div className="inner-container _350px---mbl center">
                         <h2 className="display-4 mg-bottom-8px">Subscribe to our newsletter</h2>
                         <div className="flex items-center">
-                            <span className="mb-0">
-                                Stay informed and get a free video <FiGift />
-                            </span>
+                            <span className="mb-0">Stay informed and get a free video</span>
                         </div>
                     </div>
                 </div>

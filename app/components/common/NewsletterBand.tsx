@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { BsCheckCircle } from "react-icons/bs";
-import { FiGift } from "react-icons/fi";
 import useSubscribe from "../../hooks/useSubscribe";
 import Spinner from "./Spinner";
 
@@ -22,7 +21,6 @@ function NewsletterBand() {
                             </p>
                             <div className="flex items-center">
                                 <p className="mb-0 mr-2">Stay informed and get a free video</p>
-                                <FiGift />
                             </div>
                         </div>
                         <div className="newsletter-form-block w-form">
