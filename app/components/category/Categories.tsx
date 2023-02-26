@@ -56,8 +56,8 @@ function Categories({ allPosts, slug, categories }: { allPosts: Post[]; slug: st
                                 </div>
                                 <div className="grid gap-12">
                                     {posts.map((post) => (
-                                        <ParentToChildrens>
-                                            <SecondaryPost key={post.title} post={post} />
+                                        <ParentToChildrens key={post.title}>
+                                            <SecondaryPost post={post} />
                                         </ParentToChildrens>
                                     ))}
                                 </div>

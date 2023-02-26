@@ -23,14 +23,14 @@ const PrimaryPost = ({ post }: { post: Post }) => {
                 </div>
                 <div className="blog-card-content-inside">
                     <div className="inner-container _350px---mbl">
-                        <h3 className="blog-card-title display-4 mg-bottom-24px">{post.title}</h3>
+                        <h2 className="blog-card-title display-4 mg-bottom-24px">{post.title}</h2>
                     </div>
                     <div className="mg-top-auto">
                         <div className="flex-col gap-24px _15px---mbp">
                             <p className="line-clamp-4">{post.description}</p>
                             <div className="flex justify-end items-center text-300 medium color-neutral-600">
                                 <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: level.color }} />
-                                {level.label} - {new Date(post._createdAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
+                                {level.label} - {new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
                             </div>
                         </div>
                     </div>

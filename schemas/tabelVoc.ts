@@ -3,7 +3,7 @@ import { defineField, defineType } from "sanity";
 export default defineType({
     name: "tabelVoc",
     title: "Vocabulaire",
-    type: "document",
+    type: "object",
     fields: [
         defineField({
             title: "Titres",

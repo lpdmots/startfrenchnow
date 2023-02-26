@@ -8,10 +8,10 @@ import Link from "next/link";
 import { BiPencil } from "react-icons/bi";
 import { SlideFromBottom } from "../animations/Slides";
 import { Scale } from "../animations/Scale";
-import { ParentToChildrens, ScaleChildren } from "../animations/ParentToChildrens";
+import { ParentToChildrens } from "../animations/ParentToChildrens";
 
 const query = groq`
-    *[_type=='post'] {
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now())] {
         ...,
         categories[]->
     } | order(publishedAt desc)[0...3]

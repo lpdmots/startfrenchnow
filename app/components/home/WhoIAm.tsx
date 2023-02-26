@@ -68,8 +68,8 @@ function WhoIAm() {
                                                             <div className="text-300 bold color-neutral-800">An expert with beginners</div>
                                                         </div>
                                                         <p className="mg-bottom-0">
-                                                            Where other teachers are often bored and not sure how to deal with total beginners, I’m loving it and I have specifically crafted a method
-                                                            for them.
+                                                            Where other teachers are often bored or not sure how to deal with total beginners, I love it and I have specifically crafted a method for
+                                                            them.
                                                         </p>
                                                     </div>
                                                 </div>

@@ -13,7 +13,7 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
 export default defineConfig({
     basePath: "/studio",
     name: "I_don_t_speak_French",
-    title: "I don't speak French studio",
+    title: "Start French now",
     projectId,
     dataset,
 

@@ -89,23 +89,23 @@ function About() {
                                     <SlideFromBottom delay={0.8}>
                                         <>
                                             <p className="mg-bottom-24px keep w-clearfix">
-                                                <span className="drop-cap-span">W</span>ell I started as a primary school teacher and then decided to change audience and become an expert in teaching
-                                                French as a foreign language. So I quickly wanted to work abroad and went to China first, then to London (England) and to New Zealand. I worked in
-                                                different establishments, language schools (Alliance française), universities, and business schools where I was teaching general French to a demanding
-                                                public <span className="text-no-wrap">of varied level.</span>
+                                                <span className="drop-cap-span">I</span> started as a primary school teacher before deciding to change my audience, quickly becoming an expert in
+                                                teaching French as a foreign language. This allowed me the opportunity to work abroad as I went first to China, then to England and to New Zealand. In
+                                                addition to working in many countries, I have also worked in a variety of different professional environments such as language schools (Alliance
+                                                française), universities, and business schools where I was teaching general French to a demanding public{" "}
+                                                <span className="text-no-wrap">of varied level.</span>
                                             </p>
                                             <p className="mg-bottom-40px">
-                                                Very early on, I also specialized in teaching beginners, I always liked to see my students progress quickly, being able to go from 0 French to a level
-                                                of confidence that allows them to survive in their environment and manage everyday situations.{" "}
+                                                Very early on, I specialized in teaching beginners as I always enjoyed seeing my students progress rapidly, being able to go from knowing no French to a
+                                                level of confidence which allows them to survive in their environment and manage everyday situations.{" "}
                                                 <span className="text-no-wrap">It's very rewarding.</span>
                                             </p>
                                             <p className="mg-bottom-40px">
-                                                Creating courses and materials online, I'm now so happy to see that my students come from different parts of the world and I will always do my best to
-                                                bring them answers and guide them towards <span className="text-no-wrap">their objectives. </span>
+                                                In creating courses and materials online, I'm very happy to see that now my students come from different parts of the world. This drives me to always do
+                                                my best to bring them answers and guide them toward <span className="text-no-wrap">their objectives. </span>
                                             </p>
                                             <p className="mg-bottom-40px">
-                                                So I hope you will be enjoying my courses and I’m looking forward to hearing from you. Feel free to drop me a{" "}
-                                                <span className="text-no-wrap">message anytime.</span>
+                                                I hope you will enjoy my courses and I look forward to hearing from you. Feel free to drop me a <span className="text-no-wrap">message anytime.</span>
                                             </p>
                                         </>
                                     </SlideFromBottom>

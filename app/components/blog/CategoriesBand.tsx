@@ -7,7 +7,7 @@ import VocabularyLogo from "../common/logos/VocabularyLogo";
 function CategoriesBand() {
     return (
         <div className="text-neutral-100 p-3">
-            <div className="w-full flex justify-around" style={{ marginRight: "7%" }}>
+            <div className="w-full flex justify-around bg-neutral-800" style={{ marginRight: "7%" }}>
                 <div className="flex flex-col justify-center items-center p-2">
                     <p className="font-bold">Grammaire</p>
                     <GrammarLogo height={60} width={60} />

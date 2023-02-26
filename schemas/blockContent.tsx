@@ -115,11 +115,9 @@ export default defineType({
         }),
         defineArrayMember({
             type: "videoBlog",
-            options: { hotspot: true },
         }),
         defineArrayMember({
             type: "tabelVoc",
-            options: { hotspot: true },
         }),
     ],
 });

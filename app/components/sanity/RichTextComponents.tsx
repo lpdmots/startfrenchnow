@@ -4,6 +4,7 @@ import urlFor from "../../../lib/urlFor";
 import { BsCaretRightFill } from "react-icons/bs";
 import TabelVoc from "./TabelVoc";
 import { FaFileDownload } from "react-icons/fa";
+import VideoBlog from "./VideoBlog";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -16,16 +17,7 @@ export const RichTextComponents = {
                 </div>
             );
         },
-        videoBlog: ({ value }: any) => {
-            return (
-                <div className=" my-12">
-                    <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto" style={{ width: "100%", lineHeight: 0 }}>
-                        <video className="image-wrapper border-radius-30px" src={cloudFrontDomain + value.s3Key} height="auto" width="100%" controls></video>
-                    </div>
-                    {value.title && <p className="display-4 w-full text-center pt-6 mb-0">{value.title}</p>}
-                </div>
-            );
-        },
+        videoBlog: ({ value }: any) => <VideoBlog values={value} />,
         tabelVoc: ({ value }: any) => <TabelVoc titles={value.titles} column1={value.column1} column2={value.column2} color={value.color} />,
     },
     list: {

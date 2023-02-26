@@ -27,6 +27,7 @@ function BlogList({ posts }: Props) {
                                 </div>
                             </div>
                         </SlideFromBottom>
+                        <h2 className="hidden">Newst Posts</h2>
                         <Scale>
                             <div className="grid-2-columns blog-featured-grid">
                                 <div className="w-dyn-list">

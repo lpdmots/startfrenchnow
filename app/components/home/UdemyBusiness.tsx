@@ -26,9 +26,9 @@ function UdemyBusiness() {
                                 <SlideFromBottom delay={0.5}>
                                     <>
                                         <p className="color-neutral-300 mg-bottom-24px">
-                                            One of my greatest pleasure is to see that my students come from over 140 different countries ! They all have their own objective towards the French
+                                            One of my greatest pleasures is to see that my students come from over 140 different countries ! They all have their own objective towards the French
                                             language and my mission is to help
-                                            <span className="text-no-wrap"> them reaching it.</span>
+                                            <span className="text-no-wrap"> them in reaching it.</span>
                                         </p>
                                         <p className="color-neutral-300 mg-bottom-24px">
                                             My courses have also been recommended to big companies and their employees via the Udemy for Business programm that rewards the best courses based on the

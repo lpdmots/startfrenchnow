@@ -37,9 +37,10 @@ function Contact() {
         e.preventDefault();
         setFormData((state) => ({ ...state, isLoading: true }));
         try {
-            const sendContactPromise = sendContactForm(values);
-            const subscribePromise = subscribeNewsletter(values.email);
-            await Promise.all([sendContactPromise, subscribePromise]);
+            await sendContactForm(values);
+            if (newsletterCheck) {
+                await subscribeNewsletter(values.email);
+            }
 
             setFormData(initState);
             setSubmitted(true);

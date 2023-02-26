@@ -30,8 +30,8 @@ function Home() {
                                         <div className="text-center---tablet">
                                             <div className="inner-container _550px---tablet center">
                                                 <h1 className="display-1">
-                                                    <span className="heading-span-secondary-4">Learn French</span> at your own pace with <span className="heading-span-secondary-2 ">high quality</span>{" "}
-                                                    French lessons.
+                                                    <span className="heading-span-secondary-4">Learn French</span> at Your Own Pace with <span className="heading-span-secondary-2 ">High Quality</span>{" "}
+                                                    French Lessons.
                                                 </h1>
                                             </div>
                                             <p className="mg-bottom-48px">You want to be serious about learning French? Don't worry, it doesn't have to be boring.</p>

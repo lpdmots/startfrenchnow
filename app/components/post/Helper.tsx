@@ -65,7 +65,7 @@ function Helper({ post, level }: Props) {
                     {level.label}
                 </p>
                 <p> - </p>
-                <p>{new Date(post._createdAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}</p>
+                <p>{new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}</p>
             </div>
             <div className="flex md:hidden justify-center items-end flex-wrap gap-2 mt-12 text-300 medium color-neutral-600">
                 {!!post.translation && (
@@ -88,7 +88,7 @@ function Helper({ post, level }: Props) {
                     {level.label}
                 </p>
                 <p> - </p>
-                <p>{new Date(post._createdAt).toLocaleDateString("en", { day: "numeric", month: "numeric", year: "numeric" })}</p>
+                <p>{new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "numeric", year: "numeric" })}</p>
             </div>
         </>
     );

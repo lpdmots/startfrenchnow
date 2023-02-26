@@ -34,12 +34,12 @@ const SecondaryPost = ({ post }: { post: Post }) => {
                 </div>
                 <div className="inner-container blog-secondary-card-content flex flex-col justify-between" style={{ minHeight: 200 }}>
                     <div>
-                        <h3 className="mg-bottom-16px">{post.title}</h3>
+                        <h2 className="mg-bottom-16px display-4">{post.title}</h2>
                         <p className="mg-bottom-0 line-clamp-5">{post.description}</p>
                     </div>
                     <div className="flex justify-end items-center text-300 medium color-neutral-600 mt-4" style={{ fontSize: 16 }}>
                         <AiFillSignal className=" mr-2" style={{ fontSize: "1.2rem", color: level.color }} />
-                        {level.label} - {new Date(post._createdAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
+                        {level.label} - {new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
                     </div>
                 </div>
             </div>

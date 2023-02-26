@@ -11,6 +11,7 @@ import Spinner from "../../components/common/Spinner";
 
 interface State {
     subscriberId: string | null;
+    subscriberGroups: string[];
     unknownSub: boolean;
     video: Video | null;
     error: boolean;
@@ -18,6 +19,7 @@ interface State {
 
 const initialValue = {
     subscriberId: null,
+    subscriberGroups: [],
     unknownSub: false,
     video: null,
     error: false,
@@ -98,7 +100,7 @@ const EmailInput = ({ setState }: { setState: Dispatch<SetStateAction<State>> })
                 const video = await client.fetch(queryVideo, { slug });
                 setState((state) => ({ ...state, video: video }));
             } else {
-                setState((state) => ({ ...state, subscriberId: subscriber.data.id }));
+                setState((state) => ({ ...state, subscriberId: subscriber.data.id, subscriberGroups: subscriber.data.groups.map((group: { id: string }) => group.id) }));
             }
             setIsLoading(false);
         } catch (e) {
@@ -188,7 +190,7 @@ const VideoChoice = ({ state, setState }: { state: State; setState: Dispatch<Set
     const handleClick = async (slug: string) => {
         try {
             setIsLoading(slug);
-            await updateSubscriber({ video: slug }, state.subscriberId || "");
+            await updateSubscriber({ fields: { video: slug }, groups: state.subscriberGroups }, state.subscriberId || "");
             const video = await client.fetch(queryVideo, { slug });
             setState((state) => ({ ...state, video }));
         } catch (e) {
@@ -208,7 +210,7 @@ const VideoChoice = ({ state, setState }: { state: State; setState: Dispatch<Set
             <p className="mg-bottom-24px keep">Choose the free course you want to access</p>
             <div className="w-layout-grid grid-1-column full-width gap-row-24px">
                 <button className="btn-primary w-password-page w-button" onClick={(e) => handleClick("mon-premier-cours-pour-debutants")}>
-                    {isLoading === "mon-premier-cours-pour-debutants" ? <Spinner radius maxHeight="40px" /> : "I'm a total beginner, i want my first course"}
+                    {isLoading === "mon-premier-cours-pour-debutants" ? <Spinner radius maxHeight="40px" /> : "I'm a total beginner, I want my first course"}
                 </button>
                 <button className="btn-primary w-password-page w-button" onClick={(e) => handleClick("cours-pour-les-low-intermediaires")}>
                     {isLoading === "cours-pour-les-low-intermediaires" ? <Spinner radius maxHeight="40px" /> : "I have basics and want to improve my French"}

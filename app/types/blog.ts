@@ -17,6 +17,7 @@ export interface Post extends Base {
     description: string;
     level: "a1" | "a2" | "b1" | "b2";
     translation: boolean;
+    publishedAt: string;
 }
 
 export interface Author extends Base {
@@ -75,5 +76,5 @@ export interface Title {
 export interface VideoBlog {
     _type: "videoBlog";
     title: string;
-    s3Key: string;
+    url: string;
 }
