@@ -11,7 +11,7 @@ const PrimaryPost = ({ post }: { post: Post }) => {
             <div className="blog-card-wrapper card link-card w-inline-block">
                 <div className="blog-card-image-wrapper inside-card max-heigth-330px">
                     <ScaleChildren>
-                        <Image src={urlFor(post.mainImage).url()} width={400} height={400} loading="eager" alt={post.title} className="blog-card-image" />
+                        <Image src={urlFor(post.mainImage).url()} width={400} height={400} loading="lazy" alt={post.title} className="blog-card-image" />
                     </ScaleChildren>
                     <div className="blog-card-badge-wrapper-top text-right">
                         {post.categories.map((category) => (

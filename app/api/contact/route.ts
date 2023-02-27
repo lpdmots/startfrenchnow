@@ -1,6 +1,5 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import { mailOptions, transporter } from "../../lib/nodemailer";
+import { NextRequest, NextResponse } from "next/server";
+import { mailOptions, transporter } from "../../../lib/nodemailer";
 
 interface MessageFields {
     name: string;
@@ -30,26 +29,21 @@ const generateEmailContent = (data: MessageFields) => {
     };
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
-    if (req.method === "POST") {
-        const data = req.body;
-        if (!data.email) {
-            return res.status(400).json({ message: "Bad request" });
-        }
+export async function POST(request: NextRequest) {
+    const data = await request.json();
 
-        try {
-            await transporter.sendMail({
-                ...mailOptions,
-                ...generateEmailContent(data),
-                subject: data.subject,
-            });
-            return res.status(200).json({ success: true });
-        } catch (error: any) {
-            console.log(error);
-            return res.status(400).json({ message: error.message });
-        }
+    if (!data.email) {
+        return NextResponse.json({ message: "Bad request" }, { status: 400 });
     }
-    return res.status(400).json({ message: "Bad request" });
-};
 
-export default handler;
+    try {
+        await transporter.sendMail({
+            ...mailOptions,
+            ...generateEmailContent(data),
+            subject: data.subject,
+        });
+        return NextResponse.json({ success: true }, { status: 200 });
+    } catch (error: any) {
+        return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+}
