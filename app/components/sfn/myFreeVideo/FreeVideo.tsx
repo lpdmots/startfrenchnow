@@ -1,7 +1,7 @@
 import NewsletterCard from "@/app/components/common/NewsletterCard";
-import { Video } from "@/app/types/video";
+import { Video } from "@/app/types/sfn/video";
 import { PortableText } from "@portabletext/react";
-import { RichTextComponents } from "../sanity/RichTextComponents";
+import { RichTextComponents } from "../../sanity/RichTextComponents";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 

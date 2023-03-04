@@ -1,7 +1,7 @@
-import { Category, Post } from "@/app/types/blog";
+import { Category, Post } from "@/app/types/sfn/blog";
 import Link from "next/link";
-import { ParentToChildrens } from "../animations/ParentToChildrens";
-import { SlideFromBottom } from "../animations/Slides";
+import { ParentToChildrens } from "../../animations/ParentToChildrens";
+import { SlideFromBottom } from "../../animations/Slides";
 import SecondaryPost from "../blog/SecondaryPost";
 
 export default function PostsList({ posts, categories }: { posts: Post[]; categories: Category[] }) {

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { AiOutlineUser } from "react-icons/ai";
-import { SlideFromBottom } from "../animations/Slides";
+import { SlideFromBottom } from "../../animations/Slides";
 
 function WhoIAm() {
     return (

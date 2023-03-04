@@ -12,3 +12,14 @@ export const COLORVARIABLES = {
     purple: "var(--secondary-3)",
     green: "var(--secondary-5)",
 };
+
+export const STORYCATEGORIES = {
+    fantasy: "Fantasy",
+    scienceFiction: "Science Fiction",
+    historical: "Historique",
+    adventure: "Aventure",
+    culture: "Culture française",
+    comedy: "Comédie",
+    investigation: "Enquête",
+    other: "Autre",
+};

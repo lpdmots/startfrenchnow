@@ -3,10 +3,10 @@ import { groq } from "next-sanity";
 import { client } from "../../../lib/sanity.client";
 import PreviewSuspense from "../../components/sanity/PreviewSuspense";
 import PreviewBlogListe from "../../components/sanity/PreviewBlogList";
-import BlogList from "../../components/blog/BlogList";
-import { Category, Post } from "../../types/blog";
-import PostsList from "@/app/components/post/PostList";
-import CategoriesBand from "@/app/components/blog/CategoriesBand";
+import BlogList from "../../components/sfn/blog/BlogList";
+import { Category, Post } from "../../types/sfn/blog";
+import PostsList from "@/app/components/sfn/post/PostList";
+import CategoriesBand from "@/app/components/sfn/blog/CategoriesBand";
 import Marquee from "@/app/components/animations/Marquee";
 
 const query = groq`

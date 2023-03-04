@@ -1,9 +1,9 @@
 import { groq } from "next-sanity";
 import { client } from "../../../../../lib/sanity.client";
-import { Category, Post } from "../../../../types/blog";
+import { Category, Post } from "../../../../types/sfn/blog";
 import { previewData } from "next/headers";
 import PreviewSuspense from "../../../../components/sanity/PreviewSuspense";
-import Categories from "@/app/components/category/Categories";
+import Categories from "@/app/components/sfn/category/Categories";
 import PreviewCategories from "@/app/components/sanity/PreviewCategories";
 
 type Props = {

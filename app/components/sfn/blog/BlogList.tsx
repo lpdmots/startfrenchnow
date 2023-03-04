@@ -1,7 +1,6 @@
-import { Post } from "../../types/blog";
-import { ParentToChildrens } from "../animations/ParentToChildrens";
-import { Scale } from "../animations/Scale";
-import { SlideFromBottom } from "../animations/Slides";
+import { Post } from "../../../types/sfn/blog";
+import { ParentToChildrens } from "../../animations/ParentToChildrens";
+import { Scale } from "../../animations/Scale";
 import PrimaryPost from "./PrimaryPost";
 import SecondaryPost from "./SecondaryPost";
 
@@ -15,18 +14,18 @@ function BlogList({ posts }: Props) {
             <div className="container-default w-container">
                 <div className="inner-container _600px---tablet center">
                     <div className="inner-container _500px---mbl center">
-                        <SlideFromBottom>
-                            <div className="inner-container _725px center---full-width-mbl">
-                                <div className="text-center mg-bottom-40px">
-                                    <h1 className="display-1 mg-bottom-8px">
-                                        Articles &amp; <span className="heading-span-secondary-1 v2">Resources</span>
-                                    </h1>
-                                    <p className="mg-bottom-0">
-                                        In this section you will find articles and resources to help you <span className="text-no-wrap">learn French.</span>
-                                    </p>
-                                </div>
+                        {/* <SlideFromBottom> */}
+                        <div className="inner-container _725px center---full-width-mbl">
+                            <div className="text-center mg-bottom-40px">
+                                <h1 className="display-1 mg-bottom-8px">
+                                    Articles &amp; <span className="heading-span-secondary-1 v2">Resources</span>
+                                </h1>
+                                <p className="mg-bottom-0">
+                                    In this section you will find articles and resources to help you <span className="text-no-wrap">learn French.</span>
+                                </p>
                             </div>
-                        </SlideFromBottom>
+                        </div>
+                        {/* </SlideFromBottom> */}
                         <h2 className="hidden">Newst Posts</h2>
                         <Scale>
                             <div className="grid-2-columns blog-featured-grid">

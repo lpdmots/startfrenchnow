@@ -1,13 +1,13 @@
 import Image from "next/image";
-import urlFor from "../../../lib/urlFor";
-import { Post } from "../../types/blog";
+import urlFor from "../../../../lib/urlFor";
+import { Post } from "../../../types/sfn/blog";
 import { PortableText } from "@portabletext/react";
-import { RichTextComponents } from "../../components/sanity/RichTextComponents";
+import { RichTextComponents } from "../../sanity/RichTextComponents";
 import Link from "next/link";
-import NewsletterCard from "../../components/common/NewsletterCard";
+import NewsletterCard from "../../common/NewsletterCard";
 import { LEVELDATA } from "@/lib/constantes";
 import Helper from "./Helper";
-import VideoBlog from "../sanity/VideoBlog";
+import VideoBlog from "../../sanity/VideoBlog";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 

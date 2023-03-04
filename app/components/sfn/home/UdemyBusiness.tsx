@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { SiApple, SiBarclays, SiPaypal, SiVolkswagen } from "react-icons/si";
-import { Fade } from "../animations/Fades";
-import { SlideFromBottom, SlideFromRight } from "../animations/Slides";
+import { Fade } from "../../animations/Fades";
+import { SlideFromBottom, SlideFromRight } from "../../animations/Slides";
 
 function UdemyBusiness() {
     return (

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 // 1. Importing framer-motion
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 // 2. Defining Variants
 const marqueeInitiialVariants = {
@@ -49,15 +49,15 @@ const Marquee = ({ content }: { content: JSX.Element }) => {
             <div className="logo-strip-wrapper text-neutral-100 p-3">
                 <div className="marquee">
                     {/* 3. Using framer motion */}
-                    <motion.div className="trackInitial" variants={marqueeInitiialVariants} animate="animate">
+                    <m.div className="trackInitial" variants={marqueeInitiialVariants} animate="animate">
                         {content}
-                    </motion.div>
-                    <motion.div className="track" variants={marqueeVariants} animate="animate">
+                    </m.div>
+                    <m.div className="track" variants={marqueeVariants} animate="animate">
                         {content}
-                    </motion.div>
-                    <motion.div className="track" variants={marqueeVariants2} animate="animate">
+                    </m.div>
+                    <m.div className="track" variants={marqueeVariants2} animate="animate">
                         {content}
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>

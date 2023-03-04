@@ -1,10 +1,10 @@
 import { groq } from "next-sanity";
 import { client } from "../../../../../lib/sanity.client";
-import { Post } from "../../../../types/blog";
+import { Post } from "../../../../types/sfn/blog";
 import Link from "next/link";
-import PrimaryPost from "../../../../components/blog/PrimaryPost";
+import PrimaryPost from "../../../../components/sfn/blog/PrimaryPost";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import PostContent from "@/app/components/post/PostContent";
+import PostContent from "@/app/components/sfn/post/PostContent";
 import PreviewSuspense from "../../../../components/sanity/PreviewSuspense";
 import PreviewPost from "../../../../components/sanity/PreviewPost";
 import { previewData } from "next/headers";

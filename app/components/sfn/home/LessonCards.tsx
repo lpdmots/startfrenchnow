@@ -6,10 +6,10 @@ import { IoTime } from "react-icons/io5";
 import { BiDollar } from "react-icons/bi";
 import Link from "next/link";
 import { MdOutlineEmail } from "react-icons/md";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { fadeInOneByOneItem, fadeInOneByOneParent } from "@/lib/framerVariants";
-import { SlideFromBottom } from "../animations/Slides";
-import { ParentToChildrens, ScaleChildren } from "../animations/ParentToChildrens";
+import { SlideFromBottom } from "../../animations/Slides";
+import { ParentToChildrens, ScaleChildren } from "../../animations/ParentToChildrens";
 
 const lessons = [
     {
@@ -63,7 +63,7 @@ const lessons = [
 
 function LessonCards() {
     return (
-        <motion.div variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             <div className="text-center m-auto mb-10" style={{ maxWidth: "600px" }}>
                 <h2 id="courses" className="display-2">
                     Find a course that suits you and <span className="heading-span-secondary-4">get started</span>!
@@ -75,7 +75,7 @@ function LessonCards() {
             </div>
             <div className="grid-3-columns m-auto">
                 {lessons.map(({ image, title, description, price, difficulty, time, label, reduction, link }) => (
-                    <motion.div key={title} variants={fadeInOneByOneItem} className="h-full">
+                    <m.div key={title} variants={fadeInOneByOneItem} className="h-full">
                         <ParentToChildrens>
                             <Link href={link} className="card link-card flex flex-col h-full">
                                 <div className="image-wrapper-card-top">
@@ -114,10 +114,10 @@ function LessonCards() {
                                 </div>
                             </Link>
                         </ParentToChildrens>
-                    </motion.div>
+                    </m.div>
                 ))}
 
-                <motion.div className="card card-secondary-1 flex-vertical-center card-contact-featured card-contact-sm" variants={fadeInOneByOneItem}>
+                <m.div className="card card-secondary-1 flex-vertical-center card-contact-featured card-contact-sm" variants={fadeInOneByOneItem}>
                     <div className="mg-bottom-24px keep">
                         <Image src="/images/get-in-touch-image-paperfolio-webflow-template.svg" height={90} width={90} alt="get in touch" />
                     </div>
@@ -131,7 +131,7 @@ function LessonCards() {
                             </div>
                         </Link>
                     </div>
-                </motion.div>
+                </m.div>
             </div>
             <SlideFromBottom>
                 <div className="flex justify-center">
@@ -152,7 +152,7 @@ function LessonCards() {
                     </div>
                 </div>
             </SlideFromBottom>
-        </motion.div>
+        </m.div>
     );
 }
 

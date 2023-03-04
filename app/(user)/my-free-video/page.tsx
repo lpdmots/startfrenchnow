@@ -1,6 +1,6 @@
 "use client";
-import FreeVideo from "@/app/components/myFreeVideo/FreeVideo";
-import { Video } from "@/app/types/video";
+import FreeVideo from "@/app/components/sfn/myFreeVideo/FreeVideo";
+import { Video } from "@/app/types/sfn/video";
 import { getSubscriber, updateSubscriber } from "@/lib/api";
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
@@ -113,7 +113,7 @@ const EmailInput = ({ setState }: { setState: Dispatch<SetStateAction<State>> })
         <form onSubmit={handleSubmit}>
             <div className="mg-bottom-54px flex justify-center w-full">
                 <div className="image-wrapper rigth-shadow-circle password-page-icon">
-                    <Image src="/images/home-hero-image-paperfolio-webflow-template.svg" loading="eager" height={184} width={184} alt="password protected" style={{ height: "100%" }} />
+                    <Image src="/images/home-hero-image-paperfolio-webflow-template.svg" priority height={184} width={196.73} alt="password protected" className="w-full h-auto" />
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">Hello subscriber</h1>
@@ -137,7 +137,7 @@ const UnknownSub = ({ setState }: { setState: Dispatch<SetStateAction<State>> })
         <>
             <div className="mg-bottom-54px flex justify-center w-full">
                 <div className="image-wrapper rigth-shadow-circle password-page-icon">
-                    <img src="/images/password-protected-paperfolio-webflow-template.svg" loading="eager" alt="password protected" style={{ height: "100%" }} />
+                    <Image src="/images/password-protected-paperfolio-webflow-template.svg" alt="password protected" width="184" height="184" className="image" style={{ width: "auto" }} />
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">Unknown address</h1>

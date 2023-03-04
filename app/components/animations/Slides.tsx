@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface Props {
     children: JSX.Element;
@@ -22,9 +22,9 @@ export const SlideFromBottom = ({ duration, delay, children }: Props) => {
     };
 
     return (
-        <motion.div variants={slidefromBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div variants={slidefromBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {children}
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -43,9 +43,9 @@ export const SlideFromRight = ({ duration, delay, children }: Props) => {
     };
 
     return (
-        <motion.div variants={slidefromRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div variants={slidefromRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {children}
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -64,8 +64,8 @@ export const SlideFromLeft = ({ duration, delay, children }: Props) => {
     };
 
     return (
-        <motion.div variants={slidefromRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div variants={slidefromRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {children}
-        </motion.div>
+        </m.div>
     );
 };

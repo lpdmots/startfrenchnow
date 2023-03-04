@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import Comment from "./Comment";
 import { comments } from "./Comment";
 import Link from "next/link";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { SlideFromBottom } from "../animations/Slides";
-import { Fade } from "../animations/Fades";
-import LinkArrow from "../common/LinkArrow";
+import { SlideFromBottom } from "../../animations/Slides";
+import { Fade } from "../../animations/Fades";
+import LinkArrow from "../../common/LinkArrow";
 
 function CommentsCarousel() {
     const [slideIndex, setSlideIndex] = useState(0);
@@ -52,9 +52,9 @@ function CommentsCarousel() {
                     <div className="slider-wrapper w-slider">
                         <div className="slider-mask overflow-visible w-slider-mask ">
                             <AnimatePresence mode="wait">
-                                <motion.div key={slideIndex ? slideIndex : "empty"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+                                <m.div key={slideIndex ? slideIndex : "empty"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
                                     <Comment slideIndex={slideIndex} />
-                                </motion.div>
+                                </m.div>
                             </AnimatePresence>
                         </div>
                         <div className="btn-circle-secondary slider-arrow left---center-center w-slider-arrow-left" onClick={() => handleSlide(-1)}>

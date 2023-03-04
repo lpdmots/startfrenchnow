@@ -1,11 +1,11 @@
 "use client";
 
-import { Category } from "@/app/types/blog";
+import { Category } from "@/app/types/sfn/blog";
 import { groq } from "next-sanity";
 import { usePreview } from "../../../lib/sanity.preview";
-import BlogList from "../blog/BlogList";
+import BlogList from "../sfn/blog/BlogList";
 import NewsletterBand from "../common/NewsletterBand";
-import PostsList from "../post/PostList";
+import PostsList from "../sfn/post/PostList";
 
 export default function PreviewBlogListe({ categories }: { categories: Category[] }) {
     const query = groq`

@@ -4,8 +4,8 @@ import { SiYourtraveldottv } from "react-icons/si";
 import { ImFilm } from "react-icons/im";
 import { MdOutlineEmail } from "react-icons/md";
 import Link from "next/link";
-import { SlideFromBottom } from "../animations/Slides";
-import { Scale } from "../animations/Scale";
+import { SlideFromBottom } from "../../animations/Slides";
+import { Scale } from "../../animations/Scale";
 
 const HOBBIES = [
     {

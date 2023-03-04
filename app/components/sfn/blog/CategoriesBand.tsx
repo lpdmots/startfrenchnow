@@ -1,8 +1,8 @@
 import React from "react";
 import { BsFillChatLeftQuoteFill } from "react-icons/bs";
 import { MdTipsAndUpdates } from "react-icons/md";
-import GrammarLogo from "../common/logos/GrammarLogo";
-import VocabularyLogo from "../common/logos/VocabularyLogo";
+import GrammarLogo from "../../common/logos/GrammarLogo";
+import VocabularyLogo from "../../common/logos/VocabularyLogo";
 
 function CategoriesBand() {
     return (

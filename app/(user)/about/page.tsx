@@ -1,4 +1,4 @@
-import Hobbies from "@/app/components/about/Hobbies";
+import Hobbies from "@/app/components/sfn/about/Hobbies";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,32 +19,32 @@ function About() {
                         </div>
 
                         <div id="w-node-dc0e7998-b9b3-c083-f58f-6cb9b7068f8e-c2543d52" className="inner-container _600px">
-                            <SlideFromBottom>
-                                <div className="inner-container _550px---mbl">
-                                    <div className="mg-top-64px mg-top-0px---mbl">
-                                        <div className="mg-borrom-35px mg-bottom-0px---mbl">
-                                            <div data-w-id="4fcb1f41-b872-2c44-81b4-9b4b37ac484d" className="text-center">
-                                                <div className="inner-container _400px---mbp center">
-                                                    <div className="inner-container _400px---mbl center">
-                                                        <h1 className="display-1">
-                                                            Enchanté, moi c'est <span className="heading-span-secondary-2">Yohann</span>
-                                                        </h1>
-                                                    </div>
-                                                    <p className="mg-bottom-40px">
-                                                        I'm a teacher of French as a foreign language and a specialist in <span className="text-no-wrap">teaching beginners.</span>
-                                                    </p>
+                            {/* <SlideFromBottom> */}
+                            <div className="inner-container _550px---mbl">
+                                <div className="mg-top-64px mg-top-0px---mbl">
+                                    <div className="mg-borrom-35px mg-bottom-0px---mbl">
+                                        <div data-w-id="4fcb1f41-b872-2c44-81b4-9b4b37ac484d" className="text-center">
+                                            <div className="inner-container _400px---mbp center">
+                                                <div className="inner-container _400px---mbl center">
+                                                    <h1 className="display-1">
+                                                        Enchanté, moi c'est <span className="heading-span-secondary-2">Yohann</span>
+                                                    </h1>
                                                 </div>
-                                                <Link href="/contact" className="btn-primary button-row w-button">
-                                                    <div className="flex items-center justify-center">
-                                                        <MdOutlineEmail className="mr-2" />
-                                                        Get in touch
-                                                    </div>
-                                                </Link>
+                                                <p className="mg-bottom-40px">
+                                                    I'm a teacher of French as a foreign language and a specialist in <span className="text-no-wrap">teaching beginners.</span>
+                                                </p>
                                             </div>
+                                            <Link href="/contact" className="btn-primary button-row w-button">
+                                                <div className="flex items-center justify-center">
+                                                    <MdOutlineEmail className="mr-2" />
+                                                    Get in touch
+                                                </div>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
-                            </SlideFromBottom>
+                            </div>
+                            {/* </SlideFromBottom> */}
                         </div>
 
                         <div id="w-node-_9590e10b-34c1-a027-5169-2a6f2e246de6-c2543d52" className="image-wrapper max-width-270px rigth">
@@ -73,14 +73,7 @@ function About() {
                                     <div className="inner-container _553px _100---tablet">
                                         <div className="image-wrapper">
                                             <Fade delay={0.6}>
-                                                <img
-                                                    src="/images/my-story-image-paperfolio-webflow-template.png"
-                                                    alt="my story image"
-                                                    sizes="(max-width: 479px) 92vw, (max-width: 767px) 90vw, (max-width: 991px) 600px, (max-width: 1439px) 45vw, 553px"
-                                                    data-w-id="8fce2975-a4c1-d75d-4e92-2f3e3dce47af"
-                                                    loading="eager"
-                                                    srcSet="/images/my-story-image-paperfolio-webflow-template-p-500.png 500w, /images/my-story-image-paperfolio-webflow-template.png 1106w"
-                                                />
+                                                <Image src="/images/my-story-image-paperfolio-webflow-template.png" alt="my story image" height={500} width={500} className="image" loading="lazy" />
                                             </Fade>
                                         </div>
                                     </div>

@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface Props {
     children: JSX.Element;
@@ -18,9 +18,9 @@ export const ParentToChildrens = ({ delayChildren, staggerChildren, children }: 
     };
 
     return (
-        <motion.div className="h-full" variants={parentToChildrens} whileHover="visible" viewport={{ once: true }}>
+        <m.div className="h-full" variants={parentToChildrens} whileHover="visible" viewport={{ once: true }}>
             {children}
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -41,5 +41,5 @@ export const ScaleChildren = ({ scale, duration, children }: ScaleProps) => {
         },
     };
 
-    return <motion.div variants={parentScaleChildren}>{children}</motion.div>;
+    return <m.div variants={parentScaleChildren}>{children}</m.div>;
 };

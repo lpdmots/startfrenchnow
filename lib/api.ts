@@ -1,4 +1,4 @@
-import { ContactForm } from "../app/types/contact";
+import { ContactForm } from "../app/types/sfn/contact";
 
 export const sendContactForm = async (data: ContactForm) =>
     fetch("/api/contact", {

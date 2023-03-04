@@ -5,6 +5,7 @@ import { Poppins } from "next/font/google";
 import GoogleAnalytics from "../components/common/Analytics/GoogleAnalytics";
 import { AnalyticsWrapper } from "../components/common/Analytics/Analytics";
 import type { Metadata } from "next";
+import LazyM from "../components/animations/LazyM";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -24,9 +25,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <head />
             <body>
                 <AnalyticsWrapper />
-                <Navbar />
-                <main>{children}</main>
-                <Footer />
+                <LazyM>
+                    <Navbar />
+                    <main>{children}</main>
+                    <Footer />
+                </LazyM>
+
                 <GoogleAnalytics />
             </body>
         </html>

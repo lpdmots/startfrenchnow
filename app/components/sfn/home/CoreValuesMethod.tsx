@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { fadeInOneByOneItem, fadeInOneByOneParent } from "@/lib/framerVariants";
 
 const coreValuesData = [
@@ -29,7 +29,7 @@ const coreValuesData = [
 
 function CoreValuesMethod() {
     return (
-        <motion.div className="container-default w-container" variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div className="container-default w-container" variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             <div className="inner-container _600px---tablet center">
                 <div className="inner-container _500px---mbl center">
                     <div className="mg-bottom-54px">
@@ -55,7 +55,7 @@ function CoreValuesMethod() {
                     </div>
                     <div className="w-layout-grid grid-2-columns values-grid">
                         {coreValuesData.map(({ image, title, content }) => (
-                            <motion.div key={title} variants={fadeInOneByOneItem} className="card image-left---text-rigth">
+                            <m.div key={title} variants={fadeInOneByOneItem} className="card image-left---text-rigth">
                                 <div className="image-wrapper card-value-image-left-wrapper">
                                     <img src={image} loading="eager" alt={title} className="image fit-cover" />
                                 </div>
@@ -63,12 +63,12 @@ function CoreValuesMethod() {
                                     <h3>{title}</h3>
                                     <p className="mg-bottom-0">{content}</p>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 }
 

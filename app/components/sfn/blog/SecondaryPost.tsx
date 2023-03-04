@@ -1,10 +1,10 @@
-import { Post } from "../../types/blog";
+import { Post } from "../../../types/sfn/blog";
 import Image from "next/image";
-import ClientSideRoute from "../common/ClientSideRoute";
-import urlFor from "../../../lib/urlFor";
+import ClientSideRoute from "../../common/ClientSideRoute";
+import urlFor from "../../../../lib/urlFor";
 import { AiFillSignal } from "react-icons/ai";
 import { LEVELDATA } from "@/lib/constantes";
-import { ScaleChildren } from "../animations/ParentToChildrens";
+import { ScaleChildren } from "../../animations/ParentToChildrens";
 
 const SecondaryPost = ({ post }: { post: Post }) => {
     const level = post.level ? LEVELDATA[post.level] : LEVELDATA["a1"];

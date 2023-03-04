@@ -1,14 +1,14 @@
 import { groq } from "next-sanity";
 import React from "react";
-import { Post } from "../../types/blog";
+import { Post } from "../../../types/sfn/blog";
 import PrimaryPost from "../blog/PrimaryPost";
 import SecondaryPost from "../blog/SecondaryPost";
-import { client } from "../../../lib/sanity.client";
+import { client } from "../../../../lib/sanity.client";
 import Link from "next/link";
 import { BiPencil } from "react-icons/bi";
-import { SlideFromBottom } from "../animations/Slides";
-import { Scale } from "../animations/Scale";
-import { ParentToChildrens } from "../animations/ParentToChildrens";
+import { SlideFromBottom } from "../../animations/Slides";
+import { Scale } from "../../animations/Scale";
+import { ParentToChildrens } from "../../animations/ParentToChildrens";
 
 const query = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now())] {

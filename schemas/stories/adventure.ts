@@ -1,0 +1,253 @@
+import { defineField, defineType } from "sanity";
+
+export default defineType({
+    name: "adventure",
+    title: "Aventure",
+    type: "document",
+    fields: [
+        //images, variables, starter, gameSystem, heros, description, duration, name, typeOfStory,
+        defineField({
+            name: "name",
+            title: "Nom de l'aventure",
+            type: "string",
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+        }),
+        defineField({
+            name: "slug",
+            title: "Slug",
+            type: "slug",
+            options: {
+                source: "name",
+                maxLength: 96,
+            },
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+        }),
+        defineField({
+            name: "level",
+            title: "Niveau",
+            type: "string",
+            options: {
+                list: [
+                    { value: "a1", title: "A1" },
+                    { value: "a2", title: "A2" },
+                    { value: "b1", title: "B1" },
+                    { value: "b2", title: "B2" },
+                ],
+            },
+            initialValue: "a1",
+        }),
+        defineField({
+            name: "category",
+            title: "Catégorie",
+            type: "string",
+            options: {
+                list: [
+                    // /!\  This list must be the same as in lib\constantes.ts
+                    { value: "fantasy", title: "Fantasy" },
+                    { value: "scienceFiction", title: "Science Fiction" },
+                    { value: "historical", title: "Historique" },
+                    { value: "adventure", title: "Aventure" },
+                    { value: "culture", title: "Culture française" },
+                    { value: "comedy", title: "Comédie" },
+                    { value: "investigation", title: "Enquête" },
+                    { value: "other", title: "Autre" },
+                ],
+            },
+            initialValue: "adventure",
+        }),
+        defineField({
+            name: "duration",
+            title: "Durée",
+            type: "number",
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+            description: "Durée de l'aventure en minutes",
+        }),
+        defineField({
+            name: "description",
+            description: "Entrez un court résumé de l'aventure...",
+            title: "Description",
+            type: "text",
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+        }),
+        defineField({
+            name: "images",
+            title: "Images",
+            type: "object",
+            fields: [
+                {
+                    name: "primary",
+                    title: "Image principale",
+                    type: "image",
+                    options: {
+                        hotspot: true,
+                    },
+                },
+                {
+                    name: "secondary",
+                    title: "Images secondaires",
+                    type: "array",
+                    of: [{ type: "image" }],
+                },
+            ],
+        }),
+        defineField({
+            name: "variables",
+            title: "Variables",
+            type: "array",
+            of: [{ type: "reference", to: { type: "variable" } }],
+        }),
+        defineField({
+            name: "starter",
+            title: "Starter",
+            type: "array",
+            of: [{ type: "reference", to: { type: "effect" } }],
+        }),
+        defineField({
+            name: "gameSystem",
+            title: "Système de jeu",
+            type: "object",
+            fields: [
+                {
+                    name: "name",
+                    title: "Nom du système de jeu",
+                    type: "string",
+                    validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                },
+                {
+                    name: "attributes",
+                    title: "Attributs",
+                    type: "array",
+                    of: [{ type: "string" }],
+                    validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                },
+                {
+                    name: "die",
+                    title: "Dé",
+                    type: "number",
+                    validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                },
+                {
+                    name: "DefaultDifficulty",
+                    title: "Difficulté par défaut",
+                    type: "number",
+                    validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                },
+            ],
+        }),
+        defineField({
+            name: "heros",
+            title: "Héros",
+            type: "array",
+            of: [
+                {
+                    type: "object",
+                    fields: [
+                        //fields: name, sex, statistics, description, images, starter
+                        {
+                            name: "name",
+                            title: "Nom du héros",
+                            type: "string",
+                            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                        },
+                        {
+                            name: "sex",
+                            title: "Sexe",
+                            type: "string",
+                            options: {
+                                list: ["male", "female"],
+                            },
+                            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                        },
+                        {
+                            name: "statistics",
+                            title: "Statistiques",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    fields: [
+                                        { name: "name", title: "Nom de l'attribut", type: "string" },
+                                        { name: "value", title: "Valeur de l'attribut", type: "number" },
+                                    ],
+                                },
+                            ],
+                        },
+
+                        {
+                            name: "description",
+                            title: "Description",
+                            type: "text",
+                            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                        },
+                        {
+                            name: "images",
+                            title: "Images",
+                            type: "object",
+                            fields: [
+                                {
+                                    name: "default",
+                                    title: "Image par défaut",
+                                    type: "image",
+                                    options: {
+                                        hotspot: true,
+                                    },
+                                },
+                                {
+                                    name: "happy",
+                                    title: "Image quand le héros est heureux",
+                                    type: "image",
+                                    options: {
+                                        hotspot: true,
+                                    },
+                                },
+                                {
+                                    name: "sad",
+                                    title: "Image quand le héros est triste",
+                                    type: "image",
+                                    options: {
+                                        hotspot: true,
+                                    },
+                                },
+                                {
+                                    name: "angry",
+                                    title: "Image quand le héros est en colère",
+                                    type: "image",
+                                    options: {
+                                        hotspot: true,
+                                    },
+                                },
+                                {
+                                    name: "scared",
+                                    title: "Image quand le héros a peur",
+                                    type: "image",
+                                    options: {
+                                        hotspot: true,
+                                    },
+                                },
+                            ],
+                        },
+                        {
+                            name: "starter",
+                            title: "Starter",
+                            type: "array",
+                            of: [{ type: "reference", to: { type: "effect" } }],
+                        },
+                    ],
+                },
+            ],
+        }),
+        defineField({
+            name: "isReady",
+            title: "Aventure prête",
+            type: "boolean",
+            initialValue: false,
+        }),
+        defineField({
+            name: "publishedAt",
+            title: "Published at",
+            type: "datetime",
+            initialValue: new Date().toISOString(),
+        }),
+        //Theme à faire...
+    ],
+});

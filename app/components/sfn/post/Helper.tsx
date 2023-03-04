@@ -1,5 +1,5 @@
 "use client";
-import { Post } from "@/app/types/blog";
+import { Post } from "@/app/types/sfn/blog";
 import React, { useEffect, useState } from "react";
 import { AiFillSignal } from "react-icons/ai";
 

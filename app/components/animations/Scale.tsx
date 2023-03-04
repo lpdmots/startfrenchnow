@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface Props {
     children: JSX.Element;
@@ -22,8 +22,8 @@ export const Scale = ({ duration, delay, className, children }: Props) => {
     };
 
     return (
-        <motion.div className={className} variants={slidefromBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div className={className} variants={slidefromBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {children}
-        </motion.div>
+        </m.div>
     );
 };
