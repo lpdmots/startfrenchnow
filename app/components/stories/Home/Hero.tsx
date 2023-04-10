@@ -11,7 +11,7 @@ function Hero() {
                 <div className="grid grid-cols-12">
                     <div className="hidden lg:flex col-span-4 items-center justify-center">
                         <SlideFromBottom>
-                            <Image src="/images/stories.png" height={550} width={350} alt="The teacher" className="image" priority style={{ maxHeight: 550, width: "auto" }} />
+                            <Image src="/images/stories.png" height={500} width={350} alt="The teacher" className="image" priority style={{ maxHeight: 550 }} />
                         </SlideFromBottom>
                     </div>
                     <div className="col-span-12 lg:col-span-8 flex justify-center items-center p-2 md:p-6">
@@ -26,8 +26,8 @@ function Hero() {
                                     </p>
                                 </div>
                             </div>
-                            <div className="buttons-row flex justify-start">
-                                <a href="#courses" className="btn-primary button-row w-button flex items-center">
+                            <div className="buttons-row flex justify-center lg:justify-start">
+                                <a href="#storiesTab" className="btn-primary button-row w-button flex items-center">
                                     <GiSpellBook className="mr-2" style={{ fontSize: 30 }} />
                                     Les histoires
                                 </a>

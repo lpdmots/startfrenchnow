@@ -16,7 +16,7 @@
     --neutral-800: #0b0b0b;
 
     --sm: 480px; /* A MODIFIER AUSSI DANS TAILWIND CONFIG */
-    --md: 768px;
+    --md: 768px; /* A MODIFIER AUSSI DANS WithMediaQuery component (components/stories/) */
     --lg: 992px;
 }
 

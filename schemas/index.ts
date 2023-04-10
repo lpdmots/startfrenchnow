@@ -12,5 +12,31 @@ import tabelVoc from "./sfn/tabelVoc";
 import adventure from "./stories/adventure";
 import effect from "./stories/effect";
 import variable from "./stories/variable";
+import storyContent from "./stories/storyContent";
+import element from "./stories/element";
+import extract from "./stories/extract";
+import validation from "./stories/validation";
+import choice from "./stories/choice";
+import condition from "./stories/condition";
+import modifier from "./stories/modifier";
 
-export const schemaTypes = [post, category, blockContent, user, course, video, videoBlog, tabelVoc, adventure, effect, variable];
+export const schemaTypes = [
+    post,
+    category,
+    blockContent,
+    user,
+    course,
+    video,
+    videoBlog,
+    tabelVoc,
+    adventure,
+    effect,
+    variable,
+    storyContent,
+    element,
+    validation,
+    extract,
+    choice,
+    condition,
+    modifier,
+];

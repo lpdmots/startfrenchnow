@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { subscribeNewsletter } from "../../lib/api";
+import { subscribeNewsletter } from "../../lib/apiNavigation";
 
 interface StatusProps {
     pending: boolean;

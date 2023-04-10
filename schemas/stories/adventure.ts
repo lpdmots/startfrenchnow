@@ -70,6 +70,12 @@ export default defineType({
             validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
+            name: "selectContent",
+            title: "Texte de la sélection du héros",
+            type: "storyContent",
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+        }),
+        defineField({
             name: "images",
             title: "Images",
             type: "object",
@@ -77,6 +83,14 @@ export default defineType({
                 {
                     name: "primary",
                     title: "Image principale",
+                    type: "image",
+                    options: {
+                        hotspot: true,
+                    },
+                },
+                {
+                    name: "icon",
+                    title: "Icone",
                     type: "image",
                     options: {
                         hotspot: true,
@@ -95,12 +109,6 @@ export default defineType({
             title: "Variables",
             type: "array",
             of: [{ type: "reference", to: { type: "variable" } }],
-        }),
-        defineField({
-            name: "starter",
-            title: "Starter",
-            type: "array",
-            of: [{ type: "reference", to: { type: "effect" } }],
         }),
         defineField({
             name: "gameSystem",
@@ -227,14 +235,20 @@ export default defineType({
                             ],
                         },
                         {
-                            name: "starter",
-                            title: "Starter",
+                            name: "variables",
+                            title: "Variables",
                             type: "array",
-                            of: [{ type: "reference", to: { type: "effect" } }],
+                            of: [{ type: "reference", to: { type: "variable" } }],
                         },
                     ],
                 },
             ],
+        }),
+        defineField({
+            name: "firstChapter",
+            title: "Premier chapitre",
+            type: "reference",
+            to: [{ type: "element" }],
         }),
         defineField({
             name: "isReady",
@@ -250,4 +264,17 @@ export default defineType({
         }),
         //Theme à faire...
     ],
+    preview: {
+        select: {
+            name: "name",
+            image: "images.primary.asset",
+        },
+        prepare(selection) {
+            const { name, image } = selection;
+            return {
+                title: name,
+                media: image,
+            };
+        },
+    },
 });
