@@ -25,7 +25,7 @@ export default defineType({
             name: "component",
             title: "Composant",
             type: "reference",
-            to: [{ type: "element" }, { type: "choice" }, { type: "variable" }],
+            to: [{ type: "element" }, { type: "choice" }, { type: "variable" }, { type: "extract" }],
         }),
         defineField({
             name: "reference",

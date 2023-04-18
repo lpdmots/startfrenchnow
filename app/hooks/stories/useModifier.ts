@@ -2,9 +2,9 @@ import { Variable, VariableState } from "@/app/types/stories/adventure";
 import { Effect, Modifier, ModifierWithRef } from "@/app/types/stories/effect";
 import { ElementProps } from "@/app/types/stories/element";
 import { ElementDataProps, VariablesToUpdateProps } from "@/app/types/stories/state";
-import fetchData from "@/lib/apiStories";
-import { sortByCode } from "@/lib/utils";
-import { useStoryStore } from "@/stores/storiesStore";
+import fetchData from "@/app/lib/apiStories";
+import { sortByCode } from "@/app/lib/utils";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import { useValidation } from "./useValidation";
 import { useVariable } from "./useVariable";
 
@@ -24,13 +24,12 @@ export const useModifier = () => {
         }
     };
 
-    const applyModifier = async (effect: Effect, elementData: ElementDataProps) => {
+    const applyModifier = async (effect: Effect | { modifiers: ModifierWithRef[] }, elementData: ElementDataProps) => {
         const { modifiers: modifiersWithRef } = effect;
         if (!modifiersWithRef || !modifiersWithRef.length) return;
 
         // Fetch les variables si nécessaire puis sort les modifiers par code
         const modifiers = await getModifiers(modifiersWithRef);
-
         const sortedModifiers = sortByCode(modifiers);
 
         sortedModifiers.forEach((modifier) => {
@@ -74,14 +73,13 @@ export const useModifier = () => {
 
     const applyAccess = (modifier: Modifier, elementData: ElementDataProps) => {
         const { arguments: args, access: accessRefs } = modifier;
-        console.log({ modifier });
+
         accessRefs.forEach((accessRef) => {
             const noChangePossible = elementData.access[accessRef._ref]?.persistant || access[accessRef._ref]?.persistant;
             if (noChangePossible) return;
             const argsList = args.split(",").map((arg) => arg.trim());
             const newValue = (argsList.length && argsList[0] === "false") || "" ? false : true;
             const persistant = argsList.length > 1 && argsList[1] !== "false";
-            console.log({ argsList, newValue, persistant });
             elementData.access[accessRef._ref] = { value: newValue, persistant };
         });
     };
@@ -89,10 +87,10 @@ export const useModifier = () => {
     const applyStep = (modifier: Modifier, elementData: ElementDataProps) => {
         const { arguments: args, access: stepRef } = modifier;
         if (!stepRef || !stepRef.length) return;
-        elementData.step = { _id: "step", elementId: stepRef[0]._ref, label: args || "arrow", code: "step" };
+        elementData.step = { _id: "step", elementId: stepRef[0]._ref, label: undefined, code: "step" };
     };
 
-    return { effectsTreatment };
+    return { effectsTreatment, applyModifier, applyOperation, applyAccess, applyStep };
 };
 
 const getModifiers = async (modifiersWithRef: ModifierWithRef[]) => {
@@ -131,7 +129,10 @@ const getNewValue = (variable: VariableState, operation: "addition" | "multiplic
         if (operation === "addition") newValueRaw = valueNum + (argsNum || 0);
         if (operation === "multiplication") newValueRaw = valueNum * (argsNum || 0);
         if (operation === "replace") newValueRaw = argsNum || 0;
-        const newValue = Math.max(Math.min(newValueRaw, variable.data?.maximum || 9999999999), variable.data?.minimum || -9999999999);
+
+        const valMax = variable.data?.maximum === undefined ? 9999999999 : variable.data?.maximum;
+        const valMin = variable.data?.minimum === undefined ? -9999999999 : variable.data?.minimum;
+        const newValue = Math.max(Math.min(newValueRaw, valMax), valMin);
         return newValue.toString();
     }
 };

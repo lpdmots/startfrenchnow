@@ -1,4 +1,4 @@
-import { COLORVARIABLES } from "@/lib/constantes";
+import { COLORVARIABLES } from "@/app/lib/constantes";
 import React from "react";
 import { BsCaretRightFill } from "react-icons/bs";
 

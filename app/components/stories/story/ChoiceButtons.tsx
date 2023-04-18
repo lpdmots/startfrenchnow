@@ -1,13 +1,18 @@
 "use client";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
 import { ChoiceProps, LayoutProps } from "@/app/types/stories/state";
-import { NUMBEROFBUTTONS_DESKTOP, NUMBEROFBUTTONS_MOBILE } from "@/lib/constantes";
-import { removeDuplicatesObjects } from "@/lib/utils";
+import { NUMBEROFBUTTONS_DESKTOP, NUMBEROFBUTTONS_MOBILE } from "@/app/lib/constantes";
+import { removeDuplicatesObjects } from "@/app/lib/utils";
 import React, { useEffect, useState } from "react";
 import ChoiceButton from "./ChoiceButton";
 import { CollapseChoices } from "./CollapseChoices";
 
-const getButtonVisibility = (accessChoices: ChoiceProps[], interactionChoices: ChoiceProps[], maxButtons: number) => {
+interface ButtonVisibility {
+    showAccessSelect: boolean;
+    showInteractionSelect: boolean;
+}
+
+const getButtonVisibility = (accessChoices: ChoiceProps[], interactionChoices: ChoiceProps[], maxButtons: number): ButtonVisibility => {
     let totalButtons = accessChoices.length + interactionChoices.length;
     const showAccessSelect = (totalButtons > maxButtons && accessChoices.length > 1) || (interactionChoices.length > 2 && accessChoices.length > 1);
     totalButtons = showAccessSelect ? interactionChoices.length + 1 : totalButtons;
@@ -18,17 +23,21 @@ const getButtonVisibility = (accessChoices: ChoiceProps[], interactionChoices: C
 export const ChoiceButtons = ({ data }: { data: LayoutProps }) => {
     const { accessChoices = [], interactionChoices = [] } = data;
     const maxButtons = useMediaQuery("(max-width: 480px)") ? NUMBEROFBUTTONS_MOBILE : NUMBEROFBUTTONS_DESKTOP;
-    const [buttonVisibility, setButtonVisibility] = useState(getButtonVisibility(accessChoices, interactionChoices, maxButtons));
+    const [buttonVisibility, setButtonVisibility] = useState<ButtonVisibility | null>(null);
     const isOnlyOneButton = getIsOneButtonDisplayed(accessChoices, interactionChoices, buttonVisibility);
 
     useEffect(() => {
         setButtonVisibility(getButtonVisibility(accessChoices, interactionChoices, maxButtons));
-    }, [accessChoices.length, interactionChoices.length, maxButtons, accessChoices, interactionChoices]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [maxButtons]);
 
     const renderChoices = (choices: ChoiceProps[], buttonClass: string) => {
         const singleButtonClass = isOnlyOneButton ? "w-full sm:w-1/2" : "col-span-2 sm:col-span-1";
         return removeDuplicatesObjects(choices, "_id").map((choice, index) => <ChoiceButton key={index} classes={`${buttonClass} small btn-choice w-full ${singleButtonClass}`} choice={choice} />);
     };
+
+    if (!buttonVisibility) return null;
+
     return (
         <div className={`${isOnlyOneButton ? "flex justify-center" : "grid grid-cols-2 gap-3 md:gap-6"} w-full`}>
             {buttonVisibility.showInteractionSelect ? (
@@ -45,9 +54,9 @@ export const ChoiceButtons = ({ data }: { data: LayoutProps }) => {
     );
 };
 
-const getIsOneButtonDisplayed = (accessChoices: ChoiceProps[], interactionChoices: ChoiceProps[], buttonVisibility: { showAccessSelect: boolean; showInteractionSelect: boolean }) => {
+const getIsOneButtonDisplayed = (accessChoices: ChoiceProps[], interactionChoices: ChoiceProps[], buttonVisibility: ButtonVisibility | null) => {
     let count = 0;
-
+    if (!buttonVisibility) return true;
     if (!buttonVisibility.showAccessSelect) {
         count += accessChoices.length;
     } else {

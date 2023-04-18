@@ -3,7 +3,7 @@ import { BsImage } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import { MdBackpack } from "react-icons/md";
 import { motion } from "framer-motion";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 
 export const tabs = {
     desktop: [
@@ -20,8 +20,10 @@ export const tabs = {
 
 export const StoryNavbar = ({ layout }: { layout: "desktop" | "mobile" }) => {
     const { selectedStoryTabsIndex, setSelectedStoryTabsIndex } = useStoryStore();
-    const respTabs = useMemo(() => tabs[layout], [layout]);
-    const selectedTab = useMemo(() => respTabs[selectedStoryTabsIndex], [selectedStoryTabsIndex, respTabs]);
+    const [respTabs, selectedTab] = useMemo(() => {
+        const tabsArray = tabs[layout];
+        return [tabsArray, tabsArray[selectedStoryTabsIndex]];
+    }, [layout, selectedStoryTabsIndex]);
 
     if (layout === "desktop")
         return (

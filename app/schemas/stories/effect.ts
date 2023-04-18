@@ -1,7 +1,7 @@
 import { Reference } from "@/app/types/sfn/blog";
 import { Base } from "@/app/types/stories/adventure";
 import { Validation } from "@/app/types/stories/effect";
-import { ADVENTUREID } from "@/lib/constantes";
+import { ADVENTUREID } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({

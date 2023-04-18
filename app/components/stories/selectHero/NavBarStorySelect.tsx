@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { BiExit } from "react-icons/bi";
 import Image from "next/image";
-import urlFor from "@/lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 
 export const NavBarStorySelect = ({ story }: { story: Adventure }) => {
     return (

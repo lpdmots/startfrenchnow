@@ -3,7 +3,7 @@ import Hero from "@/app/components/stories/home/Hero";
 import StoriesBand from "@/app/components/stories/home/StoriesBand";
 import { StoryTabs } from "@/app/components/stories/home/StoryTabs";
 import { StoryCard } from "@/app/types/stories/adventure";
-import { client } from "@/lib/sanity.client";
+import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
 
 const query = groq`

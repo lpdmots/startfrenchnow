@@ -1,9 +1,9 @@
 import { Post } from "../../../types/sfn/blog";
 import Image from "next/image";
 import ClientSideRoute from "../../common/ClientSideRoute";
-import urlFor from "../../../../lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 import { AiFillSignal } from "react-icons/ai";
-import { LEVELDATA } from "@/lib/constantes";
+import { LEVELDATA } from "@/app/lib/constantes";
 import { ScaleChildren } from "../../animations/ParentToChildrens";
 
 const SecondaryPost = ({ post }: { post: Post }) => {

@@ -7,7 +7,7 @@ import { BiDollar } from "react-icons/bi";
 import Link from "next/link";
 import { MdOutlineEmail } from "react-icons/md";
 import { m } from "framer-motion";
-import { fadeInOneByOneItem, fadeInOneByOneParent } from "@/lib/framerVariants";
+import { fadeInOneByOneItem, fadeInOneByOneParent } from "@/app/lib/framerVariants";
 import { SlideFromBottom } from "../../animations/Slides";
 import { ParentToChildrens, ScaleChildren } from "../../animations/ParentToChildrens";
 

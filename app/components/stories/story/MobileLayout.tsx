@@ -1,15 +1,15 @@
 import { PortableText } from "@portabletext/react";
 import React from "react";
-import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { LayoutProps } from "@/app/types/stories/state";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import Image from "next/image";
 import { ChoiceButtons } from "./ChoiceButtons";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
+import { RichTextStory } from "../../sanity/RichTextStory";
 
 export const MobileLayout = ({ data }: { data: LayoutProps }) => {
     const { slideIndex, setNewStates, layouts } = useStoryStore();
-    const oneColumn = (!data.image || !data.text) && !data.interactionChoices && !data.accessChoices;
+    const oneColumn = (!data?.image || !data?.text) && !data?.interactionChoices && !data?.accessChoices;
     const hasChoices = !!data.interactionChoices || !!data.accessChoices;
 
     const handleNextLayout = () => {
@@ -20,7 +20,7 @@ export const MobileLayout = ({ data }: { data: LayoutProps }) => {
         return (
             <div className="flex flex-col items-center justify-between h-full gap-6 py-6">
                 <div className=" flex grow items-center justify-center text-center bl">
-                    {data.text && <PortableText value={data.text} components={RichTextComponents} />}
+                    {data.text && <PortableText value={data.text} components={RichTextStory()} />}
                     {data.image && (
                         <div>
                             <Image
@@ -49,7 +49,7 @@ export const MobileLayout = ({ data }: { data: LayoutProps }) => {
             <div className="flex flex-col grow items-center justify-around">
                 {data.text && (
                     <div className="flex  items-center justify-center text-center">
-                        <PortableText value={data.text} components={RichTextComponents} />
+                        <PortableText value={data.text} components={RichTextStory()} />
                     </div>
                 )}
                 {data.image && (

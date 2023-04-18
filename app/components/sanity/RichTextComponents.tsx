@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import urlFor from "../../../lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 import { BsCaretRightFill } from "react-icons/bs";
 import TabelVoc from "./TabelVoc";
 import { FaFileDownload } from "react-icons/fa";

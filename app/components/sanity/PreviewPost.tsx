@@ -1,6 +1,6 @@
 "use client";
 
-import { usePreview } from "../../../lib/sanity.preview";
+import { usePreview } from "@/app/lib/sanity.preview";
 import PostContent from "../sfn/post/PostContent";
 
 type props = {

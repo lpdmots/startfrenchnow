@@ -2,11 +2,11 @@ import { Adventure } from "@/app/types/stories/adventure";
 import { PortableText } from "@portabletext/react";
 import React, { useMemo } from "react";
 import { Carousel } from "../../animations/Carousel";
-import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { HeroCard } from "./HeroCard";
 import Link from "next/link";
 import { StartStoryButton } from "./StartStoryButton";
 import { ElementProps } from "@/app/types/stories/element";
+import { RichTextStory } from "../../sanity/RichTextStory";
 
 export const MobileLayoutSelect = ({ story, element }: { story: Adventure; element: ElementProps }) => {
     const carouselData = useMemo(
@@ -20,7 +20,7 @@ export const MobileLayoutSelect = ({ story, element }: { story: Adventure; eleme
     return (
         <div className="flex flex-col h-full gap-6 py-6" style={{ maxWidth: 600 }}>
             <div className=" items-center justify-center text-center">
-                <PortableText value={story.selectContent} components={RichTextComponents} />
+                <PortableText value={story.selectContent} components={RichTextStory()} />
             </div>
             <div className="flex grow  items-center justify-around">
                 <div className="h-full flex items-center justify-center text-center w-full">{story.heros?.length && <Carousel data={carouselData} />}</div>

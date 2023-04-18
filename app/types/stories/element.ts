@@ -1,12 +1,13 @@
 import { Block, Image, Reference } from "../sfn/blog";
 import { Base } from "./adventure";
-import { Effect, Modifier, Validation } from "./effect";
+import { Effect, ModifierWithRef, Validation } from "./effect";
 
 export interface ElementProps extends Base {
     adventure: string;
     code: string;
     validation: Validation;
     name: string;
+    label?: Block;
     nature: "interaction" | "access";
     rolls: Roll[] | null;
     image: Image;
@@ -21,7 +22,7 @@ export interface ElementProps extends Base {
     choiceOptions: {
         interaction: boolean;
         access: boolean;
-        inherit: string;
+        inherit: Reference;
     };
 }
 
@@ -51,16 +52,18 @@ export interface Choice extends Base {
     adventure: string;
     element?: ElementForChoice;
     validation: Validation;
-    label?: string;
+    nature?: "interaction" | "access";
+    label?: Block;
     antagonistes: Reference[];
     extracts?: Extract[];
-    modifiers?: Modifier[];
+    modifiers?: ModifierWithRef[];
 }
 
 export interface ElementForChoice extends Base {
     _id: string;
     nature: string;
     name: string;
+    label?: Block;
     code: string;
     validation: Validation;
 }

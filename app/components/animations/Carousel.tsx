@@ -1,5 +1,5 @@
 "use client";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import { AnimatePresence, m } from "framer-motion";
 import React, { useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";

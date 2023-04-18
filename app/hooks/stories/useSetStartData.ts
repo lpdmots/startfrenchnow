@@ -1,5 +1,5 @@
 import { Adventure } from "@/app/types/stories/adventure";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import { useVariable } from "./useVariable";
 
 export const useSetStartData = () => {

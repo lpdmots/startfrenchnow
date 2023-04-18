@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { client } from "../../../../../../lib/sanity.client";
+import { client } from "@/app/lib/sanity.client";
 import { Post } from "../../../../../types/sfn/blog";
 import Link from "next/link";
 import PrimaryPost from "../../../../../components/sfn/blog/PrimaryPost";

@@ -1,4 +1,4 @@
-import { ADVENTUREID } from "@/lib/constantes";
+import { ADVENTUREID } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({

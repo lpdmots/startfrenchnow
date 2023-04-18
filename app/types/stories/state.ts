@@ -1,6 +1,6 @@
 import { Block } from "../sfn/blog";
 import { VariableState } from "./adventure";
-import { Modifier } from "./effect";
+import { Modifier, ModifierWithRef } from "./effect";
 import { Choice, Extract } from "./element";
 
 export interface LayoutProps {
@@ -17,9 +17,9 @@ export interface LayoutProps {
 export interface ChoiceProps {
     _id: string;
     elementId?: string;
-    label: string;
+    label?: Block;
     code: string;
-    modifiers?: Modifier[];
+    modifiers?: ModifierWithRef[];
     extracts?: Extract[];
 }
 
@@ -46,9 +46,10 @@ export interface ElementDataProps {
     step: {
         _id: "step";
         elementId: string;
-        label: string;
+        label?: Block;
         code: string;
     } | null;
+    inheritedChoices: Choice[];
 }
 
 export interface ElementsDataProps {

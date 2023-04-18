@@ -1,7 +1,7 @@
 import React from "react";
 import { NavBarStory } from "@/app/components/stories/story/NavBarStory";
 import { LayoutsCarousel } from "@/app/components/stories/story/LayoutsCarousel";
-import { client } from "@/lib/sanity.client";
+import { client } from "@/app/lib/sanity.client";
 import { groqQueries } from "@/app/api/component/[componentType]/[componentId]/route";
 
 type Props = {

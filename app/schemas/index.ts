@@ -16,9 +16,9 @@ import storyContent from "./stories/storyContent";
 import element from "./stories/element";
 import extract from "./stories/extract";
 import validation from "./stories/validation";
-import choice from "./stories/choice";
 import condition from "./stories/condition";
 import modifier from "./stories/modifier";
+import choice from "./stories/choice";
 
 export const schemaTypes = [
     post,

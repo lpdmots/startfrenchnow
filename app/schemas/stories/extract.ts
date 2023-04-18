@@ -1,4 +1,4 @@
-import { ADVENTUREID } from "@/lib/constantes";
+import { ADVENTUREID } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -26,6 +26,12 @@ export default defineType({
             options: {
                 hotspot: true,
             },
+        }),
+        defineField({
+            name: "imageInheritance",
+            title: "Héritage d'image",
+            type: "reference",
+            to: [{ type: "element" }],
         }),
         defineField({
             name: "content",

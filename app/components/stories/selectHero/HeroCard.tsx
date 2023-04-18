@@ -1,5 +1,5 @@
 import { HeroAdventure, Heros, Variable, VariableState } from "@/app/types/stories/adventure";
-import urlFor from "@/lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 import React from "react";
 import Image from "next/image";
 
@@ -10,10 +10,10 @@ export const HeroCard = ({ hero, skills }: { hero: HeroAdventure | Heros | null;
             <Image
                 src={urlFor(hero.images.default).url()}
                 height={500}
-                width={350}
+                width={"350"}
                 className="object-contain absolute top-0 z-0"
                 priority
-                style={{ maxHeight: "100%", minHeight: 350 }}
+                style={{ maxHeight: "100%", minHeight: 350, width: "auto" }}
                 alt={hero.name}
             />
             <div className="p-2 absolute bottom-0 left-0 bg-neutral-100 rounded-lg simple-border bs text-left w-full opacity-90">

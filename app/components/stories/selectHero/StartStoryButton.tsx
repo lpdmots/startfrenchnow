@@ -1,15 +1,16 @@
 "use client";
 import { useSetStartData } from "@/app/hooks/stories/useSetStartData";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ModalFromBottom } from "../../animations/Modals";
-import urlFor from "@/lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 import { ElementProps } from "@/app/types/stories/element";
 import { useElementTreatment } from "@/app/hooks/stories/useElement";
 import { Adventure } from "@/app/types/stories/adventure";
 import Spinner from "../../common/Spinner";
 import { ElementDataProps } from "@/app/types/stories/state";
+import { ELEMENTDATA } from "@/app/lib/constantes";
 
 export const StartStoryButton = ({ element, story: newStory }: { story: Adventure; element: ElementProps }) => {
     const { story: oldStory, resetData } = useStoryStore();
@@ -63,10 +64,10 @@ const StartButton = ({ element, newStory }: { element: ElementProps; newStory: A
     useEffect(() => {
         (async () => {
             if (chapter) {
-                const elementData: ElementDataProps = { elementId: element._id, variablesToUpdate: {}, layouts: [], heros: {}, countIds: [], access: {}, step: null };
+                const elementData: ElementDataProps = { ...JSON.parse(JSON.stringify(ELEMENTDATA)), elementId: element._id };
                 await elementTreatment(element._id, elementData);
                 addElementsData("0", elementData);
-                updateOnChoice({ _id: "0", elementId: element._id, code: "1", label: "" });
+                updateOnChoice({ _id: "0", elementId: element._id, code: "1", label: undefined });
             }
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps

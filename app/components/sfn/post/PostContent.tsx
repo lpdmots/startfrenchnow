@@ -1,11 +1,11 @@
 import Image from "next/image";
-import urlFor from "../../../../lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 import { Post } from "../../../types/sfn/blog";
 import { PortableText } from "@portabletext/react";
 import { RichTextComponents } from "../../sanity/RichTextComponents";
 import Link from "next/link";
 import NewsletterCard from "../../common/NewsletterCard";
-import { LEVELDATA } from "@/lib/constantes";
+import { LEVELDATA } from "@/app/lib/constantes";
 import Helper from "./Helper";
 import VideoBlog from "../../sanity/VideoBlog";
 

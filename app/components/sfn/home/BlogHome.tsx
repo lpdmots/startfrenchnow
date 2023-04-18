@@ -3,7 +3,7 @@ import React from "react";
 import { Post } from "../../../types/sfn/blog";
 import PrimaryPost from "../blog/PrimaryPost";
 import SecondaryPost from "../blog/SecondaryPost";
-import { client } from "../../../../lib/sanity.client";
+import { client } from "@/app/lib/sanity.client";
 import Link from "next/link";
 import { BiPencil } from "react-icons/bi";
 import { SlideFromBottom } from "../../animations/Slides";

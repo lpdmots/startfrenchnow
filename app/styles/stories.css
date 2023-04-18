@@ -138,3 +138,8 @@
         height: 2rem;
     }
 }
+
+/* Pour enlever le margin bottom du paragraphe dans les boutons de choix : */
+#choiceButton > p {
+    margin-bottom: 0;
+}

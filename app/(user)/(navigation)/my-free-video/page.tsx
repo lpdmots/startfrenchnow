@@ -1,8 +1,8 @@
 "use client";
 import FreeVideo from "@/app/components/sfn/myFreeVideo/FreeVideo";
 import { Video } from "@/app/types/sfn/video";
-import { getSubscriber, updateSubscriber } from "@/lib/apiNavigation";
-import { client } from "@/lib/sanity.client";
+import { getSubscriber, updateSubscriber } from "@/app/lib/apiNavigation";
+import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";

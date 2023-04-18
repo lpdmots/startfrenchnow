@@ -1,4 +1,5 @@
 import { Adventure, Heros, VariableState } from "@/app/types/stories/adventure";
+import { Choice } from "@/app/types/stories/element";
 import { AccessState, ChoiceProps, ElementDataProps, ElementsDataProps, LayoutProps } from "@/app/types/stories/state";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
@@ -7,6 +8,7 @@ interface DefaultProps {
     story: null | Adventure;
     chapter: string;
     actualElementId: string;
+    inheritedChoices: Choice[];
     layouts: LayoutProps[];
     slideIndex: number;
     elementsData: ElementsDataProps;
@@ -31,6 +33,7 @@ const DEFAULT_PROPS: DefaultProps = {
     story: null,
     chapter: "",
     actualElementId: "",
+    inheritedChoices: [],
     layouts: [],
     slideIndex: 0,
     elementsData: {},
@@ -60,7 +63,8 @@ export const useStoryStore = create<StoryState>()(
                                 layouts: state.elementsData[choice._id].layouts,
                                 elementsData: {},
                                 chapter: choice.code,
-                                actualElementId: choice.elementId,
+                                actualElementId: choice.elementId || state.actualElementId,
+                                inheritedChoices: state.elementsData[choice._id].inheritedChoices,
                                 slideIndex: 0,
                                 count: getNewCount(state, choice),
                                 variables: { ...state.variables, ...state.elementsData[choice._id].variablesToUpdate },
@@ -79,7 +83,7 @@ export const useStoryStore = create<StoryState>()(
 );
 
 const getNewCount = (state: StoryState, choice: ChoiceProps) => {
-    const count = { ...state.count, [choice._id]: (state.count[choice._id] || 0) + 1 };
+    const count = { ...state.count };
     state.elementsData[choice._id].countIds.forEach((id) => {
         count[id] = (count[id] || 0) + 1;
     });

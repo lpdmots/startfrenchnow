@@ -1,6 +1,6 @@
 import { previewData } from "next/headers";
 import { groq } from "next-sanity";
-import { client } from "../../../../lib/sanity.client";
+import { client } from "@/app/lib/sanity.client";
 import PreviewSuspense from "../../../components/sanity/PreviewSuspense";
 import PreviewBlogListe from "../../../components/sanity/PreviewBlogList";
 import BlogList from "../../../components/sfn/blog/BlogList";

@@ -1,4 +1,4 @@
-import { ADVENTUREID } from "@/lib/constantes";
+import { ADVENTUREID } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -20,6 +20,18 @@ export default defineType({
             to: [{ type: "element" }],
         }),
         defineField({
+            name: "nature",
+            title: "Nature de l'élément",
+            type: "string",
+            description: "À préciser si aucun élément n'est lié.",
+            options: {
+                list: [
+                    { title: "Interaction", value: "interaction" },
+                    { title: "Accès", value: "access" },
+                ],
+            },
+        }),
+        defineField({
             name: "validation",
             title: "Validation",
             type: "reference",
@@ -28,7 +40,7 @@ export default defineType({
         defineField({
             name: "label",
             title: "Libellé",
-            type: "string",
+            type: "storyContent",
         }),
         defineField({
             name: "antagonistes",
@@ -73,8 +85,9 @@ export default defineType({
         },
         prepare(selection) {
             const { label, name, aventure, code, image } = selection;
+            console.log({ label });
             return {
-                title: label && code ? label + "(" + code + ")" : label ? label : name && code ? name + "(" + code + ")" : name,
+                title: label && code ? label[0].children[0].text + "(" + code + ")" : label ? label[0].children[0].text : name && code ? name + "(" + code + ")" : name,
                 subtitle: aventure,
                 media: image,
             };

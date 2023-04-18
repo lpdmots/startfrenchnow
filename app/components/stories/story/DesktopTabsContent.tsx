@@ -1,6 +1,6 @@
 import { LayoutProps } from "@/app/types/stories/state";
 import Image from "next/image";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import { HeroCard } from "../selectHero/HeroCard";
 import { Inventory } from "./Inventory";
 import { AnimatePresence, motion } from "framer-motion";

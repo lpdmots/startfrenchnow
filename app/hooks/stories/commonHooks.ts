@@ -1,5 +1,5 @@
 import { tabs } from "@/app/components/stories/story/StoryNavbar";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import React, { useMemo } from "react";
 
 export const useTabsContentData = (layout: "desktop" | "mobile") => {

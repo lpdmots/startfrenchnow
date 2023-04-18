@@ -1,7 +1,6 @@
 "use client";
 import { useElementTreatment } from "@/app/hooks/stories/useElement";
-import { removeDuplicates } from "@/lib/utils";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import { AnimatePresence, m } from "framer-motion";
 import React, { useEffect, useMemo } from "react";
 import { DesktopLayout } from "@/app/components/stories/story/DesktopLayout";

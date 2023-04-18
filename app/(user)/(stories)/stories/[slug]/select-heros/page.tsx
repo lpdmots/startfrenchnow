@@ -4,7 +4,7 @@ import { MobileLayoutSelect } from "@/app/components/stories/selectHero/MobileLa
 import { NavBarStorySelect } from "@/app/components/stories/selectHero/NavBarStorySelect";
 import { IsDesktop, IsMobile } from "@/app/components/stories/WithMediaQuery";
 import { Slug } from "@/app/types/sfn/blog";
-import { client } from "@/lib/sanity.client";
+import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
 
 type Props = {

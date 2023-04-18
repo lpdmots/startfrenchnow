@@ -2,7 +2,7 @@
 
 import { Category } from "@/app/types/sfn/blog";
 import { groq } from "next-sanity";
-import { usePreview } from "../../../lib/sanity.preview";
+import { usePreview } from "@/app/lib/sanity.preview";
 import BlogList from "../sfn/blog/BlogList";
 import NewsletterBand from "../common/NewsletterBand";
 import PostsList from "../sfn/post/PostList";

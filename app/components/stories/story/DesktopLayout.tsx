@@ -1,12 +1,12 @@
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import React from "react";
-import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { LayoutProps } from "@/app/types/stories/state";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { ChoiceButtons } from "./ChoiceButtons";
 import { Tabs } from "./Tabs";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
+import { RichTextStory } from "../../sanity/RichTextStory";
 
 export const DesktopLayout = ({ data }: { data: LayoutProps }) => {
     const { slideIndex, setNewStates, layouts } = useStoryStore();
@@ -22,7 +22,7 @@ export const DesktopLayout = ({ data }: { data: LayoutProps }) => {
             <div className="flex flex-col items-center justify-center gap-6">
                 {data.text && (
                     <div className=" flex grow items-center justify-center text-center bl">
-                        <PortableText value={data.text} components={RichTextComponents} />
+                        <PortableText value={data.text} components={RichTextStory()} />
                     </div>
                 )}
                 {data.image && (
@@ -51,7 +51,7 @@ export const DesktopLayout = ({ data }: { data: LayoutProps }) => {
                 <div className="flex flex-col items-center justify-center gap-6">
                     {data.text && (
                         <div className=" flex items-center justify-center text-center bl">
-                            <PortableText value={data.text} components={RichTextComponents} />
+                            <PortableText value={data.text} components={RichTextStory()} />
                         </div>
                     )}
                     {hasChoices ? (

@@ -1,7 +1,7 @@
 "use client";
 import { Variable, VariableState } from "@/app/types/stories/adventure";
-import urlFor from "@/lib/urlFor";
-import { splitArrayIntoChunks } from "@/lib/utils";
+import urlFor from "@/app/lib/urlFor";
+import { splitArrayIntoChunks } from "@/app/lib/utils";
 import React, { useMemo, useState } from "react";
 import { Carousel } from "../../animations/Carousel";
 import { ModalFromBottom } from "../../animations/Modals";

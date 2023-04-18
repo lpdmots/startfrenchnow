@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import { BsCheckCircle } from "react-icons/bs";
-import { sendContactForm, subscribeNewsletter } from "../../../../lib/apiNavigation";
+import { sendContactForm, subscribeNewsletter } from "@/app/lib/apiNavigation";
 import Spinner from "../../../components/common/Spinner";
 
 const initialValue = {

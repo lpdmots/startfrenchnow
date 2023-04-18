@@ -1,4 +1,4 @@
-import { client } from "@/lib/sanity.client";
+import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -28,6 +28,7 @@ export const groqQueries: any = {
                 _id,
                 nature,
                 name,
+                label,
                 code,
                 validation->,
                 antagonistes,
@@ -60,6 +61,7 @@ export const groqQueries: any = {
             _id,
             nature,
             name,
+            label,
             code,
             validation->,
             antagonistes,

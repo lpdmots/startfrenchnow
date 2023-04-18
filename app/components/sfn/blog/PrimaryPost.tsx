@@ -1,7 +1,7 @@
 import { Post } from "../../../types/sfn/blog";
 import Image from "next/image";
 import ClientSideRoute from "../../common/ClientSideRoute";
-import urlFor from "../../../../lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 
 const PrimaryPost = ({ post }: { post: Post }) => {
     const level = post.level ? LEVELDATA[post.level] : LEVELDATA["a1"];
@@ -42,7 +42,7 @@ const PrimaryPost = ({ post }: { post: Post }) => {
 
 import React from "react";
 import { AiFillSignal } from "react-icons/ai";
-import { LEVELDATA } from "@/lib/constantes";
+import { LEVELDATA } from "@/app/lib/constantes";
 import { ScaleChildren } from "../../animations/ParentToChildrens";
 
 export default PrimaryPost;

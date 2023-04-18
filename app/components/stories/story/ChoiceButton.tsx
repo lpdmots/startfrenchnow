@@ -1,9 +1,11 @@
 "use client";
 import { ChoiceProps } from "@/app/types/stories/state";
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import Spinner from "../../common/Spinner";
+import { PortableText } from "@portabletext/react";
+import { RichTextStory } from "../../sanity/RichTextStory";
 
 function ChoiceButton({ choice, classes }: { choice: ChoiceProps; classes: string }) {
     const { updateOnChoice, elementsData } = useStoryStore();
@@ -34,13 +36,13 @@ function ChoiceButton({ choice, classes }: { choice: ChoiceProps; classes: strin
         setClicked(true);
     };
 
-    return choice.label === "arrow" ? (
+    return !choice.label ? (
         <button className="roundButton" onClick={handleChoice}>
             {calculating ? <Spinner radius maxHeight="20px" /> : <AiOutlineArrowRight className="text-3xl lg:text-4xl" />}
         </button>
     ) : (
-        <button disabled={disabled} className={`${classes} ${disabled && "opacity-50 cursor-not-allowed hover:transform-none"}`} onClick={handleChoice}>
-            {calculating ? <Spinner radius maxHeight="40px" /> : choice.label}
+        <button id="choiceButton" disabled={disabled} className={`${classes} ${disabled && "opacity-50 cursor-not-allowed hover:transform-none"}`} onClick={handleChoice}>
+            {calculating ? <Spinner radius maxHeight="40px" /> : <PortableText value={choice.label} components={RichTextStory()} />}
         </button>
     );
 }

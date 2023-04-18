@@ -1,4 +1,4 @@
-import { ADVENTUREID } from "@/lib/constantes";
+import { ADVENTUREID } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -30,6 +30,11 @@ export default defineType({
             title: "Nom de l'élément",
             type: "string",
             validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+        }),
+        defineField({
+            name: "label",
+            title: "Libellé",
+            type: "storyContent",
         }),
         defineField({
             name: "nature",

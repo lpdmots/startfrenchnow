@@ -1,14 +1,14 @@
 import { Adventure } from "@/app/types/stories/adventure";
-import urlFor from "@/lib/urlFor";
+import urlFor from "@/app/lib/urlFor";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { Carousel } from "../../animations/Carousel";
 import { HeroCard } from "./HeroCard";
 import { StartStoryButton } from "./StartStoryButton";
 import { ElementProps } from "@/app/types/stories/element";
+import { RichTextStory } from "../../sanity/RichTextStory";
 
 export const DesktopLayoutSelect = ({ story, element }: { story: Adventure; element: ElementProps }) => {
     const carouselData = useMemo(
@@ -25,7 +25,7 @@ export const DesktopLayoutSelect = ({ story, element }: { story: Adventure; elem
                 <div className="flex items-center justify-center">
                     <div className="flex flex-col gap-6">
                         <div className=" flex items-center justify-center text-center bl">
-                            <PortableText value={story.selectContent} components={RichTextComponents} />
+                            <PortableText value={story.selectContent} components={RichTextStory()} />
                         </div>
                         <Image
                             src={urlFor(story.images.primary).url()}

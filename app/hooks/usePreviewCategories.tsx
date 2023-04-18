@@ -1,5 +1,5 @@
 "use client";
-import { usePreview } from "@/lib/sanity.preview";
+import { usePreview } from "@/app/lib/sanity.preview";
 import { groq } from "next-sanity";
 
 async function usePreviewCategories() {

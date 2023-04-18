@@ -1,4 +1,4 @@
-import { useStoryStore } from "@/stores/storiesStore";
+import { useStoryStore } from "@/app/stores/storiesStore";
 import { Variable, VariableState } from "@/app/types/stories/adventure";
 
 export const useVariable = () => {

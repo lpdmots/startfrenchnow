@@ -1,7 +1,7 @@
 "use client";
 import { StoryCard } from "@/app/types/stories/adventure";
-import { STORYCATEGORIES } from "@/lib/constantes";
-import { removeDuplicates } from "@/lib/utils";
+import { STORYCATEGORIES } from "@/app/lib/constantes";
+import { removeDuplicates } from "@/app/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 import { StoriesAccordion } from "./StoriesAccordion";
 

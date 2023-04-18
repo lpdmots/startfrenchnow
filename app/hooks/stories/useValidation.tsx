@@ -1,9 +1,9 @@
 import { ElementForChoice, Extract } from "@/app/types/stories/element";
 import { Choice } from "@/app/types/stories/element";
-import { useStoryStore } from "@/stores/storiesStore";
-import { sortByCode } from "@/lib/utils";
+import { useStoryStore } from "@/app/stores/storiesStore";
+import { sortByCode } from "@/app/lib/utils";
 import { AllowedComponents, Condition, Effect } from "@/app/types/stories/effect";
-import fetchData from "@/lib/apiStories";
+import fetchData from "@/app/lib/apiStories";
 import { ElementDataProps, VariablesToUpdateProps } from "@/app/types/stories/state";
 
 export const useValidation = () => {
@@ -24,7 +24,7 @@ export const useValidation = () => {
             const isCountValid = checkCount(component, count);
 
             // check conditions
-            const areConditionsValid = await checkConditions(component, elementData);
+            const areConditionsValid = checkConditions(component, elementData);
 
             // if not valid, add antagonists to the list
             if (!isAccessible || !isCountValid || !areConditionsValid) {
@@ -75,7 +75,7 @@ export const useValidation = () => {
         return validatedChoices;
     };
 
-    const checkAccess = (component: Extract | ElementForChoice | Choice | Effect, elementData: ElementDataProps) => {
+    const checkAccess = (component: AllowedComponents, elementData: ElementDataProps) => {
         const initialAccess = component?.validation?.initialAccess !== undefined ? component?.validation?.initialAccess : true;
         const isAccessInElementData = elementData.access[component._id] !== undefined;
         const isAccessInAccess = access[component._id] !== undefined;
@@ -84,7 +84,7 @@ export const useValidation = () => {
         return isAccessInElementData ? elementData.access[component._id].value : access[component._id].value;
     };
 
-    const checkCount = (component: Extract | ElementForChoice | Choice | Effect, count: { [index: string]: number }) => {
+    const checkCount = (component: AllowedComponents, count: { [index: string]: number }) => {
         if (!component.validation || !component.validation.maxCount) return true;
 
         const counter = count[component._id] || 0;
@@ -92,8 +92,7 @@ export const useValidation = () => {
         return false;
     };
 
-    const checkConditions = async (component: Extract | ElementForChoice | Choice | Effect, elementData: ElementDataProps) => {
-        // Does it really need to be async?
+    const checkConditions = (component: AllowedComponents | { validation: { conditions: Condition[] } }, elementData: ElementDataProps) => {
         const { validation } = component;
         const { conditions } = validation || {};
         if (!conditions) return true;

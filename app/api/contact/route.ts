@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mailOptions, transporter } from "../../../lib/nodemailer";
+import { mailOptions, transporter } from "@/app/lib/nodemailer";
 
 interface MessageFields {
     name: string;

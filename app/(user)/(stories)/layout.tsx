@@ -1,4 +1,4 @@
-import "../../../styles/stories.css";
+import "@/app/styles/stories.css";
 
 export const metadata = {
     title: "Next.js",
