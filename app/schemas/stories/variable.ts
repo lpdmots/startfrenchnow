@@ -36,6 +36,7 @@ export default defineType({
             name: "defaultValue",
             title: "Valeur par défaut",
             type: "string",
+            initialValue: "1",
         }),
         defineField({
             name: "minimum",
@@ -93,7 +94,7 @@ export default defineType({
                 {
                     name: "description",
                     title: "Description",
-                    type: "text",
+                    type: "storyContent",
                 },
                 {
                     name: "conditions",

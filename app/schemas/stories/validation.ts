@@ -45,6 +45,18 @@ export default defineType({
                 },
             ],
         }),
+        defineField({
+            name: "operator",
+            title: "Opérateur",
+            type: "string",
+            options: {
+                list: [
+                    { title: "ET", value: "and" },
+                    { title: "OU", value: "or" },
+                ],
+            },
+            initialValue: "and",
+        }),
     ],
     preview: {
         select: {

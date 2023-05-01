@@ -11,6 +11,7 @@ import { ElementProps } from "@/app/types/stories/element";
 import { RichTextStory } from "../../sanity/RichTextStory";
 
 export const DesktopLayoutSelect = ({ story, element }: { story: Adventure; element: ElementProps }) => {
+    const portableText = useMemo(() => story?.selectContent && <PortableText value={story.selectContent} components={RichTextStory()} />, [story?.selectContent]);
     const carouselData = useMemo(
         () =>
             story.heros?.map((hero) => {
@@ -19,14 +20,13 @@ export const DesktopLayoutSelect = ({ story, element }: { story: Adventure; elem
             }),
         [story]
     );
+
     return (
         <>
             <div className="grow grid grid-cols-2 gap-6 lg:gap-12 pb-6">
                 <div className="flex items-center justify-center">
                     <div className="flex flex-col gap-6">
-                        <div className=" flex items-center justify-center text-center bl">
-                            <PortableText value={story.selectContent} components={RichTextStory()} />
-                        </div>
+                        <div className=" flex items-center justify-center text-center bl">{portableText}</div>
                         <Image
                             src={urlFor(story.images.primary).url()}
                             width={610}

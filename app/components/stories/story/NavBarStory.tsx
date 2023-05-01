@@ -12,7 +12,7 @@ export const NavBarStory = ({ story }: { story: Adventure }) => {
         <div className="w-full bg-neutral-200 py-2 sm:py-6 md:py-7 lg:py-8">
             <div className="nav-width mx-auto px-2 sm:px-6 position-relative">
                 <div className="nav shadow-1 p-3 md:p-4">
-                    <Image src={urlFor(story.images.icon).url()} height={50} width={50} alt={story.name} className="h-8 sm:h-10 md:h-12 object-contain w-auto" />
+                    {story?.images?.icon && <Image src={urlFor(story.images.icon).url()} height={50} width={50} alt={story.name} className="h-8 sm:h-10 md:h-12 object-contain w-auto" />}
                     <h1 className="hidden lg:block display-4 mb-0">{story?.name}</h1>
                     <div className="flex lg:hidden">
                         <StoryNavbar layout={"mobile"} />

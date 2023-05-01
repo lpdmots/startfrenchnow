@@ -2,6 +2,7 @@ import { Conditions } from "./RichTextStoryComponents/Conditions";
 import { Count } from "./RichTextStoryComponents/Count";
 import { GenderWord } from "./RichTextStoryComponents/GenderWord";
 import { Translation } from "./RichTextStoryComponents/Translation";
+import { VarInformation } from "./RichTextStoryComponents/VarInformation";
 
 export const RichTextStory = (isSpan: boolean = false) => ({
     list: {
@@ -24,13 +25,16 @@ export const RichTextStory = (isSpan: boolean = false) => ({
             return <Translation contentData={children} popoverData={value.translation} />;
         },
         gender: ({ children, value }: any) => {
-            return <GenderWord male={children} female={value.female} />;
+            return <GenderWord female={value.female}>{children}</GenderWord>;
         },
         withConditions: ({ children, value }: any) => {
             return <Conditions value={value} />;
         },
         count: ({ children, value }: any) => {
             return <Count value={value} />;
+        },
+        varInformation: ({ children, value }: any) => {
+            return <VarInformation value={value}>{children}</VarInformation>;
         },
     },
 });

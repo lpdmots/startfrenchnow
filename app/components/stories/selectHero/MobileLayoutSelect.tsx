@@ -9,6 +9,7 @@ import { ElementProps } from "@/app/types/stories/element";
 import { RichTextStory } from "../../sanity/RichTextStory";
 
 export const MobileLayoutSelect = ({ story, element }: { story: Adventure; element: ElementProps }) => {
+    const portableText = useMemo(() => story?.selectContent && <PortableText value={story.selectContent} components={RichTextStory()} />, [story?.selectContent]);
     const carouselData = useMemo(
         () =>
             story.heros?.map((hero) => {
@@ -19,9 +20,7 @@ export const MobileLayoutSelect = ({ story, element }: { story: Adventure; eleme
     );
     return (
         <div className="flex flex-col h-full gap-6 py-6" style={{ maxWidth: 600 }}>
-            <div className=" items-center justify-center text-center">
-                <PortableText value={story.selectContent} components={RichTextStory()} />
-            </div>
+            <div className=" items-center justify-center text-center">{portableText}</div>
             <div className="flex grow  items-center justify-around">
                 <div className="h-full flex items-center justify-center text-center w-full">{story.heros?.length && <Carousel data={carouselData} />}</div>
             </div>

@@ -7,8 +7,8 @@ export const useTabsContentData = (layout: "desktop" | "mobile") => {
     const { variables, selectedStoryTabsIndex } = useStoryStore();
     const selectedTab = useMemo(() => respTabs[selectedStoryTabsIndex], [selectedStoryTabsIndex, respTabs]);
     const variablesToList = useMemo(() => Object.values(variables), [variables]);
-    const skills = useMemo(() => variablesToList.filter((variable) => variable.data.nature === "skill").map((variable) => variable.data), [variablesToList]);
-    const objects = useMemo(() => variablesToList.filter((variable) => variable.data.nature === "object"), [variablesToList]);
+    const skills = useMemo(() => variablesToList.filter((variable) => variable?.data?.nature === "skill").map((variable) => variable.data), [variablesToList]);
+    const objects = useMemo(() => variablesToList.filter((variable) => variable?.data?.nature === "object"), [variablesToList]);
 
     return { selectedTab, skills, objects };
 };

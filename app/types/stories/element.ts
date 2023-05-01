@@ -56,7 +56,7 @@ export interface Choice extends Base {
     label?: Block;
     antagonistes: Reference[];
     extracts?: Extract[];
-    modifiers?: ModifierWithRef[];
+    effects?: Effect[];
 }
 
 export interface ElementForChoice extends Base {

@@ -1,7 +1,7 @@
 "use client";
 import { ChoiceProps } from "@/app/types/stories/state";
 import { useStoryStore } from "@/app/stores/storiesStore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import Spinner from "../../common/Spinner";
 import { PortableText } from "@portabletext/react";
@@ -15,6 +15,7 @@ function ChoiceButton({ choice, classes }: { choice: ChoiceProps; classes: strin
     const disabled = isKeyDefined && elementsData[elementKey].layouts.length === 0;
     const [calculating, setCalculating] = useState(false);
     const handleUpdateOnChoice = useRef(false); // To avoid infinite loop in case of element antagonistes
+    const buttonLabel = useMemo(() => choice?.label && <PortableText value={choice.label} components={RichTextStory()} />, [choice?.label]);
 
     useEffect(() => {
         if (clicked && isKeyDefined && !disabled && !handleUpdateOnChoice.current) {
@@ -42,7 +43,7 @@ function ChoiceButton({ choice, classes }: { choice: ChoiceProps; classes: strin
         </button>
     ) : (
         <button id="choiceButton" disabled={disabled} className={`${classes} ${disabled && "opacity-50 cursor-not-allowed hover:transform-none"}`} onClick={handleChoice}>
-            {calculating ? <Spinner radius maxHeight="40px" /> : <PortableText value={choice.label} components={RichTextStory()} />}
+            {calculating ? <Spinner radius maxHeight="40px" /> : buttonLabel}
         </button>
     );
 }

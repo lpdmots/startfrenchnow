@@ -98,10 +98,10 @@ export default defineType({
             return {
                 title: title
                     ? title
-                    : content[0].children[0].text.length > 50
-                    ? content[0].children[0].text.slice(0, 50)
-                    : content[0].children[0].text.length > 0
-                    ? content[0].children[0].text
+                    : content?.[0].children[0].text.length > 50
+                    ? content?.[0].children[0].text.slice(0, 50)
+                    : content?.[0].children[0].text.length > 0
+                    ? content?.[0].children[0].text
                     : "Sans titre",
                 subtitle: code ? code + ", " + adventure : adventure,
                 media: image,

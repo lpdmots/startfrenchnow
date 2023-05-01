@@ -57,7 +57,7 @@ export const StoryNavbar = ({ layout }: { layout: "desktop" | "mobile" }) => {
                         onClick={() => setSelectedStoryTabsIndex(index)}
                     >
                         {item.icon}
-                        {index === selectedStoryTabsIndex ? <motion.div className="absolute left-0 right-0 -bottom-3 bs font-bold bg-neutral-700 h-1" layoutId="underline"></motion.div> : null}
+                        {index === selectedStoryTabsIndex ? <motion.span className="absolute left-0 right-0 -bottom-3 bs font-bold bg-neutral-700 h-1" layoutId="underline"></motion.span> : null}
                     </li>
                 ))}
             </ul>

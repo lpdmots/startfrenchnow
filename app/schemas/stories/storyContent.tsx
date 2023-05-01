@@ -2,6 +2,7 @@ import { defineType, defineArrayMember } from "sanity";
 import { MdTranslate } from "react-icons/md";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { TbNumbers, TbSwitch2 } from "react-icons/tb";
+import { ImInfo } from "react-icons/im";
 
 export default defineType({
     title: "Story Content",
@@ -51,7 +52,7 @@ export default defineType({
                             {
                                 title: "Féminin",
                                 name: "female",
-                                type: "string",
+                                type: "storyContent",
                             },
                         ],
                     },
@@ -65,6 +66,7 @@ export default defineType({
                                 title: "Liste des Conditions",
                                 name: "conditionsBlock",
                                 type: "array",
+                                description: "Penser à prendre en compte le fait que les modifiers/accès/count ont déjà été appliqués",
                                 of: [
                                     {
                                         type: "object",
@@ -124,6 +126,8 @@ export default defineType({
                                 name: "component",
                                 title: "Composant de référence",
                                 type: "reference",
+                                description:
+                                    "Si aucun composant n'est sélectionné, c'est celui d'actualElementId qui est utilisé (avec un -1 car le count a déjà été incrémenté lors du traitement), si un composant est choisi, on considère que le count est juste.",
                                 to: [{ type: "element" }, { type: "choice" }, { type: "extract" }],
                             },
                             {
@@ -139,7 +143,7 @@ export default defineType({
                                                 title: "Count",
                                                 name: "count",
                                                 type: "string",
-                                                description: 'Plusieurs possibilités: "2", "2-5", "2,3,4,5"',
+                                                description: 'Plusieurs possibilités: "2", "2-5", "2,3,4,5", "3+"',
                                             },
                                             {
                                                 title: "Content",
@@ -149,6 +153,21 @@ export default defineType({
                                         ],
                                     },
                                 ],
+                            },
+                        ],
+                    },
+                    {
+                        title: "Information",
+                        name: "varInformation",
+                        type: "object",
+                        icon: () => <ImInfo />,
+                        fields: [
+                            {
+                                title: "Variable",
+                                name: "variable",
+                                type: "reference",
+                                to: [{ type: "variable" }],
+                                validation: (Rule) => Rule.required(),
                             },
                         ],
                     },

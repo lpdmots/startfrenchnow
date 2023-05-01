@@ -37,7 +37,11 @@ export const groqQueries: any = {
             extracts[]-> {
                 ...,
                 validation->,
-            },      
+            },  
+            effects[]-> {
+                ...,
+                validation->,
+            },    
         },
     }`,
     variable: groq`*[_type=='variable' && _id == $componentId ][0]{
@@ -70,9 +74,17 @@ export const groqQueries: any = {
         extracts[]-> {
             ...,
             validation->,
-        },   
+        },  
+        effects[]-> {
+            ...,
+            validation->,
+        }, 
     }`,
     extract: groq`*[_type=='extract' && _id == $componentId ][0]{
+        ...,
+        validation->,
+    }`,
+    effect: groq`*[_type=='effect' && _id == $componentId ][0]{
         ...,
         validation->,
     }`,

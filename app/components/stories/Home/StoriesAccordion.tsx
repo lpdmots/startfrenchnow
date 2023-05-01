@@ -10,6 +10,8 @@ import { LEVELDATA, STORYCATEGORIES } from "@/app/lib/constantes";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import { IoCaretDown, IoCaretUp } from "react-icons/io5";
 import Link from "next/link";
+import { PortableText } from "@portabletext/react";
+import { RichTextStory } from "../../sanity/RichTextStory";
 
 interface AccordionProps {
     story: StoryCardProps;
@@ -120,7 +122,7 @@ const Accordion = ({ story, expanded, setExpanded }: AccordionProps) => {
                             </div>
                         </SlideFromBottom>
                         <m.div className="p-6" variants={{ collapsed: { scale: 0.5 }, open: { scale: 1 } }} transition={{ duration: 0.8 }}>
-                            {story.description}
+                            <PortableText value={story.description} components={RichTextStory()} />
                         </m.div>
                     </m.div>
                 )}

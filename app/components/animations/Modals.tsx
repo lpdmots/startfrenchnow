@@ -5,7 +5,8 @@ import Image from "next/image";
 interface Props {
     data: {
         setOpen: (value: boolean) => void;
-        message: string;
+        title: string;
+        message: JSX.Element;
         functionOk: () => void;
         functionCancel?: () => void;
         imageUrl?: string;
@@ -16,7 +17,7 @@ interface Props {
 }
 
 export const ModalFromBottom = ({ data }: Props) => {
-    const { setOpen, message, functionOk, functionCancel, imageUrl, clickOutside, buttonOkStr, oneButtonOnly } = data;
+    const { setOpen, message, title, functionOk, functionCancel, imageUrl, clickOutside, buttonOkStr, oneButtonOnly } = data;
 
     const handleClickOk = () => {
         functionOk();
@@ -62,10 +63,10 @@ export const ModalFromBottom = ({ data }: Props) => {
                     <div className="grid grid-cols-5 gap-4">
                         {imageUrl && (
                             <div className="col-span-1">
-                                <Image src={imageUrl} height={50} width={50} alt={message} className="h-12 sm:h-16 md:h-24 object-contain w-auto" />
+                                <Image src={imageUrl} height={50} width={50} alt={title || "representation de l'objet"} className="h-12 sm:h-16 md:h-24 object-contain w-auto" />
                             </div>
                         )}
-                        <p className="col-span-4 flex items-center">{message}</p>
+                        <div className="col-span-4 flex text-left">{message}</div>
                     </div>
                     <div className="flex justify-end gap-4">
                         {!oneButtonOnly && (

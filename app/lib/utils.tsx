@@ -21,7 +21,7 @@ export function sortByCode<T extends AllowedTypes[]>(array: T): T {
         );
     };
 
-    return array.sort((a, b) => toNumber(a.code) - toNumber(b.code)) as T;
+    return array.sort((a, b) => toNumber(a?.code || "0") - toNumber(b?.code || "0")) as T;
 }
 
 export function splitArrayIntoChunks<T>(inputArray: T[], chunkSize: number = 6): T[][] {
@@ -35,12 +35,12 @@ export function splitArrayIntoChunks<T>(inputArray: T[], chunkSize: number = 6):
 }
 
 export function rangeFromString(input: string): number[] {
-    const [startStr, endStr] = input.split("-").map((s) => s.trim());
+    const [startStr, endStr] = input.split("/").map((s) => s.trim());
     const start = parseInt(startStr, 10);
     const end = parseInt(endStr, 10);
 
     if (isNaN(start) || isNaN(end)) {
-        throw new Error('Invalid input format. Expected format: "X-Y", where X and Y are integers.');
+        throw new Error('Invalid input format. Expected format: "X/Y", where X and Y are integers.');
     }
 
     const result: number[] = [];

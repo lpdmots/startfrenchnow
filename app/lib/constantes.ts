@@ -29,6 +29,6 @@ export const STORYCATEGORIES = {
 export const NUMBEROFBUTTONS_MOBILE = 3;
 export const NUMBEROFBUTTONS_DESKTOP = 6;
 
-export const ADVENTUREID = "a47a4ffe-018e-43c7-9fa3-82320006d4d8";
+export const ADVENTUREID = "18d88b4c-e3ce-4471-a66e-0d1fec1437e1";
 
-export const ELEMENTDATA: ElementDataProps = { elementId: null, variablesToUpdate: {}, layouts: [], heros: {}, countIds: [], access: {}, step: null, inheritedChoices: [] };
+export const ELEMENTDATA: ElementDataProps = { elementId: null, variablesToUpdate: {}, layouts: [], heros: {}, countIds: [], access: {}, step: null, inheritedChoices: [], informations: [] };

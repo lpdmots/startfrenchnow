@@ -23,11 +23,11 @@ export function StoryTabs({ stories }: { stories: StoryCard[] }) {
 
     return (
         <div className="container-default w-container">
-            <section className="w-layout-grid grid-2-columns blog-left-sidebar wf-section">
+            <section id="storiesTab" className="w-layout-grid grid-2-columns blog-left-sidebar wf-section">
                 <div className="sticky-top _48px-top sticky-tbl">
                     <div className="inner-container _380">
                         <div className="text-center---tablet">
-                            <div id="storiesTab" className="card categories-card">
+                            <div className="card categories-card">
                                 <div className="w-dyn-list">
                                     <div role="list" className="collection-list categories w-dyn-items">
                                         {categories.map((category) => (

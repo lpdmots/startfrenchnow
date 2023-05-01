@@ -54,12 +54,13 @@ export default defineType({
             ],
         }),
         defineField({
-            name: "modifiers",
-            title: "Modificateurs libres",
+            name: "effects",
+            title: "Effets libres",
             type: "array",
             of: [
                 {
-                    type: "modifier",
+                    type: "reference",
+                    to: [{ type: "effect" }],
                 },
             ],
         }),

@@ -12,7 +12,7 @@ export const useElementTreatment = () => {
     const { comonValidation } = useValidation();
     const { story, addElementsData, layouts, chapter, actualElementId, inheritedChoices: inheritedChoicesState } = useStoryStore();
     const { choicesValidation } = useValidation();
-    const { effectsTreatment, applyModifier } = useModifier();
+    const { effectsTreatment } = useModifier();
 
     const choicesTreatment = async () => {
         const choices = [...(layouts.at(-1)?.interactionChoices || []), ...(layouts.at(-1)?.accessChoices || [])];
@@ -20,12 +20,12 @@ export const useElementTreatment = () => {
 
         for (const choice of choices) {
             const elementData: ElementDataProps = { ...JSON.parse(JSON.stringify(ELEMENTDATA)) };
-            const { elementId, modifiers, extracts, _id } = choice;
+            const { elementId, effects, extracts, _id } = choice;
             elementData.countIds.push(_id);
 
             // Free modifiers treatment:
-            if (modifiers?.length) {
-                await applyModifier({ modifiers }, elementData);
+            if (effects?.length) {
+                await effectsTreatment({ effects }, elementData);
             }
 
             // Free extracts treatment:
@@ -39,7 +39,7 @@ export const useElementTreatment = () => {
 
             //Elements treatment only if no extracts, and copy the elementData only if no modifiers:
             if (elementId && !extracts?.length) {
-                const sameElement = modifiers ? null : allreadyTreatedElement(elementId, elementsData);
+                const sameElement = effects ? null : allreadyTreatedElement(elementId, elementsData);
                 if (sameElement) {
                     addElementsData(choice._id, sameElement);
                     elementsData[_id] = sameElement;
@@ -53,9 +53,13 @@ export const useElementTreatment = () => {
     };
 
     const elementTreatment = async (elementId: string, elementData: ElementDataProps) => {
-        const element = await fetchData<ElementProps>("element", elementId);
-        elementData.countIds.push(elementId);
-        elementData.elementId = elementId;
+        const firstElement = await fetchData<ElementProps>("element", elementId);
+        const elements = await comonValidation("element", [firstElement], elementData);
+        if (!elements) return console.warn("Aucun élément valide à traiter");
+
+        const element = elements[0];
+        elementData.countIds.push(element._id);
+        elementData.elementId = element._id;
 
         const { extracts } = element;
         if (!extracts) {
@@ -80,26 +84,26 @@ export const useElementTreatment = () => {
         const interactionChoices = step
             ? undefined
             : validatedChoices
-                  .filter((choice) => choice?.nature === "interaction" || choice?.element?.nature === "interaction")
+                  .filter((choice) => choice?.nature === "interaction" || (!choice?.nature && choice?.element?.nature === "interaction"))
                   .map((choice) => ({
                       _id: choice._id,
                       elementId: choice?.element?._id,
                       code: choice?.element?.code || chapter,
                       label: choice.label || choice?.element?.label,
-                      modifiers: choice.modifiers,
+                      effects: choice.effects,
                       extracts: choice.extracts,
                   }));
 
         const accessChoices = step
             ? [step]
             : validatedChoices
-                  .filter((choice) => choice?.nature === "access" || choice?.element?.nature === "access")
+                  .filter((choice) => choice?.nature === "access" || (!choice?.nature && choice?.element?.nature === "access"))
                   .map((choice) => ({
                       _id: choice._id,
                       elementId: choice?.element?._id,
                       code: choice?.element?.code || chapter,
                       label: choice.label || choice?.element?.label,
-                      modifiers: choice.modifiers,
+                      effects: choice.effects,
                       extracts: choice.extracts,
                   }));
 
@@ -116,6 +120,7 @@ export const useElementTreatment = () => {
                 interactionChoices: isLastLayout ? interactionChoices : undefined,
                 accessChoices: isLastLayout ? accessChoices : undefined,
                 timer: extract.timer,
+                informations: isLastLayout ? JSON.parse(JSON.stringify(elementData.informations)) : undefined,
             };
             elementData.layouts.push(layoutData);
             elementData.countIds.push(extract._id);
@@ -126,6 +131,7 @@ export const useElementTreatment = () => {
         const { elementId, extracts, _id } = choice;
         if (!extracts) return;
 
+        const validatedExtracts = await comonValidation("extract", extracts, elementData);
         const actualElement = await fetchData<ElementProps>("element", actualElementId);
         const step = elementData.step;
         let interactionChoices, accessChoices;
@@ -143,13 +149,13 @@ export const useElementTreatment = () => {
                 },
             ];
         } else {
-            await layoutsData(extracts || [], actualElement, elementData);
+            await layoutsData(validatedExtracts || [], actualElement, elementData);
             return;
         }
 
-        for (let i = 0; i < extracts.length; i++) {
-            const extract = extracts[i];
-            const isLastLayout = i === extracts.length - 1;
+        for (let i = 0; i < validatedExtracts.length; i++) {
+            const extract = validatedExtracts[i];
+            const isLastLayout = i === validatedExtracts.length - 1;
 
             const layoutData = {
                 extractId: extract._id,
@@ -160,6 +166,7 @@ export const useElementTreatment = () => {
                 interactionChoices: isLastLayout ? interactionChoices : undefined,
                 accessChoices: isLastLayout ? accessChoices : undefined,
                 timer: extract.timer,
+                informations: isLastLayout ? JSON.parse(JSON.stringify(elementData.informations)) : undefined,
             };
             elementData.layouts.push(layoutData);
             elementData.countIds.push(extract._id);
@@ -168,7 +175,6 @@ export const useElementTreatment = () => {
 
     const getChoicesList = async (element: ElementProps) => {
         const choices = [...(element.choices || [])];
-
         const { choiceOptions } = element;
         const { access, interaction, inherit } = choiceOptions;
 
@@ -195,7 +201,6 @@ export const useElementTreatment = () => {
                 console.warn("Element fetch error:", e);
             }
         }
-
         return choices;
     };
 

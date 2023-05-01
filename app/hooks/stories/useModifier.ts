@@ -13,7 +13,7 @@ export const useModifier = () => {
     const { getOrCreateStaticVariable, getOrCreateDynamiqueVariable } = useVariable();
     const { access } = useStoryStore();
 
-    const effectsTreatment = async (element: ElementProps, elementData: ElementDataProps) => {
+    const effectsTreatment = async (element: ElementProps | { effects: Effect[] }, elementData: ElementDataProps) => {
         const { effects } = element;
         const validatedEffects = await comonValidation("effect", effects || [], elementData);
         elementData.countIds.push(...validatedEffects.map((effect) => effect._id));
@@ -31,6 +31,11 @@ export const useModifier = () => {
         // Fetch les variables si nécessaire puis sort les modifiers par code
         const modifiers = await getModifiers(modifiersWithRef);
         const sortedModifiers = sortByCode(modifiers);
+
+        // Add infos:
+        sortedModifiers.forEach((modifier) => {
+            if (modifier.information) elementData.informations.push(modifier.information);
+        });
 
         sortedModifiers.forEach((modifier) => {
             switch (modifier.operator) {

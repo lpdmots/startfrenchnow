@@ -60,7 +60,6 @@ export const useStoryStore = create<StoryState>()(
                         (state) => {
                             return {
                                 ...state,
-                                layouts: state.elementsData[choice._id].layouts,
                                 elementsData: {},
                                 chapter: choice.code,
                                 actualElementId: choice.elementId || state.actualElementId,
@@ -69,6 +68,7 @@ export const useStoryStore = create<StoryState>()(
                                 count: getNewCount(state, choice),
                                 variables: { ...state.variables, ...state.elementsData[choice._id].variablesToUpdate },
                                 access: { ...state.access, ...state.elementsData[choice._id].access },
+                                layouts: state.elementsData[choice._id].layouts,
                             };
                         },
                         false,

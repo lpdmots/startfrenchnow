@@ -143,3 +143,6 @@
 #choiceButton > p {
     margin-bottom: 0;
 }
+#popoverContent > p {
+    margin-bottom: 0;
+}

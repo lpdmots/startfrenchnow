@@ -2,7 +2,7 @@ import { Reference } from "../sfn/blog";
 import { Base, Variable } from "./adventure";
 import { Choice, ElementForChoice, ElementProps, Extract } from "./element";
 
-export type Operator = "isNotNull" | "isNull" | "=" | "!=" | ">" | "<" | ">=" | "<=";
+export type Operator = "isNotNull" | "isNull" | "compare";
 export type AllowedComponents = Extract | ElementForChoice | Choice | Effect;
 
 export interface Effect extends Base {
@@ -20,7 +20,7 @@ export interface Effect extends Base {
 }
 
 export interface Condition {
-    nature: "variable" | "roll" | "heros" | "count" | "step";
+    nature: "variable" | "roll" | "hero" | "count" | "step";
     component: Reference;
     reference: string;
     arguments: string;
@@ -32,7 +32,7 @@ export interface Validation {
     initialAccess: boolean;
     maxCount: number;
     conditions: Condition[];
-    algorithm: "string";
+    operator: "and" | "or";
 }
 
 export interface ModifierWithRef {
@@ -42,6 +42,7 @@ export interface ModifierWithRef {
     access: Reference[];
     arguments: string;
     code: string;
+    information?: string;
 }
 
 export interface Modifier {
@@ -51,4 +52,5 @@ export interface Modifier {
     access: Reference[];
     arguments: string;
     code: string;
+    information?: string;
 }

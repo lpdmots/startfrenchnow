@@ -36,6 +36,8 @@ export default defineType({
             name: "arguments",
             title: "Arguments",
             type: "string",
+            description:
+                "Si comparaison d'un string: 'string1,string2,string3|count|asList|opposite' count est le nombre de string qui doit être inclus, asList permet de comparer à une liste pour éviter par exemple que male soit true quand on cherche dans female, opposite pour inverser le résultat. Si comparaison d'un nombre: 1,2,3,4+,3-,5/10...",
         }),
         defineField({
             name: "operator",
@@ -46,12 +48,7 @@ export default defineType({
                     //equal, notEqual, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual, contains, notContains
                     { title: "La variable existe", value: "isNotNull" },
                     { title: "La variable n'existe pas", value: "isNull" },
-                    { title: "Égal", value: "=" },
-                    { title: "Différent", value: "!=" },
-                    { title: "Supérieur", value: ">" },
-                    { title: "Supérieur ou égal", value: ">=" },
-                    { title: "Inférieur", value: "<" },
-                    { title: "Inférieur ou égal", value: "<=" },
+                    { title: "Comparaison", value: "compare" },
                 ],
             },
             initialValue: "isNotNull",

@@ -31,7 +31,7 @@ export default defineType({
             title: "Opérateur",
             type: "string",
             options: {
-                list: ["addition", "replace", "multiplication", "access", "step", "addObject", "deleteObject"],
+                list: ["addition", "replace", "multiplication", "access", "step"],
             },
         }),
         defineField({
@@ -55,6 +55,11 @@ export default defineType({
             title: "Code",
             type: "string",
             initialValue: "1",
+        }),
+        defineField({
+            name: "information",
+            title: "Information",
+            type: "string",
         }),
     ],
 });

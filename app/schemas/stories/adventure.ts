@@ -66,7 +66,7 @@ export default defineType({
             name: "description",
             description: "Entrez un court résumé de l'aventure...",
             title: "Description",
-            type: "text",
+            type: "storyContent",
             validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
@@ -184,8 +184,7 @@ export default defineType({
                         {
                             name: "description",
                             title: "Description",
-                            type: "text",
-                            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+                            type: "storyContent",
                         },
                         {
                             name: "images",

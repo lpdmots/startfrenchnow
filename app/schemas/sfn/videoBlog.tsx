@@ -16,7 +16,7 @@ const Preview = (props: any) => {
     );
 };
 
-export default {
+const videoBlog = {
     name: "videoBlog",
     title: "Vidéo blog",
     type: "object",
@@ -42,3 +42,5 @@ export default {
         preview: Preview,
     },
 };
+
+export default videoBlog;
