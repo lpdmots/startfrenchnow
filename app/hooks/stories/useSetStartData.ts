@@ -1,4 +1,4 @@
-import { Adventure } from "@/app/types/stories/adventure";
+import { Adventure, Variable } from "@/app/types/stories/adventure";
 import { useStoryStore } from "@/app/stores/storiesStore";
 import { useVariable } from "./useVariable";
 
@@ -11,7 +11,8 @@ export const useSetStartData = () => {
         const { statistics, variables: herosVariables, ...herosData } = selectedHeros;
 
         // Treat variables
-        const variablesData = [...(story?.variables || []), ...(herosVariables || [])];
+        const timeVariable = getTimeVariable(story) as Variable[];
+        const variablesData = [...(story?.variables || []), ...(herosVariables || []), ...timeVariable];
         addVariables(variablesData);
 
         // Add heros data, story and chapter to the state
@@ -25,4 +26,20 @@ const statsListToObject = (stats: { [key: string]: string | number }[]) => {
     return stats.reduce((acc, cur) => {
         return { ...acc, [cur.name]: cur.value };
     }, {});
+};
+
+const getTimeVariable = (story: Adventure) => {
+    if (!story.startTime) return [];
+
+    return [
+        {
+            _id: "time",
+            name: "time",
+            nature: "static",
+            defaultValue: story.startTime,
+            onMountEffects: [],
+            unMountEffects: [],
+            display: { name: "time" },
+        },
+    ] as unknown as Variable[];
 };

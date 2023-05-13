@@ -24,6 +24,7 @@ export interface ElementProps extends Base {
         access: boolean;
         inherit: Reference;
     };
+    duration?: string;
 }
 
 export interface Roll {
@@ -57,6 +58,9 @@ export interface Choice extends Base {
     antagonistes: Reference[];
     extracts?: Extract[];
     effects?: Effect[];
+    duration?: string;
+    disableNotValid?: boolean;
+    disabled?: boolean;
 }
 
 export interface ElementForChoice extends Base {
@@ -66,4 +70,5 @@ export interface ElementForChoice extends Base {
     label?: Block;
     code: string;
     validation: Validation;
+    duration?: string;
 }

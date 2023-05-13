@@ -93,5 +93,11 @@ export default defineType({
             type: "string",
             initialValue: "1",
         }),
+        defineField({
+            name: "duration",
+            title: "Durée",
+            type: "string",
+            description: "Durée de l'élément. Ex: 5 -> 5 minutes, 5,8,10 --> 5, 8 ou 10 minutes (aleatoire), 5/10 --> entre 5 et 10 minutes (aleatoire)",
+        }),
     ],
 });

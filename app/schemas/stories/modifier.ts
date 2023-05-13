@@ -49,6 +49,8 @@ export default defineType({
             name: "arguments",
             title: "Arguments",
             type: "string",
+            description:
+                "Si besoin de variable, le préciser avec les prefixes evalStr ou evalInt, puis ajouter le nom des variables ${name}. Exemple: 'evalStr ${name} ${lastname}' ou encore 'evalInt ${age} + 30'",
         }),
         defineField({
             name: "code",

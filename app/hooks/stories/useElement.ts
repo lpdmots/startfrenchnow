@@ -7,12 +7,15 @@ import urlFor from "@/app/lib/urlFor";
 import { useModifier } from "./useModifier";
 import fetchData from "@/app/lib/apiStories";
 import { ELEMENTDATA } from "@/app/lib/constantes";
+import { rangeFromString } from "@/app/lib/utils";
+import { ModifierWithRef } from "@/app/types/stories/effect";
 
 export const useElementTreatment = () => {
     const { comonValidation } = useValidation();
     const { story, addElementsData, layouts, chapter, actualElementId, inheritedChoices: inheritedChoicesState } = useStoryStore();
     const { choicesValidation } = useValidation();
     const { effectsTreatment } = useModifier();
+    const { durationTreatment } = useDuration();
 
     const choicesTreatment = async () => {
         const choices = [...(layouts.at(-1)?.interactionChoices || []), ...(layouts.at(-1)?.accessChoices || [])];
@@ -20,13 +23,16 @@ export const useElementTreatment = () => {
 
         for (const choice of choices) {
             const elementData: ElementDataProps = { ...JSON.parse(JSON.stringify(ELEMENTDATA)) };
-            const { elementId, effects, extracts, _id } = choice;
+            const { elementId, effects, extracts, _id, duration } = choice;
             elementData.countIds.push(_id);
 
             // Free modifiers treatment:
             if (effects?.length) {
                 await effectsTreatment({ effects }, elementData);
             }
+
+            // Duration treatment
+            durationTreatment(duration, elementData);
 
             // Free extracts treatment:
             if (extracts?.length) {
@@ -61,7 +67,7 @@ export const useElementTreatment = () => {
         elementData.countIds.push(element._id);
         elementData.elementId = element._id;
 
-        const { extracts } = element;
+        const { extracts, duration } = element;
         if (!extracts) {
             console.warn(`L'élément "${element.code}" n'a pas d'extrait`);
             return null;
@@ -69,6 +75,9 @@ export const useElementTreatment = () => {
 
         // Effects treatment
         await effectsTreatment(element, elementData);
+
+        // Duration treatment
+        durationTreatment(duration, elementData);
 
         // Selects the extracts that are valid and creates the layout data for each valid extract
         const validatedExtracts = await comonValidation("extract", extracts, elementData);
@@ -92,6 +101,8 @@ export const useElementTreatment = () => {
                       label: choice.label || choice?.element?.label,
                       effects: choice.effects,
                       extracts: choice.extracts,
+                      duration: choice.duration,
+                      disabled: choice.disabled,
                   }));
 
         const accessChoices = step
@@ -105,6 +116,8 @@ export const useElementTreatment = () => {
                       label: choice.label || choice?.element?.label,
                       effects: choice.effects,
                       extracts: choice.extracts,
+                      duration: choice.duration,
+                      disabled: choice.disabled,
                   }));
 
         for (let i = 0; i < validatedExtracts.length; i++) {
@@ -227,4 +240,42 @@ export const getImageUrl = async (extract: any, element: ElementProps | null, st
 
 const allreadyTreatedElement = (elementId: string, elementsData: ElementsDataProps) => {
     return Object.values(elementsData).find((elementData) => elementData.elementId && elementData.elementId === elementId);
+};
+
+export const getDurationToNumber = (duration: string) => {
+    const durationToList = duration.split(",").map((d) => d.trim());
+    const optionsList = [];
+
+    for (const duration of durationToList) {
+        if (duration.includes("/")) {
+            const range = rangeFromString(duration);
+            optionsList.push(...range);
+        } else {
+            !isNaN(parseInt(duration)) && optionsList.push(parseInt(duration));
+        }
+    }
+
+    return optionsList[Math.floor(Math.random() * optionsList.length)];
+};
+
+export const useDuration = () => {
+    const { applyModifier } = useModifier();
+
+    const durationTreatment = (duration: string | undefined, elementData: ElementDataProps) => {
+        if (!duration) return;
+
+        const durationToNumber = getDurationToNumber(duration);
+        const durationModifier: ModifierWithRef = {
+            variables: null,
+            references: ["time"],
+            operator: "addition",
+            access: [],
+            arguments: durationToNumber.toString(),
+            code: "100",
+        };
+
+        applyModifier({ modifiers: [durationModifier] }, elementData);
+    };
+
+    return { durationTreatment };
 };

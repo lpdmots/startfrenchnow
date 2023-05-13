@@ -7,6 +7,7 @@ import { ChoiceButtons } from "./ChoiceButtons";
 import { useStoryStore } from "@/app/stores/storiesStore";
 import { RichTextStory } from "../../sanity/RichTextStory";
 import { Informations } from "./DesktopLayout";
+import { VariablesDisplay } from "./VariablesDisplay";
 
 export const MobileLayout = ({ data }: { data: LayoutProps }) => {
     const { slideIndex, setNewStates, layouts } = useStoryStore();
@@ -51,7 +52,10 @@ export const MobileLayout = ({ data }: { data: LayoutProps }) => {
         );
 
     return (
-        <div className="flex flex-col h-full gap-6 py-6 " style={{ maxWidth: 600 }}>
+        <div className="flex flex-col h-full gap-6 py-4 " style={{ maxWidth: 600 }}>
+            <div className="flex justify-center">
+                <VariablesDisplay />
+            </div>
             <div className="flex flex-col grow items-center justify-around">
                 <div className="flex  items-center justify-center text-center">
                     <div>

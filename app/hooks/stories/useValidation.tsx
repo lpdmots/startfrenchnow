@@ -12,11 +12,17 @@ export const useValidation = () => {
 
     const validation = async <T extends AllowedComponents[]>(componentType: string, storyComponents: T, elementData: ElementDataProps): Promise<T> => {
         const validatedComponents = [];
-        const queue = [...storyComponents];
+        let queue = [...storyComponents];
+        let processedComponents = new Set();
 
         while (queue.length > 0) {
             const component = queue.shift();
-            if (!component) continue;
+            if (!component || processedComponents.has(component)) {
+                continue;
+            }
+
+            // Mark component as processed to avoid infinite loop
+            processedComponents.add(component);
 
             // check access
             const isAccessible = checkAccess(component, elementData);
@@ -30,7 +36,15 @@ export const useValidation = () => {
             // if not valid, add antagonists to the list
             if (!isAccessible || !isCountValid || !areConditionsValid) {
                 const antagonists = await getAntagonistes(componentType, component);
-                queue.push(...antagonists);
+                if (antagonists.length) {
+                    // Add antagonists to the beginning of the queue
+                    queue = [...antagonists, ...queue];
+
+                    // Reorder the remaining components in the queue
+                    queue = sortByCode(queue);
+                } else if ("disableNotValid" in component && component.disableNotValid) {
+                    validatedComponents.push({ ...component, disabled: true });
+                }
                 continue;
             }
 
@@ -40,8 +54,8 @@ export const useValidation = () => {
         return validatedComponents as T;
     };
 
-    const comonValidation = async <T extends (Extract | Effect | ElementProps)[]>(componentType: string, component: T, elementData: ElementDataProps): Promise<T> => {
-        const sorted = sortByCode(component);
+    const comonValidation = async <T extends (Extract | Effect | ElementProps)[]>(componentType: string, components: T, elementData: ElementDataProps): Promise<T> => {
+        const sorted = sortByCode(components);
 
         return (await validation(componentType, sorted, elementData)) as T;
     };
@@ -58,6 +72,13 @@ export const useValidation = () => {
             // check if elements in validChoices are valid
             for (let j = 0; j < validChoices.length; j++) {
                 const validChoice = validChoices[j];
+
+                // Check if the choice is disabled:
+                if (validChoice.disabled) {
+                    validatedChoices.push(validChoice);
+                    continue;
+                }
+
                 // Check if there is a valid element
                 const elementValid = await validation("element", validChoice.element ? [validChoice.element] : [], elementData);
                 const element = elementValid.length > 0 ? elementValid[0] : undefined;
@@ -118,12 +139,30 @@ export const useValidation = () => {
                 case "step":
                     NumberOfvalidated++;
                     break;
+                case "eval":
+                    evalCondition(condition.arguments, elementData) && NumberOfvalidated++;
+                    break;
                 default:
                     NumberOfvalidated++;
             }
         }
 
         return operator === "and" ? NumberOfvalidated === conditions.length : NumberOfvalidated > 0;
+    };
+
+    const evalCondition = (args: string, elementData: ElementDataProps) => {
+        const regex = /\$\{(.*?)\}/g;
+
+        try {
+            const expression = args.replace(regex, (_: string, key: string) => {
+                const value = elementData.variablesToUpdate[key]?.value || elementData.heros[key] || variables[key]?.value || heros?.[key];
+                return value !== undefined ? value.toString() : "0";
+            });
+            return !!eval(expression);
+        } catch (error) {
+            console.error("Error in evalCondition:", error);
+            return false;
+        }
     };
 
     return { validation, checkAccess, checkCount, checkConditions, choicesValidation, comonValidation };
@@ -158,7 +197,7 @@ const variableCondition = (condition: Condition, variables: VariablesToUpdatePro
 
     const value = variableData?.value || "";
     const comparisonFunctions = {
-        isNotNull: () => !!(variableData && value),
+        isNotNull: () => !!(variableData && value && value !== "0"),
         isNull: () => !variableData || !value,
         compare: () => compareValues(args, value),
     };

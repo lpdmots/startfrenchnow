@@ -5,7 +5,7 @@ import Image from "next/image";
 interface Props {
     data: {
         setOpen: (value: boolean) => void;
-        title: string;
+        title?: string;
         message: JSX.Element;
         functionOk: () => void;
         functionCancel?: () => void;

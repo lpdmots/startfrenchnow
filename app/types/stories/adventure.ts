@@ -37,6 +37,7 @@ export interface Adventure extends Base {
     isReady: boolean;
     publishedAt: string;
     firstChapter: Reference;
+    startTime?: string;
 }
 
 export interface AdventureImages {

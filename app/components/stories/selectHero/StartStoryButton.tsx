@@ -30,7 +30,7 @@ export const StartStoryButton = ({ element, story: newStory }: { story: Adventur
 
     const data = {
         setOpen,
-        message: "Une partie est déjà en cours, voulez-vous la reprendre ?",
+        message: <p>Une partie est déjà en cours, voulez-vous la reprendre ?</p>,
         functionOk: () => router.push(`/stories/${oldStory?.slug.current}/`),
         functionCancel: () => {
             resetData();

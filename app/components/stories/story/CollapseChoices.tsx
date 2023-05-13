@@ -35,14 +35,14 @@ export const CollapseChoices = ({ collapseData, type, label }: Props) => {
                         }}
                         transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
                         className="absolute w-full pb-3 md:pb-6"
-                        style={{ zIndex: 1000, transform: "translateY(-100%)" }}
+                        style={{ zIndex: 1000, transform: "translateY(-100%)", maxHeight: "70vh", overflowY: "auto" }}
                     >
                         {collapseData}
                     </m.div>
                 )}
             </AnimatePresence>
             <m.div initial={false} onClick={() => setExpanded((state) => !state)}>
-                <button className={`${buttonClass} btn-choice small w-full`}>
+                <button className={`${buttonClass} btn-choice small`}>
                     <span className="flex items-center">{type === "primary" ? <MdOutlineAdsClick className="mr-2 text-3xl" /> : <IoFootstepsOutline className="mr-2 text-3xl" />}</span>
                     {label}
                     <span className="flex items-center">{!expanded ? <IoCaretUp className="ml-2" /> : <IoCaretDown className="ml-2" />}</span>

@@ -22,6 +22,8 @@ export interface ChoiceProps {
     code: string;
     effects?: Effect[];
     extracts?: Extract[];
+    duration?: string;
+    disabled?: boolean;
 }
 
 export interface VariablesToUpdateProps {

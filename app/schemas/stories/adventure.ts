@@ -250,6 +250,12 @@ export default defineType({
             to: [{ type: "element" }],
         }),
         defineField({
+            name: "startTime",
+            title: "Heure de début",
+            type: "string",
+            description: "Heure de début de l'aventure en minutes",
+        }),
+        defineField({
             name: "isReady",
             title: "Aventure prête",
             type: "boolean",

@@ -1,6 +1,6 @@
 import { Reference } from "../sfn/blog";
 import { Base, Variable } from "./adventure";
-import { Choice, ElementForChoice, ElementProps, Extract } from "./element";
+import { Choice, ElementForChoice, Extract } from "./element";
 
 export type Operator = "isNotNull" | "isNull" | "compare";
 export type AllowedComponents = Extract | ElementForChoice | Choice | Effect;
@@ -17,10 +17,11 @@ export interface Effect extends Base {
     };
     antagonistes: Reference[];
     code: string;
+    duration?: string;
 }
 
 export interface Condition {
-    nature: "variable" | "roll" | "hero" | "count" | "step";
+    nature: "variable" | "roll" | "hero" | "count" | "step" | "eval";
     component: Reference;
     reference: string;
     arguments: string;

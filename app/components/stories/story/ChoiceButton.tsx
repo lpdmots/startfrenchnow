@@ -12,7 +12,7 @@ function ChoiceButton({ choice, classes }: { choice: ChoiceProps; classes: strin
     const [clicked, setClicked] = useState(false);
     const elementKey = choice._id;
     const isKeyDefined = elementsData[elementKey] !== undefined;
-    const disabled = isKeyDefined && elementsData[elementKey].layouts.length === 0;
+    const disabled = choice.disabled || (isKeyDefined && elementsData[elementKey].layouts.length === 0);
     const [calculating, setCalculating] = useState(false);
     const handleUpdateOnChoice = useRef(false); // To avoid infinite loop in case of element antagonistes
     const buttonLabel = useMemo(() => choice?.label && <PortableText value={choice.label} components={RichTextStory()} />, [choice?.label]);

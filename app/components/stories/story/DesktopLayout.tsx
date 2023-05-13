@@ -9,6 +9,9 @@ import { useStoryStore } from "@/app/stores/storiesStore";
 import { RichTextStory } from "../../sanity/RichTextStory";
 import { Popover } from "@/app/components/animations/Popover";
 import { ImInfo } from "react-icons/im";
+import { convertMinutesToTime } from "@/app/lib/utils";
+import { BiTime } from "react-icons/bi";
+import { VariablesDisplay } from "./VariablesDisplay";
 
 export const DesktopLayout = ({ data }: { data: LayoutProps }) => {
     const { slideIndex, setNewStates, layouts } = useStoryStore();
@@ -49,28 +52,31 @@ export const DesktopLayout = ({ data }: { data: LayoutProps }) => {
         );
 
     return (
-        <>
-            <div className="grow grid grid-cols-2 gap-6 lg:gap-12">
-                <div className="flex flex-col items-center justify-center gap-6">
-                    <div className="text-center bl">
-                        {portableText}
-                        {informations}
-                    </div>
-                    {hasChoices ? (
-                        <ChoiceButtons data={data} />
-                    ) : (
-                        <div className="flex items-center justify-center">
-                            <button className="roundButton" onClick={handleNextLayout}>
-                                <AiOutlineArrowRight className="text-4xl" />
-                            </button>
+        <div className="flex flex-col grow items-end justify-center">
+            <VariablesDisplay />
+            <div className="grow w-full grid grid-cols-2 gap-6 lg:gap-12">
+                <div className="flex flex-col h-full gap-6">
+                    <div className="flex flex-col grow items-center justify-around gap-6">
+                        <div className="text-center bl">
+                            {portableText}
+                            {informations}
                         </div>
-                    )}
+                        {hasChoices ? (
+                            <ChoiceButtons data={data} />
+                        ) : (
+                            <div className="flex items-center justify-center">
+                                <button className="roundButton" onClick={handleNextLayout}>
+                                    <AiOutlineArrowRight className="text-4xl" />
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className="flex flex-col items-center justify-around">
                     <Tabs data={data} />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

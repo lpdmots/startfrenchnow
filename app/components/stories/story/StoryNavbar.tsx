@@ -27,7 +27,7 @@ export const StoryNavbar = ({ layout }: { layout: "desktop" | "mobile" }) => {
 
     if (layout === "desktop")
         return (
-            <nav style={{ marginBottom: "10vh" }}>
+            <nav style={{ marginBottom: "8vh" }}>
                 <ul className="list-none flex justify-center m-0 mt-4 p-0 h-18">
                     {respTabs.map((item, index) => (
                         <li

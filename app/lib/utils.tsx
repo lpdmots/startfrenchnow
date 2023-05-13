@@ -1,5 +1,4 @@
-import { Effect, Modifier } from "@/app/types/stories/effect";
-import { Extract } from "@/app/types/stories/element";
+import { AllowedComponents } from "@/app/types/stories/effect";
 
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
@@ -9,9 +8,7 @@ export function removeDuplicatesObjects<T extends object>(objectsList: T[], fiel
     return objectsList.filter((value: T, index: number, self: T[]) => index === self.findIndex((t: T) => t[fieldName] === value[fieldName]));
 }
 
-type AllowedTypes = Extract | Effect | Modifier | { code: string };
-
-export function sortByCode<T extends AllowedTypes[]>(array: T): T {
+export function sortByCode<T extends any[]>(array: T): T {
     const toNumber = (code: string) => {
         return parseInt(
             code
@@ -49,4 +46,10 @@ export function rangeFromString(input: string): number[] {
     }
 
     return result;
+}
+
+export function convertMinutesToTime(minutes: number): string {
+    const hours = Math.floor(minutes / 60) % 24;
+    const remainingMinutes = minutes % 60;
+    return `${hours.toString().padStart(2, "0")}:${remainingMinutes.toString().padStart(2, "0")}`;
 }

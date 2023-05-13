@@ -32,6 +32,7 @@ export const groqQueries: any = {
                 code,
                 validation->,
                 antagonistes,
+                duration,
             },
             validation->,  
             extracts[]-> {
@@ -69,6 +70,7 @@ export const groqQueries: any = {
             code,
             validation->,
             antagonistes,
+            duration,
         },
         validation->,
         extracts[]-> {

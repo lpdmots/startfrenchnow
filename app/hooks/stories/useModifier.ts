@@ -7,11 +7,13 @@ import { sortByCode } from "@/app/lib/utils";
 import { useStoryStore } from "@/app/stores/storiesStore";
 import { useValidation } from "./useValidation";
 import { useVariable } from "./useVariable";
+import { getDurationToNumber } from "./useElement";
 
 export const useModifier = () => {
     const { comonValidation } = useValidation();
     const { getOrCreateStaticVariable, getOrCreateDynamiqueVariable } = useVariable();
     const { access } = useStoryStore();
+    const { withEval } = useEval();
 
     const effectsTreatment = async (element: ElementProps | { effects: Effect[] }, elementData: ElementDataProps) => {
         const { effects } = element;
@@ -20,6 +22,10 @@ export const useModifier = () => {
 
         for (let i = 0; i < validatedEffects.length; i++) {
             const effect = validatedEffects[i];
+
+            // Duration treatment
+            durationTreatment(effect.duration, elementData);
+
             await applyModifier(effect, elementData);
         }
     };
@@ -57,7 +63,7 @@ export const useModifier = () => {
     };
 
     const applyOperation = (operation: "addition" | "multiplication" | "replace", modifier: Modifier, elementData: ElementDataProps) => {
-        const args = modifier.arguments;
+        const args = withEval(modifier.arguments, elementData);
         const statics = modifier.variables || [];
         const dynamicsOrHeros = modifier.references || [];
 
@@ -93,6 +99,22 @@ export const useModifier = () => {
         const { arguments: args, access: stepRef } = modifier;
         if (!stepRef || !stepRef.length) return;
         elementData.step = { _id: "step", elementId: stepRef[0]._ref, label: undefined, code: "step" };
+    };
+
+    const durationTreatment = (duration: string | undefined, elementData: ElementDataProps) => {
+        if (!duration) return;
+
+        const durationToNumber = getDurationToNumber(duration);
+        const durationModifier: ModifierWithRef = {
+            variables: null,
+            references: ["time"],
+            operator: "addition",
+            access: [],
+            arguments: durationToNumber.toString(),
+            code: "100",
+        };
+
+        applyModifier({ modifiers: [durationModifier] }, elementData);
     };
 
     return { effectsTreatment, applyModifier, applyOperation, applyAccess, applyStep };
@@ -140,4 +162,42 @@ const getNewValue = (variable: VariableState, operation: "addition" | "multiplic
         const newValue = Math.max(Math.min(newValueRaw, valMax), valMin);
         return newValue.toString();
     }
+};
+
+const useEval = () => {
+    const { variables, heros } = useStoryStore();
+
+    const withEval = (argsRaw: string, elementData: ElementDataProps): string => {
+        if (!argsRaw || !argsRaw.startsWith("eval")) return argsRaw;
+        const args = argsRaw.slice(7).trim();
+
+        if (argsRaw.slice(0, 7) === "evalStr") {
+            return evalString(args, elementData);
+        } else {
+            return evalNumber(args, elementData).toString();
+        }
+    };
+
+    const evalString = (args: string, elementData: ElementDataProps): string => {
+        const regex = /\$\{(.*?)\}/g;
+        return args.replace(regex, (_: string, key: string) => {
+            return elementData.variablesToUpdate[key]?.value?.toString() || elementData.heros[key]?.toString() || variables[key]?.value?.toString() || heros?.[key]?.toString() || "";
+        });
+    };
+
+    const evalNumber = (args: string, elementData: ElementDataProps): number => {
+        const regex = /\$\{(.*?)\}/g;
+        const expression = args.replace(regex, (_: string, key: string) => {
+            const value = elementData.variablesToUpdate[key]?.value || elementData.heros[key] || variables[key]?.value || heros?.[key];
+            return value !== undefined ? value.toString() : "0";
+        });
+        try {
+            return eval(expression);
+        } catch (e) {
+            console.error("Error in evalNumber:", e);
+            return 0;
+        }
+    };
+
+    return { withEval };
 };
