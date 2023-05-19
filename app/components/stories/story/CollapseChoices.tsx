@@ -42,7 +42,7 @@ export const CollapseChoices = ({ collapseData, type, label }: Props) => {
                 )}
             </AnimatePresence>
             <m.div initial={false} onClick={() => setExpanded((state) => !state)}>
-                <button className={`${buttonClass} btn-choice small`}>
+                <button className={`${buttonClass} btn-choice small w-full`}>
                     <span className="flex items-center">{type === "primary" ? <MdOutlineAdsClick className="mr-2 text-3xl" /> : <IoFootstepsOutline className="mr-2 text-3xl" />}</span>
                     {label}
                     <span className="flex items-center">{!expanded ? <IoCaretUp className="ml-2" /> : <IoCaretDown className="ml-2" />}</span>
