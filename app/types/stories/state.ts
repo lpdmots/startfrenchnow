@@ -18,7 +18,7 @@ export interface LayoutProps {
 export interface ChoiceProps {
     _id: string;
     elementId?: string;
-    label?: Block;
+    label?: Block[];
     code: string;
     effects?: Effect[];
     extracts?: Extract[];
@@ -49,7 +49,7 @@ export interface ElementDataProps {
     step: {
         _id: "step";
         elementId: string;
-        label?: Block;
+        label?: Block[];
         code: string;
     } | null;
     inheritedChoices: Choice[];

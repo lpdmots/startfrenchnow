@@ -53,3 +53,12 @@ export function convertMinutesToTime(minutes: number): string {
     const remainingMinutes = minutes % 60;
     return `${hours.toString().padStart(2, "0")}:${remainingMinutes.toString().padStart(2, "0")}`;
 }
+
+export function partition<T>(array: T[], isValid: (elem: any) => boolean): [T[], T[]] {
+    return array.reduce<[T[], T[]]>(
+        ([pass, fail], elem) => {
+            return isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]];
+        },
+        [[], []]
+    );
+}

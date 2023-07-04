@@ -15,7 +15,7 @@ export interface StoryCard extends Base {
     level: "a1" | "a2" | "b1" | "b2";
     category: "fantasy" | "scienceFiction" | "historical" | "adventure" | "culture" | "comedy" | "investigation" | "other";
     duration: number;
-    description: Block;
+    description: Block[];
     images: AdventureImages;
     isReady: boolean;
     publishedAt: string;
@@ -27,7 +27,7 @@ export interface Adventure extends Base {
     level: "a1" | "a2" | "b1" | "b2";
     category: "fantasy" | "scienceFiction" | "historical" | "adventure" | "culture" | "comedy" | "investigation" | "other";
     duration: number;
-    description: Block;
+    description: Block[];
     selectContent: Block[];
     images: AdventureImages;
     variables: Variable[];
@@ -59,7 +59,7 @@ export interface HeroAdventure {
     statistics: {
         [key: string]: string | number;
     }[];
-    description: Block;
+    description: Block[];
     images: HeroImages;
     variables: Variable[];
 }
@@ -72,7 +72,7 @@ interface HerosBase {
     _key: string;
     name: string;
     sex: "male" | "female";
-    description: Block;
+    description: Block[];
     images: HeroImages;
 }
 
@@ -101,7 +101,7 @@ export interface DisplayVariable {
     name: string;
     image: Image;
     order: number;
-    description: Block;
+    description: Block[];
     conditions: Condition[];
 }
 

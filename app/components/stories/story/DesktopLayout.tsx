@@ -26,7 +26,7 @@ export const DesktopLayout = ({ data }: { data: LayoutProps }) => {
 
     if (oneColumn)
         return (
-            <div className="flex flex-col items-center justify-center gap-6">
+            <div className="flex flex-col items-center justify-center gap-6 pb-6">
                 <div className=" grow text-center bl max-w-3xl">
                     {portableText}
                     {informations}
@@ -38,7 +38,7 @@ export const DesktopLayout = ({ data }: { data: LayoutProps }) => {
                         height={800}
                         alt={data.title || "image"}
                         className="rounded-xl shadow-1 simple-border"
-                        style={{ objectFit: "contain", maxHeight: "67vh", width: "auto" }}
+                        style={{ objectFit: "contain", maxHeight: "60vh", width: "auto" }}
                         priority={slideIndex ? false : true}
                     />
                 )}

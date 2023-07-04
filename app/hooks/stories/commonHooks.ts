@@ -9,7 +9,7 @@ export const useTabsContentData = (layout: "desktop" | "mobile") => {
     const selectedTab = useMemo(() => respTabs[selectedStoryTabsIndex], [selectedStoryTabsIndex, respTabs]);
     const variablesToList = useMemo(() => Object.values(variables), [variables]);
     const skills = useMemo(() => variablesToList.filter((variable) => variable?.data?.nature === "skill").map((variable) => variable.data) as unknown as Variable[], [variablesToList]);
-    const objects = useMemo(() => variablesToList.filter((variable) => variable?.data?.nature === "object" && parseInt(variable?.value) > 0), [variablesToList]);
+    const objects = useMemo(() => variablesToList.filter((variable) => variable?.data?.nature === "object" && !["0", ""].includes(variable?.value)), [variablesToList]);
 
     return { selectedTab, skills, objects };
 };

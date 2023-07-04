@@ -21,7 +21,7 @@ export const CollapseChoices = ({ collapseData, type, label }: Props) => {
     });
 
     return (
-        <div className="col-span-2 sm:col-span-1 relative" ref={ref}>
+        <div className="col-span-2 sm:col-span-1 relative w-full" ref={ref}>
             <AnimatePresence initial={false}>
                 {expanded && (
                     <m.div

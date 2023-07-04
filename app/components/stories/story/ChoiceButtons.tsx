@@ -31,22 +31,26 @@ export const ChoiceButtons = ({ data }: { data: LayoutProps }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [maxButtons]);
 
-    const renderChoices = (choices: ChoiceProps[], buttonClass: string) => {
-        const singleButtonClass = isOnlyOneButton ? "w-full sm:w-1/2" : "col-span-2 sm:col-span-1";
+    const renderChoices = (choices: ChoiceProps[], buttonClass: string, inCollapse: boolean = false) => {
+        const singleButtonClass = isOnlyOneButton && !inCollapse ? "w-full" : "col-span-2 sm:col-span-1";
         return removeDuplicatesObjects(choices, "_id").map((choice, index) => <ChoiceButton key={index} classes={`${buttonClass} small btn-choice w-full ${singleButtonClass}`} choice={choice} />);
     };
 
     if (!buttonVisibility) return null;
 
     return (
-        <div className={`${isOnlyOneButton ? "flex justify-center" : "grid grid-cols-2 gap-3 md:gap-6"} w-full`}>
+        <div className={`${isOnlyOneButton ? "grid-cols-1 place-items-center md:w-1/2" : "grid-cols-2 gap-3 md:gap-6"} grid w-full`}>
             {buttonVisibility.showInteractionSelect ? (
-                <CollapseChoices type="primary" label="Choisir une action..." collapseData={<div className="flex flex-col gap-3 md:gap-6">{renderChoices(interactionChoices, "btn-primary")}</div>} />
+                <CollapseChoices
+                    type="primary"
+                    label="Choisir une action..."
+                    collapseData={<div className="flex flex-col gap-3 md:gap-6">{renderChoices(interactionChoices, "btn-primary", true)}</div>}
+                />
             ) : (
                 renderChoices(interactionChoices, "btn-primary col-span-2 sm:col-span-1")
             )}
             {buttonVisibility.showAccessSelect ? (
-                <CollapseChoices type="secondary" label="Se rendre..." collapseData={<div className="flex flex-col gap-3 md:gap-6">{renderChoices(accessChoices, "btn-secondary")}</div>} />
+                <CollapseChoices type="secondary" label="Se rendre..." collapseData={<div className="flex flex-col gap-3 md:gap-6">{renderChoices(accessChoices, "btn-secondary", true)}</div>} />
             ) : (
                 renderChoices(accessChoices, "btn-secondary col-span-2 sm:col-span-1")
             )}

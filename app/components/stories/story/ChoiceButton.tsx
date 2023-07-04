@@ -15,7 +15,10 @@ function ChoiceButton({ choice, classes }: { choice: ChoiceProps; classes: strin
     const disabled = choice.disabled || (isKeyDefined && elementsData[elementKey].layouts.length === 0);
     const [calculating, setCalculating] = useState(false);
     const handleUpdateOnChoice = useRef(false); // To avoid infinite loop in case of element antagonistes
-    const buttonLabel = useMemo(() => choice?.label && <PortableText value={choice.label} components={RichTextStory()} />, [choice?.label]);
+    const buttonLabel = useMemo(
+        () => (choice?.label?.[0].children[0].text.startsWith("arrow") ? undefined : choice?.label && <PortableText value={choice.label} components={RichTextStory()} />),
+        [choice?.label]
+    );
 
     useEffect(() => {
         if (clicked && isKeyDefined && !disabled && !handleUpdateOnChoice.current) {
@@ -37,7 +40,7 @@ function ChoiceButton({ choice, classes }: { choice: ChoiceProps; classes: strin
         setClicked(true);
     };
 
-    return !choice.label ? (
+    return !buttonLabel ? (
         <button className="roundButton" onClick={handleChoice}>
             {calculating ? <Spinner radius maxHeight="20px" /> : <AiOutlineArrowRight className="text-3xl lg:text-4xl" />}
         </button>

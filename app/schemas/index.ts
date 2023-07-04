@@ -19,6 +19,7 @@ import validation from "./stories/validation";
 import condition from "./stories/condition";
 import modifier from "./stories/modifier";
 import choice from "./stories/choice";
+import success from "./stories/success";
 
 export const schemaTypes = [
     post,
@@ -39,4 +40,5 @@ export const schemaTypes = [
     choice,
     condition,
     modifier,
+    success,
 ];

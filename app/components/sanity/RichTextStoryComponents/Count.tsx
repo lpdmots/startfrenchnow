@@ -22,6 +22,7 @@ export const Count = ({ value }: CountProps) => {
         const countStr = content.count || "";
         const countStrList = countStr.split(",").map((c) => c.trim());
         let countList: number[] = [];
+
         for (const countStr of countStrList) {
             if (countStr.includes("+")) {
                 const isEgalOrMore = parseInt(countStr.replace("+", "")) <= counter;

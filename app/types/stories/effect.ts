@@ -18,6 +18,7 @@ export interface Effect extends Base {
     antagonistes: Reference[];
     code: string;
     duration?: string;
+    priority?: boolean;
 }
 
 export interface Condition {

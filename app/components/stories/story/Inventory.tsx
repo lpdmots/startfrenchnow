@@ -65,7 +65,7 @@ const InventoryItem = ({ object }: { object: VariableState }) => {
             </div>
             <p className="flex justify-center items-center text-center mb-0 bs grow p-1">
                 {display.name}
-                {parseInt(object.value) > 1 && <b>&nbsp;x{`${object.value}`}</b>}
+                {isNaN(parseInt(object.value)) ? null : parseInt(object.value) > 1 && <b>&nbsp;x{`${object.value}`}</b>}
             </p>
             {open && <ModalFromBottom data={modalData} />}
         </div>

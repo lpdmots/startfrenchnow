@@ -94,6 +94,12 @@ export default defineType({
             initialValue: "1",
         }),
         defineField({
+            name: "priority",
+            title: "Prioritaire",
+            type: "boolean",
+            description: "Si coché, l'effet sera prioritaire et traité avant les extraits libres ou éléments",
+        }),
+        defineField({
             name: "duration",
             title: "Durée",
             type: "string",

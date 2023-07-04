@@ -3,6 +3,7 @@ import { MdTranslate } from "react-icons/md";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { TbNumbers, TbSwitch2 } from "react-icons/tb";
 import { ImInfo } from "react-icons/im";
+import { AiOutlineFunction } from "react-icons/ai";
 
 export default defineType({
     title: "Story Content",
@@ -53,6 +54,33 @@ export default defineType({
                                 title: "Féminin",
                                 name: "female",
                                 type: "storyContent",
+                            },
+                        ],
+                    },
+                    {
+                        title: "Fonction",
+                        name: "withFunction",
+                        type: "object",
+                        icon: () => <AiOutlineFunction />,
+                        fields: [
+                            {
+                                title: "Variable",
+                                name: "variableComponent",
+                                type: "reference",
+                                to: [{ type: "variable" }],
+                            },
+                            {
+                                title: "Nom de la variable",
+                                name: "variableName",
+                                type: "string",
+                            },
+                            {
+                                title: "Nom de la fonction",
+                                name: "functionName",
+                                type: "string",
+                                options: {
+                                    list: [{ title: "String to bullet list", value: "toBulletList" }],
+                                },
                             },
                         ],
                     },
@@ -143,7 +171,7 @@ export default defineType({
                                                 title: "Count",
                                                 name: "count",
                                                 type: "string",
-                                                description: 'Plusieurs possibilités: "2", "2-5", "2,3,4,5", "3+"',
+                                                description: 'Plusieurs possibilités: "2", "2/5", "2,3,4,5", "3+"',
                                             },
                                             {
                                                 title: "Content",

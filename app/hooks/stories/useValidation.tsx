@@ -241,7 +241,7 @@ const compareIntValues = (args: string, valueToCompare: number) => {
             const isEgalOrMore = parseInt(countStr.replace("+", "")) <= valueToCompare;
             if (isEgalOrMore) return true;
         } else if (countStr.includes("-")) {
-            const isEgalOrLess = parseInt(countStr.replace("-", "")) <= valueToCompare;
+            const isEgalOrLess = parseInt(countStr.replace("-", "")) >= valueToCompare;
             if (isEgalOrLess) return true;
         } else if (countStr.includes("/")) {
             countList = countList.concat(rangeFromString(countStr));
@@ -262,11 +262,9 @@ const compareStrValues = (args: string, valueToCompareStr: string) => {
     const asList = argsStrWithOptions.length > 2 ? Boolean(argsStrWithOptions[2]) : false;
     const opposite = argsStrWithOptions.length > 3 ? Boolean(argsStrWithOptions[3]) : false;
     let numberOfValidated: number = 0;
-    const valueToCompare = asList ? valueToCompareStr.split(",").map((c) => c.trim()) : valueToCompareStr;
-
+    const valueToCompare = asList ? valueToCompareStr.split("|").map((c) => c.trim()) : valueToCompareStr;
     for (const argStr of argsStrList) {
         valueToCompare.includes(argStr) && numberOfValidated++;
     }
-
     return opposite ? !(numberOfValidated >= count) : numberOfValidated >= count;
 };

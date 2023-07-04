@@ -204,6 +204,150 @@ export default defineType({
                 }),
             ],
         }),
+        defineField({
+            name: "reviews",
+            title: "Reviews",
+            type: "array",
+            of: [
+                {
+                    type: "object",
+                    fields: [
+                        // title, order, color, scores, success
+                        defineField({
+                            name: "title",
+                            title: "Titre",
+                            type: "string",
+                        }),
+                        defineField({
+                            name: "order",
+                            title: "Ordre",
+                            type: "number",
+                        }),
+                        defineField({
+                            name: "color",
+                            title: "Couleur",
+                            type: "string",
+                            options: {
+                                list: [
+                                    //primary, secondary-1, secondary-2, secondary-3, secondary-4, secondary-5,
+                                    { title: "Primaire", value: "primary" },
+                                    { title: "Secondaire 1", value: "secondary-1" },
+                                    { title: "Secondaire 2", value: "secondary-2" },
+                                    { title: "Secondaire 3", value: "secondary-3" },
+                                    { title: "Secondaire 4", value: "secondary-4" },
+                                    { title: "Secondaire 5", value: "secondary-5" },
+                                ],
+                            },
+                            initialValue: "secondary-2",
+                        }),
+                        defineField({
+                            name: "scores",
+                            title: "Scores",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "object",
+                                    fields: [
+                                        // variable (reference), title, text (storyContent), min, max, order
+                                        defineField({
+                                            name: "variable",
+                                            title: "Variable",
+                                            type: "reference",
+                                            to: [{ type: "variable" }],
+                                        }),
+                                        defineField({
+                                            name: "reference",
+                                            title: "Référence",
+                                            type: "string",
+                                        }),
+                                        defineField({
+                                            name: "title",
+                                            title: "Titre",
+                                            type: "string",
+                                        }),
+                                        defineField({
+                                            name: "text",
+                                            title: "Texte",
+                                            type: "storyContent",
+                                        }),
+                                        defineField({
+                                            name: "min",
+                                            title: "Minimum",
+                                            type: "number",
+                                        }),
+                                        defineField({
+                                            name: "max",
+                                            title: "Maximum",
+                                            type: "number",
+                                        }),
+                                        defineField({
+                                            name: "order",
+                                            title: "Ordre",
+                                            type: "number",
+                                        }),
+                                        defineField({
+                                            name: "color",
+                                            title: "Couleur",
+                                            type: "string",
+                                            options: {
+                                                list: [
+                                                    //primary, secondary-1, secondary-2, secondary-3, secondary-4, secondary-5,
+                                                    { title: "Primaire", value: "primary" },
+                                                    { title: "Secondaire 1", value: "secondary-1" },
+                                                    { title: "Secondaire 2", value: "secondary-2" },
+                                                    { title: "Secondaire 3", value: "secondary-3" },
+                                                    { title: "Secondaire 4", value: "secondary-4" },
+                                                    { title: "Secondaire 5", value: "secondary-5" },
+                                                ],
+                                            },
+                                        }),
+                                    ],
+                                },
+                            ],
+                        }),
+                        defineField({
+                            name: "success",
+                            title: "Succès",
+                            type: "array",
+                            of: [
+                                {
+                                    type: "success",
+                                },
+                            ],
+                        }),
+                        defineField({
+                            name: "filter",
+                            title: "Filtre",
+                            type: "string",
+                            options: {
+                                list: [
+                                    //primary, secondary-1, secondary-2, secondary-3, secondary-4, secondary-5,
+                                    { title: "Filtre, tous par défaut", value: "filterAll" },
+                                    { title: "Filtre, déverrouillés par défaut", value: "filterUnlocked" },
+                                    { title: "Pas de filtre, tout afficher", value: "noFilterAll" },
+                                    { title: "Pas de filtre, déverrouillés seulement", value: "noFilterUnlocked" },
+                                ],
+                            },
+                            initialValue: "filterAll",
+                        }),
+                        defineField({
+                            name: "orderOption",
+                            title: "Option d'ordre",
+                            type: "string",
+                            options: {
+                                list: [
+                                    //primary, secondary-1, secondary-2, secondary-3, secondary-4, secondary-5,
+                                    { title: "Suivre l'ordre", value: "keepOrder" },
+                                    { title: "Déverrouillés en premier", value: "unlockedFirst" },
+                                    { title: "Verrouillés en premier", value: "lockedFirst" },
+                                ],
+                            },
+                            initialValue: "unlockedFirst",
+                        }),
+                    ],
+                },
+            ],
+        }),
     ],
     preview: {
         select: {

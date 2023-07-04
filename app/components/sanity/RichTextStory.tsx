@@ -3,6 +3,7 @@ import { Count } from "./RichTextStoryComponents/Count";
 import { GenderWord } from "./RichTextStoryComponents/GenderWord";
 import { Translation } from "./RichTextStoryComponents/Translation";
 import { VarInformation } from "./RichTextStoryComponents/VarInformation";
+import WithFunction from "./RichTextStoryComponents/WithFunction";
 
 export const RichTextStory = (isSpan: boolean = false) => ({
     list: {
@@ -35,6 +36,9 @@ export const RichTextStory = (isSpan: boolean = false) => ({
         },
         varInformation: ({ children, value }: any) => {
             return <VarInformation value={value}>{children}</VarInformation>;
+        },
+        withFunction: ({ children, value }: any) => {
+            return <WithFunction value={value} />;
         },
     },
 });

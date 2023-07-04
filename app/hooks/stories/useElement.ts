@@ -7,8 +7,8 @@ import urlFor from "@/app/lib/urlFor";
 import { useModifier } from "./useModifier";
 import fetchData from "@/app/lib/apiStories";
 import { ELEMENTDATA } from "@/app/lib/constantes";
-import { rangeFromString } from "@/app/lib/utils";
-import { ModifierWithRef } from "@/app/types/stories/effect";
+import { partition, rangeFromString } from "@/app/lib/utils";
+import { Effect, ModifierWithRef } from "@/app/types/stories/effect";
 
 export const useElementTreatment = () => {
     const { comonValidation } = useValidation();
@@ -24,19 +24,18 @@ export const useElementTreatment = () => {
         for (const choice of choices) {
             const elementData: ElementDataProps = { ...JSON.parse(JSON.stringify(ELEMENTDATA)) };
             const { elementId, effects, extracts, _id, duration } = choice;
+            const [preEffects, postEffects] = partition(effects || [], (effect) => effect?.priority);
             elementData.countIds.push(_id);
 
             // Free modifiers treatment:
-            if (effects?.length) {
-                await effectsTreatment({ effects }, elementData);
-            }
+            await effectsTreatment({ effects: preEffects }, elementData);
 
             // Duration treatment
             durationTreatment(duration, elementData);
 
             // Free extracts treatment:
             if (extracts?.length) {
-                await freeLayoutsData(choice, elementData);
+                await freeLayoutsData(choice, elementData, postEffects);
                 addElementsData(choice._id, elementData);
                 elementData.elementId = "free-extract-" + actualElementId; // Préfixe pour éviter que sameElement soit true alors qu'il s'agit du parent, non de l'élément traité.
                 elementsData[_id] = elementData;
@@ -50,7 +49,7 @@ export const useElementTreatment = () => {
                     addElementsData(choice._id, sameElement);
                     elementsData[_id] = sameElement;
                 } else {
-                    await elementTreatment(elementId, elementData);
+                    await elementTreatment(elementId, elementData, postEffects);
                     addElementsData(choice._id, elementData);
                     elementsData[_id] = elementData;
                 }
@@ -58,7 +57,7 @@ export const useElementTreatment = () => {
         }
     };
 
-    const elementTreatment = async (elementId: string, elementData: ElementDataProps) => {
+    const elementTreatment = async (elementId: string, elementData: ElementDataProps, postEffects: Effect[] = []) => {
         const firstElement = await fetchData<ElementProps>("element", elementId);
         const elements = await comonValidation("element", [firstElement], elementData);
         if (!elements) return console.warn("Aucun élément valide à traiter");
@@ -74,17 +73,19 @@ export const useElementTreatment = () => {
         }
 
         // Effects treatment
-        await effectsTreatment(element, elementData);
+        const [preEffects, postEffectsElement] = partition(element.effects || [], (effect) => effect?.priority);
+        postEffects.push(...postEffectsElement);
+        await effectsTreatment({ effects: preEffects }, elementData);
 
         // Duration treatment
         durationTreatment(duration, elementData);
 
         // Selects the extracts that are valid and creates the layout data for each valid extract
         const validatedExtracts = await comonValidation("extract", extracts, elementData);
-        await layoutsData(validatedExtracts as Extract[], element, elementData);
+        await layoutsData(validatedExtracts as Extract[], element, elementData, postEffects);
     };
 
-    const layoutsData = async (validatedExtracts: Extract[], element: ElementProps, elementData: ElementDataProps) => {
+    const layoutsData = async (validatedExtracts: Extract[], element: ElementProps, elementData: ElementDataProps, postEffects: Effect[] = []) => {
         const choices = await getChoicesList(element);
         elementData.inheritedChoices = choices;
         const validatedChoices = await choicesValidation(choices, elementData);
@@ -120,6 +121,9 @@ export const useElementTreatment = () => {
                       disabled: choice.disabled,
                   }));
 
+        //PostEffects treatment:
+        await effectsTreatment({ effects: postEffects }, elementData);
+
         for (let i = 0; i < validatedExtracts.length; i++) {
             const extract = validatedExtracts[i];
             const isLastLayout = i === validatedExtracts.length - 1;
@@ -140,7 +144,7 @@ export const useElementTreatment = () => {
         }
     };
 
-    const freeLayoutsData = async (choice: ChoiceProps, elementData: ElementDataProps) => {
+    const freeLayoutsData = async (choice: ChoiceProps, elementData: ElementDataProps, postEffects: Effect[]) => {
         const { elementId, extracts, _id } = choice;
         if (!extracts) return;
 
@@ -162,9 +166,12 @@ export const useElementTreatment = () => {
                 },
             ];
         } else {
-            await layoutsData(validatedExtracts || [], actualElement, elementData);
+            await layoutsData(validatedExtracts || [], actualElement, elementData, postEffects);
             return;
         }
+
+        //PostEffects treatment:
+        await effectsTreatment({ effects: postEffects }, elementData);
 
         for (let i = 0; i < validatedExtracts.length; i++) {
             const extract = validatedExtracts[i];

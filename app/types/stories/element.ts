@@ -7,7 +7,7 @@ export interface ElementProps extends Base {
     code: string;
     validation: Validation;
     name: string;
-    label?: Block;
+    label?: Block[];
     nature: "interaction" | "access";
     rolls: Roll[] | null;
     image: Image;
@@ -54,7 +54,7 @@ export interface Choice extends Base {
     element?: ElementForChoice;
     validation: Validation;
     nature?: "interaction" | "access";
-    label?: Block;
+    label?: Block[];
     antagonistes: Reference[];
     extracts?: Extract[];
     effects?: Effect[];
@@ -67,7 +67,7 @@ export interface ElementForChoice extends Base {
     _id: string;
     nature: string;
     name: string;
-    label?: Block;
+    label?: Block[];
     code: string;
     validation: Validation;
     duration?: string;
