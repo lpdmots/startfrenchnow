@@ -7,7 +7,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import PostContent from "@/app/components/sfn/post/PostContent";
 import PreviewSuspense from "../../../../../components/sanity/PreviewSuspense";
 import PreviewPost from "../../../../../components/sanity/PreviewPost";
-import { previewData } from "next/headers";
+//import { previewData } from "next/headers";
 import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
 
 type Props = {
@@ -53,25 +53,11 @@ async function Post({ params: { slug } }: Props) {
 
     const latestPosts = rowLatestPosts.filter((post) => post.slug.current !== slug);
 
-    const postContent = previewData() ? (
-        <PreviewSuspense
-            fallback={
-                <div role="status">
-                    <p className="animate-pulse text-primary">Chargement de l'apperçu</p>
-                </div>
-            }
-        >
-            <PreviewPost query={query} slug={slug} />
-        </PreviewSuspense>
-    ) : (
-        <PostContent post={post} />
-    );
-
-    if (!post && !previewData()) return <p className="h-64 flex justify-center items-center">Sorry this post has been deleted...</p>;
+    if (!post) return <p className="h-64 flex justify-center items-center">Sorry this post has been deleted...</p>;
 
     return (
         <>
-            {postContent}
+            <PostContent post={post} />
             <div className="page-wrapper">
                 <div className="section pd-top-0 wf-section">
                     <div className="container-default w-container">
@@ -109,3 +95,17 @@ async function Post({ params: { slug } }: Props) {
 }
 
 export default Post;
+
+/* const postContent = previewData() ? (
+    <PreviewSuspense
+        fallback={
+            <div role="status">
+                <p className="animate-pulse text-primary">Chargement de l'apperçu</p>
+            </div>
+        }
+    >
+        <PreviewPost query={query} slug={slug} />
+    </PreviewSuspense>
+) : (
+    <PostContent post={post} />
+); */

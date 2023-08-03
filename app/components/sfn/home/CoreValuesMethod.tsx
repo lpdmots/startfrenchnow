@@ -1,7 +1,5 @@
-"use client";
 import React from "react";
-import { m } from "framer-motion";
-import { fadeInOneByOneItem, fadeInOneByOneParent } from "@/app/lib/framerVariants";
+import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 
 const coreValuesData = [
     {
@@ -29,46 +27,52 @@ const coreValuesData = [
 
 function CoreValuesMethod() {
     return (
-        <m.div className="container-default w-container" variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            <div className="inner-container _600px---tablet center">
-                <div className="inner-container _500px---mbl center">
-                    <div className="mg-bottom-54px">
-                        <div className="text-center---tablet">
-                            <div className="w-layout-grid grid-2-columns title-and-paragraph">
-                                <div className="inner-container _525px">
-                                    <div className="inner-container _400px---mbl center">
-                                        <div className="inner-container _350px---mbp center">
-                                            <h2 className="display-2 mg-bottom-0">
-                                                The core values of <span className="heading-span-secondary-4">my method</span>
-                                            </h2>
+        <div className="container-default w-container">
+            <SlideInOneByOneParent>
+                <div className="inner-container _600px---tablet center">
+                    <div className="inner-container _500px---mbl center">
+                        <div className="mg-bottom-54px">
+                            <div className="text-center---tablet">
+                                <div className="w-layout-grid grid-2-columns title-and-paragraph">
+                                    <div className="inner-container _525px">
+                                        <div className="inner-container _400px---mbl center">
+                                            <div className="inner-container _350px---mbp center">
+                                                <h2 className="display-2 mg-bottom-0">
+                                                    The core values of <span className="heading-span-secondary-4">my method</span>
+                                                </h2>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="inner-container _525px">
-                                    <p className="mg-bottom-0 text-neutral-700">
-                                        A <span className="underline underline-offset-2">well structured</span> method with <span className="underline underline-offset-2">bite-sized lessons</span>{" "}
-                                        that enables you to acquire the <span className="underline underline-offset-2">fundamental</span> French language skills.
-                                    </p>
+                                    <div className="inner-container _525px">
+                                        <p className="mg-bottom-0 text-neutral-700">
+                                            A <span className="underline underline-offset-2">well structured</span> method with <span className="underline underline-offset-2">bite-sized lessons</span>{" "}
+                                            that enables you to acquire the <span className="underline underline-offset-2">fundamental</span> French language skills.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="w-layout-grid grid-2-columns values-grid">
-                        {coreValuesData.map(({ image, title, content }) => (
-                            <m.div key={title} variants={fadeInOneByOneItem} className="card image-left---text-rigth">
-                                <div className="image-wrapper card-value-image-left-wrapper">
-                                    <img src={image} loading="eager" alt={title} className="image fit-cover" />
+                        <div className="w-layout-grid grid-2-columns values-grid">
+                            {coreValuesData.map(({ image, title, content }) => (
+                                <div key={title}>
+                                    <SlideInOneByOneChild>
+                                        <div className="card image-left---text-rigth h-full">
+                                            <div className="image-wrapper card-value-image-left-wrapper h-full">
+                                                <img src={image} loading="eager" alt={title} className="image fit-cover" />
+                                            </div>
+                                            <div className="card-value-conter-left">
+                                                <h3>{title}</h3>
+                                                <p className="mg-bottom-0">{content}</p>
+                                            </div>
+                                        </div>
+                                    </SlideInOneByOneChild>
                                 </div>
-                                <div className="card-value-conter-left">
-                                    <h3>{title}</h3>
-                                    <p className="mg-bottom-0">{content}</p>
-                                </div>
-                            </m.div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </m.div>
+            </SlideInOneByOneParent>
+        </div>
     );
 }
 

@@ -7,7 +7,7 @@ import { LEVELDATA } from "@/app/lib/constantes";
 import { ScaleChildren } from "../../animations/ParentToChildrens";
 
 const SecondaryPost = ({ post }: { post: Post }) => {
-    const level = post.level ? LEVELDATA[post.level] : LEVELDATA["a1"];
+    const level = post.level ? LEVELDATA[post.level] : null;
 
     return (
         <ClientSideRoute route={`/blog/post/${post.slug.current}`}>
@@ -38,8 +38,15 @@ const SecondaryPost = ({ post }: { post: Post }) => {
                         <p className="mg-bottom-0 line-clamp-5">{post.description}</p>
                     </div>
                     <div className="flex justify-end items-center text-300 medium color-neutral-600 mt-4" style={{ fontSize: 16 }}>
-                        <AiFillSignal className=" mr-2" style={{ fontSize: "1.2rem", color: level.color }} />
-                        {level.label} - {new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
+                        {level ? (
+                            <>
+                                <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: level?.color }} />
+                                {`${level.label} - `}
+                            </>
+                        ) : (
+                            ""
+                        )}
+                        {new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
                     </div>
                 </div>
             </div>

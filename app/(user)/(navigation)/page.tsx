@@ -11,6 +11,7 @@ import LessonCards from "../../components/sfn/home/LessonCards";
 import UdemyBusiness from "../../components/sfn/home/UdemyBusiness";
 import WhoIAm from "../../components/sfn/home/WhoIAm";
 import MarqueeContent from "../../components/sfn/home/MarqueeContent";
+import { StoriesHome } from "@/app/components/sfn/home/StoriesHome";
 
 function Home() {
     return (
@@ -78,6 +79,7 @@ function Home() {
                 <WhoIAm />
             </section>
             <CommentsCarousel />
+            <StoriesHome />
             {/* @ts-expect-error Server Component */}
             <BlogHome />
         </div>

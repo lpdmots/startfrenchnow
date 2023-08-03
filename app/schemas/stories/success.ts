@@ -1,11 +1,19 @@
+import { ADVENTUREID } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
     name: "success",
     title: "Succès",
-    type: "object",
+    type: "document",
     fields: [
         // image, title, text, order, color, validations
+        defineField({
+            name: "adventure",
+            title: "Aventure",
+            type: "reference",
+            to: [{ type: "adventure" }],
+            initialValue: { _ref: ADVENTUREID },
+        }),
         defineField({
             name: "image",
             title: "Image",
@@ -27,31 +35,25 @@ export default defineType({
             type: "number",
         }),
         defineField({
-            name: "color",
-            title: "Couleur",
+            name: "alignment",
+            title: "Alignement",
             type: "string",
             options: {
                 list: [
-                    //primary, secondary-1, secondary-2, secondary-3, secondary-4, secondary-5,
-                    { title: "Primaire", value: "primary" },
-                    { title: "Secondaire 1", value: "secondary-1" },
-                    { title: "Secondaire 2", value: "secondary-2" },
-                    { title: "Secondaire 3", value: "secondary-3" },
-                    { title: "Secondaire 4", value: "secondary-4" },
-                    { title: "Secondaire 5", value: "secondary-5" },
+                    { title: "Très mauvais", value: "veryBad" },
+                    { title: "Mauvais", value: "bad" },
+                    { title: "Neutre", value: "neutral" },
+                    { title: "Bon", value: "good" },
+                    { title: "Très bon", value: "veryGood" },
                 ],
             },
+            initialValue: "neutral",
         }),
         defineField({
-            name: "validations",
-            title: "Validations",
-            type: "array",
-            of: [
-                {
-                    type: "reference",
-                    to: [{ type: "validation" }],
-                },
-            ],
+            name: "validation",
+            title: "Validation",
+            type: "reference",
+            to: [{ type: "validation" }],
         }),
         defineField({
             name: "antagonistes",
@@ -59,13 +61,20 @@ export default defineType({
             type: "array",
             of: [
                 {
-                    type: "success",
+                    type: "reference",
+                    to: [{ type: "success" }],
                 },
             ],
         }),
         defineField({
             name: "showLocked",
             title: "Afficher si verrouillé",
+            type: "boolean",
+            initialValue: true,
+        }),
+        defineField({
+            name: "antagDisplayIfValid",
+            title: "Afficher les antagonistes même si validé",
             type: "boolean",
             initialValue: true,
         }),

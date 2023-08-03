@@ -9,8 +9,6 @@ import { useStoryStore } from "@/app/stores/storiesStore";
 import { RichTextStory } from "../../sanity/RichTextStory";
 import { Popover } from "@/app/components/animations/Popover";
 import { ImInfo } from "react-icons/im";
-import { convertMinutesToTime } from "@/app/lib/utils";
-import { BiTime } from "react-icons/bi";
 import { VariablesDisplay } from "./VariablesDisplay";
 
 export const DesktopLayout = ({ data }: { data: LayoutProps }) => {

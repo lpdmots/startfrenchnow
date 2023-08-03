@@ -1,19 +1,18 @@
-import { ElementProps, Extract } from "@/app/types/stories/element";
+import { ElementProps, Extract, Review } from "@/app/types/stories/element";
 import { useStoryStore } from "@/app/stores/storiesStore";
 import { useValidation } from "./useValidation";
 import { Adventure } from "@/app/types/stories/adventure";
-import { ChoiceProps, ElementDataProps, ElementsDataProps } from "@/app/types/stories/state";
+import { ChoiceProps, ElementDataProps, ElementsDataProps, LayoutProps } from "@/app/types/stories/state";
 import urlFor from "@/app/lib/urlFor";
 import { useModifier } from "./useModifier";
 import fetchData from "@/app/lib/apiStories";
 import { ELEMENTDATA } from "@/app/lib/constantes";
-import { partition, rangeFromString } from "@/app/lib/utils";
+import { partition, rangeFromString, sortByAttribut } from "@/app/lib/utils";
 import { Effect, ModifierWithRef } from "@/app/types/stories/effect";
 
 export const useElementTreatment = () => {
-    const { comonValidation } = useValidation();
-    const { story, addElementsData, layouts, chapter, actualElementId, inheritedChoices: inheritedChoicesState } = useStoryStore();
-    const { choicesValidation } = useValidation();
+    const { comonValidation, successValidation, choicesValidation } = useValidation();
+    const { story, addElementsData, layouts, chapter, actualElementId, inheritedChoices: inheritedChoicesState, variables, heros } = useStoryStore();
     const { effectsTreatment } = useModifier();
     const { durationTreatment } = useDuration();
 
@@ -66,8 +65,9 @@ export const useElementTreatment = () => {
         elementData.countIds.push(element._id);
         elementData.elementId = element._id;
 
-        const { extracts, duration } = element;
-        if (!extracts) {
+        const { extracts, duration, reviews } = element;
+
+        if (!extracts.length && !reviews?.length) {
             console.warn(`L'élément "${element.code}" n'a pas d'extrait`);
             return null;
         }
@@ -83,6 +83,9 @@ export const useElementTreatment = () => {
         // Selects the extracts that are valid and creates the layout data for each valid extract
         const validatedExtracts = await comonValidation("extract", extracts, elementData);
         await layoutsData(validatedExtracts as Extract[], element, elementData, postEffects);
+
+        // Add reviews to elementData
+        await addReviewsData(reviews, elementData);
     };
 
     const layoutsData = async (validatedExtracts: Extract[], element: ElementProps, elementData: ElementDataProps, postEffects: Effect[] = []) => {
@@ -126,7 +129,7 @@ export const useElementTreatment = () => {
 
         for (let i = 0; i < validatedExtracts.length; i++) {
             const extract = validatedExtracts[i];
-            const isLastLayout = i === validatedExtracts.length - 1;
+            const isLastLayout = i === validatedExtracts.length - 1 && !element.reviews?.length;
 
             const layoutData = {
                 extractId: extract._id,
@@ -142,6 +145,26 @@ export const useElementTreatment = () => {
             elementData.layouts.push(layoutData);
             elementData.countIds.push(extract._id);
         }
+    };
+
+    const addReviewsData = async (reviews: Review[] | undefined, elementData: ElementDataProps) => {
+        if (!reviews?.length) return;
+        const sortedReviews = sortByAttribut(reviews, "order");
+        const reviewsLayout = { reviewLayout: true, reviews: [] } as unknown as LayoutProps;
+
+        for (let i = 0; i < sortedReviews.length; i++) {
+            const review = sortedReviews[i];
+            const reviewData = { ...review };
+            reviewData.success = await successValidation(reviewData, elementData);
+            reviewData.scores = reviewData.scores?.map((score) => {
+                const key = score.reference || score.variable?._ref || "";
+                const value = elementData.variablesToUpdate[key]?.value || variables[key]?.value || "";
+                return { ...score, value: parseInt(value) };
+            });
+            reviewsLayout.reviews && reviewsLayout.reviews.push(reviewData);
+        }
+
+        elementData.layouts.push(reviewsLayout);
     };
 
     const freeLayoutsData = async (choice: ChoiceProps, elementData: ElementDataProps, postEffects: Effect[]) => {

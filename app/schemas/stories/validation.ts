@@ -12,16 +12,11 @@ export default defineType({
             type: "string",
         }),
         defineField({
-            name: "adventures",
-            title: "Aventures",
-            type: "array",
-            of: [
-                {
-                    type: "reference",
-                    to: [{ type: "adventure" }],
-                },
-            ],
-            initialValue: [{ _ref: ADVENTUREID }],
+            name: "adventure",
+            title: "Aventure",
+            type: "reference",
+            to: [{ type: "adventure" }],
+            initialValue: { _ref: ADVENTUREID },
         }),
         defineField({
             name: "initialAccess",

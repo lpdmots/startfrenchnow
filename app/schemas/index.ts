@@ -7,6 +7,8 @@ import course from "./sfn/course";
 import video from "./sfn/video";
 import videoBlog from "./sfn/videoBlog";
 import tabelVoc from "./sfn/tabelVoc";
+import flashcards from "./sfn/flashcards";
+import vocabulary from "./sfn/vocabulary";
 
 // Stories
 import adventure from "./stories/adventure";
@@ -22,14 +24,16 @@ import choice from "./stories/choice";
 import success from "./stories/success";
 
 export const schemaTypes = [
+    user,
     post,
     category,
     blockContent,
-    user,
     course,
     video,
     videoBlog,
     tabelVoc,
+    flashcards,
+    vocabulary,
     adventure,
     effect,
     variable,

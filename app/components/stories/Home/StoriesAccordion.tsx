@@ -22,7 +22,7 @@ interface AccordionProps {
 export const StoriesAccordion = ({ filtredStories }: { filtredStories: StoryCardProps[] }) => {
     // This approach is if you only want max one section open at a time. If you want multiple
     // sections to potentially be open simultaneously, they can all be given their own `useState`.
-    const [expanded, setExpanded] = useState<false | string>(false);
+    const [expanded, setExpanded] = useState<false | string>("18d88b4c-e3ce-4471-a66e-0d1fec1437e1");
 
     return (
         <>
@@ -63,7 +63,7 @@ const Accordion = ({ story, expanded, setExpanded }: AccordionProps) => {
                         <div className="flex justify-center  w-full gap-4 p-4">
                             <button className="btn btn-secondary small" onClick={() => setExpanded(isOpen ? false : story._id)}>
                                 <span className="flex  justify-center items-center">
-                                    Infos <span className="flex items-center">{isOpen ? <IoCaretUp className="ml-2" /> : <IoCaretDown className="ml-2" />}</span>
+                                    Info <span className="flex items-center">{isOpen ? <IoCaretUp className="ml-2" /> : <IoCaretDown className="ml-2" />}</span>
                                 </span>
                             </button>
                             <Link href={`/stories/${story.slug.current}/select-heros`} className="btn btn-primary small">
@@ -121,7 +121,7 @@ const Accordion = ({ story, expanded, setExpanded }: AccordionProps) => {
                                 </div>
                             </div>
                         </SlideFromBottom>
-                        <m.div className="p-6" variants={{ collapsed: { scale: 0.5 }, open: { scale: 1 } }} transition={{ duration: 0.8 }}>
+                        <m.div className="p-6" variants={{ collapsed: { scale: 0.5 }, open: { scale: 1 } }} transition={{ duration: 0.2 }}>
                             <PortableText value={story.description} components={RichTextStory()} />
                         </m.div>
                     </m.div>

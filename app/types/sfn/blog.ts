@@ -78,3 +78,15 @@ export interface VideoBlog {
     title: string;
     url: string;
 }
+
+export interface Vocabulary extends Base {
+    theme: string;
+    lines: Line[];
+}
+
+export interface Line {
+    french: string;
+    english: string;
+    sound: string;
+    note: string;
+}

@@ -24,30 +24,8 @@ export default defineType({
             initialValue: false,
         }),
         defineField({
-            name: "subscriber",
-            title: "Subscriber",
-            type: "boolean",
-            description: "Si cet utilisateur a souscrit à la newsletter.",
-            initialValue: false,
-        }),
-        defineField({
-            name: "username",
+            name: "name",
             title: "Nom d'utilisateur",
-            type: "string",
-        }),
-        defineField({
-            name: "firstName",
-            title: "Prénom",
-            type: "string",
-        }),
-        defineField({
-            name: "lastName",
-            title: "Nom",
-            type: "string",
-        }),
-        defineField({
-            name: "country",
-            title: "Pays",
             type: "string",
         }),
         defineField({
@@ -63,26 +41,29 @@ export default defineType({
             initialValue: false,
         }),
         defineField({
-            name: "videosAccess",
-            title: "Vidéos accessibles",
-            type: "array",
-            of: [
-                {
-                    type: "reference",
-                    to: [{ type: "video" }],
-                },
-            ],
+            name: "activateToken",
+            title: "Token d'activation",
+            type: "string",
         }),
         defineField({
-            name: "coursesAccess",
-            title: "Cours accessibles",
-            type: "array",
-            of: [
-                {
-                    type: "reference",
-                    to: [{ type: "course" }],
-                },
-            ],
+            name: "tokenExpiration",
+            title: "Expiration du token",
+            type: "datetime",
+        }),
+        defineField({
+            name: "resetPasswordToken",
+            title: "Token de réinitialisation du mot de passe",
+            type: "string",
+        }),
+        defineField({
+            name: "resetPasswordExpiration",
+            title: "Expiration du token de réinitialisation du mot de passe",
+            type: "datetime",
+        }),
+        defineField({
+            name: "oAuth",
+            title: "Connection OAuth",
+            type: "string",
         }),
     ],
 });

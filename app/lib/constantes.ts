@@ -15,6 +15,14 @@ export const COLORVARIABLES = {
     green: "var(--secondary-5)",
 };
 
+export const COLORVARIABLESLIGHT = {
+    yellow: "#FFF3CB",
+    blue: "#D8EEFF",
+    red: "#FFC2CA",
+    purple: "#E8E1FB",
+    green: "#7FDCA4",
+};
+
 export const STORYCATEGORIES = {
     fantasy: "Fantasy",
     scienceFiction: "Science Fiction",
@@ -32,3 +40,5 @@ export const NUMBEROFBUTTONS_DESKTOP = 6;
 export const ADVENTUREID = "18d88b4c-e3ce-4471-a66e-0d1fec1437e1";
 
 export const ELEMENTDATA: ElementDataProps = { elementId: null, variablesToUpdate: {}, layouts: [], heros: {}, countIds: [], access: {}, step: null, inheritedChoices: [], informations: [] };
+
+export const getTokenExpiration = () => new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(); // 3 days

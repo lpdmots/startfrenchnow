@@ -1,7 +1,7 @@
-import { ElementForChoice, ElementProps, Extract } from "@/app/types/stories/element";
+import { ElementForChoice, ElementProps, Extract, Review, Success } from "@/app/types/stories/element";
 import { Choice } from "@/app/types/stories/element";
 import { useStoryStore } from "@/app/stores/storiesStore";
-import { rangeFromString, sortByCode } from "@/app/lib/utils";
+import { rangeFromString, sortByAttribut, sortByCode } from "@/app/lib/utils";
 import { AllowedComponents, Condition, Effect, Validation } from "@/app/types/stories/effect";
 import fetchData from "@/app/lib/apiStories";
 import { ElementDataProps, VariablesToUpdateProps } from "@/app/types/stories/state";
@@ -97,6 +97,46 @@ export const useValidation = () => {
         return validatedChoices;
     };
 
+    const successValidation = async (review: Review, elementData: ElementDataProps) => {
+        const successList = review.success || [];
+        const successData: Success[] = [];
+        const { orderOption } = review;
+
+        const checkSuccess = (success: Success) => {
+            const isAccessible = checkAccess(success, elementData);
+            const areConditionsValid = checkConditions(success, elementData);
+            return isAccessible && areConditionsValid;
+        };
+
+        for (let i = 0; i < successList.length; i++) {
+            let successAndAntag = [successList[i]];
+            let isLockedChild = false;
+
+            while (successAndAntag.length > 0) {
+                const successToTreat = successAndAntag.shift();
+                if (!successToTreat) break;
+
+                const isValid = !isLockedChild && checkSuccess(successToTreat);
+                successData.push({ ...successToTreat, unlocked: isValid });
+
+                if (isValid) isLockedChild = true; // /!\ if mutiple antagonistes, the second will not be unlocked
+
+                if (successToTreat.antagDisplayIfValid || !isValid) {
+                    const antagonists = (await getAntagonistes("success", successToTreat)) as Success[];
+                    if (antagonists.length) {
+                        successAndAntag = [...antagonists, ...successAndAntag];
+                        successAndAntag = sortByAttribut(successAndAntag, "order");
+                    }
+                }
+            }
+        }
+        const orderedByOrder = sortByAttribut(successData, "order");
+        const orderedSuccess =
+            orderOption === "keepOrder" ? orderedByOrder : orderOption === "unlockedFirst" ? sortByAttribut(orderedByOrder, "unlocked").reverse() : sortByAttribut(orderedByOrder, "unlocked");
+
+        return orderedSuccess;
+    };
+
     const checkAccess = (component: AllowedComponents, elementData: ElementDataProps) => {
         const initialAccess = component?.validation?.initialAccess !== undefined ? component?.validation?.initialAccess : true;
         const isAccessInElementData = elementData.access[component._id] !== undefined;
@@ -165,7 +205,7 @@ export const useValidation = () => {
         }
     };
 
-    return { validation, checkAccess, checkCount, checkConditions, choicesValidation, comonValidation };
+    return { validation, checkAccess, checkCount, checkConditions, choicesValidation, comonValidation, successValidation };
 };
 
 const getAntagonistes = async (componentType: string, component: any) => {

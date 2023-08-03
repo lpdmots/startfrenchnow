@@ -1,7 +1,7 @@
 import { Block } from "../sfn/blog";
 import { VariableState } from "./adventure";
 import { Effect } from "./effect";
-import { Choice, Extract } from "./element";
+import { Choice, Extract, Review } from "./element";
 
 export interface LayoutProps {
     extractId: string;
@@ -13,6 +13,8 @@ export interface LayoutProps {
     accessChoices?: ChoiceProps[];
     timer?: { duration: number; defaultChoice: string };
     informations?: string[];
+    reviewLayout?: boolean;
+    reviews?: Review[];
 }
 
 export interface ChoiceProps {

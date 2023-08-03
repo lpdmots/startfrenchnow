@@ -1,9 +1,9 @@
 import React from "react";
 
-function Logo({ height, width }: { height: number; width: number }) {
+function Logo({ className }: { className: string }) {
     return (
-        <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 494 359" version="1.1">
+        <div className={`flex items-center ${className}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 494 359" version="1.1">
                 <path
                     d="M 145.741 296.429 C 135.284 300.160, 127.020 311.229, 127.020 321.500 C 127.020 332.210, 135.738 343.414, 146.507 346.545 C 155.949 349.290, 164.417 346.606, 171.799 338.530 C 181.442 327.979, 181.548 315.275, 172.081 304.746 C 164.412 296.216, 154.823 293.188, 145.741 296.429"
                     stroke="none"

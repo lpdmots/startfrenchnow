@@ -18,6 +18,12 @@ export default defineType({
             type: "string",
             validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
+
+        defineField({
+            name: "metaDescription",
+            title: "Meta-description",
+            type: "string",
+        }),
         defineField({
             name: "level",
             title: "Niveau",
@@ -30,7 +36,6 @@ export default defineType({
                     { value: "b2", title: "B2" },
                 ],
             },
-            initialValue: "a1",
         }),
         defineField({
             name: "slug",
@@ -49,7 +54,7 @@ export default defineType({
             options: {
                 hotspot: true,
             },
-            validation: (Rule) => Rule.required().warning("Une image est requise"),
+            //validation: (Rule) => Rule.required().warning("Une image est requise"),
         }),
         defineField({
             name: "mainVideo",

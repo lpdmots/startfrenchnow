@@ -1,9 +1,9 @@
 import { Reference } from "../sfn/blog";
 import { Base, Variable } from "./adventure";
-import { Choice, ElementForChoice, Extract } from "./element";
+import { Choice, ElementForChoice, Extract, Success } from "./element";
 
 export type Operator = "isNotNull" | "isNull" | "compare";
-export type AllowedComponents = Extract | ElementForChoice | Choice | Effect;
+export type AllowedComponents = Extract | ElementForChoice | Choice | Effect | Success;
 
 export interface Effect extends Base {
     adventure: Reference[];

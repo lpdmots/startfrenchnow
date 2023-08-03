@@ -3,6 +3,7 @@ const nextConfig = {
     reactStrictMode: true,
     experimental: {
         appDir: true,
+        serverActions: true,
     },
     images: {
         domains: ["encrypted-tbn0.gstatic.com", "cdn.sanity.io", "i-don-t-speak-french.s3.eu-central-1.amazonaws.com"],

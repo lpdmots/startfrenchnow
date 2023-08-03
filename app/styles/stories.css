@@ -86,60 +86,6 @@
     }
 }
 
-/* ROUNDBUTTON */
-.roundButton {
-    background-color: var(--neutral-600);
-    color: var(--neutral-100);
-    font-weight: bold;
-    width: 3.75rem;
-    height: 3.75rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 300ms ease-in-out;
-    padding: 4px;
-}
-
-.roundButton.small {
-    width: 3rem;
-    height: 3rem;
-    background-color: var(--neutral-400);
-    color: var(--neutral-800);
-}
-
-.roundButton.small:hover {
-    background-color: var(--neutral-500);
-    transform: translateY(-2px);
-}
-
-.roundButton:hover {
-    background-color: var(--neutral-800);
-    transform: translateY(-4px);
-}
-
-@media screen and (max-width: 992px) {
-    .roundButton {
-        width: 3.5rem;
-        height: 3.5rem;
-    }
-    .roundButton.small {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .roundButton {
-        width: 3.25rem;
-        height: 3.25rem;
-    }
-    .roundButton.small {
-        width: 2rem;
-        height: 2rem;
-    }
-}
-
 /* Pour enlever le margin bottom du paragraphe dans les boutons de choix : */
 #choiceButton > p {
     margin-bottom: 0;

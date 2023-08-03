@@ -1,8 +1,9 @@
 import nodemailer from "nodemailer";
 
-const email = process.env.EMAIL;
+const emailYoh = process.env.EMAILYOH;
+const emailNico = process.env.EMAILNICO;
 const pass = process.env.EMAIL_PASS;
-const emailPro = process.env.EMAILPRO;
+const email = process.env.EMAIL;
 
 export const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -12,7 +13,7 @@ export const transporter = nodemailer.createTransport({
     },
 });
 
-export const mailOptions = {
-    from: email,
-    to: emailPro,
+export const getMailOptions = (mailTo) => {
+    const emailPro = mailTo === "yohann" ? emailYoh : emailNico;
+    return { from: email, to: emailPro };
 };

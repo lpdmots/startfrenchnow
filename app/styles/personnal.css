@@ -86,8 +86,14 @@ section {
 .shadow-1 {
     box-shadow: 7px 7px 0 0 var(--neutral-800);
 }
+.left-shadow-1 {
+    box-shadow: -7px 7px 0 0 var(--neutral-800);
+}
 .shadow-2 {
     box-shadow: 11px 11px 0 0 var(--neutral-800);
+}
+.left-shadow-2 {
+    box-shadow: -11px 11px 0 0 var(--neutral-800);
 }
 .shadow-3 {
     box-shadow: 14px 14px 0 0 var(--neutral-800);
@@ -356,7 +362,6 @@ button {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.3);
     z-index: 5000;
     display: flex;
     justify-content: center;
@@ -521,3 +526,442 @@ button {
     pointer-events: none;
 }
 /* purgecss end ignore */
+
+.flashcards {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center center;
+    background: #4da6ff;
+}
+
+.flashcards__container {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    perspective: 800px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.flashcards__container::-webkit-scrollbar {
+    display: none;
+}
+
+.flashcards .cardFlash {
+    position: relative;
+    display: inline-block;
+    height: 33vw;
+    min-height: 200px;
+    max-height: 250px;
+    width: 33vw;
+    max-width: 250px;
+    min-width: 200px;
+    background: var(--neutral-100);
+    margin: 2rem 1rem;
+    border-radius: 15px;
+    cursor: pointer;
+    white-space: wrap;
+}
+
+.flashcards .cardFlash:first-of-type {
+    margin-left: 6rem;
+}
+
+.flashcards .cardFlash:last-of-type {
+    margin-right: 6rem;
+}
+
+.rotateText {
+    transform: rotateY(180deg);
+}
+
+.cardFlash {
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.cardFlash.flipped {
+    transform: rotateY(180deg);
+}
+
+.card__face {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    backface-visibility: hidden;
+    word-wrap: break-word;
+}
+
+.card__face--back {
+    transform: rotateY(180deg);
+}
+
+.simple-border {
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--neutral-800);
+    border-radius: 14px;
+}
+
+.only-radius {
+    border-radius: 14px;
+}
+
+@media screen and (max-width: 767px) {
+    .simple-border {
+        border-radius: 12px;
+    }
+    .only-radius {
+        border-radius: 12px;
+    }
+}
+
+/* Pour WhyStories */
+
+.grid-2-columns.blog-left-sidebar.gap-column-64px {
+    grid-column-gap: 64px;
+    -ms-grid-columns: 0.8fr 1fr;
+    grid-template-columns: 0.8fr 1fr;
+}
+
+#w-node-_20d05100-4494-e1df-c799-844a90f09c7c-b9543dac {
+    grid-column-start: span 1;
+    -ms-grid-column-span: 1;
+    grid-column-end: span 1;
+    grid-row-start: span 1;
+    -ms-grid-row-span: 1;
+    grid-row-end: span 1;
+    -ms-grid-row-align: start;
+    align-self: start;
+    -ms-grid-column-align: end;
+    justify-self: end;
+}
+
+.gap-40px {
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+}
+
+.card.resume-card-v1 {
+    overflow: hidden;
+    max-width: 625px;
+    background-color: var(--neutral-100);
+    box-shadow: none;
+}
+
+.card.resume-card-v1:hover {
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+}
+.top-content-resume-card {
+    padding: 20px 35px;
+    background-color: var(--neutral-300);
+}
+
+.reverse-wrap {
+    -webkit-flex-wrap: wrap-reverse;
+    -ms-flex-wrap: wrap-reverse;
+    flex-wrap: wrap-reverse;
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+}
+
+.grid-2-columns.blog-left-sidebar.gap-column-64px {
+    grid-column-gap: 64px;
+    -ms-grid-columns: 0.8fr 1fr;
+    grid-template-columns: 0.8fr 1fr;
+}
+
+.gap-column-64px {
+    grid-column-gap: 64px;
+}
+
+#w-node-eb9abc4f-1a64-dc91-46de-47243848b65b-b9543dac {
+    -webkit-align-self: start;
+    -ms-flex-item-align: start;
+    -ms-grid-row-align: start;
+    align-self: start;
+}
+
+.flex-horizontal {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.resume-card-divider {
+    width: 100%;
+    height: 3px;
+    background-color: var(--neutral-800);
+}
+
+.resume-card-period {
+    color: var(--neutral-800);
+    font-size: 24px;
+    line-height: 1.083em;
+    font-weight: 700;
+}
+
+.bottom-content-resume-card {
+    padding: 30px 35px 45px;
+}
+
+.flex-horizontal.space-between {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 991px) {
+    .card.resume-card-v1 {
+        max-width: 100%;
+    }
+    .grid-2-columns.blog-left-sidebar.gap-column-64px {
+        -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    }
+    .resume-card-period {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .resume-card-period {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .top-content-resume-card {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+    .bottom-content-resume-card {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+    .flex-horizontal.space-between.reverse-wrap {
+        -webkit-flex-wrap: wrap-reverse;
+        -ms-flex-wrap: wrap-reverse;
+        flex-wrap: wrap-reverse;
+        grid-column-gap: 24px;
+        grid-row-gap: 24px;
+    }
+}
+
+.footer-link.current {
+    color: var(--neutral-100);
+    display: inline;
+}
+
+.contact-item-wrapper:hover {
+    background-color: #d8eeff;
+}
+
+.contact-item-wrapper.current {
+    background-color: var(--secondary-2);
+    color: var(--neutral-100);
+}
+
+.success-register-message {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--secondary-5);
+    border-radius: 16px;
+    background-color: #effff9;
+    color: var(--secondary-5);
+    text-align: center;
+}
+
+.success-register-message.password {
+    margin-right: 24px;
+    margin-left: 24px;
+}
+
+.info-register-message {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--secondary-2);
+    border-radius: 16px;
+    background-color: #d8eeff;
+    color: var(--secondary-2);
+    text-align: center;
+}
+
+.info-register-message.password {
+    margin-right: 24px;
+    margin-left: 24px;
+}
+
+/* DropdownMenu */
+.menu-item {
+    perspective: 2000px;
+}
+
+.sub-menu {
+    position: absolute;
+    top: 30px;
+    padding: 15px;
+    background-color: #ccc;
+    border-radius: 6px;
+    z-index: 1000;
+    transform-origin: 50% -30px;
+}
+
+.sub-menu-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform-origin: 0 0;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.sub-menu-item {
+    margin-bottom: 5px;
+}
+
+.icon:hover {
+    color: blue;
+}
+
+/* ROUNDBUTTON */
+.roundButton {
+    background-color: var(--neutral-600);
+    color: var(--neutral-100);
+    font-weight: bold;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 300ms ease-in-out;
+    padding: 4px;
+}
+
+.roundButton.small {
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--neutral-400);
+    color: var(--neutral-800);
+}
+
+.roundButton.small:hover {
+    background-color: var(--neutral-500);
+    transform: translateY(-2px);
+}
+
+.roundButton:hover {
+    background-color: var(--neutral-800);
+    transform: translateY(-4px);
+}
+
+@media screen and (max-width: 992px) {
+    .roundButton {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+    .roundButton.small {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .roundButton {
+        width: 3.25rem;
+        height: 3.25rem;
+    }
+    .roundButton.small {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./node_modules/react-circular-progressbar/dist/styles.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+/*
+ * react-circular-progressbar styles
+ * All of the styles in this file are configurable!
+ */
+
+.CircularProgressbar {
+    /*
+     * This fixes an issue where the CircularProgressbar svg has
+     * 0 width inside a "display: flex" container, and thus not visible.
+     */
+    width: 100%;
+    /*
+     * This fixes a centering issue with CircularProgressbarWithChildren:
+     * https://github.com/kevinsqi/react-circular-progressbar/issues/94
+     */
+    vertical-align: middle;
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+    stroke: #3e98c7;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease 0s;
+}
+
+.CircularProgressbar .CircularProgressbar-trail {
+    stroke: #d6d6d6;
+    /* Used when trail is not full diameter, i.e. when props.circleRatio is set */
+    stroke-linecap: round;
+}
+
+.CircularProgressbar .CircularProgressbar-text {
+    fill: #3e98c7;
+    font-size: 20px;
+    dominant-baseline: middle;
+    text-anchor: middle;
+}
+
+.CircularProgressbar .CircularProgressbar-background {
+    fill: #d6d6d6;
+}
+
+/*
+   * Sample background styles. Use these with e.g.:
+   *
+   *   <CircularProgressbar
+   *     className="CircularProgressbar-inverted"
+   *     background
+   *     percentage={50}
+   *   />
+   */
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-background {
+    fill: #3e98c7;
+}
+
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-text {
+    fill: #fff;
+}
+
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-path {
+    stroke: #fff;
+}
+
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
+    stroke: transparent;
+}

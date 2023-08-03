@@ -12,14 +12,9 @@ export default defineType({
         defineField({
             name: "adventure",
             title: "Aventure",
-            type: "array",
-            of: [
-                {
-                    type: "reference",
-                    to: [{ type: "adventure" }],
-                },
-            ],
-            initialValue: [{ _ref: ADVENTUREID }],
+            type: "reference",
+            to: [{ type: "adventure" }],
+            initialValue: { _ref: ADVENTUREID },
         }),
         defineField({
             name: "name",

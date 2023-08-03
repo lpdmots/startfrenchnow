@@ -32,11 +32,11 @@ export const MobileLayout = ({ data }: { data: LayoutProps }) => {
                         <div>
                             <Image
                                 src={data.image}
-                                width={1000}
-                                height={800}
+                                width={500}
+                                height={700}
                                 alt={data?.title || "image"}
                                 className="rounded-xl shadow-1 simple-border"
-                                style={{ objectFit: "contain", maxHeight: "55vh", width: "auto" }}
+                                style={{ objectFit: "contain", maxHeight: "55vh", height: "auto" }}
                                 priority={slideIndex ? false : true}
                             />
                             <h2 className="display-3 mt-6">{data?.title}</h2>

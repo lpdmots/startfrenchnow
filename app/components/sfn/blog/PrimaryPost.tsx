@@ -4,7 +4,7 @@ import ClientSideRoute from "../../common/ClientSideRoute";
 import urlFor from "@/app/lib/urlFor";
 
 const PrimaryPost = ({ post }: { post: Post }) => {
-    const level = post.level ? LEVELDATA[post.level] : LEVELDATA["a1"];
+    const level = post.level ? LEVELDATA[post.level] : null;
 
     return (
         <ClientSideRoute route={`/blog/post/${post.slug.current}`}>
@@ -29,8 +29,15 @@ const PrimaryPost = ({ post }: { post: Post }) => {
                         <div className="flex-col gap-24px _15px---mbp">
                             <p className="line-clamp-4">{post.description}</p>
                             <div className="flex justify-end items-center text-300 medium color-neutral-600">
-                                <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: level.color }} />
-                                {level.label} - {new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
+                                {level ? (
+                                    <>
+                                        <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: level?.color }} />
+                                        {`${level.label} - `}
+                                    </>
+                                ) : (
+                                    ""
+                                )}
+                                {new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}
                             </div>
                         </div>
                     </div>

@@ -6,6 +6,7 @@ import React, { useEffect, useMemo } from "react";
 import { DesktopLayout } from "@/app/components/stories/story/DesktopLayout";
 import { MobileTabsContent } from "./MobileTabsContent";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
+import { Reviews } from "./Reviews";
 
 export const LayoutsCarousel = () => {
     const { layouts, slideIndex } = useStoryStore();
@@ -19,6 +20,7 @@ export const LayoutsCarousel = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const dateKey = useMemo(() => new Date().getTime(), [layouts]); // Force re-render when layouts change but not the slideIndex or it will not animate
+    const layout = layouts[slideIndex];
 
     return (
         <div className="slider-wrapper w-slider flex justify-center items-center pb-0 grow">
@@ -32,10 +34,16 @@ export const LayoutsCarousel = () => {
                     transition={{ duration: 0.5 }}
                 >
                     {isDesktop ? (
-                        <DesktopLayout data={layouts[slideIndex]} />
+                        layout?.reviewLayout ? (
+                            <Reviews data={layout} />
+                        ) : (
+                            <DesktopLayout data={layout} />
+                        )
+                    ) : layout?.reviewLayout ? (
+                        <Reviews data={layout} />
                     ) : (
                         <div className="flex grow justify-center items-center">
-                            <MobileTabsContent data={layouts[slideIndex]} />
+                            <MobileTabsContent data={layout} />
                         </div>
                     )}
                 </m.div>

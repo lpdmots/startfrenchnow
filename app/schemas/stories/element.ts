@@ -311,7 +311,8 @@ export default defineType({
                             type: "array",
                             of: [
                                 {
-                                    type: "success",
+                                    type: "reference",
+                                    to: [{ type: "success" }],
                                 },
                             ],
                         }),
@@ -336,7 +337,6 @@ export default defineType({
                             type: "string",
                             options: {
                                 list: [
-                                    //primary, secondary-1, secondary-2, secondary-3, secondary-4, secondary-5,
                                     { title: "Suivre l'ordre", value: "keepOrder" },
                                     { title: "Déverrouillés en premier", value: "unlockedFirst" },
                                     { title: "Verrouillés en premier", value: "lockedFirst" },

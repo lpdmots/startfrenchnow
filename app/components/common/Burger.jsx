@@ -30,17 +30,22 @@ const Burger = () => {
                             </Link>
                         </li>
                         <li className="header-nav-list-item middle">
+                            <Link href="/stories" className={`nav-link header-nav-link ${pathname === "/stories" && "current"}`} onClick={() => setOpen(false)}>
+                                Stories
+                            </Link>
+                        </li>
+                        <li className="header-nav-list-item middle">
                             <Link href="/blog" className={`nav-link header-nav-link ${pathname === "/blog" && "current"}`} onClick={() => setOpen(false)}>
                                 Blog
                             </Link>
                         </li>
                         <li className="header-nav-list-item middle">
-                            <Link href="/about" className={`nav-link header-nav-link ${pathname === "/studio" && "current"}`} onClick={() => setOpen(false)}>
+                            <Link href="/about" className={`nav-link header-nav-link ${pathname === "/about" && "current"}`} onClick={() => setOpen(false)}>
                                 About
                             </Link>
                         </li>
                         <li className="header-nav-list-item middle">
-                            <Link href="/contact" className={`nav-link header-nav-link ${pathname === "/studio" && "current"}`} onClick={() => setOpen(false)}>
+                            <Link href="/contact" className={`nav-link header-nav-link ${pathname === "/contact" && "current"}`} onClick={() => setOpen(false)}>
                                 Contact
                             </Link>
                         </li>

@@ -1854,7 +1854,7 @@ blockquote {
     padding-left: 4px;
     background-image: linear-gradient(180deg, transparent 6%, var(--secondary-4) 0);
     color: var(--neutral-100);
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 .heading-span-secondary-2 {
@@ -1862,7 +1862,7 @@ blockquote {
     padding-left: 4px;
     background-image: linear-gradient(180deg, transparent 10%, var(--secondary-2) 0);
     color: var(--neutral-100);
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 .logo-strip-wrapper {

@@ -25,6 +25,7 @@ export interface ElementProps extends Base {
         inherit: Reference;
     };
     duration?: string;
+    reviews?: Review[];
 }
 
 export interface Roll {
@@ -71,4 +72,39 @@ export interface ElementForChoice extends Base {
     code: string;
     validation: Validation;
     duration?: string;
+}
+
+export interface Review {
+    title: string;
+    order: number;
+    color: string;
+    scores?: ScoreProps[];
+    success?: Success[];
+    filter: string;
+    orderOption: string;
+}
+
+export interface ScoreProps {
+    variable: Reference;
+    reference: string;
+    title: string;
+    text: Block[];
+    min: number;
+    max: number;
+    order: number;
+    color: string;
+    value?: number;
+}
+
+export interface Success extends Base {
+    title: string;
+    text: Block[];
+    image: Image;
+    order: number;
+    color: string;
+    validation: Validation;
+    antagonistes: Reference[];
+    showLocked: Boolean;
+    antagDisplayIfValid: Boolean;
+    unlocked?: boolean;
 }

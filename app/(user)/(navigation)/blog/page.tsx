@@ -1,8 +1,8 @@
-import { previewData } from "next/headers";
+//import { previewData } from "next/headers";
 import { groq } from "next-sanity";
 import { client } from "@/app/lib/sanity.client";
-import PreviewSuspense from "../../../components/sanity/PreviewSuspense";
-import PreviewBlogListe from "../../../components/sanity/PreviewBlogList";
+//import PreviewSuspense from "../../../components/sanity/PreviewSuspense";
+//import PreviewBlogListe from "../../../components/sanity/PreviewBlogList";
 import BlogList from "../../../components/sfn/blog/BlogList";
 import { Category, Post } from "../../../types/sfn/blog";
 import PostsList from "@/app/components/sfn/post/PostList";
@@ -40,17 +40,7 @@ export default async function Blog() {
 
     const [posts, categories] = await Promise.all([postsData, categoriesData]);
 
-    return previewData() ? (
-        <PreviewSuspense
-            fallback={
-                <div role="status">
-                    <p className="animate-pulse text-primary">Chargement de l'apperçu</p>
-                </div>
-            }
-        >
-            <PreviewBlogListe categories={categories} />
-        </PreviewSuspense>
-    ) : (
+    return (
         <div className="page-wrapper">
             <BlogList posts={posts} />
             <Marquee content={<CategoriesBand />} />
@@ -58,3 +48,22 @@ export default async function Blog() {
         </div>
     );
 }
+
+/* return previewData() ? (
+    <PreviewSuspense
+        fallback={
+            <div role="status">
+                <p className="animate-pulse text-primary">Chargement de l'apperçu</p>
+            </div>
+        }
+    >
+        <PreviewBlogListe categories={categories} />
+    </PreviewSuspense>
+) : (
+    <div className="page-wrapper">
+        <BlogList posts={posts} />
+        <Marquee content={<CategoriesBand />} />
+        <PostsList posts={posts} categories={categories} />
+    </div>
+);
+ */

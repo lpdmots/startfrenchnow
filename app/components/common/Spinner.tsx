@@ -2,16 +2,23 @@ interface Props {
     radius?: boolean;
     message?: string;
     maxHeight?: string;
+    color?: string;
 }
 
-function Spinner({ radius, message, maxHeight }: Props) {
+function Spinner({ radius, message, maxHeight, color = "var(--neutral-500)" }: Props) {
     return (
-        <>
-            <div className={`loadingSpinnerContainer ${radius ? "rounded-lg" : undefined}`}>
-                <div className="loadingSpinner " style={{ borderColor: `#fff transparent #000 transparent`, maxHeight, maxWidth: maxHeight }}></div>
+        <div className="w-full">
+            <div className="w-full p-2" style={{ transformStyle: "preserve-3d" }}>
+                <div className={`loadingSpinnerContainer ${radius ? "rounded-lg" : undefined}`}>
+                    <div className="loadingSpinner " style={{ borderColor: `${color} transparent ${color} transparent`, maxHeight, maxWidth: maxHeight }}></div>
+                </div>
             </div>
-            <p>{message}</p>
-        </>
+            {message && (
+                <p className="w-full text-center" style={{ paddingTop: maxHeight }}>
+                    {message}
+                </p>
+            )}
+        </div>
     );
 }
 

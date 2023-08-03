@@ -119,5 +119,8 @@ export default defineType({
         defineArrayMember({
             type: "tabelVoc",
         }),
+        defineArrayMember({
+            type: "flashcards",
+        }),
     ],
 });

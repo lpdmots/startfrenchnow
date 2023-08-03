@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mailOptions, transporter } from "@/app/lib/nodemailer";
+import { getMailOptions, transporter } from "@/app/lib/nodemailer";
 
 interface MessageFields {
     name: string;
@@ -31,6 +31,7 @@ const generateEmailContent = (data: MessageFields) => {
 
 export async function POST(request: NextRequest) {
     const data = await request.json();
+    const { mailTo, ...mail } = data;
 
     if (!data.email) {
         return NextResponse.json({ message: "Bad request" }, { status: 400 });
@@ -38,12 +39,12 @@ export async function POST(request: NextRequest) {
 
     try {
         await transporter.sendMail({
-            ...mailOptions,
-            ...generateEmailContent(data),
-            subject: data.subject,
+            ...getMailOptions(mailTo),
+            ...generateEmailContent(mail),
+            subject: mail.subject,
         });
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (error: any) {
-        return NextResponse.json({ message: error.message }, { status: 400 });
+        return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

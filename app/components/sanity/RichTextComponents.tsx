@@ -5,6 +5,7 @@ import { BsCaretRightFill } from "react-icons/bs";
 import TabelVoc from "./TabelVoc";
 import { FaFileDownload } from "react-icons/fa";
 import VideoBlog from "./VideoBlog";
+import Flashcards from "../common/Flashcards";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -18,17 +19,20 @@ export const RichTextComponents = {
             );
         },
         videoBlog: ({ value }: any) => <VideoBlog values={value} />,
-        tabelVoc: ({ value }: any) => <TabelVoc titles={value.titles} column1={value.column1} column2={value.column2} color={value.color} />,
+        tabelVoc: ({ value }: any) => <TabelVoc data={value} />,
+        flashcards: ({ value }: any) => {
+            return <Flashcards data={value} />;
+        },
     },
     list: {
         bullet: ({ children }: any) => <ul className="ml-4 sm:ml-10 py-5 list-disc space-y-5">{children}</ul>,
         number: ({ children }: any) => <ol className="mt-lg list-decimal">{children}</ol>,
     },
     block: {
-        h1: ({ children }: any) => <h1 className="display-1">{children}</h1>,
-        h2: ({ children }: any) => <h2 className="display-2">{children}</h2>,
-        h3: ({ children }: any) => <h3 className="display-3">{children}</h3>,
-        h4: ({ children }: any) => <h4 className="display-4">{children}</h4>,
+        h1: ({ children }: any) => <h1 className="display-1 my-12">{children}</h1>,
+        h2: ({ children }: any) => <h2 className="display-2 my-12">{children}</h2>,
+        h3: ({ children }: any) => <h3 className="display-3 my-12">{children}</h3>,
+        h4: ({ children }: any) => <h4 className="display-4 my-12">{children}</h4>,
         blockquote: ({ children }: any) => <blockquote className="mt-12">{children}</blockquote>,
         translation: ({ children }: any) => (
             <div className="translation pl-8 md:pl-12" style={{ borderLeft: "solid 8px var(--neutral-600)" }}>
@@ -52,7 +56,11 @@ export const RichTextComponents = {
             );
         },
         hightlightRed: ({ children }: any) => <span className="heading-span-secondary-4">{children}</span>,
-        hightlightBlue: ({ children }: any) => <span className="heading-span-secondary-2">{children}</span>,
+        hightlightBlue: ({ children }: any) => (
+            <span className="heading-span-secondary-2" style={{ whiteSpace: "normal" }}>
+                {children}
+            </span>
+        ),
         hightlightOrange: ({ children }: any) => <span className="heading-span-secondary-1">{children}</span>,
         left: ({ children }: any) => <p style={{ textAlign: "left" }}>{children}</p>,
         center: ({ children }: any) => <p style={{ textAlign: "center" }}>{children}</p>,

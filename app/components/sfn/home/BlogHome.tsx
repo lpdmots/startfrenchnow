@@ -20,7 +20,7 @@ const query = groq`
 export default async function BlogHome() {
     const posts: Post[] = await client.fetch(query);
     return (
-        <div className="section pd-top-0 wf-section">
+        <div className="section wf-section">
             <div className="container-default w-container">
                 <div className="inner-container _600px---tablet center">
                     <div className="inner-container _500px---mbl center">

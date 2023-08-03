@@ -1,4 +1,3 @@
-import { groqQueries } from "@/app/api/component/[componentType]/[componentId]/route";
 import { DesktopLayoutSelect } from "@/app/components/stories/selectHero/DesktopLayoutSelect";
 import { MobileLayoutSelect } from "@/app/components/stories/selectHero/MobileLayoutSelect";
 import { NavBarStorySelect } from "@/app/components/stories/selectHero/NavBarStorySelect";
@@ -6,6 +5,8 @@ import { IsDesktop, IsMobile } from "@/app/components/stories/WithMediaQuery";
 import { Slug } from "@/app/types/sfn/blog";
 import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
+import { ProtectedPage } from "@/app/components/common/ProtectedPage";
+import { groqQueries } from "@/app/lib/groqQueries";
 
 type Props = {
     params: {
@@ -34,17 +35,19 @@ async function StartStory({ params: { slug } }: Props) {
     if (!story || !element) return <p>Désolé, cette histoire n'est pas encore disponible.</p>;
 
     return (
-        <div className="container-default mx-auto h-screen flex flex-col item-center">
-            <NavBarStorySelect story={story} />
-            <IsDesktop>
-                <DesktopLayoutSelect story={story} element={element} />
-            </IsDesktop>
-            <IsMobile>
-                <div className="flex grow justify-center items-center">
-                    <MobileLayoutSelect story={story} element={element} />
-                </div>
-            </IsMobile>
-        </div>
+        <ProtectedPage callbackUrl={`/stories/${story.slug.current}/select-heros`} messageInfo="You need to log in to keep track of your stories.">
+            <div className="container-default mx-auto h-screen flex flex-col item-center">
+                <NavBarStorySelect story={story} />
+                <IsDesktop>
+                    <DesktopLayoutSelect story={story} element={element} />
+                </IsDesktop>
+                <IsMobile>
+                    <div className="flex grow justify-center items-center">
+                        <MobileLayoutSelect story={story} element={element} />
+                    </div>
+                </IsMobile>
+            </div>
+        </ProtectedPage>
     );
 }
 

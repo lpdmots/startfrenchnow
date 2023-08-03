@@ -36,11 +36,19 @@ export const StoryNavbar = ({ layout }: { layout: "desktop" | "mobile" }) => {
                             onClick={() => setSelectedStoryTabsIndex(index)}
                         >
                             <button className={`roundButton ${item === selectedTab && "bg-neutral-800"}`}>{item.icon}</button>
-                            {item === selectedTab ? (
-                                <motion.div className="absolute left-0 right-0 -bottom-3 bs font-bold" layoutId="underline">
-                                    {selectedTab.label}
-                                </motion.div>
-                            ) : null}
+                            <div>
+                                {item === selectedTab ? (
+                                    <motion.div
+                                        className="absolute left-0 right-0 -bottom-3 bs font-bold"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        {selectedTab.label}
+                                    </motion.div>
+                                ) : null}
+                            </div>
                         </li>
                     ))}
                 </ul>

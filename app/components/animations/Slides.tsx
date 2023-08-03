@@ -22,7 +22,7 @@ export const SlideFromBottom = ({ duration, delay, children }: Props) => {
     };
 
     return (
-        <m.div variants={slidefromBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div className="w-full h-full" variants={slidefromBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {children}
         </m.div>
     );
@@ -43,7 +43,7 @@ export const SlideFromRight = ({ duration, delay, children }: Props) => {
     };
 
     return (
-        <m.div variants={slidefromRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <m.div className="w-full h-full" variants={slidefromRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {children}
         </m.div>
     );
@@ -65,6 +65,47 @@ export const SlideFromLeft = ({ duration, delay, children }: Props) => {
 
     return (
         <m.div variants={slidefromRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            {children}
+        </m.div>
+    );
+};
+
+export const SlideInOneByOneParent = ({ duration = 0.5, delay = 0.3, children }: Props) => {
+    const fadeInOneByOneParent = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                delay,
+                duration,
+                delayChildren: 1,
+                staggerChildren: 0.1,
+            },
+        },
+    };
+
+    return (
+        <m.div variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            {children}
+        </m.div>
+    );
+};
+
+export const SlideInOneByOneChild = ({ duration = 0.5, children }: Props) => {
+    const fadeInOneByOneItem = {
+        hidden: { y: 50, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                duration,
+                ease: "easeOut",
+            },
+        },
+    };
+
+    return (
+        <m.div variants={fadeInOneByOneItem} className="h-full w-full">
             {children}
         </m.div>
     );

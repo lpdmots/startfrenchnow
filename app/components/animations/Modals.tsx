@@ -31,7 +31,7 @@ export const ModalFromBottom = ({ data }: Props) => {
 
     return (
         <AnimatePresence>
-            <div className="px-5 fixed h-full w-full flex items-center justify-center top-0 left-0">
+            <div className="px-5 fixed h-full w-full flex items-center justify-center top-0 left-0" style={{ zIndex: 2000 }}>
                 <m.div
                     initial={{ opacity: 0 }}
                     animate={{
@@ -60,7 +60,7 @@ export const ModalFromBottom = ({ data }: Props) => {
                     className="absolute z-100 p-5 bg-neutral-200 h-auto max-w-md  text-white rounded-lg"
                     style={{ width: "98%" }}
                 >
-                    <div className="grid grid-cols-5 gap-4">
+                    <div className="grid grid-cols-5 gap-4 mb-2">
                         {imageUrl && (
                             <div className="col-span-1">
                                 <Image src={imageUrl} height={50} width={50} alt={title || "representation de l'objet"} className="h-12 sm:h-16 md:h-24 object-contain w-auto" />

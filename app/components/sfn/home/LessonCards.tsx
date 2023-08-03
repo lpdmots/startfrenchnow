@@ -3,7 +3,6 @@ import Image from "next/image";
 import React from "react";
 import { AiFillSignal } from "react-icons/ai";
 import { IoTime } from "react-icons/io5";
-import { BiDollar } from "react-icons/bi";
 import Link from "next/link";
 import { MdOutlineEmail } from "react-icons/md";
 import { m } from "framer-motion";
