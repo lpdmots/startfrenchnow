@@ -38,6 +38,7 @@ export interface Adventure extends Base {
     publishedAt: string;
     firstChapter: Reference;
     startTime?: string;
+    stats: StoryStats | undefined;
 }
 
 export interface AdventureImages {
@@ -108,4 +109,53 @@ export interface DisplayVariable {
 export interface VariableState {
     data?: Variable;
     value: string;
+}
+
+export interface StoryStats {
+    games: number;
+    userIds: string[];
+    scores: StoryScore[];
+    success: {
+        id: string;
+        value: number;
+    }[];
+    averageSuccess: {
+        id: string;
+        value: number;
+    }[];
+}
+
+export interface StoryScore {
+    title: string;
+    averageScore: number;
+    bestScore: {
+        value: number;
+        userId: string;
+    };
+    lowestScore: {
+        value: number;
+        userId: string;
+    };
+}
+
+export interface Feedback extends Base {
+    starRating: StarRating[];
+    comment: {
+        userId: string;
+        comment: string;
+    }[];
+    features: Features[];
+    userIds: string[];
+}
+
+export interface StarRating {
+    title: string;
+    totalStars: number;
+    vote: number;
+}
+
+export interface Features {
+    title: string;
+    totalChecked: number;
+    vote: number;
 }

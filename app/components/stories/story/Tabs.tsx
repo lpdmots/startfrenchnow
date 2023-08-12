@@ -5,7 +5,7 @@ import { useStoryStore } from "@/app/stores/storiesStore";
 import { DesktopTabsContent } from "./DesktopTabsContent";
 import { MobileTabsContent } from "./MobileTabsContent";
 import { StoryNavbar } from "./StoryNavbar";
-import { IsDesktop, IsMobile } from "../WithMediaQuery";
+import { IsDesktop, IsTablet } from "../WithMediaQuery";
 
 export const Tabs = ({ data }: { data: LayoutProps }) => {
     const { setSelectedStoryTabsIndex } = useStoryStore();
@@ -24,9 +24,9 @@ export const Tabs = ({ data }: { data: LayoutProps }) => {
                         <StoryNavbar layout="desktop" />
                     </div>
                 </IsDesktop>
-                <IsMobile>
+                <IsTablet>
                     <MobileTabsContent data={data} />
-                </IsMobile>
+                </IsTablet>
             </div>
         </div>
     );

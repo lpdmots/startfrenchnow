@@ -102,4 +102,7 @@ export const groqQueries: any = {
     vocabulary: groq`*[_type=='vocabulary' && _id == $componentId ][0]{
         ...,
     }`,
+    feedback: groq`*[_type=='feedback' ][0]{
+        ...,
+    }`,
 };

@@ -1,10 +1,10 @@
 "use server";
 import { hash } from "bcrypt";
 import { SignupFormData } from "../types/sfn/auth";
-import { getTokenExpiration } from "./constantes";
-import { transporter } from "./nodemailer";
-import { SanityServerClient as client } from "./sanity.clientServer";
-import { getActivateToken, isStrongPassword, isValidEmail } from "./utils";
+import { getTokenExpiration } from "../lib/constantes";
+import { transporter } from "../lib/nodemailer";
+import { SanityServerClient as client } from "../lib/sanity.clientServer";
+import { getActivateToken, isStrongPassword, isValidEmail } from "../lib/utils";
 
 export const handleSignup = async (formData: SignupFormData) => {
     const email = formData.email.toLowerCase().trim();
@@ -38,7 +38,7 @@ export const handleSignup = async (formData: SignupFormData) => {
     }
 
     if (!isStrongPassword(password1)) {
-        return { error: "Password must have at least 8 characters, including uppercase, lowercase, numbers, and special characters.", status: 400 };
+        return { error: "Password must have at least 8 characters, including uppercase, lowercase and numbers.", status: 400 };
     }
 
     try {

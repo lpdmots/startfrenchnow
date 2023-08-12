@@ -13,15 +13,21 @@ import { ElementDataProps } from "@/app/types/stories/state";
 import { ELEMENTDATA } from "@/app/lib/constantes";
 
 export const StartStoryButton = ({ element, story: newStory }: { story: Adventure; element: ElementProps }) => {
-    const { story: oldStory, resetData } = useStoryStore();
+    const { story: oldStory, resetData, layouts, slideIndex } = useStoryStore();
     const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);
     const [startNewStory, setStartNewStory] = useState<boolean>(false);
     const [startButton, setStartButton] = useState<boolean>(false);
+    const isReview = layouts[slideIndex]?.reviewLayout;
 
     useEffect(() => {
         if (oldStory && !startNewStory) {
-            setOpen(true);
+            if (isReview) {
+                resetData();
+                setStartNewStory(true);
+            } else {
+                setOpen(true);
+            }
         } else {
             setStartNewStory(true);
         }
@@ -85,8 +91,8 @@ const StartButton = ({ element, newStory }: { element: ElementProps; newStory: A
     };
 
     return (
-        <button className="btn-primary" onClick={handleClick} style={{ minWidth: 278 }}>
-            {clicked && !layoutsReady ? <Spinner radius maxHeight="40px" /> : "Commencer la partie"}
+        <button className="btn-primary" onClick={clicked ? undefined : handleClick} style={{ minWidth: 278 }}>
+            {clicked && !layoutsReady ? <Spinner radius maxHeight="40px" color="var(--neutral-100)" /> : "Commencer la partie"}
         </button>
     );
 };

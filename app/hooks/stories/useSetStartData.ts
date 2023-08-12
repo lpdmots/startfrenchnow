@@ -16,7 +16,7 @@ export const useSetStartData = () => {
         addVariables(variablesData);
 
         // Add heros data, story and chapter to the state
-        setNewStates({ heros: { ...herosData, ...statsListToObject(statistics) }, story, chapter: "1" });
+        setNewStates({ gameDate: Date.now(), heros: { ...herosData, ...statsListToObject(statistics) }, story, chapter: "1" });
     };
 
     return setStartData;

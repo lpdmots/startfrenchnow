@@ -1,7 +1,7 @@
 import { DesktopLayoutSelect } from "@/app/components/stories/selectHero/DesktopLayoutSelect";
 import { MobileLayoutSelect } from "@/app/components/stories/selectHero/MobileLayoutSelect";
 import { NavBarStorySelect } from "@/app/components/stories/selectHero/NavBarStorySelect";
-import { IsDesktop, IsMobile } from "@/app/components/stories/WithMediaQuery";
+import { IsDesktop, IsTablet } from "@/app/components/stories/WithMediaQuery";
 import { Slug } from "@/app/types/sfn/blog";
 import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
@@ -41,11 +41,11 @@ async function StartStory({ params: { slug } }: Props) {
                 <IsDesktop>
                     <DesktopLayoutSelect story={story} element={element} />
                 </IsDesktop>
-                <IsMobile>
+                <IsTablet>
                     <div className="flex grow justify-center items-center">
                         <MobileLayoutSelect story={story} element={element} />
                     </div>
-                </IsMobile>
+                </IsTablet>
             </div>
         </ProtectedPage>
     );

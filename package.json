@@ -12,8 +12,8 @@
     "dependencies": {
         "@google-cloud/text-to-speech": "^4.2.3",
         "@portabletext/react": "^2.0.0",
-        "@sanity/client": "^4.0.1",
-        "@sanity/export": "^3.14.3",
+        "@sanity/client": "^6.4.0",
+        "@sanity/export": "^3.14.5",
         "@sanity/image-url": "^1.0.1",
         "@sanity/ui": "^1.1.0",
         "@sanity/vision": "^3.0.0",

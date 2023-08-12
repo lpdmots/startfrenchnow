@@ -4,7 +4,7 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServer";
 import { UserProps } from "@/app/types/sfn/auth";
 import { getActivateToken } from "@/app/lib/utils";
 import { getTokenExpiration } from "@/app/lib/constantes";
-import { sendActivationEmail } from "@/app/lib/serverActions";
+import { sendActivationEmail } from "@/app/serverActions/authActions";
 
 interface Props {
     params: {

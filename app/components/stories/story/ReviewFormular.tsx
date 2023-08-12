@@ -5,7 +5,10 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { BiExit } from "react-icons/bi";
 import { GiSpellBook } from "react-icons/gi";
 import SimpleButton from "../../animations/SimpleButton";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useStoryStore } from "@/app/stores/storiesStore";
+import { setStoryFeedback } from "@/app/serverActions/storyActions";
 
 export const ReviewFormularNavbar = () => {
     const [open, setOpen] = useState<boolean>(false);
@@ -48,14 +51,23 @@ export const ReviewFormularButton = () => {
 
 const ModalAskForComment = ({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) => {
     const [checked, setChecked] = useState<boolean>(false);
+    const { story } = useStoryStore();
+    const { data: session, status } = useSession();
     const router = useRouter();
-
-    const handleClickOk = () => {
-        // Traitement du formulaire
-    };
+    const pathname = usePathname();
 
     const handleCheck = () => {
         setChecked(!checked);
+    };
+
+    const handleLeave = () => {
+        if (checked) setStoryFeedback(session?.user?._id as string, story?._id as string, "no");
+        router.push("/stories");
+    };
+
+    const handleFeedback = () => {
+        if (checked) setStoryFeedback(session?.user?._id as string, story?._id as string, "no");
+        router.push(pathname + "/feedback");
     };
 
     return (
@@ -91,23 +103,26 @@ const ModalAskForComment = ({ setOpen }: { setOpen: Dispatch<SetStateAction<bool
                         <Image src="/images/ask-for-help.png" height={100} width={100} alt="Le développeur" className="object-contain float-left mr-4 mb-4" style={{ maxHeight: 100 }} />
 
                         <p className="text-justify">
-                            Salut mon p'tit loup. Si ça t'a plu soit cool et laisse-moi un petit retour pour que je puisse m'améliorer et continuer à progresser gnagnagna... Et patatiti et patata.
+                            J'espère que vous avez bien voyagé à travers cette histoire. Accepteriez-vous de partager vos impressions sur cette expérience ? Votre retour nous aide à améliorer nos
+                            histoires. Si vous avez des souhaits, c'est le moment de demander !
                         </p>
                     </div>
                     <div className="w-checkbox checkbox-field-wrapper col-span-2">
-                        <label className="w-form-label flex items-center" onClick={handleCheck}>
+                        <label className="bs w-form-label flex items-center" onClick={handleCheck}>
                             <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checked ? "w--redirected-checked" : undefined}`}></div>
-                            Ne plus demander
+                            Ne plus afficher ce message.
                         </label>
                     </div>
-                    <div className="flex justify-end gap-4">
-                        <button className="btn-secondary small" onClick={() => router.push("/stories")}>
-                            Quitter
-                        </button>
-                        <button className="btn-primary small" onClick={handleClickOk}>
-                            Aider
-                        </button>
-                    </div>
+                    {status === "authenticated" && (
+                        <div className="flex justify-end gap-4">
+                            <button className="btn-secondary small" onClick={handleLeave}>
+                                Quitter
+                            </button>
+                            <button className="btn-primary small" onClick={handleFeedback}>
+                                Donner son avis
+                            </button>
+                        </div>
+                    )}
                 </m.div>
             </div>
         </AnimatePresence>

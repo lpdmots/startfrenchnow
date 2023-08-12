@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { handleSignup } from "@/app/lib/serverActions";
+import { handleSignup } from "@/app/serverActions/authActions";
 import { SignupFormData } from "@/app/types/sfn/auth";
 import Spinner from "@/app/components/common/Spinner";
 import { subscribeNewsletter } from "@/app/lib/apiNavigation";

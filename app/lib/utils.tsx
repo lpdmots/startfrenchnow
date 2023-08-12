@@ -1,5 +1,3 @@
-import { AllowedComponents } from "@/app/types/stories/effect";
-
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
 }
@@ -110,9 +108,8 @@ export function isStrongPassword(password: string): boolean {
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
 
-    return password.length >= minLength && hasUppercase && hasLowercase && hasNumber && hasSpecialChar;
+    return password.length >= minLength && hasUppercase && hasLowercase && hasNumber;
 }
 
 export function isValidEmail(email: string): boolean {

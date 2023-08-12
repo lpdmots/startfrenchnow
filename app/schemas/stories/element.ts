@@ -317,16 +317,14 @@ export default defineType({
                             ],
                         }),
                         defineField({
-                            name: "filter",
-                            title: "Filtre",
+                            name: "defaultFilter",
+                            title: "Filtre par défaut",
                             type: "string",
                             options: {
                                 list: [
-                                    //primary, secondary-1, secondary-2, secondary-3, secondary-4, secondary-5,
-                                    { title: "Filtre, tous par défaut", value: "filterAll" },
-                                    { title: "Filtre, déverrouillés par défaut", value: "filterUnlocked" },
-                                    { title: "Pas de filtre, tout afficher", value: "noFilterAll" },
-                                    { title: "Pas de filtre, déverrouillés seulement", value: "noFilterUnlocked" },
+                                    { title: "Pas de bouton de filtre", value: "noFilterButton" },
+                                    { title: "Tous par défaut", value: "noFilter" },
+                                    { title: "Déverrouillés par défaut", value: "unlocked" },
                                 ],
                             },
                             initialValue: "filterAll",

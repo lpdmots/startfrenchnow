@@ -905,11 +905,29 @@ blockquote {
     font-weight: 400;
 }
 
+.badge-secondary {
+    display: inline-block;
+    padding: 18px 28px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--neutral-800);
+    border-radius: 14px;
+    background-color: var(--neutral-100);
+    color: var(--neutral-800);
+    font-size: 18px;
+    line-height: 1.111em;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+}
+
+.badge-secondary.light,
 .badge-primary.light {
     background-color: var(--neutral-400);
     color: var(--neutral-800);
 }
 
+.badge-secondary.small,
 .badge-primary.small {
     padding: 14px 22px;
     border-radius: 12px;
@@ -917,12 +935,14 @@ blockquote {
     line-height: 1.125em;
 }
 
-.badge-primary.small.btn-primary {
+.badge-primary.small.btn-primary,
+.badge-secondary.small.btn-primary {
     border-width: 0px;
     font-weight: 700;
 }
 
-.badge-primary.large {
+.badge-primary.large,
+.badge-secondary.large {
     padding: 22px 38px;
     border-radius: 16px;
     font-size: 20px;
@@ -1123,8 +1143,8 @@ blockquote {
 .checkbox.w--redirected-checked {
     margin-top: 0px;
     margin-left: 0px;
-    border-color: var(--neutral-800);
-    background-color: var(--neutral-800);
+    border-color: #fff;
+    background-color: #000;
     background-image: url("/images/check-form-brix-templates-webflow.svg");
     background-size: auto;
 }
@@ -2870,19 +2890,22 @@ blockquote {
         font-size: 18px;
     }
 
-    .badge-primary {
+    .badge-primary,
+    .badge-secondary {
         padding: 16px 24px;
         border-radius: 12px;
         font-size: 16px;
     }
 
-    .badge-primary.small {
+    .badge-primary.small,
+    .badge-secondary.small {
         padding: 12px 20px;
         border-radius: 10px;
         font-size: 14px;
     }
 
-    .badge-primary.large {
+    .badge-primary.large,
+    .badge-secondary.large {
         padding: 20px 32px;
         border-radius: 14px;
         font-size: 18px;
@@ -3428,7 +3451,8 @@ blockquote {
         padding-left: 20px;
     }
 
-    .badge-primary.small.btn-primary {
+    .badge-primary.small.btn-primary,
+    .badge-secondary.small.btn-primary {
         width: auto;
     }
 

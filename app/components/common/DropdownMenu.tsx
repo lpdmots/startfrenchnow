@@ -12,7 +12,9 @@ const DropdownMenu: React.FC<DropdownProps> = ({ content, children }) => {
 
     return (
         <Popover isOpen={isOpen} positions={["bottom"]} onClickOutside={() => setIsOpen(false)} content={content}>
-            <div onClick={() => setIsOpen(!isOpen)}>{children}</div>
+            <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+                {children}
+            </div>
         </Popover>
     );
 };

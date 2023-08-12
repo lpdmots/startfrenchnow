@@ -2,12 +2,14 @@
 import GoogleAnalytics from "../components/common/Analytics/GoogleAnalytics";
 import { AnalyticsWrapper } from "../components/common/Analytics/Analytics";
 import LazyM from "../components/animations/LazyM";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     return (
         <>
             <SessionProvider>
+                <UserIdProvider />
                 <AnalyticsWrapper />
                 <LazyM>
                     <main>{children}</main>
@@ -17,3 +19,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         </>
     );
 }
+
+const UserIdProvider = () => {
+    const { data: session } = useSession();
+    useEffect(() => {
+        if (session) {
+            localStorage.setItem("current-user", session.user._id);
+        } else {
+            localStorage.removeItem("current-user");
+        }
+    }, [session]);
+
+    return null;
+};

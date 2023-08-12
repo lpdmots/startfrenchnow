@@ -965,3 +965,59 @@ button {
 .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
     stroke: transparent;
 }
+
+.select-container {
+    position: relative;
+}
+
+.select-selected {
+    border: 2px solid var(--neutral-800);
+    padding: 10px;
+    cursor: pointer;
+}
+
+.select-options {
+    margin-top: 8px;
+    position: absolute;
+    width: 100%;
+    border: 2px solid var(--neutral-800);
+    z-index: 1000;
+}
+
+.select-option {
+    cursor: pointer;
+    background-color: var(--neutral-100);
+}
+
+.select-option:hover {
+    background-color: var(--neutral-200);
+}
+
+/* Pour la barre de scroll quand il y a trop de bouton de choix */
+
+.keep-scroll {
+    overflow: auto; /* ou overflow-y: auto; si vous voulez le scrolling vertical uniquement */
+}
+
+.keep-scroll::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.keep-scroll::-webkit-scrollbar:vertical {
+    width: 12px;
+}
+
+.keep-scroll::-webkit-scrollbar:horizontal {
+    height: 12px;
+}
+
+.keep-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+}
+
+.keep-scroll::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #ffffff;
+}

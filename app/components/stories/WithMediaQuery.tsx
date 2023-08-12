@@ -7,8 +7,20 @@ export const IsDesktop = ({ children }: { children: JSX.Element }) => {
     return <>{children}</>;
 };
 
+export const IsTablet = ({ children }: { children: JSX.Element }) => {
+    const isTablet = useMediaQuery("(max-width: 991px)");
+    if (!isTablet) return null;
+    return <>{children}</>;
+};
+
+export const IsMedium = ({ children }: { children: JSX.Element }) => {
+    const isMedium = useMediaQuery("(max-width: 768px)");
+    if (!isMedium) return null;
+    return <>{children}</>;
+};
+
 export const IsMobile = ({ children }: { children: JSX.Element }) => {
-    const isMobile = useMediaQuery("(max-width: 991px)");
+    const isMobile = useMediaQuery("(max-width: 480px)");
     if (!isMobile) return null;
     return <>{children}</>;
 };

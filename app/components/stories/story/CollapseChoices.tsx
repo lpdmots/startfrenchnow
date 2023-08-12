@@ -34,7 +34,7 @@ export const CollapseChoices = ({ collapseData, type, label }: Props) => {
                             collapsed: { opacity: 0 },
                         }}
                         transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
-                        className="absolute w-full pb-3 md:pb-6"
+                        className="absolute w-full pb-3 md:pb-6 keep-scroll"
                         style={{ zIndex: 1000, transform: "translateY(-100%)", maxHeight: "70vh", overflowY: "auto" }}
                     >
                         {collapseData}

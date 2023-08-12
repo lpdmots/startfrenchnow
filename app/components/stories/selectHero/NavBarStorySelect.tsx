@@ -15,7 +15,7 @@ export const NavBarStorySelect = ({ story }: { story: Adventure }) => {
                     <h1 className="hidden sm:block display-4 mb-0">{story.name}</h1>
                     <div className="flex gap-4 items-center">
                         <DarkMode />
-                        <Link href="/stories" aria-label="Dark mode" data-set-theme="dark" data-act-class="ACTIVECLASS" className="btn p-0 flex items-center bg-neutral-100 ">
+                        <Link href="/stories" className="btn p-0 flex items-center bg-neutral-100 ">
                             <BiExit className="fill-neutral-800 text-3xl sm:text-4xl" />
                         </Link>
                     </div>

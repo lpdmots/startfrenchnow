@@ -65,5 +65,80 @@ export default defineType({
             title: "Connection OAuth",
             type: "string",
         }),
+        defineField({
+            name: "stories",
+            title: "Stories",
+            type: "array",
+            of: [
+                {
+                    title: "storyUserStats",
+                    type: "object",
+                    fields: [
+                        {
+                            title: "Story",
+                            name: "story",
+                            type: "reference",
+                            to: [{ type: "adventure" }],
+                        },
+                        {
+                            title: "Date de la dernière partie débutée",
+                            name: "lastGameDate",
+                            type: "number",
+                        },
+                        {
+                            title: "Feedback",
+                            name: "feedback",
+                            type: "string",
+                            options: {
+                                list: [
+                                    { value: "done", title: "Fait" },
+                                    { value: "no", title: "Refusé" },
+                                    { value: "open", title: "Attente" },
+                                ],
+                            },
+                        },
+                        {
+                            title: "Games",
+                            name: "games",
+                            type: "number",
+                        },
+                        {
+                            title: "Scores",
+                            name: "scores",
+                            type: "array",
+                            of: [
+                                {
+                                    title: "Score",
+                                    type: "object",
+                                    fields: [
+                                        {
+                                            title: "Titre",
+                                            name: "title",
+                                            type: "string",
+                                        },
+                                        {
+                                            title: "Meilleur score",
+                                            name: "bestScore",
+                                            type: "number",
+                                        },
+                                        {
+                                            title: "Score le plus bas",
+                                            name: "lowestScore",
+                                            type: "number",
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            title: "Success",
+                            name: "success",
+                            type: "array",
+                            of: [{ type: "string" }],
+                        },
+                    ],
+                },
+            ],
+        }),
     ],
 });

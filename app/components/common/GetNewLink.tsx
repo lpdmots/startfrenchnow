@@ -1,6 +1,6 @@
 "use client";
 
-import { sendNewActivationLink, sendNewPasswordLink } from "@/app/lib/serverActions";
+import { sendNewActivationLink, sendNewPasswordLink } from "@/app/serverActions/authActions";
 import { useRef, useState } from "react";
 import Spinner from "./Spinner";
 

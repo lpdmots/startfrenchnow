@@ -24,7 +24,7 @@ function DarkMode() {
     }, []);
 
     return (
-        <div className="flex justify-center p-2 pr-0">
+        <div className="flex justify-center py-2 ">
             {!["light", ""].includes(toggle) ? (
                 <button aria-label="Light mode" data-set-theme="" data-act-class="ACTIVECLASS" onClick={() => handleClick("light")} className="btn p-0 flex items-center bg-neutral-100">
                     <MdWbSunny className="fill-neutral-800 text-2xl sm:text-3xl hover:fill-secondary-2 duration-300" />

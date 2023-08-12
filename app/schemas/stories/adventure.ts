@@ -150,7 +150,6 @@ export default defineType({
                 {
                     type: "object",
                     fields: [
-                        //fields: name, sex, statistics, description, images, starter
                         {
                             name: "name",
                             title: "Nom du héros",
@@ -267,7 +266,124 @@ export default defineType({
             type: "datetime",
             initialValue: new Date().toISOString(),
         }),
-        //Theme à faire...
+        defineField({
+            name: "stats",
+            title: "Statistiques",
+            type: "object",
+            fields: [
+                {
+                    name: "games",
+                    title: "Nombre de parties",
+                    type: "number",
+                },
+                {
+                    name: "userIds",
+                    title: "Ids des utilisateurs",
+                    type: "array",
+                    of: [{ type: "string" }],
+                },
+                {
+                    name: "scores",
+                    title: "Scores",
+                    type: "array",
+                    of: [
+                        {
+                            type: "object",
+                            fields: [
+                                {
+                                    name: "title",
+                                    title: "Titre",
+                                    type: "string",
+                                },
+                                {
+                                    name: "averageScore",
+                                    title: "Score moyen",
+                                    type: "number",
+                                },
+                                {
+                                    name: "bestScore",
+                                    title: "Meilleur score",
+                                    type: "object",
+                                    fields: [
+                                        {
+                                            name: "value",
+                                            title: "Valeur",
+                                            type: "number",
+                                        },
+                                        {
+                                            name: "userId",
+                                            title: "Id de l'utilisateur",
+                                            type: "string",
+                                        },
+                                    ],
+                                },
+                                {
+                                    name: "lowestScore",
+                                    title: "Score le plus bas",
+                                    type: "object",
+                                    fields: [
+                                        {
+                                            name: "value",
+                                            title: "Valeur",
+                                            type: "number",
+                                        },
+                                        {
+                                            name: "userId",
+                                            title: "Id de l'utilisateur",
+                                            type: "string",
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    name: "success",
+                    title: "Succès",
+                    type: "array",
+                    of: [
+                        {
+                            type: "object",
+                            fields: [
+                                {
+                                    name: "id",
+                                    title: "Id",
+                                    type: "string",
+                                },
+                                {
+                                    name: "value",
+                                    title: "Valeur",
+                                    type: "number",
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    name: "averageSuccess",
+                    title: "Succès moyens",
+                    type: "array",
+                    of: [
+                        {
+                            type: "object",
+                            fields: [
+                                {
+                                    name: "id",
+                                    title: "Id",
+                                    type: "string",
+                                },
+                                {
+                                    name: "value",
+                                    title: "Valeur",
+                                    type: "number",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        }),
     ],
     preview: {
         select: {

@@ -1,7 +1,7 @@
 "use client";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import Spinner from "@/app/components/common/Spinner";
-import { updateUserPassword } from "@/app/lib/serverActions";
+import { updateUserPassword } from "@/app/serverActions/authActions";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";

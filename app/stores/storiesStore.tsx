@@ -18,6 +18,7 @@ interface DefaultProps {
     access: AccessState;
     count: { [key: string]: number };
     selectedStoryTabsIndex: number;
+    gameDate: number;
 }
 
 interface StoryState extends DefaultProps {
@@ -43,6 +44,7 @@ const DEFAULT_PROPS: DefaultProps = {
     selectedStoryTabsIndex: 0,
     access: {},
     count: {},
+    gameDate: 0,
 };
 
 export const useStoryStore = create<StoryState>()(

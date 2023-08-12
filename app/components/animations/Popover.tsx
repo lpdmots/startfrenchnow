@@ -5,14 +5,16 @@ interface PopoverProps {
     content: React.ReactNode;
     popover: React.ReactNode;
     small?: boolean;
+    reposition?: boolean;
 }
 
-export const Popover: React.FC<PopoverProps> = ({ content, popover, small = false }) => {
+export const Popover: React.FC<PopoverProps> = ({ content, popover, small = false, reposition = true }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <span onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
             <TinyPopover
+                reposition={reposition}
                 isOpen={isOpen}
                 positions={["top", "bottom", "right", "left"]}
                 content={

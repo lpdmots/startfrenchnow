@@ -80,7 +80,7 @@ export interface Review {
     color: string;
     scores?: ScoreProps[];
     success?: Success[];
-    filter: string;
+    defaultFilter: "noFilterButton" | "noFilter" | "unlocked";
     orderOption: string;
 }
 
@@ -101,7 +101,7 @@ export interface Success extends Base {
     text: Block[];
     image: Image;
     order: number;
-    color: string;
+    alignment: "veryBad" | "bad" | "neutral" | "good" | "veryGood";
     validation: Validation;
     antagonistes: Reference[];
     showLocked: Boolean;

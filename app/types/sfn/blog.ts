@@ -34,7 +34,7 @@ export interface Image {
 
 export interface Reference {
     _ref: string;
-    _type: "reference";
+    _type: "reference" | string;
 }
 
 export interface Slug {

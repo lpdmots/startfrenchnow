@@ -22,6 +22,7 @@ import condition from "./stories/condition";
 import modifier from "./stories/modifier";
 import choice from "./stories/choice";
 import success from "./stories/success";
+import feedback from "./stories/feedback";
 
 export const schemaTypes = [
     user,
@@ -45,4 +46,5 @@ export const schemaTypes = [
     condition,
     modifier,
     success,
+    feedback,
 ];
