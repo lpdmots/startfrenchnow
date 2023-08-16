@@ -98,6 +98,12 @@ export default defineType({
                             },
                         },
                         {
+                            title: "Games commencées",
+                            name: "gamesStarted",
+                            type: "number",
+                            initialValue: 0,
+                        },
+                        {
                             title: "Games",
                             name: "games",
                             type: "number",

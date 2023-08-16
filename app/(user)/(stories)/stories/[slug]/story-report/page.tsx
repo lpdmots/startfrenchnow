@@ -78,7 +78,7 @@ const StoryReport = ({ params: { slug } }: Props) => {
                     <h1 className="display-1">
                         <span className="heading-span-secondary-2">Nous contacter</span>
                     </h1>
-                    <p>Un bug à signaler ? Une suggestion pour améliorer nos histoires interactives ? Laissez-nous un message.</p>
+                    <p>Un bug à signaler ? Une suggestion pour améliorer nos histoires interactives ?</p>
                     <textarea placeholder={"Laissez-nous un message..."} ref={comment} className="text-area w-input mt-4" maxLength={1000}></textarea>
                     <div className="flex w-full justify-center gap-4 mt-4">
                         <button className="btn-secondary" onClick={() => router.push("/stories/" + slug)}>

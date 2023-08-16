@@ -9,7 +9,6 @@ import { m } from "framer-motion";
 import { fadeInOneByOneItem, fadeInOneByOneParent } from "@/app/lib/framerVariants";
 import { SlideFromBottom } from "../../animations/Slides";
 import { ParentToChildrens, ScaleChildren } from "../../animations/ParentToChildrens";
-import { StarRating } from "../../common/StarRating.js";
 
 const lessons = [
     {
@@ -64,7 +63,6 @@ const lessons = [
 function LessonCards() {
     return (
         <m.div variants={fadeInOneByOneParent} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            <StarRating />
             <div className="text-center m-auto mb-10" style={{ maxWidth: "600px" }}>
                 <h2 id="courses" className="display-2">
                     Find a course that suits you and <span className="heading-span-secondary-4">get started</span>!

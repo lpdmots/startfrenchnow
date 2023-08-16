@@ -15,7 +15,7 @@ export const StoriesHome = () => {
                                 <SlideFromBottom>
                                     <div className="inner-container _300px---mbp">
                                         <h2 className="display-2 color-neutral-100">
-                                            Choose Your Path: An <span className="heading-span-secondary-1">Interactive Story</span> in French Language Learning
+                                            Choose Your Path: Engage with our <span className="heading-span-secondary-1">Interactive French Stories</span> for effective learning.
                                         </h2>
                                     </div>
                                 </SlideFromBottom>

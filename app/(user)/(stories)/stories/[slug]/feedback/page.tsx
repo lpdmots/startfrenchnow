@@ -121,7 +121,7 @@ interface SubmitResponse {
     success: boolean;
 }
 
-const Feedback = ({ params: { slug } }: Props) => {
+export default function Feedback({ params: { slug } }: Props) {
     const [stars, setStars] = useState(initialStars);
     const [language, setLanguage] = useState<"fr" | "en">("fr");
     const [checkboxes, setCheckboxes] = useState(initialCheckBoxes);
@@ -307,9 +307,7 @@ const Feedback = ({ params: { slug } }: Props) => {
             </div>
         </ProtectedPage>
     );
-};
-
-export default Feedback;
+}
 
 const CommentCollapse = forwardRef<HTMLTextAreaElement, any>(function (props: { language: "fr" | "en" }, ref) {
     const [textValue, setTextValue] = useState("");
@@ -335,6 +333,7 @@ const CommentCollapse = forwardRef<HTMLTextAreaElement, any>(function (props: { 
         </span>
     );
 });
+CommentCollapse.displayName = "CommentCollapse";
 
 const LanguageButton = ({ language, handleLanguage }: { language: "fr" | "en"; handleLanguage: () => void }) => {
     return (

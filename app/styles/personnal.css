@@ -436,11 +436,15 @@ button {
     background-color: #000;
     position: relative;
     display: block;
-    contain: content;
+    /* contain: content; */
     background-position: center center;
     background-size: cover;
     cursor: pointer;
     border-radius: 30px;
+}
+
+#hero-video > .yt-lite {
+    border-radius: 0px;
 }
 
 @media screen and (max-width: 767px) {

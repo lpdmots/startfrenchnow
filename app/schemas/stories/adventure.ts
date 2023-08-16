@@ -272,6 +272,12 @@ export default defineType({
             type: "object",
             fields: [
                 {
+                    name: "gamesStarted",
+                    title: "Nombre de parties commencées",
+                    type: "number",
+                    initialValue: 0,
+                },
+                {
                     name: "games",
                     title: "Nombre de parties",
                     type: "number",

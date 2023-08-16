@@ -14,6 +14,7 @@ const getInitialData = (storyId: string) => {
         },
         lastGameDate: 0,
         feedback: "open" as "open" | "no" | "done",
+        gamesStarted: 0,
         games: 0,
         scores: [] as UserScore[],
         success: [] as string[],
@@ -38,6 +39,7 @@ export const storyToStats = async (gameDate: number, userId: string, storyId: st
     const story: Adventure = await client.fetch(`*[_type == "adventure" && _id == $storyId][0]`, { storyId });
     if (!user) return { error: "User not found", userStoryData: null };
     if (!story) return { error: "Story not found", userStoryData: null };
+    if (user.isAdmin) return { error: "Admin accounts do not count" };
 
     const previousData = structuredClone(user.stories?.find((story) => story.story._ref === storyId));
     const userStoryData: UserStory = previousData || getInitialData(storyId);
@@ -102,6 +104,8 @@ export const setStoryFeedback = async (userId: string, storyId: string, value: "
     const user: UserProps = await client.fetch(`*[_type == "user" && _id == $userId][0]`, { userId });
     const userStoryData: UserStory | undefined = user?.stories?.find((story) => story.story._ref === storyId);
     if (!userStoryData) return;
+    if (user.isAdmin) return { error: "Admin accounts do not count" };
+
     userStoryData.feedback = value;
     try {
         client
@@ -118,6 +122,7 @@ export const setStoryFeedback = async (userId: string, storyId: string, value: "
 };
 
 const INITIALSTORYSTATS = {
+    gamesStarted: 0,
     games: 0,
     userIds: [],
     scores: [],

@@ -11,10 +11,11 @@ function UdemyBusiness() {
                     <div className="inner-container _500px---mbl center">
                         <Fade>
                             <h2 className="display-2 color-neutral-100 mb-12">
-                                Students from{" "}
+                                Join{" "}
                                 <span className="heading-span-secondary-2" style={{ whiteSpace: "nowrap" }}>
-                                    all over the world.
-                                </span>
+                                    students worldwide
+                                </span>{" "}
+                                in our quality French content and courses.
                             </h2>
                         </Fade>
                         <div className="lg:grid lg:grid-cols-7 gap-6">
@@ -26,12 +27,12 @@ function UdemyBusiness() {
                                 <SlideFromBottom delay={0.5}>
                                     <>
                                         <p className="color-neutral-300 mg-bottom-24px">
-                                            One of my greatest pleasures is to see that my students come from over 140 different countries ! They all have their own objective towards the French
-                                            language and my mission is to help
+                                            One of our greatest pleasures is to see that our students come from over 140 different countries ! They all have their own objective towards the French
+                                            language and our mission is to help
                                             <span className="text-no-wrap"> them in reaching it.</span>
                                         </p>
                                         <p className="color-neutral-300 mg-bottom-24px">
-                                            My courses have also been recommended to big companies and their employees via the Udemy for Business programm that rewards the best courses based on the
+                                            Our courses have also been recommended to big companies and their employees via the Udemy for Business programm that rewards the best courses based on the
                                             student feedback, their relevance and
                                             <span className="text-no-wrap"> general quality.</span>
                                         </p>

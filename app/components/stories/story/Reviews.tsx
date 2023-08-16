@@ -1,7 +1,7 @@
 "use client";
 import { Review, ScoreProps, Success } from "@/app/types/stories/element";
 import { LayoutProps } from "@/app/types/stories/state";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ScoreGauge from "./ScoreGauge";
 import { PortableText } from "@portabletext/react";
 import { RichTextStory } from "../../sanity/RichTextStory";
@@ -70,14 +70,10 @@ const Review = ({ review, userStoryData }: { review: Review; userStoryData: User
     const oneScore = review?.scores?.length === 1;
     const { defaultFilter, success } = review;
     const [filter, setFilter] = useState(defaultFilter);
-    const [filtredSuccess, setFiltredSuccess] = useState<Success[]>(getFiltredSuccess(success || [], filter, userStoryData));
+    const filtredSuccess = useMemo(() => getFiltredSuccess(success || [], filter, userStoryData), [filter, userStoryData, success]);
 
     const successCount = success?.filter((s) => s.unlocked || userStoryData?.success.includes(s._id)).length;
     const ratio = success?.length ? `${successCount}/${success?.length}` : "";
-
-    useEffect(() => {
-        setFiltredSuccess(getFiltredSuccess(success || [], filter, userStoryData));
-    }, [filter, userStoryData, success]);
 
     return (
         <div className="py-6 flex flex-col justify-center items-center ">
@@ -91,7 +87,7 @@ const Review = ({ review, userStoryData }: { review: Review; userStoryData: User
                 ))}
             </div>
 
-            {!!filtredSuccess.length && defaultFilter !== "noFilterButton" && (
+            {!!success?.length && defaultFilter !== "noFilterButton" && (
                 <div className="flex w-full">
                     <button className="btn btn-secondary small my-4" style={{ minWidth: 130 }} onClick={() => setFilter((prev) => (prev === "unlocked" ? "noFilter" : "unlocked"))}>
                         <p className="flex items-center mb-0">
@@ -193,6 +189,7 @@ const Success = ({ success, userStoryData }: { success: Success; userStoryData: 
 };
 
 const getFiltredSuccess = (success: Success[], filter: string, userStoryData: UserStory | null) => {
+    console.log({ success });
     switch (filter) {
         case "noFilter":
             if (!userStoryData) return success;

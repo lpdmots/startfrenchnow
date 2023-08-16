@@ -38,7 +38,7 @@ function CoreValuesMethod() {
                                         <div className="inner-container _400px---mbl center">
                                             <div className="inner-container _350px---mbp center">
                                                 <h2 className="display-2 mg-bottom-0">
-                                                    The core values of <span className="heading-span-secondary-4">my method</span>
+                                                    The core values of <span className="heading-span-secondary-4">our method</span>
                                                 </h2>
                                             </div>
                                         </div>

@@ -11,6 +11,8 @@ import { Adventure } from "@/app/types/stories/adventure";
 import Spinner from "../../common/Spinner";
 import { ElementDataProps } from "@/app/types/stories/state";
 import { ELEMENTDATA } from "@/app/lib/constantes";
+import { useSession } from "next-auth/react";
+import { addGameStarted } from "@/app/lib/apiStories";
 
 export const StartStoryButton = ({ element, story: newStory }: { story: Adventure; element: ElementProps }) => {
     const { story: oldStory, resetData, layouts, slideIndex } = useStoryStore();
@@ -60,6 +62,7 @@ export const StartStoryButton = ({ element, story: newStory }: { story: Adventur
 
 const StartButton = ({ element, newStory }: { element: ElementProps; newStory: Adventure }) => {
     const setStartData = useSetStartData();
+    const { data: session } = useSession();
     const { elementTreatment } = useElementTreatment();
     const router = useRouter();
     const { layouts, chapter, updateOnChoice, addElementsData } = useStoryStore();
@@ -85,8 +88,9 @@ const StartButton = ({ element, newStory }: { element: ElementProps; newStory: A
         }
     }, [clicked, newStory, layoutsReady, router]);
 
-    const handleClick = () => {
+    const handleClick = async () => {
         setStartData(newStory);
+        await addGameStarted({ storyId: newStory._id, userId: session?.user?._id || "" });
         setClicked(true);
     };
 

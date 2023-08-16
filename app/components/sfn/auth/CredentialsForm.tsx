@@ -33,10 +33,8 @@ export const CredentialsForm = () => {
             if (response?.error === "CredentialsSignin") {
                 setMessage({ error: "Credentials do not match!", success: "", spinner: false });
             } else if (response?.error) {
-                console.log({ object: response });
                 setMessage({ error: "Oops, there's been an error...", success: "", spinner: false });
             } else {
-                console.log({ callbackUrl });
                 router.replace(callbackUrl);
             }
         });

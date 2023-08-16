@@ -24,3 +24,17 @@ async function fetchData<T>(componentType: string, id: string): Promise<T> {
 }
 
 export default fetchData;
+
+export async function addGameStarted(data: { storyId: string; userId: string }) {
+    fetch("/api/stories", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    }).then((res) => {
+        if (!res.ok) throw new Error("Failed to add new game counter");
+        return res.json();
+    });
+}

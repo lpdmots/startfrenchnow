@@ -18,6 +18,7 @@
     --sm: 480px; /* A MODIFIER AUSSI DANS TAILWIND CONFIG */
     --md: 768px; /* A MODIFIER AUSSI DANS WithMediaQuery component (components/stories/) */
     --lg: 992px;
+    --xl: 1200px;
 }
 
 /*! purgecss start ignore */

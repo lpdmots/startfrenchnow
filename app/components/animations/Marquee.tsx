@@ -48,14 +48,13 @@ const Marquee = ({ content }: { content: JSX.Element }) => {
         <section className="section pd-top-5---bottom-5 wf-section">
             <div className="logo-strip-wrapper text-neutral-100 p-3">
                 <div className="marquee">
-                    {/* 3. Using framer motion */}
-                    <m.div className="trackInitial" variants={marqueeInitiialVariants} animate="animate">
+                    <m.div className="trackInitial h-full flex items-center" variants={marqueeInitiialVariants} animate="animate">
                         {content}
                     </m.div>
-                    <m.div className="track" variants={marqueeVariants} animate="animate">
+                    <m.div className="track h-full flex items-center" variants={marqueeVariants} animate="animate">
                         {content}
                     </m.div>
-                    <m.div className="track" variants={marqueeVariants2} animate="animate">
+                    <m.div className="track h-full flex items-center" variants={marqueeVariants2} animate="animate">
                         {content}
                     </m.div>
                 </div>

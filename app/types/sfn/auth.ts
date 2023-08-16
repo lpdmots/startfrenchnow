@@ -27,6 +27,7 @@ export interface UserStory {
     story: Reference;
     lastGameDate: number;
     feedback: "done" | "no" | "open";
+    gamesStarted: number;
     games: number;
     scores: UserScore[];
     success: string[];

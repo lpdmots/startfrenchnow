@@ -112,6 +112,7 @@ export interface VariableState {
 }
 
 export interface StoryStats {
+    gamesStarted: number;
     games: number;
     userIds: string[];
     scores: StoryScore[];

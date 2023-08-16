@@ -65,7 +65,7 @@ export const WhyStories = () => {
                                                 <p className="color-neutral-300 mg-bottom-40px">
                                                     Unleash the power of interactive stories for an engaging and effective French learning experience. Here are the key benefits.
                                                 </p>
-                                                <Link href="/blog/post/discover-the-benefits-of-interactive-stories-for-learning-french" className="btn-secondary variant w-button">
+                                                <Link href="/blog/post/decouvrez-les-bienfaits-des-histoires-interactives-pour-apprendre-le-francais" className="btn-secondary variant w-button">
                                                     <div className="flex items-center justify-center">
                                                         <FaPenFancy className="mr-2" />
                                                         Read more on the blog
