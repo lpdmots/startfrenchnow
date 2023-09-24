@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+/* const nextConfig = {
     reactStrictMode: true,
     experimental: {
         appDir: true,
@@ -14,3 +14,22 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+ */
+const withNextIntl = require("next-intl/plugin")(
+    // This is the default (also the `src` folder is supported out of the box)
+    "./i18n.ts"
+);
+
+module.exports = withNextIntl({
+    reactStrictMode: true,
+    experimental: {
+        appDir: true,
+        serverActions: true,
+    },
+    images: {
+        domains: ["encrypted-tbn0.gstatic.com", "cdn.sanity.io", "i-don-t-speak-french.s3.eu-central-1.amazonaws.com"],
+    },
+    redirects() {
+        return [process.env.MAINTENANCE_MODE === "1" ? { source: "/((?!maintenance).*)", destination: "/maintenance", permanent: false } : null].filter(Boolean);
+    },
+});

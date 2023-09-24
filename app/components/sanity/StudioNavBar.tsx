@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-intl/link";
 import { IoArrowUndo } from "react-icons/io5";
 
 function StudioNavBar(props: any) {

@@ -9,7 +9,7 @@ import { AiFillSignal } from "react-icons/ai";
 import { LEVELDATA, STORYCATEGORIES } from "@/app/lib/constantes";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import { IoCaretDown, IoCaretUp } from "react-icons/io5";
-import Link from "next/link";
+import Link from "next-intl/link";
 import { PortableText } from "@portabletext/react";
 import { RichTextStory } from "../../sanity/RichTextStory";
 

@@ -1,3 +1,5 @@
+import { intelRich } from "@/app/lib/intelRich";
+import { useTranslations } from "next-intl";
 import { Post } from "../../../types/sfn/blog";
 import { ParentToChildrens } from "../../animations/ParentToChildrens";
 import { Scale } from "../../animations/Scale";
@@ -6,9 +8,11 @@ import SecondaryPost from "./SecondaryPost";
 
 type Props = {
     posts: Post[];
+    postLang: "en" | "fr";
 };
 
-function BlogList({ posts }: Props) {
+function BlogList({ posts, postLang }: Props) {
+    const t = useTranslations("Blog.BlogList");
     return (
         <div className="section hero v3 wf-section">
             <div className="container-default w-container">
@@ -17,16 +21,12 @@ function BlogList({ posts }: Props) {
                         {/* <SlideFromBottom> */}
                         <div className="inner-container _725px center---full-width-mbl">
                             <div className="text-center mg-bottom-40px">
-                                <h1 className="display-1 mg-bottom-8px">
-                                    Articles &amp; <span className="heading-span-secondary-1 v2">Resources</span>
-                                </h1>
-                                <p className="mg-bottom-0">
-                                    In this section you will find articles and resources to help you <span className="text-no-wrap">learn French.</span>
-                                </p>
+                                <h1 className="display-1 mg-bottom-8px mb-8">{t.rich("articlesAndResources", intelRich())}</h1>
+                                <p className="mg-bottom-0">{t.rich("description", intelRich())}</p>
                             </div>
                         </div>
                         {/* </SlideFromBottom> */}
-                        <h2 className="hidden">Newst Posts</h2>
+                        <h2 className="hidden">{t("newestPosts")}</h2>
                         <Scale>
                             <div className="grid-2-columns blog-featured-grid">
                                 <div className="w-dyn-list">
@@ -34,7 +34,7 @@ function BlogList({ posts }: Props) {
                                         <div role="listitem" className="height-100 w-dyn-item">
                                             {posts.length > 0 && (
                                                 <ParentToChildrens>
-                                                    <PrimaryPost post={posts[0]} />
+                                                    <PrimaryPost post={posts[0]} postLang={postLang} />
                                                 </ParentToChildrens>
                                             )}
                                         </div>
@@ -45,14 +45,14 @@ function BlogList({ posts }: Props) {
                                         <div role="listitem" className="w-dyn-item">
                                             {posts.length > 1 && (
                                                 <ParentToChildrens>
-                                                    <SecondaryPost post={posts[1]} />
+                                                    <SecondaryPost post={posts[1]} postLang={postLang} />
                                                 </ParentToChildrens>
                                             )}
                                         </div>
                                         <div role="listitem" className="w-dyn-item">
                                             {posts.length > 2 && (
                                                 <ParentToChildrens>
-                                                    <SecondaryPost post={posts[2]} />
+                                                    <SecondaryPost post={posts[2]} postLang={postLang} />
                                                 </ParentToChildrens>
                                             )}
                                         </div>

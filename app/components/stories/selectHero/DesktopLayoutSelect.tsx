@@ -2,7 +2,7 @@ import { Adventure } from "@/app/types/stories/adventure";
 import urlFor from "@/app/lib/urlFor";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "next-intl/link";
 import React, { useMemo } from "react";
 import { Carousel } from "../../animations/Carousel";
 import { HeroCard } from "./HeroCard";

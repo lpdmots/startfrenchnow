@@ -6,16 +6,24 @@ type Base = {
     _updatedAt: string;
 };
 
+type Level = "none" | "a1" | "a2" | "b1" | "b2";
+
 export interface Post extends Base {
+    langage: "both" | "en" | "fr";
     author: Author;
     body: Block[];
-    categories: Category[];
+    body_en: Block[];
+    categorie: Category;
     mainImage: Image;
     mainVideo: VideoBlog;
     slug: Slug;
     title: string;
+    title_en: string;
     description: string;
-    level: "a1" | "a2" | "b1" | "b2";
+    description_en: string;
+    metaDescription: string;
+    metaDescription_en: string;
+    level: Level;
     translation: boolean;
     publishedAt: string;
 }
@@ -57,12 +65,6 @@ interface Span {
     text: string;
 }
 
-export interface Category extends Base {
-    description: string;
-    title: string;
-    slug: Slug;
-}
-
 export interface MainImage {
     _type: "image";
     asset: Reference;
@@ -79,6 +81,15 @@ export interface VideoBlog {
     url: string;
 }
 
+export interface FlashcardsProps {
+    color: ColorsTypes;
+    title: string;
+    title_en: string;
+    instruction: Block[];
+    instruction_en: Block[];
+    vocabulary: Reference;
+}
+
 export interface Vocabulary extends Base {
     theme: string;
     lines: Line[];
@@ -89,4 +100,49 @@ export interface Line {
     english: string;
     sound: string;
     note: string;
+}
+
+export type Category = "tip" | "grammar" | "vocabulary" | "culture" | "expression";
+export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" | "input";
+export type ExerciseTypes = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound";
+export type ColorsTypes = "yellow" | "blue" | "red" | "purple" | "green";
+
+export interface SimpleExercise {
+    _key: string;
+    name: string;
+    color: ColorsTypes;
+    title: string;
+    title_en: string;
+    instruction: Block[];
+    instruction_en: Block[];
+    time: number;
+    ready: boolean;
+    themes: Reference[];
+    exerciseTypes: ExerciseTypes[];
+    nbOfQuestions: number;
+}
+
+export interface ExerciseTheme {
+    name: string;
+    categories: Category[];
+    level: Level;
+    children: Reference[] | undefined;
+    questions: SimpleQuestion[] | undefined;
+}
+
+export interface SimpleQuestion {
+    exerciseTypes: ExerciseTypes[];
+    defaultLayout: ResponsesLayouts | undefined;
+    prompt: {
+        text: string;
+        images: Image[];
+        sounds: string[];
+    };
+    responses: {
+        text: string;
+        isCorrect: string | undefined;
+        image: Image;
+        onlyTypes: ExerciseTypes[];
+        sound: string;
+    }[];
 }

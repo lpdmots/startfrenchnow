@@ -15,6 +15,13 @@
     --neutral-700: #393939;
     --neutral-800: #0b0b0b;
 
+    --primaryShades: #ffeec2;
+    --secondaryShades-1: #ffeec2;
+    --secondaryShades-2: #add8ff;
+    --secondaryShades-3: #dcd7fe;
+    --secondaryShades-4: #ffb8bf;
+    --secondaryShades-5: #dbf8c9;
+
     --sm: 480px; /* A MODIFIER AUSSI DANS TAILWIND CONFIG */
     --md: 768px; /* A MODIFIER AUSSI DANS WithMediaQuery component (components/stories/) */
     --lg: 992px;
@@ -31,6 +38,12 @@
     --neutral-300: #5e5e5f;
     --neutral-100: #1d1d1d;
     --neutral-200: #0e0e0e;
+    --primaryShades: #a37500;
+    --secondaryShades-1: #a37500;
+    --secondaryShades-2: #004a8f;
+    --secondaryShades-3: #1c05b3;
+    --secondaryShades-4: #cc0014;
+    --secondaryShades-5: #439014;
 }
 /*! purgecss end ignore */
 

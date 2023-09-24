@@ -1,10 +1,22 @@
 import Image from "next/image";
 import React from "react";
-import Link from "next/link";
+import Link from "next-intl/link";
 import { GiSpellBook } from "react-icons/gi";
-import { SlideFromBottom, SlideFromRight, SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
+import { SlideFromBottom, SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
+import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+
+/* "StoriesHome": {
+    "title": "Choisissez votre chemin : Engagez-vous avec nos <hs1>Histoires françaises interactives</hs1> pour un apprentissage efficace.",
+    "description": "Plonger dans le français peut devenir une aventure palpitante avec notre application d'histoires interactives, conçue pour vous emmener au cœur de la langue française. En vous plongeant dans ces contes, vous améliorerez votre français de manière ludique et engageante. Alors, pourquoi ne pas <noWrap>essayer ?</noWrap>",
+    "bullet1": "Choisissez votre héros, armé de <noWrap>compétences uniques.</noWrap>",
+    "bullet2": "Guidez-les à travers un labyrinthe <noWrap>de possibilités.</noWrap>",
+    "bullet3": "Débloquez une pléthore <noWrap>d'accomplissements.</noWrap>",
+    "button": "Aller aux histoires"
+} */
 
 export const StoriesHome = () => {
+    const t = useTranslations("StoriesHome");
     return (
         <div className="section bg-neutral-800 wf-section">
             <div className="container-default w-container">
@@ -14,16 +26,11 @@ export const StoriesHome = () => {
                             <div id="w-node-_686f4507-61d8-cbed-f166-5192bfa063e2-c2543d52" data-w-id="686f4507-61d8-cbed-f166-5192bfa063e2" className="inner-container _584px _100---tablet">
                                 <SlideFromBottom>
                                     <div className="inner-container _300px---mbp">
-                                        <h2 className="display-2 color-neutral-100">
-                                            Choose Your Path: Engage with our <span className="heading-span-secondary-1">Interactive French Stories</span> for effective learning.
-                                        </h2>
+                                        <h2 className="display-2 color-neutral-100">{t.rich("title", intelRich())}</h2>
                                     </div>
                                 </SlideFromBottom>
                                 <SlideFromBottom>
-                                    <p className="color-neutral-300 mg-bottom-24px">
-                                        Diving into French can turn into a thrilling adventure with our interactive story app, crafted to whisk you away into the heart of the French language. By
-                                        plunging into these tales, you'll level up your French in a fun and engaging way. So, why not <span className="text-no-wrap">give it a shot?</span>
-                                    </p>
+                                    <p className="color-neutral-300 mg-bottom-24px">{t.rich("description", intelRich())}</p>
                                 </SlideFromBottom>
                                 <SlideInOneByOneParent>
                                     <div className="mg-bottom-40px">
@@ -31,9 +38,7 @@ export const StoriesHome = () => {
                                             <div className="mg-bottom-12px">
                                                 <div className="flex-horizontal align-top---justify-left gap-16px">
                                                     <div className="bullet bg-secondary-3 white mg-top-5px"></div>
-                                                    <p className="color-neutral-100 mg-bottom-0">
-                                                        Pick your hero, armed with <span className="text-no-wrap">unique skills.</span>
-                                                    </p>
+                                                    <p className="color-neutral-100 mg-bottom-0">{t.rich("bullet1", intelRich())}</p>
                                                 </div>
                                             </div>
                                         </SlideInOneByOneChild>
@@ -41,9 +46,7 @@ export const StoriesHome = () => {
                                             <div className="mg-bottom-12px">
                                                 <div className="flex-horizontal align-top---justify-left gap-16px">
                                                     <div className="bullet bg-secondary-2 white mg-top-5px"></div>
-                                                    <p className="color-neutral-100 mg-bottom-0">
-                                                        Guide them through a labyrinth <span className="text-no-wrap">of possibilities.</span>
-                                                    </p>
+                                                    <p className="color-neutral-100 mg-bottom-0">{t.rich("bullet2", intelRich())}</p>
                                                 </div>
                                             </div>
                                         </SlideInOneByOneChild>
@@ -51,9 +54,7 @@ export const StoriesHome = () => {
                                             <div>
                                                 <div className="flex-horizontal align-top---justify-left gap-16px">
                                                     <div className="bullet bg-secondary-1 white mg-top-5px"></div>
-                                                    <p className="color-neutral-100 mg-bottom-0">
-                                                        Unlock a plethora <span className="text-no-wrap">of achievements.</span>
-                                                    </p>
+                                                    <p className="color-neutral-100 mg-bottom-0">{t.rich("bullet3", intelRich())}</p>
                                                 </div>
                                             </div>
                                         </SlideInOneByOneChild>
@@ -63,7 +64,7 @@ export const StoriesHome = () => {
                                     <Link href="/stories" className="btn-secondary variant w-button">
                                         <div className="flex items-center justify-center">
                                             <GiSpellBook className="mr-2" style={{ fontSize: 30 }} />
-                                            Go to stories
+                                            {t("button")}
                                         </div>
                                     </Link>
                                 </div>

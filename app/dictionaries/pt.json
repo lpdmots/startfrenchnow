@@ -1,0 +1,421 @@
+{
+    "Metadata": {
+        "Home": {
+            "title": "Aprenda Francês no Seu Próprio Ritmo com Aulas em Vídeo Lideradas por Especialistas",
+            "description": "Melhore suas habilidades na língua francesa com nossas aulas em vídeo abrangentes. Propomos uma maneira conveniente, séria e divertida de aprender francês como língua estrangeira e alcançar fluência. Comece a aprender francês agora!"
+        },
+        "StoriesApp": {
+            "title": "Aprenda Francês com Start French Now: Histórias Interativas e Cursos Online",
+            "description": "Descubra uma forma única de dominar a língua francesa com Start French Now. Mergulhe em histórias interativas, cursos estruturados na Udemy e uma infinidade de conteúdo educacional personalizado para alunos globais."
+        },
+        "Stories": {
+            "title": "Aprenda Francês de Forma Divertida com Histórias Interativas | Start French Now",
+            "description": "Mergulhe em histórias francesas envolventes e melhore suas habilidades linguísticas de forma fácil. Explore Paris e aprenda francês no seu próprio ritmo. Comece agora!"
+        },
+        "Blog": {
+            "title": "Blog Start French Now: Seu Guia Definitivo para Aprender Francês",
+            "description": "Desbloqueie os segredos de aprender francês com o blog Start French Now. De gramática a vocabulário, nossos artigos oferecem um guia extenso e compreensível para dominar o idioma."
+        },
+        "About": {
+            "title": "Conheça Yohann: Seu Guia Especialista para Aprender Francês do Zero",
+            "description": "Descubra a jornada de Yohann, de professor do ensino fundamental a especialista global no ensino de francês para iniciantes. Comece sua própria jornada de aprendizado de francês conosco!"
+        }
+    },
+    "Navigation": {
+        "home": "Início",
+        "stories": "Histórias",
+        "blog": "Blog",
+        "about": "Sobre",
+        "contact": "Contato",
+        "my_account": "Minha Conta",
+        "logout": "Sair",
+        "contact_us": "Entre em contato"
+    },
+    "HeroSfn": {
+        "title": "<hs4>Aprenda Francês</hs4> ao Seu Próprio Ritmo com <hs2>Lições de Qualidade</hs2>",
+        "description": "Deseja se dedicar seriamente ao aprendizado do francês? Não se preocupe, não precisa ser monótono.",
+        "btn_courses": "Nossos cursos"
+    },
+    "LessonCards": {
+        "title": "Encontre um curso que lhe seja adequado e <hs4>comece agora</hs4>!",
+        "description": "Sem \"Blabla\"! O objetivo é realmente aprender e compreender a língua francesa para poder falar. Um método para iniciantes e intermediários, visando levá-lo a um nível de confiança onde você possa \"voar sozinho\".",
+        "notSureTitle": "Não sabe qual escolher?",
+        "notSureDescription": "Clique aqui e me envie uma mensagem!",
+        "contactButton": "Contate-me",
+        "lessons": {
+            "beginnerLevel1": {
+                "title": "Iniciante - Nível 1 (A0 a A2)",
+                "description": "Para iniciantes que desejam dominar os fundamentos do francês. Desenvolva e aprimore habilidades práticas de comunicação em francês: fala, escuta, leitura e escrita."
+            },
+            "lowIntermediateLevel2": {
+                "title": "Intermediário - Nível 2 (A2.1)",
+                "description": "Aprofunde seus conhecimentos em francês e avance de A2 para B1. Aprenda todas as ferramentas necessárias para construir frases mais longas e complexas. Fale francês com confiança em tópicos familiares."
+            },
+            "masterPastTenses": {
+                "title": "Domine os tempos passados",
+                "description": "Fale no passado em francês. Aprenda os 3 principais tempos passados: passé composé, imparfait, plus-que-parfait. Compreenda as diferenças entre os tempos passados e saiba como usá-los conjuntamente."
+            }
+        }
+    },
+    "UdemyBusiness": {
+        "title": "Junte-se a <hs2>estudantes do mundo todo</hs2> em nosso conteúdo e cursos de francês de alta qualidade.",
+        "paragraph1": "Um dos nossos maiores prazeres é ver que nossos alunos vêm de mais de 140 países diferentes! Todos têm seus próprios objetivos em relação à língua francesa e nossa missão é ajudá-los a <noWrap>atingi-los.</noWrap>",
+        "paragraph2": "Nossos cursos também foram recomendados a grandes empresas e seus funcionários através do programa Udemy for Business, que premia os melhores cursos com base no feedback dos alunos, em sua relevância e <noWrap>qualidade geral.</noWrap>"
+    },
+    "CoreValuesMethod": {
+        "title": "Os valores fundamentais de <hs4>nosso método</hs4>",
+        "description": "Um método <under>estruturado</under> com lições <under>concisas</under> que lhe permitem adquirir as habilidades <under>fundamentais</under> da língua francesa.",
+        "coreValues": {
+            "serious": {
+                "title": "Sério",
+                "content": "Um método estruturado e sério onde o aluno se sente orientado e apoiado durante todo o curso."
+            },
+            "smartLearning": {
+                "title": "Aprendizado inteligente",
+                "content": "Novos conceitos são bem identificados, dificuldades são isoladas, explicadas, trabalhadas e gradualmente integradas ao seu conhecimento atual."
+            },
+            "fun": {
+                "title": "Divertido",
+                "content": "Sério, mas divertido! Os cursos são interativos e divertidos, com visuais atraentes e modernos. Prepare-se para participar ativamente."
+            },
+            "fullMethod": {
+                "title": "Um método completo",
+                "content": "Um método completo com acesso a recursos extensivos: exercícios extras, quizzes, folhas de vocabulário, um blog de qualidade e incríveis histórias interativas em francês."
+            }
+        }
+    },
+    "WhoIAm": {
+        "description": "Sou um professor de francês como língua estrangeira, especialista em ensino online e criação de conteúdo de alta qualidade para iniciantes e aprendizes intermediários.",
+        "bulletPoints": {
+            "nativeCertified": {
+                "title": "Um professor nativo e certificado",
+                "content": "Nascido na bela região da Borgonha, perto de Dijon, tenho um Mestrado em Educação."
+            },
+            "experience": {
+                "title": "Mais de 10 anos de experiência",
+                "content": "Ensinei em escolas de idiomas, universidades e escolas de negócios ao redor do mundo antes de entrar no mundo online com meus alunos."
+            },
+            "expertBeginners": {
+                "title": "Especialista com iniciantes",
+                "content": "Enquanto outros professores muitas vezes se entediam ou não sabem como lidar com iniciantes totais, eu adoro e criei um método específico para eles."
+            }
+        },
+        "moreAboutMe": "Saiba mais sobre mim"
+    },
+    "CommentsCarousel": {
+        "title": "O que meus alunos dizem <hs4>sobre o meu trabalho</hs4>",
+        "description": "Aqui estão algumas avaliações das minhas aulas. Você encontrará muitas mais ",
+        "description2": "em"
+    },
+    "StoriesHome": {
+        "title": "Escolha o Seu Caminho: Engaje-se com nossas <hs1>Histórias Interativas em Francês</hs1> para um aprendizado eficaz.",
+        "description": "Mergulhar no francês pode se transformar em uma emocionante aventura com nosso app de histórias interativas, criado para transportá-lo diretamente para o coração da língua francesa. Ao se envolver nestes contos, você aprimorará seu francês de uma forma divertida e envolvente. Então, por que não <noWrap>experimentar?</noWrap>",
+        "bullet1": "Escolha o seu herói, armado com <noWrap>habilidades únicas.</noWrap>",
+        "bullet2": "Guie-o através de um labirinto <noWrap>de possibilidades.</noWrap>",
+        "bullet3": "Desbloqueie uma infinidade <noWrap>de conquistas.</noWrap>",
+        "button": "Ir para histórias"
+    },
+    "BlogHome": {
+        "title": "<hs1>Artigos</hs1> e Notícias",
+        "button": "Ver todos os artigos"
+    },
+    "Newsletter": {
+        "title": "Inscreva-se em <noWrap>nossa newsletter</noWrap>",
+        "description": "Fique informado e receba um vídeo gratuito",
+        "successMessage": "Obrigado por se inscrever na nossa newsletter. Verifique seus e-mails e comece a aprender francês agora!",
+        "errorMessage": "Ops! Algo deu errado.",
+        "placeholder": "Insira seu endereço de e-mail",
+        "button": "Inscrever-se"
+    },
+    "About": {
+        "introDescription": "Sou um professor de francês como língua estrangeira e especialista em <noWrap>ensinar iniciantes.</noWrap>",
+        "button": "Entre em contato",
+        "storyTitle": "Minha <hs3>história</hs3> como <noWrap>professor</noWrap>",
+        "capital": "E",
+        "storyParagraph1": "u comecei como professor de escola primária antes de decidir mudar meu público, rapidamente me tornando um especialista em ensino de francês como língua estrangeira. Essa mudança me permitiu a oportunidade de trabalhar no exterior, indo primeiro para a China, depois para a Inglaterra e para a Nova Zelândia. Além de trabalhar em muitos países, também trabalhei em diversos ambientes profissionais como escolas de idiomas (Alliance française), universidades e escolas de negócios, onde ensinava francês geral para um público exigente <noWrap>de diferentes níveis.</noWrap>",
+        "storyParagraph2": "Desde muito cedo, me especializei no ensino para iniciantes, pois sempre gostei de ver meus alunos progredirem rapidamente, sendo capazes de ir de um nível zero em francês para um nível de confiança que lhes permite sobreviver em seu ambiente e gerenciar situações cotidianas. <noWrap>É muito gratificante.</noWrap>",
+        "storyParagraph3": "Ao criar cursos e materiais online, estou muito feliz em ver que agora meus alunos vêm de diferentes partes do mundo. Isso me motiva a sempre fazer o meu melhor para trazê-los respostas e guiá-los em direção a <noWrap>seus objetivos.</noWrap>",
+        "storyParagraph4": "Espero que você aproveite meus cursos e estou ansioso para ouvir de você. Sinta-se à vontade para me enviar uma <noWrap>mensagem a qualquer momento.</noWrap>",
+        "Hobbies": {
+            "title": "Conheça meus <hs4>hobbies</hs4>",
+            "button": "Entre em contato"
+        }
+    },
+    "Contact": {
+        "title": "Contato",
+        "description": "Não hesite em entrar em contato conosco se tiver alguma dúvida. Teremos prazer em responder.",
+        "ContactClient": {
+            "contactPrompt": "Com quem você gostaria de entrar em contato?",
+            "yohann": "Cursos e conteúdo em vídeo",
+            "nicolas": "Histórias e conteúdo do site",
+            "ContactForm": {
+                "emailTo": "Enviar e-mail para ",
+                "nameLabel": "Nome",
+                "emailLabel": "E-mail*",
+                "emailPlaceholder": "endereco@email.com",
+                "subjectLabel": "Assunto*",
+                "subjectPlaceholder": "Sobre o que é sua mensagem?",
+                "messageLabel": "Mensagem*",
+                "messagePlaceholder": "Sua mensagem aqui...",
+                "subscribeNewsletter": "Inscrever-se em nossa newsletter",
+                "sendButton": "Enviar Mensagem",
+                "loading": "Carregando...",
+                "error": "Ops! Algo deu errado...",
+                "successTitle": "Obrigado",
+                "successMessage": "Sua mensagem foi enviada",
+                "successNewsletter": " e você se inscreveu em nossa newsletter",
+                "successFooter": "Entraremos em contato o mais breve possível."
+            }
+        }
+    },
+    "Stories": {
+        "Hero": {
+            "imageAlt": "Um homem olhando para um livro do qual emanam efusões mágicas",
+            "title": "<hs4>Imersão</hs4> no Francês Através de uma <hs2>História Interativa</hs2>",
+            "description": "Descubra o poder do aprendizado interativo com nossa história em língua francesa. Melhore suas habilidades linguísticas e explore Paris de uma forma divertida e envolvente.",
+            "btnStory": "Ir para a história",
+            "btnMoreInfo": "Mais informações"
+        },
+        "StoriesBand": {
+            "label": "Versão Beta"
+        },
+        "StoryTabs": {
+            "title": "<hs1>Teste Suas Habilidades em Francês</hs1> Através de uma História Interativa",
+            "description1": "Mergulhe em nossa história interativa e experimente a alegria de explorar <hs4>as miríades de possibilidades</hs4> que ela oferece. Não hesite em começar de novo e buscar o sucesso máximo - mas você nunca alcançará todos eles! 😈",
+            "description2": "Esta jornada requer uma base sólida em francês, mas não se preocupe se você ainda não estiver lá. Nós te damos cobertura com <hs2>traduções úteis</hs2>. Com um pouco de dedicação e um toque de criatividade, você fará mágica em pouco tempo."
+        },
+        "WhyStories": {
+            "title": "Por que Aprender Francês com <hs2>Histórias Interativas</hs2>?",
+            "description": "Libere o poder das histórias interativas para uma experiência de aprendizado de francês envolvente e eficaz. Aqui estão os principais benefícios.",
+            "btnReadMore": "Leia mais no blog",
+            "argumentsList": {
+                "languageComprehension": {
+                    "title": "Compreensão da linguagem",
+                    "description": "Histórias interativas ajudam a entender a estrutura da língua francesa e o contexto no qual as palavras são usadas de uma forma natural e intuitiva."
+                },
+                "vocabularyAcquisition": {
+                    "title": "Aquisição de vocabulário",
+                    "description": "Essas histórias oferecem uma excelente oportunidade para adquirir vocabulário no contexto, tornando o aprendizado mais eficaz."
+                },
+                "adaptedToYourNeeds": {
+                    "title": "Adaptado às suas necessidades",
+                    "description": "Seja qual for o seu nível de habilidade, histórias interativas se adaptam às suas necessidades específicas, permitindo que você progrida no seu próprio ritmo."
+                },
+                "engagementAndEnjoyment": {
+                    "title": "Engajamento e prazer",
+                    "description": "Histórias interativas tornam o aprendizado do francês mais envolvente e agradável, graças a uma experiência imersiva e cativante."
+                },
+                "repetitionAndReinforcement": {
+                    "title": "Repetição e reforço",
+                    "description": "A repetição, um elemento-chave do aprendizado de idiomas, também é facilitada por essas histórias."
+                },
+                "anywhereAnytime": {
+                    "title": "Em qualquer lugar, a qualquer momento",
+                    "description": "Sua acessibilidade online significa que você pode aprender a qualquer hora, em qualquer lugar."
+                }
+            }
+        },
+        "BetaVersion": {
+            "title": "<hs4>Ajude-nos</hs4> a Criar a Sua Experiência de Aprendizado Ideal",
+            "subtitle": "<hs2>Fale, Estamos Ouvindo</hs2>. Tem uma ideia? Notou algo que poderíamos fazer melhor? Estamos todos ouvidos. Cada feedback é um passo para criar uma experiência de aprendizado mais eficaz e agradável.",
+            "btnFeedback": "Dar feedback",
+            "image1Alt": "uma paisagem de fantasia",
+            "image2Alt": "sobre lápis"
+        }
+    },
+    "MyFreeVideo": {
+        "Form": {
+            "title": "Olá, assinante",
+            "description": "Insira o seu endereço de e-mail e aproveite o curso gratuito de sua escolha.",
+            "emailPlaceholder": "Insira o seu endereço de e-mail",
+            "submitBtn": "Acessar o curso gratuito"
+        },
+        "UnknownSub": {
+            "title": "Endereço desconhecido",
+            "description": "Desculpe, mas este endereço de e-mail não está na lista.",
+            "tryAgainBtn": "Tentar novamente",
+            "goHomeBtn": "Ir para a página inicial"
+        },
+        "ErrorLayout": {
+            "title": "Oops! Algo deu errado...",
+            "description": "Desculpe, mas ocorreu um erro. Você pode me contatar para que eu possa resolver este problema, ou tentar novamente mais tarde.",
+            "tryAgainBtn": "Tentar novamente",
+            "contactBtn": "Fale comigo"
+        },
+        "VideoChoice": {
+            "title": "Faça sua escolha",
+            "description": "Escolha o curso gratuito ao qual você deseja ter acesso",
+            "btnBeginner": "Sou um iniciante total, quero o meu primeiro curso",
+            "btnIntermediate": "Já tenho o básico e quero melhorar o meu francês"
+        }
+    },
+    "Auth": {
+        "Activated": {
+            "congratulations": "Parabéns!",
+            "title": "Conta ativada",
+            "description": "Sua conta foi ativada. Agora você pode se conectar ao <b>Comece a Aprender Francês Agora</b> e melhorar seu francês. Até breve!",
+            "btnLogin": "Ir para a página de login"
+        },
+        "Error": {
+            "oops": "Ops!",
+            "title": "Algo deu errado",
+            "messages": {
+                "no-user": "Não conseguimos encontrar o usuário correspondente a esta chave de ativação. Por favor, insira seu endereço de e-mail para receber um novo link de ativação. Se o erro persistir, entre em contato conosco.",
+                "already-active": "A conta correspondente a esta chave já foi validada. Você está livre para fazer login.",
+                "expired": "Desculpe, a chave de ativação expirou. Enviamos um novo e-mail para validar sua conta.",
+                "email-already-used": "Este endereço de e-mail já está em uso. Por favor, insira outro endereço de e-mail ou mude o modo de autenticação."
+            },
+            "btnLogin": "Ir para a página de login",
+            "btnHome": "Ir para a página inicial"
+        },
+        "GetNewLink": {
+            "placeholder": "Seu endereço de e-mail",
+            "btnGetLink": "Obter um link",
+            "errorEmptyEmail": "Por favor, insira seu endereço de e-mail",
+            "successMessage": "Um novo link foi enviado para o seu endereço de e-mail.",
+            "errorMessage": "Ocorreu um erro ao enviar o link. Por favor, tente novamente."
+        },
+        "Email": {
+            "activationEmail": {
+                "subject": "Por favor, ative sua conta e Comece a Aprender Francês Agora",
+                "body": "<p>Olá USERNAME,</p> <br><p>Obrigado por se inscrever no Comece a Aprender Francês Agora.</p> <p>Por favor, clique <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/pt'>aqui</a></span> para ativar sua conta.</p><br> <p>Desejamos a você um excelente aprendizado do francês.</p><br> <p>Atenciosamente,</p> <p>Yohann e Nicolas</p>"
+            },
+            "ResetPasswordMail": {
+                "subject": "Redefinir sua senha",
+                "body": "<p>Olá USERNAME,</p> <br><p>Por favor, clique <span><a href='DOMAIN/pt/auth/reset-password/new-password/PASSWORDTOKEN'>aqui</a></span> para mudar sua senha.</p><br> <p>Desejamos a você um excelente aprendizado do francês.</p><br> <p>Atenciosamente,</p> <p>Yohann e Nicolas</p>"
+            }
+        },
+        "GetPasswordLink": {
+            "title": "Redefinir senha",
+            "subtitle": "Você não está sozinho. Todos nós já estivemos aqui em algum momento.",
+            "instruction": "Insira seu endereço de e-mail e enviaremos um e-mail contendo um link. Clique nele e forneça uma nova senha.",
+            "returnToLogin": "Retornar à página de login"
+        },
+        "NewPassword": {
+            "title": "Nova senha",
+            "subtitle": "Mude sua senha",
+            "instruction": "Insira sua nova senha para que você possa fazer login novamente e continuar aprendendo francês.",
+            "NewPasswordForm": {
+                "passwordPlaceholder": "Senha",
+                "confirmPlaceholder": "Confirmar",
+                "updateButton": "Atualizar senha",
+                "loginButton": "Login",
+                "error": {
+                    "emptyFields": "Por favor, preencha todos os campos",
+                    "mismatch": "As senhas não coincidem",
+                    "oops": "Ops! Algo deu errado..."
+                },
+                "success": "Sua senha foi atualizada com sucesso."
+            }
+        },
+        "SignIn": {
+            "helloAgain": "<hs2>Olá</hs2> de novo",
+            "welcomeBack": "Bem-vindo de volta, você fez falta!",
+            "homepage": "Página inicial",
+            "createAccount": "Criar conta",
+            "or": "Ou",
+            "infoMessages": {
+                "storyAccount": "Você precisa fazer login para acompanhar suas histórias."
+            }
+        },
+        "CredentialsForm": {
+            "yourEmailAddress": "Seu endereço de e-mail",
+            "yourPassword": "Sua senha",
+            "logIn": "Fazer login",
+            "forgotPassword": "Esqueceu a senha?",
+            "credentialsDoNotMatch": "As credenciais não coincidem!",
+            "oopsError": "Ops, ocorreu um erro..."
+        },
+        "ContinueWithGoogle": {
+            "label": "Continuar com o Google"
+        },
+        "SignUp": {
+            "or": "Ou",
+            "signUp": "<hs1>Inscreva-se</hs1>",
+            "homepage": "Página inicial",
+            "alreadyAccount": "Já tem uma conta?"
+        },
+        "SignUpForm": {
+            "enterYourEmail": "Insira seu e-mail",
+            "enterYourUsername": "Insira seu nome de usuário",
+            "password": "Senha",
+            "confirm": "Confirmar",
+            "subscribeNewsletter": "Inscrever-se na nossa newsletter",
+            "createAccount": "Criar conta",
+            "successMessage": "Conta criada. Por favor, verifique seu e-mail para ativá-la.",
+            "errorMessages": {
+                "fillAllField": "Por favor, preencha todos os campos",
+                "emailexist": "Uma conta já usando este endereço de e-mail existe.",
+                "notActivated": "Um e-mail foi enviado para sua caixa de entrada. Por favor, clique no link quando recebê-lo.",
+                "emailInvalid": "Formato de e-mail inválido.",
+                "passwordMismatch": "As senhas não coincidem.",
+                "passwordNotConform": "A senha deve ter pelo menos 8 caracteres, incluindo maiúsculas, minúsculas e números.",
+                "error500": "Ops, erro na criação do usuário..."
+            }
+        }
+    },
+    "Categories": {
+        "tip": {
+            "title": "Dica",
+            "description": "Uma dica é uma pequena lição que se concentra em um ponto específico de gramática ou vocabulário.",
+            "color": "#FFC107",
+            "posts": "Publicações",
+            "all": "Todas"
+        },
+        "grammar": {
+            "title": "Gramática",
+            "description": "Uma lição de gramática é uma lição mais completa que se concentra em um ponto específico da gramática.",
+            "color": "#FF5722",
+            "posts": "Publicações",
+            "all": "Todas"
+        },
+        "vocabulary": {
+            "title": "Vocabulário",
+            "description": "Uma lição de vocabulário é uma lição mais completa que se concentra em um ponto específico do vocabulário.",
+            "color": "#4CAF50",
+            "posts": "Publicações",
+            "all": "Todas"
+        },
+        "culture": {
+            "title": "Cultura",
+            "description": "Uma lição de cultura é uma lição que se concentra em um ponto cultural específico.",
+            "color": "#2196F3",
+            "posts": "Publicações",
+            "all": "Todas"
+        },
+        "expression": {
+            "title": "Expressão",
+            "description": "Uma lição de expressão é uma lição que se concentra em uma expressão específica.",
+            "color": "#9C27B0",
+            "posts": "Publicações",
+            "all": "Todas"
+        }
+    },
+    "Blog": {
+        "BlogList": {
+            "articlesAndResources": "Artigos & <hs1>Recursos</hs1>",
+            "description": "Nesta seção você encontrará artigos e recursos para ajudá-lo a <noWrap>aprender francês.</noWrap>",
+            "newestPosts": "Publicações mais recentes"
+        },
+        "CategoriesBand": {
+            "grammar": "Gramática",
+            "vocabulary": "Vocabulário",
+            "expressions": "Expressões",
+            "tips": "Dicas"
+        },
+        "PostsList": {
+            "all": "Todas",
+            "latest": "Mais recentes",
+            "posts": "Publicações"
+        },
+        "BlogLangButton": {
+            "title": "Escolha o seu idioma",
+            "message": "O conteúdo do blog está disponível em inglês e francês. Você pode mudar o idioma a qualquer momento no topo da página.",
+            "okString": "Eu entendi"
+        },
+        "Post": {
+            "latestPosts": "Publicações <hs4>mais recentes</hs4>",
+            "browseAllPosts": "Ver todas as publicações"
+        }
+    }
+}

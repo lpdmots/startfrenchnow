@@ -1,3 +1,4 @@
+"use client";
 import { m } from "framer-motion";
 
 function SimpleButton({ children, classname }: { children: React.ReactNode; classname?: string }) {

@@ -11,5 +11,7 @@ type props = {
 export default function PreviewBlogListe({ query, slug }: props) {
     const post = usePreview(null, query, { slug });
 
-    return <PostContent post={post} />;
+    return null;
 }
+
+/* <PostContent post={post} /> */

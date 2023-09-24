@@ -1,11 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "next-intl/link";
 import urlFor from "@/app/lib/urlFor";
 import { BsCaretRightFill } from "react-icons/bs";
 import TabelVoc from "./TabelVoc";
 import { FaFileDownload } from "react-icons/fa";
 import VideoBlog from "./VideoBlog";
-import Flashcards from "../common/Flashcards";
+import Flashcards from "../exercises/Flashcards";
+import SimpleExercise from "../exercises/SimpleExercise";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -22,6 +23,9 @@ export const RichTextComponents = {
         tabelVoc: ({ value }: any) => <TabelVoc data={value} />,
         flashcards: ({ value }: any) => {
             return <Flashcards data={value} />;
+        },
+        simpleExercise: ({ value }: any) => {
+            return <SimpleExercise data={value} />;
         },
     },
     list: {

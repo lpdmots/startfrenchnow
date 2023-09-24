@@ -1,5 +1,5 @@
 import { Adventure } from "@/app/types/stories/adventure";
-import Link from "next/link";
+import Link from "next-intl/link";
 import React from "react";
 import { BiExit } from "react-icons/bi";
 import Image from "next/image";

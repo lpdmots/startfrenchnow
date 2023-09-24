@@ -4,7 +4,7 @@ import { Review, ScoreProps } from "../types/stories/element";
 import { SanityServerClient as client } from "../lib/sanity.clientServer";
 import { UserProps, UserScore, UserStory } from "../types/sfn/auth";
 import { Adventure, Feedback, StarRating, StoryStats } from "../types/stories/adventure";
-import { CheckBoxes } from "../(user)/(stories)/stories/[slug]/feedback/page";
+import { CheckBoxes } from "@/app/[locale]/(stories)/stories/[slug]/feedback/page";
 
 const getInitialData = (storyId: string) => {
     return {

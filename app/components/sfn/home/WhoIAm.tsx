@@ -1,10 +1,13 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "next-intl/link";
 import React from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import { SlideFromBottom } from "../../animations/Slides";
 
 function WhoIAm() {
+    const t = useTranslations("WhoIAm");
+
     return (
         <div className="container-default w-container">
             <div className="inner-container _600px---tablet center">
@@ -31,9 +34,7 @@ function WhoIAm() {
                                             </div>
                                         </div>
                                     </div>
-                                    <p className="mg-bottom-32px">
-                                        I’m a French teacher as a foreign language, expert on teaching online and creating high quality content for beginners and intermediate learners.
-                                    </p>
+                                    <p className="mg-bottom-32px">{t("description")}</p>
                                     <div className="inner-container _500px---tablet center">
                                         <div className="inner-container _400px---mbl center _100---mbp">
                                             <div className="mg-bottom-40px">
@@ -41,9 +42,9 @@ function WhoIAm() {
                                                     <div className="bullet bg-secondary-1"></div>
                                                     <div>
                                                         <div className="mg-bottom-12px">
-                                                            <div className="text-300 bold color-neutral-800">A native & certified French teacher</div>
+                                                            <div className="text-300 bold color-neutral-800">{t("bulletPoints.nativeCertified.title")}</div>
                                                         </div>
-                                                        <p className="mg-bottom-0">Born in the beautiful Burgundy region near Dijon, I have a Master’s degree in Education.</p>
+                                                        <p className="mg-bottom-0">{t("bulletPoints.nativeCertified.content")}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -52,11 +53,9 @@ function WhoIAm() {
                                                     <div className="bullet bg-secondary-3"></div>
                                                     <div>
                                                         <div className="mg-bottom-12px">
-                                                            <div className="text-300 bold color-neutral-800">10+ years of experience</div>
+                                                            <div className="text-300 bold color-neutral-800">{t("bulletPoints.experience.title")}</div>
                                                         </div>
-                                                        <p className="mg-bottom-0">
-                                                            I have taught in language schools, universities and business schools all around the world before going online with my students.
-                                                        </p>
+                                                        <p className="mg-bottom-0">{t("bulletPoints.experience.content")}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -65,12 +64,9 @@ function WhoIAm() {
                                                     <div className="bullet bg-secondary-4"></div>
                                                     <div>
                                                         <div className="mg-bottom-12px">
-                                                            <div className="text-300 bold color-neutral-800">An expert with beginners</div>
+                                                            <div className="text-300 bold color-neutral-800">{t("bulletPoints.expertBeginners.title")}</div>
                                                         </div>
-                                                        <p className="mg-bottom-0">
-                                                            Where other teachers are often bored or not sure how to deal with total beginners, I love it and I have specifically crafted a method for
-                                                            them.
-                                                        </p>
+                                                        <p className="mg-bottom-0">{t("bulletPoints.expertBeginners.content")}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -78,7 +74,7 @@ function WhoIAm() {
                                                 <Link href="about" className="btn-primary w-button">
                                                     <div className="flex items-center justify-center">
                                                         <AiOutlineUser className="mr-2" />
-                                                        More about me
+                                                        {t("moreAboutMe")}
                                                     </div>
                                                 </Link>
                                             </div>

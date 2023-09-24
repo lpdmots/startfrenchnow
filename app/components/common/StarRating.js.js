@@ -39,11 +39,11 @@ const Star = ({ i, isHoveringWrapper, isClicked }) => {
         if (isHovering) starControls.start("hovered");
         else if (isClicked) starControls.start("animate");
         else starControls.start("exit");
-    }, [isClicked, isHovering]);
+    }, [isClicked, isHovering, starControls]);
     useEffect(() => {
         if (isHoveringWrapper) backgroundControls.start({ background: "var(--primary)" });
         else backgroundControls.start({ background: "var(--neutral-200)" });
-    }, [isHoveringWrapper]);
+    }, [isHoveringWrapper, backgroundControls]);
     return (
         <div>
             <motion.div

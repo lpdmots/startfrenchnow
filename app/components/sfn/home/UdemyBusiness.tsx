@@ -1,22 +1,19 @@
+import { intelRich } from "@/app/lib/intelRich";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { SiApple, SiBarclays, SiPaypal, SiVolkswagen } from "react-icons/si";
 import { Fade } from "../../animations/Fades";
 import { SlideFromBottom, SlideFromRight } from "../../animations/Slides";
 
 function UdemyBusiness() {
+    const t = useTranslations("UdemyBusiness");
     return (
         <div className="section bg-neutral-800 wf-section">
             <div className="container-default w-container">
                 <div className="inner-container _600px---tablet center">
                     <div className="inner-container _500px---mbl center">
                         <Fade>
-                            <h2 className="display-2 color-neutral-100 mb-12">
-                                Join{" "}
-                                <span className="heading-span-secondary-2" style={{ whiteSpace: "nowrap" }}>
-                                    students worldwide
-                                </span>{" "}
-                                in our quality French content and courses.
-                            </h2>
+                            <h2 className="display-2 color-neutral-100 mb-12">{t.rich("title", intelRich())}</h2>
                         </Fade>
                         <div className="lg:grid lg:grid-cols-7 gap-6">
                             <div
@@ -26,16 +23,8 @@ function UdemyBusiness() {
                             >
                                 <SlideFromBottom delay={0.5}>
                                     <>
-                                        <p className="color-neutral-300 mg-bottom-24px">
-                                            One of our greatest pleasures is to see that our students come from over 140 different countries ! They all have their own objective towards the French
-                                            language and our mission is to help
-                                            <span className="text-no-wrap"> them in reaching it.</span>
-                                        </p>
-                                        <p className="color-neutral-300 mg-bottom-24px">
-                                            Our courses have also been recommended to big companies and their employees via the Udemy for Business programm that rewards the best courses based on the
-                                            student feedback, their relevance and
-                                            <span className="text-no-wrap"> general quality.</span>
-                                        </p>
+                                        <p className="color-neutral-300 mg-bottom-24px">{t.rich("paragraph1", intelRich())}</p>
+                                        <p className="color-neutral-300 mg-bottom-24px">{t.rich("paragraph2", intelRich())}</p>
                                         <div className="grid grid-cols-2 gap-2 sm:gap-6 lg:gap-6 ">
                                             <div className="mg-bottom-12px">
                                                 <div className="flex gap-2 sm:gap-4 items-center">
@@ -94,7 +83,7 @@ function UdemyBusiness() {
                                             className="object-contain"
                                             width={705}
                                             height={500}
-                                            style={{ border: "solid 4px #0b0b0b", borderRadius: "32px", objectFit: "contain", height: "auto" }}
+                                            style={{ border: "solid 4px #0b0b0b", borderRadius: "32px", objectFit: "contain", height: "auto", maxWidth: "100%" }}
                                             loading="lazy"
                                         />
                                     </div>

@@ -61,15 +61,15 @@ export const ModalFromBottom = ({ data }: Props) => {
                     style={{ width: "98%" }}
                 >
                     <div className="grid grid-cols-5 gap-4 mb-2">
+                        <div className={`${imageUrl ? "col-span-4" : "col-span-5"} flex flex-col text-left`}>
+                            {title}
+                            {message}
+                        </div>
                         {imageUrl && (
                             <div className="col-span-1">
                                 <Image src={imageUrl} height={50} width={50} alt="representation de l'objet" className="h-12 sm:h-16 md:h-24 object-contain w-auto" />
                             </div>
                         )}
-                        <div className={`${imageUrl ? "col-span-4" : "col-span-5"} flex flex-col text-left`}>
-                            {title}
-                            {message}
-                        </div>
                     </div>
                     <div className="flex justify-end gap-4">
                         {!oneButtonOnly && (

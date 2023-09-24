@@ -5,7 +5,7 @@ interface Props {
     color?: string;
 }
 
-function Spinner({ radius, message, maxHeight, color = "var(--neutral-500)" }: Props) {
+function Spinner({ radius, message, maxHeight, color = "var(--neutral-100)" }: Props) {
     return (
         <div className="w-full">
             <div className="w-full p-2" style={{ transformStyle: "preserve-3d" }}>

@@ -1,14 +1,19 @@
 // Start French now
 import blockContent from "./sfn/blockContent";
-import category from "./sfn/category";
 import post from "./sfn/post";
 import user from "./sfn/user";
-import course from "./sfn/course";
 import video from "./sfn/video";
 import videoBlog from "./sfn/videoBlog";
-import tabelVoc from "./sfn/tabelVoc";
-import flashcards from "./sfn/flashcards";
 import vocabulary from "./sfn/vocabulary";
+
+// Blog Tools
+import flashcards from "./sfn/blogTools/flashcards";
+import simpleExercise from "./sfn/blogTools/simpleExercise";
+import tabelVoc from "./sfn/blogTools/tabelVoc";
+
+// Exercices
+import exerciseTheme from "./sfn/exercises/exerciseTheme";
+import simpleQuestion from "./sfn/exercises/simpleQuestion";
 
 // Stories
 import adventure from "./stories/adventure";
@@ -27,13 +32,14 @@ import feedback from "./stories/feedback";
 export const schemaTypes = [
     user,
     post,
-    category,
     blockContent,
-    course,
     video,
     videoBlog,
     tabelVoc,
     flashcards,
+    simpleExercise,
+    exerciseTheme,
+    simpleQuestion,
     vocabulary,
     adventure,
     effect,

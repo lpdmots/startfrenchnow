@@ -1,45 +1,49 @@
 import React from "react";
-import Link from "next/link";
 import { FaPenFancy } from "react-icons/fa";
-import GrammarLogo from "../../common/logos/GrammarLogo";
-import VocabularyLogo from "../../common/logos/VocabularyLogo";
 import Image from "next/image";
 import { SlideFromBottom } from "../../animations/Slides";
-
-const argumentsList = [
-    {
-        title: "Language comprehension",
-        icon: { url: "/images/execution.png", alt: "Comprehension" },
-        description: "Interactive stories help to understand the structure of the French language and the context in which words are used in a natural, intuitive way.",
-    },
-    {
-        title: "Vocabulary acquisition",
-        icon: { url: "/images/dictionary.png", alt: "Dictionary" },
-        description: "These stories offer an excellent opportunity to acquire vocabulary in context, making learning more effective.",
-    },
-    {
-        title: "Adapted to your needs",
-        icon: { url: "/images/adaptation.png", alt: "Adaptation" },
-        description: "Whatever your skill level, interactive stories adapt to your specific needs, enabling you to progress at your own pace.",
-    },
-    {
-        title: "Engagement and enjoyment",
-        icon: { url: "/images/smile.png", alt: "happy smiley" },
-        description: "Interactive stories make learning French more engaging and enjoyable, thanks to an immersive and captivating experience.",
-    },
-    {
-        title: "Repetition and reinforcement",
-        icon: { url: "/images/rinse.png", alt: "Repetition" },
-        description: "Repetition, a key element of language learning, is also facilitated by these stories.",
-    },
-    {
-        title: "Anywhere, Anytime",
-        icon: { url: "/images/time-management.png", alt: "time-management" },
-        description: "Their online accessibility means you can learn anytime, anywhere.",
-    },
-];
+import { useLocale, useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+import { LinkBlog } from "../../sfn/blog/LinkBlog";
+import { Locale } from "@/i18n";
 
 export const WhyStories = () => {
+    const t = useTranslations("Stories.WhyStories");
+    const locale = useLocale();
+
+    const argumentsList = [
+        {
+            title: t("argumentsList.languageComprehension.title"),
+            icon: { url: "/images/execution.png", alt: "Comprehension" },
+            description: t("argumentsList.languageComprehension.description"),
+        },
+        {
+            title: t("argumentsList.vocabularyAcquisition.title"),
+            icon: { url: "/images/dictionary.png", alt: "Dictionary" },
+            description: t("argumentsList.vocabularyAcquisition.description"),
+        },
+        {
+            title: t("argumentsList.adaptedToYourNeeds.title"),
+            icon: { url: "/images/adaptation.png", alt: "Adaptation" },
+            description: t("argumentsList.adaptedToYourNeeds.description"),
+        },
+        {
+            title: t("argumentsList.engagementAndEnjoyment.title"),
+            icon: { url: "/images/smile.png", alt: "happy smiley" },
+            description: t("argumentsList.engagementAndEnjoyment.description"),
+        },
+        {
+            title: t("argumentsList.repetitionAndReinforcement.title"),
+            icon: { url: "/images/rinse.png", alt: "Repetition" },
+            description: t("argumentsList.repetitionAndReinforcement.description"),
+        },
+        {
+            title: t("argumentsList.anywhereAnytime.title"),
+            icon: { url: "/images/time-management.png", alt: "time-management" },
+            description: t("argumentsList.anywhereAnytime.description"),
+        },
+    ];
+
     return (
         <div id="moreInfo" className="section bg-neutral-800 wf-section">
             <div className="container-default w-container">
@@ -53,24 +57,24 @@ export const WhyStories = () => {
                                             <SlideFromBottom>
                                                 <div className="inner-container _300px---mbl center">
                                                     <h2 className="display-2 color-neutral-100">
-                                                        <span className="z-index-1">
-                                                            Why Should You Learn French with <span className="heading-span-secondary-2">Interactive Stories</span>?
-                                                        </span>
+                                                        <span className="z-index-1">{t.rich("title", intelRich())}</span>
                                                     </h2>
                                                 </div>
                                             </SlideFromBottom>
                                         </div>
                                         <SlideFromBottom>
                                             <>
-                                                <p className="color-neutral-300 mg-bottom-40px">
-                                                    Unleash the power of interactive stories for an engaging and effective French learning experience. Here are the key benefits.
-                                                </p>
-                                                <Link href="/blog/post/decouvrez-les-bienfaits-des-histoires-interactives-pour-apprendre-le-francais" className="btn-secondary variant w-button">
+                                                <p className="color-neutral-300 mg-bottom-40px">{t("description")}</p>
+                                                <LinkBlog
+                                                    href="/blog/post/decouvrez-les-bienfaits-des-histoires-interactives-pour-apprendre-le-francais"
+                                                    className="btn-secondary variant w-button"
+                                                    locale={locale as Locale}
+                                                >
                                                     <div className="flex items-center justify-center">
                                                         <FaPenFancy className="mr-2" />
-                                                        Read more on the blog
+                                                        {t("btnReadMore")}
                                                     </div>
-                                                </Link>
+                                                </LinkBlog>
                                             </>
                                         </SlideFromBottom>
                                     </div>

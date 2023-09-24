@@ -1,5 +1,7 @@
 import { ContactForm } from "@/app/types/sfn/contact";
 
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+
 export const sendContactForm = async (data: ContactForm) =>
     fetch("/api/contact", {
         method: "POST",
@@ -27,17 +29,31 @@ export const subscribeNewsletter = async (data: string) =>
         return res.json();
     });
 
-export const getSubscriber = async (email: string) =>
-    fetch(`/api/subscribers/${email}`, {
+export const getSubscriber = async (email: string) => {
+    return fetch(`/api/subscribers/${email}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
         },
     }).then((res) => {
-        if (!res.ok) throw new Error("Failed to subscribe");
+        if (!res.ok) throw new Error("Failed to get subscriber");
         return res.json();
     });
+};
+
+export const getSubscriberFromServer = async (email: string) => {
+    return fetch(`${NEXTAUTH_URL}/api/subscribers/${email}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    }).then((res) => {
+        if (!res.ok) throw new Error("Failed to get subscriber");
+        return res.json();
+    });
+};
 
 export const updateSubscriber = async (data: any, subscriberId: string) =>
     fetch(`/api/subscribers/${subscriberId}`, {

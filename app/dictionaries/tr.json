@@ -1,0 +1,421 @@
+{
+    "Metadata": {
+        "Home": {
+            "title": "Uzmanların Yönettiği Video Derslerle Kendi Hızınızda Fransızca Öğrenin",
+            "description": "Kapsamlı video derslerimizle Fransızca dil becerilerinizi geliştirin. Fransızca'yı yabancı dil olarak öğrenmek ve akıcılığa ulaşmak için uygun, ciddi ve eğlenceli bir yol öneriyoruz. Hemen Fransızca öğrenmeye başlayın!"
+        },
+        "StoriesApp": {
+            "title": "Start French Now ile Fransızca Öğrenin: Etkileşimli Hikayeler ve Çevrimiçi Kurslar",
+            "description": "Start French Now ile Fransızca dilini öğrenmenin eşsiz bir yolunu keşfedin. Etkileşimli hikayelere, Udemy üzerinde düzenlenmiş yapılandırılmış kurslara ve küresel öğrenciler için özel olarak hazırlanmış zengin eğitim içeriğine dalın."
+        },
+        "Stories": {
+            "title": "Etkileşimli Hikayelerle Fransızca Öğrenin | Start French Now",
+            "description": "Sürükleyici Fransızca hikayelere dalın ve dil becerilerinizi çabasız bir şekilde geliştirin. Paris'i keşfedin ve kendi hızınızda Fransızca öğrenin. Şimdi yolculuğunuza başlayın!"
+        },
+        "Blog": {
+            "title": "Start French Now Blog: Fransızca Öğrenmenin Nihai Rehberi",
+            "description": "Fransızca öğrenmenin sırlarını Start French Now Blog ile keşfedin. Dil bilgisinden kelime bilgisine, makalelerimiz dilin hakimiyeti için kapsamlı, anlaşılır bir rehber sunar."
+        },
+        "About": {
+            "title": "Yohann'ı Tanıyın: Sıfırdan Fransızca Öğrenmeniz için Uzman Rehberiniz",
+            "description": "Yohann'ın ilkokul öğretmeninden başlayarak başlangıç seviyesinde Fransızca öğretme konusunda global bir uzmana dönüşümünü keşfedin. Kendi Fransızca öğrenme yolculuğunuzu bizimle başlatın!"
+        }
+    },
+    "Navigation": {
+        "home": "Ana Sayfa",
+        "stories": "Hikayeler",
+        "blog": "Blog",
+        "about": "Hakkında",
+        "contact": "İletişim",
+        "my_account": "Hesabım",
+        "logout": "Çıkış Yap",
+        "contact_us": "Bizimle İletişime Geçin"
+    },
+    "HeroSfn": {
+        "title": "<hs4>Fransızca'yı</hs4> <hs2>Yüksek Kalite</hs2> ile Kendi Hızınızda Öğrenin",
+        "description": "Ciddi bir şekilde Fransızca öğrenmek mi istiyorsunuz? Endişelenmeyin, sıkıcı olmak zorunda değil.",
+        "btn_courses": "Kurslarımız"
+    },
+    "LessonCards": {
+        "title": "Siz uygun bir kurs bulun ve <hs4>başlayın</hs4>!",
+        "description": "Hiçbir \"Blabla\"! Amaç, Fransızca dilini gerçekten öğrenmeye ve anlamaktır. Başlangıç ve orta seviyeler için bir yöntem, sizi, kendi başınıza \"uçabileceğiniz\" bir güven seviyesine yönlendirmeyi amaçlar.",
+        "notSureTitle": "Ne seçeceğinizden emin değil misiniz?",
+        "notSureDescription": "Buraya tıklayın ve bana bir mesaj gönderin!",
+        "contactButton": "Benimle İletişime Geçin",
+        "lessons": {
+            "beginnerLevel1": {
+                "title": "Başlangıç - Seviye 1 (A0'dan A2'ye)",
+                "description": "Fransızca'nın temellerini öğrenmek isteyen tam anlamıyla başlangıç seviyesindekiler için. Fransızca'da pratik iletişim becerilerini oluşturun ve geliştirin: konuşma, dinleme, okuma ve yazma."
+            },
+            "lowIntermediateLevel2": {
+                "title": "Düşük Orta - Seviye 2 (A2.1)",
+                "description": "Fransızca bilginizi derinleştirin ve A2'den B1'e ilerleyin. Daha uzun ve daha karmaşık cümleler oluşturmak için ihtiyaç duyduğunuz tüm araçları öğrenin. Tanıdık konular hakkında gerçek Fransızca konuşun."
+            },
+            "masterPastTenses": {
+                "title": "Geçmiş Zamanları Hâkim Olun",
+                "description": "Fransızca'da geçmişte konuşun. 3 ana geçmiş zamanı öğrenin: passé composé, imparfait, plus-que-parfait. Geçmiş zamanlar arasındaki farkları anlayın ve onları birlikte kullanın."
+            }
+        }
+    },
+    "UdemyBusiness": {
+        "title": "<hs2>Dünya çapında öğrencilerle</hs2> kaliteli Fransızca içerik ve kurslarımızda yer alın.",
+        "paragraph1": "En büyük zevklerimizden biri, öğrencilerimizin 140 farklı ülkeden geldiğini görmektir! Hepsi Fransızca diline yönelik kendi hedeflerine sahiptir ve görevimiz onlara bu hedefe ulaşmalarına <noWrap>yardımcı olmaktır.</noWrap>",
+        "paragraph2": "Kurslarımız, Udemy for Business programı aracılığıyla büyük şirketlere ve çalışanlarına da önerilmiştir; bu program en iyi kursları, öğrenci geri bildirimleri, ilgileri ve genel kalitesi temel <noWrap>alarak ödüllendirir.</noWrap>"
+    },
+    "CoreValuesMethod": {
+        "title": "<hs4>Metodumuzun</hs4> Temel Değerleri",
+        "description": "<under>İyi yapılandırılmış</under> bir metod ile <under>lokma büyüklüğünde dersler</under> sayesinde <under>temel</under> Fransızca dil becerilerini kazanabilirsiniz.",
+        "coreValues": {
+            "serious": {
+                "title": "Ciddi",
+                "content": "Öğrencinin baştan sona rehberlik ve destek aldığı yapılandırılmış ve ciddi bir metod."
+            },
+            "smartLearning": {
+                "title": "Akıllı Öğrenme",
+                "content": "Yeni kavramlar iyi tanımlanır, zorluklar izole edilir, açıklanır, üzerinde çalışılır ve mevcut bilginizle kademeli olarak entegre edilir."
+            },
+            "fun": {
+                "title": "Eğlenceli",
+                "content": "Ciddi ama eğlenceli! Kurslar etkileşimli ve eğlenceli, çekici ve modern görsellerle dolu. Aktif olarak katılmaya hazır olun."
+            },
+            "fullMethod": {
+                "title": "Tam bir Metod",
+                "content": "Ekstra egzersizler, quizler, kelime listeleri, kaliteli bir blog ve harika Fransızca interaktif hikayeler ile erişilebilecek geniş kaynaklara sahip tam bir metod."
+            }
+        }
+    },
+    "WhoIAm": {
+        "description": "Ben bir Fransızca yabancı dil öğretmeniyim, çevrimiçi öğretim ve başlangıç ve orta seviye öğrenciler için yüksek kaliteli içerik oluşturma konusunda uzmanım.",
+        "bulletPoints": {
+            "nativeCertified": {
+                "title": "Ana Dil Olan & Sertifikalı Fransızca Öğretmen",
+                "content": "Güzel Burgonya bölgesi, Dijon yakınlarında doğdum, Eğitim alanında Yüksek Lisans derecem var."
+            },
+            "experience": {
+                "title": "10+ Yıl Deneyim",
+                "content": "Öğrencilerimle çevrimiçi olmadan önce dünyanın dört bir yanındaki dil okullarında, üniversitelerde ve iş okullarında öğrettim."
+            },
+            "expertBeginners": {
+                "title": "Başlangıç Seviyesiyle Uğraşan Bir Uzman",
+                "content": "Diğer öğretmenler genellikle toplam başlangıç seviyesi öğrencileriyle nasıl başa çıkacakları konusunda sıkılır veya emin değillerse, ben bu durumu seviyorum ve onlar için özellikle bir metod geliştirdim."
+            }
+        },
+        "moreAboutMe": "Benim hakkımda daha fazla"
+    },
+    "CommentsCarousel": {
+        "title": "Öğrencilerim <hs4>çalışmam hakkında</hs4> ne diyor",
+        "description": "İşte sınıflarımın bazı yorumları. Daha fazlasını burada bulacaksınız ",
+        "description2": "üzerinde"
+    },
+    "StoriesHome": {
+        "title": "Yolunuzu Seçin: Etkili öğrenme için <hs1>İnteraktif Fransızca Hikayelerimiz</hs1> ile bağlantıya geçin.",
+        "description": "Fransızca'ya dalış, Fransızca dilinin kalbine sizi götürecek olan interaktif hikaye uygulamamız ile heyecan verici bir maceraya dönüşebilir. Bu hikayelere dalarak, Fransızcanızı eğlenceli ve etkileşimli bir şekilde geliştirebilirsiniz. Peki, neden <noWrap>bir şans vermeyesiniz</noWrap>?",
+        "bullet1": "Özgün yeteneklerle donatılmış <noWrap>kahramanınızı seçin.</noWrap>",
+        "bullet2": "Onu bir labirent olanaklar <noWrap>arasında yönlendirin.</noWrap>",
+        "bullet3": "Bir dizi başarıyı <noWrap>kilidini açın.</noWrap>",
+        "button": "Hikayelere Git"
+    },
+    "BlogHome": {
+        "title": "<hs1>Makaleler</hs1> & Haberler",
+        "button": "Tüm makalelere göz atın"
+    },
+    "Newsletter": {
+        "title": "Bültenimize <noWrap>abone olun</noWrap>",
+        "description": "Bilgilendirilmeyi sürdürün ve ücretsiz bir video alın",
+        "successMessage": "Bültenimize katıldığınız için teşekkürler. E-postalarınızı kontrol edin ve Fransızcaya hemen başlayın!",
+        "errorMessage": "Hata! Bir şeyler yanlış gitti.",
+        "placeholder": "E-posta adresinizi girin",
+        "button": "Abone ol"
+    },
+    "About": {
+        "introDescription": "Ben bir Fransızca yabancı dil öğretmeniyim ve başlangıç seviyesi <noWrap>öğretiminde uzmanım.</noWrap>",
+        "button": "İletişime geçin",
+        "storyTitle": "Bir öğretmen olarak <noWrap><hs3>hikayem</hs3></noWrap>",
+        "capital": "B",
+        "storyParagraph1": "en ilk olarak bir ilkokul öğretmeni olarak başladım ve sonra seyircimi değiştirmeye karar verdim, hızla Fransızcayı yabancı dil olarak öğretmede uzman oldum. Bu, ilk olarak Çin'e, ardından İngiltere'ye ve Yeni Zelanda'ya gitme fırsatı verdi. Farklı profesyonel ortamlarda da çalıştım, yani dil okullarında (Alliance française), üniversitelerde ve iş okullarında genel Fransızca öğrettim <noWrap>farklı seviyelerde talepkar bir kitleye.</noWrap>",
+        "storyParagraph2": "Çok erken bir dönemde, öğrencilerimin hızla ilerlemesinden her zaman keyif aldığım için başlangıç seviyesi öğretiminde uzmanlaştım. <noWrap>Çok ödüllendirici.</noWrap>",
+        "storyParagraph3": "Çevrimiçi kurslar ve materyaller oluştururken, şimdi öğrencilerimin dünyanın farklı yerlerinden geldiğini görmekten çok mutluyum. Bu, onlara cevaplar getirmek ve onları <noWrap>hedeflerine yönlendirmek</noWrap> için her zaman en iyisini yapmam için beni motive ediyor.",
+        "storyParagraph4": "Umarım kurslarımı beğenirsiniz ve sizden haber almayı dört gözle bekliyorum. Her zaman bir <noWrap>mesaj bırakmaktan çekinmeyin.</noWrap>",
+        "Hobbies": {
+            "title": "<hs4>Hobilerime</hs4> bir göz atın",
+            "button": "İletişime geçin"
+        }
+    },
+    "Contact": {
+        "title": "Bize Ulaşın",
+        "description": "Herhangi bir sorunuz varsa bizimle iletişime geçmekten çekinmeyin. Size cevap vermaktan mutluluk duyarız.",
+        "ContactClient": {
+            "contactPrompt": "Kimi iletişime geçmek istersiniz?",
+            "yohann": "Kurslar ve video içerik",
+            "nicolas": "Hikayeler ve web sitesi içeriği",
+            "ContactForm": {
+                "emailTo": "Email to ",
+                "nameLabel": "Ad",
+                "emailLabel": "E-posta*",
+                "emailPlaceholder": "adres@email.com",
+                "subjectLabel": "Konu*",
+                "subjectPlaceholder": "Mesajınız ne hakkında?",
+                "messageLabel": "Mesaj*",
+                "messagePlaceholder": "Mesajınızı buraya yazın...",
+                "subscribeNewsletter": "Bültenimize abone olun",
+                "sendButton": "Mesaj Gönder",
+                "loading": "Yükleniyor...",
+                "error": "Hata! Bir şeyler yanlış gitti...",
+                "successTitle": "Teşekkürler",
+                "successMessage": "Mesajınız gönderildi",
+                "successNewsletter": " ve bültenimize katıldınız",
+                "successFooter": "En kısa sürede size geri döneceğiz."
+            }
+        }
+    },
+    "Stories": {
+        "Hero": {
+            "imageAlt": "Bir adamın bir kitaba baktığı ve sihirli etkilerin çıktığı bir resim",
+            "title": "<hs4>Fransızca'da</hs4> Etkileşimli Bir <hs2>Hikayeyle</hs2> Kendinizi Kaybedin",
+            "description": "Fransızca dil hikayemizle etkileşimli öğrenmenin gücünü keşfedin. Dil becerilerinizi geliştirin ve Paris'i eğlenceli ve ilgi çekici bir şekilde keşfedin.",
+            "btnStory": "Hikayeye git",
+            "btnMoreInfo": "Daha fazla bilgi"
+        },
+        "StoriesBand": {
+            "label": "Beta sürüm"
+        },
+        "StoryTabs": {
+            "title": "<hs1>Fransızca Becerilerinizi</hs1> Etkileşimli Bir Hikayeyle Test Edin",
+            "description1": "Etkileşimli hikayemize dalarak <hs4>farklı olasılıkları</hs4> keşfetmenin keyfini çıkarın. Tekrar başlamaktan çekinmeyin ve maksimum başarı için çaba gösterin - fakat hepsine asla ulaşamayacaksınız! 😈",
+            "description2": "Bu yolculuk sağlam bir Fransızca temeli gerektirir, ama henüz orada değilseniz endişelenmeyin. <hs2>Faydalı çevirilerle</hs2> sizi destekliyoruz. Biraz gayret ve bir tutam yaratıcılıkla, kısa süre içinde sihir yapacaksınız."
+        },
+        "WhyStories": {
+            "title": "Neden Fransızca'yı <hs2>Etkileşimli Hikayelerle</hs2> Öğrenmelisiniz?",
+            "description": "Etkileşimli hikayelerin gücünü serbest bırakın ve Fransızca öğrenme deneyiminizi ilgi çekici ve etkili hale getirin. İşte ana faydaları.",
+            "btnReadMore": "Blogda daha fazlasını okuyun",
+            "argumentsList": {
+                "languageComprehension": {
+                    "title": "Dil anlama",
+                    "description": "Etkileşimli hikayeler, Fransızca'nın yapısını ve kelimelerin doğal, sezgisel bir şekilde hangi bağlamda kullanıldığını anlamaya yardımcı olur."
+                },
+                "vocabularyAcquisition": {
+                    "title": "Kelime dağarcığı kazanımı",
+                    "description": "Bu hikayeler, öğrenmeyi daha etkili hale getiren bir bağlamda kelime dağarcığı kazanma fırsatı sunar."
+                },
+                "adaptedToYourNeeds": {
+                    "title": "İhtiyacınıza uygun",
+                    "description": "Becerileriniz ne olursa olsun, etkileşimli hikayeler özel ihtiyaçlarınıza uyum sağlar, kendi hızınızda ilerlemenizi sağlar."
+                },
+                "engagementAndEnjoyment": {
+                    "title": "Taahhüt ve Zevk",
+                    "description": "Etkileşimli hikayeler, sürükleyici ve büyüleyici bir deneyim sayesinde Fransızca öğrenmeyi daha ilgi çekici ve zevkli hale getirir."
+                },
+                "repetitionAndReinforcement": {
+                    "title": "Tekrar ve Pekiştirme",
+                    "description": "Bu hikayeler, dil öğrenmenin bir anahtarı olan tekrarı da kolaylaştırır."
+                },
+                "anywhereAnytime": {
+                    "title": "Her Yerde, Her Zaman",
+                    "description": "Çevrimiçi erişilebilirlikleri sayesinde her zaman, her yerde öğrenebilirsiniz."
+                }
+            }
+        },
+        "BetaVersion": {
+            "title": "<hs4>Bize Yardım</hs4> Edin, İdeal Öğrenme Deneyiminizi Yaratın",
+            "subtitle": "<hs2>Duyuyoruz, Dinliyoruz</hs2>. Bir fikriniz mi var? Daha iyi yapabileceğimiz bir şey mi fark ettiniz? Tüm kulaklarız. Her bir geri bildirim, daha etkili ve keyifli bir öğrenme deneyimi yaratmaya yönelik bir adımdır.",
+            "btnFeedback": "Geri bildirim sağlayın",
+            "image1Alt": "fantastik bir manzara",
+            "image2Alt": "bir kalem hakkında"
+        }
+    },
+    "MyFreeVideo": {
+        "Form": {
+            "title": "Merhaba abone",
+            "description": "E-posta adresinizi girin ve istediğiniz ücretsiz kursun avantajından yararlanın.",
+            "emailPlaceholder": "E-posta adresinizi girin",
+            "submitBtn": "Ücretsiz kursa erişim sağlayın"
+        },
+        "UnknownSub": {
+            "title": "Bilinmeyen adres",
+            "description": "Üzgünüm ama bu e-posta adresi listede değil.",
+            "tryAgainBtn": "Tekrar deneyin",
+            "goHomeBtn": "Ana sayfaya git"
+        },
+        "ErrorLayout": {
+            "title": "Hata! Bir şeyler yanlış gitti...",
+            "description": "Üzgünüm ama bir hata oluştu. Sorunu çözebilmem için benimle iletişime geçebilir veya daha sonra tekrar deneyebilirsiniz.",
+            "tryAgainBtn": "Tekrar deneyin",
+            "contactBtn": "Benimle iletişime geçin"
+        },
+        "VideoChoice": {
+            "title": "Seçiminizi yapın",
+            "description": "Erişmek istediğiniz ücretsiz kursu seçin",
+            "btnBeginner": "Ben tam bir acemiyim, ilk kursumu istiyorum",
+            "btnIntermediate": "Temellerim var ve Fransızcamı geliştirmek istiyorum"
+        }
+    },
+    "Auth": {
+        "Activated": {
+            "congratulations": "Tebrikler!",
+            "title": "Hesap Aktif",
+            "description": "Hesabınız aktifleştirilmiştir. Artık <b>Hemen Fransızca Öğrenmeye Başla</b> üzerine giriş yapabilir ve Fransızcayı geliştirebilirsiniz. Görüşmek üzere!",
+            "btnLogin": "Giriş sayfasına git"
+        },
+        "Error": {
+            "oops": "Hata!",
+            "title": "Bir şeyler ters gitti",
+            "messages": {
+                "no-user": "Bu aktivasyon anahtarına karşılık gelen bir kullanıcı bulamıyoruz. Yeni bir aktivasyon bağlantısı almak için e-posta adresinizi girin. Hata devam ederse, bize ulaşın.",
+                "already-active": "Bu anahtara ait hesap zaten doğrulanmıştır. Giriş yapabilirsiniz.",
+                "expired": "Üzgünüz, aktivasyon anahtarı süresi dolmuştur. Hesabınızı doğrulamak için size yeni bir e-posta gönderdik.",
+                "email-already-used": "Bu e-posta adresi zaten kullanılmaktadır. Lütfen başka bir e-posta adresi girin veya kimlik doğrulama modunu değiştirin."
+            },
+            "btnLogin": "Giriş sayfasına git",
+            "btnHome": "Ana sayfaya git"
+        },
+        "GetNewLink": {
+            "placeholder": "E-posta adresiniz",
+            "btnGetLink": "Bağlantı al",
+            "errorEmptyEmail": "Lütfen e-posta adresinizi girin",
+            "successMessage": "Yeni bir bağlantı e-posta adresinize gönderilmiştir.",
+            "errorMessage": "Bağlantı gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
+        },
+        "Email": {
+            "activationEmail": {
+                "subject": "Lütfen hesabınızı aktifleştirin ve Hemen Fransızca Öğrenmeye Başlayın",
+                "body": "<p>Merhaba USERNAME,</p> <br><p>Hemen Fransızca Öğrenmeye Başla'ya kaydolduğunuz için teşekkür ederiz.</p> <p>Hesabınızı aktifleştirmek için <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/tr'>buraya</a></span> tıklayın.</p><br> <p>Fransızca öğreniminde size başarılar dileriz.</p><br> <p>Saygılarımla,</p> <p>Yohann ve Nicolas</p>"
+            },
+            "ResetPasswordMail": {
+                "subject": "Şifrenizi sıfırlayın",
+                "body": "<p>Merhaba USERNAME,</p> <br><p>Şifrenizi değiştirmek için <span><a href='DOMAIN/tr/auth/reset-password/new-password/PASSWORDTOKEN'>buraya</a></span> tıklayın.</p><br> <p>Fransızca öğreniminde size başarılar dileriz.</p><br> <p>Saygılarımla,</p> <p>Yohann ve Nicolas</p>"
+            }
+        },
+        "GetPasswordLink": {
+            "title": "Şifreyi Sıfırla",
+            "subtitle": "Yalnız değilsiniz. Hepimiz bir noktada burada olduk.",
+            "instruction": "E-posta adresinizi girin ve size bir e-posta içeren bir bağlantı gönderelim. Ona tıklayın ve yeni bir şifre belirtin.",
+            "returnToLogin": "Giriş sayfasına dön"
+        },
+        "NewPassword": {
+            "title": "Yeni Şifre",
+            "subtitle": "Şifrenizi değiştirin",
+            "instruction": "Yeniden giriş yapabilmeniz ve Fransızcayı öğrenmeye devam edebilmeniz için yeni şifrenizi girin.",
+            "NewPasswordForm": {
+                "passwordPlaceholder": "Şifre",
+                "confirmPlaceholder": "Onaylayın",
+                "updateButton": "Şifreyi güncelle",
+                "loginButton": "Giriş yap",
+                "error": {
+                    "emptyFields": "Lütfen tüm alanları doldurun",
+                    "mismatch": "Şifreler uyuşmuyor",
+                    "oops": "Hata! Bir şeyler yanlış gitti..."
+                },
+                "success": "Şifreniz başarıyla güncellendi."
+            }
+        },
+        "SignIn": {
+            "helloAgain": "<hs2>Merhaba</hs2> tekrar",
+            "welcomeBack": "Tekrar hoş geldiniz, sizin gibi değerli biri özlenmiş!",
+            "homepage": "Ana sayfa",
+            "createAccount": "Hesap oluştur",
+            "or": "Veya",
+            "infoMessages": {
+                "storyAccount": "Hikayelerinizi takip edebilmek için giriş yapmalısınız."
+            }
+        },
+        "CredentialsForm": {
+            "yourEmailAddress": "E-posta adresiniz",
+            "yourPassword": "Şifreniz",
+            "logIn": "Giriş yap",
+            "forgotPassword": "Şifrenizi mi unuttunuz?",
+            "credentialsDoNotMatch": "Kimlik bilgileri uyuşmuyor!",
+            "oopsError": "Hata, bir sorun oluştu..."
+        },
+        "ContinueWithGoogle": {
+            "label": "Google ile devam et"
+        },
+        "SignUp": {
+            "or": "Veya",
+            "signUp": "<hs1>Kayıt ol</hs1>",
+            "homepage": "Ana sayfa",
+            "alreadyAccount": "Zaten bir hesabınız mı var?"
+        },
+        "SignUpForm": {
+            "enterYourEmail": "E-postanızı girin",
+            "enterYourUsername": "Kullanıcı adınızı girin",
+            "password": "Şifre",
+            "confirm": "Onaylayın",
+            "subscribeNewsletter": "Bültenimize abone olun",
+            "createAccount": "Hesap oluştur",
+            "successMessage": "Hesap oluşturuldu. Lütfen etkinleştirmek için e-postanızı kontrol edin.",
+            "errorMessages": {
+                "fillAllField": "Lütfen tüm alanları doldurun",
+                "emailexist": "Bu e-posta adresini kullanan bir hesap zaten var.",
+                "notActivated": "E-posta kutunuza bir e-posta gönderilmiştir. Lütfen onu aldığınızda bağlantıya tıklayın.",
+                "emailInvalid": "Geçersiz e-posta formatı.",
+                "passwordMismatch": "Şifreler uyuşmuyor.",
+                "passwordNotConform": "Şifrenin en az 8 karakter, büyük harf, küçük harf ve sayı içermesi gerekmektedir.",
+                "error500": "Hata, kullanıcı oluşturma hatası..."
+            }
+        }
+    },
+    "Categories": {
+        "tip": {
+            "title": "İpucu",
+            "description": "Bir ipucu, belirli bir dil bilgisi veya kelime dağarcığı noktasına odaklanan kısa bir derstir.",
+            "color": "#FFC107",
+            "posts": "Gönderiler",
+            "all": "Hepsi"
+        },
+        "grammar": {
+            "title": "Dil Bilgisi",
+            "description": "Bir dil bilgisi dersi, belirli bir dil bilgisi noktasına odaklanan daha tam bir derstir.",
+            "color": "#FF5722",
+            "posts": "Gönderiler",
+            "all": "Hepsi"
+        },
+        "vocabulary": {
+            "title": "Kelime Dağarcığı",
+            "description": "Bir kelime dağarcığı dersi, belirli bir kelime dağarcığı noktasına odaklanan daha tam bir derstir.",
+            "color": "#4CAF50",
+            "posts": "Gönderiler",
+            "all": "Hepsi"
+        },
+        "culture": {
+            "title": "Kültür",
+            "description": "Bir kültür dersi, belirli bir kültürel noktaya odaklanan bir derstir.",
+            "color": "#2196F3",
+            "posts": "Gönderiler",
+            "all": "Hepsi"
+        },
+        "expression": {
+            "title": "İfade",
+            "description": "Bir ifade dersi, belirli bir ifadeye odaklanan bir derstir.",
+            "color": "#9C27B0",
+            "posts": "Gönderiler",
+            "all": "Hepsi"
+        }
+    },
+    "Blog": {
+        "BlogList": {
+            "articlesAndResources": "Makaleler & <hs1>Kaynaklar</hs1>",
+            "description": "Bu bölümde Fransızca öğrenmenize yardımcı olacak makaleler ve kaynaklar bulacaksınız.",
+            "newestPosts": "En Yeni Gönderiler"
+        },
+        "CategoriesBand": {
+            "grammar": "Dil Bilgisi",
+            "vocabulary": "Kelime Dağarcığı",
+            "expressions": "İfadeler",
+            "tips": "İpuçları"
+        },
+        "PostsList": {
+            "all": "Hepsi",
+            "latest": "En Yeni",
+            "posts": "Gönderiler"
+        },
+        "BlogLangButton": {
+            "title": "Dilinizi Seçin",
+            "message": "Blog içeriği İngilizce ve Fransızca olarak mevcuttur. Sayfanın üst kısmında dili istediğiniz zaman değiştirebilirsiniz.",
+            "okString": "Anladım"
+        },
+        "Post": {
+            "latestPosts": "En Yeni <hs4>Gönderiler</hs4>",
+            "browseAllPosts": "Tüm gönderilere göz at"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 "use client";
-import { COLORVARIABLES, COLORVARIABLESLIGHT } from "@/app/lib/constantes";
-import { Reference, Vocabulary } from "@/app/types/sfn/blog";
+import { COLORVARIABLES, COLORVARIABLESSHADES } from "@/app/lib/constantes";
+import { ColorsTypes, Reference, Vocabulary } from "@/app/types/sfn/blog";
 import React, { useEffect, useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
 import fetchData from "@/app/lib/apiStories";
@@ -9,10 +9,11 @@ import { AiOutlineSound } from "react-icons/ai";
 import { Popover } from "../animations/Popover";
 import { m } from "framer-motion";
 import Spinner from "../common/Spinner";
+import Image from "next/image";
 
 interface Props {
     data: {
-        color: "yellow" | "blue" | "red" | "purple" | "green";
+        color: ColorsTypes;
         vocabulary: Reference;
     };
 }
@@ -28,10 +29,10 @@ function TabelVoc({ data }: Props) {
             setVocabulary(vocabulary);
         };
         fetchVocabularyData();
-    }, []);
+    }, [data.vocabulary._ref]);
 
     const colorVar = COLORVARIABLES[data.color || "blue"];
-    const colorLight = COLORVARIABLESLIGHT[data.color || "blue"];
+    const colorLight = COLORVARIABLESSHADES[data.color || "blue"];
 
     return (
         <div className="inner-container _600px---tablet center py-8">
@@ -41,12 +42,12 @@ function TabelVoc({ data }: Props) {
                         <tr style={{ borderBottom: "solid 2px var(--neutral-800)", backgroundColor: colorVar }}>
                             <th>
                                 <span className="pl-0 sm:pl-4" style={{ marginLeft: 26 }}>
-                                    <img src="/images/france.png" style={{ height: 40, objectFit: "contain" }} />
+                                    <Image src="/images/france.png" height={40} width={50} alt="french flag" style={{ objectFit: "contain" }} />
                                 </span>
                             </th>
                             <th>
                                 <span className="pr-0 sm:pr-4">
-                                    <img src="/images/royaume-uni.png" style={{ height: 40, objectFit: "contain" }} />
+                                    <Image src="/images/royaume-uni.png" alt="UK flag" height={40} width={50} style={{ height: 40, objectFit: "contain" }} />
                                 </span>
                             </th>
                         </tr>

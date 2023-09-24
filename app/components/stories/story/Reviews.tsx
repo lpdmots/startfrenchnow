@@ -13,7 +13,7 @@ import { getUserStoryData, storyToStoryStats, storyToStats } from "@/app/serverA
 import { useSession } from "next-auth/react";
 import { UserStory } from "@/app/types/sfn/auth";
 import { GiSpellBook } from "react-icons/gi";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-intl/client";
 import { IoFilter } from "react-icons/io5";
 import Image from "next/image";
 

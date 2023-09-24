@@ -1,4 +1,4 @@
-import { Block, Category, Slug } from "./blog";
+import { Block, Slug } from "./blog";
 
 type Base = {
     _createdAt: string;
@@ -15,7 +15,7 @@ export interface Video extends Base {
     slug: Slug;
     s3Key: string;
     level: "a1" | "a1Plus" | "a2" | "a2Plus";
-    categories: Category;
+    categorie: string;
     duration: Number;
     display: "primary" | "secondary" | "hidden";
     price: Number;

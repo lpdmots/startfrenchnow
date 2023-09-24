@@ -1,12 +1,13 @@
 "use client";
-import Link from "next/link";
+import { Locale } from "@/i18n";
 import React from "react";
+import { LinkBlog } from "../sfn/blog/LinkBlog";
 
-function ClientSideRoute({ children, route }: { children: React.ReactNode; route: string }) {
+function ClientSideRoute({ children, route, locale }: { children: React.ReactNode; route: string; locale: Locale }) {
     return (
-        <Link href={route} style={{ textDecoration: "none" }}>
+        <LinkBlog href={route} className="no-underline" locale={locale}>
             {children}
-        </Link>
+        </LinkBlog>
     );
 }
 

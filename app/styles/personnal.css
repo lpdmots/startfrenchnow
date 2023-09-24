@@ -1025,3 +1025,30 @@ button {
     border-radius: 10px;
     background-color: #ffffff;
 }
+
+.tab-underline {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--neutral-800);
+}
+
+.tab-lang {
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 100%;
+    position: relative;
+    background: var(--neutral-200);
+    cursor: pointer;
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    user-select: none;
+}

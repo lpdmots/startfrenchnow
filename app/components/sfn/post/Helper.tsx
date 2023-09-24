@@ -6,9 +6,10 @@ import { AiFillSignal } from "react-icons/ai";
 
 interface Props {
     post: Post;
+    postLang: "en" | "fr";
 }
 
-function Helper({ post }: Props) {
+function Helper({ post, postLang }: Props) {
     const [help, setHelp] = useState<boolean>(true);
     const level = post.level ? LEVELDATA[post.level] : null;
 
@@ -42,8 +43,8 @@ function Helper({ post }: Props) {
 
     return (
         <>
-            <div className="hidden md:flex justify-center items-end flex-wrap gap-4 mt-12 text-300 medium color-neutral-600">
-                {!!post.translation && (
+            <div className="hidden md:flex justify-center items-end flex-wrap gap-4 mt-8 text-300 medium color-neutral-600">
+                {!!post.translation && postLang === "fr" && (
                     <>
                         <div className="w-checkbox checkbox-field-wrapper col-span-2 mb-4">
                             <label className="w-form-label flex items-center text-300 medium color-neutral-600" onClick={handleHelp}>
@@ -58,7 +59,7 @@ function Helper({ post }: Props) {
                         <p> - </p>
                     </>
                 )}
-                {level && (
+                {level && postLang === "fr" && (
                     <>
                         <p className="flex items-end">
                             Difficulty:
@@ -70,8 +71,8 @@ function Helper({ post }: Props) {
                 )}
                 <p>{new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}</p>
             </div>
-            <div className="flex md:hidden justify-center items-end flex-wrap gap-2 mt-12 text-300 medium color-neutral-600">
-                {!!post.translation && (
+            <div className="flex md:hidden justify-center items-end flex-wrap gap-2 mt-8 text-300 medium color-neutral-600">
+                {!!post.translation && postLang === "fr" && (
                     <>
                         <div className="w-checkbox checkbox-field-wrapper col-span-2 mb-4">
                             <label className="w-form-label flex items-center text-300 medium color-neutral-600" onClick={handleHelp}>
@@ -80,13 +81,13 @@ function Helper({ post }: Props) {
                                     className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${help ? "w--redirected-checked" : undefined}`}
                                     style={{ borderColor: help ? level?.color : "var(--neutral-600)", backgroundColor: help ? level?.color : "var(--neutral-200)" }}
                                 ></div>
-                                Help me
+                                I need help
                             </label>
                         </div>
                         <p> - </p>
                     </>
                 )}
-                {level && (
+                {level && postLang === "fr" && (
                     <>
                         <p className="flex items-end">
                             Difficulty:

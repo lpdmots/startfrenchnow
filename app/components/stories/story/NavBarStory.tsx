@@ -8,7 +8,7 @@ import { StoryNavbar } from "./StoryNavbar";
 import DarkMode from "../../common/DarkMode";
 import { ModalFromBottom } from "../../animations/Modals";
 import SimpleButton from "../../animations/SimpleButton";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-intl/client";
 import { ReviewFormularNavbar } from "./ReviewFormular";
 import { useSession } from "next-auth/react";
 import { getUserStoryData } from "@/app/serverActions/storyActions";
@@ -37,7 +37,7 @@ export const NavBarStory = ({ story }: { story: Adventure }) => {
             if (resp?.error) console.error(resp.error);
             setFeedback(resp?.userStoryData?.feedback || "open");
         })();
-    }, [status]);
+    }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const modalData = {
         setOpen,

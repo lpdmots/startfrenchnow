@@ -1,31 +1,35 @@
+import { intelRich } from "@/app/lib/intelRich";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
 import React from "react";
 import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 
-const coreValuesData = [
-    {
-        image: "/images/hard-work-image-paperfolio-webflow-template.png",
-        title: "Serious",
-        content: "A structured and serious method where the student feel guided and supported all along.",
-    },
-    {
-        image: "/images/innovation-image-paperfolio-webflow-template.png",
-        title: "Smart learning",
-        content: "New concepts are well identified, difficulties are isolated, explained, worked on and gradually integrated with your current knowledge.",
-    },
-    {
-        image: "/images/fun-image-paperfolio-webflow-template.png",
-        title: "Fun",
-        content: "Serious but fun! The courses are interactive and entertaining with attractive and modern visuals. Be prepared to actively participate.",
-    },
-    {
-        image: "/images/growth-image-paperfolio-webflow-template.png",
-        title: "A full method",
-        content:
-            "A complete method with access to extensive resources: extra exercises, vocabulary sheets and a quality blog. Quizzes, and amazing French stories where you are the hero are coming soon.",
-    },
-];
-
 function CoreValuesMethod() {
+    const t = useTranslations("CoreValuesMethod");
+
+    const coreValuesData = [
+        {
+            image: "/images/hard-work-image-paperfolio-webflow-template.png",
+            title: t("coreValues.serious.title"),
+            content: t("coreValues.serious.content"),
+        },
+        {
+            image: "/images/innovation-image-paperfolio-webflow-template.png",
+            title: t("coreValues.smartLearning.title"),
+            content: t("coreValues.smartLearning.content"),
+        },
+        {
+            image: "/images/fun-image-paperfolio-webflow-template.png",
+            title: t("coreValues.fun.title"),
+            content: t("coreValues.fun.content"),
+        },
+        {
+            image: "/images/growth-image-paperfolio-webflow-template.png",
+            title: t("coreValues.fullMethod.title"),
+            content: t("coreValues.fullMethod.content"),
+        },
+    ];
+
     return (
         <div className="container-default w-container">
             <SlideInOneByOneParent>
@@ -37,17 +41,12 @@ function CoreValuesMethod() {
                                     <div className="inner-container _525px">
                                         <div className="inner-container _400px---mbl center">
                                             <div className="inner-container _350px---mbp center">
-                                                <h2 className="display-2 mg-bottom-0">
-                                                    The core values of <span className="heading-span-secondary-4">our method</span>
-                                                </h2>
+                                                <h2 className="display-2 mg-bottom-0">{t.rich("title", intelRich())}</h2>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="inner-container _525px">
-                                        <p className="mg-bottom-0 text-neutral-700">
-                                            A <span className="underline underline-offset-2">well structured</span> method with <span className="underline underline-offset-2">bite-sized lessons</span>{" "}
-                                            that enables you to acquire the <span className="underline underline-offset-2">fundamental</span> French language skills.
-                                        </p>
+                                        <p className="mg-bottom-0 text-neutral-700">{t.rich("description", intelRich())}</p>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +57,7 @@ function CoreValuesMethod() {
                                     <SlideInOneByOneChild>
                                         <div className="card image-left---text-rigth h-full">
                                             <div className="image-wrapper card-value-image-left-wrapper h-full">
-                                                <img src={image} loading="eager" alt={title} className="image fit-cover" />
+                                                <Image src={image} loading="eager" alt={title} className="image fit-cover" height={400} width={400} />
                                             </div>
                                             <div className="card-value-conter-left">
                                                 <h3>{title}</h3>

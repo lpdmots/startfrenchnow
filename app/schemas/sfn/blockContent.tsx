@@ -4,17 +4,6 @@ import { AiOutlineAlignCenter, AiOutlineAlignLeft, AiOutlineAlignRight } from "r
 import { MdTranslate } from "react-icons/md";
 import { BsCaretRightFill } from "react-icons/bs";
 
-/**
- * This is the schema definition for the rich text fields used for
- * for this blog studio. When you import it in schemas.js it can be
- * reused in other parts of the studio with:
- *  {
- *    name: 'someName',
- *    title: 'Some title',
- *    type: 'blockContent'
- *  }
- */
-
 const hightLigthIcon = (color: string) => {
     return <FaHighlighter style={{ color }} />;
 };
@@ -121,6 +110,9 @@ export default defineType({
         }),
         defineArrayMember({
             type: "flashcards",
+        }),
+        defineArrayMember({
+            type: "simpleExercise",
         }),
     ],
 });

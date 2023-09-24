@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { BiExit } from "react-icons/bi";
 import { GiSpellBook } from "react-icons/gi";
 import SimpleButton from "../../animations/SimpleButton";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next-intl/client";
 import { useSession } from "next-auth/react";
 import { useStoryStore } from "@/app/stores/storiesStore";
 import { setStoryFeedback } from "@/app/serverActions/storyActions";

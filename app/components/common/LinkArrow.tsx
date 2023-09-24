@@ -2,7 +2,7 @@
 
 import React from "react";
 import { m } from "framer-motion";
-import Link from "next/link";
+import Link from "next-intl/link";
 import { HiOutlineArrowRight } from "react-icons/hi";
 
 function LinkArrow({ children }: { children: string | JSX.Element }) {

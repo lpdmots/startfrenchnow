@@ -3,9 +3,11 @@ import { IoBeer, IoLanguageSharp } from "react-icons/io5";
 import { SiYourtraveldottv } from "react-icons/si";
 import { ImFilm } from "react-icons/im";
 import { MdOutlineEmail } from "react-icons/md";
-import Link from "next/link";
+import Link from "next-intl/link";
 import { SlideFromBottom } from "../../animations/Slides";
 import { Scale } from "../../animations/Scale";
+import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
 
 const HOBBIES = [
     {
@@ -96,14 +98,13 @@ const HOBBIES = [
 ];
 
 function Hobbies() {
+    const t = useTranslations("About.Hobbies");
     return (
         <div className="section wf-section pt-0">
             <div className="container-default w-container">
                 <div className="inner-container _500px---mbl center">
                     <SlideFromBottom>
-                        <h2 className="display-2 text-center mg-bottom-56px">
-                            Take a look at my <span className="heading-span-secondary-4">hobbies</span>
-                        </h2>
+                        <h2 className="display-2 text-center mg-bottom-56px">{t.rich("title", intelRich())}</h2>
                     </SlideFromBottom>
                     <div className="inner-container _935px center">
                         <div className="grid-1-column gap-32px mg-bottom-64px">
@@ -128,7 +129,7 @@ function Hobbies() {
                         <Link href="/contact" className="btn-primary button-row w-button">
                             <div className="flex items-center justify-center">
                                 <MdOutlineEmail className="mr-2" />
-                                Get in touch
+                                {t("button")}
                             </div>
                         </Link>
                     </div>

@@ -3,7 +3,7 @@ import { PortableText } from "@portabletext/react";
 import React, { useMemo } from "react";
 import { Carousel } from "../../animations/Carousel";
 import { HeroCard } from "./HeroCard";
-import Link from "next/link";
+import Link from "next-intl/link";
 import { StartStoryButton } from "./StartStoryButton";
 import { ElementProps } from "@/app/types/stories/element";
 import { RichTextStory } from "../../sanity/RichTextStory";

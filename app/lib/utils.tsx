@@ -1,9 +1,15 @@
+import { Post } from "../types/sfn/blog";
+
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
 }
 
 export function removeDuplicatesObjects<T extends object>(objectsList: T[], fieldName: keyof T): T[] {
     return objectsList.filter((value: T, index: number, self: T[]) => index === self.findIndex((t: T) => t[fieldName] === value[fieldName]));
+}
+
+export function getRandomItem<T>(array: T[]): T {
+    return array[Math.floor(Math.random() * array.length)];
 }
 
 export function sortByCode<T extends any[]>(array: T): T {
@@ -121,13 +127,75 @@ export function isValidEmail(email: string): boolean {
 }
 
 export const getActivateToken = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-/* 
-export const getPathAsParam = (pathname: string | null) => {
-    const regex = /\//g;
-    return !pathname || pathname === "/" ? "/" : pathname.replace(regex, "_");
+
+export function replaceInString(template: string, variables: any) {
+    let result = template;
+    for (const [key, value] of Object.entries(variables)) {
+        const placeholder = new RegExp(key, "g");
+        result = result.replace(placeholder, value as string);
+    }
+    return result;
+}
+
+export const getDataInRightLang = <T extends object>(item: T, lang: "en" | "fr", attribute: keyof T) => {
+    const attrString = String(attribute); // Explicitly convert to string
+
+    if (lang === "fr" && item[attribute]) {
+        return item[attribute] as string | undefined;
+    }
+    if (lang === "fr" && !item[attribute]) {
+        return item[`${attrString}_en` as keyof T] as string | undefined;
+    }
+    if (lang === "en" && item[`${attrString}_en` as keyof T]) {
+        return item[`${attrString}_en` as keyof T] as string | undefined;
+    }
+    return item[attribute] as string | undefined;
 };
 
-export const getParamAsPath = (param: string | null) => {
-    const regex = /_/g;
-    return !param || param === "/" ? "/" : param.replace(regex, "/");
-}; */
+export function formatStringToNoWrap(input: string): JSX.Element {
+    const words = input.split(" ");
+
+    const lastTwoWords = words.slice(-1).join(" ");
+    const stringStart = words.slice(0, -1).join(" ");
+
+    return (
+        <span>
+            {stringStart}
+            <span className="text-no-wrap"> {lastTwoWords}</span>
+        </span>
+    );
+}
+
+export function replaceWord(text: string, targetWord: string, replacementWord: string, numOccurrences: number) {
+    let counter = 0;
+    let position = 0;
+
+    while (counter < numOccurrences) {
+        position = text.indexOf(targetWord, position);
+        if (position === -1) {
+            break;
+        }
+        text = text.substring(0, position) + replacementWord + text.substring(position + targetWord.length);
+        position += replacementWord.length;
+        counter++;
+    }
+
+    return text;
+}
+
+export const splitAndKeepMultipleKeywords = (text: string, keywordPairs: { keyword: string; keywordReplace: string; maxKeyword?: number }[]) => {
+    // Remplacer et conserver les mots-clés dans le texte
+    let replacedText = text;
+    keywordPairs.forEach(({ keyword, keywordReplace, maxKeyword }) => {
+        replacedText = replaceWord(replacedText, keyword, `<>${keywordReplace}<>`, maxKeyword || Infinity);
+    });
+
+    // Supprimer les mots-clés du texte
+    keywordPairs.forEach(({ keyword }) => {
+        const keywordRegex = new RegExp(keyword, "g");
+        replacedText = replacedText.replace(keywordRegex, "");
+    });
+
+    // Diviser le texte en utilisant les mots-clés
+    return replacedText.replace(/  /g, " ").split("<>");
+};
