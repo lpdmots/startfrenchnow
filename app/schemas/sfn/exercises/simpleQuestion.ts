@@ -43,6 +43,27 @@ export default defineType({
             ],
         }),
         defineField({
+            name: "options",
+            title: "Options",
+            type: "object",
+            fields: [
+                defineField({
+                    name: "responsesMonitoring",
+                    title: "Suivi des réponses",
+                    type: "string",
+                    options: { list: ["all", "oneByOne", "hidde"] },
+                    description: "important pour les exercices de type 'imgMap'",
+                    initialValue: "all",
+                }),
+                defineField({
+                    name: "scoreCalculation",
+                    title: "Calcul du score",
+                    type: "number",
+                    initialValue: 1,
+                }),
+            ],
+        }),
+        defineField({
             name: "responses",
             title: "Réponses",
             type: "array",

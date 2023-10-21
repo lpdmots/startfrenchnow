@@ -6,7 +6,7 @@ import TabelVoc from "./TabelVoc";
 import { FaFileDownload } from "react-icons/fa";
 import VideoBlog from "./VideoBlog";
 import Flashcards from "../exercises/Flashcards";
-import SimpleExercise from "../exercises/SimpleExercise";
+import SimpleExercise from "../exercises/simpleExercise/SimpleExercise";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 

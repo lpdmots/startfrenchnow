@@ -103,8 +103,8 @@ export interface Line {
 }
 
 export type Category = "tip" | "grammar" | "vocabulary" | "culture" | "expression";
-export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" | "input";
-export type ExerciseTypes = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound";
+export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" | "input" | "imgMap" | "link" | "order";
+export type ExerciseTypes = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound" | "imgMap" | "link" | "order";
 export type ColorsTypes = "yellow" | "blue" | "red" | "purple" | "green";
 
 export interface SimpleExercise {
@@ -131,6 +131,7 @@ export interface ExerciseTheme {
 }
 
 export interface SimpleQuestion {
+    _key: string;
     exerciseTypes: ExerciseTypes[];
     defaultLayout: ResponsesLayouts | undefined;
     prompt: {
@@ -138,11 +139,18 @@ export interface SimpleQuestion {
         images: Image[];
         sounds: string[];
     };
-    responses: {
-        text: string;
-        isCorrect: string | undefined;
-        image: Image;
-        onlyTypes: ExerciseTypes[];
-        sound: string;
-    }[];
+    options: {
+        responsesMonitoring?: "all" | "oneByOne" | "hidde";
+        scoreCalculation?: number;
+    };
+    responses: Response[];
+}
+
+export interface Response {
+    _key: string;
+    text: string;
+    isCorrect: string | undefined;
+    image: Image;
+    onlyTypes: ExerciseTypes[];
+    sound: string;
 }

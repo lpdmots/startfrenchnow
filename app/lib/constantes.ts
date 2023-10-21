@@ -75,5 +75,17 @@ export const langData = {
 
 export const CATEGORIES = ["tip", "grammar", "vocabulary", "culture", "expression"];
 
-export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input"];
-export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound"];
+export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
+export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];
+export const STARTLAYOUTIMAGE = {
+    "true-false": "/images/true-false-start-layout.png",
+    buttons: "/images/buttons-start-layout.png",
+    checkbox: "/images/checkbox-start-layout.png",
+    select: "/images/select-start-layout.png",
+    input: "/images/input-start-layout.png",
+    image: "/images/image-start-layout.png",
+    sound: "/images/sound-start-layout.png",
+    imgMap: "/images/imgMap-start-layout.png",
+    link: "/images/link-start-layout.png",
+    order: "/images/learning.png",
+};

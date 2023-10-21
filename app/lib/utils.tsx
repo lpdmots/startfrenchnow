@@ -1,5 +1,3 @@
-import { Post } from "../types/sfn/blog";
-
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
 }
@@ -71,7 +69,7 @@ export function sortByAttribut<T extends Record<string, any>>(array: T[], attrib
     return array.sort((a, b) => (a[attribute] > b[attribute] ? 1 : -1));
 }
 
-export function shuffleArray(array: any[]) {
+export function shuffleArray<T>(array: T[]): T[] {
     return [...array].sort(() => Math.random() - 0.5);
 }
 
@@ -198,4 +196,20 @@ export const splitAndKeepMultipleKeywords = (text: string, keywordPairs: { keywo
 
     // Diviser le texte en utilisant les mots-clés
     return replacedText.replace(/  /g, " ").split("<>");
+};
+
+export const getImageDimensions = (imageRef: string) => {
+    const [width, height] = imageRef
+        ?.split("-")
+        .at(-2)
+        ?.split("x")
+        .map((str) => parseInt(str)) || [0, 0];
+    return { width, height };
+};
+
+export const listToString = (liste: string[]) => {
+    let string = liste.join(", ");
+    const index = string.lastIndexOf(",");
+    string = index !== -1 ? string.substring(0, index) + " et" + string.substring(index + 1) : string;
+    return string;
 };

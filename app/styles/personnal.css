@@ -1052,3 +1052,30 @@ button {
     position: relative;
     user-select: none;
 }
+
+.found-pair {
+    border: none;
+    opacity: 0.9;
+    color: var(--neutral-400) !important;
+    cursor: default;
+}
+
+.btn-secondary[disabled],
+.btn-primary[disabled] {
+    background-color: transparent;
+    border-color: var(--neutral-800);
+    color: var(--neutral-800);
+    opacity: 0.5;
+}
+
+.btn-secondary[disabled]:hover,
+.btn-primary[disabled]:hover {
+    transform: none;
+}
+
+.icon-translate {
+    transition: transform 0.3s ease-in-out;
+}
+.btn-hover:hover .icon-translate {
+    transform: translateX(8px);
+}

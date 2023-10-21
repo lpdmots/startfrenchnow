@@ -6,6 +6,7 @@ interface Props {
     duration?: number;
     delay?: number;
     delayChildren?: number;
+    width?: string;
 }
 
 export const SlideFromBottom = ({ duration, delay, children }: Props) => {
@@ -92,7 +93,7 @@ export const SlideInOneByOneParent = ({ duration = 0.5, delay = 0.3, delayChildr
     );
 };
 
-export const SlideInOneByOneChild = ({ duration = 0.5, children }: Props) => {
+export const SlideInOneByOneChild = ({ duration = 0.5, width = "100%", children }: Props) => {
     const fadeInOneByOneItem = {
         hidden: { y: 50, opacity: 0 },
         visible: {
@@ -106,7 +107,7 @@ export const SlideInOneByOneChild = ({ duration = 0.5, children }: Props) => {
     };
 
     return (
-        <m.div variants={fadeInOneByOneItem} className="h-full w-full">
+        <m.div variants={fadeInOneByOneItem} className="h-full" style={{ width }}>
             {children}
         </m.div>
     );

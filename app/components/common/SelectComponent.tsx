@@ -39,7 +39,7 @@ const SelectComponent: FC<SelectComponentProps> = ({ options, label, onChange, v
                     </div>
                 );
             }),
-        [handleOptionClick]
+        [handleOptionClick, options]
     );
 
     return (
