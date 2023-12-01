@@ -29,7 +29,19 @@
         "contact": "Contato",
         "my_account": "Minha Conta",
         "logout": "Sair",
-        "contact_us": "Entre em contato"
+        "contact_us": "Entre em contato",
+        "learn": {
+            "button": "Aprender",
+            "blog": "Artigos e Recursos",
+            "resources": "Recursos",
+            "vocabulary": "Vocabulário",
+            "grammar": "Gramática",
+            "expressions": "Expressões",
+            "culture": "Cultura",
+            "orthography": "Ortografia",
+            "videos": "Vídeos",
+            "tips": "Dicas e Truques"
+        }
     },
     "HeroSfn": {
         "title": "<hs4>Aprenda Francês</hs4> ao Seu Próprio Ritmo com <hs2>Lições de Qualidade</hs2>",
@@ -355,40 +367,47 @@
         }
     },
     "Categories": {
-        "tip": {
+        "tips": {
             "title": "Dica",
-            "description": "Uma dica é uma pequena lição que se concentra em um ponto específico de gramática ou vocabulário.",
+            "description": "Descubra estratégias práticas para acelerar seu domínio do francês, projetadas para máximo impacto.",
             "color": "#FFC107",
             "posts": "Publicações",
             "all": "Todas"
         },
         "grammar": {
             "title": "Gramática",
-            "description": "Uma lição de gramática é uma lição mais completa que se concentra em um ponto específico da gramática.",
-            "color": "#FF5722",
+            "description": "Orientações detalhadas sobre as regras gramaticais do francês para ajudá-lo a formar frases corretas e complexas.",
+            "color": "#ff4a60",
             "posts": "Publicações",
             "all": "Todas"
         },
         "vocabulary": {
             "title": "Vocabulário",
-            "description": "Uma lição de vocabulário é uma lição mais completa que se concentra em um ponto específico do vocabulário.",
+            "description": "Mergulhe em palavras e frases essenciais em francês para expandir seu vocabulário e melhorar suas habilidades de comunicação.",
             "color": "#4CAF50",
             "posts": "Publicações",
             "all": "Todas"
         },
         "culture": {
             "title": "Cultura",
-            "description": "Uma lição de cultura é uma lição que se concentra em um ponto cultural específico.",
+            "description": "Descubra a rica tapeçaria da cultura francesa, desde tradições consagradas até marcos históricos e contribuições artísticas.",
             "color": "#2196F3",
             "posts": "Publicações",
             "all": "Todas"
         },
-        "expression": {
+        "expressions": {
             "title": "Expressão",
-            "description": "Uma lição de expressão é uma lição que se concentra em uma expressão específica.",
+            "description": "Domine frases idiomáticas e do dia a dia em francês para soar mais como um nativo e compreender as nuances da língua.",
             "color": "#9C27B0",
             "posts": "Publicações",
             "all": "Todas"
+        },
+        "orthography": {
+            "title": "Ortografia",
+            "description": "Dicas e diretrizes para aperfeiçoar sua ortografia em francês, evitar armadilhas comuns e escrever com confiança.",
+            "color": "#FF5722",
+            "posts": "Artigos",
+            "all": "Todos"
         }
     },
     "Blog": {

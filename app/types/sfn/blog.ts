@@ -6,14 +6,14 @@ type Base = {
     _updatedAt: string;
 };
 
-type Level = "none" | "a1" | "a2" | "b1" | "b2";
+type Level = "a1" | "a2" | "b1" | "b2" | "c1" | "c2";
 
 export interface Post extends Base {
     langage: "both" | "en" | "fr";
     author: Author;
     body: Block[];
     body_en: Block[];
-    categorie: Category;
+    categories: Category[];
     mainImage: Image;
     mainVideo: VideoBlog;
     slug: Slug;
@@ -23,9 +23,11 @@ export interface Post extends Base {
     description_en: string;
     metaDescription: string;
     metaDescription_en: string;
-    level: Level;
-    translation: boolean;
+    level: Level[];
+    help: boolean;
     publishedAt: string;
+    externLinks: { url: string; title: string }[];
+    internLink: string;
 }
 
 export interface Author extends Base {
@@ -82,35 +84,58 @@ export interface VideoBlog {
 }
 
 export interface FlashcardsProps {
-    color: ColorsTypes;
+    category: PrimaryCategory;
     title: string;
     title_en: string;
     instruction: Block[];
     instruction_en: Block[];
-    vocabulary: Reference;
+    themes: Reference[];
 }
 
-export interface Vocabulary extends Base {
-    theme: string;
-    lines: Line[];
+export interface Theme extends Base {
+    name: string;
+    translationOnly: boolean;
+    image: Image;
+    category: PrimaryCategory;
+    level: string;
+    children: Reference[];
+    vocabItems: Reference[];
+    questions: Question[];
 }
 
-export interface Line {
+export interface ThemeWithVocab extends Base {
+    name: string;
+    translationOnly: boolean;
+    image: Image;
+    category: PrimaryCategory;
+    level: string;
+    children: Reference[];
+    vocabItems: VocabItem[];
+    questions: Question[];
+}
+
+export interface VocabItem extends Base {
     french: string;
     english: string;
-    sound: string;
+    soundFr: string;
+    soundEn: string;
     note: string;
+    example: string;
+    nature: string;
+    translationOnly: boolean;
+    exerciseData: string;
 }
 
-export type Category = "tip" | "grammar" | "vocabulary" | "culture" | "expression";
+export type Category = "tips" | "video" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography" | "exercise" | "toLoad";
+export type PrimaryCategory = "tips" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography";
 export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" | "input" | "imgMap" | "link" | "order";
 export type ExerciseTypes = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound" | "imgMap" | "link" | "order";
 export type ColorsTypes = "yellow" | "blue" | "red" | "purple" | "green";
 
-export interface SimpleExercise {
+export interface Exercise extends Base {
     _key: string;
     name: string;
-    color: ColorsTypes;
+    category: PrimaryCategory;
     title: string;
     title_en: string;
     instruction: Block[];
@@ -120,17 +145,10 @@ export interface SimpleExercise {
     themes: Reference[];
     exerciseTypes: ExerciseTypes[];
     nbOfQuestions: number;
+    questions: Question[];
 }
 
-export interface ExerciseTheme {
-    name: string;
-    categories: Category[];
-    level: Level;
-    children: Reference[] | undefined;
-    questions: SimpleQuestion[] | undefined;
-}
-
-export interface SimpleQuestion {
+export interface Question {
     _key: string;
     exerciseTypes: ExerciseTypes[];
     defaultLayout: ResponsesLayouts | undefined;

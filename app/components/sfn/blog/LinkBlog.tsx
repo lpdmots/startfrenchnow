@@ -13,7 +13,7 @@ interface Props {
 
 export const LinkBlog = ({ children, className, href, locale }: Props) => {
     const { postLang: postLangStored } = useSfnStore();
-    const postLang = ["fr", "en"].includes(locale || "") ? locale : postLangStored ? postLangStored : "en";
+    const postLang = postLangStored ? postLangStored : ["fr", "en"].includes(locale || "") ? locale : "en";
 
     return (
         <Link href={`${href}?postLang=${postLang}`} className={className}>

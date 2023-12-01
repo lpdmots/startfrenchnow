@@ -2,7 +2,6 @@ import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 import { Post } from "../../../types/sfn/blog";
 import { ParentToChildrens } from "../../animations/ParentToChildrens";
-import { Scale } from "../../animations/Scale";
 import PrimaryPost from "./PrimaryPost";
 import SecondaryPost from "./SecondaryPost";
 
@@ -27,39 +26,37 @@ function BlogList({ posts, postLang }: Props) {
                         </div>
                         {/* </SlideFromBottom> */}
                         <h2 className="hidden">{t("newestPosts")}</h2>
-                        <Scale>
-                            <div className="grid-2-columns blog-featured-grid">
-                                <div className="w-dyn-list">
-                                    <div role="list" className="height-100 w-dyn-items">
-                                        <div role="listitem" className="height-100 w-dyn-item">
-                                            {posts.length > 0 && (
-                                                <ParentToChildrens>
-                                                    <PrimaryPost post={posts[0]} postLang={postLang} />
-                                                </ParentToChildrens>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="collection-list-wrapper w-dyn-list">
-                                    <div role="list" className="grid-1-column gap-32px w-dyn-items">
-                                        <div role="listitem" className="w-dyn-item">
-                                            {posts.length > 1 && (
-                                                <ParentToChildrens>
-                                                    <SecondaryPost post={posts[1]} postLang={postLang} />
-                                                </ParentToChildrens>
-                                            )}
-                                        </div>
-                                        <div role="listitem" className="w-dyn-item">
-                                            {posts.length > 2 && (
-                                                <ParentToChildrens>
-                                                    <SecondaryPost post={posts[2]} postLang={postLang} />
-                                                </ParentToChildrens>
-                                            )}
-                                        </div>
+                        <div className="grid-2-columns blog-featured-grid">
+                            <div className="w-dyn-list">
+                                <div role="list" className="height-100 w-dyn-items">
+                                    <div role="listitem" className="height-100 w-dyn-item">
+                                        {posts.length > 0 && (
+                                            <ParentToChildrens>
+                                                <PrimaryPost post={posts[0]} postLang={postLang} />
+                                            </ParentToChildrens>
+                                        )}
                                     </div>
                                 </div>
                             </div>
-                        </Scale>
+                            <div className="collection-list-wrapper w-dyn-list">
+                                <div role="list" className="grid-1-column gap-32px w-dyn-items">
+                                    <div role="listitem" className="w-dyn-item">
+                                        {posts.length > 1 && (
+                                            <ParentToChildrens>
+                                                <SecondaryPost post={posts[1]} postLang={postLang} />
+                                            </ParentToChildrens>
+                                        )}
+                                    </div>
+                                    <div role="listitem" className="w-dyn-item">
+                                        {posts.length > 2 && (
+                                            <ParentToChildrens>
+                                                <SecondaryPost post={posts[2]} postLang={postLang} />
+                                            </ParentToChildrens>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

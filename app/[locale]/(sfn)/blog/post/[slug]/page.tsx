@@ -36,11 +36,10 @@ const query = groq`
         {
             ...,
             author->,
-            categories[]->,
         }
     `;
 const queryLatest = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && langage == 'both'] 
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && langage == 'both' && isReady == true] 
     {
         ...,
     } | order(title asc) [0...3]

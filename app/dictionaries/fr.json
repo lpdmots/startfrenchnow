@@ -29,7 +29,18 @@
         "contact": "Contact",
         "my_account": "Mon compte",
         "logout": "Se déconnecter",
-        "contact_us": "Contactez-nous"
+        "contact_us": "Contactez-nous",
+        "learn": {
+            "button": "Apprendre",
+            "blog": "Articles & Ressources",
+            "vocabulary": "Vocabulaire",
+            "grammar": "Grammaire",
+            "expressions": "Expressions",
+            "culture": "Culture",
+            "orthography": "Orthographe",
+            "videos": "Vidéos",
+            "tips": "Conseils et astuces"
+        }
     },
     "HeroSfn": {
         "title": "Apprenez <hs4>le français</hs4> à votre rythme avec des cours de <hs2>qualité</hs2>",
@@ -355,38 +366,45 @@
         }
     },
     "Categories": {
-        "tip": {
+        "tips": {
             "title": "Conseils",
-            "description": "Un conseil est une courte leçon qui se concentre sur un point spécifique de grammaire ou de vocabulaire.",
+            "description": "Des techniques et conseils pratiques pour accélérer votre maîtrise du français de manière efficace et structurée.",
             "color": "#FFC107",
             "posts": "Articles",
             "all": "Tous"
         },
         "grammar": {
             "title": "Grammaire",
-            "description": "Une leçon de grammaire est une leçon plus complète qui se concentre sur un point de grammaire spécifique.",
-            "color": "#FF5722",
+            "description": "Des explications détaillées sur les règles grammaticales du français pour vous aider à construire des phrases correctes.",
+            "color": "#ff4a60",
             "posts": "Articles",
             "all": "Tous"
         },
         "vocabulary": {
             "title": "Vocabulaire",
-            "description": "Une leçon de vocabulaire est une leçon plus complète qui se concentre sur un point de vocabulaire spécifique.",
-            "color": "#4CAF50",
+            "description": "Explorez des mots et des phrases clés en français pour enrichir votre lexique et communiquer plus efficacement.",
+            "color": "#2196F3",
             "posts": "Articles",
             "all": "Tous"
         },
         "culture": {
             "title": "Culture",
-            "description": "Une leçon de culture est une leçon qui se concentre sur un point culturel spécifique.",
-            "color": "#2196F3",
+            "description": "Explorez la culture française, des traditions locales à l'histoire, en passant par l'art et la manière de vivre.",
+            "color": "#4CAF50",
             "posts": "Articles",
             "all": "Tous"
         },
-        "expression": {
-            "title": "Expression",
-            "description": "Une leçon d'expression est une leçon qui se concentre sur une expression spécifique.",
+        "expressions": {
+            "title": "Expressions",
+            "description": "Apprenez des expressions courantes et idiomatiques en français pour parler comme un natif et comprendre les subtilités de la langue.",
             "color": "#9C27B0",
+            "posts": "Articles",
+            "all": "Tous"
+        },
+        "orthography": {
+            "title": "Orthographe",
+            "description": "Des astuces et des règles pour maîtriser l'orthographe en français, éviter les erreurs communes et écrire avec précision.",
+            "color": "#FF5722",
             "posts": "Articles",
             "all": "Tous"
         }

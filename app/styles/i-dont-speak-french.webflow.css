@@ -167,7 +167,7 @@ label {
     font-weight: 700;
 }
 
-blockquote {
+/* blockquote {
     margin-top: 14px;
     margin-bottom: 32px;
     padding: 99px 35px;
@@ -182,7 +182,7 @@ blockquote {
     line-height: 1.417em;
     font-weight: 700;
     text-align: center;
-}
+} */
 
 .page-wrapper {
     background-color: var(--neutral-200);
@@ -1892,6 +1892,22 @@ blockquote {
     /* white-space: nowrap; */
 }
 
+.heading-span-secondary-5 {
+    padding-right: 4px;
+    padding-left: 4px;
+    background-image: linear-gradient(180deg, transparent 6%, var(--secondary-5) 0);
+    color: var(--neutral-100);
+    /* white-space: nowrap; */
+}
+
+.heading-span-secondary-6 {
+    padding-right: 4px;
+    padding-left: 4px;
+    background-image: linear-gradient(180deg, transparent 6%, var(--secondary-6) 0);
+    color: var(--neutral-100);
+    /* white-space: nowrap; */
+}
+
 .heading-span-secondary-2 {
     padding-right: 4px;
     padding-left: 4px;
@@ -2145,11 +2161,11 @@ blockquote {
         font-size: 30px;
     }
 
-    blockquote {
+    /* blockquote {
         padding-top: 83px;
         padding-bottom: 83px;
         font-size: 22px;
-    }
+    } */
 
     .grid-2-columns._1-col-tablet {
         grid-template-columns: 1fr;
@@ -2672,11 +2688,11 @@ blockquote {
         font-size: 16px;
     }
 
-    blockquote {
+    /* blockquote {
         padding: 68px 34px;
         border-radius: 18px;
         font-size: 20px;
-    }
+    } */
 
     .grid-2-columns {
         grid-template-columns: 1fr;
@@ -3308,10 +3324,10 @@ blockquote {
         font-size: 32px;
     }
 
-    blockquote {
+    /* blockquote {
         padding: 58px 24px;
         font-size: 18px;
-    }
+    } */
 
     .grid-2-columns.contact-v1 {
         grid-row-gap: 40px;
@@ -3720,7 +3736,12 @@ blockquote {
         top: 18%;
     }
 
+    .heading-span-secondary-5,
     .heading-span-secondary-4 {
+        white-space: normal;
+    }
+
+    .heading-span-secondary-6 {
         white-space: normal;
     }
 

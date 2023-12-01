@@ -16,7 +16,7 @@ type Props = {
 
 export const revalidate = 60;
 
-export async function generateStaticParams() {
+/* export async function generateStaticParams() {
     const query = groq`*[_type=='adventure' && isReady && dateTime(publishedAt) < dateTime(now())]
     {
         slug
@@ -26,7 +26,7 @@ export async function generateStaticParams() {
     const slugRoutes = slugs.map((slug) => slug.slug.current);
 
     return slugRoutes.map((slug) => ({ slug }));
-}
+} */
 
 async function StartStory({ params: { slug } }: Props) {
     const story = await client.fetch(groqQueries["adventure"], { slug });

@@ -1,8 +1,8 @@
 "use client";
 import fetchData from "@/app/lib/apiStories";
-import { COLORVARIABLES, COLORVARIABLESSHADES } from "@/app/lib/constantes";
+import { CATEGORIESCOLORS, CATEGORIESCOLORSSHADES } from "@/app/lib/constantes";
 import { shuffleArray } from "@/app/lib/utils";
-import { ColorsTypes, FlashcardsProps, Reference, Vocabulary } from "@/app/types/sfn/blog";
+import { FlashcardsProps, Reference, Theme, ThemeWithVocab, VocabItem } from "@/app/types/sfn/blog";
 import React, { useRef, useEffect, useState, MouseEvent, RefObject, useMemo } from "react";
 import { AiOutlineSwap } from "react-icons/ai";
 import { IoShuffleOutline } from "react-icons/io5";
@@ -13,6 +13,7 @@ import { m } from "framer-motion";
 import { usePostLang } from "@/app/hooks/usePostLang";
 import { PortableText } from "@portabletext/react";
 import { RichTextComponents } from "../sanity/RichTextComponents";
+import { getThemes } from "@/app/serverActions/exerciseActions";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 const DEFAULTCONTENT = {
@@ -38,13 +39,6 @@ interface Props {
     data: FlashcardsProps;
 }
 
-interface Card {
-    french: string;
-    english: string;
-    sound: string;
-    note: string;
-}
-
 interface DragStart {
     startX: number;
     startScrollLeft: number;
@@ -52,37 +46,40 @@ interface DragStart {
 }
 
 export default function Flashcards({ data }: Props) {
-    const [vocabulary, setVocabulary] = useState<Vocabulary | null>(null);
+    const [theme, setTheme] = useState<ThemeWithVocab | null>(null);
 
     useEffect(() => {
-        const fetchVocabularyData = async () => {
-            const vocabulary: Vocabulary = await fetchData("vocabulary", data.vocabulary._ref);
-            setVocabulary(vocabulary);
+        const fetchThemeData = async () => {
+            const { themes } = await getThemes(data.themes.map((theme) => theme._ref));
+            const vocabItems = themes?.map((theme) => theme.vocabItems).flat();
+            if (!themes || !vocabItems?.length) return console.warn("No themes or vocabItems found");
+            setTheme({ ...themes[0], vocabItems });
         };
-        fetchVocabularyData();
-    }, [data.vocabulary._ref]);
 
-    return <FlashcardsRender data={data} vocabulary={vocabulary} />;
+        fetchThemeData();
+    }, [data.themes]);
+
+    return <FlashcardsRender data={data} theme={theme} />;
 }
 
-function FlashcardsRender({ data, vocabulary }: { data: FlashcardsProps; vocabulary: Vocabulary | null }) {
+function FlashcardsRender({ data, theme }: { data: FlashcardsProps; theme: ThemeWithVocab | null }) {
     const [selectedCard, setSelectedCard] = useState<number | null>(null);
-    const [shuffledCards, setShuffledCards] = useState<Card[]>(shuffleArray(vocabulary?.lines || []));
+    const [shuffledCards, setShuffledCards] = useState<VocabItem[]>(shuffleArray(theme?.vocabItems || []));
     const [isFrontFrench, setIsFrontFrench] = useState<boolean>(true);
     const [voices, setVoices] = useState<boolean>(false);
     const [{ startX, startScrollLeft, isDragging }, setDragStart] = useState<DragStart>({ startX: 0, startScrollLeft: 0, isDragging: false });
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const cardRefs = useRef<RefObject<HTMLDivElement>[]>([]);
-    const colorVar = COLORVARIABLES[data.color || "blue"];
-    const colorVarLight = COLORVARIABLESSHADES[data.color || "blue"];
+    const colorVar = CATEGORIESCOLORS[data.category || "vocabulary"];
+    const colorVarLight = CATEGORIESCOLORSSHADES[data.category || "vocabulary"];
 
     const postLang = usePostLang();
     const { title, instruction, shuffle, swapFaces, withSound, loading } = useMemo(() => getContent(postLang, data), [postLang, data]);
 
     useEffect(() => {
-        setShuffledCards(shuffleArray(vocabulary?.lines || []));
-    }, [vocabulary]);
+        setShuffledCards(shuffleArray(theme?.vocabItems || []));
+    }, [theme]);
 
     useEffect(() => {
         if (containerRef.current) {
@@ -131,7 +128,7 @@ function FlashcardsRender({ data, vocabulary }: { data: FlashcardsProps; vocabul
     };
 
     const handleRefresh = () => {
-        setShuffledCards(shuffleArray(vocabulary?.lines || []));
+        setShuffledCards(shuffleArray(theme?.vocabItems || []));
     };
 
     const handleVoice = () => {
@@ -207,11 +204,11 @@ function FlashcardsRender({ data, vocabulary }: { data: FlashcardsProps; vocabul
 interface CardContentProps {
     isFrontFrench: boolean;
     voices: boolean;
-    card: Card;
+    card: VocabItem;
 }
 
 interface AudioButtonProps {
-    card: Card;
+    card: VocabItem;
     handleAudio: (e: MouseEvent<HTMLParagraphElement, globalThis.MouseEvent>) => void;
     fontSize: number;
 }
@@ -229,7 +226,7 @@ const AudioButton: React.FC<AudioButtonProps> = ({ card, handleAudio, fontSize }
         whileTap={{ scale: 0.9 }}
         transition={{ duration: 0.2 }}
     >
-        {card.sound && <AiOutlineSound style={{ fontSize }} />}
+        {card.soundFr && <AiOutlineSound style={{ fontSize }} />}
     </m.p>
 );
 
@@ -237,7 +234,7 @@ const AudioButton: React.FC<AudioButtonProps> = ({ card, handleAudio, fontSize }
 const CardText: React.FC<CardTextProps> = ({ text }) => <p className="p-2 text-3xl font-extrabold text-center mb-0">{text}</p>;
 
 const FrontCardContent: React.FC<CardContentProps> = ({ isFrontFrench, voices, card }) => {
-    const audio = useMemo(() => new Audio(cloudFrontDomain + card.sound), [card.sound]);
+    const audio = useMemo(() => new Audio(cloudFrontDomain + card.soundFr), [card.soundFr]);
 
     const handleAudio = (e: MouseEvent<HTMLParagraphElement, globalThis.MouseEvent>) => {
         e.stopPropagation();
@@ -252,7 +249,7 @@ const FrontCardContent: React.FC<CardContentProps> = ({ isFrontFrench, voices, c
 };
 
 const BackCardContent: React.FC<CardContentProps> = ({ isFrontFrench, voices, card }) => {
-    const audio = useMemo(() => new Audio(cloudFrontDomain + card.sound), [card.sound]);
+    const audio = useMemo(() => new Audio(cloudFrontDomain + card.soundFr), [card.soundFr]);
 
     const handleAudio = (e: MouseEvent<HTMLParagraphElement, globalThis.MouseEvent>) => {
         e.stopPropagation();
@@ -284,7 +281,7 @@ const getContent = (postLang: "fr" | "en", data: FlashcardsProps) => {
     const instructionData = data[`instruction${postLang === "en" ? "_en" : ""}`];
     return {
         title: data[`title${postLang === "en" ? "_en" : ""}`] || DEFAULTCONTENT[postLang].title,
-        instruction: instructionData ? <PortableText value={instructionData} components={RichTextComponents} /> : <p>{DEFAULTCONTENT[postLang].instruction}</p>,
+        instruction: instructionData ? <PortableText value={instructionData} components={RichTextComponents(data?.category)} /> : <p>{DEFAULTCONTENT[postLang].instruction}</p>,
         shuffle: DEFAULTCONTENT[postLang].shuffle,
         swapFaces: DEFAULTCONTENT[postLang].swapFaces,
         withSound: DEFAULTCONTENT[postLang].withSound,

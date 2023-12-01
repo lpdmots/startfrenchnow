@@ -11,19 +11,21 @@ interface Props {
 
 function Helper({ post, postLang }: Props) {
     const [help, setHelp] = useState<boolean>(true);
-    const level = post.level ? LEVELDATA[post.level] : null;
+    const [level, setLevel] = useState<{ label: string; color: string } | null>(null);
 
     const handleHelp = () => {
         const newHelp = !help;
-        const elements = document.querySelectorAll(".translation");
+        const elements = document.querySelectorAll(".help");
         if (newHelp) {
             elements.forEach((element) => {
                 element.classList.remove("hidden");
             });
+            setLevel(LEVELDATA[post.level[1]]);
         } else {
             elements.forEach((element) => {
                 element.classList.add("hidden");
             });
+            setLevel(LEVELDATA[post.level[0]]);
         }
         localStorage.setItem("sfn-help", newHelp.toString());
         setHelp((state) => !state);
@@ -32,72 +34,50 @@ function Helper({ post, postLang }: Props) {
     useEffect(() => {
         const helpStorage = localStorage.getItem("sfn-help");
         if (!helpStorage || helpStorage === "true") {
-            return setHelp(true);
+            setHelp(true);
+            setLevel(post.level ? LEVELDATA[post.level[1]] : null);
+            return;
         }
-        const elements = document.querySelectorAll(".translation");
+        const elements = document.querySelectorAll(".help");
         elements.forEach((element) => {
             element.classList.add("hidden");
         });
         setHelp(false);
+        setLevel(post.level ? LEVELDATA[post.level[0]] : null);
     }, []);
 
     return (
         <>
-            <div className="hidden md:flex justify-center items-end flex-wrap gap-4 mt-8 text-300 medium color-neutral-600">
-                {!!post.translation && postLang === "fr" && (
+            <div className="block w-full md:flex justify-center items-end flex-wrap gap-4 mt-8 text-300 medium color-neutral-600">
+                {!!post.help && post.level.length === 2 && (
                     <>
-                        <div className="w-checkbox checkbox-field-wrapper col-span-2 mb-4">
+                        <div className="w-checkbox checkbox-field-wrapper col-span-2 mb-2 flex justify-center">
                             <label className="w-form-label flex items-center text-300 medium color-neutral-600" onClick={handleHelp}>
                                 <div
                                     id="checkbox"
                                     className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${help ? "w--redirected-checked" : undefined}`}
                                     style={{ borderColor: help ? level?.color : "var(--neutral-600)", backgroundColor: help ? level?.color : "var(--neutral-200)" }}
                                 ></div>
-                                I need help
+                                {postLang === "fr" ? "J'ai besoin d'aide" : "Include french"}
                             </label>
                         </div>
-                        <p> - </p>
+                        <p className="mb-2 hidden md:block"> - </p>
                     </>
                 )}
-                {level && postLang === "fr" && (
-                    <>
-                        <p className="flex items-end">
-                            Difficulty:
-                            <AiFillSignal className=" mx-2" style={{ fontSize: "1.5rem", color: level.color }} />
-                            {level.label}
-                        </p>
-                        <p> - </p>
-                    </>
-                )}
-                <p>{new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}</p>
-            </div>
-            <div className="flex md:hidden justify-center items-end flex-wrap gap-2 mt-8 text-300 medium color-neutral-600">
-                {!!post.translation && postLang === "fr" && (
-                    <>
-                        <div className="w-checkbox checkbox-field-wrapper col-span-2 mb-4">
-                            <label className="w-form-label flex items-center text-300 medium color-neutral-600" onClick={handleHelp}>
-                                <div
-                                    id="checkbox"
-                                    className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${help ? "w--redirected-checked" : undefined}`}
-                                    style={{ borderColor: help ? level?.color : "var(--neutral-600)", backgroundColor: help ? level?.color : "var(--neutral-200)" }}
-                                ></div>
-                                I need help
-                            </label>
-                        </div>
-                        <p> - </p>
-                    </>
-                )}
-                {level && postLang === "fr" && (
-                    <>
-                        <p className="flex items-end">
-                            Difficulty:
-                            <AiFillSignal className=" mx-2" style={{ fontSize: "1.5rem", color: level.color }} />
-                            {level.label}
-                        </p>
-                        <p> - </p>
-                    </>
-                )}
-                <p>{new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "numeric", year: "numeric" })}</p>
+                <div className="flex items-center justify-center gap-4 mb-2">
+                    {level && (postLang === "fr" || help) && (
+                        <>
+                            <p className="flex items-end mb-0">
+                                Difficulty:
+                                <AiFillSignal className=" mx-2" style={{ fontSize: "1.5rem", color: level.color }} />
+                                {level.label}
+                            </p>
+                            <p className="mb-0"> - </p>
+                        </>
+                    )}
+                    <p className="hidden md:block mb-0">{new Date(post.publishedAt).toLocaleDateString(postLang, { day: "numeric", month: "long", year: "numeric" })}</p>
+                    <p className="block md:hidden mb-0">{new Date(post.publishedAt).toLocaleDateString(postLang, { day: "numeric", month: "numeric", year: "numeric" })}</p>
+                </div>
             </div>
         </>
     );

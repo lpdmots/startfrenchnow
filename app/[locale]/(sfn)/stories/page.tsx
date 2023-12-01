@@ -7,7 +7,6 @@ import { groq } from "next-sanity";
 import Hero from "@/app/components/stories/home/Hero";
 import { WhyStories } from "@/app/components/stories/home/WhyStories";
 import { BetaVersion } from "@/app/components/stories/home/BetaVersion";
-import { useTranslations } from "next-intl";
 
 const query = groq`
     *[_type=='adventure' && isReady && dateTime(publishedAt) < dateTime(now())] {

@@ -3,25 +3,27 @@ import urlFor from "@/app/lib/urlFor";
 import { Post } from "../../../types/sfn/blog";
 import { PortableText } from "@portabletext/react";
 import { RichTextComponents } from "../../sanity/RichTextComponents";
-import Link from "next-intl/link";
 import NewsletterCard from "../../common/newsletter/NewsletterCard";
 import Helper from "./Helper";
-import VideoBlog from "../../sanity/VideoBlog";
+import VideoBlog from "../../sanity/RichTextSfnComponents/VideoBlog";
 import { useLocale, useTranslations } from "next-intl";
 import { getDataInRightLang } from "@/app/lib/utils";
 import { BlogLangButton } from "../blog/BlogLangButton";
 import { LinkBlog } from "../blog/LinkBlog";
 import { Locale } from "@/i18n";
+import { CategoryBadge } from "../blog/CategoryBadge";
+import { CATEGORIESCOLORS } from "@/app/lib/constantes";
 
 function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "en" | "fr"; isForcedLang: boolean }) {
     const locale = useLocale();
-    const tCat = useTranslations(`Categories.${post?.categorie}`);
+    const tCat = useTranslations(`Categories.${post?.categories?.[0] || "tips"}`);
     const tBut = useTranslations("Blog.BlogLangButton");
     const messages = {
         title: tBut("title"),
         message: tBut("message"),
         okString: tBut("okString"),
     };
+    const firstCategory = post?.categories?.[0] || "tips";
 
     return (
         <>
@@ -29,10 +31,10 @@ function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "
                 <div className="container-default w-container">
                     <div className="inner-container _600px---mbl center">
                         <div className="flex w-full justify-center items-center gap-8 mb-8">
-                            <LinkBlog href={`/blog/category/${post.categorie}`} className="badge-primary small btn-primary w-button" locale={locale as Locale}>
-                                {tCat("title")}
+                            <LinkBlog href={`/blog/category/${firstCategory}`} locale={locale as Locale}>
+                                <CategoryBadge category={firstCategory} label={tCat("title")} />
                             </LinkBlog>
-                            {isForcedLang && post.langage === "both" && <BlogLangButton messages={messages} postLang={postLang} />}
+                            {post.langage === "both" && <BlogLangButton messages={messages} postLang={postLang} />}
                         </div>
                         <div className="text-center">
                             <div className="inner-container _1015px center">
@@ -61,8 +63,22 @@ function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "
                         <div className="grid-2-columns post-rigth-sidebar _1-col-tablet">
                             <div className="inner-container _758px">
                                 <div className="mg-bottom-48px">
-                                    <PortableText value={getDataInRightLang(post, postLang, "body") as any} components={RichTextComponents} />
+                                    <PortableText value={getDataInRightLang(post, postLang, "body") as any} components={RichTextComponents(post.categories[0] as keyof typeof CATEGORIESCOLORS)} />
                                 </div>
+                                {post.externLinks?.length > 0 && (
+                                    <div>
+                                        <p className="underline">Sources:</p>
+                                        <ul>
+                                            {post.externLinks.map((link, index) => (
+                                                <li key={index}>
+                                                    <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-neutral-500">
+                                                        {link.title}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                             </div>
                             <div id="w-node-_2efa5bda-72aa-9528-9385-590a86804244-6f543d60" className="sticky-top _48px-top">
                                 <NewsletterCard />

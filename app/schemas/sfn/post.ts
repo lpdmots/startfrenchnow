@@ -53,16 +53,8 @@ export default defineType({
         defineField({
             name: "level",
             title: "Niveau",
-            type: "string",
-            options: {
-                list: [
-                    { value: "none", title: "Aucun" },
-                    { value: "a1", title: "A1" },
-                    { value: "a2", title: "A2" },
-                    { value: "b1", title: "B1" },
-                    { value: "b2", title: "B2" },
-                ],
-            },
+            type: "array",
+            of: [{ type: "string", options: { list: ["a1", "a2", "b1", "b2", "c1", "c2"] } }],
         }),
         defineField({
             name: "slug",
@@ -91,18 +83,10 @@ export default defineType({
             },
         }),
         defineField({
-            name: "categorie",
-            title: "Catégorie",
-            type: "string",
-            options: {
-                list: [
-                    { value: "tip", title: "Conseil" },
-                    { value: "grammar", title: "Grammaire" },
-                    { value: "vocabulary", title: "Vocabulaire" },
-                    { value: "culture", title: "Culture" },
-                    { value: "expression", title: "Expression" },
-                ],
-            },
+            name: "categories",
+            title: "Catégories",
+            type: "array",
+            of: [{ type: "string", options: { list: ["tips", "video", "grammar", "vocabulary", "culture", "expressions", "orthography", "exercise", "toLoad"] } }],
         }),
         defineField({
             name: "publishedAt",
@@ -121,10 +105,35 @@ export default defineType({
             type: "blockContent",
         }),
         defineField({
-            name: "translation",
-            title: "Translation",
+            name: "help",
+            title: "Help",
             type: "boolean",
-            initialValue: true,
+            initialValue: false,
+        }),
+        defineField({
+            name: "isReady",
+            title: "Prêt",
+            type: "boolean",
+            initialValue: false,
+        }),
+        defineField({
+            name: "internLink",
+            title: "Lien interne",
+            type: "string",
+        }),
+        defineField({
+            name: "externLinks",
+            title: "Liens externes",
+            type: "array",
+            of: [
+                {
+                    type: "object",
+                    fields: [
+                        { name: "url", type: "string" },
+                        { name: "title", type: "string" },
+                    ],
+                },
+            ],
         }),
     ],
 

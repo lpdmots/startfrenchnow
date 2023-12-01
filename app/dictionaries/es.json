@@ -29,7 +29,19 @@
         "contact": "Contacto",
         "my_account": "Mi Cuenta",
         "logout": "Cerrar Sesión",
-        "contact_us": "Contáctenos"
+        "contact_us": "Contáctenos",
+        "learn": {
+            "button": "Aprender",
+            "blog": "Artículos y Recursos",
+            "resources": "Recursos",
+            "vocabulary": "Vocabulario",
+            "grammar": "Gramática",
+            "expressions": "Expresiones",
+            "culture": "Cultura",
+            "orthography": "Ortografía",
+            "videos": "Vídeos",
+            "tips": "Consejos y Trucos"
+        }
     },
     "HeroSfn": {
         "title": "<hs4>Aprenda francés</hs4> a su propio ritmo con <hs2>lecciones de alta calidad</hs2>",
@@ -355,39 +367,46 @@
         }
     },
     "Categories": {
-        "tip": {
+        "tips": {
             "title": "Consejo",
-            "description": "Un consejo es una breve lección que se centra en un punto específico de gramática o vocabulario.",
+            "description": "Descubrimientos prácticos y estrategias para acelerar tu fluidez en francés, diseñados para un impacto máximo.",
             "color": "#FFC107",
             "posts": "Publicaciones",
             "all": "Todos"
         },
         "grammar": {
             "title": "Gramática",
-            "description": "Una lección de gramática es una lección más completa que se centra en un punto específico de gramática.",
-            "color": "#FF5722",
+            "description": "Orientación detallada sobre las reglas gramaticales del francés para ayudarte a formar frases precisas y complejas.",
+            "color": "#ff4a60",
             "posts": "Publicaciones",
             "all": "Todos"
         },
         "vocabulary": {
             "title": "Vocabulario",
-            "description": "Una lección de vocabulario es una lección más completa que se centra en un punto específico de vocabulario.",
+            "description": "Sumérgete en palabras y frases esenciales del francés para expandir tu vocabulario y mejorar tus habilidades de comunicación.",
             "color": "#4CAF50",
             "posts": "Publicaciones",
             "all": "Todos"
         },
         "culture": {
             "title": "Cultura",
-            "description": "Una lección de cultura es una lección que se centra en un punto específico cultural.",
+            "description": "Descubre la rica diversidad de la cultura francesa, desde tradiciones ancestrales hasta hitos históricos y contribuciones artísticas.",
             "color": "#2196F3",
             "posts": "Publicaciones",
             "all": "Todos"
         },
-        "expression": {
+        "expressions": {
             "title": "Expresión",
-            "description": "Una lección de expresión es una lección que se centra en una expresión específica.",
+            "description": "Domina frases idiomáticas y cotidianas en francés para sonar más como un nativo y captar las sutilezas del idioma.",
             "color": "#9C27B0",
             "posts": "Publicaciones",
+            "all": "Todos"
+        },
+        "orthography": {
+            "title": "Ortografía",
+            "description": "Consejos y pautas para perfeccionar tu ortografía en francés, evitar trampas comunes y escribir con confianza.",
+            "color": "#FF5722",
+            "posts": "Artículos",
             "all": "Todos"
         }
     },

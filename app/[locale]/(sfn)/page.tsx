@@ -38,7 +38,6 @@ function Home({ params }: { params: { locale: Locale } }) {
             </section>
             <CommentsCarousel />
             <StoriesHome />
-            {/* @ts-expect-error Server Component */}
             <BlogHome />
         </div>
     );

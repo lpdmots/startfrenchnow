@@ -4,12 +4,7 @@ import { BsFillChatLeftQuoteFill } from "react-icons/bs";
 import { MdTipsAndUpdates } from "react-icons/md";
 import GrammarLogo from "../../common/logos/GrammarLogo";
 import VocabularyLogo from "../../common/logos/VocabularyLogo";
-/* "CategoriesBand": {
-            "grammar": "Grammar",
-            "vocabulary": "Vocabulary",
-            "expressions": "Expressions",
-            "tips": "Tips"
-        }, */
+
 function CategoriesBand() {
     const t = useTranslations("Blog.CategoriesBand");
     return (

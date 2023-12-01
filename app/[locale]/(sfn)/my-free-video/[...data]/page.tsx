@@ -46,7 +46,7 @@ async function FreeVideo({ params: { data } }: { params: { data: string[] } }) {
                         <div className="grid-2-columns post-rigth-sidebar _1-col-tablet">
                             <div className="inner-container _758px">
                                 <div className="mg-bottom-48px">
-                                    <PortableText value={video?.body} components={RichTextComponents} />
+                                    <PortableText value={video?.body} components={RichTextComponents()} />
                                 </div>
                             </div>
                             <div id="w-node-_2efa5bda-72aa-9528-9385-590a86804244-6f543d60" className="sticky-top _48px-top">

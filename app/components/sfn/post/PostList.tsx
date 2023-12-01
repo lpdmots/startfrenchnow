@@ -26,7 +26,7 @@ export default function PostsList({ posts, postLang }: { posts: Post[]; postLang
                                                 <span className="z-index-1">{t("latest")} </span>
                                                 <span className="heading-span-secondary-3 v2">{t("posts")}</span>
                                             </h2>
-                                            <div className="card categories-card">
+                                            <div className="card categories-card !p-8">
                                                 <Link href="#" className="blog-categories-item-wrapper current w-inline-block pointer-events-none">
                                                     {t("all")}
                                                 </Link>

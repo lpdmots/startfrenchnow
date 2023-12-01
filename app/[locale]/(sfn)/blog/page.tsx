@@ -12,7 +12,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { BlogLangButton } from "@/app/components/sfn/blog/BlogLangButton";
 
 const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now())] {
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true] {
         ...,
     } | order(publishedAt desc)
 `;
@@ -20,7 +20,7 @@ const query = groq`
 export const revalidate = 60;
 
 /* export async function generateStaticParams() {
-    const query = groq`*[_type=='post' && dateTime(publishedAt) < dateTime(now())]
+    const query = groq`*[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true]
     {
         slug
     }`;
@@ -40,7 +40,7 @@ const BlogNoAsync = ({ postsData, searchParams }: { postsData: Post[]; searchPar
     const locale = useLocale();
     const postLang = searchParams.postLang ? searchParams.postLang : ["fr", "en"].includes(locale) ? (locale as "fr" | "en") : "en";
     const isForcedLang = locale !== postLang;
-    const posts = postsData.filter((post) => postLang === post.langage || post.langage === "both");
+    const posts = postsData.filter((post) => postLang === post.langage || post.langage === "both" || post.langage === undefined);
 
     const t = useTranslations("Blog.BlogLangButton");
     const messages = {

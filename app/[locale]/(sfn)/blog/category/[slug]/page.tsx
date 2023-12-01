@@ -2,25 +2,24 @@ import { groq } from "next-sanity";
 import { client } from "@/app/lib/sanity.client";
 import { Category, Post } from "@/app/types/sfn/blog";
 import SecondaryPost from "@/app/components/sfn/blog/SecondaryPost";
-import Link from "next-intl/link";
 import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
 import { useLocale, useTranslations } from "next-intl";
-import { CATEGORIES } from "@/app/lib/constantes";
+import { CATEGORIES, HEADINGSPANCOLORS } from "@/app/lib/constantes";
 import { BlogLangButton } from "@/app/components/sfn/blog/BlogLangButton";
 import { LinkBlog } from "@/app/components/sfn/blog/LinkBlog";
 import { Locale } from "@/i18n";
+import post from "@/app/schemas/sfn/post";
 
 type Props = {
     params: {
-        slug: string;
+        slug: Category;
     };
     searchParams: { postLang: "en" | "fr" };
 };
 
 const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now())] {
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && $slug in categories] {
         ...,
-        categories[]->
     } | order(publishedAt desc)
 `;
 
@@ -31,7 +30,7 @@ const queryCategories = groq`
 export const revalidate = 60;
 
 /* export async function generateStaticParams() {
-    const query = groq`*[_type=='post' && dateTime(publishedAt) < dateTime(now())]
+    const query = groq`*[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true]
     {
         slug
     }`;
@@ -43,9 +42,7 @@ export const revalidate = 60;
 } */
 
 async function Categories({ params: { slug }, searchParams }: Props) {
-    const allPosts: Post[] = await client.fetch(query);
-    const posts = allPosts.filter((post) => post.categorie === slug);
-
+    const posts: Post[] = await client.fetch(query, { slug });
     return <CategoriesNoAsync posts={posts} slug={slug} searchParams={searchParams} />;
 }
 
@@ -55,7 +52,7 @@ const CategoriesNoAsync = ({ posts: postsCatFiltred, slug, searchParams }: { pos
     const locale = useLocale();
     const postLang = searchParams.postLang ? searchParams.postLang : ["fr", "en"].includes(locale) ? (locale as "fr" | "en") : "en";
     const isForcedLang = locale !== postLang;
-    const posts = postsCatFiltred.filter((post) => postLang === post.langage || post.langage === "both");
+    const posts = postsCatFiltred.filter((post) => postLang === post.langage || post.langage === "both" || post.langage === undefined);
     const t = useTranslations(`Categories.${slug}`);
     const tBut = useTranslations("Blog.BlogLangButton");
     const messages = {
@@ -63,6 +60,7 @@ const CategoriesNoAsync = ({ posts: postsCatFiltred, slug, searchParams }: { pos
         message: tBut("message"),
         okString: tBut("okString"),
     };
+    const headingSpanColor = HEADINGSPANCOLORS[slug as Category];
 
     return (
         <div className="page-wrapper mt-8 sm:mt-12">
@@ -75,7 +73,7 @@ const CategoriesNoAsync = ({ posts: postsCatFiltred, slug, searchParams }: { pos
                                 <div className="text-center---tablet">
                                     <div className="w-layout-grid grid-2-columns title-and-paragraph v2">
                                         <div className="flex-horizontal start flex-wrap center---tablet">
-                                            <div className="heading-span-secondary-4">
+                                            <div className={headingSpanColor}>
                                                 <h1 className="display-1 color-neutral-100 mg-bottom-0">{t("title")}</h1>
                                             </div>
                                             <div className="display-1"> </div>
@@ -91,7 +89,7 @@ const CategoriesNoAsync = ({ posts: postsCatFiltred, slug, searchParams }: { pos
                                 <div className="sticky-top _48px-top sticky-tbl">
                                     <div className="inner-container _380">
                                         <div className="text-center---tablet">
-                                            <div className="card categories-card">
+                                            <div className="card categories-card !p-8">
                                                 <LinkBlog href="/blog" className="blog-categories-item-wrapper w-inline-block" locale={locale as Locale}>
                                                     {t("all")}
                                                 </LinkBlog>

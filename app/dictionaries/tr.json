@@ -29,7 +29,19 @@
         "contact": "İletişim",
         "my_account": "Hesabım",
         "logout": "Çıkış Yap",
-        "contact_us": "Bizimle İletişime Geçin"
+        "contact_us": "Bizimle İletişime Geçin",
+        "learn": {
+            "button": "Öğren",
+            "blog": "Makaleler ve Kaynaklar",
+            "resources": "Kaynaklar",
+            "vocabulary": "Kelime Dağarcığı",
+            "grammar": "Dil Bilgisi",
+            "expressions": "İfadeler",
+            "culture": "Kültür",
+            "orthography": "İmla",
+            "videos": "Videolar",
+            "tips": "İpuçları ve Püf Noktaları"
+        }
     },
     "HeroSfn": {
         "title": "<hs4>Fransızca'yı</hs4> <hs2>Yüksek Kalite</hs2> ile Kendi Hızınızda Öğrenin",
@@ -355,39 +367,46 @@
         }
     },
     "Categories": {
-        "tip": {
+        "tips": {
             "title": "İpucu",
-            "description": "Bir ipucu, belirli bir dil bilgisi veya kelime dağarcığı noktasına odaklanan kısa bir derstir.",
+            "description": "Fransızcayı etkili ve düzenli bir şekilde hızlandırmanız için pratik stratejiler ve içgörüler.",
             "color": "#FFC107",
             "posts": "Gönderiler",
             "all": "Hepsi"
         },
         "grammar": {
             "title": "Dil Bilgisi",
-            "description": "Bir dil bilgisi dersi, belirli bir dil bilgisi noktasına odaklanan daha tam bir derstir.",
-            "color": "#FF5722",
+            "description": "Doğru ve karmaşık cümleler oluşturmanıza yardımcı olacak Fransızca dil bilgisi kuralları hakkında detaylı rehberlik.",
+            "color": "#ff4a60",
             "posts": "Gönderiler",
             "all": "Hepsi"
         },
         "vocabulary": {
             "title": "Kelime Dağarcığı",
-            "description": "Bir kelime dağarcığı dersi, belirli bir kelime dağarcığı noktasına odaklanan daha tam bir derstir.",
+            "description": "Kelime dağarcığınızı genişletmek ve iletişim becerilerinizi geliştirmek için önemli Fransızca kelimeler ve ifadeler üzerine dalın.",
             "color": "#4CAF50",
             "posts": "Gönderiler",
             "all": "Hepsi"
         },
         "culture": {
             "title": "Kültür",
-            "description": "Bir kültür dersi, belirli bir kültürel noktaya odaklanan bir derstir.",
+            "description": "Zamanın testinden geçmiş geleneklerden tarihi dönemeçlere ve sanatsal katkılara kadar zengin Fransız kültürünü keşfedin.",
             "color": "#2196F3",
             "posts": "Gönderiler",
             "all": "Hepsi"
         },
-        "expression": {
+        "expressions": {
             "title": "İfade",
-            "description": "Bir ifade dersi, belirli bir ifadeye odaklanan bir derstir.",
+            "description": "Daha yerel gibi konuşmak ve dilin inceliklerini anlamak için yaygın ve deyimsel Fransızca ifadeleri öğrenin.",
             "color": "#9C27B0",
             "posts": "Gönderiler",
+            "all": "Hepsi"
+        },
+        "orthography": {
+            "title": "İmla",
+            "description": "Fransızca imlanızı mükemmelleştirmek, yaygın tuzaklardan kaçınmak ve güvenle yazmak için ipuçları ve yönergeler.",
+            "color": "#FF5722",
+            "posts": "Makaleler",
             "all": "Hepsi"
         }
     },

@@ -3,17 +3,17 @@ import blockContent from "./sfn/blockContent";
 import post from "./sfn/post";
 import user from "./sfn/user";
 import video from "./sfn/video";
-import videoBlog from "./sfn/videoBlog";
-import vocabulary from "./sfn/vocabulary";
+import videoBlog from "./sfn/blogTools/videoBlog";
+import theme from "./sfn/blogTools/theme";
 
 // Blog Tools
 import flashcards from "./sfn/blogTools/flashcards";
-import simpleExercise from "./sfn/blogTools/simpleExercise";
+import exercise from "./sfn/exercises/exercise";
 import tabelVoc from "./sfn/blogTools/tabelVoc";
+import vocabItem from "./sfn/blogTools/vocabItem";
 
 // Exercices
-import exerciseTheme from "./sfn/exercises/exerciseTheme";
-import simpleQuestion from "./sfn/exercises/simpleQuestion";
+import question from "./sfn/exercises/question";
 
 // Stories
 import adventure from "./stories/adventure";
@@ -36,11 +36,11 @@ export const schemaTypes = [
     video,
     videoBlog,
     tabelVoc,
+    vocabItem,
     flashcards,
-    simpleExercise,
-    exerciseTheme,
-    simpleQuestion,
-    vocabulary,
+    exercise,
+    question,
+    theme,
     adventure,
     effect,
     variable,

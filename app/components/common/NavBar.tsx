@@ -8,11 +8,24 @@ import { ProfilButton } from "../auth/ProfilButton";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { useLocale, useTranslations } from "next-intl";
 import { Locale } from "@/i18n";
-import { LinkCurrentBlog } from "./LinkCurrentBlog";
+import { LearnButton } from "./LearnButton";
 
 function NavBar() {
     const t = useTranslations("Navigation");
     const locale = useLocale();
+
+    const learnDict = {
+        blog: t("learn.blog"),
+        vocabulary: t("learn.vocabulary"),
+        button: t("learn.button"),
+        videos: t("learn.videos"),
+        grammar: t("learn.grammar"),
+        expressions: t("learn.expressions"),
+        culture: t("learn.culture"),
+        orthography: t("learn.orthography"),
+        tips: t("learn.tips"),
+    };
+
     const links = (
         <>
             <li className="header-nav-list-item middle">
@@ -26,9 +39,7 @@ function NavBar() {
                 </LinkCurrent>
             </li>
             <li className="header-nav-list-item middle">
-                <LinkCurrentBlog href="/blog" className="nav-link header-nav-link" locale={locale as Locale}>
-                    {t("blog")}
-                </LinkCurrentBlog>
+                <LearnButton locale={locale as Locale} dictionnary={learnDict} />
             </li>
             <li className="header-nav-list-item middle">
                 <LinkCurrent href="/about" className="nav-link header-nav-link">
@@ -56,7 +67,7 @@ function NavBar() {
                         <Link aria-label="Go to contact page" href="/contact" className="btn-primary small header-btn-hidde-on-mb flex items-center !p-2 !mr-2 lg:!mr-0">
                             <FaRegEnvelope style={{ fontSize: 22 }} />
                         </Link>
-                        <Burger messages={{ home: t("home"), stories: t("stories"), blog: t("blog"), about: t("about"), contact: t("contact") }} locale={locale} />
+                        <Burger messages={{ home: t("home"), stories: t("stories"), ...learnDict, about: t("about"), contact: t("contact") }} locale={locale as Locale} />
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ import { Locale } from "@/i18n";
 import { LinkBlog } from "../blog/LinkBlog";
 
 const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && langage == 'both'] {
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && langage == 'both' && isReady == true] {
         ...,
         categories[]->
     } | order(publishedAt desc)[0...3]

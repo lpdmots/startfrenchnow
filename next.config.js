@@ -30,6 +30,24 @@ module.exports = withNextIntl({
         domains: ["encrypted-tbn0.gstatic.com", "cdn.sanity.io", "i-don-t-speak-french.s3.eu-central-1.amazonaws.com"],
     },
     redirects() {
-        return [process.env.MAINTENANCE_MODE === "1" ? { source: "/((?!maintenance).*)", destination: "/maintenance", permanent: false } : null].filter(Boolean);
+        return [
+            // Redirection pour les chemins /blog avec une locale spécifiée
+            process.env.MAINTENANCE_MODE === "1"
+                ? {
+                      source: "/:locale/blog/:path*",
+                      destination: "/maintenance",
+                      permanent: false,
+                      locale: false, // Ne pas préfixer automatiquement avec la locale par défaut
+                  }
+                : null,
+            // Redirection pour les chemins /blog sans locale
+            process.env.MAINTENANCE_MODE === "1"
+                ? {
+                      source: "/blog/:path*",
+                      destination: "/maintenance",
+                      permanent: false,
+                  }
+                : null,
+        ].filter(Boolean);
     },
 });

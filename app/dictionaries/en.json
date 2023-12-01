@@ -29,7 +29,18 @@
         "contact": "Contact",
         "my_account": "My Account",
         "logout": "Log out",
-        "contact_us": "Contact us"
+        "contact_us": "Contact us",
+        "learn": {
+            "button": "Learn",
+            "blog": "Articles and Resources",
+            "vocabulary": "Vocabulary",
+            "grammar": "Grammar",
+            "expressions": "Expressions",
+            "culture": "Culture",
+            "orthography": "Orthography",
+            "videos": "Videos",
+            "tips": "Tips and Tricks"
+        }
     },
     "HeroSfn": {
         "title": "<hs4>Learn French</hs4> at Your Own Pace with <hs2>High Quality</hs2> French Lessons",
@@ -355,38 +366,45 @@
         }
     },
     "Categories": {
-        "tip": {
+        "tips": {
             "title": "Tip",
-            "description": "A tip is a short lesson that focuses on a specific point of grammar or vocabulary.",
+            "description": "Practical insights and strategies to fast-track your fluency in French, designed for maximum impact.",
             "color": "#FFC107",
             "posts": "Posts",
             "all": "All"
         },
         "grammar": {
             "title": "Grammar",
-            "description": "A grammar lesson is a more complete lesson that focuses on a specific grammar point.",
-            "color": "#FF5722",
+            "description": "In-depth guidance on the rules of French grammar to help you form accurate and complex sentences.",
+            "color": "#ff4a60",
             "posts": "Posts",
             "all": "All"
         },
         "vocabulary": {
             "title": "Vocabulary",
-            "description": "A vocabulary lesson is a more complete lesson that focuses on a specific vocabulary point.",
+            "description": "Dive into essential French words and phrases to expand your vocabulary and improve your communication skills",
             "color": "#4CAF50",
             "posts": "Posts",
             "all": "All"
         },
         "culture": {
             "title": "Culture",
-            "description": "A culture lesson is a lesson that focuses on a specific cultural point.",
+            "description": "Discover the rich tapestry of French culture, from time-honored traditions to historical milestones and artistic contributions.",
             "color": "#2196F3",
             "posts": "Posts",
             "all": "All"
         },
-        "expression": {
+        "expressions": {
             "title": "Expression",
-            "description": "An expression lesson is a lesson that focuses on a specific expression.",
+            "description": "Master idiomatic and everyday French phrases to sound more like a native and grasp the language's nuances.",
             "color": "#9C27B0",
+            "posts": "Posts",
+            "all": "All"
+        },
+        "orthography": {
+            "title": "Orthography",
+            "description": "Tips and guidelines to perfect your French spelling, avoid common pitfalls, and write with confidence.",
+            "color": "#FF5722",
             "posts": "Posts",
             "all": "All"
         }

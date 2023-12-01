@@ -2,31 +2,72 @@ import { defineType, defineArrayMember } from "sanity";
 import { FaHighlighter } from "react-icons/fa";
 import { AiOutlineAlignCenter, AiOutlineAlignLeft, AiOutlineAlignRight } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
-import { BsCaretRightFill } from "react-icons/bs";
+import { FcIdea } from "react-icons/fc";
+import { RiDoubleQuotesL, RiDoubleQuotesR } from "react-icons/ri";
+import Image from "next/image";
+import lessonTeacher from "@/public/images/lesson-teacher.png";
 
-const hightLigthIcon = (color: string) => {
-    return <FaHighlighter style={{ color }} />;
+const highligthIcon = (color?: string) => {
+    return <FaHighlighter style={{ color: color || "var(--neutral-600)" }} />;
 };
 
+const HighlightDecorator = (props: any) => <span style={{ backgroundColor: "var(--neutral-300)" }}>{props.children}</span>;
 const HighlightDecoratorRed = (props: any) => <span style={{ backgroundColor: "red" }}>{props.children}</span>;
 const HighlightDecoratorBlue = (props: any) => <span style={{ backgroundColor: "blue" }}>{props.children}</span>;
 const HighlightDecoratorOrange = (props: any) => <span style={{ backgroundColor: "orange" }}>{props.children}</span>;
+const HighlightDecoratorYellow = (props: any) => <span style={{ backgroundColor: "yellow" }}>{props.children}</span>;
+const HighlightDecoratorPurple = (props: any) => <span style={{ backgroundColor: "purple" }}>{props.children}</span>;
+const HighlightDecoratorGreen = (props: any) => <span style={{ backgroundColor: "green" }}>{props.children}</span>;
 const AlignLeft = (props: any) => <p style={{ textAlign: "center" }}>{props.children}</p>;
 const AlignCenter = (props: any) => <p style={{ textAlign: "center" }}>{props.children}</p>;
 const AlignRight = (props: any) => <p style={{ textAlign: "right" }}>{props.children}</p>;
-const TranslationBlock = (props: any) => (
-    <div className="translation pl-8 md:pl-12" style={{ borderLeft: "solid 8px var(--neutral-600)" }}>
+const HelpBlock = (props: any) => (
+    <div className="help pl-8 md:pl-12" style={{ borderLeft: "solid 8px var(--neutral-600)" }}>
         <p className="italic">{props.children}</p>
     </div>
 );
-const InlineTranslation = (props: any) => {
-    return (
-        <span className="translation italic underline ml-1">
-            <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2 }} />
-            {props.children}
-        </span>
-    );
-};
+const Funfact = (props: any) => (
+    <div className="flex flex-col items-center my-8">
+        <div className="w-full bg-neutral-600 mb-4" style={{ height: 1 }}></div>
+        <div className="flex items-center justify-center">
+            <div className="px-4 sm:px-8">
+                <FcIdea className="text-3xl sm:text-4xl" />
+            </div>
+            <div>
+                <p className="font-bold mb-0">Le saviez-vous ?</p>
+                <p>{props.children}</p>
+            </div>
+        </div>
+        <div className="w-full bg-neutral-600" style={{ height: 1 }}></div>
+    </div>
+);
+const Blockquote = (props: any) => (
+    <blockquote className="sm:p-4 mx-0 sm:mx-6 md:mx-12">
+        <div className="flex w-full">
+            <RiDoubleQuotesL className="text-5xl text-neutral-600" />
+        </div>
+        <p className="mb-0 bl font-bold px-6 sm:px-12 text-justify text-neutral-600">{props.children}</p>
+        <div className="flex w-full justify-end">
+            <RiDoubleQuotesR className="text-5xl text-neutral-600" />
+        </div>
+    </blockquote>
+);
+const Exemple = (props: any) => (
+    <div className="pl-8 md:pl-12 bg-neutral-300" style={{ borderLeft: "solid 8px var(--neutral-600)" }}>
+        <p className="italic">{props.children}</p>
+    </div>
+);
+const Extract = ({ children }: any) => (
+    <div className="card p-4 sm:p-8">
+        <p className="mb-0">{children}</p>
+    </div>
+);
+const Lesson = ({ children }: any) => (
+    <div className="card p-4 sm:p-8 shadow-1 bg-neutral-300">
+        <Image height={75} width={75} src={lessonTeacher} alt="the teacher" style={{ objectFit: "contain", float: "left" }} className="mb-1 mr-1" />
+        <span className="mb-0">{children}</span>
+    </div>
+);
 
 export default defineType({
     title: "Block Content",
@@ -46,9 +87,12 @@ export default defineType({
                 { title: "H2", value: "h2" },
                 { title: "H3", value: "h3" },
                 { title: "H4", value: "h4" },
-                { title: "Quote", value: "blockquote" },
-                { title: "Translation", value: "translation", component: TranslationBlock },
-                { title: "Hidden", value: "hidden" },
+                { title: "Quote", value: "blockquote", component: Blockquote },
+                { title: "Help", value: "help", component: HelpBlock },
+                { title: "Funfact", value: "funfact", component: Funfact },
+                { title: "Exemple", value: "exemple", component: Exemple },
+                { title: "Extrait", value: "extract", component: Extract },
+                { title: "Leçon", value: "lesson", component: Lesson },
             ],
             lists: [{ title: "Bullet", value: "bullet" }],
             // Marks let you mark up inline text in the block editor.
@@ -58,13 +102,17 @@ export default defineType({
                 decorators: [
                     { title: "Strong", value: "strong" },
                     { title: "Emphasis", value: "em" },
-                    { title: "Hightlight Red", value: "hightlightRed", icon: hightLigthIcon("red"), component: HighlightDecoratorRed },
-                    { title: "Hightlight Blue", value: "hightlightBlue", icon: hightLigthIcon("blue"), component: HighlightDecoratorBlue },
-                    { title: "Hightlight Orange", value: "hightlightOrange", icon: hightLigthIcon("orange"), component: HighlightDecoratorOrange },
+                    { title: "Underline", value: "underline" },
+                    { title: "Highlight", value: "highlight", icon: highligthIcon(), component: HighlightDecorator },
+                    { title: "Highlight Red", value: "hightlightRed", icon: highligthIcon("red"), component: HighlightDecoratorRed },
+                    { title: "Highlight Blue", value: "hightlightBlue", icon: highligthIcon("blue"), component: HighlightDecoratorBlue },
+                    { title: "Highlight Orange", value: "hightlightOrange", icon: highligthIcon("orange"), component: HighlightDecoratorOrange },
+                    { title: "Highlight Yellow", value: "hightlightYellow", icon: highligthIcon("yellow"), component: HighlightDecoratorYellow },
+                    { title: "Highlight Purple", value: "hightlightPurple", icon: highligthIcon("purple"), component: HighlightDecoratorPurple },
+                    { title: "Highlight Green", value: "hightlightGreen", icon: highligthIcon("green"), component: HighlightDecoratorGreen },
                     { title: "Left", value: "left", icon: () => <AiOutlineAlignLeft />, component: AlignLeft },
                     { title: "Center", value: "center", icon: () => <AiOutlineAlignCenter />, component: AlignCenter },
                     { title: "Right", value: "right", icon: () => <AiOutlineAlignRight />, component: AlignRight },
-                    { title: "Inline translation", value: "inlineTranslation", icon: () => <MdTranslate />, component: InlineTranslation },
                 ],
                 // Annotations can be any object structure – e.g. a link or a footnote.
                 annotations: [
@@ -92,6 +140,19 @@ export default defineType({
                             },
                         ],
                     },
+                    {
+                        title: "Traduction",
+                        name: "translationPopover",
+                        type: "object",
+                        icon: () => <MdTranslate />,
+                        fields: [
+                            {
+                                title: "Traduction",
+                                name: "translation",
+                                type: "string",
+                            },
+                        ],
+                    },
                 ],
             },
         }),
@@ -112,7 +173,10 @@ export default defineType({
             type: "flashcards",
         }),
         defineArrayMember({
-            type: "simpleExercise",
+            title: "Exercice",
+            name: "exercise",
+            type: "reference",
+            to: [{ type: "exercise" }],
         }),
     ],
 });

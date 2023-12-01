@@ -213,3 +213,20 @@ export const listToString = (liste: string[]) => {
     string = index !== -1 ? string.substring(0, index) + " et" + string.substring(index + 1) : string;
     return string;
 };
+
+export function extractAndParseJson(text: string): object | null {
+    const startIndex = text.indexOf("[");
+    const endIndex = text.indexOf("]");
+
+    // Vérification si les crochets ont été trouvés
+    if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
+        const jsonStr = text.slice(startIndex, endIndex + 1); // +1 pour inclure le dernier crochet
+        try {
+            const jsonObj = JSON.parse(jsonStr);
+            return jsonObj as any[];
+        } catch (e) {
+            console.error("Erreur de parsing JSON:", e);
+        }
+    }
+    return null;
+}

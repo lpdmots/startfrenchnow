@@ -1,11 +1,12 @@
 import { ElementDataProps } from "../types/stories/state";
 
 export const LEVELDATA = {
-    none: null,
     a1: { label: "A1", color: "var(--secondary-5)" },
-    a2: { label: "A2", color: "var(--secondary-1)" },
-    b1: { label: "B1", color: "var(--secondary-4)" },
-    b2: { label: "B2", color: "var(--secondary-3)" },
+    a2: { label: "A2", color: "var(--secondary-5)" },
+    b1: { label: "B1", color: "var(--secondary-1)" },
+    b2: { label: "B2", color: "var(--secondary-6)" },
+    c1: { label: "C1", color: "var(--secondary-4)" },
+    c2: { label: "C2", color: "var(--secondary-4)" },
 };
 export const COLORS = ["yellow", "blue", "red", "purple", "green"];
 
@@ -23,6 +24,46 @@ export const COLORVARIABLESSHADES = {
     red: "var(--secondaryShades-4)",
     purple: "var(--secondaryShades-3)",
     green: "var(--secondaryShades-5)",
+};
+
+export const HEADINGSPANCOLORS = {
+    //"tips", "vocabulary", "grammar", "orthography", "culture", "expressions"
+    tips: "heading-span-secondary-1",
+    vocabulary: "heading-span-secondary-2",
+    grammar: "heading-span-secondary-4",
+    orthography: "heading-span-secondary-6",
+    culture: "heading-span-secondary-5",
+    expressions: "heading-span-secondary-3",
+    video: "heading-span-secondary-1",
+    toLoad: "heading-span-secondary-1",
+    exercise: "heading-span-secondary-1",
+};
+
+export const HIGHLIGHTCOLORS = {
+    tips: "hightlightYellow",
+    vocabulary: "hightlightBlue",
+    grammar: "hightlightRed",
+    orthography: "hightlightOrange",
+    culture: "hightlightGreen",
+    expressions: "hightlightPurple",
+};
+
+export const CATEGORIESCOLORS = {
+    tips: "var(--secondary-1)",
+    vocabulary: "var(--secondary-2)",
+    grammar: "var(--secondary-4)",
+    orthography: "var(--secondary-6)",
+    culture: "var(--secondary-5)",
+    expressions: "var(--secondary-3)",
+};
+
+export const CATEGORIESCOLORSSHADES = {
+    tips: "var(--primaryShades)",
+    vocabulary: "var(--secondaryShades-2)",
+    grammar: "var(--secondaryShades-4)",
+    expressions: "var(--secondaryShades-3)",
+    culture: "var(--secondaryShades-5)",
+    orthography: "var(--secondaryShades-6)",
 };
 
 export const STORYCATEGORIES = {
@@ -73,7 +114,7 @@ export const langData = {
     },
 };
 
-export const CATEGORIES = ["tip", "grammar", "vocabulary", "culture", "expression"];
+export const CATEGORIES = ["tips", "vocabulary", "grammar", "orthography", "culture", "expressions"];
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];
