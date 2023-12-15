@@ -26,7 +26,7 @@ const SCOREPROMPTS = {
 export const StartLayout = ({ _key, exercise }: { _key: string; exercise: ExerciseProps }) => {
     const postLang = usePostLang();
     const { setStatus } = useExerciseStore();
-    const imageUrl = STARTLAYOUTIMAGE[exercise.exerciseTypes[0]];
+    const imageUrl = STARTLAYOUTIMAGE[exercise.exerciseTypes?.[0] || "buttons"];
 
     const handleClick = () => {
         setStatus(_key, "fetching");

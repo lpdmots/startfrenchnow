@@ -1,10 +1,10 @@
 "use client";
-import { ExerciseTypes, ResponsesLayouts, Exercise as ExerciseProps, Question, Exercise } from "@/app/types/sfn/blog";
+import { ExerciseType, ResponsesLayouts, Exercise as ExerciseProps, Question, Exercise } from "@/app/types/sfn/blog";
 import { CATEGORIESCOLORS, RESPONSESLAYOUTS } from "@/app/lib/constantes";
 import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { PortableText } from "@portabletext/react";
 import { ReactElement, useEffect, useMemo, useState } from "react";
-import { formatStringToNoWrap, getRandomItem, listToString } from "@/app/lib/utils";
+import { formatStringToNoWrap, getRandomItem, listToString, safeInputAnswer } from "@/app/lib/utils";
 import { usePostLang } from "@/app/hooks/usePostLang";
 import { useExerciseStore } from "@/app/stores/exerciseStore";
 import QuestionPrompt from "./QuestionPrompt";
@@ -117,7 +117,7 @@ const QuestionLayouts = ({ exercise }: { exercise: ExerciseProps }) => {
     const { _id } = exercise;
     const { questions, questionIndex, scoreMax } = getExercise(_id);
     const currentQuestion = questions[questionIndex];
-    const responsesLayout = getResponseLayout(currentQuestion, exercise.exerciseTypes);
+    const responsesLayout = getResponseLayout(currentQuestion, exercise.exerciseTypes || []);
 
     useEffect(() => {
         const scoreMax = questions.reduce((accumulator, currentValue) => {
@@ -203,7 +203,7 @@ interface GetSelectsInputsDataResult {
 type HandlerFunction = (responseNumber: number, e: any) => void;
 
 export const getSelectsInputsData = (currentQuestion: Question, handler: HandlerFunction, htmlElement: "select" | "input"): GetSelectsInputsDataResult => {
-    const numResponsesInPrompt = (currentQuestion.prompt.text.match(/RESPONSE/g) || []).length;
+    const numResponsesInPrompt = (currentQuestion?.prompt?.text?.match(/RESPONSE/g) || []).length;
     const isBottomSelect = numResponsesInPrompt === 0;
 
     const [correctResponses, isError] = getCorrectResponses(currentQuestion, numResponsesInPrompt);
@@ -222,7 +222,7 @@ export const getSelectPoints = (correctResponses: { [key: string]: string[] }, s
     let rightAnswers = 0;
     for (let i = 0; i < keys.length; i++) {
         const responseNumber = keys[i];
-        const isCorrect = correctResponses[responseNumber].map((resp) => resp.toLowerCase()).includes(selects[responseNumber].trim().toLowerCase());
+        const isCorrect = correctResponses[responseNumber].map((resp) => safeInputAnswer(resp)).includes(safeInputAnswer(selects[responseNumber]));
         if (isCorrect) rightAnswers++;
     }
 
@@ -237,7 +237,7 @@ const getContent = (exercise: ExerciseProps, postLang: "en" | "fr") => {
     return { title, instruction };
 };
 
-const getResponseLayout = (currentQuestion: Question, possibleTypes: ExerciseTypes[]): ResponsesLayouts => {
+const getResponseLayout = (currentQuestion: Question, possibleTypes: ExerciseType[]): ResponsesLayouts => {
     const { exerciseTypes } = currentQuestion;
     const exerciseType = getRandomItem(exerciseTypes.filter((type) => possibleTypes.includes(type)));
     if (!RESPONSESLAYOUTS.includes(exerciseType)) {

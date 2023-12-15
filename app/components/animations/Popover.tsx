@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Popover as TinyPopover } from "react-tiny-popover";
 
@@ -18,7 +19,7 @@ export const Popover: React.FC<PopoverProps> = ({ content, popover, small = fals
                 isOpen={isOpen}
                 positions={["top", "bottom", "right", "left"]}
                 content={
-                    <div className={`bg-neutral-100 simple-border shadow-1 p-4 m-2 ${small ? "bs" : ""}`} style={{ maxWidth: "90vw" }}>
+                    <div className={`bg-neutral-100 simple-border shadow-1 p-4 m-2 ${small ? "bs" : ""}`} style={{ maxWidth: "min(90vw, 400px)" }}>
                         <div id="popoverContent">{popover}</div>
                     </div>
                 }

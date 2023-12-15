@@ -111,7 +111,7 @@ const ImageMapResponse = ({ response, clickedAreas, isSolo = false }: ImageMapRe
     const audio = response.sound && (
         <div className="flex w-full">
             <SimpleButton>
-                <m.div className="cursor-pointer" onClick={(e) => handleSound(response.sound, e)} whileHover={{ y: -2 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.2 }}>
+                <m.div className="cursor-pointer" onClick={(e) => handleSound(response?.sound || "", e)} whileHover={{ y: -2 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.2 }}>
                     <AiOutlineSound className="text-3xl lg:text-4xl" />
                 </m.div>
             </SimpleButton>

@@ -118,6 +118,8 @@ export const CATEGORIES = ["tips", "vocabulary", "grammar", "orthography", "cult
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];
+export const AUTOMATEDQUESTIONS = ["translateFrToEn"];
+
 export const STARTLAYOUTIMAGE = {
     "true-false": "/images/true-false-start-layout.png",
     buttons: "/images/buttons-start-layout.png",
@@ -129,4 +131,47 @@ export const STARTLAYOUTIMAGE = {
     imgMap: "/images/imgMap-start-layout.png",
     link: "/images/link-start-layout.png",
     order: "/images/learning.png",
+};
+
+export const natures = {
+    nounM: {
+        french: "Nom masculin",
+        english: "Masculine noun",
+    },
+    nounF: {
+        french: "Nom féminin",
+        english: "Feminine noun",
+    },
+    verb: {
+        french: "Verbe",
+        english: "Verb",
+    },
+    adjective: {
+        french: "Adjectif",
+        english: "Adjective",
+    },
+    adverb: {
+        french: "Adverbe",
+        english: "Adverb",
+    },
+    pronoun: {
+        french: "Pronom",
+        english: "Pronoun",
+    },
+    preposition: {
+        french: "Préposition",
+        english: "Preposition",
+    },
+    conjunction: {
+        french: "Conjonction",
+        english: "Conjunction",
+    },
+    interjection: {
+        french: "Interjection",
+        english: "Interjection",
+    },
+    article: {
+        french: "Article",
+        english: "Article",
+    },
 };

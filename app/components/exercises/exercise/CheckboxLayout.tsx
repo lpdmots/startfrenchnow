@@ -60,8 +60,8 @@ export const CheckboxLayout = ({ _key }: { _key: string }) => {
                                 const audio = response.sound && (
                                     <div className="flex w-full">
                                         <SimpleButton>
-                                            <m.div onClick={(e) => handleSound(response.sound, e)} whileHover={{ y: -2 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.2 }}>
-                                                <AiOutlineSound className="text-3xl lg:text-4xl" />
+                                            <m.div onClick={(e) => handleSound(response.sound || "", e)} whileHover={{ y: -2 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.2 }}>
+                                                <AiOutlineSound className="text-2xl lg:text-3xl" />
                                             </m.div>
                                         </SimpleButton>
                                     </div>
@@ -95,15 +95,6 @@ export const CheckboxLayout = ({ _key }: { _key: string }) => {
                                     </div>
                                 );
                             })}
-                            {/* <div className="col-span-2">
-                            <SlideInOneByOneChild duration={0.3}>
-                                <div className="w-full flex justify-center">
-                                    <button className="btn-secondary small w-full sm:w-60" disabled={disabled} onClick={handleClick}>
-                                        Valider
-                                    </button>
-                                </div>
-                            </SlideInOneByOneChild>
-                        </div> */}
                         </div>
                     </>
                 </SlideInOneByOneParent>

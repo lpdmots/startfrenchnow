@@ -151,6 +151,7 @@ export const getDataInRightLang = <T extends object>(item: T, lang: "en" | "fr",
 };
 
 export function formatStringToNoWrap(input: string): JSX.Element {
+    if (!input) return <span></span>;
     const words = input.split(" ");
 
     const lastTwoWords = words.slice(-1).join(" ");
@@ -230,3 +231,16 @@ export function extractAndParseJson(text: string): object | null {
     }
     return null;
 }
+
+export function removeTrailingPunctuation(str: string) {
+    return str.replace(/[.,!?]+$/, "");
+}
+
+export function splitSentence(sentence: string) {
+    // Divise la phrase en prenant en compte les mots avec tiret ou apostrophe
+    return sentence.trim().split(/(?<!\w-)\s+|(?<!\w')\s+/);
+}
+
+export const safeInputAnswer = (str: string) => {
+    return removeTrailingPunctuation(str.trim().toLowerCase()).trim();
+};

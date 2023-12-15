@@ -89,7 +89,8 @@ const createStore: StateCreator<ExerciseStore> = (set, get) => ({
         set((state) => updateExercise(state, id, { score: 0 }));
     },
     restart: (id: string) => {
-        set((state) => updateExercise(state, id, { ...DEFAULT_PROPS, status: "fetching" }));
+        const { data } = get().exercises[id];
+        set((state) => updateExercise(state, id, { ...DEFAULT_PROPS, data, status: "fetching" }));
     },
 });
 

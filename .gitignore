@@ -41,3 +41,6 @@ next-env.d.ts
 /public/sitemap.xml
 
 /client
+
+text-to-speech-service-account-file.json
+```

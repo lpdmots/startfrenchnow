@@ -47,7 +47,7 @@ export const InputLayout = ({ _key }: { _key: string }) => {
                                 <div className="w-full flex justify-center my-1">
                                     <input
                                         type="text"
-                                        className="rounded-xl px-2 text-secondary-2 my-1 focus:border-secondary-2 w-full sm:w-60 h-12 md:h-14"
+                                        className="rounded-xl px-2 my-1 focus:border-secondary-2 w-full sm:w-60 h-12 md:h-14"
                                         onChange={(e) => handleChange(1, e)}
                                         name="response"
                                         placeholder="..."

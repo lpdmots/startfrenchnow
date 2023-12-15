@@ -6,7 +6,6 @@ import { htmlToBlocks } from "@sanity/block-tools";
 import { Schema } from "@sanity/schema";
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
-import { HEADINGSPANCOLORS, HIGHLIGHTCOLORS } from "@/app/lib/constantes";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 
@@ -71,11 +70,11 @@ export async function POST(request: NextRequest) {
         // Convertir le corps en blocs
         const blocksBody = htmlToBlocks(body, blockContentType, {
             parseHtml: (html) => new JSDOM(html).window.document,
-            rules: getRules(imagesIds, categories[0]),
+            rules: getRules(imagesIds),
         });
         const blocksBody_en = htmlToBlocks(body_en, blockContentType, {
             parseHtml: (html) => new JSDOM(html).window.document,
-            rules: getRules(imagesIds, categories[0]),
+            rules: getRules(imagesIds),
         });
 
         const externLinks = JSON.parse(liens_externes)?.map((link: any) => ({ ...link, _key: uuidv4() }));
@@ -132,33 +131,8 @@ async function loadImagesToSanity(images: string[], slug: string): Promise<{ mai
 
     return { mainImage, imagesIds };
 }
-/* async function loadImagesToSanity(images: string[], slug: string) {
-    const imagesIds = [];
-    for (let index = 0; index < images.length; index++) {
-        const image = images[index];
-        const imageResponse = await fetch(image);
-        const arrayBuffer = await imageResponse.arrayBuffer();
-        const imageBuffer = Buffer.from(arrayBuffer);
-        // Chargez l'image sur Sanity
-        const uploadedImage = await client.assets.upload("image", imageBuffer, {
-            title: slug + "-" + index,
-        });
-        imagesIds.push(uploadedImage._id);
-    }
 
-    // Créez une référence à l'image chargée pour l'attribut mainImage de votre post
-    const mainImage = {
-        _type: "image",
-        asset: {
-            _type: "reference",
-            _ref: imagesIds[0],
-        },
-    };
-
-    return { mainImage, imagesIds };
-} */
-
-const getRules = (imagesIds: string[], category: keyof typeof HEADINGSPANCOLORS) => {
+export const getRules = (imagesIds: string[]) => {
     return [
         {
             deserialize(el: any, next: any, block: any) {

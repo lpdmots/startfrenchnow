@@ -176,14 +176,16 @@ const ButtonOrder = ({ response, handleSelect, showResponses = false, isCorrect 
 
 const getVerdict = (selectedKeys: Response[], responses: Response[]) => {
     const isFalseBadge = selectedKeys.find((response) => !response.isCorrect);
-    if (isFalseBadge) return false;
 
+    if (isFalseBadge) return false;
     const nberOfBadge = responses.filter((response) => response.isCorrect).length;
     const isNberOfBadgeCorrect = selectedKeys.length === nberOfBadge;
+
     if (!isNberOfBadgeCorrect) return false;
 
     const order = selectedKeys.map((response) => parseInt(response.isCorrect?.trim() as string));
     const isOrderCorrect = order.every((value, index) => value === index + 1);
+
     if (!isOrderCorrect) return false;
 
     return true;

@@ -1,40 +1,31 @@
-"use client";
+import { TabelVocProps, TabelVocFilters, ThemeWithVocab, VocabItem } from "@/app/types/sfn/blog";
+import { groq } from "next-sanity";
+import { SanityServerClient as client } from "../../../lib/sanity.clientServer";
 import { COLORVARIABLES } from "@/app/lib/constantes";
-import { ColorsTypes, Reference, ThemeWithVocab } from "@/app/types/sfn/blog";
-import React, { useEffect, useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
-import fetchData from "@/app/lib/apiStories";
-import { CgNotes } from "react-icons/cg";
-import { AiOutlineSound } from "react-icons/ai";
-import { Popover } from "../../animations/Popover";
-import { m } from "framer-motion";
 import Spinner from "../../common/Spinner";
 import Image from "next/image";
-import { getThemes } from "@/app/serverActions/exerciseActions";
+import { NotePopover, TabelVocSoundButton } from "../../animations/BlogAnimations";
 
-interface Props {
-    data: {
-        color: ColorsTypes;
-        themes: Reference[];
-    };
-}
+const queryThemes = groq`
+        *[_type == "theme" && _id in $refs] 
+        {
+            ...,
+            vocabItems[]->,
+        }
+    `;
 
-const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
-
-function TabelVoc({ data }: Props) {
-    const [theme, setTheme] = useState<ThemeWithVocab | null>(null);
-
-    useEffect(() => {
-        const fetchThemeData = async () => {
-            const { themes } = await getThemes(data.themes.map((theme) => theme._ref));
-            console.log(themes);
-            const vocabItems = themes?.map((theme) => theme.vocabItems).flat();
-            if (!themes || !vocabItems?.length) return console.warn("No themes or vocabItems found");
-            setTheme({ ...themes[0], vocabItems });
-        };
-
-        fetchThemeData();
-    }, [data.themes]);
+const TabelVoc = async ({ data }: TabelVocProps) => {
+    const refs = data.themes.map((theme) => theme._ref);
+    const filters = data.filters;
+    const themes: ThemeWithVocab[] = await client.fetch(queryThemes, { refs });
+    const allVocabItems = themes?.map((theme) => theme.vocabItems).flat();
+    const vocabItems = allVocabItems?.filter((item) => filterVocabItems(item, filters));
+    if (!themes || !vocabItems?.length) {
+        console.warn("No themes or vocabItems found");
+        return null;
+    }
+    const theme = { ...themes[0], vocabItems };
 
     const colorVar = COLORVARIABLES[data.color || "blue"];
     const colorLight = "var(--neutral-200)";
@@ -58,37 +49,16 @@ function TabelVoc({ data }: Props) {
                         </tr>
                         {theme ? (
                             theme.vocabItems.map((vocabItem, index) => {
-                                const audio = new Audio(cloudFrontDomain + vocabItem.soundFr);
                                 return (
                                     <tr key={index} style={{ backgroundColor: index % 2 === 0 ? "var(--neutral-100)" : colorLight }}>
                                         <td className="flex justify-between items-center">
-                                            {vocabItem.soundFr ? (
-                                                <m.span
-                                                    className="pl-0 sm:pl-4 font-bold flex items-center underline decoration-dotted underline-offset-4 cursor-pointer decoration-1"
-                                                    onClick={() => audio.play()}
-                                                    whileHover={{ y: -2 }} // orange sur hover
-                                                    whileTap={{ scale: 0.9 }} // réduit la taille à 90% sur click
-                                                    transition={{ duration: 0.2 }} // transition smooth
-                                                >
-                                                    {vocabItem.soundFr && <AiOutlineSound className="mr-2" />}
-                                                    {vocabItem.french}
-                                                </m.span>
-                                            ) : (
-                                                <span className="pl-0 sm:pl-4 font-bold flex items-center">{vocabItem.french}</span>
-                                            )}
+                                            <TabelVocSoundButton sound={vocabItem?.soundFr} text={vocabItem.french} />
                                             <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2, height: 16, objectFit: "contain", flexShrink: 0 }} />
                                         </td>
                                         <td>
                                             <div className="flex justify-between items-center">
                                                 <span className="pr-0 sm:pr-4 font-bold">{vocabItem.english}</span>
-                                                <m.span
-                                                    className="cursor-pointer mr-0 sm:mr-2 "
-                                                    whileHover={{ y: -2 }} // orange sur hover
-                                                    whileTap={{ scale: 0.9 }} // réduit la taille à 90% sur click
-                                                    transition={{ duration: 0.2 }} // transition smooth
-                                                >
-                                                    {vocabItem.note && <Popover content={<CgNotes />} popover={vocabItem.note} small />}
-                                                </m.span>
+                                                <NotePopover noteFr={vocabItem.noteFr} noteEn={vocabItem.noteEn} />
                                             </div>
                                         </td>
                                     </tr>
@@ -108,6 +78,15 @@ function TabelVoc({ data }: Props) {
             </div>
         </div>
     );
-}
+};
 
 export default TabelVoc;
+
+const filterVocabItems = (item: VocabItem, filters: TabelVocFilters) => {
+    const { status: filterStatus, tags: filterTags, nature: filterNature } = filters;
+    const itemNature = (item.nature === "expression" ? "expressions" : "words") as "expressions" | "words" | "all";
+    if (filterStatus !== "all" && item.status !== filterStatus) return false;
+    if (filterTags?.length && !filterTags?.some((tag) => item.tags?.includes(tag))) return false;
+    if (filterNature !== "all" && itemNature !== filterNature) return false;
+    return true;
+};

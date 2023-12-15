@@ -12,6 +12,7 @@ import { CATEGORIESCOLORS, HEADINGSPANCOLORS } from "@/app/lib/constantes";
 import lessonTeacher from "@/public/images/lesson-teacher.png";
 import { TranslationPopover } from "./RichTextSfnComponents/TranslationPopover";
 import Exercise from "../exercises/exercise/Exercise";
+import { ArticleVoc } from "./RichTextSfnComponents/ArticleVoc";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -25,7 +26,7 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
             );
         },
         videoBlog: ({ value }: any) => <VideoBlog values={value} />,
-        tabelVoc: ({ value }: any) => <TabelVoc data={value} />,
+        tabelVoc: ({ value }: any) => (value.isArticle ? <ArticleVoc data={value} /> : <TabelVoc data={value} />),
         flashcards: ({ value }: any) => {
             return <Flashcards data={value} />;
         },
@@ -54,8 +55,8 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
             </blockquote>
         ),
         exemple: ({ children }: any) => (
-            <div className="pl-8 md:pl-12 pr-2 md:pr-4 py-2 sm:py-4 mb-4" style={{ borderLeft: "solid 6px var(--neutral-500)" }}>
-                <p className="italic mb-0">{children}</p>
+            <div className="pl-8 md:pl-12 bg-neutral-300 pr-2 md:pr-4 py-2 sm:py-4 mb-4" style={{ borderLeft: "solid 6px var(--neutral-600)", borderRadius: 10 }}>
+                <p className="mb-0">{children}</p>
             </div>
         ),
         help: ({ children }: any) => (
@@ -97,7 +98,7 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
                 }}
             >
                 <Image height={75} width={75} src={lessonTeacher} alt="the teacher" style={{ objectFit: "contain", float: "left" }} className="mb-1 mr-1" />
-                <span className="mb-0">{children}</span>
+                <p className="mb-0">{children}</p>
             </div>
         ),
     },

@@ -144,7 +144,7 @@ const RenderSoundSpan = ({ soundString }: { soundString: string }) => {
 
 const RenderImageMap = ({ currentQuestion, handler }: { currentQuestion: Question; handler?: HandlerFunction }) => {
     const imageUrl = urlFor(currentQuestion.prompt.images?.[0]).url();
-    const minHeight = useImageDimensions(currentQuestion.prompt.images?.[0]?.asset._ref, "image-map-container");
+    const minHeight = useImageDimensions(currentQuestion.prompt.images?.[0]?.asset._ref || "", "image-map-container");
     const [parentWidth, setParentWidth] = useState(0);
 
     useEffect(() => {

@@ -89,12 +89,12 @@ export interface FlashcardsProps {
     title_en: string;
     instruction: Block[];
     instruction_en: Block[];
+    filters: TabelVocFilters;
     themes: Reference[];
 }
 
 export interface Theme extends Base {
     name: string;
-    translationOnly: boolean;
     image: Image;
     category: PrimaryCategory;
     level: string;
@@ -105,7 +105,6 @@ export interface Theme extends Base {
 
 export interface ThemeWithVocab extends Base {
     name: string;
-    translationOnly: boolean;
     image: Image;
     category: PrimaryCategory;
     level: string;
@@ -117,20 +116,51 @@ export interface ThemeWithVocab extends Base {
 export interface VocabItem extends Base {
     french: string;
     english: string;
+    relatedThemes: Reference[];
     soundFr: string;
     soundEn: string;
-    note: string;
+    noteFr?: Block[];
+    noteEn?: Block[];
     example: string;
+    soundExample?: string;
     nature: string;
-    translationOnly: boolean;
-    exerciseData: string;
+    tags: string[];
+    status: "primary" | "secondary" | "translationOnly";
+    image?: Image;
+    exerciseData?: {
+        chooseCorrectSpelling?: string[];
+        riddle?: string;
+        inputAnswers?: string[];
+    };
 }
 
 export type Category = "tips" | "video" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography" | "exercise" | "toLoad";
 export type PrimaryCategory = "tips" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography";
 export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" | "input" | "imgMap" | "link" | "order";
-export type ExerciseTypes = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound" | "imgMap" | "link" | "order";
+export type ExerciseType = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound" | "imgMap" | "link" | "order";
 export type ColorsTypes = "yellow" | "blue" | "red" | "purple" | "green";
+export type AutomatedType =
+    | "translateFrToEn"
+    | "translateEnToFr"
+    | "translateEnToFrInput"
+    | "translateSoundToFrInput"
+    | "soundFrToEn"
+    | "enToSoundFr"
+    | "soundFrToFr"
+    | "chooseCorrectSpelling"
+    | "pairedWords"
+    | "orderWords"
+    | "orderWordsEasy"
+    | "riddleButtons"
+    | "riddleInput"
+    | "imageButtons"
+    | "imageInput";
+export type QuestionPriority = "automated" | "manual" | "mixed";
+export interface TabelVocFilters {
+    status: "all" | "primary" | "secondary";
+    nature: "all" | "words" | "expressions";
+    tags: string[];
+}
 
 export interface Exercise extends Base {
     _key: string;
@@ -143,19 +173,21 @@ export interface Exercise extends Base {
     time: number;
     ready: boolean;
     themes: Reference[];
-    exerciseTypes: ExerciseTypes[];
+    automatedTypes: AutomatedType[];
+    questionsPriority: QuestionPriority;
+    exerciseTypes?: ExerciseType[];
     nbOfQuestions: number;
     questions: Question[];
 }
 
 export interface Question {
     _key: string;
-    exerciseTypes: ExerciseTypes[];
-    defaultLayout: ResponsesLayouts | undefined;
+    exerciseTypes: ExerciseType[];
+    defaultLayout?: ResponsesLayouts;
     prompt: {
-        text: string;
-        images: Image[];
-        sounds: string[];
+        text?: string;
+        images?: Image[];
+        sounds?: string[];
     };
     options: {
         responsesMonitoring?: "all" | "oneByOne" | "hidde";
@@ -167,8 +199,18 @@ export interface Question {
 export interface Response {
     _key: string;
     text: string;
-    isCorrect: string | undefined;
-    image: Image;
-    onlyTypes: ExerciseTypes[];
-    sound: string;
+    isCorrect?: string | undefined;
+    image?: Image;
+    onlyTypes?: ExerciseType[];
+    sound?: string;
+}
+
+export interface TabelVocProps {
+    data: {
+        filters: TabelVocFilters;
+        tags?: string[];
+        color: ColorsTypes;
+        themes: Reference[];
+        isArticle?: boolean;
+    };
 }

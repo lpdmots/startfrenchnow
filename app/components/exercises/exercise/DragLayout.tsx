@@ -32,21 +32,6 @@ const DragLayout = ({ _key }: { _key: string }) => {
         else setDisabled(false);
     }, [selectedResponses]);
 
-    /* useEffect(() => {
-        const updateHeight = () => {
-            if (unselectedRef.current && selectedRef.current) {
-                const unselectedHeight = unselectedRef.current.offsetHeight;
-                selectedRef.current.style.minHeight = `${unselectedHeight}px`;
-                unselectedRef.current.style.minHeight = `${unselectedHeight}px`;
-            }
-        };
-
-        updateHeight();
-
-        window.addEventListener("resize", updateHeight);
-        return () => window.removeEventListener("resize", updateHeight);
-    }, []); */
-
     const [isDragging, setIsDragging] = useState(false);
     let timer: NodeJS.Timeout;
 

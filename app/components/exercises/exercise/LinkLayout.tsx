@@ -86,7 +86,7 @@ export const LinkLayout = ({ _key }: { _key: string }) => {
     return (
         <div className="flex flex-col justify-between w-full h-full grow">
             <QuestionPrompt currentQuestion={currentQuestion} htmlElement="disabledInput" />
-            <div className="flex justify-center items-center w-full">
+            <div className="flex justify-center items-center w-full pt-4">
                 <SlideInOneByOneParent delayChildren={0.1}>
                     <div className="grid grid-cols-2 gap-4 w-full">
                         <div className="flex flex-col gap-y-4">

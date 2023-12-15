@@ -11,11 +11,6 @@ export default defineType({
             type: "string",
         }),
         defineField({
-            title: "Traduction uniquement",
-            name: "translationOnly",
-            type: "boolean",
-        }),
-        defineField({
             name: "image",
             title: "Image",
             type: "image",
