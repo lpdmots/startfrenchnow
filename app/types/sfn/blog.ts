@@ -45,6 +45,7 @@ export interface Image {
 export interface Reference {
     _ref: string;
     _type: "reference" | string;
+    _key?: string;
 }
 
 export interface Slug {
@@ -115,6 +116,7 @@ export interface ThemeWithVocab extends Base {
 
 export interface VocabItem extends Base {
     french: string;
+    alternatives?: string[];
     english: string;
     relatedThemes: Reference[];
     soundFr: string;
@@ -132,6 +134,10 @@ export interface VocabItem extends Base {
         riddle?: string;
         inputAnswers?: string[];
     };
+}
+
+export interface VocabItemNew extends VocabItem {
+    instruction: "new" | string; // Si un vocabItem est déjà créé, on met son _id ici, si c'est un homonyme, on met new pour créer un nouveau vocabItem
 }
 
 export type Category = "tips" | "video" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography" | "exercise" | "toLoad";
@@ -170,6 +176,7 @@ export interface Exercise extends Base {
     title_en: string;
     instruction: Block[];
     instruction_en: Block[];
+    filters: TabelVocFilters;
     time: number;
     ready: boolean;
     themes: Reference[];

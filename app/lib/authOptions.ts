@@ -1,4 +1,4 @@
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServer";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { UserProps } from "@/app/types/sfn/auth";
 import { compare } from "bcrypt";
 import { type NextAuthOptions } from "next-auth";

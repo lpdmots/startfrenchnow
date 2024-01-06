@@ -25,10 +25,12 @@ function uploadFile(fileBuffer: any, fileName: string, mimetype: any) {
 
     return s3Client.send(new PutObjectCommand(uploadParams));
 }
-console.log(process.cwd());
+
 // Creates a client using the credentials from the JSON key file
+const textToSpeechAuth = JSON.parse(process.env.TEXTTOSPEECH_AUTH || "{}");
+
 const clientTextToSpeech = new textToSpeech.TextToSpeechClient({
-    keyFilename: "./app/lib/text-to-speech-service-account-file.json",
+    credentials: textToSpeechAuth,
 });
 
 export default async function vocabItemToSpeech(vocabItem: VocabItem, theme: Theme) {

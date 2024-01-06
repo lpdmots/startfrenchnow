@@ -1,4 +1,4 @@
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServer";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { UserProps, UserScore, UserStory } from "@/app/types/sfn/auth";
 import { Adventure, StoryStats } from "@/app/types/stories/adventure";
 import { NextRequest, NextResponse } from "next/server";

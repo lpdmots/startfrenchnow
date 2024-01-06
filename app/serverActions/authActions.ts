@@ -3,7 +3,7 @@ import { hash } from "bcrypt";
 import { SignupFormData } from "../types/sfn/auth";
 import { getTokenExpiration } from "../lib/constantes";
 import { transporter } from "../lib/nodemailer";
-import { SanityServerClient as client } from "../lib/sanity.clientServer";
+import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { getActivateToken, isStrongPassword, isValidEmail, replaceInString } from "../lib/utils";
 
 export const handleSignup = async (formData: SignupFormData, mailMessages: any) => {

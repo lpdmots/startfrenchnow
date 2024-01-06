@@ -1,10 +1,11 @@
 "use client";
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { shuffleArray } from "@/app/lib/utils";
+import { shuffleArray, splitArrayFilter } from "@/app/lib/utils";
 import { useExerciseStore } from "@/app/stores/exerciseStore";
 import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 import { FeedbackMessage, getSelectPoints, getSelectsInputsData } from "./Exercise";
 import ValidationButton from "./ValidationButton";
+import { Response } from "@/app/types/sfn/blog";
 
 export const SelectLayout = ({ _key }: { _key: string }) => {
     const { updateScore, getExercise } = useExerciseStore();
@@ -42,13 +43,16 @@ export const SelectLayout = ({ _key }: { _key: string }) => {
         updateScore(_key, points, scoreCalculation);
     };
 
+    let optionsList: Response[] | undefined;
+    if (isBottomSelect) optionsList = getOptionsList(currentQuestion?.responses, 1);
+
     return (
         <div className="flex-col flex justify-between items-center gap-8 grow">
             {prompt}
             <div className="flex justify-center items-center w-full">
                 <SlideInOneByOneParent delayChildren={0.1}>
                     <div className="flex flex-col gap-4">
-                        {isBottomSelect && (
+                        {optionsList && (
                             <SlideInOneByOneChild duration={0.3}>
                                 <div className="w-full flex justify-center my-1">
                                     <select
@@ -58,7 +62,7 @@ export const SelectLayout = ({ _key }: { _key: string }) => {
                                         defaultValue=""
                                     >
                                         <option value="" hidden></option>
-                                        {currentQuestion.responses.map((response, index) => {
+                                        {optionsList?.map((response, index) => {
                                             return (
                                                 <option className=" text-base md:text-lg font-bold" key={index} value={response.text}>
                                                     {response.text}
@@ -75,4 +79,11 @@ export const SelectLayout = ({ _key }: { _key: string }) => {
             <ValidationButton _key={_key} handleValidation={handleClick} disabled={disabled} isCorrect={isCorrect} feedbackMessage={feedbackMessage} />
         </div>
     );
+};
+
+export const getOptionsList = (responses: Response[], index: number): Response[] => {
+    const [trueAnswers, falseAnswers] = splitArrayFilter(responses, (response) => response.isCorrect === index.toString());
+    const shuffledFalseAnswers = shuffleArray(falseAnswers);
+    const selectedFalseAnswers = shuffledFalseAnswers.length < 2 ? shuffledFalseAnswers : shuffledFalseAnswers.slice(0, 2);
+    return shuffleArray([...trueAnswers, ...selectedFalseAnswers]);
 };

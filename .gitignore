@@ -42,5 +42,4 @@ next-env.d.ts
 
 /client
 
-text-to-speech-service-account-file.json
 ```

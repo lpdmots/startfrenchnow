@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServer";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { UserProps } from "@/app/types/sfn/auth";
 import { getActivateToken } from "@/app/lib/utils";
 import { getTokenExpiration } from "@/app/lib/constantes";

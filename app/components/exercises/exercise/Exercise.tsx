@@ -90,7 +90,7 @@ const ExerciseContent = ({ exercise }: { exercise: Exercise }) => {
     return (
         <div className="my-12">
             <div className="flex flex-col">
-                <h2>{title}</h2>
+                <h3>{title}</h3>
                 {instruction}
             </div>
             <div className="card flex flex-col justify-center overflow-hidden p-2 sm:p-4 md:p-6 relative" style={{ backgroundColor: colorVar, minHeight: "min(550px, 90vh)" }}>

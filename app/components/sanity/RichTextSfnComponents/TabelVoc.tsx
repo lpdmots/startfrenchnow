@@ -1,7 +1,7 @@
 import { TabelVocProps, TabelVocFilters, ThemeWithVocab, VocabItem } from "@/app/types/sfn/blog";
 import { groq } from "next-sanity";
-import { SanityServerClient as client } from "../../../lib/sanity.clientServer";
-import { COLORVARIABLES } from "@/app/lib/constantes";
+import { SanityServerClient as client } from "../../../lib/sanity.clientServerDev";
+import { COLORVARIABLES, natures } from "@/app/lib/constantes";
 import { BsCaretRightFill } from "react-icons/bs";
 import Spinner from "../../common/Spinner";
 import Image from "next/image";
@@ -52,13 +52,13 @@ const TabelVoc = async ({ data }: TabelVocProps) => {
                                 return (
                                     <tr key={index} style={{ backgroundColor: index % 2 === 0 ? "var(--neutral-100)" : colorLight }}>
                                         <td className="flex justify-between items-center">
-                                            <TabelVocSoundButton sound={vocabItem?.soundFr} text={vocabItem.french} />
+                                            <TabelVocSoundButton vocabItem={vocabItem} />
                                             <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2, height: 16, objectFit: "contain", flexShrink: 0 }} />
                                         </td>
                                         <td>
                                             <div className="flex justify-between items-center">
                                                 <span className="pr-0 sm:pr-4 font-bold">{vocabItem.english}</span>
-                                                <NotePopover noteFr={vocabItem.noteFr} noteEn={vocabItem.noteEn} />
+                                                <NotePopover vocabItem={vocabItem} category={theme.category} />
                                             </div>
                                         </td>
                                     </tr>

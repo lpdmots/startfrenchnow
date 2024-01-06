@@ -52,13 +52,13 @@ const Ratings = () => {
             <div className="w-full flex justify-around gap-8 lg:gap-12">
                 <SlideInOneByOneChild>
                     <div className="flex flex-col  justify-center items-center gap-2">
-                        <p className="font-extrabold text-2xl  mb-0">18,320</p>
+                        <p className="font-extrabold text-2xl  mb-0">22,260</p>
                         <FaUserGraduate className=" text-3xl" />
                     </div>
                 </SlideInOneByOneChild>
                 <SlideInOneByOneChild>
                     <div className="flex flex-col justify-between items-center gap-2 h-full">
-                        <p className="font-extrabold text-2xl mb-0">4.7</p>
+                        <p className="font-extrabold text-2xl mb-0">4.8</p>
                         <div className="flex flex-grow items-center">
                             <FaStar className="text-xl md:text-2xl fill-secondary-1" />
                             <FaStar className="text-xl  md:text-2xl fill-secondary-1" />
@@ -70,7 +70,7 @@ const Ratings = () => {
                 </SlideInOneByOneChild>
                 <SlideInOneByOneChild>
                     <div className="flex flex-col justify-center items-center gap-2">
-                        <p className="font-extrabold text-2xl  mb-0">3,429</p>
+                        <p className="font-extrabold text-2xl  mb-0">3,800</p>
                         <FaCommentDots className=" text-3xl" />
                     </div>
                 </SlideInOneByOneChild>

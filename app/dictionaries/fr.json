@@ -62,6 +62,11 @@
                 "title": "Intermédiaire - Niveau 2 (A2.1)",
                 "description": "Approfondissez vos connaissances en français et progressez du niveau A2 à B1. Apprenez tous les outils nécessaires pour construire des phrases plus longues et plus complexes. Parlez de tous les sujets du quotidien avec confiance."
             },
+            "lowIntermediateLevel2bis": {
+                "title": "Intermédiaire - Niveau 2 (A2.1)",
+                "description": "Approfondissez vos connaissances en français et progressez du niveau A2 à B1. Apprenez tous les outils nécessaires pour construire des phrases plus longues et plus complexes. Parlez de tous les sujets du quotidien avec confiance.",
+                "new": "Nouveau !"
+            },
             "masterPastTenses": {
                 "title": "Maîtrisez les temps du passé",
                 "description": "Parlez au passé en français. Apprenez les 3 principaux temps du passé : le passé composé, l'imparfait, le plus-que-parfait. Comprenez les différences entre les temps du passés et utilisez-les ensemble."

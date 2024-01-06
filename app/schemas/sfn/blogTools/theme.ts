@@ -58,5 +58,20 @@ export default defineType({
             type: "array",
             of: [{ type: "question" }],
         }),
+        defineField({
+            name: "tags",
+            title: "Tags",
+            type: "array",
+            of: [
+                {
+                    type: "object",
+                    fields: [
+                        { name: "name", type: "array", of: [{ type: "string" }] },
+                        { name: "french", type: "string" },
+                        { name: "english", type: "string" },
+                    ],
+                },
+            ],
+        }),
     ],
 });

@@ -1,3 +1,5 @@
+import { VocabItem } from "../types/sfn/blog";
+
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
 }
@@ -244,3 +246,56 @@ export function splitSentence(sentence: string) {
 export const safeInputAnswer = (str: string) => {
     return removeTrailingPunctuation(str.trim().toLowerCase()).trim();
 };
+
+const PAIREDARTICLES = {
+    le: "un ",
+    la: "une ",
+    un: "le ",
+    une: "la ",
+    les: "des ",
+    des: "les ",
+    apostrophe: "l'",
+};
+
+export const getPossibleAnswers = (vocabItem: VocabItem) => {
+    const { french, alternatives, exerciseData, nature } = vocabItem;
+    const originalAnswers = [french, ...(alternatives || []), ...(exerciseData?.inputAnswers || [])];
+    if (nature === "expression") return originalAnswers;
+
+    const allAnswers = [];
+    const articles = ["le", "la", "une", "un", "des", "les", "l"];
+
+    for (let rohAnswer of originalAnswers) {
+        const answer = rohAnswer.trim();
+        allAnswers.push(answer);
+        const firstWord = answer.split(" ")[0];
+        const apostrophe = answer.split("'")[0];
+        let article = articles.includes(firstWord) ? firstWord : apostrophe === "l" ? "l'" : null;
+        if (article) {
+            const noArticle = answer.replace(article, "").trim();
+            allAnswers.push(noArticle);
+            if (["un", "une"].includes(article) && ["a", "e", "i", "o", "u", "î", "ô", "â", "ê", "é", "è", "h"].includes(noArticle[0])) {
+                article = "apostrophe";
+            }
+            if (article === "l'") allAnswers.push("un " + noArticle, "une " + noArticle);
+            else allAnswers.push(PAIREDARTICLES[article as keyof typeof PAIREDARTICLES] + noArticle);
+        }
+    }
+
+    return allAnswers;
+};
+
+export function splitArrayFilter<T>(array: T[], filterFunction: (element: T) => boolean): [T[], T[]] {
+    const passFilter: T[] = [];
+    const failFilter: T[] = [];
+
+    array.forEach((element) => {
+        if (filterFunction(element)) {
+            passFilter.push(element);
+        } else {
+            failFilter.push(element);
+        }
+    });
+
+    return [passFilter, failFilter];
+}

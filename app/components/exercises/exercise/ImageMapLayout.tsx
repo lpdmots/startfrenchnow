@@ -9,12 +9,17 @@ import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Sl
 import urlFor from "@/app/lib/urlFor";
 import { AiOutlineSound } from "react-icons/ai";
 import SimpleButton from "../../animations/SimpleButton";
-import { BsCheck2Square, BsQuestionSquare } from "react-icons/bs";
 import QuestionPrompt from "./QuestionPrompt";
 import { CarouselLayout } from "./CarouselLayout";
 import { FaCheck, FaQuestion } from "react-icons/fa";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
+
+// CRÉER UNE QUESTION:
+// FAIRE LES MAPS ICI: https://www.image-map.net/
+// TRANSFORMER LE CODE POUR UN JSON DANS ISCORRECT: {"name": "un verre", "coords": [952, 71, 1185, 393], "shape": "rect", "title": "un verre"}
+// ATTENTION AU FORMAT JSON, ET CHANGER LE STRING COORDS EN LISTE.
+// DANS LE TEXT DE PROMPT, METTRE IMAGEMAP POUR L'EMPLACEMENT DE L'IMAGE.
 
 export function ImageMapLayout({ _key }: { _key: string }) {
     const { getExercise } = useExerciseStore();

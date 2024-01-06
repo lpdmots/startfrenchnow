@@ -10,14 +10,7 @@ import { intelRich } from "@/app/lib/intelRich";
 
 function About() {
     const t = useTranslations("About");
-    /* "introTitle": "Enchanté, moi c'est <hs2>Yohann</hs2>",
-        "introDescription": "I'm a teacher of French as a foreign language and a specialist in <noWrap>teaching beginners.</noWrap>",
-        "button": "Get in touch",
-        "storyTitle": "My <hs3>story</hs3> as <noWrap>a teacher</noWrap>",
-        "storyParagraph1": "<span class='drop-cap-span'>I</span> started as a primary school teacher before deciding to change my audience, quickly becoming an expert in teaching French as a foreign language. This allowed me the opportunity to work abroad as I went first to China, then to England and to New Zealand. In addition to working in many countries, I have also worked in a variety of different professional environments such as language schools (Alliance française), universities, and business schools where I was teaching general French to a demanding public <noWrap>of varied level.</noWrap>",
-        "storyParagraph2": "Very early on, I specialized in teaching beginners as I always enjoyed seeing my students progress rapidly, being able to go from knowing no French to a level of confidence which allows them to survive in their environment and manage everyday situations. <noWrap>It's very rewarding.</noWrap>",
-        "storyParagraph3": "In creating courses and materials online, I'm very happy to see that now my students come from different parts of the world. This drives me to always do my best to bring them answers and guide them toward <noWrap>their objectives.</noWrap>",
-        "storyParagraph4": "I hope you will enjoy my courses and I look forward to hearing from you. Feel free to drop me a <noWrap>message anytime.</noWrap>" */
+
     return (
         <div className="page-wrapper">
             <div className="section hero v2 overflow-hidden wf-section">
@@ -30,7 +23,6 @@ function About() {
                         </div>
 
                         <div id="w-node-dc0e7998-b9b3-c083-f58f-6cb9b7068f8e-c2543d52" className="inner-container _600px">
-                            {/* <SlideFromBottom> */}
                             <div className="inner-container _550px---mbl">
                                 <div className="mg-top-64px mg-top-0px---mbl">
                                     <div className="mg-borrom-35px mg-bottom-0px---mbl">
@@ -53,7 +45,6 @@ function About() {
                                     </div>
                                 </div>
                             </div>
-                            {/* </SlideFromBottom> */}
                         </div>
 
                         <div id="w-node-_9590e10b-34c1-a027-5169-2a6f2e246de6-c2543d52" className="image-wrapper max-width-270px rigth">

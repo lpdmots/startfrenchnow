@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServer";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { createSlug } from "@/app/lib/utils";
 import { Category } from "@/app/types/sfn/blog";
 import { htmlToBlocks } from "@sanity/block-tools";

@@ -9,6 +9,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { LinkBlog } from "@/app/components/sfn/blog/LinkBlog";
 import { Locale } from "@/i18n";
+import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 
 type Props = {
     params: {
@@ -107,6 +108,7 @@ const PostNoAsync = ({ post, latestPosts, searchParams }: PropsNoAsync) => {
                     </div>
                 </div>
             </div>
+            <BlogLangFixedButton />
         </>
     );
 };

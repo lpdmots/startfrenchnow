@@ -1,8 +1,7 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
 import { CATEGORIESCOLORS, CATEGORIESCOLORSSHADES } from "@/app/lib/constantes";
 import { shuffleArray } from "@/app/lib/utils";
-import { FlashcardsProps, Reference, TabelVocFilters, Theme, ThemeWithVocab, VocabItem } from "@/app/types/sfn/blog";
+import { FlashcardsProps, Reference, Theme, ThemeWithVocab, VocabItem } from "@/app/types/sfn/blog";
 import React, { useRef, useEffect, useState, MouseEvent, RefObject, useMemo } from "react";
 import { AiOutlineSwap } from "react-icons/ai";
 import { IoShuffleOutline } from "react-icons/io5";
@@ -39,14 +38,19 @@ interface Props {
     data: FlashcardsProps;
 }
 
+interface DragStart {
+    startX: number;
+    startScrollLeft: number;
+    isDragging: boolean;
+}
+
 export default function Flashcards({ data }: Props) {
     const [theme, setTheme] = useState<ThemeWithVocab | null>(null);
 
     useEffect(() => {
         const fetchThemeData = async () => {
             const { themes } = await getThemes(data.themes.map((theme) => theme._ref));
-            const allVocabItems = themes?.map((theme) => theme.vocabItems).flat();
-            const vocabItems = allVocabItems?.filter((item) => filterVocabItems(item, data.filters));
+            const vocabItems = themes?.map((theme) => theme.vocabItems).flat();
             if (!themes || !vocabItems?.length) return console.warn("No themes or vocabItems found");
             setTheme({ ...themes[0], vocabItems });
         };
@@ -54,17 +58,20 @@ export default function Flashcards({ data }: Props) {
         fetchThemeData();
     }, [data.themes]);
 
-    return <FlashCardsWrapper data={data} theme={theme} />;
+    return <FlashcardsRender data={data} theme={theme} />;
 }
 
-const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: ThemeWithVocab | null }) => {
+function FlashcardsRender({ data, theme }: { data: FlashcardsProps; theme: ThemeWithVocab | null }) {
+    const [selectedCard, setSelectedCard] = useState<number | null>(null);
     const [shuffledCards, setShuffledCards] = useState<VocabItem[]>(shuffleArray(theme?.vocabItems || []));
     const [isFrontFrench, setIsFrontFrench] = useState<boolean>(true);
     const [voices, setVoices] = useState<boolean>(false);
-    const colorVar = CATEGORIESCOLORS[data.category || "vocabulary"];
-    const colorVarLight = CATEGORIESCOLORSSHADES[data.category || "vocabulary"];
+    const [{ startX, startScrollLeft, isDragging }, setDragStart] = useState<DragStart>({ startX: 0, startScrollLeft: 0, isDragging: false });
 
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const cardRefs = useRef<RefObject<HTMLDivElement>[]>([]);
+    const colorVar = CATEGORIESCOLORS[data.category || "vocabulary"];
+    const colorVarLight = CATEGORIESCOLORSSHADES[data.category || "vocabulary"];
 
     const postLang = usePostLang();
     const { title, instruction, shuffle, swapFaces, withSound, loading } = useMemo(() => getContent(postLang, data), [postLang, data]);
@@ -81,6 +88,44 @@ const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: Them
         }
     }, []);
 
+    const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+        if (containerRef.current) {
+            setDragStart({
+                startX: e.pageX - containerRef.current.offsetLeft,
+                startScrollLeft: containerRef.current.scrollLeft,
+                isDragging: true,
+            });
+        }
+    };
+
+    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+        if (!isDragging || !containerRef.current) return;
+        const x = e.pageX - containerRef.current.offsetLeft;
+        const walk = x - startX;
+        containerRef.current.scrollLeft = startScrollLeft - walk;
+    };
+
+    const selectCard = (card: number) => {
+        setSelectedCard(card === selectedCard ? null : card);
+        if (card !== null && selectedCard === null && cardRefs.current[card - 1]?.current) {
+            cardRefs?.current[card - 1]?.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+            });
+        }
+    };
+
+    const handleCardMouseUp = (e: MouseEvent<HTMLDivElement>, card: number) => {
+        if ((e.target as HTMLElement).closest(".audioButton")) return;
+
+        if (isDragging && containerRef.current) {
+            const x = e.pageX - containerRef.current.offsetLeft;
+            const walk = x - startX;
+            if (Math.abs(walk) < 5) selectCard(card);
+        } else selectCard(card);
+    };
+
     const handleRefresh = () => {
         setShuffledCards(shuffleArray(theme?.vocabItems || []));
     };
@@ -92,9 +137,9 @@ const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: Them
     return (
         <div className="my-12">
             <div className="flex flex-col">
-                <h3>{title}</h3>
+                <h2>{title}</h2>
                 {instruction}
-                <div className="flex justify-center gap-6 mb-4 cards-center">
+                <div className="flex justify-center gap-6 mb-4 items-center">
                     <div onClick={handleRefresh}>
                         <SimpleButton>
                             <IoShuffleOutline />
@@ -108,7 +153,7 @@ const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: Them
                         </SimpleButton>
                     </div>
                     <div className="w-checkbox checkbox-field-wrapper mb-0">
-                        <label className="w-form-label flex cards-center justify-center" onClick={handleVoice}>
+                        <label className="w-form-label flex items-center justify-center" onClick={handleVoice}>
                             <div
                                 id="checkbox"
                                 className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${voices ? "w--redirected-checked" : undefined} mr-0`}
@@ -119,146 +164,40 @@ const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: Them
                     </div>
                 </div>
             </div>
-            <div className="flashcards card" style={{ backgroundColor: colorVar, overflow: "hidden" }}>
-                {!shuffledCards.length ? (
-                    <div className="flex justify-center items-center cards-center w-full h-full" style={{ minHeight: 323 }}>
-                        <Spinner radius maxHeight="40px" message={loading} />
-                    </div>
-                ) : (
-                    <FlashCardsCarousel cards={shuffledCards} isFrontFrench={isFrontFrench} voices={voices} colorVarLight={colorVarLight} />
-                )}
-            </div>
-        </div>
-    );
-};
-
-interface FlashCardsCarouselProps {
-    isFrontFrench: boolean;
-    voices: boolean;
-    cards: VocabItem[];
-    colorVarLight: string;
-}
-
-function FlashCardsCarousel({ cards, isFrontFrench, voices, colorVarLight }: FlashCardsCarouselProps) {
-    const [[activeIndex, direction], setActiveIndex] = useState<[number, number]>([0, 0]);
-    const [selectedCard, setSelectedCard] = useState<string | null>(null);
-
-    const indexInArrayScope = ((activeIndex % cards.length) + cards.length) % cards.length;
-    const visibleCards = [...cards, ...cards].slice(indexInArrayScope, indexInArrayScope + 3);
-
-    const handleClick = (newDirection: number) => {
-        setActiveIndex((prevIndex) => [prevIndex[0] + newDirection, newDirection]);
-        setTimeout(() => setSelectedCard(null), 10);
-    };
-
-    const handleCardClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, cardFrench: string) => {
-        e.stopPropagation();
-        if ((e.target as HTMLElement).closest(".audioButton")) return;
-        setSelectedCard(cardFrench === selectedCard ? null : cardFrench);
-    };
-
-    return (
-        <div className="flashcard-main-wrapper">
-            <div className="flashcard-wrapper">
-                <AnimatePresence mode="popLayout" initial={false}>
-                    {visibleCards.map((card, i) => {
-                        const isSelected = selectedCard === card.french;
+            <div
+                className="flashcards card"
+                style={{ backgroundColor: colorVar }}
+                onMouseDown={handleMouseDown}
+                onMouseUp={() => setDragStart((prev) => ({ ...prev, isDragging: false }))}
+                onMouseMove={handleMouseMove}
+            >
+                <div className="flashcards__container" ref={containerRef}>
+                    {shuffledCards.map((card, i) => {
                         return (
-                            <motion.div
-                                className="flashcard"
-                                key={card.french}
-                                layout
-                                custom={{
-                                    direction,
-                                    position: () => {
-                                        if (card === visibleCards[0]) {
-                                            return "left";
-                                        } else if (card === visibleCards[1]) {
-                                            return "center";
-                                        } else {
-                                            return "right";
-                                        }
-                                    },
-                                }}
-                                variants={variants}
-                                initial="enter"
-                                animate="center"
-                                exit="exit"
-                                transition={{ duration: 0.5 }}
+                            <div
+                                className={`card cardFlash ${selectedCard === i ? "flipped left-shadow-1" : "shadow-1"}`}
+                                key={i}
+                                ref={(el: any) => cardRefs.current.push(el)}
+                                onMouseUp={(e) => handleCardMouseUp(e, i)}
                             >
-                                <div
-                                    className={`card cardFlash ${isSelected ? "flipped" : ""}`}
-                                    key={i}
-                                    onClick={
-                                        card === visibleCards[1] && isSelected
-                                            ? () => handleClick(1)
-                                            : card === visibleCards[1]
-                                            ? (e) => handleCardClick(e, card.french)
-                                            : card === visibleCards[0]
-                                            ? () => handleClick(-1)
-                                            : () => handleClick(1)
-                                    }
-                                    style={{ borderWidth: 2 }}
-                                >
-                                    <div className="card__face card__face--front flex justify-center items-center">
-                                        <FrontCardContent isFrontFrench={isFrontFrench} voices={voices} card={card} />
-                                    </div>
-                                    <div className="card__face card__face--back flex justify-center items-center only-radius" style={{ backgroundColor: colorVarLight }}>
-                                        <BackCardContent isFrontFrench={isFrontFrench} voices={voices} card={card} />
-                                    </div>
+                                <div className="card__face card__face--front flex justify-center items-center">
+                                    <FrontCardContent isFrontFrench={isFrontFrench} voices={voices} card={card} />
                                 </div>
-                            </motion.div>
+                                <div className="card__face card__face--back flex justify-center items-center only-radius" style={{ backgroundColor: colorVarLight }}>
+                                    <BackCardContent isFrontFrench={isFrontFrench} voices={voices} card={card} />
+                                </div>
+                            </div>
                         );
                     })}
-                </AnimatePresence>
-            </div>
-            <div>
-                <motion.button className="text-4xl md:text-5xl" whileTap={{ scale: 0.8 }} onClick={() => handleClick(-1)}>
-                    ◀︎
-                </motion.button>
-                <motion.button className="text-4xl md:text-5xl" whileTap={{ scale: 0.8 }} onClick={() => handleClick(1)}>
-                    ▶︎
-                </motion.button>
+                    {!shuffledCards.length && (
+                        <div className="flex justify-center items-center w-full" style={{ minHeight: 323 }}>
+                            <Spinner radius maxHeight="40px" message={loading} />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
-}
-
-const variants = {
-    enter: ({ direction }: { direction: number }) => ({
-        scale: 0.2,
-        x: direction < 1 ? 50 : -50,
-        opacity: 0,
-        transition: {
-            zIndex: { delay: 0.1 }, // Ajout d'un délai pour zIndex
-        },
-    }),
-    center: ({ position, direction }: { position: () => string; direction: number }) => ({
-        scale: position() === "center" ? 1 : 0.7,
-        x: 0,
-        zIndex: getZIndex({ position, direction }),
-        opacity: 1,
-        transition: {
-            zIndex: { delay: 0.1 }, // Ajout d'un délai pour zIndex
-        },
-    }),
-    exit: ({ direction }: { direction: number }) => ({
-        scale: 0.2,
-        x: direction < 1 ? -50 : 50,
-        opacity: 0,
-        transition: {
-            zIndex: { delay: 0.1 }, // Ajout d'un délai pour zIndex
-        },
-    }),
-};
-
-function getZIndex({ position, direction }: { position: () => string; direction: number }) {
-    const indexes = {
-        left: direction > 0 ? 2 : 1,
-        center: 3,
-        right: direction > 0 ? 1 : 2,
-    };
-    return indexes[position() as keyof typeof indexes];
 }
 
 interface CardContentProps {
@@ -347,13 +286,4 @@ const getContent = (postLang: "fr" | "en", data: FlashcardsProps) => {
         withSound: DEFAULTCONTENT[postLang].withSound,
         loading: DEFAULTCONTENT[postLang].loading,
     };
-};
-
-const filterVocabItems = (item: VocabItem, filters: TabelVocFilters) => {
-    const { status: filterStatus, tags: filterTags, nature: filterNature } = filters;
-    const itemNature = (item.nature === "expression" ? "expressions" : "words") as "expressions" | "words" | "all";
-    if (filterStatus !== "all" && item.status !== filterStatus) return false;
-    if (filterTags?.length && !filterTags?.some((tag) => item.tags?.includes(tag))) return false;
-    if (filterNature !== "all" && itemNature !== filterNature) return false;
-    return true;
 };

@@ -1,6 +1,6 @@
 "use server";
 import { groq } from "next-sanity";
-import { SanityServerClient as client } from "../lib/sanity.clientServer";
+import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { Exercise, ThemeWithVocab } from "../types/sfn/blog";
 
 const queryThemes = groq`

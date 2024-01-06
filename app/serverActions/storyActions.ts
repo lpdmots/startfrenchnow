@@ -1,7 +1,7 @@
 "use server";
 
 import { Review, ScoreProps } from "../types/stories/element";
-import { SanityServerClient as client } from "../lib/sanity.clientServer";
+import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { UserProps, UserScore, UserStory } from "../types/sfn/auth";
 import { Adventure, Feedback, StarRating, StoryStats } from "../types/stories/adventure";
 import { CheckBoxes } from "@/app/[locale]/(stories)/stories/[slug]/feedback/page";

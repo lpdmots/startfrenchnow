@@ -11,6 +11,12 @@ export default defineType({
             type: "string",
         }),
         defineField({
+            title: "Alternatives",
+            name: "alternatives",
+            type: "array",
+            of: [{ type: "string" }],
+        }),
+        defineField({
             title: "Anglais",
             name: "english",
             type: "string",
@@ -116,7 +122,7 @@ export default defineType({
                     type: "string",
                 }),
                 defineField({
-                    title: "Résponses valides dans les inputs",
+                    title: "Réponses valides dans les inputs",
                     name: "inputAnswers",
                     type: "array",
                     of: [{ type: "string" }],

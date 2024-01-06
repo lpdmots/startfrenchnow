@@ -1,4 +1,4 @@
-import { AutomatedType, Exercise as ExerciseProps, ExerciseType, Question, QuestionPriority, Theme, VocabItem } from "@/app/types/sfn/blog";
+import { AutomatedType, Exercise as ExerciseProps, ExerciseType, Question, QuestionPriority, TabelVocFilters, Theme, VocabItem } from "@/app/types/sfn/blog";
 import { useEffect } from "react";
 import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
@@ -55,10 +55,10 @@ export const useQuestions = (exercise: ExerciseProps) => {
             automatedQuestions = await getAutomatedQuestions(exercise, nbreToCreate, themesData);
         }
 
-        const allQuestions = shuffleArray([...automatedQuestions, ...shuffleArray(potentialQuestions)]);
+        const allQuestions = shuffleArray([...automatedQuestions, ...potentialQuestions]);
         const nberOfQuestions = Math.min(allQuestions.length, exercise.nbOfQuestions);
         allQuestions.splice(nberOfQuestions);
-        setQuestions(_id, automatedQuestions);
+        setQuestions(_id, allQuestions);
         setStatus(_id, "inGame");
     };
 
@@ -76,12 +76,13 @@ const getNbreToCreate = (nbreOfpotentialQuestions: number, questionsPriority: Qu
 };
 
 const getAutomatedQuestions = async (exercise: ExerciseProps, nbreToCreate: number, themesData: Theme[]) => {
-    const { automatedTypes } = exercise;
+    const { automatedTypes, filters } = exercise;
     const automatedTypesWithLevels = replaceLevels(automatedTypes);
     const automatedQuestions = [];
     const vocabItemsRefs = themesData.map((theme) => theme.vocabItems.map((item) => item._ref)).flat();
     const allVocabItems: VocabItem[] = await client.fetch(`*[_type=='vocabItem' && _id in $vocabItemsRefs]`, { vocabItemsRefs });
-    const vocabItems = allVocabItems.filter((item) => item.status === "primary");
+    const vocabItems = allVocabItems?.filter((item) => filterVocabItems(item, filters));
+    console.log("vocabItems", vocabItems);
     const remainingVocabItems = [...vocabItems];
     const possibleCombinations = Object.assign({}, ...vocabItems.map((vocabItem) => ({ [vocabItem._id]: [...automatedTypesWithLevels] })));
 
@@ -177,12 +178,12 @@ const getAutomatedQuestions = async (exercise: ExerciseProps, nbreToCreate: numb
 
 function replaceLevels(automatedTypes: AutomatedType[]) {
     const levelMappings = {
-        level1: ["translateEnToFr", "pairedWords"],
-        level2: ["soundFrToEn", "enToSoundFr", "soundFrToFr", "chooseCorrectSpelling", "orderWordsEasy", "riddleButtons"],
-        level3: ["orderWords", "riddleInput", "translateEnToFrInput", "translateSoundToFrInput"],
+        level1: ["translateEnToFr", "pairedWords", "soundFrToFr", "chooseCorrectSpelling"],
+        level2: ["soundFrToEn", "enToSoundFr", "orderWordsEasy", "riddleButtons", "pairedWords"],
+        level3: ["translateEnToFrInput", "translateSoundToFrInput", "orderWordsEasy"],
     };
 
-    return removeDuplicates(automatedTypes.flatMap((type) => levelMappings[type as "level1" | "level2" | "level3"] || type));
+    return removeDuplicates(automatedTypes?.flatMap((type) => levelMappings[type as "level1" | "level2" | "level3"] || type));
 }
 
 const getPossibleWrongAnswers = (vocabItem: VocabItem, vocabItems: VocabItem[]) => {
@@ -413,14 +414,14 @@ const getRiddleQuestion = (vocabItem: VocabItem, vocabItems: VocabItem[], button
     const { french, soundFr, nature, soundExample, exerciseData } = vocabItem;
     const riddle = exerciseData?.riddle;
     if (!riddle) return null;
-
+    console.log("reponses", getPossibleAnswers(vocabItem));
     const isExpression = nature === "expression";
     const possibleWrongAnswers = getPossibleWrongAnswers(vocabItem, vocabItems);
     const otherAnswers = buttons
         ? shuffleArray(possibleWrongAnswers)
               .slice(0, Math.min(3, possibleWrongAnswers.length))
               .map((v, index) => ({ _key: (index + 2).toString(), text: v.french, sound: v.soundFr }))
-        : exerciseData?.inputAnswers?.map((answer, index) => ({ _key: (index + 2).toString(), text: answer, isCorrect: "1" })) || [];
+        : getPossibleAnswers(vocabItem).map((answer, index) => ({ _key: index.toString(), text: answer, isCorrect: "1" }));
 
     return {
         _key: vocabItem._id + "riddle",
@@ -445,7 +446,7 @@ const getImageQuestion = (vocabItem: VocabItem, vocabItems: VocabItem[], buttons
         ? shuffleArray(possibleWrongAnswers)
               .slice(0, Math.min(3, possibleWrongAnswers.length))
               .map((v, index) => ({ _key: (index + 2).toString(), text: v.french, sound: v.soundFr }))
-        : exerciseData?.inputAnswers?.map((answer, index) => ({ _key: (index + 2).toString(), text: answer, isCorrect: "1" })) || [];
+        : getPossibleAnswers(vocabItem).map((answer, index) => ({ _key: index.toString(), text: answer, isCorrect: "1" }));
 
     return {
         _key: vocabItem._id + "riddle",
@@ -461,12 +462,12 @@ const getImageQuestion = (vocabItem: VocabItem, vocabItems: VocabItem[], buttons
 
 // Niveau 2-3
 const getTranslateToFrInputQuestion = (vocabItem: VocabItem, sound: boolean = true): Question | null => {
-    const { english, soundFr, exerciseData } = vocabItem;
+    const { english, soundFr } = vocabItem;
     const texts = sound
         ? ["Écris ce que tu entends.SOUNDBLOCK", "Écoute SOUNDSPAN et écris ce que tu as entendu."]
         : [`Écris la traduction de "${english}" en français.`, `Comment dit-on "${english}" en français ?`, `Quelle est la traduction de "${english}" ?`];
-    const alternatives = exerciseData?.inputAnswers?.map((answer, index) => ({ _key: (index + 2).toString(), text: answer, isCorrect: "1" })) || [];
-
+    const possibleAnswers = getPossibleAnswers(vocabItem);
+    console.log("possibleAnswers", possibleAnswers);
     return {
         _key: vocabItem._id + "translateEnToFrInput" + (sound ? "Sound" : ""),
         exerciseTypes: ["input"],
@@ -475,6 +476,53 @@ const getTranslateToFrInputQuestion = (vocabItem: VocabItem, sound: boolean = tr
             sounds: sound ? [soundFr] : undefined,
         },
         options: {},
-        responses: [{ _key: "1", text: vocabItem.french, isCorrect: "1" }, ...alternatives],
+        responses: possibleAnswers.map((answer, index) => ({ _key: index.toString(), text: answer, isCorrect: "1" })),
     };
+};
+
+const filterVocabItems = (item: VocabItem, filters: TabelVocFilters) => {
+    const { status: filterStatus, tags: filterTags, nature: filterNature } = filters;
+    const itemNature = (item.nature === "expression" ? "expressions" : "words") as "expressions" | "words" | "all";
+    if (filterStatus !== "all" && item.status !== filterStatus) return false;
+    if (filterTags?.length && !filterTags?.some((tag) => item.tags?.includes(tag))) return false;
+    if (filterNature !== "all" && itemNature !== filterNature) return false;
+    return true;
+};
+
+const PAIREDARTICLES = {
+    le: "un ",
+    la: "une ",
+    un: "le ",
+    une: "la ",
+    les: "des ",
+    des: "les ",
+    apostrophe: "l'",
+};
+
+const getPossibleAnswers = (vocabItem: VocabItem) => {
+    const { french, alternatives, exerciseData, nature } = vocabItem;
+    const originalAnswers = [french, ...(alternatives || []), ...(exerciseData?.inputAnswers || [])];
+    if (nature === "expression") return originalAnswers;
+
+    const allAnswers = [];
+    const articles = ["le", "la", "une", "un", "des", "les", "l"];
+
+    for (let rohAnswer of originalAnswers) {
+        const answer = rohAnswer.trim();
+        allAnswers.push(answer);
+        const firstWord = answer.split(" ")[0];
+        const apostrophe = answer.split("'")[0];
+        let article = articles.includes(firstWord) ? firstWord : apostrophe === "l" ? "l'" : null;
+        if (article) {
+            const noArticle = answer.replace(article, "").trim();
+            allAnswers.push(noArticle);
+            if (["un", "une"].includes(article) && ["a", "e", "i", "o", "u", "î", "ô", "â", "ê", "é", "è", "h"].includes(noArticle[0])) {
+                article = "apostrophe";
+            }
+            if (article === "l'") allAnswers.push("un " + noArticle, "une " + noArticle);
+            else allAnswers.push(PAIREDARTICLES[article as keyof typeof PAIREDARTICLES] + noArticle);
+        }
+    }
+
+    return allAnswers;
 };

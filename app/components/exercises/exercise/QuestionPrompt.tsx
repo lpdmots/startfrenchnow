@@ -1,5 +1,5 @@
 "use client";
-import { Question } from "@/app/types/sfn/blog";
+import { Question, Response } from "@/app/types/sfn/blog";
 import { createElement, useEffect, useMemo, useState } from "react";
 import { splitAndKeepMultipleKeywords } from "@/app/lib/utils";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { AiOutlineSound } from "react-icons/ai";
 import SimpleButton from "../../animations/SimpleButton";
 import ImageMapper from "react-img-mapper";
 import useImageDimensions from "@/app/hooks/exercises/exercise/useImageDimensions";
+import { getOptionsList } from "./SelectLayout";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -63,23 +64,26 @@ export default function QuestionPrompt({ currentQuestion, htmlElement, handler }
     );
 }
 
-const SelectInput: React.FC<{ index: number; responses: { text: string }[]; handler: HandlerFunction }> = ({ index, responses, handler }) => (
-    <select
-        key={index}
-        className="rounded-lg px-2 text-secondary-2 text-base md:text-lg font-bold my-1"
-        style={{ minHeight: 40 }}
-        onChange={(e) => handler(index, e)}
-        autoComplete="off"
-        defaultValue=""
-    >
-        <option value="" hidden></option>
-        {responses.map((response, index) => (
-            <option className="text-base md:text-lg font-bold mx-6" key={index} value={response.text}>
-                {response.text}
-            </option>
-        ))}
-    </select>
-);
+const SelectInput: React.FC<{ index: number; responses: Response[]; handler: HandlerFunction }> = ({ index, responses, handler }) => {
+    const selectedResponses = getOptionsList(responses, index);
+    return (
+        <select
+            key={index}
+            className="rounded-lg px-2 text-secondary-2 text-base md:text-lg font-bold my-1"
+            style={{ minHeight: 40 }}
+            onChange={(e) => handler(index, e)}
+            autoComplete="off"
+            defaultValue=""
+        >
+            <option value="" hidden></option>
+            {selectedResponses.map((response, index) => (
+                <option className="text-base md:text-lg font-bold mx-6" key={index} value={response.text}>
+                    {response.text}
+                </option>
+            ))}
+        </select>
+    );
+};
 
 const TextInput: React.FC<{ index: number; handler: HandlerFunction }> = ({ index, handler }) => (
     <input
@@ -186,6 +190,7 @@ const RenderImageMap = ({ currentQuestion, handler }: { currentQuestion: Questio
     const handleClickArea = (area: any) => {
         handler(0, area);
     };
+    console.log({ MAP });
 
     return (
         <div id="image-map-container" className="w-full flex items-center justify-center my-2 rounded-xl overflow-hidden cursor-pointer" style={{ maxWidth: "100%", minHeight }}>
