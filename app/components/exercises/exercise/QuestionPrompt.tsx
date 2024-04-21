@@ -102,7 +102,7 @@ const RenderImageBlock = ({ imageData }: { imageData: string }) => {
     if (!imageData) return null;
     return (
         <div className="w-full flex items-center justify-center my-2 rounded-xl overflow-hidden">
-            <Image src={urlFor(imageData).url()} alt="image" height={500} width={500} className="object-contain h-auto rounded-xl" style={{ maxWidth: "100%" }} />
+            <Image src={urlFor(imageData).url()} alt="image" height={350} width={500} className="object-contain h-auto rounded-xl" style={{ maxWidth: "100%", maxHeight: 350 }} />
         </div>
     );
 };

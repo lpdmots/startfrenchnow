@@ -22,7 +22,7 @@ interface AccordionProps {
 export const StoriesAccordion = ({ filtredStories }: { filtredStories: StoryCardProps[] }) => {
     // This approach is if you only want max one section open at a time. If you want multiple
     // sections to potentially be open simultaneously, they can all be given their own `useState`.
-    const [expanded, setExpanded] = useState<false | string>("18d88b4c-e3ce-4471-a66e-0d1fec1437e1");
+    const [expanded, setExpanded] = useState<false | string>("9d9e0112-482c-4a8b-a9a8-c5f70b99d2ce");
 
     return (
         <>
@@ -40,7 +40,7 @@ const Accordion = ({ story, expanded, setExpanded }: AccordionProps) => {
     // By using `AnimatePresence` to mount and unmount the contents, we can animate
     // them in and out while also only rendering the contents of open accordions
     return (
-        <div className="link-card card overflow-hidden" style={{ transformStyle: "flat" }}>
+        <div className="link-card card overflow-hidden mb-12" style={{ transformStyle: "flat" }}>
             <m.div initial={false}>
                 <div className="hidden sm:flex relative justify-end">
                     <m.div className="absolute left-0" initial={{ width: "50%" }} animate={{ width: isOpen ? "100%" : "50%" }} transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}>
@@ -113,7 +113,7 @@ const Accordion = ({ story, expanded, setExpanded }: AccordionProps) => {
                             <div className="hidden sm:grid grid-cols-12 p-6 pb-0">
                                 <div className="col-span-8 flex flex-col justify-center items-center">
                                     <h2 className="display-4 text-center">{story.name}</h2>
-                                    <p className="font-bold text-secondary-2">{story.category}</p>
+                                    <p className="font-bold text-secondary-2">{STORYCATEGORIES[story.category]}</p>
                                 </div>
                                 <div className="col-span-4 flex justify-center items-center text-300 medium color-neutral-600 " style={{ fontSize: 16 }}>
                                     <AiFillSignal className=" mr-2" style={{ fontSize: "1.2rem", color: level.color }} />

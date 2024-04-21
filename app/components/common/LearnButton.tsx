@@ -4,6 +4,7 @@ import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { Locale } from "@/i18n";
 import { FaCaretDown, FaCaretRight, FaPenFancy } from "react-icons/fa";
 import { MdVideoLibrary } from "react-icons/md";
+import { GiSpellBook } from "react-icons/gi";
 
 export const LearnButton = ({ locale, dictionnary }: { locale: Locale; dictionnary: any }) => {
     const dropdownLearn = {
@@ -38,15 +39,19 @@ export const LearnButton = ({ locale, dictionnary }: { locale: Locale; dictionna
                         <FaCaretRight />
                         {dictionnary.expressions}
                     </LinkCurrentBlog>
-                    {/* <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-2 m-0 flex items-center" locale={locale as Locale}>
-                        <MdVideoLibrary className="mr-2" />
-                        {dictionnary.videos}
-                    </LinkCurrentBlog> */}
                 </div>
+                <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-2 m-0 flex items-center" locale={locale as Locale}>
+                    <MdVideoLibrary className="mr-2" />
+                    {dictionnary.videos}
+                </LinkCurrentBlog>
+                <LinkCurrentBlog href="/stories" className="nav-link header-nav-link p-2 m-0 flex items-center" locale={locale as Locale}>
+                    <GiSpellBook className="mr-2" />
+                    {dictionnary.stories}
+                </LinkCurrentBlog>
             </div>
         ),
         button: (
-            <div className="font-bold flex items-center">
+            <div className="font-bold flex items-center p-5">
                 {dictionnary.button}
                 <FaCaretDown className="ml-1" />
             </div>

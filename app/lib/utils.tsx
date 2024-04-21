@@ -1,4 +1,4 @@
-import { VocabItem } from "../types/sfn/blog";
+import { Reference, VocabItem } from "../types/sfn/blog";
 
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
@@ -30,6 +30,10 @@ export function splitArrayIntoChunks<T>(inputArray: T[], chunkSize: number = 6):
 
     for (let i = 0; i < inputArray.length; i += chunkSize) {
         result.push(inputArray.slice(i, i + chunkSize));
+    }
+
+    if (result.length === 0) {
+        result.push([]);
     }
 
     return result;
@@ -258,8 +262,8 @@ const PAIREDARTICLES = {
 };
 
 export const getPossibleAnswers = (vocabItem: VocabItem) => {
-    const { french, alternatives, exerciseData, nature } = vocabItem;
-    const originalAnswers = [french, ...(alternatives || []), ...(exerciseData?.inputAnswers || [])];
+    const { french, exerciseData, nature } = vocabItem;
+    const originalAnswers = [french, ...(exerciseData?.inputAnswers || [])];
     if (nature === "expression") return originalAnswers;
 
     const allAnswers = [];
@@ -298,4 +302,19 @@ export function splitArrayFilter<T>(array: T[], filterFunction: (element: T) => 
     });
 
     return [passFilter, failFilter];
+}
+
+type TransformedType = {
+    [key: string]: string;
+};
+
+export function transformObject(original: Record<string, Reference>): TransformedType {
+    const transformed: TransformedType = {};
+    for (const key in original) {
+        if (original.hasOwnProperty(key)) {
+            const element = original[key];
+            transformed[key] = element._ref; // Ici, nous prenons seulement l'ID pour le nouvel objet
+        }
+    }
+    return transformed;
 }

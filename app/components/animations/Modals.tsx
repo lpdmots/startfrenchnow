@@ -62,7 +62,7 @@ export const ModalFromBottom = ({ data }: Props) => {
                 >
                     <div className="grid grid-cols-5 gap-4 mb-2">
                         <div className={`${imageUrl ? "col-span-4" : "col-span-5"} flex flex-col text-left`}>
-                            {title}
+                            <div className="font-bold underline">{title}</div>
                             {message}
                         </div>
                         {imageUrl && (

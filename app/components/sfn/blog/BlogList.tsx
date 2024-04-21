@@ -13,7 +13,7 @@ type Props = {
 function BlogList({ posts, postLang }: Props) {
     const t = useTranslations("Blog.BlogList");
     return (
-        <div className="section hero v3 wf-section">
+        <div className="section hero v3 wf-section !pb-0">
             <div className="container-default w-container">
                 <div className="inner-container _600px---tablet center">
                     <div className="inner-container _500px---mbl center">
@@ -25,9 +25,9 @@ function BlogList({ posts, postLang }: Props) {
                             </div>
                         </div>
                         {/* </SlideFromBottom> */}
-                        <h2 className="hidden">{t("newestPosts")}</h2>
-                        <div className="grid-2-columns blog-featured-grid">
-                            <div className="w-dyn-list">
+                        {/* <h2 className="hidden">{t("newestPosts")}</h2>
+                        <div className="grid grid-cols-7 gap-8">
+                            <div className="col-span-7 lg:col-span-3">
                                 <div role="list" className="height-100 w-dyn-items">
                                     <div role="listitem" className="height-100 w-dyn-item">
                                         {posts.length > 0 && (
@@ -38,7 +38,7 @@ function BlogList({ posts, postLang }: Props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="collection-list-wrapper w-dyn-list">
+                            <div className="col-span-7 lg:col-span-4">
                                 <div role="list" className="grid-1-column gap-32px w-dyn-items">
                                     <div role="listitem" className="w-dyn-item">
                                         {posts.length > 1 && (
@@ -56,7 +56,7 @@ function BlogList({ posts, postLang }: Props) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

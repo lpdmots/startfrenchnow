@@ -7,5 +7,6 @@ export const intelRich = () => {
         hs2: (chunks: any) => <span className="heading-span-secondary-2">{chunks}</span>,
         hs3: (chunks: any) => <span className="heading-span-secondary-3">{chunks}</span>,
         hs4: (chunks: any) => <span className="heading-span-secondary-4">{chunks}</span>,
+        hs5: (chunks: any) => <span className="heading-span-secondary-5">{chunks}</span>,
     };
 };

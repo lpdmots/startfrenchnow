@@ -30,7 +30,7 @@ export const Inventory = ({ objects }: { objects: VariableState[] }) => {
             )),
         [objects, isTablet]
     );
-
+    console.log({ data });
     return (
         <div className="rounded-xl shadow-1 simple-border w-full p-4 md:p-6" style={{ height: isTablet ? 450 : "80%" }}>
             <Carousel data={data} inventoryArrows />

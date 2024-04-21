@@ -1,11 +1,12 @@
 import { create, StateCreator } from "zustand";
 import { devtools } from "zustand/middleware";
-import { Exercise, Question } from "../types/sfn/blog";
+import { Exercise, LevelChoice, Question } from "../types/sfn/blog";
 
 type Status = "off" | "fetching" | "inGame" | "finished";
 
 interface ExerciseData {
     status: Status;
+    levelChoice: LevelChoice;
     score: number;
     scoreMax: number;
     currentMaxScore: number;
@@ -21,6 +22,7 @@ interface ExerciseStore {
     initializeExercise: (id: string, data: Exercise) => void;
     setScoreMax: (id: string, scoreMax: number) => void;
     setStatus: (id: string, status: Status) => void;
+    setLevelChoice: (id: string, levelChoice: LevelChoice) => void;
     setQuestions: (id: string, questions: Question[]) => void;
     setQuestionIndex: (id: string, index: number) => void;
     setShowAnswers: (id: string, questionKey: string, isShowed: boolean) => void;
@@ -31,6 +33,7 @@ interface ExerciseStore {
 
 const DEFAULT_PROPS: ExerciseData = {
     status: "off",
+    levelChoice: "level1",
     score: 0,
     scoreMax: 0,
     currentMaxScore: 0,
@@ -70,6 +73,9 @@ const createStore: StateCreator<ExerciseStore> = (set, get) => ({
     setStatus: (id: string, status: Status) => {
         set((state) => updateExercise(state, id, { status }));
     },
+    setLevelChoice: (id: string, levelChoice: LevelChoice) => {
+        set((state) => updateExercise(state, id, { levelChoice }));
+    },
     setQuestions: (id: string, questions: Question[]) => {
         set((state) => updateExercise(state, id, { questions }));
     },
@@ -86,7 +92,7 @@ const createStore: StateCreator<ExerciseStore> = (set, get) => ({
         }
     },
     resetScore: (id: string) => {
-        set((state) => updateExercise(state, id, { score: 0 }));
+        set((state) => updateExercise(state, id, { score: 0, currentMaxScore: 0, questionIndex: 0, showAnswers: {}, scoreMax: 0 }));
     },
     restart: (id: string) => {
         const { data } = get().exercises[id];

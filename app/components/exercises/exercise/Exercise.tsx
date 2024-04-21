@@ -1,5 +1,5 @@
 "use client";
-import { ExerciseType, ResponsesLayouts, Exercise as ExerciseProps, Question, Exercise } from "@/app/types/sfn/blog";
+import { ExerciseType, ResponsesLayouts, Exercise as ExerciseProps, Question, Exercise, LevelChoice } from "@/app/types/sfn/blog";
 import { CATEGORIESCOLORS, RESPONSESLAYOUTS } from "@/app/lib/constantes";
 import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { PortableText } from "@portabletext/react";
@@ -20,6 +20,7 @@ import { LinkLayout } from "./LinkLayout";
 import OrderLayout from "./OrderLayout";
 import { fetchExercise } from "@/app/serverActions/exerciseActions";
 import Spinner from "../../common/Spinner";
+import { LevelChoiceButtons } from "./LevelChoiceButtons";
 
 interface Props {
     _ref: string;
@@ -78,10 +79,11 @@ export default function Exercise({ _ref }: Props) {
 const ExerciseContent = ({ exercise }: { exercise: Exercise }) => {
     const { _id, category } = exercise;
     const { getExercise, initializeExercise } = useExerciseStore();
-    const { status, questionIndex } = getExercise(_id) || {};
+    const { status, questionIndex, data } = getExercise(_id) || {};
     const colorVar = CATEGORIESCOLORS[category || "vocabulary"];
     const postLang = usePostLang();
     const { title, instruction } = useMemo(() => getContent(exercise, postLang), [exercise, postLang]);
+    const islevelChoice = data?.automatedTypes?.includes("levelChoice");
 
     useEffect(() => {
         initializeExercise(_id, exercise);
@@ -92,6 +94,7 @@ const ExerciseContent = ({ exercise }: { exercise: Exercise }) => {
             <div className="flex flex-col">
                 <h3>{title}</h3>
                 {instruction}
+                {!!islevelChoice && <LevelChoiceButtons _id={_id} />}
             </div>
             <div className="card flex flex-col justify-center overflow-hidden p-2 sm:p-4 md:p-6 relative" style={{ backgroundColor: colorVar, minHeight: "min(550px, 90vh)" }}>
                 {!status || status === "off" ? (
@@ -99,7 +102,7 @@ const ExerciseContent = ({ exercise }: { exercise: Exercise }) => {
                         <StartLayout _key={_id} exercise={exercise} />
                     </CarouselLayout>
                 ) : status === "fetching" ? (
-                    <FetchLayout exercise={exercise} />
+                    <FetchLayout exercise={exercise} _id={_id} />
                 ) : status === "finished" ? (
                     <CarouselLayout currentQuestionIndex={questionIndex || 0}>
                         <EndLayout _key={_id} />
@@ -189,7 +192,7 @@ const getCorrectResponses = (currentQuestion: Question, numResponsesInPrompt: nu
         correctResponses[loopIndex.toString()] = correctAnswers;
         loopIndex++;
     }
-
+    console.log({ correctResponses });
     return [correctResponses, isError];
 };
 

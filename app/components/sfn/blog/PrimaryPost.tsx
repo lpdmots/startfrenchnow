@@ -4,11 +4,12 @@ import ClientSideRoute from "../../common/ClientSideRoute";
 import urlFor from "@/app/lib/urlFor";
 import React from "react";
 import { AiFillSignal } from "react-icons/ai";
-import { LEVELDATA } from "@/app/lib/constantes";
+import { CATEGORIESCOLORS, LEVELDATA } from "@/app/lib/constantes";
 import { ScaleChildren } from "../../animations/ParentToChildrens";
 import { useLocale, useTranslations } from "next-intl";
 import { Locale } from "@/i18n";
 import { CategoryBadge } from "./CategoryBadge";
+import { ImPlay2 } from "react-icons/im";
 
 const PrimaryPost = ({ post, postLang = "en" }: { post: Post; postLang?: "en" | "fr" }) => {
     const locale = useLocale();
@@ -17,13 +18,23 @@ const PrimaryPost = ({ post, postLang = "en" }: { post: Post; postLang?: "en" | 
     const tCat = useTranslations(`Categories.${firstCategory}`);
     const title = postLang === "fr" ? post.title : post.title_en;
     const description = postLang === "fr" ? post.description : post.description_en;
+    const hasVideo = post?.mainVideo?.url;
+    const categoryColor = CATEGORIESCOLORS[firstCategory as keyof typeof CATEGORIESCOLORS];
 
     return (
         <ClientSideRoute route={`/blog/post/${post.slug.current}`} locale={locale as Locale}>
             <div className="blog-card-wrapper card link-card w-inline-block">
                 <div className="blog-card-image-wrapper inside-card max-heigth-330px">
                     <ScaleChildren>
-                        <Image src={urlFor(post.mainImage).url()} width={400} height={400} loading="lazy" alt={title || "no title"} className="blog-card-image" />
+                        <Image
+                            src={urlFor(post.mainImage).url()}
+                            width={400}
+                            height={400}
+                            loading="lazy"
+                            alt={title || "no title"}
+                            className="blog-card-image"
+                            style={{ minHeight: 150, objectFit: "contain" }}
+                        />
                     </ScaleChildren>
                     <CategoryBadge category={firstCategory} label={tCat("title")} primary={true} />
                 </div>
@@ -35,8 +46,14 @@ const PrimaryPost = ({ post, postLang = "en" }: { post: Post; postLang?: "en" | 
                         <div className="flex-col gap-24px _15px---mbp">
                             <p className="line-clamp-4">{description}</p>
                             <div className="flex justify-end items-center text-300 medium color-neutral-600 gap-2">
+                                {hasVideo && (
+                                    <div className="flex items-center gap-2">
+                                        <ImPlay2 className="text-2xl" style={{ color: categoryColor }} />
+                                        <p className="mb-0"> - </p>
+                                    </div>
+                                )}
                                 {level && (
-                                    <div className="flex  gap-2 items-center">
+                                    <div className="flex gap-2 items-center">
                                         {level.reverse().map((level, index) => {
                                             return (
                                                 <div className="flex items-center gap-2" key={level.label}>

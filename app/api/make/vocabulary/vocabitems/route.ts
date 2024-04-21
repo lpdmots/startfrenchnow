@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
-import { createSlug, getPossibleAnswers } from "@/app/lib/utils";
-import { Theme, VocabItem, VocabItemNew } from "@/app/types/sfn/blog";
+import { createSlug, getPossibleAnswers, removeDuplicates, transformObject } from "@/app/lib/utils";
+import { Reference, Theme, VocabItem, VocabItemNew } from "@/app/types/sfn/blog";
 import vocabItemToSpeech from "@/app/lib/vocabItemToSpeech";
 import { htmlToBlocks } from "@sanity/block-tools";
 import { getRules } from "../../article/route";
@@ -46,27 +46,32 @@ export async function POST(request: NextRequest) {
         const { name, image, levels, courses, category, children: childrenIdsStr, vocabulary, tags } = await request.json();
 
         // creation du thème:
-        const theme = await createTheme(name, image, levels, category, childrenIdsStr, tags);
+        let theme = null;
+        if (name) theme = await createTheme(name, image, levels, category, childrenIdsStr, tags);
 
         // creation des vocabItems:
-        const vocabItemsRefs = await getVocabItemsRefs(vocabulary, theme);
+        const { refs, notCreated } = await getVocabItemsRefs(vocabulary, theme);
 
         // ajout des vocabItems au thème:
-        await client.patch(theme._id).set({ vocabItems: vocabItemsRefs }).commit();
+        if (theme)
+            await client
+                .patch(theme._id)
+                .set({ vocabItems: Object.values(refs) })
+                .commit({ autoGenerateArrayKeys: true });
 
-        return NextResponse.json({ themeId: theme._id }, { status: 200 });
+        return NextResponse.json({ themeId: theme?._id, vocabItemsIds: transformObject(refs), notCreated }, { status: 200 });
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 400 });
     }
 }
 
-const createTheme = async (name: string, imageUrl: string, levels: string, category: string, childrenIdsStr: string, tags: string) => {
+const createTheme = async (name: string, imageUrl: string, levels: string, category: string, childrenIdsStr: string, tags: string | null) => {
     // check if theme exists
     const themeExists = await client.fetch(`*[_type == "theme" && name == "${name}"]`);
     if (themeExists.length > 0) return themeExists[0] as unknown as Theme;
 
     // Tags to object with key
-    const tagsObj = JSON.parse(tags).map((tag: any) => ({ ...tag, _key: tag.name }));
+    const tagsObj = JSON.parse(tags || "[]")?.map((tag: any) => ({ ...tag, _key: tag.name }));
 
     // Téléchargement de l'images
     const image = await loadImagesToSanity(imageUrl, name);
@@ -114,31 +119,51 @@ async function loadImagesToSanity(image: string, name: string): Promise<{ _type:
     };
 }
 
-const getVocabItemsRefs = async (vocabulary: string, theme: Theme) => {
-    const vocabItems: VocabItemNew[] = JSON.parse(vocabulary);
-    const refs = [];
-
+const getVocabItemsRefs = async (vocabulary: string | VocabItemNew[], theme: Theme | null) => {
+    console.log("vocabulary", vocabulary);
+    const vocabItems: VocabItemNew[] = Array.isArray(vocabulary) ? vocabulary : JSON.parse(vocabulary);
+    const refs: Record<string, Reference> = {};
+    const notCreated: string[] = [];
     for (let vocabItem of vocabItems) {
         const { instruction } = vocabItem;
 
         if (instruction === "new") {
-            refs.push(await createVocabItem(vocabItem, theme));
-        } else if (instruction) {
-            const vocabItemExists = await client.fetch(`*[_type == "vocabItem" && _id == "${instruction}"]`);
-            if (vocabItemExists.length > 0) {
-                refs.push({ _type: "reference", _ref: vocabItemExists[0]._id, _key: vocabItemExists[0]._id });
-                await updateRelatedThemes(vocabItemExists, theme);
+            refs[vocabItem.french] = await createVocabItem(vocabItem, theme);
+            continue;
+        }
+
+        const possibleNames = getPossibleAnswers(vocabItem);
+        const vocabItemExists: VocabItem[] = await client.fetch(`*[_type == "vocabItem" && french in ["${possibleNames.join('","')}"]]`);
+
+        if (!instruction) {
+            if (vocabItemExists.length) {
+                notCreated.push(vocabItem.french);
+                continue;
             }
-        } else {
-            const possibleNames = getPossibleAnswers(vocabItem);
-            const vocabItemExists = await client.fetch(`*[_type == "vocabItem" && french in ["${possibleNames.join('","')}"]]`);
-            if (vocabItemExists.length > 0) {
-                refs.push({ _type: "reference", _ref: vocabItemExists[0]._id, _key: vocabItemExists[0]._id });
-                await updateRelatedThemes(vocabItemExists, theme);
-            } else refs.push(await createVocabItem(vocabItem, theme));
+            refs[vocabItem.french] = await createVocabItem(vocabItem, theme);
+            continue;
+        }
+
+        if (!vocabItemExists.length) {
+            refs[vocabItem.french] = await createVocabItem(vocabItem, theme);
+            continue;
+        }
+
+        if (instruction === "keep") {
+            refs[vocabItem.french] = { _type: "reference", _ref: vocabItemExists[0]._id, _key: vocabItemExists[0]._id };
+            if (theme) await updateRelatedThemes(vocabItemExists, theme);
+            continue;
+        }
+
+        if (instruction === "update") {
+            const updatedVocabItem = await updateVocabItem(vocabItem, vocabItemExists, theme);
+            if (theme) await updateRelatedThemes(vocabItemExists, theme);
+            await client.patch(updatedVocabItem._id).set(updatedVocabItem).commit();
+            refs[vocabItem.french] = { _type: "reference", _ref: updatedVocabItem._id, _key: updatedVocabItem._id };
+            continue;
         }
     }
-    return refs;
+    return { refs, notCreated };
 };
 
 const updateRelatedThemes = async (vocabItemExists: VocabItem[], theme: Theme) => {
@@ -149,7 +174,7 @@ const updateRelatedThemes = async (vocabItemExists: VocabItem[], theme: Theme) =
     }
 };
 
-const createVocabItem = async (vocabItem: VocabItem, theme: Theme) => {
+const createVocabItem = async (vocabItem: VocabItem, theme: Theme | null) => {
     const { soundFr, soundEn, soundExample } = await vocabItemToSpeech(vocabItem, theme);
     const { noteFr: noteFrHtml, noteEn: noteEnHtml } = vocabItem;
 
@@ -164,7 +189,7 @@ const createVocabItem = async (vocabItem: VocabItem, theme: Theme) => {
 
     const data = {
         ...vocabItem,
-        relatedThemes: [{ _type: "reference", _ref: theme._id, _key: theme._id }],
+        relatedThemes: theme ? [{ _type: "reference", _ref: theme._id, _key: theme._id }] : [],
         soundFr,
         soundEn,
         soundExample,
@@ -175,4 +200,20 @@ const createVocabItem = async (vocabItem: VocabItem, theme: Theme) => {
     };
     const vocabItemCreated = await client.create(data);
     return { _type: "reference", _ref: vocabItemCreated._id, _key: vocabItemCreated._id };
+};
+
+const updateVocabItem = async (vocabItem: VocabItem, vocabItemExists: VocabItem[], theme: Theme | null) => {
+    const vocabItemToUpdate = vocabItemExists[0];
+    const { soundFr, soundEn, soundExample } = await vocabItemToSpeech(vocabItem, theme);
+    vocabItemToUpdate.example = vocabItem.example ? vocabItem.example : vocabItemToUpdate.example;
+    vocabItemToUpdate.alternatives = removeDuplicates([...(vocabItemToUpdate?.alternatives || []), ...(vocabItem.alternatives || [])]);
+    vocabItemToUpdate.tags = removeDuplicates([...(vocabItemToUpdate?.tags || []), ...(vocabItem.tags || [])]);
+    vocabItemToUpdate.image = vocabItem.image || vocabItemToUpdate.image;
+    vocabItemToUpdate.soundFr = soundFr;
+    vocabItemToUpdate.soundEn = soundEn;
+    vocabItemToUpdate.soundExample = vocabItem.example ? soundExample : vocabItemToUpdate.soundExample;
+    vocabItemToUpdate.noteFr = vocabItem.noteFr || vocabItemToUpdate.noteFr;
+    vocabItemToUpdate.noteEn = vocabItem.noteEn || vocabItemToUpdate.noteEn;
+
+    return vocabItemToUpdate;
 };

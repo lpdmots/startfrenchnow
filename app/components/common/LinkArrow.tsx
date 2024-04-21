@@ -4,8 +4,17 @@ import React from "react";
 import { m } from "framer-motion";
 import Link from "next-intl/link";
 import { HiOutlineArrowRight } from "react-icons/hi";
+import { CATEGORIESTEXTCOLORS } from "@/app/lib/constantes";
 
-function LinkArrow({ children }: { children: string | JSX.Element }) {
+interface Props {
+    children: string | JSX.Element;
+    url: string;
+    target?: string;
+    rel?: string;
+    category?: string;
+}
+
+function LinkArrow({ children, url, target = "_blank", rel, category }: Props) {
     const ParentVariants = {
         visible: {
             transition: {
@@ -21,9 +30,12 @@ function LinkArrow({ children }: { children: string | JSX.Element }) {
         },
     };
 
+    const hoverColor = "hover:!" + CATEGORIESTEXTCOLORS[(category || "tips") as keyof typeof CATEGORIESTEXTCOLORS];
+    const className = `link-wrapper w-inline-block ${hoverColor}`;
+
     return (
         <m.span variants={ParentVariants} whileHover="visible">
-            <Link href="https://www.udemy.com/course/french-for-beginners-a1/" className="link-wrapper w-inline-block">
+            <Link href={url} className={className} target={target} rel={rel}>
                 <span className="flex items-center justify-between">
                     <span className="link-text underline mr-1">{children}</span>
                     <m.span variants={childrenVariant} style={{ width: 10 }}>

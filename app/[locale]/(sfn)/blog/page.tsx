@@ -52,8 +52,8 @@ const BlogNoAsync = ({ postsData, searchParams }: { postsData: Post[]; searchPar
     return (
         <div className="page-wrapper mt-8 sm:mt-12">
             {isForcedLang && <BlogLangButton messages={messages} postLang={postLang} />}
-            <BlogList posts={posts} postLang={postLang} />
-            <Marquee content={<CategoriesBand />} />
+            {/* <BlogList posts={posts} postLang={postLang} /> */}
+            {/* <Marquee content={<CategoriesBand />} /> */}
             <PostsList posts={posts} postLang={postLang} />
         </div>
     );

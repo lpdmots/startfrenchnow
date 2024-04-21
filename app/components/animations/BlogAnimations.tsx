@@ -9,6 +9,7 @@ import { Block, PrimaryCategory, VocabItem } from "@/app/types/sfn/blog";
 import { useEffect, useState } from "react";
 import { usePostLang } from "@/app/hooks/usePostLang";
 import { CATEGORIESCOLORS, natures } from "@/app/lib/constantes";
+import { FaInfoCircle } from "react-icons/fa";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -39,27 +40,8 @@ export const TabelVocSoundButton = ({ vocabItem }: { vocabItem: VocabItem }) => 
 };
 
 export const NotePopover = ({ vocabItem, category }: { vocabItem: VocabItem; category: PrimaryCategory }) => {
-    const { noteFr, noteEn, alternatives } = vocabItem;
-    const postLang = usePostLang();
-    const note = postLang === "fr" && noteFr ? noteFr : noteEn || noteFr;
-    const nature = natures[vocabItem.nature as keyof typeof natures]?.[postLang === "fr" ? "french" : "english"];
-    const alternativesString = alternatives?.join(" - ");
-    const popoverText = (
-        <>
-            {!!alternativesString && (
-                <p>
-                    <span className="underline">Alternatives:</span> <b style={{ color: CATEGORIESCOLORS[category || "tips"] }}>{alternativesString}</b>
-                </p>
-            )}
-            {!!nature && (
-                <p>
-                    <span className="underline">Nature:</span> <b style={{ color: CATEGORIESCOLORS[category || "tips"] }}>{nature}</b>
-                </p>
-            )}
-            {!!note && <PortableText value={note} components={RichTextComponents(category)} />}
-        </>
-    );
-    if (!note && !alternativesString) return null;
+    const popoverText = usePopoverText(vocabItem, category);
+    if (!popoverText) return null;
 
     return (
         <m.span
@@ -68,7 +50,55 @@ export const NotePopover = ({ vocabItem, category }: { vocabItem: VocabItem; cat
             whileTap={{ scale: 0.9 }} // réduit la taille à 90% sur click
             transition={{ duration: 0.2 }} // transition smooth
         >
-            {note && <Popover content={<CgNotes />} popover={popoverText} small />}
+            <Popover content={<CgNotes />} popover={popoverText} small />
         </m.span>
+    );
+};
+
+export const NotePopoverTransalation = ({ vocabItem, category }: { vocabItem: VocabItem; category: PrimaryCategory }) => {
+    const popoverText = usePopoverText(vocabItem, category);
+    if (!popoverText) return null;
+
+    return (
+        <m.span
+            className="cursor-pointer"
+            whileHover={{ y: -2 }} // orange sur hover
+            whileTap={{ scale: 0.9 }} // réduit la taille à 90% sur click
+            transition={{ duration: 0.2 }} // transition smooth
+        >
+            <Popover content={<FaInfoCircle className="text-xl mt-2 ml-2" />} popover={popoverText} small />
+        </m.span>
+    );
+};
+
+export const usePopoverText = (vocabItem: VocabItem, category: PrimaryCategory) => {
+    const postLang = usePostLang();
+    const { noteFr, noteEn, alternatives, example } = vocabItem;
+    const note = postLang === "fr" && noteFr ? noteFr : noteEn || noteFr;
+    const nature = natures[vocabItem.nature as keyof typeof natures]?.[postLang === "fr" ? "french" : "english"];
+    const alternativesString = alternatives?.join(" - ");
+    const isSomethingToShow = !!note || !!alternativesString || !!nature || !!example;
+
+    if (!isSomethingToShow) return null;
+    return (
+        <>
+            {!!alternativesString && (
+                <p>
+                    <span className="underline">Alternatives:</span> <b style={{ color: CATEGORIESCOLORS[category || "tips"] }}>{alternativesString}</b>
+                </p>
+            )}
+            {!!nature && (
+                <p className="mb-0">
+                    <span className="underline mb-0">Nature:</span> <b style={{ color: CATEGORIESCOLORS[category || "tips"] }}>{nature}</b>
+                </p>
+            )}
+            {!!note && <PortableText value={note} components={RichTextComponents(category)} />}
+            {!!example && (
+                <p>
+                    <span className="underline">{postLang === "fr" ? "Exemple :" : "Example:"}</span>
+                    <span className="italic"> {example}</span>
+                </p>
+            )}
+        </>
     );
 };

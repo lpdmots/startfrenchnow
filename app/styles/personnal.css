@@ -441,6 +441,7 @@ button {
     background-size: cover;
     cursor: pointer;
     border-radius: 30px;
+    overflow: hidden;
 }
 
 #hero-video > .yt-lite {

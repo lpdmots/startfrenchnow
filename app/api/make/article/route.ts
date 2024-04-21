@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
-import { createSlug } from "@/app/lib/utils";
-import { Category } from "@/app/types/sfn/blog";
+import { createSlug, getPossibleAnswers } from "@/app/lib/utils";
+import { Category, VocabItem } from "@/app/types/sfn/blog";
 import { htmlToBlocks } from "@sanity/block-tools";
 import { Schema } from "@sanity/schema";
 import { JSDOM } from "jsdom";
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     try {
         const { categories: makeCategories, body, body_en, images, lien_interne, liens_externes, ...postData } = await request.json();
 
-        const categories = makeCategories.map((category: any) => CATEGORIES[category as CATEGORIESKeys]) as Category[];
+        const categories = makeCategories?.map((category: any) => CATEGORIES[category as CATEGORIESKeys]) as Category[];
         const slug = { _type: "slug", current: createSlug(postData.title) };
         const link = NEXTAUTH_URL + "/blog/post/" + slug.current;
 
@@ -86,10 +86,10 @@ export async function POST(request: NextRequest) {
             _type: "post",
             body: blocksBody,
             body_en: blocksBody_en,
-            categories,
             mainImage,
-            langage: "both",
             externLinks,
+            categories,
+            langage: "both",
             internLink: lien_interne,
         });
         return NextResponse.json({ createdPost, link }, { status: 200 });
@@ -100,6 +100,7 @@ export async function POST(request: NextRequest) {
 
 async function loadImagesToSanity(images: string[], slug: string): Promise<{ mainImage: any; imagesIds: string[] }> {
     const imagesIds: string[] = [];
+    if (!images?.length) return { mainImage: undefined, imagesIds };
     for (let index = 0; index < images.length; index++) {
         const image = images[index];
         const imageResponse = await fetch(image);
@@ -152,6 +153,79 @@ export const getRules = (imagesIds: string[]) => {
         },
         {
             deserialize(el: any, next: any, block: any) {
+                if ((el as HTMLElement).tagName?.toLowerCase() != "tabelvoc") {
+                    return undefined;
+                }
+                const tag = (el as HTMLElement).getAttribute("tag");
+                const category = (el as HTMLElement).getAttribute("category");
+                const themeId = (el as HTMLElement).getAttribute("themeId");
+                const isArticle = "isArticle" in el.attributes ? true : false;
+                const isOnlyFrench = "isOnlyFrench" in el.attributes ? true : false;
+
+                return block({
+                    _type: "tabelVoc",
+                    filters: {
+                        status: "primary",
+                        nature: "all",
+                        tags: tag ? [tag] : undefined,
+                    },
+                    category: category || "vocabulary",
+                    themes: [
+                        {
+                            _key: uuidv4(),
+                            _type: "reference",
+                            _ref: themeId,
+                        },
+                    ],
+                    isArticle,
+                    isOnlyFrench,
+                });
+            },
+        },
+        {
+            deserialize(el: any, next: any, block: any) {
+                if ((el as HTMLElement).tagName?.toLowerCase() != "flashcards") {
+                    return undefined;
+                }
+
+                const tag = (el as HTMLElement).getAttribute("tag");
+                const category = (el as HTMLElement).getAttribute("category");
+                const themeId = (el as HTMLElement).getAttribute("themeId");
+
+                return block({
+                    _type: "flashcards",
+                    filters: {
+                        status: "primary",
+                        nature: "all",
+                        tags: tag ? [tag] : undefined,
+                    },
+                    category: category || "vocabulary",
+                    themes: [
+                        {
+                            _key: uuidv4(),
+                            _type: "reference",
+                            _ref: themeId,
+                        },
+                    ],
+                });
+            },
+        },
+        {
+            deserialize(el: any, next: any, block: any) {
+                if ((el as HTMLElement).tagName?.toLowerCase() != "exercise") {
+                    return undefined;
+                }
+
+                const exerciseId = (el as HTMLElement).getAttribute("exerciseId");
+
+                return block({
+                    _type: "exercise",
+                    _ref: exerciseId,
+                });
+            },
+        },
+        {
+            deserialize(el: any, next: any, block: any) {
                 if ((el as HTMLElement).tagName?.toLowerCase() === "highlight") {
                     let text = "";
                     el.childNodes.forEach((node: any) => {
@@ -170,22 +244,29 @@ export const getRules = (imagesIds: string[]) => {
         },
         {
             deserialize(el: any, next: any, block: any) {
-                if ((el as HTMLElement).tagName?.toLowerCase() === "exemple") {
+                if ((el as HTMLElement).tagName?.toLowerCase() === "u") {
                     let text = "";
                     el.childNodes.forEach((node: any) => {
                         text += node.textContent;
                     });
+
+                    return {
+                        _key: uuidv4(),
+                        _type: "span",
+                        marks: ["underline"],
+                        text,
+                    };
+                }
+                return undefined;
+            },
+        },
+        {
+            deserialize(el: any, next: any, block: any) {
+                if ((el as HTMLElement).tagName?.toLowerCase() === "example") {
                     return block({
                         _key: uuidv4(),
                         _type: "block",
-                        children: [
-                            {
-                                _key: uuidv4(),
-                                _type: "span",
-                                marks: [],
-                                text,
-                            },
-                        ],
+                        children: next(el.childNodes),
                         markDefs: [],
                         style: "exemple",
                     });
@@ -196,21 +277,10 @@ export const getRules = (imagesIds: string[]) => {
         {
             deserialize(el: any, next: any, block: any) {
                 if ((el as HTMLElement).tagName?.toLowerCase() === "funfact") {
-                    let text = "";
-                    el.childNodes.forEach((node: any) => {
-                        text += node.textContent;
-                    });
                     return block({
                         _key: uuidv4(),
                         _type: "block",
-                        children: [
-                            {
-                                _key: uuidv4(),
-                                _type: "span",
-                                marks: [],
-                                text,
-                            },
-                        ],
+                        children: next(el.childNodes),
                         markDefs: [],
                         style: "funfact",
                     });
@@ -220,42 +290,11 @@ export const getRules = (imagesIds: string[]) => {
         },
         {
             deserialize(el: any, next: any, block: any) {
-                if ((el as HTMLElement).tagName?.toLowerCase() === "translation") {
-                    let text = "";
-                    el.childNodes.forEach((node: any) => {
-                        text += node.textContent;
-                    });
-                    const translation: string | null = (el as HTMLElement).getAttribute("english");
-
-                    return {
-                        _key: uuidv4(),
-                        _type: "span",
-                        marks: ["translation"],
-                        text,
-                        value: { translation },
-                    };
-                }
-                return undefined;
-            },
-        },
-        {
-            deserialize(el: any, next: any, block: any) {
                 if ((el as HTMLElement).tagName?.toLowerCase() === "help") {
-                    let text = "";
-                    el.childNodes.forEach((node: any) => {
-                        text += node.textContent;
-                    });
                     return block({
                         _key: uuidv4(),
                         _type: "block",
-                        children: [
-                            {
-                                _key: uuidv4(),
-                                _type: "span",
-                                marks: [],
-                                text,
-                            },
-                        ],
+                        children: next(el.childNodes),
                         markDefs: [],
                         style: "help",
                     });
@@ -266,21 +305,10 @@ export const getRules = (imagesIds: string[]) => {
         {
             deserialize(el: any, next: any, block: any) {
                 if ((el as HTMLElement).tagName?.toLowerCase() === "lesson") {
-                    let text = "";
-                    el.childNodes.forEach((node: any) => {
-                        text += node.textContent;
-                    });
                     return block({
                         _key: uuidv4(),
                         _type: "block",
-                        children: [
-                            {
-                                _key: uuidv4(),
-                                _type: "span",
-                                marks: [],
-                                text,
-                            },
-                        ],
+                        children: next(el.childNodes),
                         markDefs: [],
                         style: "lesson",
                     });
@@ -291,21 +319,10 @@ export const getRules = (imagesIds: string[]) => {
         {
             deserialize(el: any, next: any, block: any) {
                 if ((el as HTMLElement).tagName?.toLowerCase() === "extract") {
-                    let text = "";
-                    el.childNodes.forEach((node: any) => {
-                        text += node.textContent;
-                    });
                     return block({
                         _key: uuidv4(),
                         _type: "block",
-                        children: [
-                            {
-                                _key: uuidv4(),
-                                _type: "span",
-                                marks: [],
-                                text,
-                            },
-                        ],
+                        children: next(el.childNodes),
                         markDefs: [],
                         style: "extract",
                     });
@@ -313,5 +330,82 @@ export const getRules = (imagesIds: string[]) => {
                 return undefined;
             },
         },
+        {
+            deserialize(el: any, next: any) {
+                if ((el as HTMLElement).tagName?.toLowerCase() !== "translation") return undefined;
+
+                const label: string | null = next(el.childNodes);
+                const french: string = (el as HTMLElement).getAttribute("french") || getTextFromEl(el);
+                const english: string = (el as HTMLElement).getAttribute("english") || "";
+                const id: string | null = (el as HTMLElement).getAttribute("id");
+
+                if (!english && !id) return undefined;
+                const reference = id ? { _type: "reference", _ref: id } : undefined;
+
+                return {
+                    _type: "__annotation",
+                    markDef: {
+                        _type: "translationPopover",
+                        _key: uuidv4(),
+                        french,
+                        english,
+                        vocabItemId: reference,
+                    },
+                    children: label,
+                };
+            },
+        },
+        {
+            deserialize(el: any, next: any) {
+                if ((el as HTMLElement).tagName?.toLowerCase() !== "sound") return undefined;
+                const label: string | null = next(el.childNodes);
+                const vocabItemId: string = (el as HTMLElement).getAttribute("vocabitemid") || getTextFromEl(el);
+                const phonetic: string = (el as HTMLElement).getAttribute("phonetic") || "";
+
+                const reference = vocabItemId ? { _type: "reference", _ref: vocabItemId } : undefined;
+
+                return {
+                    _type: "__annotation",
+                    markDef: {
+                        _type: "sound",
+                        _key: uuidv4(),
+                        phonetic,
+                        vocabItem: reference,
+                    },
+                    children: label,
+                };
+            },
+        },
+        {
+            deserialize(el: any, next: any) {
+                if ((el as HTMLElement).tagName?.toLowerCase() !== "lien") return undefined;
+                const children: string | null = next(el.childNodes);
+                const href: string | null = (el as HTMLElement).getAttribute("href") || "https://www.startfrenchnow.com/";
+                const target: boolean = "target" in el.attributes ? true : false;
+                const download: boolean = "download" in el.attributes ? true : false;
+                const isSpan: boolean = "span" in el.attributes ? true : false;
+
+                return {
+                    _type: "__annotation",
+                    markDef: {
+                        _type: "link",
+                        _key: uuidv4(),
+                        href,
+                        target,
+                        download,
+                        isSpan,
+                    },
+                    children,
+                };
+            },
+        },
     ] as any;
+};
+
+const getTextFromEl = (el: any) => {
+    let text = "";
+    el.childNodes.forEach((node: any) => {
+        text += node.textContent;
+    });
+    return text;
 };

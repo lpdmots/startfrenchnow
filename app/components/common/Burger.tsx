@@ -27,63 +27,50 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
             >
                 <div className="nav burgerCollapse w-full sm:w-none mb-0 flex flex-col items-start">
                     <ul className="flex-col !items-start list-none pl-0 sm:pl-2 w-full">
+                        <div onClick={() => setOpen(false)} className="p-2 font-bold">
+                            {messages.coursesTitle}
+                        </div>
+                        <div className="grid grid-cols-2 w-full">
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.beginners}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/courses/intermediates" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center  pl-0" locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.intermediates}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/courses/dialogues" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.dialogues}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/courses/past-tenses" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.pastTenses}
+                                </LinkCurrentBlog>
+                            </div>
+                        </div>
+                        <li className="header-nav-list-item middle !mb-0">
+                            <LinkCurrentBlog href="/videos" className={`nav-link header-nav-link !p-2 ${pathname === "/stories" && "current"}`} locale={locale}>
+                                {messages.videos}
+                            </LinkCurrentBlog>
+                        </li>
+                        <div onClick={() => setOpen(false)}>
+                            <LinkCurrentBlog href="/blog" className="nav-link header-nav-link p-2 m-0 flex items-center" locale={locale as Locale}>
+                                {messages.learn}
+                            </LinkCurrentBlog>
+                        </div>
                         <li className="header-nav-list-item middle !mb-0">
                             <Link href="/stories" className={`nav-link header-nav-link !p-2 ${pathname === "/stories" && "current"}`} onClick={() => setOpen(false)}>
                                 {messages.stories}
                             </Link>
                         </li>
-                        <div onClick={() => setOpen(false)}>
-                            <LinkCurrentBlog href="/blog" className="nav-link header-nav-link p-2 m-0 flex items-center" locale={locale as Locale}>
-                                {messages.blog}
-                            </LinkCurrentBlog>
-                        </div>
-                        <div className="grid grid-cols-2 w-full">
-                            <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog href="/blog/category/tips" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
-                                    <FaCaretRight />
-                                    {messages.tips}
-                                </LinkCurrentBlog>
-                            </div>
-                            <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog href="/blog/category/vocabulary" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center  pl-0" locale={locale as Locale}>
-                                    <FaCaretRight />
-                                    {messages.vocabulary}
-                                </LinkCurrentBlog>
-                            </div>
-                            <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog href="/blog/category/grammar" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
-                                    <FaCaretRight />
-                                    {messages.grammar}
-                                </LinkCurrentBlog>
-                            </div>
-                            <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog
-                                    href="/blog/category/orthography"
-                                    className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 "
-                                    locale={locale as Locale}
-                                >
-                                    <FaCaretRight />
-                                    {messages.orthography}
-                                </LinkCurrentBlog>
-                            </div>
-                            <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog href="/blog/category/culture" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
-                                    <FaCaretRight />
-                                    {messages.culture}
-                                </LinkCurrentBlog>
-                            </div>
-                            <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog href="/blog/category/expressions" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale}>
-                                    <FaCaretRight />
-                                    {messages.expressions}
-                                </LinkCurrentBlog>
-                            </div>
-                        </div>
-                        {/* <div onClick={() => setOpen(false)}>
-                            <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-2 m-0 flex items-center" locale={locale}>
-                                {messages.videos}
-                            </LinkCurrentBlog>
-                        </div> */}
                         <li className="header-nav-list-item middle !mb-0" onClick={() => setOpen(false)}>
                             <Link href="/about" className={`nav-link header-nav-link !p-2 ${pathname === "/about" && "current"}`} onClick={() => setOpen(false)}>
                                 {messages.about}

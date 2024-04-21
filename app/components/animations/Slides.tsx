@@ -7,6 +7,7 @@ interface Props {
     delay?: number;
     delayChildren?: number;
     width?: string;
+    onVisible?: (visible: boolean) => void;
 }
 
 export const SlideFromBottom = ({ duration, delay, children }: Props) => {
@@ -72,7 +73,7 @@ export const SlideFromLeft = ({ duration, delay, children }: Props) => {
     );
 };
 
-export const SlideInOneByOneParent = ({ duration = 0.5, delay = 0.3, delayChildren = 1, children }: Props) => {
+export const SlideInOneByOneParent = ({ duration = 0.5, delay = 0.3, delayChildren = 1, onVisible, children }: Props) => {
     const fadeInOneByOneParent = {
         hidden: { opacity: 0 },
         visible: {
@@ -82,6 +83,11 @@ export const SlideInOneByOneParent = ({ duration = 0.5, delay = 0.3, delayChildr
                 duration,
                 delayChildren,
                 staggerChildren: 0.1,
+                onComplete: () => {
+                    if (onVisible) {
+                        onVisible(true);
+                    }
+                },
             },
         },
     };

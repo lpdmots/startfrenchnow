@@ -10,26 +10,49 @@
         },
         "Stories": {
             "title": "Apprenez le Français avec des Histoires Interactives | Start French Now",
-            "description": "Plongez dans des histoires françaises immersives et améliorez vos compétences linguistiques sans effort. Découvrez Paris et apprenez à votre rythme. Start French Now !"
+            "description": "Plongez dans des histoires françaises immersives et améliorez vos compétences linguistiques sans effort. Découvrez nos aventures et apprenez à votre rythme. Start French Now !"
         },
         "Blog": {
             "title": "Blog Start French Now : Votre Guide Ultime pour Apprendre le Français",
             "description": "Découvrez les secrets de l'apprentissage du français avec le blog Start French Now. De la grammaire au vocabulaire, nos articles offrent un guide complet et compréhensible pour maîtriser la langue."
         },
+        "Videos": {
+            "title": "Nos Vidéos Educatives – Apprendre Facilement et Efficacement | Start French Now",
+            "description": "Explorez notre collection de vidéos éducatives pour apprendre le français. Que vous soyez débutant ou intermédiaire, nos vidéos ludiques et informatives vous guideront à chaque étape de votre apprentissage."
+        },
         "About": {
             "title": "Rencontrez Yohann : Votre guide expert pour apprendre le français à partir de zéro",
             "description": "Découvrez le parcours de Yohann, de professeur des écoles à expert mondial dans l'enseignement du français aux débutants. Commencez votre propre voyage d'apprentissage du français avec nous !"
+        },
+        "Courses": {
+            "Beginners": {
+                "title": "Cours Complet de Français : Apprenez le Français - Débutants | Start French Now",
+                "description": "Langue française pour les débutants (A0 > A2). Expression orale, écoute, grammaire, lecture, vocabulaire avec un enseignant natif."
+            },
+            "Intermediates": {
+                "title": "Cours de Français Intermédiaire : Apprenez le Français - Intermédiaire | Start French Now",
+                "description": "Langue française pour les intermédiaires (A2 > B1). Expression orale, écoute, grammaire, lecture, vocabulaire avec un enseignant natif."
+            },
+            "Dialogues": {
+                "title": "Cours de Français : Les Dialogues du Quotidien | Start French Now",
+                "description": "Améliorez vos compétences en français avec un cours qui intègre la vie quotidienne française à vos leçons à travers des dialogues captivants, une pratique ciblée de la grammaire et du vocabulaire. Vous serez prêt à vivre et à communiquer en France aisément."
+            },
+            "PastTenses": {
+                "title": "Cours de Français : Maîtrisez les Temps du Passé | Start French Now",
+                "description": "Parlez au passé en français. Apprenez les 3 principaux temps du passé : le passé composé, l'imparfait, le plus-que-parfait. Comprenez les différences entre les temps du passés et utilisez-les ensemble."
+            }
         }
     },
     "Navigation": {
         "home": "Accueil",
-        "stories": "Histoires",
         "blog": "Blog",
         "about": "À propos",
         "contact": "Contact",
         "my_account": "Mon compte",
         "logout": "Se déconnecter",
         "contact_us": "Contactez-nous",
+        "videos": "Vidéos",
+        "stories": "Jouer",
         "learn": {
             "button": "Apprendre",
             "blog": "Articles & Ressources",
@@ -39,7 +62,18 @@
             "culture": "Culture",
             "orthography": "Orthographe",
             "videos": "Vidéos",
-            "tips": "Conseils et astuces"
+            "tips": "Conseils et astuces",
+            "stories": "Histoires"
+        },
+        "courses": {
+            "coursesTitle": "Nos cours",
+            "button": "Cours",
+            "beginners": "Débutant",
+            "intermediates": "Intermédiaire",
+            "dialogues": "Dialogues Quotidiens",
+            "pastTenses": "Les Temps Passés",
+            "dialoguesFooter": "Dialogues",
+            "pastTensesFooter": "Temps Passés"
         }
     },
     "HeroSfn": {
@@ -62,9 +96,9 @@
                 "title": "Intermédiaire - Niveau 2 (A2.1)",
                 "description": "Approfondissez vos connaissances en français et progressez du niveau A2 à B1. Apprenez tous les outils nécessaires pour construire des phrases plus longues et plus complexes. Parlez de tous les sujets du quotidien avec confiance."
             },
-            "lowIntermediateLevel2bis": {
-                "title": "Intermédiaire - Niveau 2 (A2.1)",
-                "description": "Approfondissez vos connaissances en français et progressez du niveau A2 à B1. Apprenez tous les outils nécessaires pour construire des phrases plus longues et plus complexes. Parlez de tous les sujets du quotidien avec confiance.",
+            "lowIntermediateLevel3": {
+                "title": "Les dialogues du quotidien - Niveau 3 (A2-B1)",
+                "description": "Améliorez vos compétences en français avec un cours qui intègre la vie quotidienne française à vos leçons à travers des dialogues captivants, une pratique ciblée de la grammaire et du vocabulaire. Vous serez prêt à vivre et à communiquer en France aisément.",
                 "new": "Nouveau !"
             },
             "masterPastTenses": {
@@ -188,8 +222,8 @@
         "Hero": {
             "imageAlt": "Un homme qui regarde un livre d'où sort des effluves magiques",
             "title": "<hs4>Apprenez</hs4> le français avec nos <hs2>histoires</hs2> interactives",
-            "description": "Découvrez les bienfaits des histoires interactives pour progresser en langue française. Améliorez vos compétences linguistiques et explorez Paris de manière amusante et engageante.",
-            "btnStory": "Aller à l'histoire",
+            "description": "Découvrez les bienfaits des histoires interactives pour progresser en langue française. Améliorez vos compétences linguistiques de manière amusante et engageante.",
+            "btnStory": "Aller aux histoires",
             "btnMoreInfo": "Plus d'infos"
         },
         "StoriesBand": {
@@ -197,8 +231,8 @@
         },
         "StoryTabs": {
             "title": "<hs1>Testez vos compétences</hs1> en français à travers une histoire interactive",
-            "description1": "Plongez dans notre histoire interactive et explorez <hs4>les innombrables possibilités</hs4> qu'elle offre. N'hésitez pas à recommencer et à déverrouiller un maximum de succès - mais vous ne les obtiendrez jamais tous ! 😈",
-            "description2": "Ce voyage nécessite une solide base en français, mais ne vous inquiétez pas, vous disposez de <hs2>traductions</hs2>. Avec un peu de dévouement et une touche de créativité, vous ferez des merveilles en un rien de temps."
+            "description1": "Plongez dans nos histoires interactives et explorez <hs4>les innombrables possibilités</hs4> qu'elles offrent. N'hésitez pas à recommencer et à déverrouiller un maximum de succès - mais vous ne les obtiendrez jamais tous ! 😈",
+            "description2": "Ces voyages nécessitent une solide base en français, mais ne vous inquiétez pas, vous disposez de <hs2>traductions</hs2>. Avec un peu de dévouement et une touche de créativité, vous ferez des merveilles en un rien de temps."
         },
         "WhyStories": {
             "title": "Apprendre le français avec des <hs2>histoires interactives</hs2>?",
@@ -443,6 +477,335 @@
         "Post": {
             "latestPosts": "Derniers <hs4>articles</hs4>",
             "browseAllPosts": "Tous les articles"
+        }
+    },
+    "Videos": {
+        "VideoList": {
+            "title": "Nos Ressources <hs1>Vidéos</hs1>",
+            "description": "Explorez notre collection de vidéos pour apprendre le français. Quelque soit votre niveau, vous trouverez sans doute votre bonheur !"
+        }
+    },
+    "Courses": {
+        "Beginners": {
+            "PrimaryPage": {
+                "title": "Cours Complet de Français : Apprenez le Français - <hs2>Débutants</hs2>",
+                "description": "Langue française pour les débutants (A0 > A2). Expression orale, écoute, grammaire, lecture, vocabulaire avec un enseignant natif."
+            },
+            "YouLearn": {
+                "title": "Ce que <hs2>vous apprendrez</hs2>",
+                "learn1": "Maîtrisez les bases du français pour de <noWrap>bon !</noWrap>",
+                "learn2": "Construisez et développez les compétences pratiques de communication en français : Expression orale, écoute, lecture <noWrap>et écriture.</noWrap>",
+                "learn3": "Exprimez-vous aisément sur des <noWrap>sujets familiers.</noWrap>",
+                "learn4": "Commencez à parler français couramment et avec confiance. <noWrap>(Niveau A2)</noWrap>",
+                "learn5": "Soyez confiant concernant vos compétences en français, utilisez et comprenez les expressions courantes.",
+                "learn6": "Apprenez la grammaire et le vocabulaire avec des explications et des <noWrap>exercices amusants.</noWrap>"
+            },
+            "Description": {
+                "para1": "<b>Ce premier cours est probablement le plus important. <hs2>Il vous donnera une base solide</hs2> de la langue française et vous motivera certainement à la parler couramment.</b>",
+                "header1": "Il est fait <hs2>pour vous si</hs2> :",
+                "listItem1": "Vous souhaitez sérieusement apprendre le français (mais avec des exercices amusants, interactifs et visuellement intéressants).",
+                "listItem2": "Vous avez besoin de quelque chose de structuré (suivant Le Cadre Européen Commun de Référence pour les Langues).",
+                "listItem3": "Vous voulez du matériel supplémentaire après la leçon.",
+                "listItem4": "Vous êtes intéressé par l'obtention du A1 ou A2 pour le DELF / TCF / TEF / FIDE ...",
+                "header2": "<hs2>Comment</hs2> cela fonctionne-t-il ?",
+                "para2": "Le cours est divisé en 28 leçons (16 heures de vidéos) suivant toutes une progression très logique basée sur de nombreuses années d'enseignement et des dizaines de méthodes françaises. J'utilise également exactement le même matériel avec mes étudiants privés en leçons individuelles et je peux vous assurer qu'ils progressent !",
+                "para3": "Chaque leçon a un objectif spécifique ou un thème et vient avec du vocabulaire et de la grammaire. Toutes ces nouvelles connaissances sont testées à travers de nombreux exercices. Pour cette partie (exercices) vous aurez besoin d'un stylo et d'une feuille de papier pour faire les exercices avec moi. C'est facile, suivez juste les instructions sur la vidéo !",
+                "para4": "<b>Après chaque leçon, vous aurez accès au résumé de la leçon, à des exercices supplémentaires (avec corrections) et à une liste de vocabulaire. Alors s'il vous plaît, faites vos devoirs :)</b>",
+                "header3": "Contenu du <hs2>Cours</hs2>",
+                "content1": "Se présenter - L'alphabet",
+                "content2": "Faire connaissance - Les nationalités",
+                "content3": "Saluer & dire au revoir",
+                "content4": "Les nombres",
+                "content5": "Parler de soi",
+                "content6": "Les articles",
+                "content7": "Parler de sa famille",
+                "content8": "Questionner",
+                "content9": "Décrire sa ville",
+                "content10": "Comprendre un itinéraire",
+                "content11": "Parler de ses goûts et de ses activités",
+                "content12": "Réserver un hébergement",
+                "content13": "Proposer une sortie",
+                "content14": "Décrire la personnalité et le physique",
+                "content15": "Faire du shopping",
+                "content16": "Parler de son quotidien",
+                "content17": "Parler de ses vacances",
+                "content18": "Chez le docteur",
+                "content19": "Parler de son alimentation",
+                "content20": "Donner des conseils",
+                "content21": "Questionner (les 3 formes du questionnement)",
+                "content22": "Parler de ses projets (le futur)",
+                "content23": "Révision des temps",
+                "content24": "La construction de la phrase"
+            },
+            "Infos": {
+                "header": "Ce cours comprend :",
+                "video": "Vidéo à la demande de <noWrap>17 heures</noWrap>",
+                "articles": "12 articles",
+                "resources": "119 ressources téléchargeables",
+                "accessMobileTV": "Accès sur mobiles et TV",
+                "unlimitedAccess": "Accès illimité",
+                "certificate": "Certificat de fin de formation",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "guarantee": "* Garantie satisfait ou remboursé de 30 jours"
+            },
+            "IsForYou": {
+                "title": "Ce Cours est-il <hs2>Fait pour Vous</hs2> ?",
+                "description": "Assurez-vous que notre cours corresponde à vos besoins et à votre niveau actuel en français. N'hésitez pas à nous contacter pour toute question ou pour obtenir des conseils personnalisés avant de vous inscrire. ",
+                "help": "À l'aide !",
+                "prerequisitesTitle": "Les Prérequis",
+                "prerequisite1": "Vous n'avez besoin d'aucune connaissance préalable pour commencer ce cours.",
+                "prerequisite2": "Le cours est recommandé à toute personne souhaitant apprendre le français de manière rapide et efficace.",
+                "prerequisite3": "Il est en français, ne vous inquiétez pas : l'immersion est la meilleure méthode pour apprendre une langue.",
+                "prerequisite4": "Enseignant de langue maternelle française avec un accent parfait.",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "levelTitle": "Quel niveau atteindrez-vous ?",
+                "levelDescription": "À la fin de ce cours, vous aurez complété le niveau A1.2 et atteint un niveau intermédiaire bas en français (A2) vous <noWrap>permettant de :</noWrap>",
+                "level1": "comprendre des phrases et des expressions fréquemment utilisées liées à des domaines de pertinence immédiate (ex. : informations personnelles et familiales de base, achats, géographie locale, emploi).",
+                "level2": "communiquer dans des tâches simples et habituelles nécessitant un échange d'informations simple et direct sur des sujets familiers et routiniers.",
+                "level3": "décrire en termes simples des aspects de votre environnement proche et répondre à des questions dans des domaines de besoin immédiat."
+            },
+            "OtherCourses": { "title": "Voir les <hs2>autres cours</hs2>" },
+            "LastComments": {
+                "title": "<hs2>Retours</hs2> & Expériences",
+                "description": "Voici ce que nos étudiants disent de ce cours. Faites-vous votre propre avis sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous trouverez des milliers d'autres avis sur ",
+                "buyNow": "ACHETEZ-LE MAINTENANT !"
+            }
+        },
+        "Intermediates": {
+            "PrimaryPage": {
+                "title": "Cours Complet de Français : Apprendre le Français - <noWrap><hs4>Intermédiaire</hs4></noWrap>",
+                "description": "Cours de langue française pour le niveau intermédiaire bas A2 à B1. Approfondissez vos connaissances avec un enseignant natif."
+            },
+            "YouLearn": {
+                "title": "Ce que <hs4>vous apprendrez</hs4>",
+                "learn1": "Approfondissez votre connaissance du français et progressez du niveau A2 au B1",
+                "learn2": "Apprenez tous les outils nécessaires pour construire des phrases plus longues et complexes",
+                "learn3": "Gérez la plupart des situations lors de vos voyages en France",
+                "learn4": "Apprenez le vocabulaire et la grammaire française importants pour le niveau A2",
+                "learn5": "Parlez français avec confiance sur des sujets familiers",
+                "learn6": "Commencez à exprimer votre opinion sur différents sujets"
+            },
+            "Description": {
+                "para1": "<b>Si vous êtes un débutant complet, envisagez de prendre ma première classe :</b>",
+                "header1": "Ce cours est <hs4>fait pour vous si</hs4> :",
+                "listItem1": "Vous voulez amener votre français au niveau supérieur.",
+                "listItem2": "Si vous avez terminé mon cours précédent et que vous souhaitez une progression logique.",
+                "listItem3": "Si vous voulez passer le DELF A2 ou un examen similaire.",
+                "listItem4": "Si vous avez déjà appris un peu de français dans le passé et souhaitez poursuivre le rêve de parler français 😉",
+                "header2": "<hs4>Comment</hs4> ça fonctionne ?",
+                "para2": "Le cours se divise en <b>18 leçons (~12 heures de vidéos)</b> suivant toutes une progression très logique, basée sur de nombreuses années d'enseignement et des dizaines de méthodes françaises. J'utilise également le même matériel avec mes étudiants privés en cours particuliers et je peux vous assurer qu'ils progressent !",
+                "para3": "Chaque leçon a un objectif spécifique ou un thème utilisant des situations réelles pour apprendre un nouveau vocabulaire et de la grammaire. Toutes ces nouvelles connaissances sont testées à travers de nombreux exercices. Pour cette partie, vous aurez besoin d'un stylo et d'une feuille de papier pour faire les exercices avec moi. C'est facile, suivez simplement les instructions de la vidéo !",
+                "para4": "Après chaque leçon, vous aurez accès au <b>résumé de la leçon, à des exercices supplémentaires (avec corrections) et une liste de vocabulaire</b>. Alors s'il vous plaît, faites vos devoirs 😊",
+                "header3": "Contenu <hs4>du cours</hs4>",
+                "content1": "Parler de la météo",
+                "content2": "La France et ses régions",
+                "content3": "Décrire un lieu",
+                "content4": "Comprendre & Écrire un programme",
+                "content5": "Choisir un cadeau",
+                "content6": "Faire du shopping dans un magasin",
+                "content7": "Décrire un objet et sa fonction",
+                "content8": "Faire une liste de courses",
+                "content9": "Chez le commerçant",
+                "content10": "Caractériser un restaurant",
+                "content11": "Commander dans un restaurant",
+                "content12": "Parler du passé",
+                "content13": "Faire des comparaisons",
+                "content14": "Décrire un logement",
+                "content15": "Transformations / Rénovations de la maison",
+                "content16": "Rechercher un logement",
+                "content17": "Colocation",
+                "content18": "Conjugaison (Révision)"
+            },
+            "Infos": {
+                "header": "Ce cours inclut:",
+                "video": "Vidéos à la demande pendant <noWrap>11,5 heures</noWrap>",
+                "resources": "64 ressources téléchargeables",
+                "accessMobileTV": "Accès sur mobiles et TV",
+                "unlimitedAccess": "Accès illimité",
+                "certificate": "Certificat de complétion",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "guarantee": "* Garantie de satisfaction ou remboursement de 30 jours"
+            },
+            "IsForYou": {
+                "title": "Ce cours est-il <hs4>fait pour vous</hs4> ?",
+                "description": "Assurez-vous que notre cours correspond à vos besoins et à votre niveau actuel de français. N'hésitez pas à nous contacter pour toute question ou pour des conseils personnalisés avant de vous inscrire.",
+                "help": "Aidez-moi !",
+                "prerequisitesTitle": "Prérequis",
+                "prerequisite1": "Vous devriez avoir une bonne connaissance du vocabulaire et de la grammaire français A1.",
+                "prerequisite2": "Idéalement mon premier cours : Cours Complet de Français : Apprendre le Français - Débutants.",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "levelTitle": "Quel niveau vais-je atteindre ?",
+                "levelDescription": "À la fin de ce cours, vous aurez complété le niveau A2.1. Vous devrez terminer la deuxième partie de ce cours (sur laquelle je travaille déjà) pour finir le niveau A2.2 et atteindre le début de B1."
+            },
+            "OtherCourses": { "title": "Voir <hs4>d'autres cours</hs4>" },
+            "LastComments": {
+                "title": "<hs4>Avis</hs4> & Expériences",
+                "description": "Voici ce que nos étudiants disent de ce cours. Formez votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
+                "buyNow": "ACHETEZ-LE MAINTENANT !"
+            }
+        },
+        "Dialogues": {
+            "PrimaryPage": {
+                "title": "Le cours complet de français - <noWrap><hs5>Conversations du quotidien</hs5></noWrap>",
+                "description": "Cours de langue française - Niveau intermédiaire A2 à B1. Maîtrisez la communication quotidienne en français avec 100 dialogues de la vie réelle."
+            },
+            "YouLearn": {
+                "title": "Ce que <hs5>vous apprendrez</hs5>",
+                "learn1": "Maîtriser les situations de la vie courante en français",
+                "learn2": "Acquérir des expressions françaises essentielles pour divers contextes de communication",
+                "learn3": "Consolidez vos compétences avec des exercices et évaluations ciblés",
+                "learn4": "Plongez-vous dans plus d'une centaine de dialogues pratiques en français",
+                "learn5": "Augmentez votre confiance en pratiquant avec de vrais scénarios",
+                "learn6": "Comprendre et utiliser les modes du subjonctif et du conditionnel"
+            },
+            "Description": {
+                "para1": "<b>Premièrement, si vous êtes un débutant complet, envisagez de suivre mon premier cours :</b>",
+                "header1": "Il est <hs5>fait pour vous si</hs5> :",
+                "listItem1": "Vous avez terminé mes cours précédents et souhaitez une progression logique",
+                "listItem2": "Vous désirez un cours basé sur des scénarios de la vie quotidienne réelle",
+                "listItem3": "Vous voulez connaître toutes les expressions pratiques et utiles et parler comme un local",
+                "listItem4": "Vous voulez renforcer votre confiance et être capable de gérer diverses situations en France",
+                "header2": "<hs5>Comment</hs5> cela fonctionne-t-il ?",
+                "para2": "Le cours est divisé en <b>40 leçons (~23 heures de vidéos et une centaine de dialogues)</b> suivant toutes une progression logique et explorant toutes les <b>situations de la vie réelle</b> que vous pourriez rencontrer en France.",
+                "para3": "Chaque leçon commence par des dialogues captivants sur un sujet spécifique, accompagnés de questions pour vérifier votre compréhension. Ensuite, nous décomposons chaque dialogue, en mettant en évidence le vocabulaire clé et la nouvelle grammaire. Nous mettons tout cela en pratique et finalement, nous terminons avec un <b>accent sur la communication</b>, en vous donnant les phrases essentielles pour pouvoir gérer facilement vos situations françaises quotidiennes !",
+                "para4": "Pour la partie exercice, n'oubliez pas que vous aurez besoin d'un stylo et d'un papier pour les compléter avec moi. C'est facile, il suffit de suivre les instructions sur la vidéo !",
+                "para5": "Et très important ! Après chaque leçon, vous aurez accès à <b>un résumé de la leçon et une liste de vocabulaire</b> avec toutes les bonnes expressions à utiliser pour chaque situation de communication, accompagnées de la traduction et d'un document audio pour garantir une prononciation parfaite !",
+                "para6": "Vous trouverez également des bilans ou évaluations avec de nombreux exercices tout au long du cours. Alors, s'il vous plaît, faites vos devoirs 😉",
+                "header3": "Contenu du <hs5>cours</hs5>",
+                "content1": "Faire les courses",
+                "content2": "Préciser les quantités",
+                "content3": "Passer une commande - Commander",
+                "content4": "Réserver",
+                "content5": "Modifier une réservation",
+                "content6": "Parler d'argent",
+                "content7": "Demander l'échange, le remboursement",
+                "content8": "Hésiter - Ne pas être sûr(e)",
+                "content9": "Demander, donner des informations",
+                "content10": "S'inscrire à une activité",
+                "content11": "Chercher, localiser",
+                "content12": "Décrire un lieu - Les vacances",
+                "content13": "Son lieu de vie - S'installer",
+                "content14": "S'abonner - Internet et Téléphonie",
+                "content15": "Demander des explications",
+                "content16": "Chercher une solution",
+                "content17": "Décrire un vol",
+                "content18": "Décrire un accident",
+                "content19": "Parler de sa santé",
+                "content20": "Téléphoner",
+                "content21": "Prendre, reporter, annuler un rendez-vous",
+                "content22": "Faire des travaux, bricoler",
+                "content23": "Réparer, chez le mécanicien",
+                "content24": "Donner - Suivre des instructions",
+                "content25": "Insister - Refuser",
+                "content26": "Signaler une erreur, un problème",
+                "content27": "S'excuser",
+                "content28": "Organiser, proposer une activité",
+                "content29": "Être invité - Complimenter",
+                "content30": "Présenter une personne",
+                "content31": "Prendre, recevoir des nouvelles",
+                "content32": "Féliciter",
+                "content33": "Exprimer la déception et le regret - Consoler",
+                "content34": "Vérifier - Assurer",
+                "content35": "Nier - Accuser",
+                "content36": "Parler d'un changement positif",
+                "content37": "Se plaindre - être négatif",
+                "content38": "Faire une critique positive ou négative (Film - Spectacle)",
+                "content39": "Faire une critique positive ou négative (Exposition - l'Art)",
+                "content40": "Dire du bien / Dire du mal de quelqu'un",
+                "content41": "Demander & Donner des conseils",
+                "content42": "Remerciements et Suite !"
+            },
+            "Infos": {
+                "header": "Ce cours comprend :",
+                "video": "Vidéos à la demande pendant <noWrap>23 heures</noWrap>",
+                "resources": "89 ressources téléchargeables",
+                "accessMobileTV": "Accès sur mobiles et TV",
+                "unlimitedAccess": "Accès illimité",
+                "certificate": "Certificat de complétion",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "guarantee": "* Garantie de satisfaction ou remboursement de 30 jours"
+            },
+            "IsForYou": {
+                "title": "Ce cours est-il <hs5>fait pour vous</hs5> ?",
+                "description": "Assurez-vous que notre cours correspond à vos besoins et à votre niveau actuel de français. N'hésitez pas à nous contacter pour toute question ou pour des conseils personnalisés avant de vous inscrire.",
+                "help": "Aide !",
+                "prerequisitesTitle": "Prérequis",
+                "prerequisite1": "Vous devriez avoir un niveau A2 en français ou un A1 solide.",
+                "prerequisite2": "Au moins mon premier cours : Le cours complet de français : Apprendre le français - Débutants",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "levelTitle": "Quel niveau atteindrai-je ?",
+                "levelDescription": "À la fin de ce cours allant du niveau A2 au B1, vous atteindrez un niveau de conversation B1."
+            },
+            "OtherCourses": { "title": "Voir <hs5>d'autres cours</hs5>" },
+            "LastComments": {
+                "title": "<hs5>Commentaires</hs5> & Expériences",
+                "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
+                "buyNow": "ACHETEZ-LE MAINTENANT !"
+            }
+        },
+        "PastTenses": {
+            "PrimaryPage": {
+                "title": "Apprendre le Français - Niveau Intermédiaire <noWrap>: Maîtrisez</noWrap> <hs3>les Temps Passés</hs3>",
+                "description": "Parler du passé en français - Apprenez les 3 principaux temps du passé : Passé Composé - Imparfait - Plus-que-parfait."
+            },
+            "YouLearn": {
+                "title": "Ce que <hs3>vous allez apprendre</hs3>",
+                "learn1": "Parler du passé",
+                "learn2": "Comprendre les différences entre les temps du passé et les utiliser conjointement",
+                "learn4": "Maîtriser les 3 temps principaux : Passé Composé - Imparfait - Plus-que-parfait",
+                "learn5": "Pratiquer avec des exercices écrits et oraux"
+            },
+            "Description": {
+                "para1": "<b>Maîtrisez le passé en Français !</b>",
+                "header1": "Il est <hs3>fait pour vous si</hs3> :",
+                "listItem1": "Vous avez déjà des connaissances en langue française (niveau A1+/A2)",
+                "listItem2": "Vous recherchez une structure grammaticale claire",
+                "listItem3": "Vous voulez apprendre activement les temps du passé (Faites les exercices avec moi !)",
+                "listItem4": "Vous souhaitez pouvoir vous exprimer au passé en français",
+                "header2": "<hs3>Comment</hs3> cela fonctionne-t-il ?",
+                "para2": "Les temps du passé les plus importants en français sont le <b>Passé Composé</b> et <b>l'Imparfait</b>, et ils peuvent être difficiles à utiliser pour plusieurs raisons. Ils n'ont pas exactement un équivalent en anglais, ce qui rend leur traduction délicate. Ils fonctionnent souvent ensemble et comprendre la relation entre eux est essentiel pour communiquer en français.",
+                "para3": "C'est pourquoi, pour chaque temps, nous verrons les différents <b>usages</b> possibles, la <b>construction</b> et enfin nous allons <b>pratiquer</b> avec des exercices.",
+                "para4": "Ne manquez pas les fiches de résumé et d'exercices (avec corrections) qui vous aideront à pratiquer et à consolider ce que vous avez appris.",
+                "para5": "Comme travail final, il y a un projet que vous pourrez réaliser après avoir suivi cette leçon. Il s'appelle \"Une histoire d'amour\" et vous trouverez le document / PDF en pièce jointe. Je me ferai un plaisir de le corriger et de vous donner un retour personnalisé. Utilisez le résumé du PDF de la leçon pour vous aider avec les verbes ainsi que la liste de vocabulaire qui se trouve sur la feuille de devoir. J'ai hâte de lire vos histoires 😉",
+                "header3": "Contenu du <hs3>cours</hs3>",
+                "content1": "Le passé - Passé Composé - Imparfait - Plus-Que-Parfait",
+                "content2": "Le Passé Composé",
+                "content3": "L'Imparfait",
+                "content4": "Passé Composé ou Imparfait ?",
+                "content5": "Le Plus-Que-Parfait",
+                "content6": "Passé Composé, Imparfait et Plus-que-parfait"
+            },
+            "Infos": {
+                "header": "Ce cours inclut :",
+                "video": "Vidéos à la demande pendant <noWrap>1,5 heures</noWrap>",
+                "resources": "3 ressources téléchargeables",
+                "accessMobileTV": "Accès sur mobiles et TV",
+                "unlimitedAccess": "Accès illimité",
+                "certificate": "Certificat de fin de cours",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "guarantee": "* Garantie de satisfaction ou remboursement de 30 jours"
+            },
+            "IsForYou": {
+                "title": "Ce cours est-il <hs3>fait pour vous</hs3> ?",
+                "description": "Assurez-vous que notre cours correspond à vos besoins et à votre niveau actuel de français. N'hésitez pas à nous contacter pour toute question ou pour un conseil personnalisé avant de vous inscrire.",
+                "help": "Aidez-moi !",
+                "prerequisitesTitle": "Prérequis",
+                "prerequisite1": "Vous avez déjà des connaissances en langue française (niveau A1+/A2).",
+                "prerequisite2": "Un stylo et une feuille de papier.",
+                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "levelTitle": "Quel niveau vais-je atteindre ?",
+                "levelDescription": "Ce cours sur les temps du passé en français est conçu pour <noWrap>vous aider :</noWrap>",
+                "level1": "Les comprendre et savoir quand les utiliser",
+                "level2": "Construire et conjuguer les verbes",
+                "level3": "Être à l'aise en parlant du passé",
+                "level4": "Raconter une histoire au passé, en utilisant les bons temps"
+            },
+            "OtherCourses": { "title": "Voir <hs3>d'autres cours</hs3>" },
+            "LastComments": {
+                "title": "<hs3>Commentaires</hs3> & Expériences",
+                "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
+                "buyNow": "ACHETEZ-LE MAINTENANT !"
+            }
         }
     }
 }

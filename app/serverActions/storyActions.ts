@@ -135,16 +135,16 @@ export const storyToStoryStats = async (story: Adventure, userId: string, review
     const storyStats: StoryStats = previousData || INITIALSTORYSTATS;
 
     storyStats.games += 1;
-    if (!storyStats.userIds.includes(userId)) storyStats.userIds.push(userId);
+    if (!(storyStats?.userIds || []).includes(userId)) storyStats?.userIds ? storyStats?.userIds.push(userId) : (storyStats.userIds = [userId]);
 
     reviews.forEach((review) => {
         const { scores, success } = review;
 
         scores &&
             scores.forEach((score) => {
-                const storyScore = storyStats.scores.find((storyScore) => storyScore.title === score.title);
+                const storyScore = storyStats?.scores?.find((storyScore) => storyScore.title === score.title);
                 if (!storyScore) {
-                    storyStats.scores.push({
+                    const newScore = {
                         title: score.title,
                         averageScore: score.value || 0,
                         bestScore: {
@@ -155,7 +155,9 @@ export const storyToStoryStats = async (story: Adventure, userId: string, review
                             value: score.value || 0,
                             userId,
                         },
-                    });
+                    };
+                    if (storyStats?.scores) storyStats.scores.push(newScore);
+                    else storyStats.scores = [newScore];
                 } else {
                     storyScore.averageScore += score.value || 0;
                     if ((score.value || 0) > storyScore.bestScore.value) {
@@ -175,24 +177,22 @@ export const storyToStoryStats = async (story: Adventure, userId: string, review
 
         success &&
             success.forEach((success) => {
-                const storySuccess = storyStats.success.find((storySuccess) => storySuccess.id === success._id);
-                const storyAverageSuccess = storyStats.averageSuccess.find((storyAverageSuccess) => storyAverageSuccess.id === success._id);
+                const storySuccess = storyStats?.success?.find((storySuccess) => storySuccess.id === success._id);
+                const storyAverageSuccess = storyStats?.averageSuccess?.find((storyAverageSuccess) => storyAverageSuccess.id === success._id);
+                const newSuccess = {
+                    id: success._id,
+                    value: 1,
+                };
                 if (success.unlocked && !userStoryData.success.includes(success._id)) {
                     if (!storySuccess) {
-                        storyStats.success.push({
-                            id: success._id,
-                            value: 1,
-                        });
+                        storyStats?.success?.push(newSuccess) || (storyStats.success = [newSuccess]);
                     } else {
                         storySuccess.value += 1;
                     }
                 }
                 if (success.unlocked) {
                     if (!storyAverageSuccess) {
-                        storyStats.averageSuccess.push({
-                            id: success._id,
-                            value: 1,
-                        });
+                        storyStats?.averageSuccess?.push(newSuccess) || (storyStats.averageSuccess = [newSuccess]);
                     } else {
                         storyAverageSuccess.value += 1;
                     }

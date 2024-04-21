@@ -48,7 +48,7 @@ export const InputLayout = ({ _key }: { _key: string }) => {
     };
 
     return (
-        <div className="flex-col flex justify-between items-center gap-8 grow">
+        <div className="flex-col flex justify-between items-center gap-8 grow" onKeyDown={handleKeyPress}>
             {prompt}
             <div className="flex justify-center items-center w-full">
                 <SlideInOneByOneParent delayChildren={0.1}>
@@ -61,7 +61,6 @@ export const InputLayout = ({ _key }: { _key: string }) => {
                                         type="text"
                                         className="rounded-xl px-2 my-1 focus:border-secondary-2 w-full sm:w-60 h-12 md:h-14"
                                         onChange={(e) => handleChange(1, e)}
-                                        onKeyDown={handleKeyPress}
                                         name="response"
                                         placeholder="..."
                                         autoComplete="off"

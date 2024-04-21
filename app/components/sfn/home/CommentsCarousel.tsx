@@ -24,7 +24,7 @@ function CommentsCarousel() {
                                         <p className="mg-bottom-48px">
                                             {t("description")}
                                             <span className="text-no-wrap">
-                                                {t("description2")} <LinkArrow>Udemy</LinkArrow>.
+                                                {t("description2")} <LinkArrow url="https://www.udemy.com/course/french-for-beginners-a1/">Udemy</LinkArrow>.
                                             </span>
                                         </p>
                                     </div>

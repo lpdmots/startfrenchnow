@@ -11,6 +11,7 @@ import { AiOutlineSound } from "react-icons/ai";
 import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 import ValidationButton from "./ValidationButton";
 import { COLORVARIABLESSHADES } from "@/app/lib/constantes";
+import { on } from "events";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 

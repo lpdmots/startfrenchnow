@@ -7,29 +7,41 @@ import { ParentToChildrens } from "../../animations/ParentToChildrens";
 import { SlideFromBottom } from "../../animations/Slides";
 import { LinkBlog } from "../blog/LinkBlog";
 import SecondaryPost from "../blog/SecondaryPost";
+import { intelRich } from "@/app/lib/intelRich";
 
 export default function PostsList({ posts, postLang }: { posts: Post[]; postLang: "en" | "fr" }) {
-    const t = useTranslations("Blog.PostsList");
+    const t = useTranslations("Blog.BlogList");
+    const tp = useTranslations("Blog.PostsList");
     const locale = useLocale();
 
     return (
-        <div className="section pd-200px pd-top-184px wf-section">
-            <div className="container-default w-container">
-                <div className="inner-container _600px---tablet center">
-                    <div className="inner-container _500px---mbl center">
-                        <div className="w-layout-grid grid-2-columns blog-left-sidebar">
-                            <div className="sticky-top _48px-top sticky-tbl">
-                                <div className="inner-container _380">
-                                    <SlideFromBottom>
+        <div className="page-wrapper mt-8 sm:mt-12">
+            <div className="section hero v3 wf-section">
+                <div className="container-default w-container">
+                    <div className="inner-container _600px---tablet center">
+                        <div className="inner-container _500px---mbl center">
+                            <div className="mg-bottom-60px">
+                                <div className="text-center---tablet">
+                                    <div className="w-layout-grid grid-2-columns title-and-paragraph v2">
+                                        <div className="flex-horizontal start flex-wrap center---tablet">
+                                            <div>
+                                                <h1 className="display-1 mg-bottom-0">{t.rich("articlesAndResources", intelRich())}</h1>
+                                            </div>
+                                        </div>
+                                        <div className="inner-container _560px">
+                                            <p className="mg-bottom-0">{t.rich("description", intelRich())}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-layout-grid grid-2-columns blog-left-sidebar">
+                                <div className="sticky-top _48px-top sticky-tbl">
+                                    <div className="inner-container _380">
                                         <div className="text-center---tablet">
-                                            <h2 className="display-2 mg-bottom-40px">
-                                                <span className="z-index-1">{t("latest")} </span>
-                                                <span className="heading-span-secondary-3 v2">{t("posts")}</span>
-                                            </h2>
                                             <div className="card categories-card !p-8">
-                                                <Link href="#" className="blog-categories-item-wrapper current w-inline-block pointer-events-none">
-                                                    {t("all")}
-                                                </Link>
+                                                <LinkBlog href="/blog" className="blog-categories-item-wrapper w-inline-block current pointer-events-none" locale={locale as Locale}>
+                                                    {tp("all")}
+                                                </LinkBlog>
                                                 <div className="w-dyn-list">
                                                     <div role="list" className="collection-list categories w-dyn-items">
                                                         {CATEGORIES.map((category) => (
@@ -39,15 +51,15 @@ export default function PostsList({ posts, postLang }: { posts: Post[]; postLang
                                                 </div>
                                             </div>
                                         </div>
-                                    </SlideFromBottom>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="grid gap-12">
-                                {posts.map((post) => (
-                                    <ParentToChildrens key={post.title}>
-                                        <SecondaryPost post={post} postLang={postLang} />
-                                    </ParentToChildrens>
-                                ))}
+                                <div className="grid gap-12">
+                                    {posts.map((post) => (
+                                        <ParentToChildrens key={post.title}>
+                                            <SecondaryPost post={post} postLang={postLang as "fr" | "en"} />
+                                        </ParentToChildrens>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -21,7 +21,7 @@ function MarqueeContent() {
                 <UdemyBig height={50} width={150} />
             </div>
             <div className="hidden lg:flex flex-col justify-center">
-                <TwitterBig height={100} width={150} />
+                <TwitterBig height={50} width={100} />
             </div>
 
             <div className="lg:hidden flex flex-col justify-center">

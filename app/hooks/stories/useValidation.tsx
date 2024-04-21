@@ -238,7 +238,7 @@ const variableCondition = (condition: Condition, variables: VariablesToUpdatePro
     const value = variableData?.value || "";
     const comparisonFunctions = {
         isNotNull: () => !!(variableData && value && value !== "0"),
-        isNull: () => !variableData || !value,
+        isNull: () => !!(!variableData || !value || value === "0"),
         compare: () => compareValues(args, value),
     };
 

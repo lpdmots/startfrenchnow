@@ -2,7 +2,7 @@ import { usePostLang } from "@/app/hooks/usePostLang";
 import { useExerciseStore } from "@/app/stores/exerciseStore";
 import Image from "next/image";
 import { DEFAULTCONTENT } from "./Exercise";
-import { Exercise as ExerciseProps } from "@/app/types/sfn/blog";
+import { Exercise as ExerciseProps, LevelChoice } from "@/app/types/sfn/blog";
 import { useQuestions } from "@/app/hooks/exercises/exercise/useQuestions";
 import Spinner from "../../common/Spinner";
 import { useMemo } from "react";
@@ -42,9 +42,11 @@ export const StartLayout = ({ _key, exercise }: { _key: string; exercise: Exerci
     );
 };
 
-export const FetchLayout = ({ exercise }: { exercise: ExerciseProps }) => {
+export const FetchLayout = ({ exercise, _id }: { exercise: ExerciseProps; _id: string }) => {
     const postLang = usePostLang();
-    useQuestions(exercise);
+    const { getExercise } = useExerciseStore();
+    const { levelChoice } = getExercise(_id);
+    useQuestions(exercise, levelChoice);
 
     return (
         <div className="flex justify-center items-center w-full">

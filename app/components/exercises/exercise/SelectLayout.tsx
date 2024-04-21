@@ -82,7 +82,7 @@ export const SelectLayout = ({ _key }: { _key: string }) => {
 };
 
 export const getOptionsList = (responses: Response[], index: number): Response[] => {
-    const [trueAnswers, falseAnswers] = splitArrayFilter(responses, (response) => response.isCorrect === index.toString());
+    const [trueAnswers, falseAnswers] = splitArrayFilter(responses, (response) => (response?.isCorrect || "").split(",").includes(index.toString()));
     const shuffledFalseAnswers = shuffleArray(falseAnswers);
     const selectedFalseAnswers = shuffledFalseAnswers.length < 2 ? shuffledFalseAnswers : shuffledFalseAnswers.slice(0, 2);
     return shuffleArray([...trueAnswers, ...selectedFalseAnswers]);

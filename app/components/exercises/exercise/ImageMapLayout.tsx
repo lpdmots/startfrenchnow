@@ -226,3 +226,54 @@ function useScoreManagement(_key: string, nbrOfResponses: number) {
 
     return { addTrueAnswer, addFalseAnswer };
 }
+
+/* 
+[
+  {"name": "une table basse", "coords": [445, 374, 293, 286], "shape": "rect", "title": "une table basse"},
+  {"name": "un canapé", "coords": [18, 264, 108, 313, 136, 387, 208, 333, 205, 263, 121, 233], "shape": "poly", "title": "un canapé"},
+  {"name": "une table basse", "coords": [20, 310, 106, 404], "shape": "rect", "title": "une table basse"},
+  {"name": "un fauteuil", "coords": [549, 358, 552, 287, 633, 244, 677, 260, 658, 376, 580, 384], "shape": "poly", "title": "un fauteuil"},
+  {"name": "une télévision", "coords": [301, 137, 420, 204], "shape": "rect", "title": "une télévision"},
+  {"name": "un meuble TV", "coords": [236, 223, 240, 303, 291, 278, 449, 278, 481, 302, 485, 223], "shape": "poly", "title": "un meuble TV"},
+  {"name": "un buffet", "coords": [505, 298, 498, 77, 554, 55, 614, 78, 608, 275], "shape": "poly", "title": "un buffet"},
+  {"name": "les étagères", "coords": [157, 73, 221, 169], "shape": "rect", "title": "les étagères"},
+  {"name": "une lampe", "coords": [168, 172, 202, 256], "shape": "rect", "title": "une lampe"},
+  {"name": "une lampe", "coords": [239, 171, 271, 220], "shape": "rect", "title": "une lampe"},
+  {"name": "une lampe", "coords": [447, 157, 489, 220], "shape": "rect", "title": "une lampe"},
+  {"name": "un rideau", "coords": [56, 21, 95, 34, 98, 234, 59, 243], "shape": "poly", "title": "un rideau"},
+  {"name": "un tapis", "coords": [242, 319, 291, 321, 291, 378, 445, 378, 448, 321, 495, 319, 563, 400, 166, 401], "shape": "poly", "title": "un tapis"},
+  {"name": "un luminaire", "coords": [334, 0, 374, 86], "shape": "rect", "title": "un luminaire"},
+  {"name": "un luminaire", "coords": [27, 81, 58, 122], "shape": "rect", "title": "un luminaire"}
+]
+
+
+[
+  {"name": "un canapé", "coords": [32, 236, 134, 203, 218, 227, 220, 289, 164, 370, 33, 375], "shape": "poly", "title": "un canapé"},
+  {"name": "un canapé", "coords": [535, 373, 487, 301, 489, 225, 574, 206, 669, 232, 668, 369], "shape": "poly", "title": "un canapé"},
+  {"name": "une table basse", "coords": [276, 269, 418, 348], "shape": "rect", "title": "une table basse"},
+  {"name": "un fauteuil", "coords": [413, 216, 472, 273], "shape": "rect", "title": "un fauteuil"},
+  {"name": "une chaise", "coords": [248, 182, 288, 245], "shape": "rect", "title": "une chaise"},
+  {"name": "un luminaire", "coords": [359, 47, 23], "shape": "circle", "title": "un luminaire"},
+  {"name": "un luminaire", "coords": [256, 86, 287, 99], "shape": "rect", "title": "un luminaire"},
+  {"name": "un coussin", "coords": [136, 225, 167, 217, 183, 251, 145, 258], "shape": "poly", "title": "un coussin"},
+  {"name": "un coussin", "coords": [72, 259, 93, 242, 119, 275, 94, 274], "shape": "poly", "title": "un coussin"},
+  {"name": "un coussin", "coords": [555, 221, 577, 230, 562, 261, 536, 252], "shape": "poly", "title": "un coussin"},
+  {"name": "un coussin", "coords": [609, 242, 627, 260, 590, 282, 584, 264], "shape": "poly", "title": "un coussin"},
+  {"name": "un tapis", "coords": [260, 291, 209, 375, 479, 373, 441, 291, 413, 294, 419, 351, 276, 351, 286, 296], "shape": "poly", "title": "un tapis"}
+]
+
+[
+  {"name": "un canapé", "coords": [179, 323, 226, 287, 507, 286, 550, 328, 549, 412, 465, 414, 461, 372, 281, 376, 279, 415, 182, 414], "shape": "poly", "title": "un canapé"},
+  {"name": "une table basse", "coords": [283, 376, 465, 485], "shape": "rect", "title": "une table basse"},
+  {"name": "un tapis", "coords": [184, 419, 284, 419, 378, 488, 463, 419, 530, 421, 588, 512, 113, 511], "shape": "poly", "title": "un tapis"},
+  {"name": "une bibliothèque", "coords": [2, 112, 83, 150, 83, 393, 3, 451], "shape": "poly", "title": "une bibliothèque"},
+  {"name": "un coussin", "coords": [196, 293, 335, 346], "shape": "rect", "title": "un coussin"},
+  {"name": "un coussin", "coords": [413, 293, 527, 346], "shape": "rect", "title": "un coussin"},
+  {"name": "une plante", "coords": [490, 199, 645, 201, 634, 341, 581, 385, 560, 288, 497, 278], "shape": "poly", "title": "une plante"},
+  {"name": "une plante", "coords": [158, 381, 148, 201, 213, 198, 215, 241, 323, 246, 324, 280, 188, 287, 177, 379], "shape": "poly", "title": "une plante"},
+  {"name": "une plante", "coords": [0, 40, 65, 61, 53, 131, 2, 110], "shape": "poly", "title": "une plante"},
+  {"name": "une plante", "coords": [392, 308, 459, 308, 446, 386, 403, 387], "shape": "poly", "title": "une plante"}
+]
+
+
+ */

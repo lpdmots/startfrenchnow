@@ -71,7 +71,7 @@ export const ArticleVoc = async ({ data }: TabelVocProps) => {
                                             alt={english}
                                             height={200}
                                             width={200}
-                                            style={{ objectFit: "cover", maxHeight: 200, maxWidth: 200, borderRadius: 10 }}
+                                            style={{ objectFit: "contain", maxHeight: 200, maxWidth: 200, borderRadius: 10 }}
                                             className={`${!isNote ? "" : imagePlacement === "left" ? "md:float-left mr-4" : "md:float-right ml-4"}`}
                                         />
                                     </div>

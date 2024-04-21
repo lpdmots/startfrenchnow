@@ -61,9 +61,9 @@ const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: Them
     const [shuffledCards, setShuffledCards] = useState<VocabItem[]>(shuffleArray(theme?.vocabItems || []));
     const [isFrontFrench, setIsFrontFrench] = useState<boolean>(true);
     const [voices, setVoices] = useState<boolean>(false);
-    const colorVar = CATEGORIESCOLORS[data.category || "vocabulary"];
-    const colorVarLight = CATEGORIESCOLORSSHADES[data.category || "vocabulary"];
-
+    const colorVar = CATEGORIESCOLORS[theme?.category || "vocabulary"];
+    const colorVarLight = CATEGORIESCOLORSSHADES[theme?.category || "vocabulary"];
+    const options = data.options;
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const postLang = usePostLang();
@@ -95,28 +95,34 @@ const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: Them
                 <h3>{title}</h3>
                 {instruction}
                 <div className="flex justify-center gap-6 mb-4 cards-center">
-                    <div onClick={handleRefresh}>
-                        <SimpleButton>
-                            <IoShuffleOutline />
-                            <p className="pl-1 mb-0 font-bold">{shuffle}</p>
-                        </SimpleButton>
-                    </div>
-                    <div onClick={() => setIsFrontFrench((isFrontFrench) => !isFrontFrench)}>
-                        <SimpleButton>
-                            <AiOutlineSwap />
-                            <p className="pl-1 mb-0 font-bold">{swapFaces}</p>
-                        </SimpleButton>
-                    </div>
-                    <div className="w-checkbox checkbox-field-wrapper mb-0">
-                        <label className="w-form-label flex cards-center justify-center" onClick={handleVoice}>
-                            <div
-                                id="checkbox"
-                                className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${voices ? "w--redirected-checked" : undefined} mr-0`}
-                                style={{ minHeight: 18, minWidth: 18 }}
-                            ></div>
-                            <p className="pl-1 mb-0 font-bold">{withSound}</p>
-                        </label>
-                    </div>
+                    {options?.shuffle !== false && (
+                        <div onClick={handleRefresh}>
+                            <SimpleButton>
+                                <IoShuffleOutline />
+                                <p className="pl-1 mb-0 font-bold">{shuffle}</p>
+                            </SimpleButton>
+                        </div>
+                    )}
+                    {options?.swapFaces !== false && (
+                        <div onClick={() => setIsFrontFrench((isFrontFrench) => !isFrontFrench)}>
+                            <SimpleButton>
+                                <AiOutlineSwap />
+                                <p className="pl-1 mb-0 font-bold">{swapFaces}</p>
+                            </SimpleButton>
+                        </div>
+                    )}
+                    {options?.withSound !== false && (
+                        <div className="w-checkbox checkbox-field-wrapper mb-0">
+                            <label className="w-form-label flex cards-center justify-center" onClick={handleVoice}>
+                                <div
+                                    id="checkbox"
+                                    className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${voices ? "w--redirected-checked" : undefined} mr-0`}
+                                    style={{ minHeight: 18, minWidth: 18 }}
+                                ></div>
+                                <p className="pl-1 mb-0 font-bold">{withSound}</p>
+                            </label>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="flashcards card" style={{ backgroundColor: colorVar, overflow: "hidden" }}>
@@ -213,10 +219,10 @@ function FlashCardsCarousel({ cards, isFrontFrench, voices, colorVarLight }: Fla
                 </AnimatePresence>
             </div>
             <div>
-                <motion.button className="text-4xl md:text-5xl" whileTap={{ scale: 0.8 }} onClick={() => handleClick(-1)}>
+                <motion.button className="text-4xl md:text-5xl" style={{ backgroundColor: "transparent" }} whileTap={{ scale: 0.8 }} onClick={() => handleClick(-1)}>
                     ◀︎
                 </motion.button>
-                <motion.button className="text-4xl md:text-5xl" whileTap={{ scale: 0.8 }} onClick={() => handleClick(1)}>
+                <motion.button className="text-4xl md:text-5xl" style={{ backgroundColor: "transparent" }} whileTap={{ scale: 0.8 }} onClick={() => handleClick(1)}>
                     ▶︎
                 </motion.button>
             </div>
@@ -341,7 +347,7 @@ const getContent = (postLang: "fr" | "en", data: FlashcardsProps) => {
     const instructionData = data[`instruction${postLang === "en" ? "_en" : ""}`];
     return {
         title: data[`title${postLang === "en" ? "_en" : ""}`] || DEFAULTCONTENT[postLang].title,
-        instruction: instructionData ? <PortableText value={instructionData} components={RichTextComponents(data?.category)} /> : <p>{DEFAULTCONTENT[postLang].instruction}</p>,
+        instruction: instructionData ? <PortableText value={instructionData} components={RichTextComponents(data?.category)} /> : <p></p>,
         shuffle: DEFAULTCONTENT[postLang].shuffle,
         swapFaces: DEFAULTCONTENT[postLang].swapFaces,
         withSound: DEFAULTCONTENT[postLang].withSound,

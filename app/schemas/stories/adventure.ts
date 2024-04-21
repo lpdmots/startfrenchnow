@@ -395,12 +395,14 @@ export default defineType({
         select: {
             name: "name",
             image: "images.primary.asset",
+            id: "_id",
         },
         prepare(selection) {
-            const { name, image } = selection;
+            const { name, image, id } = selection;
             return {
                 title: name,
                 media: image,
+                subtitle: `ID: ${id}`,
             };
         },
     },

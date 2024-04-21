@@ -92,6 +92,11 @@ export interface FlashcardsProps {
     instruction_en: Block[];
     filters: TabelVocFilters;
     themes: Reference[];
+    options: {
+        shuffle: boolean;
+        swapFaces: boolean;
+        withSound: boolean;
+    };
 }
 
 export interface Theme extends Base {
@@ -137,7 +142,7 @@ export interface VocabItem extends Base {
 }
 
 export interface VocabItemNew extends VocabItem {
-    instruction: "new" | string; // Si un vocabItem est déjà créé, on met son _id ici, si c'est un homonyme, on met new pour créer un nouveau vocabItem
+    instruction: "new" | "keep" | "update" | undefined; // undefined ou new --> on créera un nouveau vocabItem, keep --> on prendra le vocabItem existant, update --> on mettra à jour le vocabItem existant
 }
 
 export type Category = "tips" | "video" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography" | "exercise" | "toLoad";
@@ -146,6 +151,7 @@ export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" 
 export type ExerciseType = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound" | "imgMap" | "link" | "order";
 export type ColorsTypes = "yellow" | "blue" | "red" | "purple" | "green";
 export type AutomatedType =
+    | "levelChoice"
     | "translateFrToEn"
     | "translateEnToFr"
     | "translateEnToFrInput"
@@ -161,6 +167,7 @@ export type AutomatedType =
     | "riddleInput"
     | "imageButtons"
     | "imageInput";
+export type LevelChoice = "level1" | "level2" | "level3";
 export type QuestionPriority = "automated" | "manual" | "mixed";
 export interface TabelVocFilters {
     status: "all" | "primary" | "secondary";
@@ -216,8 +223,9 @@ export interface TabelVocProps {
     data: {
         filters: TabelVocFilters;
         tags?: string[];
-        color: ColorsTypes;
+        category: PrimaryCategory;
         themes: Reference[];
         isArticle?: boolean;
+        isOnlyFrench?: boolean;
     };
 }

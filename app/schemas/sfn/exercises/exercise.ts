@@ -107,6 +107,7 @@ export default defineType({
                     type: "string",
                     options: {
                         list: [
+                            { title: "Au choix", value: "levelChoice" },
                             { title: "Niveau 1", value: "level1" },
                             { title: "Niveau 2", value: "level2" },
                             { title: "Niveau 3", value: "level3" },
@@ -162,4 +163,13 @@ export default defineType({
             initialValue: 10,
         }),
     ],
+    preview: {
+        select: {
+            title: "name",
+            media: "theme.image",
+        },
+        prepare(selection) {
+            return { ...selection };
+        },
+    },
 });

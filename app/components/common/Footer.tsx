@@ -24,18 +24,18 @@ function Footer() {
                                     <ul role="list" className="flex !pl-0 justify-center gap-4 md:gap-8 flex-wrap list-none">
                                         <li className="footer-list-item">
                                             <LinkCurrent href="/" className="footer-link">
-                                                {t("home")}
+                                                {t("videos")}
                                             </LinkCurrent>
+                                        </li>
+                                        <li className="footer-list-item">
+                                            <LinkCurrentBlog href="/blog" className="footer-link" locale={locale as Locale}>
+                                                {t("learn.button")}
+                                            </LinkCurrentBlog>
                                         </li>
                                         <li className="footer-list-item">
                                             <LinkCurrent href="/stories" className="footer-link">
                                                 {t("stories")}
                                             </LinkCurrent>
-                                        </li>
-                                        <li className="footer-list-item">
-                                            <LinkCurrentBlog href="/blog" className="footer-link" locale={locale as Locale}>
-                                                {t("blog")}
-                                            </LinkCurrentBlog>
                                         </li>
                                         <li className="footer-list-item">
                                             <LinkCurrent href="/about" className="footer-link">
@@ -45,6 +45,29 @@ function Footer() {
                                         <li className="footer-list-item">
                                             <LinkCurrent href="/contact" className="footer-link">
                                                 {t("contact")}
+                                            </LinkCurrent>
+                                        </li>
+                                    </ul>
+                                    <div className="text-400 medium footer-title">{t("courses.button")}</div>
+                                    <ul role="list" className="flex !pl-0 justify-center gap-4 md:gap-8 flex-wrap list-none">
+                                        <li className="footer-list-item">
+                                            <LinkCurrent href="/courses/beginners" className="footer-link">
+                                                {t("courses.beginners")}
+                                            </LinkCurrent>
+                                        </li>
+                                        <li className="footer-list-item">
+                                            <LinkCurrent href="/courses/intermediates" className="footer-link">
+                                                {t("courses.intermediates")}
+                                            </LinkCurrent>
+                                        </li>
+                                        <li className="footer-list-item">
+                                            <LinkCurrentBlog href="/courses/dialogues" className="footer-link" locale={locale as Locale}>
+                                                {t("courses.dialoguesFooter")}
+                                            </LinkCurrentBlog>
+                                        </li>
+                                        <li className="footer-list-item">
+                                            <LinkCurrent href="/courses/past-tenses" className="footer-link">
+                                                {t("courses.pastTensesFooter")}
                                             </LinkCurrent>
                                         </li>
                                     </ul>

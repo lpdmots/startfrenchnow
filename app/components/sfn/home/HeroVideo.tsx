@@ -12,7 +12,7 @@ export const HeroVideo = () => {
                     <h2 className="display-4 text-right mb-0">Start French Now</h2>
                 </div>
                 <div id="hero-video" className="cms-featured-image-wrapper image-wrapper border-radius-40px mx-auto p-0">
-                    <LiteYouTubeEmbed id="KoUzwH5zPlU" title="How to build a sentence in French" />
+                    <LiteYouTubeEmbed id="vsdYR2fgIV0" title="Mastering Direct and Indirect Object Pronouns in French" />
                 </div>
             </>
         </SlideFromBottom>

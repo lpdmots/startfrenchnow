@@ -1,6 +1,6 @@
 import { defineType, defineArrayMember } from "sanity";
-import { FaHighlighter } from "react-icons/fa";
-import { AiOutlineAlignCenter, AiOutlineAlignLeft, AiOutlineAlignRight } from "react-icons/ai";
+import { FaFileDownload, FaHighlighter } from "react-icons/fa";
+import { AiOutlineAlignCenter, AiOutlineAlignLeft, AiOutlineAlignRight, AiOutlineSound } from "react-icons/ai";
 import { MdTranslate } from "react-icons/md";
 import { FcIdea } from "react-icons/fc";
 import { RiDoubleQuotesL, RiDoubleQuotesR } from "react-icons/ri";
@@ -138,6 +138,12 @@ export default defineType({
                                 type: "boolean",
                                 initialValue: false,
                             },
+                            {
+                                title: "Span",
+                                name: "isSpan",
+                                type: "boolean",
+                                initialValue: false,
+                            },
                         ],
                     },
                     {
@@ -147,8 +153,38 @@ export default defineType({
                         icon: () => <MdTranslate />,
                         fields: [
                             {
-                                title: "Traduction",
-                                name: "translation",
+                                title: "Français",
+                                name: "french",
+                                type: "string",
+                            },
+                            {
+                                title: "Anglais",
+                                name: "english",
+                                type: "string",
+                            },
+                            {
+                                title: "VocabItem",
+                                name: "vocabItemId",
+                                type: "reference",
+                                to: [{ type: "vocabItem" }],
+                            },
+                        ],
+                    },
+                    {
+                        title: "Sound",
+                        name: "sound",
+                        type: "object",
+                        icon: () => <AiOutlineSound />,
+                        fields: [
+                            {
+                                title: "VocabItem",
+                                name: "vocabItem",
+                                type: "reference",
+                                to: [{ type: "vocabItem" }],
+                            },
+                            {
+                                title: "Phonétique",
+                                name: "phonetics",
                                 type: "string",
                             },
                         ],

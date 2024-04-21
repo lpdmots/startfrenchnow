@@ -43,7 +43,7 @@ const queryLatest = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && langage == 'both' && isReady == true] 
     {
         ...,
-    } | order(title asc) [0...3]
+    } | order(publishedAt desc) [0...3]
 `;
 
 // Vérifier si la langue correspond au post

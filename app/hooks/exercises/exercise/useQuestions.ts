@@ -1,4 +1,4 @@
-import { AutomatedType, Exercise as ExerciseProps, ExerciseType, Question, QuestionPriority, TabelVocFilters, Theme, VocabItem } from "@/app/types/sfn/blog";
+import { AutomatedType, Exercise as ExerciseProps, ExerciseType, LevelChoice, Question, QuestionPriority, TabelVocFilters, Theme, VocabItem } from "@/app/types/sfn/blog";
 import { useEffect } from "react";
 import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
@@ -10,7 +10,7 @@ const queryTheme = groq`
 
 const MAX_LOOP_COUNT = 10;
 
-export const useQuestions = (exercise: ExerciseProps) => {
+export const useQuestions = (exercise: ExerciseProps, levelChoice: LevelChoice = "level1") => {
     const { _id, themes, exerciseTypes, questions, questionsPriority } = exercise;
     const { setQuestions, setStatus } = useExerciseStore();
 
@@ -52,7 +52,7 @@ export const useQuestions = (exercise: ExerciseProps) => {
         const areAutomatedNeeded = ["automated", "mixed"].includes(questionsPriority) || (questionsPriority === "manual" && potentialQuestions.length < exercise.nbOfQuestions);
         if (areAutomatedNeeded) {
             const nbreToCreate = getNbreToCreate(potentialQuestions.length, questionsPriority, exercise.nbOfQuestions);
-            automatedQuestions = await getAutomatedQuestions(exercise, nbreToCreate, themesData);
+            automatedQuestions = await getAutomatedQuestions(exercise, nbreToCreate, themesData, levelChoice);
         }
 
         const allQuestions = shuffleArray([...automatedQuestions, ...potentialQuestions]);
@@ -75,14 +75,14 @@ const getNbreToCreate = (nbreOfpotentialQuestions: number, questionsPriority: Qu
         : nbreOfQuestions - nbreOfpotentialQuestions;
 };
 
-const getAutomatedQuestions = async (exercise: ExerciseProps, nbreToCreate: number, themesData: Theme[]) => {
+const getAutomatedQuestions = async (exercise: ExerciseProps, nbreToCreate: number, themesData: Theme[], levelChoice: LevelChoice) => {
     const { automatedTypes, filters } = exercise;
-    const automatedTypesWithLevels = replaceLevels(automatedTypes);
+    const automatedTypesWithLevels = replaceLevels(automatedTypes, levelChoice);
     const automatedQuestions = [];
     const vocabItemsRefs = themesData.map((theme) => theme.vocabItems.map((item) => item._ref)).flat();
     const allVocabItems: VocabItem[] = await client.fetch(`*[_type=='vocabItem' && _id in $vocabItemsRefs]`, { vocabItemsRefs });
     const vocabItems = allVocabItems?.filter((item) => filterVocabItems(item, filters));
-    console.log("vocabItems", vocabItems);
+    console.log("vocabItems", vocabItems, automatedTypesWithLevels);
     const remainingVocabItems = [...vocabItems];
     const possibleCombinations = Object.assign({}, ...vocabItems.map((vocabItem) => ({ [vocabItem._id]: [...automatedTypesWithLevels] })));
 
@@ -176,14 +176,19 @@ const getAutomatedQuestions = async (exercise: ExerciseProps, nbreToCreate: numb
     return automatedQuestions;
 };
 
-function replaceLevels(automatedTypes: AutomatedType[]) {
+function replaceLevels(automatedTypes: AutomatedType[], levelChoice: LevelChoice) {
     const levelMappings = {
         level1: ["translateEnToFr", "pairedWords", "soundFrToFr", "chooseCorrectSpelling"],
         level2: ["soundFrToEn", "enToSoundFr", "orderWordsEasy", "riddleButtons", "pairedWords"],
         level3: ["translateEnToFrInput", "translateSoundToFrInput", "orderWordsEasy"],
     };
 
-    return removeDuplicates(automatedTypes?.flatMap((type) => levelMappings[type as "level1" | "level2" | "level3"] || type));
+    return removeDuplicates(
+        automatedTypes?.flatMap((type) => {
+            const typeOrChoice = type === "levelChoice" ? levelChoice : type;
+            return levelMappings[typeOrChoice as "level1" | "level2" | "level3"] || type;
+        })
+    );
 }
 
 const getPossibleWrongAnswers = (vocabItem: VocabItem, vocabItems: VocabItem[]) => {
@@ -452,7 +457,7 @@ const getImageQuestion = (vocabItem: VocabItem, vocabItems: VocabItem[], buttons
         _key: vocabItem._id + "riddle",
         exerciseTypes: [buttons ? "buttons" : "input"],
         prompt: {
-            text: "De quoi s'agit-il ?IMAGEBLOCK",
+            text: "IMAGEBLOCK",
             images: [image],
         },
         options: {},

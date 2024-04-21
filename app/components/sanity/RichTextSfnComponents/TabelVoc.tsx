@@ -1,7 +1,7 @@
 import { TabelVocProps, TabelVocFilters, ThemeWithVocab, VocabItem } from "@/app/types/sfn/blog";
 import { groq } from "next-sanity";
 import { SanityServerClient as client } from "../../../lib/sanity.clientServerDev";
-import { COLORVARIABLES, natures } from "@/app/lib/constantes";
+import { CATEGORIESCOLORS, COLORVARIABLES, natures } from "@/app/lib/constantes";
 import { BsCaretRightFill } from "react-icons/bs";
 import Spinner from "../../common/Spinner";
 import Image from "next/image";
@@ -25,9 +25,10 @@ const TabelVoc = async ({ data }: TabelVocProps) => {
         console.warn("No themes or vocabItems found");
         return null;
     }
+    const isOnlyFrench = data.isOnlyFrench;
     const theme = { ...themes[0], vocabItems };
 
-    const colorVar = COLORVARIABLES[data.color || "blue"];
+    const colorVar = CATEGORIESCOLORS[data.category];
     const colorLight = "var(--neutral-200)";
 
     return (
@@ -41,11 +42,13 @@ const TabelVoc = async ({ data }: TabelVocProps) => {
                                     <Image src="/images/france.png" height={40} width={50} alt="french flag" style={{ objectFit: "contain" }} />
                                 </span>
                             </th>
-                            <th>
-                                <span className="pr-0 sm:pr-4">
-                                    <Image src="/images/royaume-uni.png" alt="UK flag" height={40} width={50} style={{ height: 40, objectFit: "contain" }} />
-                                </span>
-                            </th>
+                            {!isOnlyFrench && (
+                                <th>
+                                    <span className="pr-0 sm:pr-4">
+                                        <Image src="/images/royaume-uni.png" alt="UK flag" height={40} width={50} style={{ height: 40, objectFit: "contain" }} />
+                                    </span>
+                                </th>
+                            )}
                         </tr>
                         {theme ? (
                             theme.vocabItems.map((vocabItem, index) => {
@@ -53,14 +56,16 @@ const TabelVoc = async ({ data }: TabelVocProps) => {
                                     <tr key={index} style={{ backgroundColor: index % 2 === 0 ? "var(--neutral-100)" : colorLight }}>
                                         <td className="flex justify-between items-center">
                                             <TabelVocSoundButton vocabItem={vocabItem} />
-                                            <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2, height: 16, objectFit: "contain", flexShrink: 0 }} />
+                                            {!isOnlyFrench && <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2, height: 16, objectFit: "contain", flexShrink: 0 }} />}
                                         </td>
-                                        <td>
-                                            <div className="flex justify-between items-center">
-                                                <span className="pr-0 sm:pr-4 font-bold">{vocabItem.english}</span>
-                                                <NotePopover vocabItem={vocabItem} category={theme.category} />
-                                            </div>
-                                        </td>
+                                        {!isOnlyFrench && (
+                                            <td>
+                                                <div className="flex justify-between items-center">
+                                                    <span className="pr-0 sm:pr-4 font-bold">{vocabItem.english}</span>
+                                                    <NotePopover vocabItem={vocabItem} category={theme.category} />
+                                                </div>
+                                            </td>
+                                        )}
                                     </tr>
                                 );
                             })

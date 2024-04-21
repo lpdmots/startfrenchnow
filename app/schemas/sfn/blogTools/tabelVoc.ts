@@ -73,5 +73,11 @@ export default defineType({
             type: "array",
             of: [{ type: "reference", to: [{ type: "theme" }] }],
         }),
+        defineField({
+            title: "Seulement la colonne FR",
+            name: "isOnlyFrench",
+            type: "boolean",
+            initialValue: false,
+        }),
     ],
 });

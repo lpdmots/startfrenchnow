@@ -6,9 +6,15 @@ import { HeroVideo } from "./HeroVideo";
 import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
+import { CourseRatings } from "../courses/CourseRatings";
 
 export const HeroSfn = () => {
     const t = useTranslations("HeroSfn");
+    const baseNumbers = {
+        subscribers: 23000,
+        rating: 0,
+        reviews: 3500,
+    };
 
     return (
         <section className="section hero v1 wf-section">
@@ -37,7 +43,7 @@ export const HeroSfn = () => {
                             <div className="h-auto w-full mb-8">
                                 <HeroVideo />
                             </div>
-                            <Ratings />
+                            <CourseRatings courseIds={["3693426", "4931486", "5651144", "4440636"]} baseNumbers={baseNumbers} />
                         </div>
                     </div>
                 </div>
@@ -46,7 +52,7 @@ export const HeroSfn = () => {
     );
 };
 
-const Ratings = () => {
+/* const Ratings = () => {
     return (
         <SlideInOneByOneParent>
             <div className="w-full flex justify-around gap-8 lg:gap-12">
@@ -77,4 +83,4 @@ const Ratings = () => {
             </div>
         </SlideInOneByOneParent>
     );
-};
+}; */

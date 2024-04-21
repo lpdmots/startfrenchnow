@@ -16,20 +16,43 @@
             "title": "Blog Start French Now: Seu Guia Definitivo para Aprender Francês",
             "description": "Desbloqueie os segredos de aprender francês com o blog Start French Now. De gramática a vocabulário, nossos artigos oferecem um guia extenso e compreensível para dominar o idioma."
         },
+        "Videos": {
+            "title": "Nossos Vídeos Educativos – Aprenda Facilmente e com Eficiência | Start French Now",
+            "description": "Explore nossa coleção de vídeos educativos para aprender francês. Seja você iniciante ou intermediário, nossos vídeos divertidos e informativos irão orientá-lo em cada etapa de seu aprendizado."
+        },
         "About": {
             "title": "Conheça Yohann: Seu Guia Especialista para Aprender Francês do Zero",
             "description": "Descubra a jornada de Yohann, de professor do ensino fundamental a especialista global no ensino de francês para iniciantes. Comece sua própria jornada de aprendizado de francês conosco!"
+        },
+        "Courses": {
+            "Beginners": {
+                "title": "O Curso Completo de Francês: Aprenda Francês - Iniciantes | Start French Now",
+                "description": "Língua francesa para iniciantes (A0 > A2). Fala, audição, gramática, leitura, vocabulário com um professor nativo."
+            },
+            "Intermediates": {
+                "title": "Curso Completo de Francês: Aprenda Francês - Intermediário | Start French Now",
+                "description": "Curso de língua francesa para nível intermediário baixo A2 a B1. Avance seu conhecimento com um professor nativo."
+            },
+            "Dialogues": {
+                "title": "DO Curso Completo de Francês - Conversas do Dia a Dia | Start French Now",
+                "description": "Aprenda francês com diálogos do dia a dia. Avance suas habilidades no francês com um curso que traz a vida diária francesa para suas aulas através de diálogos envolventes, prática gramatical direcionada e vocabulário."
+            },
+            "PastTenses": {
+                "title": "Domine os Tempos Passados | Start French Now",
+                "description": "Fale no passado em francês. Aprenda os 3 principais tempos passados: passé composé, imparfait, plus-que-parfait. Compreenda as diferenças entre os tempos passados e saiba como usá-los conjuntamente."
+            }
         }
     },
     "Navigation": {
         "home": "Início",
-        "stories": "Histórias",
         "blog": "Blog",
         "about": "Sobre",
         "contact": "Contato",
         "my_account": "Minha Conta",
         "logout": "Sair",
         "contact_us": "Entre em contato",
+        "videos": "Vídeos",
+        "stories": "Jogar",
         "learn": {
             "button": "Aprender",
             "blog": "Artigos e Recursos",
@@ -40,7 +63,18 @@
             "culture": "Cultura",
             "orthography": "Ortografia",
             "videos": "Vídeos",
-            "tips": "Dicas e Truques"
+            "tips": "Dicas e Truques",
+            "stories": "Histórias"
+        },
+        "courses": {
+            "coursesTitle": "Nossos cursos",
+            "button": "Cursos",
+            "beginners": "Iniciante",
+            "intermediates": "Intermediário",
+            "dialogues": "Diálogos Diários",
+            "pastTenses": "Tempos Passados",
+            "dialoguesFooter": "Diálogos",
+            "pastTensesFooter": "Tempos Passados"
         }
     },
     "HeroSfn": {
@@ -63,10 +97,10 @@
                 "title": "Intermediário - Nível 2 (A2.1)",
                 "description": "Aprofunde seus conhecimentos em francês e avance de A2 para B1. Aprenda todas as ferramentas necessárias para construir frases mais longas e complexas. Fale francês com confiança em tópicos familiares."
             },
-            "lowIntermediateLevel2bis": {
-                "title": "Intermediário - Nível 2 (A2.1)",
-                "description": "Aprofunde seus conhecimentos em francês e avance de A2 para B1. Aprenda todas as ferramentas necessárias para construir frases mais longas e complexas. Fale francês com confiança em tópicos familiares.",
-                "new": "Novo !"
+            "lowIntermediateLevel3": {
+                "title": "Diálogos do Dia a Dia - Nível 3 (A2-B1)",
+                "description": "Avance suas habilidades no francês com um curso que traz a vida diária francesa para suas aulas através de diálogos envolventes, prática gramatical direcionada e vocabulário. Você estará preparado para viver e se comunicar na França com facilidade!",
+                "new": "Novo!"
             },
             "masterPastTenses": {
                 "title": "Domine os tempos passados",
@@ -189,8 +223,8 @@
         "Hero": {
             "imageAlt": "Um homem olhando para um livro do qual emanam efusões mágicas",
             "title": "<hs4>Imersão</hs4> no Francês Através de uma <hs2>História Interativa</hs2>",
-            "description": "Descubra o poder do aprendizado interativo com nossa história em língua francesa. Melhore suas habilidades linguísticas e explore Paris de uma forma divertida e envolvente.",
-            "btnStory": "Ir para a história",
+            "description": "Descubra os benefícios das histórias interativas para progredir no francês. Melhore suas habilidades linguísticas de forma divertida e envolvente.",
+            "btnStory": "Ir para as histórias",
             "btnMoreInfo": "Mais informações"
         },
         "StoriesBand": {
@@ -198,8 +232,8 @@
         },
         "StoryTabs": {
             "title": "<hs1>Teste Suas Habilidades em Francês</hs1> Através de uma História Interativa",
-            "description1": "Mergulhe em nossa história interativa e experimente a alegria de explorar <hs4>as miríades de possibilidades</hs4> que ela oferece. Não hesite em começar de novo e buscar o sucesso máximo - mas você nunca alcançará todos eles! 😈",
-            "description2": "Esta jornada requer uma base sólida em francês, mas não se preocupe se você ainda não estiver lá. Nós te damos cobertura com <hs2>traduções úteis</hs2>. Com um pouco de dedicação e um toque de criatividade, você fará mágica em pouco tempo."
+            "description1": "Mergulhe em nossas histórias interativas e explore <hs4>as inúmeras possibilidades</hs4> que elas oferecem. Não hesite em começar de novo e desbloquear o máximo de sucessos possível - mas você nunca conseguirá todos! 😈",
+            "description2": "Estas viagens requerem uma base sólida em francês, mas não se preocupe se você ainda não estiver lá. Nós te damos cobertura com <hs2>traduções úteis</hs2>. Com um pouco de dedicação e um toque de criatividade, você fará mágica em pouco tempo."
         },
         "WhyStories": {
             "title": "Por que Aprender Francês com <hs2>Histórias Interativas</hs2>?",
@@ -440,6 +474,334 @@
         "Post": {
             "latestPosts": "Publicações <hs4>mais recentes</hs4>",
             "browseAllPosts": "Ver todas as publicações"
+        }
+    },
+    "Videos": {
+        "VideoList": {
+            "title": "Nossos Recursos em <hs1>Vídeo</hs1>",
+            "description": "Explore nossa coleção de vídeos para aprender francês. Independentemente do seu nível, você certamente encontrará algo que lhe agrade!"
+        }
+    },
+    "Courses": {
+        "Beginners": {
+            "PrimaryPage": {
+                "title": "O Curso Completo de Francês: Aprenda Francês - <hs2>Iniciantes</hs2>",
+                "description": "Língua francesa para iniciantes (A0 > A2). Fala, audição, gramática, leitura, vocabulário com um professor nativo."
+            },
+            "YouLearn": {
+                "title": "O que <hs2>você vai aprender</hs2>",
+                "learn1": "Domine os fundamentos do francês de uma vez por todas!",
+                "learn2": "Desenvolva e aprimore suas habilidades práticas de comunicação em francês: Falar, Ouvir, Ler e Escrever.",
+                "learn3": "Expresse-se com facilidade em tópicos familiares.",
+                "learn4": "Comece a falar francês com confiança. (Nível A2)",
+                "learn5": "Tenha confiança em suas habilidades em francês, use e entenda expressões do dia a dia.",
+                "learn6": "Aprenda gramática e vocabulário com explicações e exercícios divertidos."
+            },
+            "Description": {
+                "para1": "<b>Este primeiro curso é provavelmente o mais importante, pois <hs2>ele lhe dará uma base sólida</hs2> no idioma francês e certamente o motivará a falar fluentemente.</b>",
+                "header1": "É feito <hs2>para você se</hs2> :",
+                "listItem1": "Você quer aprender francês seriamente (mas com exercícios divertidos, interativos e visualmente interessantes).",
+                "listItem2": "Você precisa de algo estruturado (seguindo o Quadro Europeu Comum de Referência para Línguas).",
+                "listItem3": "Você quer material extra após a aula.",
+                "listItem4": "Você está interessado em obter A1 ou A2 para DELF / TCF / TEF / FIDE ...",
+                "header2": "<hs2>Como</hs2> funciona?",
+                "para2": "O curso é dividido em 28 lições (16 horas de vídeos) todas seguindo uma progressão muito lógica baseada em muitos anos de ensino e dezenas de métodos franceses. Eu também uso o mesmo material com meus alunos particulares em aulas individuais e posso assegurar que eles progridem!",
+                "para3": "Cada lição tem um objetivo ou tema específico e vem com vocabulário e gramática. Todo esse novo conhecimento é testado através de muitos exercícios. Para essa parte (exercícios), você precisará de uma caneta e um papel para fazer os exercícios comigo. É fácil, basta seguir as instruções do vídeo!",
+                "para4": "<b>Após cada lição, você terá acesso ao resumo da lição, exercícios adicionais (com correções) e uma lista de vocabulário. Então, por favor, faça sua lição de casa :)</b>",
+                "header3": "Conteúdo <hs2>do Curso</hs2>",
+                "content1": "Apresentando-se - O Alfabeto",
+                "content2": "Fazendo Conhecidos - Nacionalidades",
+                "content3": "Cumprimentando e Dizendo Adeus",
+                "content4": "Números",
+                "content5": "Falando Sobre Si Mesmo",
+                "content6": "Artigos",
+                "content7": "Falando Sobre Sua Família",
+                "content8": "Fazendo Perguntas",
+                "content9": "Descrevendo Sua Cidade",
+                "content10": "Entendendo Direções",
+                "content11": "Falando Sobre Seus Gostos e Atividades",
+                "content12": "Reservando Acomodações",
+                "content13": "Sugerindo um Passeio",
+                "content14": "Descrevendo Personalidade e Aparência",
+                "content15": "Compras",
+                "content16": "Falando Sobre Sua Rotina Diária",
+                "content17": "Falando Sobre Suas Férias",
+                "content18": "No Médico",
+                "content19": "Falando Sobre Sua Dieta",
+                "content20": "Dando Conselhos",
+                "content21": "Questionando (as 3 formas de questionamento)",
+                "content22": "Falando Sobre Seus Planos (o futuro)",
+                "content23": "Revisão de Tempos",
+                "content24": "Construção de Frases"
+            },
+            "Infos": {
+                "header": "Este curso inclui:",
+                "video": "Vídeos sob demanda por <noWrap>17 horas</noWrap>",
+                "articles": "12 artigos",
+                "resources": "119 recursos para download",
+                "accessMobileTV": "Acesso em celulares e TV",
+                "unlimitedAccess": "Acesso ilimitado",
+                "certificate": "Certificado de conclusão",
+                "buyNow": "COMPRE AGORA!",
+                "guarantee": "* Garantia de satisfação ou reembolso em 30 dias"
+            },
+            "IsForYou": {
+                "title": "Este Curso é <hs2>Certo para Você</hs2>?",
+                "description": "Certifique-se de que nosso curso corresponde às suas necessidades e ao seu nível atual de francês. Sinta-se à vontade para nos contatar para quaisquer perguntas ou para aconselhamento personalizado antes de se inscrever.",
+                "help": "Ajuda!",
+                "prerequisitesTitle": "Pré-requisitos",
+                "prerequisite1": "Você não precisa de conhecimento prévio para começar este curso.",
+                "prerequisite2": "O curso é recomendado para qualquer pessoa que queira aprender francês de maneira rápida e eficaz.",
+                "prerequisite3": "Está em francês, não se preocupe: A imersão é o melhor método de aprendizagem de um idioma.",
+                "prerequisite4": "Professor nativo de francês com sotaque perfeito.",
+                "buyNow": "COMPRE AGORA!",
+                "levelTitle": "Qual nível eu alcançarei?",
+                "levelDescription": "No final deste curso, você terá completado o nível A1.2 e alcançará um nível intermediário baixo de francês (A2) que permite <noWrap>você:</noWrap>",
+                "level1": "entender frases e expressões frequentemente usadas relacionadas a áreas de relevância imediata (por exemplo, informações pessoais e familiares básicas, compras, geografia local, emprego).",
+                "level2": "comunicar-se em tarefas simples e rotineiras que exigem uma troca simples e direta de informações sobre assuntos familiares e rotineiros.",
+                "level3": "descrever em termos simples aspectos do seu contexto imediato, ambiente imediato e assuntos em áreas de necessidade imediata."
+            },
+            "OtherCourses": { "title": "Ver <hs2>outros cursos</hs2>" },
+            "LastComments": {
+                "title": "<hs2>Feedback</hs2> e Experiências",
+                "description": "Veja o que nossos alunos dizem sobre este curso. Forme sua própria opinião sobre a qualidade de nosso ensino e a eficácia de nosso método. Você pode encontrar milhares de outras avaliações em "
+            }
+        },
+        "Intermediates": {
+            "PrimaryPage": {
+                "title": "Curso Completo de Francês: Aprenda Francês - <noWrap><hs4>Intermediário</hs4></noWrap>",
+                "description": "Curso de língua francesa para nível intermediário baixo A2 a B1. Avance seu conhecimento com um professor nativo."
+            },
+            "YouLearn": {
+                "title": "O que <hs4>você vai aprender</hs4>",
+                "learn1": "Aprofunde seu conhecimento do francês e avance do A2 para o B1",
+                "learn2": "Aprenda todas as ferramentas necessárias para construir frases mais longas e complexas",
+                "learn3": "Lide com a maioria das situações enquanto viaja na França",
+                "learn4": "Aprenda o vocabulário e a gramática francesa importantes para o nível A2",
+                "learn5": "Fale francês com confiança sobre tópicos familiares",
+                "learn6": "Comece a expressar sua opinião sobre diferentes tópicos"
+            },
+            "Description": {
+                "para1": "<b>Primeiro, se você é um iniciante completo, considere fazer minha primeira aula:</b>",
+                "header1": "Este curso é <hs4>para você se</hs4> :",
+                "listItem1": "Você quer levar seu francês para o próximo nível.",
+                "listItem2": "Se você terminou meu curso anterior e quer ter uma progressão lógica.",
+                "listItem3": "Se você quer fazer o DELF A2 ou um exame similar.",
+                "listItem4": "Se você já aprendeu um pouco de francês no passado e gostaria de continuar o sonho de falar francês 😉",
+                "header2": "<hs4>Como</hs4> funciona?",
+                "para2": "O curso é dividido em <b>18 lições (~12 horas de vídeos)</b> seguindo uma progressão muito lógica baseada em muitos anos de ensino e dezenas de métodos franceses. Eu também uso o mesmo material com meus alunos particulares em aulas individuais e posso garantir que eles melhoram!",
+                "para3": "Cada lição tem um objetivo específico ou tema usando situações da vida real para aprender novo vocabulário e gramática. Todo esse novo conhecimento é testado por meio de muitos exercícios. Para essa parte, você precisará de uma caneta e um papel para fazer os exercícios comigo. É fácil, basta seguir as instruções do vídeo!",
+                "para4": "Após cada lição, você terá acesso ao <b>resumo da lição, exercícios extras (com correções) e uma lista de vocabulário</b>. Então, por favor, faça sua lição de casa 😊",
+                "header3": "Conteúdo <hs4>do Curso</hs4>",
+                "content1": "Falando sobre o Tempo",
+                "content2": "França e Suas Regiões",
+                "content3": "Descrevendo um Lugar",
+                "content4": "Entendendo & Escrevendo um Programa",
+                "content5": "Escolhendo um Presente",
+                "content6": "Fazendo Compras em uma Loja",
+                "content7": "Descrevendo um Objeto e Sua Função",
+                "content8": "Fazendo uma Lista de Compras",
+                "content9": "No Comerciante",
+                "content10": "Caracterizando um Restaurante",
+                "content11": "Pedindo em um Restaurante",
+                "content12": "Falando sobre o Passado",
+                "content13": "Fazendo Comparações",
+                "content14": "Descrevendo uma Habitação",
+                "content15": "Transformações / Renovações de Casa",
+                "content16": "Procurando uma Habitação",
+                "content17": "Dividindo Apartamento",
+                "content18": "Conjugação (Revisão)"
+            },
+            "Infos": {
+                "header": "Este curso inclui:",
+                "video": "Vídeos sob demanda por <noWrap>11,5 horas</noWrap>",
+                "resources": "64 recursos para download",
+                "accessMobileTV": "Acesso em celulares e TV",
+                "unlimitedAccess": "Acesso ilimitado",
+                "certificate": "Certificado de conclusão",
+                "buyNow": "COMPRE AGORA!",
+                "guarantee": "* Garantia de satisfação ou reembolso de 30 dias"
+            },
+            "IsForYou": {
+                "title": "Este Curso é <hs4>Certo para Você</hs4>?",
+                "description": "Certifique-se de que nosso curso corresponde às suas necessidades e ao seu nível atual de francês. Sinta-se à vontade para nos contatar para qualquer dúvida ou por conselhos personalizados antes de se inscrever.",
+                "help": "Ajuda!",
+                "prerequisitesTitle": "Pré-requisitos",
+                "prerequisite1": "Você deve ter um bom conhecimento do vocabulário e da gramática francesa A1.",
+                "prerequisite2": "Idealmente meu primeiro curso: Curso Completo de Francês: Aprenda Francês - Iniciantes.",
+                "buyNow": "COMPRE AGORA!",
+                "levelTitle": "Qual nível eu alcançarei?",
+                "levelDescription": "No final deste curso, você terá completado o nível A2.1. Você precisará terminar a segunda parte deste curso (no qual já estou trabalhando) para completar o nível A2.2 e alcançar o início de B1."
+            },
+            "OtherCourses": { "title": "Veja <hs4>outros cursos</hs4>" },
+            "LastComments": {
+                "title": "<hs4>Comentários</hs4> & Experiências",
+                "description": "Veja o que nossos alunos dizem sobre este curso. Forme sua própria opinião sobre a qualidade do nosso ensino e a eficácia do nosso método. Você pode encontrar milhares de outras avaliações em ",
+                "buyNow": "COMPRE AGORA!"
+            }
+        },
+        "Dialogues": {
+            "PrimaryPage": {
+                "title": "O Curso Completo de Francês - <noWrap><hs5>Conversas do Dia a Dia</hs5></noWrap>",
+                "description": "Curso de Língua Francesa - Nível Intermediário A2 a B1. Domine a Comunicação Cotidiana em Francês com 100 Diálogos da Vida Real."
+            },
+            "YouLearn": {
+                "title": "O que <hs5>você vai aprender</hs5>",
+                "learn1": "Dominar situações cotidianas em francês",
+                "learn2": "Adquirir frases essenciais em francês para diversos contextos de comunicação",
+                "learn3": "Consolidar suas habilidades com exercícios e avaliações direcionados",
+                "learn4": "Imersão em mais de cem diálogos práticos em francês",
+                "learn5": "Aumentar sua confiança praticando com cenários reais",
+                "learn6": "Entender e usar os modos subjuntivo e condicional"
+            },
+            "Description": {
+                "para1": "<b>Primeiro, se você é um iniciante completo, considere fazer minha primeira aula :</b>",
+                "header1": "É <hs5>feito para você se</hs5> :",
+                "listItem1": "Você terminou meus cursos anteriores e quer uma progressão lógica",
+                "listItem2": "Você deseja um curso baseado em cenários reais do dia a dia",
+                "listItem3": "Você quer conhecer todas as expressões práticas e úteis e falar como um local",
+                "listItem4": "Você quer aumentar sua confiança e ser capaz de lidar com várias situações na França",
+                "header2": "<hs5>Como</hs5> funciona?",
+                "para2": "O curso é dividido em <b>40 lições (~23 horas de vídeos e cem diálogos)</b> seguindo uma progressão lógica e explorando todas as <b>situações da vida real</b> que você poderia encontrar na França.",
+                "para3": "Cada lição começa com diálogos envolventes sobre um tópico específico, acompanhados de perguntas para verificar seu entendimento. Em seguida, decompomos cada diálogo, destacando o vocabulário chave e a nova gramática. Colocamos tudo isso em prática e finalmente terminamos com um <b>foco na comunicação</b>, dando a você as frases essenciais para lidar facilmente com suas situações diárias em francês!",
+                "para4": "Para a parte de exercício, não esqueça que você precisará de uma caneta e papel para completá-los comigo. É fácil, basta seguir as instruções no vídeo!",
+                "para5": "E muito importante! Após cada lição, você terá acesso a <b>um resumo da lição e uma lista de vocabulário</b> com todas as expressões corretas para usar em cada situação de comunicação, junto com a tradução e um documento de áudio para garantir uma pronúncia perfeita!",
+                "para6": "Você também encontrará avaliações ou bilans com muitos exercícios ao longo do curso. Então, por favor, faça suas tarefas 😉",
+                "header3": "Conteúdo do <hs5>Curso</hs5>",
+                "content1": "Fazendo Compras",
+                "content2": "Especificando Quantidades",
+                "content3": "Fazendo um Pedido",
+                "content4": "Reserva",
+                "content5": "Modificando uma Reserva",
+                "content6": "Falando sobre Dinheiro",
+                "content7": "Pedindo uma Troca, Reembolso",
+                "content8": "Hesitando - Estando Incerto",
+                "content9": "Pedindo, Dando Informações",
+                "content10": "Inscrevendo-se em uma Atividade",
+                "content11": "Procurando, Localizando",
+                "content12": "Descrevendo um Lugar - Férias",
+                "content13": "Descrevendo seu Local de Moradia - Instalando-se",
+                "content14": "Assinando - Internet e Telefonia",
+                "content15": "Pedindo Explicações",
+                "content16": "Procurando uma Solução",
+                "content17": "Descrevendo um Voo",
+                "content18": "Descrevendo um Acidente",
+                "content19": "Falando sobre Saúde",
+                "content20": "Telefonando",
+                "content21": "Marcando, Remarcando, Cancelando um Compromisso",
+                "content22": "Fazendo Renovações, Faça Você Mesmo",
+                "content23": "Reparando, no Mecânico",
+                "content24": "Dando - Seguindo Instruções",
+                "content25": "Insistindo - Recusando",
+                "content26": "Relatando um Erro, um Problema",
+                "content27": "Pedindo Desculpas",
+                "content28": "Organizando, Propondo uma Atividade",
+                "content29": "Sendo Convidado - Elogiando",
+                "content30": "Apresentando uma Pessoa",
+                "content31": "Tomando, Recebendo Notícias",
+                "content32": "Parabenizando",
+                "content33": "Expressando Decepção e Arrependimento - Consolando",
+                "content34": "Verificando - Assegurando",
+                "content35": "Negando - Acusando",
+                "content36": "Falando sobre uma Mudança Positiva",
+                "content37": "Reclamando - Sendo Negativo",
+                "content38": "Fazendo uma Crítica Positiva ou Negativa (Filme - Show)",
+                "content39": "Fazendo uma Crítica Positiva ou Negativa (Exposição - Arte)",
+                "content40": "Falando Bem/Mal de Alguém",
+                "content41": "Pedindo & Dando Conselhos",
+                "content42": "Agradecimentos e Acompanhamento!"
+            },
+            "Infos": {
+                "header": "Este curso inclui:",
+                "video": "Vídeos sob demanda por <noWrap>23 horas</noWrap>",
+                "resources": "89 recursos para download",
+                "accessMobileTV": "Acesso em celulares e TV",
+                "unlimitedAccess": "Acesso ilimitado",
+                "certificate": "Certificado de conclusão",
+                "buyNow": "COMPRE AGORA!",
+                "guarantee": "* Garantia de satisfação ou reembolso em 30 dias"
+            },
+            "IsForYou": {
+                "title": "Este Curso é <hs5>Certo para Você</hs5>?",
+                "description": "Certifique-se de que nosso curso corresponde às suas necessidades e ao seu nível atual de francês. Sinta-se à vontade para nos contatar para quaisquer perguntas ou para conselhos personalizados antes de se inscrever.",
+                "help": "Ajuda!",
+                "prerequisitesTitle": "Pré-requisitos",
+                "prerequisite1": "Você deve ter um nível A2 de francês ou um A1 forte.",
+                "prerequisite2": "Pelo menos meu primeiro curso: O Curso Completo de Francês: Aprender Francês - Iniciantes",
+                "buyNow": "COMPRE AGORA!",
+                "levelTitle": "Qual nível eu alcançarei?",
+                "levelDescription": "No final deste curso que vai do nível A2 ao B1, você alcançará um nível de conversação B1."
+            },
+            "OtherCourses": { "title": "Ver <hs5>outros cursos</hs5>" },
+            "LastComments": {
+                "title": "<hs5>Feedback</hs5> & Experiências",
+                "description": "Veja o que nossos alunos dizem sobre este curso. Forme sua própria opinião sobre a qualidade do nosso ensino e a eficácia do nosso método. Você pode encontrar milhares de outras opiniões em ",
+                "buyNow": "COMPRE AGORA!"
+            }
+        },
+        "PastTenses": {
+            "PrimaryPage": {
+                "title": "Aprenda Francês - Nível Intermediário <noWrap>: Domine</noWrap> <hs3>os Tempos Passados</hs3>",
+                "description": "Falar no passado em francês - Aprenda os 3 principais tempos passados: Passé Composé - Imparfait - Plus-que-parfait."
+            },
+            "YouLearn": {
+                "title": "O que <hs3>você vai aprender</hs3>",
+                "learn1": "Falar no passado",
+                "learn2": "Entender as diferenças entre os tempos passados e usá-los juntos",
+                "learn4": "Dominar os 3 tempos principais: Passé Composé - Imparfait - Plus-que-parfait",
+                "learn5": "Praticar com exercícios escritos e orais"
+            },
+            "Description": {
+                "para1": "<b>Domine o Passado em Francês!</b>",
+                "header1": "É feito <hs3>para você se</hs3>:",
+                "listItem1": "Você já tem algum conhecimento da língua francesa (nível A1+/A2)",
+                "listItem2": "Você deseja algo estruturado gramaticalmente",
+                "listItem3": "Você quer aprender ativamente os Tempos Passados (Faça os exercícios comigo!)",
+                "listItem4": "Você quer ser capaz de se expressar no passado em francês",
+                "header2": "<hs3>Como</hs3> funciona?",
+                "para2": "Os tempos passados mais importantes em francês são o <b>Passé Composé</b> e o <b>Imparfait</b>, e podem ser difíceis de usar por várias razões. Eles não têm exatamente um equivalente em inglês, o que os torna complicados de traduzir. Além disso, muitas vezes trabalham juntos e entender a relação entre eles é essencial para se comunicar em francês.",
+                "para3": "Por isso, para cada tempo, veremos os diferentes <b>usos</b> possíveis, a <b>construção</b> e finalmente praticaremos com exercícios.",
+                "para4": "Não perca as folhas de resumo e exercícios (com correções) que ajudarão você a praticar e consolidar o que você aprendeu.",
+                "para5": "Como trabalho final, há um projeto que você poderá completar após assistir a esta aula. Chama-se \"Uma história de amor\" e você encontrará o documento / PDF em anexo. Corrigirei com prazer e darei um feedback personalizado. Use o resumo do PDF da aula para ajudá-lo com os verbos, bem como a lista de vocabulário que está na folha de tarefa. Mal posso esperar para ler suas histórias 😉",
+                "header3": "Conteúdo do <hs3>curso</hs3>",
+                "content1": "O passado - Passé Composé - Imparfait - Plus-Que-Parfait",
+                "content2": "O Passé Composé",
+                "content3": "O Imparfait",
+                "content4": "Passé Composé ou Imparfait?",
+                "content5": "O Plus-Que-Parfait",
+                "content6": "Passé Composé, Imparfait e Plus-que-parfait"
+            },
+            "Infos": {
+                "header": "Este curso inclui:",
+                "video": "Vídeos sob demanda por <noWrap>1,5 horas</noWrap>",
+                "resources": "3 recursos para download",
+                "accessMobileTV": "Acesso em celulares e TV",
+                "unlimitedAccess": "Acesso ilimitado",
+                "certificate": "Certificado de conclusão",
+                "buyNow": "COMPRE AGORA!",
+                "guarantee": "* Garantia de satisfação ou reembolso de 30 dias"
+            },
+            "IsForYou": {
+                "title": "Este curso é <hs3>certo para você</hs3>?",
+                "description": "Certifique-se de que nosso curso corresponde às suas necessidades e ao seu nível atual de francês. Fique à vontade para nos contactar para quaisquer perguntas ou para um aconselhamento personalizado antes de se inscrever.",
+                "help": "Ajuda!",
+                "prerequisitesTitle": "Pré-requisitos",
+                "prerequisite1": "Você já tem algum conhecimento da língua francesa (nível A1+/A2).",
+                "prerequisite2": "Uma caneta e um papel.",
+                "buyNow": "COMPRE AGORA!",
+                "levelTitle": "Qual nível eu vou alcançar?",
+                "levelDescription": "Esta aula sobre os tempos passados em francês é projetada para <noWrap>ajudar você a:</noWrap>",
+                "level1": "Entendê-los e saber quando usá-los",
+                "level2": "Construir e conjugar os verbos",
+                "level3": "Se sentir confortável falando no passado",
+                "level4": "Contar uma história no passado, usando os tempos corretos"
+            },
+            "OtherCourses": { "title": "Ver <hs3>outros cursos</hs3>" },
+            "LastComments": {
+                "title": "<hs3>Comentários</hs3> & Experiências",
+                "description": "Veja o que nossos alunos dizem sobre este curso. Forme sua própria opinião sobre a qualidade do nosso ensino e a eficácia do nosso método. Você pode encontrar milhares de outras opiniões em ",
+                "buyNow": "COMPRE AGORA!"
+            }
         }
     }
 }

@@ -9,10 +9,22 @@ import { ParentToChildrens, ScaleChildren } from "../../animations/ParentToChild
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 
+interface LessonCard {
+    title: string;
+    image: string;
+    description: string;
+    price: number;
+    reduction: number | null;
+    difficulty: string;
+    time: string;
+    link: string;
+    isNew?: string;
+}
+
 function LessonCards() {
     const t = useTranslations("LessonCards");
 
-    const lessons = [
+    const lessons: LessonCard[] = [
         {
             title: t("lessons.beginnerLevel1.title"),
             image: "/images/cours1.jpg",
@@ -21,7 +33,7 @@ function LessonCards() {
             reduction: 60,
             difficulty: "A1",
             time: "16h10",
-            link: "https://www.udemy.com/course/french-for-beginners-a1/",
+            link: "/courses/beginners",
         },
         {
             title: t("lessons.lowIntermediateLevel2.title"),
@@ -31,18 +43,18 @@ function LessonCards() {
             reduction: 70,
             difficulty: "A2",
             time: "11h40",
-            link: "https://www.udemy.com/course/the-complete-french-course-learn-french-low-intermediate/",
+            link: "/courses/intermediates",
         },
         {
-            title: t("lessons.lowIntermediateLevel2bis.title"),
+            title: t("lessons.lowIntermediateLevel3.title"),
             image: "/images/cours3.jpg",
-            description: t("lessons.lowIntermediateLevel2bis.description"),
+            description: t("lessons.lowIntermediateLevel3.description"),
             price: 120,
             reduction: 70,
-            difficulty: "A2",
-            time: "11h40",
-            link: "https://www.udemy.com/course/the-complete-french-course-learn-french-low-intermediate/",
-            isNew: t("lessons.lowIntermediateLevel2bis.new"),
+            difficulty: "B1",
+            time: "23h",
+            link: "/courses/dialogues",
+            isNew: t("lessons.lowIntermediateLevel3.new"),
         },
         {
             title: t("lessons.masterPastTenses.title"),
@@ -52,7 +64,7 @@ function LessonCards() {
             reduction: null,
             difficulty: "A2",
             time: "1h30",
-            link: "https://www.udemy.com/course/french-grammar-the-past-tenses/",
+            link: "/courses/past-tenses",
         },
     ];
 
@@ -66,44 +78,8 @@ function LessonCards() {
                     <p className="bd py-4">{t("description")}</p>
                 </div>
                 <div className="grid grid-cols-6 gap-4 lg:gap-8">
-                    {lessons.map(({ image, title, description, isNew, difficulty, time, link }) => (
-                        <div key={title} className="col-span-6 md:col-span-3 xl:col-span-2">
-                            <SlideInOneByOneChild>
-                                <ParentToChildrens>
-                                    <Link href={link} className="card link-card flex flex-col h-full w-full relative overflow-hidden">
-                                        {isNew && (
-                                            <div className="new-banner" style={{ border: "solid 1px black", boxShadow: "3px 3px 3px 0px var(--neutral-800)" }}>
-                                                {isNew}
-                                            </div>
-                                        )}
-                                        <div className="image-wrapper-card-top">
-                                            <ScaleChildren>
-                                                <Image className="h-auto" src={image} alt={title || "no title"} height={320} width={550} style={{ maxWidth: "100%" }} />
-                                            </ScaleChildren>
-                                        </div>
-                                        <div className="p-4 flex flex-col space-between grow">
-                                            <h2 className="font-bold pt-2 text-xl" style={{ minHeight: 64 }}>
-                                                {title}
-                                            </h2>
-                                            <div className=" flex flex-col justify-between grow">
-                                                <p className="text-left">{description}</p>
-                                            </div>
-                                            <div className="flex justify-center items-center">
-                                                <div className="flex items-center mr-2">
-                                                    <AiFillSignal className=" mr-2" style={{ fontSize: "1.5rem", color: difficulty === "A1" ? "var(--secondary-5)" : "var(--secondary-1)" }} />
-                                                    <p className="m-0">{difficulty}</p>
-                                                </div>
-                                                <div className="flex items-center">
-                                                    <IoTime className="mr-2" style={{ fontSize: "1.5rem" }} />
-                                                    <p className="m-0">{time}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                </ParentToChildrens>
-                            </SlideInOneByOneChild>
-                        </div>
-                    ))}
+                    <LessonCardsRender lessons={lessons} />
+
                     <div className="h-full hidden xl:block col-span-2">
                         <SlideInOneByOneChild>
                             <div className="card card-secondary-1 flex-vertical-center card-contact-featured h-full">
@@ -149,3 +125,50 @@ function LessonCards() {
 }
 
 export default LessonCards;
+
+export const LessonCardsRender = ({ lessons }: { lessons: LessonCard[] }) => {
+    return lessons.map(({ image, title, description, isNew, difficulty, time, link }) => (
+        <div key={title} className="col-span-6 md:col-span-3 xl:col-span-2">
+            <SlideInOneByOneChild>
+                <ParentToChildrens>
+                    <Link href={link} className="card link-card flex flex-col h-full w-full relative overflow-hidden">
+                        {isNew && (
+                            <div className="new-banner" style={{ border: "solid 1px black", boxShadow: "3px 3px 3px 0px var(--neutral-800)" }}>
+                                {isNew}
+                            </div>
+                        )}
+                        <div className="image-wrapper-card-top">
+                            <ScaleChildren>
+                                <Image className="h-auto" src={image} alt={title || "no title"} height={320} width={550} style={{ maxWidth: "100%" }} />
+                            </ScaleChildren>
+                        </div>
+                        <div className="p-4 flex flex-col space-between grow">
+                            <h2 className="font-bold pt-2 text-xl" style={{ minHeight: 64 }}>
+                                {title}
+                            </h2>
+                            <div className=" flex flex-col justify-between grow">
+                                <p className="text-left">{description}</p>
+                            </div>
+                            <div className="flex justify-center items-center">
+                                <div className="flex items-center mr-2">
+                                    <AiFillSignal
+                                        className=" mr-2"
+                                        style={{
+                                            fontSize: "1.5rem",
+                                            color: difficulty === "A1" ? "var(--secondary-5)" : difficulty === "A2" ? "var(--secondary-1)" : "var(--secondary-4)",
+                                        }}
+                                    />
+                                    <p className="m-0">{difficulty}</p>
+                                </div>
+                                <div className="flex items-center">
+                                    <IoTime className="mr-2" style={{ fontSize: "1.5rem" }} />
+                                    <p className="m-0">{time}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </Link>
+                </ParentToChildrens>
+            </SlideInOneByOneChild>
+        </div>
+    ));
+};

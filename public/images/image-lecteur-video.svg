@@ -1,0 +1,19 @@
+<svg width="416" height="389" viewBox="0 0 416 389" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="416" height="389" fill="#137AFD"/>
+<rect x="97.4609" y="51.2725" width="241.079" height="306.453" rx="32" fill="#0B0B0B"/>
+<rect x="88.9609" y="42.7734" width="238.079" height="303.453" rx="30.5" fill="white" stroke="#0B0B0B" stroke-width="3"/>
+<rect x="116.662" y="75.4741" width="193.424" height="117.723" rx="27.8427" fill="#1C92FF"/>
+<rect x="110.455" y="68.0005" width="188.745" height="116.627" rx="26.3427" stroke="#0B0B0B" stroke-width="3"/>
+<path d="M211.983 134.621L199.11 142.193C194.694 144.79 189.127 141.606 189.127 136.483V121.34C189.127 116.217 194.694 113.033 199.11 115.63L211.983 123.201C216.338 125.762 216.338 132.06 211.983 134.621Z" fill="white" stroke="#0B0B0B" stroke-width="3"/>
+<line x1="110.455" y1="213.555" x2="308.354" y2="213.555" stroke="#0B0B0B" stroke-width="3" stroke-linecap="round"/>
+<path d="M156.025 213.051C156.025 216.791 152.992 219.824 149.251 219.824C145.509 219.824 142.477 216.791 142.477 213.051C142.477 209.31 145.509 206.277 149.251 206.277C152.992 206.277 156.025 209.31 156.025 213.051Z" fill="#1C92FF" stroke="#0B0B0B" stroke-width="3"/>
+<line x1="113.943" y1="310.054" x2="161.888" y2="310.05" stroke="#0B0B0B" stroke-width="3" stroke-linecap="round"/>
+<line x1="113.945" y1="321.341" x2="194.999" y2="321.341" stroke="#0B0B0B" stroke-width="3" stroke-linecap="round"/>
+<rect x="114.693" y="241.216" width="87.8349" height="57.9271" rx="14.7768" fill="#1C92FF"/>
+<rect x="110.457" y="235.977" width="85.0562" height="57.3329" rx="12.4213" stroke="#0B0B0B" stroke-width="3"/>
+<path d="M159.299 269.526L150.825 274.51C148.259 276.019 145.025 274.169 145.025 271.193V261.224C145.025 258.248 148.259 256.398 150.825 257.907L159.299 262.892C161.829 264.379 161.829 268.038 159.299 269.526Z" fill="white" stroke="#0B0B0B" stroke-width="3"/>
+<line x1="225.357" y1="310.335" x2="295.404" y2="310.335" stroke="#0B0B0B" stroke-width="3" stroke-linecap="round"/>
+<line x1="225.355" y1="321.341" x2="308.41" y2="321.341" stroke="#0B0B0B" stroke-width="3" stroke-linecap="round"/>
+<rect x="219.779" y="235.977" width="85.0562" height="57.3329" rx="12.4213" stroke="#0B0B0B" stroke-width="3"/>
+<path d="M269.561 269.526L261.086 274.51C258.521 276.019 255.287 274.169 255.287 271.193V261.224C255.287 258.248 258.521 256.398 261.086 257.907L269.561 262.892C272.091 264.379 272.091 268.038 269.561 269.526Z" stroke="#0B0B0B" stroke-width="3"/>
+</svg>

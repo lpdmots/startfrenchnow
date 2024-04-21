@@ -57,6 +57,15 @@ export const CATEGORIESCOLORS = {
     expressions: "var(--secondary-3)",
 };
 
+export const CATEGORIESTEXTCOLORS = {
+    tips: "text-secondary-1",
+    vocabulary: "text-secondary-2",
+    grammar: "text-secondary-4",
+    orthography: "text-secondary-6",
+    culture: "text-secondary-5",
+    expressions: "text-secondary-3",
+};
+
 export const CATEGORIESCOLORSSHADES = {
     tips: "var(--primaryShades)",
     vocabulary: "var(--secondaryShades-2)",
@@ -80,7 +89,7 @@ export const STORYCATEGORIES = {
 export const NUMBEROFBUTTONS_MOBILE = 3;
 export const NUMBEROFBUTTONS_DESKTOP = 6;
 
-export const ADVENTUREID = "18d88b4c-e3ce-4471-a66e-0d1fec1437e1";
+export const ADVENTUREID = "9d9e0112-482c-4a8b-a9a8-c5f70b99d2ce";
 
 export const ELEMENTDATA: ElementDataProps = { elementId: null, variablesToUpdate: {}, layouts: [], heros: {}, countIds: [], access: {}, step: null, inheritedChoices: [], informations: [] };
 
@@ -114,7 +123,7 @@ export const langData = {
     },
 };
 
-export const CATEGORIES = ["tips", "vocabulary", "grammar", "orthography", "culture", "expressions"];
+export const CATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions"];
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];

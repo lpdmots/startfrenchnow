@@ -10,9 +10,12 @@ import { FcIdea } from "react-icons/fc";
 import { RiDoubleQuotesL, RiDoubleQuotesR } from "react-icons/ri";
 import { CATEGORIESCOLORS, HEADINGSPANCOLORS } from "@/app/lib/constantes";
 import lessonTeacher from "@/public/images/lesson-teacher.png";
-import { TranslationPopover } from "./RichTextSfnComponents/TranslationPopover";
 import Exercise from "../exercises/exercise/Exercise";
 import { ArticleVoc } from "./RichTextSfnComponents/ArticleVoc";
+import LinkArrow from "../common/LinkArrow";
+import { NotePopover, NotePopoverTransalation } from "../animations/BlogAnimations";
+import TranslationPopover from "./RichTextSfnComponents/TranslationPopover";
+import Sound from "./RichTextSfnComponents/Sound";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -26,7 +29,10 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
             );
         },
         videoBlog: ({ value }: any) => <VideoBlog values={value} />,
-        tabelVoc: ({ value }: any) => (value.isArticle ? <ArticleVoc data={value} /> : <TabelVoc data={value} />),
+        tabelVoc: ({ value }: any) => {
+            console.log("value", value);
+            return value.isArticle ? <ArticleVoc data={value} /> : <TabelVoc data={value} />;
+        },
         flashcards: ({ value }: any) => {
             return <Flashcards data={value} />;
         },
@@ -101,19 +107,46 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
                 <p className="mb-0">{children}</p>
             </div>
         ),
+        translation: ({ children }: any) => (
+            <div className="translation pl-8 md:pl-12" style={{ borderLeft: "solid 8px var(--neutral-600)" }}>
+                <p className="italic">{children}</p>
+            </div>
+        ),
     },
     marks: {
         link: ({ children, value }: any) => {
-            const href = value.download ? cloudFrontDomain + value.href : value.href;
-            const rel = value.href[0] !== "/" ? "noreferrer noopener" : undefined;
-            const target = value.target ? "_blank" : "_self";
-            return (
-                <span className="flex justify-center my-8">
-                    <Link className="btn-primary w-button" href={href} target={target} rel={rel} download={value.download}>
-                        {value.download && <FaFileDownload className="mr-2" />}
+            let { href, download, target, isSpan } = value;
+            href = download ? cloudFrontDomain + href : href;
+            const rel = href[0] !== "/" ? "noreferrer noopener" : undefined;
+            target = target ? "_blank" : "_self";
+            if (isSpan) {
+                return (
+                    <LinkArrow url={href} target={target} rel={rel} category={category}>
                         {children}
-                    </Link>
-                </span>
+                    </LinkArrow>
+                );
+            } else {
+                return (
+                    <span className="flex justify-center my-8">
+                        <Link className="btn-primary w-button" href={href} target={target} rel={rel} download={download}>
+                            {download && <FaFileDownload className="mr-2" />}
+                            {children}
+                        </Link>
+                    </span>
+                );
+            }
+        },
+        translationPopover: ({ children, value }: any) => {
+            const { french, english, vocabItemId } = value;
+            if (!(french && english) && !vocabItemId) return <p>Traduction invalide</p>;
+            return <TranslationPopover data={{ ...value, category }}>{children}</TranslationPopover>;
+        },
+        sound: ({ children, value }: any) => {
+            const { phonetics, vocabItem } = value;
+            return (
+                <Sound vocabItemId={vocabItem._ref} phonetics={phonetics}>
+                    {children}
+                </Sound>
             );
         },
         highlight: ({ children }: any) => (
@@ -134,9 +167,7 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
         left: ({ children }: any) => <p style={{ textAlign: "left" }}>{children}</p>,
         center: ({ children }: any) => <p style={{ textAlign: "center" }}>{children}</p>,
         right: ({ children }: any) => <p style={{ textAlign: "right" }}>{children}</p>,
-        translationPopover: ({ children, value }: any) => {
-            return <TranslationPopover contentData={children} popoverData={value.translation} />;
-        },
+
         strong: ({ children }: any) => (
             <strong className="font-bold" style={{ color: CATEGORIESCOLORS[category || "tips"] }}>
                 {children}

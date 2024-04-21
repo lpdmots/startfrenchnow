@@ -70,5 +70,30 @@ export default defineType({
             type: "array",
             of: [{ type: "reference", to: [{ type: "theme" }] }],
         }),
+        defineField({
+            title: "Options",
+            name: "options",
+            type: "object",
+            fields: [
+                defineField({
+                    title: "Mélanger les cartes",
+                    name: "shuffle",
+                    type: "boolean",
+                    initialValue: true,
+                }),
+                defineField({
+                    title: "Changer les faces",
+                    name: "swapFaces",
+                    type: "boolean",
+                    initialValue: true,
+                }),
+                defineField({
+                    title: "Avec les voix",
+                    name: "withSound",
+                    type: "boolean",
+                    initialValue: true,
+                }),
+            ],
+        }),
     ],
 });
