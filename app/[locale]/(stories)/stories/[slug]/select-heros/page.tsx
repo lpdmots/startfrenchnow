@@ -35,20 +35,24 @@ async function StartStory({ params: { slug } }: Props) {
     if (!story || !element) return <p>Désolé, cette histoire n'est pas encore disponible.</p>;
 
     return (
-        <ProtectedPage callbackUrl={`/stories/${story.slug.current}/select-heros`} messageInfo="storyAccount">
-            <div className="container-default mx-auto h-screen flex flex-col item-center">
-                <NavBarStorySelect story={story} />
-                <IsDesktop>
-                    <DesktopLayoutSelect story={story} element={element} />
-                </IsDesktop>
-                <IsTablet>
-                    <div className="flex grow justify-center items-center">
-                        <MobileLayoutSelect story={story} element={element} />
-                    </div>
-                </IsTablet>
-            </div>
-        </ProtectedPage>
+        <div className="container-default mx-auto h-screen flex flex-col item-center">
+            <NavBarStorySelect story={story} />
+            <IsDesktop>
+                <DesktopLayoutSelect story={story} element={element} />
+            </IsDesktop>
+            <IsTablet>
+                <div className="flex grow justify-center items-center">
+                    <MobileLayoutSelect story={story} element={element} />
+                </div>
+            </IsTablet>
+        </div>
     );
+
+    /* return (
+        <ProtectedPage callbackUrl={`/stories/${story.slug.current}/select-heros`} messageInfo="storyAccount">
+            
+        </ProtectedPage>
+    ); */
 }
 
 export default StartStory;

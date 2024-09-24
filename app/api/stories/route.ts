@@ -34,8 +34,8 @@ export async function POST(request: NextRequest) {
     const user: UserProps = await client.fetch(`*[_type == "user" && _id == $userId][0]`, { userId });
     const story: Adventure = await client.fetch(`*[_type == "adventure" && _id == $storyId][0]`, { storyId });
 
-    if (!user || !story || !userId) return NextResponse.json({ message: "No user or no story found." }, { status: 400 });
-    if (user.isAdmin) return NextResponse.json({ message: "Admin accounts do not count" }, { status: 200 });
+    if (!story) return NextResponse.json({ message: "No user or no story found." }, { status: 400 });
+    if (user?.isAdmin) return NextResponse.json({ message: "Admin accounts do not count" }, { status: 200 });
 
     // Story Stats
     const storyPreviousData = structuredClone(story.stats);
@@ -43,24 +43,30 @@ export async function POST(request: NextRequest) {
     storyStats.gamesStarted = storyStats.gamesStarted ? storyStats.gamesStarted + 1 : 1;
 
     // User Stats
-    const userPreviousData = structuredClone(user.stories?.find((story) => story.story._ref === storyId));
-    const userStoryData: UserStory = userPreviousData || getInitialData(storyId);
-    userStoryData.gamesStarted = userStoryData.gamesStarted ? userStoryData.gamesStarted + 1 : 1;
+    let userPreviousData;
+    let userStoryData: UserStory = getInitialData(storyId);
+    if (user) {
+        userPreviousData = structuredClone(user.stories?.find((story) => story.story._ref === storyId));
+        if (userPreviousData) userStoryData = userPreviousData;
+        userStoryData.gamesStarted = userStoryData.gamesStarted ? userStoryData.gamesStarted + 1 : 1;
+    }
 
     try {
         client.patch(storyId).set({ stats: storyStats }).commit({ autoGenerateArrayKeys: true });
 
-        const valueToUnset = userPreviousData ? [`stories[story._ref == "${storyId}"]`] : [];
-        client
-            .patch(userId)
-            // Ensure that the `reviews` arrays exists before attempting to add items to it
-            .setIfMissing({ stories: [] })
-            .unset(valueToUnset)
-            // Add the items after the last item in the array (append)
-            .insert("after", "stories[-1]", [userStoryData])
-            .commit({
-                autoGenerateArrayKeys: true,
-            });
+        if (user) {
+            const valueToUnset = userPreviousData ? [`stories[story._ref == "${storyId}"]`] : [];
+            client
+                .patch(userId)
+                // Ensure that the `reviews` arrays exists before attempting to add items to it
+                .setIfMissing({ stories: [] })
+                .unset(valueToUnset)
+                // Add the items after the last item in the array (append)
+                .insert("after", "stories[-1]", [userStoryData])
+                .commit({
+                    autoGenerateArrayKeys: true,
+                });
+        }
 
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (error: any) {

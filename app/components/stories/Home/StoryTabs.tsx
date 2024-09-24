@@ -18,7 +18,6 @@ export function StoryTabs({ stories }: { stories: StoryCard[] }) {
                     <SlideFromBottom>
                         <div className="flex flex-col items-center pb-16">
                             <p className="w-full text-center max-w-3xl">{t.rich("description1", intelRich())}</p>
-                            <p className="w-full text-center max-w-3xl">{t.rich("description2", intelRich())}</p>
                         </div>
                     </SlideFromBottom>
 

@@ -212,8 +212,8 @@ export const updateFeedback = async (data: any, slug: string, userId: string | u
     const oldFeedback: Feedback = await client.fetch(`*[_type == "feedback"][0]`);
     const story = await client.fetch(`*[_type == "adventure" && slug.current == $slug][0]`, { slug });
 
-    if (!oldFeedback || !story || !userId) return { error: "error404", success: false };
-    if (oldFeedback.userIds?.includes(userId)) return { error: "allready", success: false };
+    if (!oldFeedback || !story) return { error: "error404", success: false };
+    if (oldFeedback.userIds?.includes(userId || "")) return { error: "allready", success: false };
 
     const { stars, checkboxes, comment } = data;
     try {
@@ -252,8 +252,8 @@ export const updateFeedback = async (data: any, slug: string, userId: string | u
             }
         });
 
-        comment && newFeedback.comment.push({ userId, comment });
-        newFeedback.userIds.push(userId);
+        comment && newFeedback.comment.push({ userId: userId || "", comment });
+        newFeedback.userIds.push(userId || "");
 
         await client.patch(oldFeedback._id).set(newFeedback).commit({ autoGenerateArrayKeys: true });
 

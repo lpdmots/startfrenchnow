@@ -24,7 +24,7 @@ const StoryReport = ({ params: { slug } }: Props) => {
     const router = useRouter();
 
     useEffect(() => {
-        if (status !== "authenticated" || sending) setIsLoading(true);
+        if (sending) setIsLoading(true);
         else setIsLoading(false);
     }, [status, sending, setIsLoading]);
 
@@ -34,7 +34,7 @@ const StoryReport = ({ params: { slug } }: Props) => {
         message: (
             <div>
                 {type === "success" ? (
-                    <p>Merci pour votre message ! Nous vous répondrons dès que possible.</p>
+                    <p>Merci pour votre message ! Nous vous répondrons dès que possible si vous avez un compte utilisateur.</p>
                 ) : type === "error" ? (
                     <p>Une erreur est survenue. Veuillez réessayer plus tard.</p>
                 ) : (
@@ -72,7 +72,7 @@ const StoryReport = ({ params: { slug } }: Props) => {
     };
 
     return (
-        <ProtectedPage callbackUrl={`/stories/${slug}/story-report`} messageInfo="">
+        <>
             <div className="container-default mx-auto h-screen grid grid-cols-2 gap-0 lg:gap-8">
                 <div className="col-span-2 lg:col-span-1 h-full w-full flex flex-col items-center justify-center py-8 md:gap-4">
                     <h1 className="display-1">
@@ -94,7 +94,7 @@ const StoryReport = ({ params: { slug } }: Props) => {
                 </div>
             </div>
             {open && <ModalFromBottom data={modalData} />}
-        </ProtectedPage>
+        </>
     );
 };
 

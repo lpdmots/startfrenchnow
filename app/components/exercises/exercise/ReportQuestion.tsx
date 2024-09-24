@@ -3,6 +3,7 @@ import { AnimatePresence, m } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import Spinner from "../../common/Spinner";
+import { Question } from "@/app/types/sfn/blog";
 
 const DEFAULTCHECKBOXES = {
     answer: false,
@@ -13,9 +14,11 @@ const DEFAULTCHECKBOXES = {
 interface ReportQuestionProps {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
+    exerciseId: string;
+    question: Question;
 }
 
-export const ReportQuestion = ({ open, setOpen }: ReportQuestionProps) => {
+export const ReportQuestion = ({ open, setOpen, exerciseId, question }: ReportQuestionProps) => {
     const { data: session } = useSession();
     const [checboxes, setCheckboxes] = useState(DEFAULTCHECKBOXES);
     const [input, setInput] = useState("");
@@ -30,6 +33,7 @@ export const ReportQuestion = ({ open, setOpen }: ReportQuestionProps) => {
         if (theme) body += "This question does not correspond to the theme.\n";
         if (error) body += "Something went wrong.\n";
         if (input) body += `Additional information: ${input}\n`;
+        body += `\nQuestion: ${question._key} -> ${question.prompt.text}\nExercise: ${exerciseId}`;
         return body;
     };
 

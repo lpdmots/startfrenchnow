@@ -199,113 +199,109 @@ export default function Feedback({ params: { slug } }: Props) {
         setLanguage((prev) => (prev === "fr" ? "en" : "fr"));
     };
 
-    return (
+    /* return (
         <ProtectedPage callbackUrl={`/stories/${slug}/select-heros`} messageInfo="You need to log in to keep track of your stories.">
-            <div className="container-default mx-auto h-screen flex flex-col item-center">
-                <LanguageButton language={language} handleLanguage={handleLanguage} />
-                <div className="my-16 mt-0">
-                    <h1 className="display-1 w-full text-center">{t[language].title}</h1>
-                    <p className="mb-0 w-full text-center">{t[language].feedbackInfo}</p>
-                </div>
-
-                <div className="grid grid-cols-2">
-                    <div className="col-span-2 md:col-span-1 flex justify-center items-center">
-                        <Image src="/images/codeur.png" alt="a coder working on computer" height={500} width={500} style={{ objectFit: "contain", height: "auto" }} />
-                    </div>
-                    <div className="col-span-2 md:col-span-1">
-                        {divider}
-                        <div className="flex flex-col justify-center items-center gap-4">
-                            <StarRating starIndex={stars["Intérêt pour l'application"]} handleStarIndex={handleStarIndex} ObjectKey="Intérêt pour l'application" />
-                            <div>
-                                <h3 className="display-5 text-center">{t[language].interestTitle}</h3>
-                                <p className="bs font-bold text-center mb-0 max-w-xl">{t[language].interestDescription}</p>
-                                <CommentCollapse ref={interestRef} language={language} />
-                            </div>
-                        </div>
-
-                        {divider}
-                        <div className="flex flex-col justify-center items-center gap-4">
-                            <StarRating starIndex={stars["Expérience utilisateur"]} handleStarIndex={handleStarIndex} ObjectKey="Expérience utilisateur" />
-                            <div>
-                                <h3 className="display-5 text-center">{t[language].uxTitle}</h3>
-                                <p className="bs font-bold text-center mb-0 max-w-xl">{t[language].uxDescription}</p>
-                                <CommentCollapse ref={uxRef} language={language} />
-                            </div>
-                        </div>
-                        {divider}
-                        <div className="flex flex-col justify-center items-center gap-4">
-                            <StarRating starIndex={stars.story} handleStarIndex={handleStarIndex} ObjectKey="story" />
-                            <div>
-                                <h3 className="display-5 text-center">{t[language].storyTitle}</h3>
-                                <p className="bs font-bold text-center mb-0 max-w-xl">{t[language].storyDescription}</p>
-                                <CommentCollapse ref={storyRef} language={language} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {divider}
-                <div className="grid grid-cols-2 gap-8 md:gap-16">
-                    <div className="col-span-2 md:col-span-1 flex flex-col justify-center md:items-end">
-                        <div className="flex flex-col  md:items-end w-full md:max-w-sm">
-                            <h3 className="display-5 text-left md:text-right">{t[language].futureWishes}</h3>
-                            <p className="bs font-bold mb-0 max-w-xl text-left md:text-right">{t[language].futureDescription}</p>
-                        </div>
-                    </div>
-                    <div className="col-span-2 md:col-span-1 flex flex-col justify-center">
-                        <div className="w-checkbox checkbox-field-wrapper col-span-2">
-                            <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("enigm")}>
-                                <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.enigm.checked ? "w--redirected-checked" : undefined}`}></div>
-                                {t[language].checkboxes.enigm}
-                            </label>
-                        </div>
-                        <div className="w-checkbox checkbox-field-wrapper col-span-2">
-                            <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("dialog")}>
-                                <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.dialog.checked ? "w--redirected-checked" : undefined}`}></div>
-                                {t[language].checkboxes.dialog}
-                            </label>
-                        </div>
-                        <div className="w-checkbox checkbox-field-wrapper col-span-2">
-                            <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("exercises")}>
-                                <div
-                                    id="checkbox"
-                                    className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.exercises.checked ? "w--redirected-checked" : undefined}`}
-                                ></div>
-                                {t[language].checkboxes.exercises}
-                            </label>
-                        </div>
-                        <div className="w-checkbox checkbox-field-wrapper col-span-2">
-                            <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("soundscape")}>
-                                <div
-                                    id="checkbox"
-                                    className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.soundscape.checked ? "w--redirected-checked" : undefined}`}
-                                ></div>
-                                {t[language].checkboxes.soundscape}
-                            </label>
-                        </div>
-                        <div className="w-checkbox checkbox-field-wrapper col-span-2 mb-0">
-                            <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("audio")}>
-                                <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.audio.checked ? "w--redirected-checked" : undefined}`}></div>
-                                {t[language].checkboxes.audio}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                {divider}
-                <div className="w-full">
-                    <label htmlFor="message">{t[language].commentLabel}</label>
-                    <textarea ref={comment} placeholder={t[language].placeholder} className="text-area w-input" maxLength={1000}></textarea>
-                </div>
-                <div className="py-4 flex justify-center gap-4">
-                    <button className="btn btn-secondary" onClick={() => router.push("/stories")}>
-                        {t[language].cancelButton}
-                    </button>
-                    <button onClick={isLoading ? undefined : handleSubmit} className="btn btn-primary" style={{ minWidth: 150 }}>
-                        {isLoading ? <Spinner radius maxHeight="40px" color="var(--neutral-100)" /> : t[language].submitButton}
-                    </button>
-                </div>
-                {modal.open && <ModalFromBottom data={modal.data as any} />}
+            
+        </ProtectedPage> */
+    return (
+        <div className="container-default mx-auto h-screen flex flex-col item-center">
+            <LanguageButton language={language} handleLanguage={handleLanguage} />
+            <div className="my-16 mt-0">
+                <h1 className="display-1 w-full text-center">{t[language].title}</h1>
+                <p className="mb-0 w-full text-center">{t[language].feedbackInfo}</p>
             </div>
-        </ProtectedPage>
+
+            <div className="grid grid-cols-2">
+                <div className="col-span-2 md:col-span-1 flex justify-center items-center">
+                    <Image src="/images/codeur.png" alt="a coder working on computer" height={500} width={500} style={{ objectFit: "contain", height: "auto" }} />
+                </div>
+                <div className="col-span-2 md:col-span-1">
+                    {divider}
+                    <div className="flex flex-col justify-center items-center gap-4">
+                        <StarRating starIndex={stars["Intérêt pour l'application"]} handleStarIndex={handleStarIndex} ObjectKey="Intérêt pour l'application" />
+                        <div>
+                            <h3 className="display-5 text-center">{t[language].interestTitle}</h3>
+                            <p className="bs font-bold text-center mb-0 max-w-xl">{t[language].interestDescription}</p>
+                            <CommentCollapse ref={interestRef} language={language} />
+                        </div>
+                    </div>
+
+                    {divider}
+                    <div className="flex flex-col justify-center items-center gap-4">
+                        <StarRating starIndex={stars["Expérience utilisateur"]} handleStarIndex={handleStarIndex} ObjectKey="Expérience utilisateur" />
+                        <div>
+                            <h3 className="display-5 text-center">{t[language].uxTitle}</h3>
+                            <p className="bs font-bold text-center mb-0 max-w-xl">{t[language].uxDescription}</p>
+                            <CommentCollapse ref={uxRef} language={language} />
+                        </div>
+                    </div>
+                    {divider}
+                    <div className="flex flex-col justify-center items-center gap-4">
+                        <StarRating starIndex={stars.story} handleStarIndex={handleStarIndex} ObjectKey="story" />
+                        <div>
+                            <h3 className="display-5 text-center">{t[language].storyTitle}</h3>
+                            <p className="bs font-bold text-center mb-0 max-w-xl">{t[language].storyDescription}</p>
+                            <CommentCollapse ref={storyRef} language={language} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {divider}
+            <div className="grid grid-cols-2 gap-8 md:gap-16">
+                <div className="col-span-2 md:col-span-1 flex flex-col justify-center md:items-end">
+                    <div className="flex flex-col  md:items-end w-full md:max-w-sm">
+                        <h3 className="display-5 text-left md:text-right">{t[language].futureWishes}</h3>
+                        <p className="bs font-bold mb-0 max-w-xl text-left md:text-right">{t[language].futureDescription}</p>
+                    </div>
+                </div>
+                <div className="col-span-2 md:col-span-1 flex flex-col justify-center">
+                    <div className="w-checkbox checkbox-field-wrapper col-span-2">
+                        <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("enigm")}>
+                            <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.enigm.checked ? "w--redirected-checked" : undefined}`}></div>
+                            {t[language].checkboxes.enigm}
+                        </label>
+                    </div>
+                    <div className="w-checkbox checkbox-field-wrapper col-span-2">
+                        <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("dialog")}>
+                            <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.dialog.checked ? "w--redirected-checked" : undefined}`}></div>
+                            {t[language].checkboxes.dialog}
+                        </label>
+                    </div>
+                    <div className="w-checkbox checkbox-field-wrapper col-span-2">
+                        <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("exercises")}>
+                            <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.exercises.checked ? "w--redirected-checked" : undefined}`}></div>
+                            {t[language].checkboxes.exercises}
+                        </label>
+                    </div>
+                    <div className="w-checkbox checkbox-field-wrapper col-span-2">
+                        <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("soundscape")}>
+                            <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.soundscape.checked ? "w--redirected-checked" : undefined}`}></div>
+                            {t[language].checkboxes.soundscape}
+                        </label>
+                    </div>
+                    <div className="w-checkbox checkbox-field-wrapper col-span-2 mb-0">
+                        <label className="w-stars-label flex items-center cursor-pointer" onClick={() => handleCheckbox("audio")}>
+                            <div id="checkbox" className={`w-checkbox-input w-checkbox-input--inputType-custom checkbox ${checkboxes.audio.checked ? "w--redirected-checked" : undefined}`}></div>
+                            {t[language].checkboxes.audio}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            {divider}
+            <div className="w-full">
+                <label htmlFor="message">{t[language].commentLabel}</label>
+                <textarea ref={comment} placeholder={t[language].placeholder} className="text-area w-input" maxLength={1000}></textarea>
+            </div>
+            <div className="py-4 flex justify-center gap-4">
+                <button className="btn btn-secondary" onClick={() => router.push("/stories")}>
+                    {t[language].cancelButton}
+                </button>
+                <button onClick={isLoading ? undefined : handleSubmit} className="btn btn-primary" style={{ minWidth: 150 }}>
+                    {isLoading ? <Spinner radius maxHeight="40px" color="var(--neutral-100)" /> : t[language].submitButton}
+                </button>
+            </div>
+            {modal.open && <ModalFromBottom data={modal.data as any} />}
+        </div>
     );
 }
 

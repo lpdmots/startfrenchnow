@@ -9,7 +9,7 @@ import urlFor from "@/app/lib/urlFor";
 import { SlideFromBottom } from "../../animations/Slides";
 import { ReviewFormularButton } from "./ReviewFormular";
 import { useStoryStore } from "@/app/stores/storiesStore";
-import { getUserStoryData, storyToStoryStats, storyToStats } from "@/app/serverActions/storyActions";
+import { getUserStoryData, storyToStats } from "@/app/serverActions/storyActions";
 import { useSession } from "next-auth/react";
 import { UserStory } from "@/app/types/sfn/auth";
 import { GiSpellBook } from "react-icons/gi";

@@ -104,7 +104,7 @@ const ValidationButton = ({ _key, handleValidation, disabled, isCorrect, feedbac
                     </div>
                 </>
             )}
-            <ReportQuestion open={open} setOpen={setOpen} />
+            <ReportQuestion open={open} setOpen={setOpen} exerciseId={_key} question={questions[questionIndex]} />
         </div>
     );
 };

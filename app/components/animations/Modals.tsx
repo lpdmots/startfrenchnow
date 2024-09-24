@@ -12,12 +12,13 @@ interface Props {
         imageUrl?: string;
         clickOutside?: boolean;
         buttonOkStr?: string;
+        buttonAnnulerStr?: string;
         oneButtonOnly?: boolean;
     };
 }
 
 export const ModalFromBottom = ({ data }: Props) => {
-    const { setOpen, message, title, functionOk, functionCancel, imageUrl, clickOutside, buttonOkStr, oneButtonOnly } = data;
+    const { setOpen, message, title, functionOk, functionCancel, imageUrl, clickOutside, buttonOkStr, oneButtonOnly, buttonAnnulerStr } = data;
 
     const handleClickOk = () => {
         functionOk();
@@ -74,7 +75,7 @@ export const ModalFromBottom = ({ data }: Props) => {
                     <div className="flex justify-end gap-4">
                         {!oneButtonOnly && (
                             <button className="btn-secondary small" onClick={handleClickCancel}>
-                                Annuler
+                                {buttonAnnulerStr ? buttonAnnulerStr : "Annuler"}
                             </button>
                         )}
                         <button className="btn-primary small" onClick={handleClickOk}>
