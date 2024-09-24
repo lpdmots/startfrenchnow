@@ -1,69 +1,58 @@
-@tailwind base;
 @tailwind components;
+:root {
+    --primary: #ffc431;
+    --secondary-1: #ffc224;
+    --secondary-2: #1c92ff;
+    --secondary-3: #5c42fb;
+    --secondary-4: #ff4a60;
+    --secondary-5: #81e644;
+    --secondary-6: #ff5722;
+    --neutral-100: #ffffff;
+    --neutral-200: #faf9f6;
+    --neutral-300: #f1f0ee;
+    --neutral-400: #9e9d9b;
+    --neutral-500: #878787;
+    --neutral-600: #5e5e5f;
+    --neutral-700: #393939;
+    --neutral-800: #0b0b0b;
+
+    --primaryShades: #ffeec2;
+    --secondaryShades-1: #ffeec2;
+    --secondaryShades-2: #add8ff;
+    --secondaryShades-3: #dcd7fe;
+    --secondaryShades-4: #ffb8bf;
+    --secondaryShades-5: #dbf8c9;
+    --secondaryShades-6: #fcbdaa;
+
+    --sm: 480px; /* A MODIFIER AUSSI DANS TAILWIND CONFIG */
+    --md: 768px; /* A MODIFIER AUSSI DANS WithMediaQuery component (components/stories/) */
+    --lg: 992px;
+    --xl: 1200px;
+}
+
+/*! purgecss start ignore */
+[data-theme="dark"] {
+    --neutral-800: #ffffff;
+    --neutral-700: #faf9f6;
+    --neutral-600: #f1f0ee;
+    --neutral-500: #eceae8;
+    --neutral-400: #878787;
+    --neutral-300: #5e5e5f;
+    --neutral-100: #1d1d1d;
+    --neutral-200: #0e0e0e;
+    --primaryShades: #a37500;
+    --secondaryShades-1: #a37500;
+    --secondaryShades-2: #004a8f;
+    --secondaryShades-3: #1c05b3;
+    --secondaryShades-4: #cc0014;
+    --secondaryShades-5: #439014;
+}
+/*! purgecss end ignore */
+
+@import "./normalize.css";
+@import "./webflow.css";
+@import "./i-dont-speak-french.webflow.css";
+@import "./personnal.css";
+
+/* @tailwind base; */
 @tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
