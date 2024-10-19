@@ -3,17 +3,18 @@ import nodemailer from "nodemailer";
 const emailYoh = process.env.EMAILYOH;
 const emailNico = process.env.EMAILNICO;
 const pass = process.env.EMAIL_PASS;
-const email = process.env.EMAIL;
 
 export const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.hostinger.com",
+    port: 465, // Utilise 465 pour SSL ou 587 pour TLS
+    secure: true, // true pour SSL (port 465), false pour TLS (port 587)
     auth: {
-        user: email,
+        user: emailYoh,
         pass,
     },
 });
 
 export const getMailOptions = (mailTo) => {
     const emailPro = mailTo === "yohann" ? emailYoh : emailNico;
-    return { from: email, to: emailPro };
+    return { from: emailYoh, to: emailPro };
 };

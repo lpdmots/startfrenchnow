@@ -60,6 +60,7 @@ export const InputLayout = ({ _key }: { _key: string }) => {
                                         ref={inputRef}
                                         type="text"
                                         className="rounded-xl px-2 my-1 focus:border-secondary-2 w-full sm:w-60 h-12 md:h-14"
+                                        style={{ color: "#000" }}
                                         onChange={(e) => handleChange(1, e)}
                                         name="response"
                                         placeholder="..."

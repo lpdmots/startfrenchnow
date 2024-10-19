@@ -26,7 +26,7 @@ const VideoBlog = (props: any) => {
     return (
         <div className=" my-12">
             <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto">
-                <LiteYouTubeEmbed id={id || ""} title={title} />
+                <LiteYouTubeEmbed id={id || ""} title={title} poster="maxresdefault" />
             </div>
             {title && <p className="display-4 w-full text-center pt-6 mb-0">{title}</p>}
         </div>

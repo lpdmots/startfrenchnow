@@ -28,7 +28,7 @@ async function Stories() {
     return (
         <>
             <Hero />
-            <Marquee content={<StoriesBand />} />
+            {/* <Marquee content={<StoriesBand />} /> */}
             <StoryTabs stories={stories} />
             <WhyStories />
             <BetaVersion />

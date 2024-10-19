@@ -1,12 +1,12 @@
 import React from "react";
 import { AiOutlineUser } from "react-icons/ai";
-import { FaCommentDots, FaStar, FaStarHalfAlt, FaUserGraduate } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi";
 import { HeroVideo } from "./HeroVideo";
-import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { CourseRatings } from "../courses/CourseRatings";
+import Link from "next-intl/link";
+import ShimmerButton from "../../ui/shimmer-button";
 
 export const HeroSfn = () => {
     const t = useTranslations("HeroSfn");
@@ -17,7 +17,7 @@ export const HeroSfn = () => {
     };
 
     return (
-        <section className="section hero v1 wf-section">
+        <section className="section hero v1 wf-section !pb-0">
             <div className="flex justify-center w-full items-center">
                 <div className="px-8" style={{ maxWidth: 1500 }}>
                     <div className="grid grid-cols-1 lg:grid-cols-2 hero-v1 gap-8 xl:gap-12">
@@ -28,15 +28,13 @@ export const HeroSfn = () => {
                                 </div>
                                 <p className="mb-8">{t.rich("description", intelRich())}</p>
                             </div>
-                            <div className="buttons-row center-tablet ">
-                                <a href="#courses" className="btn-primary button-row w-button flex items-center">
-                                    <HiAcademicCap className="mr-2" style={{ fontSize: 20 }} />
-                                    {t("btn_courses")}
-                                </a>
-                                <a href="#whoami" className="btn-secondary button-row w-button flex items-center justify-center">
-                                    <AiOutlineUser className="mr-2" />
-                                    Enchanté
-                                </a>
+                            <div className="buttons-row center-tablet">
+                                <Link href="/courses/beginners" className="no-underline">
+                                    <ShimmerButton className="btn-primary button-row w-button flex items-center justify-center">
+                                        <HiAcademicCap className="mr-2" style={{ fontSize: 20 }} />
+                                        {t("btn_beginner_course")}
+                                    </ShimmerButton>
+                                </Link>
                             </div>
                         </div>
                         <div className="flex flex-col justify-center items-center gap-4">

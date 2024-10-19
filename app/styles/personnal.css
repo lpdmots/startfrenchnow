@@ -1114,3 +1114,103 @@ button {
     transform: translate(50%, -50%) rotate(45deg);
     z-index: 10;
 }
+
+.gradient-left {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 20%;
+    background-image: linear-gradient(to right, var(--neutral-200), transparent);
+}
+
+.gradient-left.dark {
+    background-image: linear-gradient(to right, var(--background), transparent);
+}
+
+.gradient-right {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 20%;
+    background-image: linear-gradient(to left, var(--neutral-200), transparent);
+}
+
+.gradient-right.dark {
+    background-image: linear-gradient(to left, var(--background), transparent);
+}
+
+.gradient-top {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background-image: linear-gradient(to bottom, var(--neutral-200), transparent);
+}
+
+.gradient-top.dark {
+    background-image: linear-gradient(to bottom, var(--background), transparent);
+}
+
+.gradient-bottom {
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background-image: linear-gradient(to top, var(--neutral-200), transparent);
+}
+
+.gradient-bottom.dark {
+    background-image: linear-gradient(to top, var(--background), transparent);
+}
+
+.custom-rotate {
+    transform: rotate(-2deg);
+    margin-left: -1rem; /* -mx-4 équivaut à -16px ou -1rem */
+    margin-right: -1rem; /* -mx-4 équivaut à -16px ou -1rem */
+}
+
+@media (min-width: 1024px) {
+    /* lg corresponds to large screens (min-width: 1024px) */
+    .custom-rotate {
+        margin-left: -2rem; /* -mx-8 équivaut à -32px ou -2rem */
+        margin-right: -2rem; /* -mx-8 équivaut à -32px ou -2rem */
+    }
+}
+
+/* TIMELINE */
+.timeline-line {
+    width: 3px;
+    background: linear-gradient(to bottom, var(--tw-gradient-stops));
+    background: linear-gradient(to bottom, transparent 0%, var(--neutral-500) 50%, transparent 99%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.timeline-progress {
+    width: 3px;
+    background: linear-gradient(to top, #a855f7 0%, #3b82f6 10%, transparent 100%);
+    border-radius: 9999px; /* équivalent à rounded-full en Tailwind */
+}
+
+.translate-hover {
+    transition: transform 0.1s ease; /* Ajoute une transition fluide */
+}
+
+.translate-hover:hover {
+    transform: translateX(5px); /* Applique la translation de 2px vers la droite au survol */
+}
+
+/* FAQ */
+.AccordionChevron {
+    transition: transform 300ms;
+}
+.AccordionTrigger[data-state="open"] > .AccordionChevron {
+    transform: rotate(180deg);
+}

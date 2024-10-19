@@ -18,3 +18,17 @@ export const LinkCurrent = ({ href, className, children }: Props) => {
         </Link>
     );
 };
+
+export const LinkTranslation = ({ href, children }: { href: string; children: JSX.Element }) => {
+    return (
+        <Link
+            href={href}
+            target="_blank"
+            style={{ lineHeight: 0, display: "inline-block", transition: "transform 0.3s ease" }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+        >
+            {children}
+        </Link>
+    );
+};

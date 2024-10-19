@@ -145,8 +145,8 @@ export interface VocabItemNew extends VocabItem {
     instruction: "new" | "keep" | "update" | undefined; // undefined ou new --> on créera un nouveau vocabItem, keep --> on prendra le vocabItem existant, update --> on mettra à jour le vocabItem existant
 }
 
-export type Category = "tips" | "video" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography" | "exercise" | "toLoad";
-export type PrimaryCategory = "tips" | "grammar" | "vocabulary" | "culture" | "expressions" | "orthography";
+export type Category = "tips" | "video" | "grammar" | "vocabulary" | "culture" | "expressions" | "exercise" | "toLoad" | "fide";
+export type PrimaryCategory = "tips" | "grammar" | "vocabulary" | "culture" | "expressions" | "fide";
 export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" | "input" | "imgMap" | "link" | "order";
 export type ExerciseType = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound" | "imgMap" | "link" | "order";
 export type ColorsTypes = "yellow" | "blue" | "red" | "purple" | "green";

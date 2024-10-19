@@ -9,7 +9,7 @@ module.exports = {
             },
             stage: 3,
             features: {
-                "custom-properties": false,
+                "custom-properties": true,
             },
         },
         ...(process.env.NEXT_PUBLIC_PRODUCTION_URL || process.env.NEXT_PUBLIC_VERCEL_URL
@@ -17,7 +17,7 @@ module.exports = {
                   "@fullhuman/postcss-purgecss": {
                       content: ["./app/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}", "./lib/**/*.{js,jsx,ts,tsx}", "./modules/**/*.{js,jsx,ts,tsx}"],
                       defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
-                      safelist: [/^!/, /\bCircular\w*/, "html", "body"],
+                      safelist: [/^!/, /\bCircular\w*/, "html", "body", /\[.*\]/],
                   },
               }
             : {}),

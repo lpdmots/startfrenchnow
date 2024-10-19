@@ -4,23 +4,36 @@ import { useState } from "react";
 import Comment from "./Comment";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { CommentProps } from "../courses/LastComments";
+import Image from "next/image";
 
 const defaultComments: CommentProps[] = [
     {
         userName: "Santiago Terreno D.",
-        userImage: "/images/andy-smith-image-paperfolio-webflow-template.png",
+        userImage: (
+            <div className="testimonial-image-wrapper image-comment lg:h-auto">
+                <Image src="/images/andy-smith-image-paperfolio-webflow-template.png" height={500} width={500} alt={"Avatar de Santiago"} className="image object-contain" />
+            </div>
+        ),
         comment:
             "Excellent course, couldn't have been better! The explanations were very clear, the exercises were really helpful to solidify concepts, and the pace was optimal. Amazing teacher and great content! Looking forward to continue to learn and improve my French.",
     },
     {
         userName: "Kanishka A.",
-        userImage: "/images/frances-willem-image-paperfolio-webflow-template.png",
+        userImage: (
+            <div className="testimonial-image-wrapper image-comment lg:h-auto">
+                <Image src="/images/frances-willem-image-paperfolio-webflow-template.png" height={500} width={500} alt={"Avatar de Kanishka"} className="image object-contain" />
+            </div>
+        ),
         comment:
             "The most organised, well-explained and fun to learn French course on Udemy. It contains a great deal of information, being inclusive of all the major themes one requires to learn French in the initial stage. 10/10 on quality, quantity and engagement. Je viens de finir ce cours et maintenant vais compléter les fiches d'exercices pour plus de révision. Vous avez été d'une grande aide! Encore, merci beaucoup.",
     },
     {
         userName: "Diana S.",
-        userImage: "/images/lily-woods-image-paperflow-webflow-template.png",
+        userImage: (
+            <div className="testimonial-image-wrapper image-comment lg:h-auto">
+                <Image src="/images/lily-woods-image-paperflow-webflow-template.png" height={500} width={500} alt={"Avatar de Diana"} className="image object-contain" />
+            </div>
+        ),
         comment:
             "As always, great teaching skills and very organized classes. Always includes exercises in order to practice what we have learnt so far. Took begginner's level with Yohan and he never disappoints. Thank you so much!",
     },

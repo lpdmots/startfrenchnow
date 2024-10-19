@@ -24,6 +24,10 @@
             "title": "Yohann'ı Tanıyın: Sıfırdan Fransızca Öğrenmeniz için Uzman Rehberiniz",
             "description": "Yohann'ın ilkokul öğretmeninden başlayarak başlangıç seviyesinde Fransızca öğretme konusunda global bir uzmana dönüşümünü keşfedin. Kendi Fransızca öğrenme yolculuğunuzu bizimle başlatın!"
         },
+        "Fide": {
+            "title": "FIDE Sınavına Kişiye Özel Destek ile Hazırlanın ve Başarılı Olun",
+            "description": "Kapsamlı rehberimiz ve kişiselleştirilmiş koçluğumuzla FIDE sınavını geçme şansınızı artırın. Etkili bir şekilde ve güvenle hazırlanın!"
+        },
         "Courses": {
             "Beginners": {
                 "title": "Fransızca Öğrenin: Başlangıç Seviyesi Kursları | Start French Now",
@@ -75,12 +79,22 @@
             "pastTenses": "Geçmiş Zamanlar",
             "dialoguesFooter": "Diyaloglar",
             "pastTensesFooter": "Geçmiş Zamanlar"
+        },
+        "fide": "Fide",
+        "fideLong": "FIDE Sınavı",
+        "resources": {
+            "resourcesTitle": "Kaynaklarımız",
+            "button": "Kaynaklar",
+            "videos": "Tüm Videolarımız",
+            "blog": "Makaleler & Kaynaklar",
+            "stories": "Etkileşimli Hikayeler"
         }
     },
     "HeroSfn": {
         "title": "<hs4>Fransızca'yı</hs4> <hs2>Yüksek Kalite</hs2> ile Kendi Hızınızda Öğrenin",
         "description": "Ciddi bir şekilde Fransızca öğrenmek mi istiyorsunuz? Endişelenmeyin, sıkıcı olmak zorunda değil.",
-        "btn_courses": "Kurslarımız"
+        "btn_resources": "Kaynaklarımız",
+        "btn_beginner_course": "İlk dersi keşfet"
     },
     "LessonCards": {
         "title": "Siz uygun bir kurs bulun ve <hs4>başlayın</hs4>!",
@@ -109,7 +123,7 @@
         }
     },
     "UdemyBusiness": {
-        "title": "<hs2>Dünya çapında öğrencilerle</hs2> kaliteli Fransızca içerik ve kurslarımızda yer alın.",
+        "title": "<hs2>Dünyanın</hs2> dört bir yanından gelen öğrencilere katılın",
         "paragraph1": "En büyük zevklerimizden biri, öğrencilerimizin 140 farklı ülkeden geldiğini görmektir! Hepsi Fransızca diline yönelik kendi hedeflerine sahiptir ve görevimiz onlara bu hedefe ulaşmalarına <noWrap>yardımcı olmaktır.</noWrap>",
         "paragraph2": "Kurslarımız, Udemy for Business programı aracılığıyla büyük şirketlere ve çalışanlarına da önerilmiştir; bu program en iyi kursları, öğrenci geri bildirimleri, ilgileri ve genel kalitesi temel <noWrap>alarak ödüllendirir.</noWrap>"
     },
@@ -154,7 +168,7 @@
         "moreAboutMe": "Benim hakkımda daha fazla"
     },
     "CommentsCarousel": {
-        "title": "Öğrencilerim <hs4>çalışmam hakkında</hs4> ne diyor",
+        "title": "Binlerce <hs4>memnun</hs4> öğrenci",
         "description": "İşte sınıflarımın bazı yorumları. Daha fazlasını burada bulacaksınız ",
         "description2": "üzerinde"
     },
@@ -216,6 +230,240 @@
                 "successMessage": "Mesajınız gönderildi",
                 "successNewsletter": " ve bültenimize katıldınız",
                 "successFooter": "En kısa sürede size geri döneceğiz."
+            }
+        }
+    },
+    "Fide": {
+        "HeroFide": {
+            "title": "<hs2>FIDE Sınavı</hs2>'na Hazırlanın",
+            "li1": "<b>B veya C izni</b> veya <b>vatandaşlık</b> almak için FIDE sınavına hazırlanmanız mı gerekiyor?",
+            "li2": "Başarıya ulaşmanızı hedefleyen <hs4>FIDE uzmanı</hs4> ile kişiselleştirilmiş bir yaklaşım mı istiyorsunuz?",
+            "button": "Ders rezervasyonu yap",
+            "videoSubtitle": "FIDE sınavınızı alın!"
+        },
+        "Formateur": {
+            "title": "<hs4>FIDE derslerimizi</hs4> neden seçmelisiniz?",
+            "competences": {
+                "description1": "FIDE uzmanı olarak 6+ yıllık deneyim.",
+                "description2": "FIDE sınavını başarıyla geçen 100+ öğrenci.",
+                "description3": "Yabancılara Fransızca öğretme konusunda 15 yıllık deneyim.",
+                "description4": "Udemy'nin en iyi Fransızca eğitmeni."
+            },
+            "formateurTitle": "Eğitmen",
+            "formateurName": "Yohann Coussot",
+            "formateurRole": "Fransızca öğretmeni",
+            "point1": "Fransızcanızı geliştirin ve FIDE sınavını geçmek için <under2>güven kazanın</under2>.",
+            "point2": "Tüm FIDE konularını kapsayın, <under4>kelime dağarcığınızı genişletin</under4> ve sınav sorularına hazırlıklı olun.",
+            "point3": "<under2>Sözlü bölüme odaklanın</under2> ve en son sınav senaryolarında <under2>pratik yapın</under2>.",
+            "point4": "En iyi performans için <under4>değerli ipuçları ve stratejiler</under4> edinin.",
+            "point5": "Başarıya ulaşmanıza yardımcı olacak <under2><b>kişiselleştirilmiş çalışma planı</b></under2> alın."
+        },
+        "WhatIsFide": {
+            "title": "FIDE Sınavı nedir?",
+            "point1": "<under>İsviçre oturumu</under> (B, C izinleri) veya <under>vatandaşlık</under> için gereklidir.",
+            "point2": "<under>Fransızca</under>, İtalyanca veya Almanca dil becerilerini değerlendirir.",
+            "point3": "<b>Konuşma</b>, <b>dinleme</b>, <b>okuma</b> ve <b>yazma</b> bölümlerini içerir.",
+            "point4": "CEFR seviyeleriyle uyumludur: <hs2>A1'den B1'e</hs2> kadar.",
+            "point5": "Başarıyla geçtikten sonra <under>FIDE dil pasaportu</under> kazanın.",
+            "fullExplanation": "Tam Açıklama",
+            "AskForPdf": {
+                "ask": "FIDE sınavı için <hs4>ücretsiz rehberinizi</hs4> isteyin",
+                "emailPlaceholder": "E-posta adresiniz",
+                "button": "Talep et",
+                "successMessage": "Talebiniz alındı, PDF'ye erişim linki e-posta kutunuza gönderildi. E-postamızı görmüyorsanız, lütfen spam klasörünüzü kontrol edin.",
+                "errorMessage": "Oops! Bir hata oluştu."
+            }
+        },
+        "HowClassLook": {
+            "steps": {
+                "oralProduction": {
+                    "title": "Sözlü Üretim",
+                    "description": "Kelime dağarcığını uygulamalı olarak geliştirin. FIDE senaryolarında rol yapma ve sorularla meşgul olun: A2 seviyesi betimlemeler, diyaloglar ve basit sorulara odaklanır; B1 ise daha karmaşık sorulara odaklanır."
+                },
+                "listeningReading": {
+                    "title": "Dinleme ve Okuma",
+                    "description": "Dinleme ve okuma alıştırmaları aracılığıyla FIDE ile ilgili konuları anlayın. Dinleme becerilerinizi geliştirin ve kelime dağarcığınızı genişletin."
+                },
+                "homeworkExercises": {
+                    "title": "Ev Ödevi ve Alıştırmalar",
+                    "description": "Öğrenilen konuları pekiştirmek için ev ödevi yapın. Kelime bilgisi, dilbilgisi veya yazılı üretim alıştırmalarını tamamlayarak becerilerinizi güçlendirin."
+                }
+            },
+            "title": "Bir <hs3>dersin</hs3> nasıl görünebileceği",
+            "videoDescription": "Öğrencim Jessica ile bir FIDE <hs4>senaryo örneği</hs4>.",
+            "videoKey": "fide/apercu-d-une-classe.mp4",
+            "posterImage": "/images/jessica-apercu-thumbnail.jpg"
+        },
+        "ReviewsFide": {
+            "title": "FIDE <hs2>Öğrenci Yorumları</hs2>: Onların Başarıları, Sizin İlhamınız",
+            "description": "Öğrencilerimizden gelen referansları keşfedin."
+        },
+        "ContactForFide": {
+            "title": "Ücretsiz Çalışma Planınızı Alın",
+            "description": "FIDE sınavına en iyi şekilde hazırlanmanız için size özel planınızı almak için benimle iletişime geçin.",
+            "successMessage": "Talebiniz alındı. En kısa sürede sizinle iletişime geçeceğiz, e-postamızı görmüyorsanız, lütfen spam klasörünüzü kontrol edin.",
+            "errorMessage": "Oops! Bir hata oluştu.",
+            "placeholder": "E-posta adresiniz",
+            "button": "Gönder"
+        },
+        "AdditionalCourses": {
+            "title": "<hs4>Öğreniminize</hs4> <noWrap>biraz öz öğrenme</noWrap> ekleyin",
+            "description": "Biraz boş zamanınız mı var? Dersler arasında Fransızca bilginizi artırmak ve FIDE sınavını geçme şansınızı en üst düzeye çıkarmak mı istiyorsunuz? <under><b>En az 5 ders</b></under> rezervasyonu ile <under><b>tüm Udemy kurslarıma tam erişim</b></under> kazanacaksınız.",
+            "lowIntermediateLevel3": {
+                "title": "Günlük Diyaloglar - Seviye 3 <noWrap>(A2-B1)</noWrap>",
+                "description": "FIDE B1 sınavını geçmek için mükemmel tamamlayıcı.",
+                "isNew": "En İyi Seçim!"
+            },
+            "beginner": {
+                "title": "Başlangıç Seviyesi - Seviye 1 <noWrap>(A0'dan A2'ye)</noWrap>",
+                "description": "A2 seviyesine hızla ulaşmayı hedefleyen yeni başlayanlar için harika bir başlangıç kursu."
+            }
+        },
+        "ContactForFideCourses": {
+            "title": "<hs1>Fide'nize Başlayın</hs1>",
+            "description1": "Hadi birlikte ",
+            "description2": "<under1>kişisel öğrenim planınızı</under1> oluşturalım.",
+            "description3": " beraber yapalım.",
+            "label": "E-posta",
+            "placeholder": "E-posta adresim",
+            "button": "Hemen başlayın!",
+            "ContactFideForm": {
+                "objectifPlaceholder": "Hedefiniz",
+                "objectifOptions": {
+                    "preparationFide": "FIDE hazırlığı",
+                    "naturalisation": "Vatandaşlık"
+                },
+                "niveauActuelPlaceholder": "Mevcut seviye",
+                "niveauActuelOptions": {
+                    "a0": "A0",
+                    "a1": "A1",
+                    "a2": "A2",
+                    "b1": "B1",
+                    "unknown": "Bilmiyorum"
+                },
+                "niveauSouhaitePlaceholder": "Gerekli seviye (sözlü)",
+                "niveauSouhaiteOptions": {
+                    "a1": "A1",
+                    "a2": "A2",
+                    "b1": "B1",
+                    "unknown": "Bilmiyorum"
+                },
+                "specificRequestPlaceholder": "Özel bir isteğiniz var mı?",
+                "emailPlaceholder": "E-posta adresim",
+                "button": "Gönder",
+                "additionalInfo1": "Size 24 saat içinde ",
+                "additionalInfo2": "Zoom üzerinden kısa ve bağlayıcı olmayan bir görüşme",
+                "additionalInfo3": " teklif etmek için ulaşacağız.",
+                "successMessage": "Talebiniz gönderildi. En kısa sürede sizinle iletişime geçeceğiz, e-postamızı görmüyorsanız, lütfen spam klasörünüzü kontrol edin.",
+                "errorMessage": "Oops! Bir hata oluştu."
+            }
+        },
+        "FideFAQ": {
+            "title": "<hs4>FIDE Hakkında Sıkça Sorulan Sorular</hs4>",
+            "subtitle": "FIDE sınavı hakkında en sık sorulan soruların yanıtlarını burada bulabilirsiniz.",
+            "qu_est_ce_que_fide": {
+                "title": "FIDE nedir?",
+                "content": "FIDE, İsviçre'deki günlük durumlarda Fransızca, Almanca veya İtalyanca dil becerilerini değerlendirmek için tasarlanmış bir dil testidir. İkamet veya yerleşim izni almak ve vatandaşlık başvurusu yapmak için kullanılır."
+            },
+            "de_quel_niveau_besoin": {
+                "title": "Hangi seviyeye ihtiyacım var?",
+                "content": {
+                    "part1": "İkamet izni başvurusu (B izni), yerleşim izni (C izni) veya vatandaşlık için gereksinimler farklıdır:",
+                    "list": {
+                        "item1": "B izni için A1 sözlü seviye.",
+                        "item2": "C izni için A2 sözlü seviye ve A1 yazılı seviye.",
+                        "item3": "Erken C izni için B1 sözlü seviye ve A1 yazılı seviye.",
+                        "item4": "Vatandaşlık için B1 sözlü seviye ve A2 yazılı seviye."
+                    },
+                    "part2": "Bazı kantonlar daha yüksek seviyeler talep edebilir.",
+                    "link": "Daha fazla bilgi"
+                }
+            },
+            "ou_et_quand_passer_examen": {
+                "title": "FIDE sınavını nerede ve ne zaman yapabilirim?",
+                "content": {
+                    "part1": "Test, İsviçre'deki akredite merkezlerde yapılabilir. Tarihleri ve yerleri resmi FIDE web sitesinde veya yerel sınav merkezlerinde bulabilirsiniz.",
+                    "link": "Daha fazla bilgi edinin"
+                }
+            },
+            "combien_de_temps_examen": {
+                "title": "FIDE sınavı ne kadar sürer?",
+                "content": "Sözlü sınav yaklaşık 40 dakika, yazılı sınav ise 60 dakika sürer. Her iki bölüm de ayrı ayrı alınabilir."
+            },
+            "parties_examen": {
+                "title": "FIDE sınavının bölümleri nelerdir?",
+                "content": {
+                    "part1": "FIDE sınavı iki bölüme ayrılmıştır:",
+                    "list": {
+                        "item1": "<b>Sözlü</b>: Sözlü üretim (20 dakika) ve sözlü anlama (20 dakika)",
+                        "item2": "<b>Yazılı</b>: Yazılı anlama ve yazılı üretim alıştırmalarının birleşimi (60 dakika)"
+                    }
+                }
+            },
+            "combien_coute_examen": {
+                "title": "FIDE sınavı ne kadar tutar?",
+                "content": "Toplam maliyeti her iki bölüm için 250 CHF'dir. Sadece sözlü bölümü alırsanız 170 CHF, yazılı bölüm ise 120 CHF'dir."
+            },
+            "resultats_examen": {
+                "title": "Sonuçları ne zaman alacağım?",
+                "content": "Sonuçlar sınavdan yaklaşık 4 hafta sonra posta yoluyla gönderilir. Ayrıca bir Dil Pasaportu alacaksınız."
+            },
+            "validite_examen": {
+                "title": "FIDE sınavı ne kadar süre geçerlidir?",
+                "content": "Prensipte, FIDE Dil Pasaportu ömür boyu geçerlidir."
+            },
+            "nombre_de_passages": {
+                "title": "FIDE sınavını kaç kez alabilirim?",
+                "content": {
+                    "part1": "Sınavı kaç kez alabileceğiniz konusunda bir sınır yoktur. İstediğiniz seviyeye ulaşana kadar sınavı tekrar edebilirsiniz.",
+                    "part2": "Bir bölüm (sözlü veya yazılı) geçildikten sonra, tüm sınavı yeniden almanız gerekmez, sadece geliştirmek istediğiniz bölümü alırsınız."
+                }
+            },
+            "difficulte_examen": {
+                "title": "FIDE sınavı zor mu?",
+                "content": "Pek sayılmaz. FIDE B1'i başka bir dil sınavı olan DELF B1'e göre almak daha kolaydır. Biraz zaman ve motivasyonla, başlangıç seviyeniz ne olursa olsun bunu başarabilirsiniz."
+            },
+            "duree_obtention_b1": {
+                "title": "B1 seviyesine ulaşmak ne kadar sürer?",
+                "content": {
+                    "part1": "Bu başlangıç seviyenize bağlıdır.",
+                    "part2": "Tam bir başlangıç seviyesi için: 60 ile 80 saat arasında.",
+                    "part3": "Zaten A2 seviyesine sahip biri için: 20 ile 40 saat arasında.",
+                    "part4": "Bu saatler, CEFR tarafından tanımlanan resmi B1 seviyesine göre daha az saat gerektiren FIDE B1 seviyesine dayanmaktadır."
+                }
+            },
+            "preparation_examen": {
+                "title": "FIDE sınavına en iyi şekilde nasıl hazırlanırım?",
+                "content": {
+                    "part1": "En iyi yöntem, FIDE sınavını iyi bilen bir öğretmenle çalışmaktır. Öğretmeniniz, mevcut seviyenize ve ulaşmanız gereken seviyeye dayalı olarak size kesin bir çalışma planı oluşturmanıza yardımcı olacaktır.",
+                    "part2": "Sınav, İsviçre'deki günlük yaşam durumlarına dayandığı için, hazırlık buna odaklanmalıdır. Sınavın ana tekrar eden konularını (Sağlık / Konut / İş...), temel dilbilgisini ve Sözlü senaryoları çalışın.",
+                    "link1a": "Daha fazla ayrıntı için, ",
+                    "link1b": "bu videoyu izleyin",
+                    "link2a": "FIDE sınavına hazırlık için ",
+                    "link2b": "kişisel çalışma planı alın"
+                }
+            },
+            "sujets_oral_examen": {
+                "title": "FIDE sınavının sözlü konuları nelerdir?",
+                "content": {
+                    "part1": "Sözlü konular, A1'den B1'e kadar olan seviyeler için günlük yaşam durumlarına dayanmaktadır. Bu nedenle konular sınırsız değildir ve belirli temalar sık sık karşımıza çıkar (Konut, komşular, iş, partiler, sağlık, ulaşım...).",
+                    "linka": "Sözlü bölüm ve sınav konuları hakkında daha fazla bilgi için, ",
+                    "linkb": "buraya tıklayın"
+                }
+            },
+            "meilleure_ecole_preparation": {
+                "title": "FIDE sınavına hazırlık için en iyi okul nedir?",
+                "content": {
+                    "part1": "FIDE sınavına özel okulların çoğu iyi bir hazırlık sunar.",
+                    "part2": "Ancak şu durumlar için:",
+                    "list": {
+                        "item1": "Daha düşük maliyetli hazırlık",
+                        "item2": "Gerçekten kişisel bir program",
+                        "item3": "Zamanlama esnekliğinde daha fazla özgürlük",
+                        "item4": "En güncel/sık karşılaşılan sınav senaryolarına erişim"
+                    },
+                    "link": "Benimle iletişime geçin"
+                }
             }
         }
     },
@@ -441,9 +689,9 @@
             "posts": "Gönderiler",
             "all": "Hepsi"
         },
-        "orthography": {
-            "title": "İmla",
-            "description": "Fransızca imlanızı mükemmelleştirmek, yaygın tuzaklardan kaçınmak ve güvenle yazmak için ipuçları ve yönergeler.",
+        "fide": {
+            "title": "Fide",
+            "description": "FIDE sınavı hakkında her şey: İsviçre'ye entegrasyon için bu önemli testi geçmek için ipuçları ve kaynaklar.",
             "color": "#FF5722",
             "posts": "Makaleler",
             "all": "Hepsi"

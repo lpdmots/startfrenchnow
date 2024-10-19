@@ -65,7 +65,7 @@ export default function IntermediatesPage() {
                     </div>
                     <div data-w-id="57239c1c-abea-04c2-40ac-578156c65de2" className="cms-featured-image-wrapper mb-8 md:mb-12">
                         <div className="image-wrapper border-radius-30px">
-                            <Image width={500} height={500} src="/images/cours2.jpg" loading="eager" alt="the first course" className="image" />
+                            <Image width={1186} height={667.67} src="/images/cours2.jpg" loading="eager" alt="the first course" className="image" />
                         </div>
                     </div>
                     <CourseRatings courseIds={[COURSE_ID]} baseNumbers={baseNumbers} />

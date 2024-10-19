@@ -5,6 +5,7 @@ import { Locale } from "@/i18n";
 import { FaCaretDown, FaCaretRight, FaPenFancy } from "react-icons/fa";
 import { MdVideoLibrary } from "react-icons/md";
 import { GiSpellBook } from "react-icons/gi";
+import { CATEGORIES } from "@/app/lib/constantes";
 
 export const LearnButton = ({ locale, dictionnary }: { locale: Locale; dictionnary: any }) => {
     const dropdownLearn = {
@@ -15,6 +16,7 @@ export const LearnButton = ({ locale, dictionnary }: { locale: Locale; dictionna
                         <FaPenFancy className="mr-2" />
                         {dictionnary.blog}
                     </LinkCurrentBlog>
+                    {CATEGORIES}
                     <LinkCurrentBlog href="/blog/category/tips" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {dictionnary.tips}

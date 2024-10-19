@@ -10,6 +10,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Locale } from "@/i18n"; /* 
 import { LearnButton } from "./LearnButton"; */
 import { CoursesButton } from "./CoursesButton";
+import { ResourcesButton } from "./ResourcesButton";
 
 function NavBar() {
     const t = useTranslations("Navigation");
@@ -37,32 +38,26 @@ function NavBar() {
         pastTenses: t("courses.pastTenses"),
     };
 
+    const resourcesDict = {
+        resourcesTitle: t("resources.resourcesTitle"),
+        button: t("resources.button"),
+        videos: t("resources.videos"),
+        blog: t("resources.blog"),
+        stories: t("resources.stories"),
+    };
+
     const links = (
         <>
-            {/* <li className="header-nav-list-item middle !px-0">
-                <LinkCurrent href="/" className="nav-link header-nav-link">
-                    {t("home")}
-                </LinkCurrent>
-            </li> */}
             <li className="header-nav-list-item middle !px-0">
                 <CoursesButton locale={locale as Locale} dictionnary={coursesDict} />
             </li>
-
             <li className="header-nav-list-item middle !px-0">
-                <LinkCurrent href="/videos" className="nav-link header-nav-link">
-                    {t("videos")}
+                <LinkCurrent href="/fide" className="nav-link header-nav-link">
+                    {t("fide")}
                 </LinkCurrent>
             </li>
             <li className="header-nav-list-item middle !px-0">
-                <LinkCurrent href="/blog" className="nav-link header-nav-link">
-                    {t("learn.button")}
-                </LinkCurrent>
-                {/* <LearnButton locale={locale as Locale} dictionnary={learnDict} /> */}
-            </li>
-            <li className="header-nav-list-item middle !px-0">
-                <LinkCurrent href="/stories" className="nav-link header-nav-link">
-                    {t("stories")}
-                </LinkCurrent>
+                <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
             </li>
         </>
     );
@@ -85,10 +80,7 @@ function NavBar() {
                         <Link aria-label="Go to contact page" href="/contact" className="btn-primary small header-btn-hidde-on-mb flex items-center !p-2 !mr-2 lg:!mr-0">
                             <FaRegEnvelope style={{ fontSize: 22 }} />
                         </Link>
-                        <Burger
-                            messages={{ home: t("home"), ...learnDict, ...coursesDict, about: t("about"), contact: t("contact"), stories: t("stories"), learn: t("learn.button") }}
-                            locale={locale as Locale}
-                        />
+                        <Burger messages={{ home: t("home"), learnDict, coursesDict, about: t("about"), contact: t("contact"), resourcesDict, fide: t("fideLong") }} locale={locale as Locale} />
                     </div>
                 </div>
             </div>

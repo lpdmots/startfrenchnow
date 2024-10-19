@@ -24,6 +24,7 @@ const CATEGORIES = {
     Orthographe: "orthography",
     Exercice: "exercise",
     Téléchargement: "toLoad",
+    Fide: "fide",
 };
 
 const defaultSchema = Schema.compile({

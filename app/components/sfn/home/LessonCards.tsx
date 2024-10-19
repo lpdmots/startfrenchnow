@@ -56,31 +56,21 @@ function LessonCards() {
             link: "/courses/dialogues",
             isNew: t("lessons.lowIntermediateLevel3.new"),
         },
-        {
-            title: t("lessons.masterPastTenses.title"),
-            image: "/images/cours-passe.png",
-            description: t("lessons.masterPastTenses.description"),
-            price: 90,
-            reduction: null,
-            difficulty: "A2",
-            time: "1h30",
-            link: "/courses/past-tenses",
-        },
     ];
 
     return (
         <SlideInOneByOneParent>
-            <>
-                <div className="text-center m-auto mb-10" style={{ maxWidth: "600px" }}>
+            <div className="flex flex-col w-full items-center pb-12 px-5">
+                <div className="text-center m-auto mb-10" style={{ maxWidth: "900px" }}>
                     <h2 id="courses" className="display-2">
                         {t.rich("title", intelRich())}
                     </h2>
                     <p className="bd py-4">{t("description")}</p>
                 </div>
-                <div className="grid grid-cols-6 gap-4 lg:gap-8">
+                <div className="grid grid-cols-6 gap-4 lg:gap-8 max-w-7xl">
                     <LessonCardsRender lessons={lessons} />
 
-                    <div className="h-full hidden xl:block col-span-2">
+                    <div className="h-full hidden md:grid xl:hidden col-span-3">
                         <SlideInOneByOneChild>
                             <div className="card card-secondary-1 flex-vertical-center card-contact-featured h-full">
                                 <div className="mg-bottom-24px keep">
@@ -101,7 +91,7 @@ function LessonCards() {
                     </div>
                 </div>
                 <SlideFromBottom>
-                    <div className="flex justify-center xl:hidden">
+                    <div className="flex justify-center md:hidden xl:grid">
                         <div className="card card-secondary-1 flex flex-col md:flex-row gap-4 !justify-around items-center card-contact-featured mt-16 shadow-2">
                             <Image className="display-inline " src="/images/get-in-touch-image-paperfolio-webflow-template.svg" height={90} width={90} alt="get in touch" />
                             <div className=" max-w-xl">
@@ -119,7 +109,7 @@ function LessonCards() {
                         </div>
                     </div>
                 </SlideFromBottom>
-            </>
+            </div>
         </SlideInOneByOneParent>
     );
 }

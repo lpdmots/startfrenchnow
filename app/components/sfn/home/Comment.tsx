@@ -33,11 +33,7 @@ function Comment({ slideIndex, comments }: { slideIndex: any; comments: CommentP
                                 <div>{renderStars(rating, true)}</div>
                             </div>
                         )}
-                        {!!userImage && (
-                            <div className="testimonial-image-wrapper image-comment lg:h-auto">
-                                <Image src={userImage} height={500} width={500} alt={selectedSlide.userName || "avatar"} className="image object-contain" />
-                            </div>
-                        )}
+                        {!!userImage && userImage}
                     </div>
                 </div>
             </div>

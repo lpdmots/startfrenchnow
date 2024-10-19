@@ -13,6 +13,7 @@ import { LinkBlog } from "../blog/LinkBlog";
 import { Locale } from "@/i18n";
 import { CategoryBadge } from "../blog/CategoryBadge";
 import { CATEGORIESCOLORS } from "@/app/lib/constantes";
+import { ContactFideCard } from "./ContactFideCard";
 
 function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "en" | "fr"; isForcedLang: boolean }) {
     const locale = useLocale();
@@ -81,7 +82,7 @@ function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "
                                 )}
                             </div>
                             <div id="w-node-_2efa5bda-72aa-9528-9385-590a86804244-6f543d60" className="sticky-top _48px-top">
-                                <NewsletterCard />
+                                {firstCategory === "fide" ? <ContactFideCard /> : <NewsletterCard />}
                             </div>
                         </div>
                     </div>

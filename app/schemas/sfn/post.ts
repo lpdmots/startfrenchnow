@@ -86,7 +86,7 @@ export default defineType({
             name: "categories",
             title: "Catégories",
             type: "array",
-            of: [{ type: "string", options: { list: ["tips", "video", "grammar", "vocabulary", "culture", "expressions", "orthography", "exercise", "toLoad"] } }],
+            of: [{ type: "string", options: { list: ["tips", "video", "grammar", "vocabulary", "culture", "expressions", "orthography", "exercise", "toLoad", "fide"] } }],
         }),
         defineField({
             name: "publishedAt",

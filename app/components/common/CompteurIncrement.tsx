@@ -86,7 +86,7 @@ export const CompteurStarsIncrement: React.FC<CompteurProps> = ({ nombreDeBase, 
 
     return (
         <div className="flex flex-col justify-between items-center gap-2 h-full" style={{ minWidth: 80 }}>
-            <p className="font-extrabold text-2xl mb-0">{valeurActuelle.toFixed(1)}</p>
+            <p className="font-extrabold text-lg md:text-2xl mb-0">{valeurActuelle.toFixed(1)}</p>
             <div className="flex flex-grow items-center">{renderStars(valeurActuelle)}</div>
         </div>
     );

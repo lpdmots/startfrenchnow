@@ -35,7 +35,7 @@ function LinkArrow({ children, url, target = "_blank", rel, category }: Props) {
 
     return (
         <m.span variants={ParentVariants} whileHover="visible">
-            <Link href={url} className={className} target={target} rel={rel}>
+            <Link href={url} className={className} target={target} rel={rel} onClick={(event) => event.stopPropagation()}>
                 <span className="flex items-center justify-between">
                     <span className="link-text underline mr-1">{children}</span>
                     <m.span variants={childrenVariant} style={{ width: 10 }}>

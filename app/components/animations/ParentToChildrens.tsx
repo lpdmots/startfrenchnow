@@ -44,6 +44,26 @@ export const ScaleChildren = ({ scale, duration, children }: ScaleProps) => {
     return <m.div variants={parentScaleChildren}>{children}</m.div>;
 };
 
+interface TranslateProps {
+    translate?: number;
+    children: JSX.Element;
+    duration?: number;
+}
+
+export const TranslateRightChildren = ({ translate, duration, children }: TranslateProps) => {
+    const parentTranslateChildren = {
+        hidden: { y: 0, x: 0 },
+        visible: {
+            translateX: translate || 5,
+            transition: {
+                duration: duration || 0.3,
+            },
+        },
+    };
+
+    return <m.div variants={parentTranslateChildren}>{children}</m.div>;
+};
+
 export const SlideInOneByOneParent = ({ children }: Props) => {
     const fadeInOneByOneParent = {
         hidden: { opacity: 0 },

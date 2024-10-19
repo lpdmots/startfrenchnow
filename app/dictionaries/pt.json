@@ -24,6 +24,10 @@
             "title": "Conheça Yohann: Seu Guia Especialista para Aprender Francês do Zero",
             "description": "Descubra a jornada de Yohann, de professor do ensino fundamental a especialista global no ensino de francês para iniciantes. Comece sua própria jornada de aprendizado de francês conosco!"
         },
+        "Fide": {
+            "title": "Prepare-se e Passe no Exame FIDE com Suporte Personalizado",
+            "description": "Aumente suas chances de sucesso no exame FIDE com nosso guia completo e coaching personalizado. Prepare-se de forma eficaz e com confiança!"
+        },
         "Courses": {
             "Beginners": {
                 "title": "O Curso Completo de Francês: Aprenda Francês - Iniciantes | Start French Now",
@@ -75,12 +79,22 @@
             "pastTenses": "Tempos Passados",
             "dialoguesFooter": "Diálogos",
             "pastTensesFooter": "Tempos Passados"
+        },
+        "fide": "Fide",
+        "fideLong": "Exame FIDE",
+        "resources": {
+            "resourcesTitle": "Nossos recursos",
+            "button": "Recursos",
+            "videos": "Todos os nossos Vídeos",
+            "blog": "Artigos & Recursos",
+            "stories": "Histórias Interativas"
         }
     },
     "HeroSfn": {
         "title": "<hs4>Aprenda Francês</hs4> ao Seu Próprio Ritmo com <hs2>Lições de Qualidade</hs2>",
         "description": "Deseja se dedicar seriamente ao aprendizado do francês? Não se preocupe, não precisa ser monótono.",
-        "btn_courses": "Nossos cursos"
+        "btn_resources": "Nossos recursos",
+        "btn_beginner_course": "Explorar o primeiro curso"
     },
     "LessonCards": {
         "title": "Encontre um curso que lhe seja adequado e <hs4>comece agora</hs4>!",
@@ -109,7 +123,7 @@
         }
     },
     "UdemyBusiness": {
-        "title": "Junte-se a <hs2>estudantes do mundo todo</hs2> em nosso conteúdo e cursos de francês de alta qualidade.",
+        "title": "Junte-se a estudantes <hs2>do mundo todo</hs2>",
         "paragraph1": "Um dos nossos maiores prazeres é ver que nossos alunos vêm de mais de 140 países diferentes! Todos têm seus próprios objetivos em relação à língua francesa e nossa missão é ajudá-los a <noWrap>atingi-los.</noWrap>",
         "paragraph2": "Nossos cursos também foram recomendados a grandes empresas e seus funcionários através do programa Udemy for Business, que premia os melhores cursos com base no feedback dos alunos, em sua relevância e <noWrap>qualidade geral.</noWrap>"
     },
@@ -154,8 +168,8 @@
         "moreAboutMe": "Saiba mais sobre mim"
     },
     "CommentsCarousel": {
-        "title": "O que meus alunos dizem <hs4>sobre o meu trabalho</hs4>",
-        "description": "Aqui estão algumas avaliações das minhas aulas. Você encontrará muitas mais ",
+        "title": "Milhares de alunos <hs4>satisfeitos</hs4>",
+        "description": "Veja o que nossos alunos mais recentes dizem sobre nossos cursos. Encontre mais avaliações ",
         "description2": "em"
     },
     "StoriesHome": {
@@ -216,6 +230,240 @@
                 "successMessage": "Sua mensagem foi enviada",
                 "successNewsletter": " e você se inscreveu em nossa newsletter",
                 "successFooter": "Entraremos em contato o mais breve possível."
+            }
+        }
+    },
+    "Fide": {
+        "HeroFide": {
+            "title": "Prepare-se para o <hs2>Exame FIDE</hs2>",
+            "li1": "Precisa se preparar para o exame FIDE para obter seu <b>Permiso B ou C</b> ou <b>naturalização</b>?",
+            "li2": "Quer uma abordagem personalizada com um <hs4>especialista em FIDE</hs4> dedicado ao seu sucesso?",
+            "button": "Agendar uma aula",
+            "videoSubtitle": "Obtenha seu exame FIDE!"
+        },
+        "Formateur": {
+            "title": "Por que escolher <hs4>nossas aulas de FIDE</hs4>?",
+            "competences": {
+                "description1": "Mais de 6 anos de experiência como especialista em FIDE.",
+                "description2": "Mais de 100 estudantes que passaram com sucesso no FIDE.",
+                "description3": "15 anos ensinando francês para estrangeiros.",
+                "description4": "Principal Instrutor de Francês no Udemy."
+            },
+            "formateurTitle": "Formador",
+            "formateurName": "Yohann Coussot",
+            "formateurRole": "Professor de francês",
+            "point1": "Melhore seu francês e <under2>ganhe confiança</under2> para passar no exame FIDE.",
+            "point2": "Cubra todos os tópicos do FIDE, <under4>amplie seu vocabulário</under4> e esteja pronto para as perguntas do examinador.",
+            "point3": "<under2>Concentre-se na parte oral</under2> e <under2>pratique</under2> com os cenários mais recentes do exame.",
+            "point4": "Obtenha <under4>dicas e estratégias valiosas</under4> para dar o seu melhor.",
+            "point5": "Receba um <under2><b>plano de estudo personalizado</b></under2> projetado para ajudá-lo a ter sucesso."
+        },
+        "WhatIsFide": {
+            "title": "O que é o <hs4>Exame FIDE</hs4>?",
+            "point1": "Requerido para <under>residência na Suíça</under> (Permisso B, C) ou <under>cidadania</under>.",
+            "point2": "Avalia habilidades linguísticas em <under>francês</under>, italiano ou alemão.",
+            "point3": "Cobre <b>fala</b>, <b>escuta</b>, <b>leitura</b> e <b>escrita</b>.",
+            "point4": "Alinhado com os níveis do CEFR <hs2>A1 a B1</hs2>.",
+            "point5": "Obtenha um <under>passaporte linguístico FIDE</under> ao passar.",
+            "fullExplanation": "A Explicação Completa",
+            "AskForPdf": {
+                "ask": "Solicite o seu <hs4>guia gratuito</hs4> para o exame FIDE",
+                "emailPlaceholder": "Seu endereço de e-mail",
+                "button": "Solicitar",
+                "successMessage": "Sua solicitação foi enviada, e um link para o PDF foi enviado para a sua caixa de entrada. Por favor, verifique seu spam se você não vir nosso e-mail.",
+                "errorMessage": "Opa! Algo deu errado."
+            }
+        },
+        "HowClassLook": {
+            "steps": {
+                "oralProduction": {
+                    "title": "Produção Oral",
+                    "description": "Coloque o vocabulário em prática através da produção oral. Envolva-se em cenários do FIDE com simulações e perguntas: O nível A2 foca em descrições, diálogos e perguntas simples; o nível B1 foca em perguntas mais complexas."
+                },
+                "listeningReading": {
+                    "title": "Escuta e Leitura",
+                    "description": "Entenda tópicos relacionados ao FIDE por meio de exercícios de escuta e leitura. Melhore sua compreensão auditiva e amplie seu vocabulário."
+                },
+                "homeworkExercises": {
+                    "title": "Tarefas e Exercícios",
+                    "description": "Consolide o aprendizado com tarefas sobre o tópico estudado. Complete exercícios de vocabulário, gramática ou produção escrita para reforçar suas habilidades."
+                }
+            },
+            "title": "Como <hs3>uma aula</hs3> pode ser",
+            "videoDescription": "Um exemplo de <hs4>cenário FIDE</hs4> com minha aluna, Jessica.",
+            "videoKey": "fide/apercu-d-une-classe.mp4",
+            "posterImage": "/images/jessica-apercu-thumbnail.jpg"
+        },
+        "ReviewsFide": {
+            "title": "<hs2>Avaliações dos Alunos</hs2> do FIDE: O Sucesso Deles, Sua Inspiração",
+            "description": "Descubra os depoimentos de nossos alunos."
+        },
+        "ContactForFide": {
+            "title": "Obtenha Seu Plano de Estudo Gratuito",
+            "description": "Entre em contato comigo para receber seu plano personalizado para se preparar da melhor maneira para o exame FIDE.",
+            "successMessage": "Sua solicitação foi enviada. Entraremos em contato o mais rápido possível, por favor, verifique seu spam se você não vir nosso e-mail.",
+            "errorMessage": "Opa! Algo deu errado.",
+            "placeholder": "Seu endereço de e-mail",
+            "button": "Enviar"
+        },
+        "AdditionalCourses": {
+            "title": "Adicione <hs4>alguma autoaprendizagem</hs4> aos <noWrap>seus estudos</noWrap>",
+            "description": "Tem algum tempo extra? Quer melhorar seu francês entre as aulas e maximizar suas chances de passar no exame FIDE? Com cada reserva de <under><b>pelo menos 5 aulas</b></under>, você terá <under><b>acesso completo a todos os meus cursos no Udemy</b></under>.",
+            "lowIntermediateLevel3": {
+                "title": "Diálogos do Cotidiano - Nível 3 <noWrap>(A2-B1)</noWrap>",
+                "description": "O complemento perfeito para passar no exame FIDE B1.",
+                "isNew": "Escolha Principal!"
+            },
+            "beginner": {
+                "title": "Iniciante - Nível 1 <noWrap>(A0 a A2)</noWrap>",
+                "description": "Comece bem com este curso para iniciantes que desejam alcançar o nível A2 rapidamente."
+            }
+        },
+        "ContactForFideCourses": {
+            "title": "<hs1>Inicie</hs1> Seu Fide",
+            "description1": "Vamos criar seu ",
+            "description2": "<under1>plano de aprendizado personalizado</under1>",
+            "description3": " juntos.",
+            "label": "E-mail",
+            "placeholder": "Meu endereço de e-mail",
+            "button": "Começar agora!",
+            "ContactFideForm": {
+                "objectifPlaceholder": "Seu objetivo",
+                "objectifOptions": {
+                    "preparationFide": "Preparação para FIDE",
+                    "naturalisation": "Naturalização"
+                },
+                "niveauActuelPlaceholder": "Nível atual",
+                "niveauActuelOptions": {
+                    "a0": "A0",
+                    "a1": "A1",
+                    "a2": "A2",
+                    "b1": "B1",
+                    "unknown": "Não sei"
+                },
+                "niveauSouhaitePlaceholder": "Nível necessário (oral)",
+                "niveauSouhaiteOptions": {
+                    "a1": "A1",
+                    "a2": "A2",
+                    "b1": "B1",
+                    "unknown": "Não sei"
+                },
+                "specificRequestPlaceholder": "Algum pedido específico?",
+                "emailPlaceholder": "Meu endereço de e-mail",
+                "button": "Enviar",
+                "additionalInfo1": "Entraremos em contato em até 24 horas para oferecer ",
+                "additionalInfo2": "uma breve conversa sem compromisso pelo Zoom",
+                "additionalInfo3": " para ajudá-lo a se preparar para o exame FIDE.",
+                "successMessage": "Sua solicitação foi enviada. Entraremos em contato o mais rápido possível, por favor, verifique seu spam se você não vir nosso e-mail.",
+                "errorMessage": "Opa! Algo deu errado."
+            }
+        },
+        "FideFAQ": {
+            "title": "<hs4>Perguntas Frequentes</hs4> sobre o FIDE",
+            "subtitle": "Encontre aqui as respostas para as perguntas mais comuns sobre o exame FIDE.",
+            "qu_est_ce_que_fide": {
+                "title": "O que é o FIDE?",
+                "content": "FIDE é um teste de idiomas projetado para avaliar as habilidades linguísticas em francês, alemão ou italiano em situações cotidianas na Suíça. Ele é utilizado para obter um visto de residência ou de assentamento, e para a naturalização."
+            },
+            "de_quel_niveau_besoin": {
+                "title": "Qual nível eu preciso?",
+                "content": {
+                    "part1": "Para a solicitação de um visto de residência (visto B), visto de assentamento (visto C), ou naturalização, os requisitos são diferentes:",
+                    "list": {
+                        "item1": "Nível oral A1 para o visto B.",
+                        "item2": "Nível oral A2 e escrito A1 para o visto C.",
+                        "item3": "Nível oral B1 e escrito A1 para o visto C antecipado.",
+                        "item4": "Nível oral B1 e escrito A2 para a naturalização."
+                    },
+                    "part2": "Alguns cantões podem exigir níveis mais altos.",
+                    "link": "Mais informações"
+                }
+            },
+            "ou_et_quand_passer_examen": {
+                "title": "Onde e quando fazer o exame FIDE?",
+                "content": {
+                    "part1": "O teste pode ser feito em centros credenciados na Suíça. Você pode encontrar as datas e os locais no site oficial do FIDE ou nos centros de exames locais.",
+                    "link": "Descubra mais"
+                }
+            },
+            "combien_de_temps_examen": {
+                "title": "Quanto tempo dura o exame FIDE?",
+                "content": "O exame oral dura cerca de 40 minutos, e o exame escrito dura 60 minutos. Ambas as partes podem ser feitas separadamente."
+            },
+            "parties_examen": {
+                "title": "Quais são as partes do exame FIDE?",
+                "content": {
+                    "part1": "O exame FIDE é dividido em duas partes:",
+                    "list": {
+                        "item1": "<b>Oral</b>: Produção oral (20 minutos) e compreensão oral (20 minutos)",
+                        "item2": "<b>Escrito</b>: Uma combinação de exercícios de compreensão escrita e produção escrita (60 minutos)"
+                    }
+                }
+            },
+            "combien_coute_examen": {
+                "title": "Quanto custa o exame FIDE?",
+                "content": "O custo total é de 250 CHF por ambas as partes. Se você fizer apenas a parte oral, custa 170 CHF, enquanto a parte escrita custa 120 CHF."
+            },
+            "resultats_examen": {
+                "title": "Quando receberei os resultados?",
+                "content": "Os resultados são enviados por correio aproximadamente 4 semanas após o exame. Você também receberá um Passaporte Linguístico."
+            },
+            "validite_examen": {
+                "title": "Por quanto tempo o exame FIDE é válido?",
+                "content": "Em princípio, o Passaporte Linguístico FIDE é válido para toda a vida."
+            },
+            "nombre_de_passages": {
+                "title": "Quantas vezes posso fazer o exame FIDE?",
+                "content": {
+                    "part1": "Não há limite para quantas vezes você pode fazer o teste. Você pode refazê-lo quantas vezes forem necessárias para alcançar o nível desejado.",
+                    "part2": "Uma vez que uma parte (oral ou escrita) seja aprovada, você não precisa refazer todo o exame, apenas a parte que deseja melhorar."
+                }
+            },
+            "difficulte_examen": {
+                "title": "O exame FIDE é difícil?",
+                "content": "Não realmente. É mais fácil obter FIDE B1 do que outro exame de idiomas como o DELF B1, por exemplo. Com algum tempo e motivação, você deve ser capaz de alcançá-lo, independentemente do seu nível inicial."
+            },
+            "duree_obtention_b1": {
+                "title": "Quanto tempo leva para alcançar o nível B1?",
+                "content": {
+                    "part1": "Isso depende do seu nível inicial.",
+                    "part2": "Para um iniciante completo: Entre 60 e 80 horas.",
+                    "part3": "Para alguém que já tem um nível A2: Entre 20 e 40 horas.",
+                    "part4": "Essas horas são baseadas no nível FIDE B1, que é mais fácil do que o nível B1 oficial descrito pelo CEFR, que requer mais horas."
+                }
+            },
+            "preparation_examen": {
+                "title": "Como se preparar melhor para o exame FIDE?",
+                "content": {
+                    "part1": "O melhor método é trabalhar com um professor que conheça bem o exame FIDE. Ele ajudará você a estabelecer um plano de estudo preciso com base no seu nível atual e no nível que você precisa alcançar.",
+                    "part2": "Como o exame é baseado em situações cotidianas na Suíça, a preparação deve focar nisso. Estude os principais tópicos recorrentes do exame (Saúde / Moradia / Trabalho...), a gramática essencial e os cenários orais.",
+                    "link1a": "Para mais detalhes, assista a ",
+                    "link1b": "este vídeo",
+                    "link2a": "Entre em contato comigo para obter um ",
+                    "link2b": "plano de estudo personalizado"
+                }
+            },
+            "sujets_oral_examen": {
+                "title": "Quais são os tópicos orais do exame FIDE?",
+                "content": {
+                    "part1": "Os tópicos orais são baseados em situações cotidianas para níveis que vão de A1 a B1. Portanto, os tópicos não são ilimitados, e certos temas aparecem frequentemente (Moradia, vizinhos, trabalho, festas, saúde, transporte...).",
+                    "linka": "Para mais informações sobre a seção oral e os tópicos do exame, ",
+                    "linkb": "clique aqui"
+                }
+            },
+            "meilleure_ecole_preparation": {
+                "title": "Qual é a melhor escola para se preparar para o exame FIDE?",
+                "content": {
+                    "part1": "A maioria das escolas especializadas no exame FIDE oferece uma boa preparação.",
+                    "part2": "Mas para:",
+                    "list": {
+                        "item1": "Uma preparação mais econômica",
+                        "item2": "Um programa verdadeiramente personalizado",
+                        "item3": "Maior flexibilidade de horários",
+                        "item4": "Acesso aos cenários de exame mais recentes e frequentes"
+                    },
+                    "link": "Entre em contato comigo"
+                }
             }
         }
     },
@@ -441,9 +689,9 @@
             "posts": "Publicações",
             "all": "Todas"
         },
-        "orthography": {
-            "title": "Ortografia",
-            "description": "Dicas e diretrizes para aperfeiçoar sua ortografia em francês, evitar armadilhas comuns e escrever com confiança.",
+        "fide": {
+            "title": "Fide",
+            "description": "Tudo sobre o exame FIDE: dicas e recursos para passar neste teste essencial para integração na Suíça.",
             "color": "#FF5722",
             "posts": "Artigos",
             "all": "Todos"

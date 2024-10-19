@@ -27,11 +27,11 @@ export const COLORVARIABLESSHADES = {
 };
 
 export const HEADINGSPANCOLORS = {
-    //"tips", "vocabulary", "grammar", "orthography", "culture", "expressions"
+    //"tips", "vocabulary", "grammar", "fide", "culture", "expressions"
     tips: "heading-span-secondary-1",
     vocabulary: "heading-span-secondary-2",
     grammar: "heading-span-secondary-4",
-    orthography: "heading-span-secondary-6",
+    fide: "heading-span-secondary-6",
     culture: "heading-span-secondary-5",
     expressions: "heading-span-secondary-3",
     video: "heading-span-secondary-1",
@@ -43,7 +43,7 @@ export const HIGHLIGHTCOLORS = {
     tips: "hightlightYellow",
     vocabulary: "hightlightBlue",
     grammar: "hightlightRed",
-    orthography: "hightlightOrange",
+    fide: "hightlightOrange",
     culture: "hightlightGreen",
     expressions: "hightlightPurple",
 };
@@ -52,7 +52,7 @@ export const CATEGORIESCOLORS = {
     tips: "var(--secondary-1)",
     vocabulary: "var(--secondary-2)",
     grammar: "var(--secondary-4)",
-    orthography: "var(--secondary-6)",
+    fide: "var(--secondary-6)",
     culture: "var(--secondary-5)",
     expressions: "var(--secondary-3)",
 };
@@ -61,7 +61,7 @@ export const CATEGORIESTEXTCOLORS = {
     tips: "text-secondary-1",
     vocabulary: "text-secondary-2",
     grammar: "text-secondary-4",
-    orthography: "text-secondary-6",
+    fide: "text-secondary-6",
     culture: "text-secondary-5",
     expressions: "text-secondary-3",
 };
@@ -72,7 +72,7 @@ export const CATEGORIESCOLORSSHADES = {
     grammar: "var(--secondaryShades-4)",
     expressions: "var(--secondaryShades-3)",
     culture: "var(--secondaryShades-5)",
-    orthography: "var(--secondaryShades-6)",
+    fide: "var(--secondaryShades-6)",
 };
 
 export const STORYCATEGORIES = {
@@ -123,7 +123,7 @@ export const langData = {
     },
 };
 
-export const CATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions"];
+export const CATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions", "fide"];
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];

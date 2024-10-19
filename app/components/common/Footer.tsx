@@ -3,9 +3,14 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import { Fade } from "../animations/Fades";
-import { LinkCurrent } from "./LinkCurrent";
+import { LinkCurrent, LinkTranslation } from "./LinkCurrent";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import NewsletterFooter from "./newsletter/NewsletterFooter";
+import Link from "next-intl/link";
+import { FacebookFooter } from "./logos/FacebookFooter";
+import { YoutubeFooter } from "./logos/Youtube";
+import { InstagramFooter } from "./logos/Instagram";
+import { TiktokFooter } from "./logos/Tiktok";
 
 function Footer() {
     const t = useTranslations("Navigation");
@@ -93,6 +98,20 @@ function Footer() {
                                                 </a>
                                             </li>
                                         </ul>
+                                    </div>
+                                    <div className="flex gap-2 md:gap-4">
+                                        <LinkTranslation href="https://www.facebook.com/groups/1274260010235504/">
+                                            <FacebookFooter height={30} width={30} />
+                                        </LinkTranslation>
+                                        <LinkTranslation href="https://www.youtube.com/@startfrenchnow">
+                                            <YoutubeFooter height={30} width={30} />
+                                        </LinkTranslation>
+                                        <LinkTranslation href="https://www.instagram.com/startfrenchnow">
+                                            <InstagramFooter height={30} width={30} />
+                                        </LinkTranslation>
+                                        <LinkTranslation href="https://www.tiktok.com/@startfrenchnow">
+                                            <TiktokFooter height={30} width={30} />
+                                        </LinkTranslation>
                                     </div>
                                 </div>
                             </div>

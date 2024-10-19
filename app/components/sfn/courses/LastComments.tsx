@@ -9,7 +9,7 @@ import Link from "next-intl/link";
 
 export interface CommentProps {
     userName?: string;
-    userImage?: string;
+    userImage?: React.ReactNode;
     comment: string;
     rating?: number;
     created?: string;

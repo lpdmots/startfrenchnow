@@ -27,50 +27,59 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
             >
                 <div className="nav burgerCollapse w-full sm:w-none mb-0 flex flex-col items-start">
                     <ul className="flex-col !items-start list-none pl-0 sm:pl-2 w-full">
-                        <div onClick={() => setOpen(false)} className="p-2 font-bold">
-                            {messages.coursesTitle}
-                        </div>
+                        <div className="p-2 font-bold">{messages.coursesDict.coursesTitle}</div>
                         <div className="grid grid-cols-2 w-full">
                             <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
                                     <FaCaretRight />
-                                    {messages.beginners}
+                                    {messages.coursesDict.beginners}
                                 </LinkCurrentBlog>
                             </div>
                             <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog href="/courses/intermediates" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center  pl-0" locale={locale as Locale}>
                                     <FaCaretRight />
-                                    {messages.intermediates}
+                                    {messages.coursesDict.intermediates}
                                 </LinkCurrentBlog>
                             </div>
                             <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog href="/courses/dialogues" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
                                     <FaCaretRight />
-                                    {messages.dialogues}
+                                    {messages.coursesDict.dialogues}
                                 </LinkCurrentBlog>
                             </div>
                             <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog href="/courses/past-tenses" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
                                     <FaCaretRight />
-                                    {messages.pastTenses}
+                                    {messages.coursesDict.pastTenses}
                                 </LinkCurrentBlog>
                             </div>
                         </div>
-                        <li className="header-nav-list-item middle !mb-0">
-                            <LinkCurrentBlog href="/videos" className={`nav-link header-nav-link !p-2 ${pathname === "/stories" && "current"}`} locale={locale}>
-                                {messages.videos}
+                        <li onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0">
+                            <LinkCurrentBlog href="/fide" className={`nav-link header-nav-link !p-2 ${pathname === "/stories" && "current"}`} locale={locale}>
+                                {messages.fide}
                             </LinkCurrentBlog>
                         </li>
-                        <div onClick={() => setOpen(false)}>
-                            <LinkCurrentBlog href="/blog" className="nav-link header-nav-link p-2 m-0 flex items-center" locale={locale as Locale}>
-                                {messages.learn}
-                            </LinkCurrentBlog>
+                        <div className="p-2 font-bold">{messages.resourcesDict.resourcesTitle}</div>
+                        <div className="flex flex-col w-full">
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center  pl-0" locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.resourcesDict.videos}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/blog" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.resourcesDict.blog}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/stories" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.resourcesDict.stories}
+                                </LinkCurrentBlog>
+                            </div>
                         </div>
-                        <li className="header-nav-list-item middle !mb-0">
-                            <Link href="/stories" className={`nav-link header-nav-link !p-2 ${pathname === "/stories" && "current"}`} onClick={() => setOpen(false)}>
-                                {messages.stories}
-                            </Link>
-                        </li>
                         <li className="header-nav-list-item middle !mb-0" onClick={() => setOpen(false)}>
                             <Link href="/about" className={`nav-link header-nav-link !p-2 ${pathname === "/about" && "current"}`} onClick={() => setOpen(false)}>
                                 {messages.about}

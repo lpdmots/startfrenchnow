@@ -8,8 +8,8 @@ import { SlideFromBottom, SlideFromRight } from "../../animations/Slides";
 function UdemyBusiness() {
     const t = useTranslations("UdemyBusiness");
     return (
-        <div className="section bg-neutral-800 wf-section">
-            <div className="container-default w-container">
+        <div className="w-full m-auto bg-neutral-800">
+            <div className="container-default w-container py-12 lg:py-24">
                 <div className="inner-container _600px---tablet center">
                     <div className="inner-container _500px---mbl center">
                         <Fade>
