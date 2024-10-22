@@ -4,7 +4,6 @@ import { Formateur } from "./components/Formateur";
 import { ReviewsFide } from "./components/ReviewsFide";
 import { WhatIsFide } from "./components/WhatIsFide";
 import HowClassLook from "./components/HowClassLook";
-import { TimelineFide } from "./components/TimelineFide";
 import { FideFaq } from "./components/FideFaq";
 import { ContactForFide } from "./components/ContactForFide";
 import { AdditionalCourses } from "./components/AdditionalCourses";
@@ -33,7 +32,7 @@ function FidePage({ params }: { params: { locale: Locale } }) {
             <ContactForFide />
             <div className="py-24 px-4 lg:px-8">
                 <div className="max-w-7xl m-auto">
-                    <AdditionalCourses />
+                    <FideFaq />
                 </div>
             </div>
             <div id="ContactForFIDECourses" className="py-24 px-4 lg:px-8 bg-neutral-800">
@@ -43,7 +42,7 @@ function FidePage({ params }: { params: { locale: Locale } }) {
             </div>
             <div className="py-24 px-4 lg:px-8">
                 <div className="max-w-7xl m-auto">
-                    <FideFaq />
+                    <AdditionalCourses />
                 </div>
             </div>
         </div>

@@ -25,8 +25,8 @@
             "description": "Discover Yohann's journey from a primary school teacher to a global expert in teaching French to beginners. Start your own French learning journey with us!"
         },
         "Fide": {
-            "title": "Prepare and Pass the FIDE Exam with Tailored Support",
-            "description": "Boost your chances of passing the FIDE exam with our comprehensive guide and personalized coaching. Prepare effectively and with confidence!"
+            "title": "Prepare and Pass the FIDE Test with Tailored Support",
+            "description": "Boost your chances of passing the FIDE test with our comprehensive guide and personalized coaching. Prepare effectively and with confidence!"
         },
         "Courses": {
             "Beginners": {
@@ -80,7 +80,7 @@
             "pastTensesFooter": "Past Tenses"
         },
         "fide": "Fide",
-        "fideLong": "FIDE Exam",
+        "fideLong": "FIDE Test",
         "resources": {
             "resourcesTitle": "Our resources",
             "button": "Resources",
@@ -234,8 +234,8 @@
     },
     "Fide": {
         "HeroFide": {
-            "title": "Prepare for the <hs2>FIDE Exam</hs2>",
-            "li1": "Do you need to prepare for the FIDE exam to obtain your <b>B or C permit</b> or <b>naturalization</b>?",
+            "title": "Prepare for the <hs2>FIDE Test</hs2>",
+            "li1": "Do you need to prepare for the FIDE test to obtain your <b>B or C permit</b> or <b>naturalization</b>?",
             "li2": "You want a personalized approach with a <hs4>FIDE expert</hs4> dedicated to your success?",
             "button": "Book a lesson",
             "videoSubtitle": "Get your FIDE exam!"
@@ -251,14 +251,14 @@
             "formateurTitle": "Formateur",
             "formateurName": "Yohann Coussot",
             "formateurRole": "French Teacher",
-            "point1": "Improve your French and <under2>gain the confidence</under2> to pass the FIDE exam.",
+            "point1": "Improve your French and <under2>gain the confidence</under2> to pass the FIDE test.",
             "point2": "Cover all FIDE topics, <under4>expand your vocabulary</under4>, and be ready for the examiner's questions.",
-            "point3": "<under2>Focus on the oral</under2> section and <under2>practice</under2> on the latest exam scenarios.",
+            "point3": "<under2>Focus on the oral</under2> section and <under2>practice</under2> on the latest test scenarios.",
             "point4": "Gain <under4>valuable tips and strategies</under4> to perform your best.",
             "point5": "Receive a <under2><b>tailored study plan</b></under2> designed to help you succeed."
         },
         "WhatIsFide": {
-            "title": "What is the <hs4>FIDE Exam</hs4>?",
+            "title": "What is the <hs4>FIDE Test</hs4>?",
             "point1": "Required for <under>Swiss residency</under> (Permis B, C) or <under>citizenship</under>.",
             "point2": "Tests <under>French</under>, Italian, or German language skills.",
             "point3": "Covers <b>speaking</b>, <b>listening</b>, <b>reading</b>, and <b>writing</b>.",
@@ -266,7 +266,7 @@
             "point5": "Earn a <under>FIDE language passport</under> upon passing.",
             "fullExplanation": "The Full Explanation",
             "AskForPdf": {
-                "ask": "Request your <hs4>free guide</hs4> for the FIDE exam",
+                "ask": "Request your <hs4>free guide</hs4> for the FIDE test",
                 "emailPlaceholder": "Your email address",
                 "button": "Request",
                 "successMessage": "Your request has been submitted, and a link to the PDF has been sent to your inbox. Please check your spam folder if you don't see our email.",
@@ -299,7 +299,7 @@
         },
         "ContactForFide": {
             "title": "Get Your Free Study Plan",
-            "description": "Contact me to receive your customized plan to best prepare for your FIDE exam.",
+            "description": "Contact me to receive your customized plan to best prepare for your FIDE test.",
             "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
             "errorMessage": "Oops! Something went wrong.",
             "placeholder": "Your email address",
@@ -310,7 +310,7 @@
             "description": "Got some extra time? Want to boost your French between lessons and maximize your chances of acing the FIDE exam? With every booking of <under><b>at least 5 lessons</b></under>, you’ll receive <under><b>full access to all my Udemy courses</b></under>.",
             "lowIntermediateLevel3": {
                 "title": "Everyday Dialogues - Level 3 <noWrap>(A2-B1)</noWrap>",
-                "description": "The perfect complement to pass your FIDE B1 exam.",
+                "description": "The perfect complement to pass your FIDE B1 test.",
                 "isNew": "Top Choice!"
             },
             "beginner": {
@@ -320,9 +320,7 @@
         },
         "ContactForFideCourses": {
             "title": "<hs1>Start</hs1> Your Fide",
-            "description1": "Let's create your ",
-            "description2": "<under1>personalized learning plan</under1>",
-            "description3": " together.",
+            "description1": "Let's create your <textxl><under1>FREE</under1></textxl> personalized <textxl><under1>learning plan</under1></textxl>.",
             "label": "Email",
             "placeholder": "My email address",
             "button": "Start now !",
@@ -352,14 +350,14 @@
                 "button": "Envoyer",
                 "additionalInfo1": "We’ll get in touch within 24 hours to offer you ",
                 "additionalInfo2": "a short, no-obligation chat via Zoom",
-                "additionalInfo3": " to help you prepare for your FIDE exam.",
+                "additionalInfo3": " to help you prepare for your FIDE test.",
                 "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
                 "errorMessage": "Oops! Something went wrong."
             }
         },
         "FideFAQ": {
             "title": "<hs4>Frequently Asked Questions</hs4> about the FIDE",
-            "subtitle": "Find here the answers to the most common questions about the FIDE exam.",
+            "subtitle": "Find here the answers to the most common questions about the FIDE test.",
             "qu_est_ce_que_fide": {
                 "title": "What is the FIDE?",
                 "content": "FIDE is a language test designed to assess language skills in French, German, or Italian in everyday situations in Switzerland. It is used for obtaining a residence or settlement permit and for naturalization."
@@ -379,18 +377,18 @@
                 }
             },
             "ou_et_quand_passer_examen": {
-                "title": "Where and when to take the FIDE exam?",
+                "title": "Where and when to take the FIDE test?",
                 "content": {
                     "part1": "The test can be taken at accredited centers in Switzerland. You can find the dates and locations on the official FIDE website or through local exam centers.",
                     "link": "Find out more"
                 }
             },
             "combien_de_temps_examen": {
-                "title": "How long does the FIDE exam last?",
-                "content": "The oral exam lasts about 40 minutes, and the written exam lasts 60 minutes. Both parts can be taken separately."
+                "title": "How long does the FIDE test last?",
+                "content": "The oral test lasts about 40 minutes, and the written test lasts 60 minutes. Both parts can be taken separately."
             },
             "parties_examen": {
-                "title": "What are the parts of the FIDE exam?",
+                "title": "What are the parts of the FIDE test?",
                 "content": {
                     "part1": "The FIDE exam is divided into two parts:",
                     "list": {
@@ -405,10 +403,10 @@
             },
             "resultats_examen": {
                 "title": "When will I receive the results?",
-                "content": "The results are sent by mail approximately 4 weeks after the exam. You will also receive a Language Passport."
+                "content": "The results are sent by mail approximately 4 weeks after the test. You will also receive a Language Passport."
             },
             "validite_examen": {
-                "title": "How long is the FIDE exam valid?",
+                "title": "How long is the FIDE test valid?",
                 "content": "In principle, the FIDE Language Passport is valid for life."
             },
             "nombre_de_passages": {
@@ -432,10 +430,10 @@
                 }
             },
             "preparation_examen": {
-                "title": "How to best prepare for the FIDE exam?",
+                "title": "How to best prepare for the FIDE test?",
                 "content": {
-                    "part1": "The best method is to work with a teacher who knows the FIDE exam well. They will help you establish a precise study plan based on your current level and the level you need to reach.",
-                    "part2": "Since the exam is based on everyday life situations in Switzerland, the preparation should focus on that. Study the main recurring topics of the exam (Health / Housing / Work...), the essential grammar, and the Oral scenarios.",
+                    "part1": "The best method is to work with a teacher who knows the FIDE test well. They will help you establish a precise study plan based on your current level and the level you need to reach.",
+                    "part2": "Since the test is based on everyday life situations in Switzerland, the preparation should focus on that. Study the main recurring topics of the exam (Health / Housing / Work...), the essential grammar, and the Oral scenarios.",
                     "link1a": "For more details, watch ",
                     "link1b": "this video",
                     "link2a": "Contact me to get a ",
@@ -446,20 +444,20 @@
                 "title": "What are the Oral topics of the FIDE exam?",
                 "content": {
                     "part1": "The Oral topics are based on everyday situations for levels ranging from A1 to B1. The topics are therefore not unlimited, and certain themes often appear (Housing, neighbors, work, parties, health, transportation...).",
-                    "linka": "For more information on the Oral section and exam topics, ",
+                    "linka": "For more information on the Oral section and test topics, ",
                     "linkb": "click here"
                 }
             },
             "meilleure_ecole_preparation": {
-                "title": "What is the best school to prepare for the FIDE exam?",
+                "title": "What is the best school to prepare for the FIDE test?",
                 "content": {
-                    "part1": "Most schools specialized in the FIDE exam offer good preparation.",
+                    "part1": "Most schools specialized in the FIDE test offer good preparation.",
                     "part2": "But for:",
                     "list": {
                         "item1": "Lower-cost preparation",
                         "item2": "A truly personalized program",
                         "item3": "More flexibility in scheduling",
-                        "item4": "Access to the most recent/frequent exam scenarios"
+                        "item4": "Access to the most recent/frequent test scenarios"
                     },
                     "link": "Contact me"
                 }
@@ -690,7 +688,7 @@
         },
         "fide": {
             "title": "Fide",
-            "description": "All about the FIDE exam: tips and resources to pass this essential test for integration in Switzerland.",
+            "description": "All about the FIDE test: tips and resources to pass this essential test for integration in Switzerland.",
             "color": "#FF5722",
             "posts": "Posts",
             "all": "All"

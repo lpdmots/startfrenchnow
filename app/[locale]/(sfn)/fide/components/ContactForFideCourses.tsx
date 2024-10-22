@@ -9,11 +9,7 @@ export const ContactForFideCourses = () => {
     return (
         <div className="flex flex-col items-center justify-center color-neutral-100">
             <h2 className="display-2 color-neutral-100 text-center">{t.rich("title", intelRich())}</h2>
-            <p className="text-center mb-12">
-                {t.rich("description1", intelRich())}
-                <span className="text-xl">{t.rich("description2", intelRich())}</span>
-                {t.rich("description3", intelRich())}
-            </p>
+            <p className="text-center mb-12">{t.rich("description1", intelRich())}</p>
             <ContactFideForm messages={messages} />
         </div>
     );

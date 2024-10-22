@@ -30,7 +30,7 @@ const comments = [
         userName: "Pramod",
         userImage: (
             <div className="rounded-full testimonial-image-wrapper image-comment lg:h-auto overflow-hidden card shadow-1 w-[200px] md:w-[300px] lg:w-[47%]">
-                <Image src="/images/avatar-de-pramod.png" height={500} width={500} alt="Pramod" className="aspect-square image object-cover" />
+                <Image src="/images/pramod-reviews.jpg" height={500} width={500} alt="Pramod" className="aspect-square image object-cover" />
             </div>
         ),
         comment:

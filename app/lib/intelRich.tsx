@@ -1,6 +1,7 @@
 export const intelRich = () => {
     return {
         under: (chunks: any) => <span className="underline underline-offset-2">{chunks}</span>,
+        textxl: (chunks: any) => <span className="text-xl">{chunks}</span>,
         under1: (chunks: any) => (
             <span className="underline underline-offset-2" style={{ textDecorationColor: "var(--secondary-1)" }}>
                 {chunks}

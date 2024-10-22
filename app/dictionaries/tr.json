@@ -321,9 +321,7 @@
         },
         "ContactForFideCourses": {
             "title": "<hs1>Fide'nize Başlayın</hs1>",
-            "description1": "Hadi birlikte ",
-            "description2": "<under1>kişisel öğrenim planınızı</under1> oluşturalım.",
-            "description3": " beraber yapalım.",
+            "description1": "Kişisel <textxl><under1>ücretsiz</under1></textxl> <textxl><under1>öğrenim planınızı</under1></textxl> oluşturalım.",
             "label": "E-posta",
             "placeholder": "E-posta adresim",
             "button": "Hemen başlayın!",

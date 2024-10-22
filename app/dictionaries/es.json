@@ -321,9 +321,7 @@
         },
         "ContactForFideCourses": {
             "title": "<hs1>Comienza</hs1> Tu Fide",
-            "description1": "Vamos a crear tu ",
-            "description2": "<under1>plan de aprendizaje personalizado</under1>",
-            "description3": " juntos.",
+            "description1": "Establezcamos su <textxl><under1>plan de aprendizaje</under1></textxl> personalizado <textxl><under1>GRATUITO</under1></textxl>.",
             "label": "Correo electrónico",
             "placeholder": "Mi dirección de correo electrónico",
             "button": "¡Comienza ahora!",

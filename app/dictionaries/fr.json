@@ -25,8 +25,8 @@
             "description": "Découvrez le parcours de Yohann, de professeur des écoles à expert mondial dans l'enseignement du français aux débutants. Commencez votre propre voyage d'apprentissage du français avec nous !"
         },
         "Fide": {
-            "title": "Préparez et Réussissez l'Examen FIDE avec un Accompagnement Sur Mesure",
-            "description": "Boostez vos chances de réussite à l'examen FIDE grâce à notre guide complet et bénéficiez d'un coaching personnalisé. Préparez-vous efficacement en toute confiance !"
+            "title": "Préparez et Réussissez le Test FIDE avec un Accompagnement Sur Mesure",
+            "description": "Boostez vos chances de réussite au test FIDE grâce à notre guide complet et bénéficiez d'un coaching personnalisé. Préparez-vous efficacement en toute confiance !"
         },
         "Courses": {
             "Beginners": {
@@ -80,7 +80,7 @@
             "pastTensesFooter": "Temps Passés"
         },
         "fide": "Fide",
-        "fideLong": "Examen FIDE",
+        "fideLong": "Test FIDE",
         "resources": {
             "resourcesTitle": "Nos ressources",
             "button": "Ressources",
@@ -234,8 +234,8 @@
     },
     "Fide": {
         "HeroFide": {
-            "title": "Préparez <hs2>l'examen FIDE</hs2>",
-            "li1": "Vous devez préparer l'examen FIDE pour obtenir votre <b>permis B, C</b> ou <noWrap><b>naturalisation</b> ?</noWrap>",
+            "title": "Préparez <hs2>le Test FIDE</hs2>",
+            "li1": "Vous devez préparer le test FIDE pour obtenir votre <b>permis B, C</b> ou <noWrap><b>naturalisation</b> ?</noWrap>",
             "li2": "Vous souhaitez une approche personnalisée avec un <hs4>expert FIDE</hs4> dédié à votre <noWrap>réussite ?</noWrap>",
             "button": "Réserver un cours",
             "videoSubtitle": "Obtenez votre examen FIDE !"
@@ -244,21 +244,21 @@
             "title": "Pourquoi choisir <noWrap><hs4>nos leçons</hs4> ?</noWrap>",
             "competences": {
                 "description1": "Plus de 6 ans d'expérience en tant qu'expert FIDE.",
-                "description2": "Plus de 100 étudiants qui ont réussi leur examen FIDE avec succès.",
+                "description2": "Plus de 100 étudiants qui ont réussi leur test FIDE avec succès.",
                 "description3": "15 ans d'expérience dans l'enseignement du français pour les étrangers.",
                 "description4": "Formateur de français reconnu sur Udemy."
             },
             "formateurName": "Yohann Coussot",
             "formateurTitle": "Votre formateur",
             "formateurRole": "Professeur de français et expert FIDE.",
-            "point1": "Améliorez votre français et <under2>présentez-vous avec confiance</under2> à <noWrap>l'examen FIDE.</noWrap>",
+            "point1": "Améliorez votre français et <under2>présentez-vous avec confiance</under2> <noWrap>au test FIDE.</noWrap>",
             "point2": "Explorez tous les thèmes FIDE, <under4>élargissez votre vocabulaire</under4> et anticipez les questions de l'examinateur.",
-            "point3": "<under2>Mettez l'accent sur l'oral</under2> et <under2>pratiquez</under2> avec les scénarios d'examen les <noWrap>plus récents.</noWrap>",
-            "point4": "Obtenez des <under4>conseils et des stratégies efficaces</under4> pour exceller lors de l'examen.",
+            "point3": "<under2>Mettez l'accent sur l'oral</under2> et <under2>pratiquez</under2> avec les scénarios du test les <noWrap>plus récents.</noWrap>",
+            "point4": "Obtenez des <under4>conseils et des stratégies efficaces</under4> pour exceller lors du test.",
             "point5": "Bénéficiez d'un <under2><b>plan d'étude personnalisé</b></under2> conçu pour garantir <noWrap>votre succès.</noWrap>"
         },
         "WhatIsFide": {
-            "title": "Qu'est-ce que l'examen <noWrap><hs4>FIDE</hs4> ?</noWrap>",
+            "title": "Qu'est-ce que le test <noWrap><hs4>FIDE</hs4> ?</noWrap>",
             "point1": "Indispensable en Suisse pour obtenir le <under>permis B, C</under> ou la <under>naturalisation</under>.",
             "point2": "Évalue les compétences linguistiques en <under>français</under>, italien ou allemand.",
             "point3": "Comprend des <b>épreuves orales</b> et <b>écrites</b>.",
@@ -266,7 +266,7 @@
             "point5": "Permet d'obtenir un <under>passeport linguistique FIDE</under>.",
             "fullExplanation": "L'explication complète !",
             "AskForPdf": {
-                "ask": "Demandez votre <hs4>guide gratuit</hs4> pour l'examen FIDE",
+                "ask": "Demandez votre <hs4>guide gratuit</hs4> pour le test FIDE",
                 "emailPlaceholder": "Votre adresse e-mail",
                 "button": "Envoyer",
                 "successMessage": "Votre demande a été transmise et <under>un lien vers le pdf a été envoyé</under> sur votre boîte. Veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
@@ -313,10 +313,10 @@
         },
         "AdditionalCourses": {
             "title": "Boostez votre préparation avec <noWrap><hs4>l’auto-apprentissage</hs4></noWrap>",
-            "description": "Vous avez un peu de temps libre ? Vous voulez améliorer votre français entre les leçons et maximiser vos chances de réussir l'examen FIDE ? Pour toute réservation <under><b>d'au moins 5 leçons</b></under>, vous bénéficierez d'un <under><b>accès complet à l'ensemble de mes cours sur Udemy</b></under>.",
+            "description": "Vous avez un peu de temps libre ? Vous voulez améliorer votre français entre les leçons et maximiser vos chances de réussir le test FIDE ? Pour toute réservation <under><b>d'au moins 5 leçons</b></under>, vous bénéficierez d'un <under><b>accès complet à l'ensemble de mes cours sur Udemy</b></under>.",
             "lowIntermediateLevel3": {
                 "title": "Les dialogues du quotidien - Niveau 3 <noWrap>(A2-B1)</noWrap>",
-                "description": "Le complément idéal pour réussir votre examen FIDE B1.",
+                "description": "Le complément idéal pour réussir votre test FIDE B1.",
                 "isNew": "Top Choice !"
             },
             "beginner": {
@@ -326,9 +326,7 @@
         },
         "ContactForFideCourses": {
             "title": "Commencez votre <hs1>préparation</hs1> <noWrap> FIDE !</noWrap>",
-            "description1": "Établissons ensemble votre ",
-            "description2": "<under1>plan d'apprentissage</under1>",
-            "description3": " personnalisé.",
+            "description1": "Établissons <textxl><under1>GRATUITEMENT</under1></textxl> votre <textxl><under1>plan d'apprentissage</under1></textxl> personnalisé.",
             "label": "Email",
             "placeholder": "Mon adresse email",
             "button": "Commencer !",
@@ -358,14 +356,14 @@
                 "button": "Envoyer",
                 "additionalInfo1": "Nous vous contacterons sous les 24h, et vous proposerons, si vous le souhaitez, un premier ",
                 "additionalInfo2": "entretien Zoom rapide et gratuit",
-                "additionalInfo3": " pour vous aider à préparer au mieux votre examen FIDE.",
+                "additionalInfo3": " pour vous aider à préparer au mieux votre test FIDE.",
                 "successMessage": "Votre demande a été envoyée. Nous vous contacterons dès que possible, veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
                 "errorMessage": "Oups ! Quelque chose a mal tourné."
             }
         },
         "FideFAQ": {
             "title": "<hs4>Questions Fréquentes</hs4> sur le FIDE",
-            "subtitle": "Retrouvez ici les réponses aux questions les plus courantes sur l'examen FIDE.",
+            "subtitle": "Retrouvez ici les réponses aux questions les plus courantes sur le test FIDE.",
             "qu_est_ce_que_fide": {
                 "title": "Qu'est-ce que le FIDE ?",
                 "content": "Le FIDE est un test de langue destiné à évaluer les compétences linguistiques en français, allemand ou italien dans des situations quotidiennes en Suisse. Il est utilisé pour l’obtention d’une autorisation de séjour ou d’établissement et pour la naturalisation."
@@ -385,18 +383,18 @@
                 }
             },
             "ou_et_quand_passer_examen": {
-                "title": "Où et quand passer l'examen FIDE ?",
+                "title": "Où et quand passer le test FIDE ?",
                 "content": {
                     "part1": "Le test peut être passé dans des centres accrédités en Suisse. Vous pouvez trouver les dates et lieux sur le site officiel FIDE ou via les centres locaux d'examen.",
                     "link": "Plus d'infos"
                 }
             },
             "combien_de_temps_examen": {
-                "title": "Combien de temps dure l'examen FIDE ?",
+                "title": "Combien de temps dure le test FIDE ?",
                 "content": "L'oral dure environ 40 minutes et l'écrit 60 minutes. Les deux parties peuvent être passées séparément."
             },
             "parties_examen": {
-                "title": "Quelles sont les parties de l'examen FIDE ?",
+                "title": "Quelles sont les parties du test FIDE ?",
                 "content": {
                     "part1": "Le FIDE est divisé en deux parties :",
                     "list": {
@@ -406,7 +404,7 @@
                 }
             },
             "combien_coute_examen": {
-                "title": "Combien coûte l'examen FIDE ?",
+                "title": "Combien coûte le test FIDE ?",
                 "content": "Le coût total est de 250 CHF pour les deux parties. Si vous ne passez que l’oral, cela coûte 170 CHF tandis que la partie écrite coûte 120 CHF."
             },
             "resultats_examen": {
@@ -414,11 +412,11 @@
                 "content": "Les résultats sont envoyés par courrier environ 4 semaines après l’examen. Vous recevrez également un Passeport des Langues."
             },
             "validite_examen": {
-                "title": "Combien de temps est-ce que l'examen est valide ?",
+                "title": "Combien de temps est-ce que le test est valide ?",
                 "content": "En principe, le Passeport des Langues FIDE est valable à vie."
             },
             "nombre_de_passages": {
-                "title": "Combien de fois est-ce que je peux passer l'examen FIDE ?",
+                "title": "Combien de fois est-ce que je peux passer le test FIDE ?",
                 "content": {
                     "part1": "Il n'y a aucune limitation au nombre de fois où vous pouvez passer le test. Vous pouvez le refaire autant que nécessaire pour atteindre le niveau voulu.",
                     "part2": "Quand une partie (écrite ou orale) est validée, il n’est pas nécessaire de repasser le test complet mais seulement la partie souhaitée."
@@ -438,7 +436,7 @@
                 }
             },
             "preparation_examen": {
-                "title": "Comment préparer l'examen FIDE au mieux ?",
+                "title": "Comment préparer le test FIDE au mieux ?",
                 "content": {
                     "part1": "La meilleure méthode est de travailler avec un professeur qui connaît parfaitement l’examen FIDE. Il vous aidera à établir un plan d’étude précis en fonction de votre niveau actuel et du niveau à atteindre.",
                     "part2": "L’examen étant basé sur les situations de la vie quotidienne en Suisse, la préparation doit être spécialisée sur cela. Étudiez les grands thèmes récurrents de l’examen (La santé / Le logement / le travail ...), la grammaire essentielle de l’examen ainsi que les scénarios de l’Oral.",
@@ -457,7 +455,7 @@
                 }
             },
             "meilleure_ecole_preparation": {
-                "title": "Quelle est la meilleure école pour préparer l'examen FIDE ?",
+                "title": "Quelle est la meilleure école pour préparer le test FIDE ?",
                 "content": {
                     "part1": "La plupart des écoles spécialisées dans l’examen proposent une bonne préparation.",
                     "part2": "Mais pour :",
@@ -696,7 +694,7 @@
         },
         "fide": {
             "title": "Fide",
-            "description": "Tout sur l'examen FIDE : conseils et ressources pour réussir ce test indispensable à l'intégration en Suisse.",
+            "description": "Tout sur le test FIDE : conseils et ressources pour réussir ce test indispensable à l'intégration en Suisse.",
             "color": "#FF5722",
             "posts": "Articles",
             "all": "Tous"
