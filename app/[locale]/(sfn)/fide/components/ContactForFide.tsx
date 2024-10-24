@@ -1,12 +1,11 @@
 import { SlideFromLeft } from "@/app/components/animations/Slides";
-import { getFormMessages } from "@/app/components/common/newsletter/NewsletterFooter";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { ContactFideInput } from "./ContactFideInput";
+import { BookFirstMeeting } from "./BookFirstMeeting";
 
 export const ContactForFide = () => {
     const t = useTranslations("Fide.ContactForFide");
-    const formMessages = getFormMessages(t);
+    const tbutton = useTranslations("Fide.HeroFide");
 
     return (
         <SlideFromLeft>
@@ -29,7 +28,7 @@ export const ContactForFide = () => {
                                 <p className="color-neutral-300 mb-0 text-center md:text-left">{t("description")}</p>
                             </div>
                             <div className="newsletter-form-block w-form">
-                                <ContactFideInput formMessages={formMessages} />
+                                <BookFirstMeeting label={tbutton("button")} variant="secondary" />
                             </div>
                         </div>
                     </div>

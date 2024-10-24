@@ -64,8 +64,8 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
 
     const infosEn =
         type === "form"
-            ? `<p>Here’s a summary of the information you provided:</p>
-        <ul>
+            ? `<p><strong>Here’s a summary of the information you provided:</strong></p>
+        <ul style="padding-left: 20px;">
             <li><strong>Goal:</strong> ${objectif ? objectif : "Not specified"}</li>
             <li><strong>Current Level:</strong> ${niveauActuel ? niveauActuel : "Not specified"}</li>
             <li><strong>Target Level:</strong> ${niveauSouhaite ? niveauSouhaite : "Not specified"}</li>
@@ -76,28 +76,73 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     // Email content to user
     const userHtmlContent =
         type === "pdf"
-            ? `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-    <p><strong>Bonjour,</strong></p>
-    <p>Thank you for requesting your free guide! You can download it by clicking the link below:</p>
-    <p>
-        <a href="${cloudFrontDomain + "fide/fide-exam-presentation.pdf"}" style="color: #1a73e8; text-decoration: none;">Download the guide</a>
+            ? `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+  <p>Salut, c'est Yohann.</p>
+  
+  <p>Thank you for requesting your free guide! You can download it by clicking the link below:</p>
+  
+  <p>
+    <a href="${cloudFrontDomain + "fide/fide-exam-presentation.pdf"}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Download the guide</a>
+  </p>
+
+  <p style="margin-top: 30px;"><strong>How about taking it a step further?</strong></p>
+  
+  <p>I’d like to offer you a quick, free, no-obligation chat to discuss your French learning goals. Together, we can create a personalized plan to help you make progress efficiently. You can <a href="https://calendly.com/yohann-startfrenchnow/15min" style="color: #1a73e8; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center;">
+    <span style="margin-right: 5px;">book here</span> &#x27A1;
+  </a>, it's very easy. 
+    
+  </p>
+  
+  <p>Feel free to reply to this email if you have any questions in the meantime.</p>
+  
+  <p>Talk to you soon,<br/>Yohann</p>
+
+  <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
+  
+  <!-- Signature avec flexbox -->
+  <div style="display: flex; align-items: center; margin-top: 20px;">
+    <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
+
+    <p style="margin: 0;">
+      Yohann Coussot<br/>
+      Formateur Fide<br/>
+      <a href="https://www.startfrenchnow.com" style="color: #1a73e8; text-decoration: none;">www.startfrenchnow.com</a>
     </p>
-    <p style="margin-top: 30px;"><strong>How about taking it a step further?</strong></p>
-    <p>I’d like to offer you a quick, free, no-obligation chat to discuss your French learning goals. Together, we can create a personalized plan to help you make progress efficiently.</p>
-    <p>Feel free to reach out if you are interested or if you have any questions!</p>
-    <p>Talk to you soon,<br/>Yohann</p>
-    <p style="margin-top: 20px; font-size: 14px; color: #666;">If you are expecting a response from us, please make sure to check your spam or junk folder as well, just in case our emails end up there.</p>
+  </div>
+
+  <p style="margin-top: 20px; font-size: 14px; color: #666;">If you are expecting a response from us, please make sure to check your spam or junk folder as well, just in case our emails end up there.</p>
 </div>
+
 `
             : `
-    <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-        <p><strong>Bonjour</strong>,</p>
-        <p>Thanks a lot for trusting me and sending your request. I'll get back to you as soon as possible, and if you're interested, we can set up a quick, free chat to better understand your goals and create a personalized plan that works for you.</p>
+            <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+        <p>Salut, c'est Yohann.</p>
+        
+        <p>
+  Thanks a lot for trusting me and sending your request. I'll get back to you as soon as possible, and if you're interested, we can set up a quick, free chat to better understand your goals and create a personalized plan that works for you. It's easy, you can
+  <a href="https://calendly.com/yohann-startfrenchnow/15min" style="color: #1a73e8; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center;">
+    <span style="margin-right: 5px;">book here</span> &#x27A1;
+  </a>.
+</p>
+        
         ${infosEn}
+        
         <p>Feel free to reply to this email if you have any questions in the meantime.</p>
+        
         <p>Talk to you soon,<br/>Yohann</p>
-        <p style="margin-top: 20px; font-size: 14px; color: #666;">If you are expecting a response from us, please make sure to check your spam or junk folder as well, just in case our emails end up there.</p>
-    </div>
+        
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
+        
+        <div style="display: flex; align-items: center; margin-top: 20px;">
+  <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
+
+  <p style="margin: 0;">
+    Yohann Coussot<br/>
+    Formateur Fide<br/>
+    <a href="https://www.startfrenchnow.com" style="color: #1a73e8; text-decoration: none;">www.startfrenchnow.com</a>
+  </p>
+</div>
+        </div>
     `;
 
     // Send confirmation email to the user

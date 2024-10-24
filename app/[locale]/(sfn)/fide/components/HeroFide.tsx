@@ -4,7 +4,8 @@ import { intelRich } from "@/app/lib/intelRich";
 import Link from "next-intl/link";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { MdPlayLesson } from "react-icons/md";
-import { NotebookPen } from "lucide-react";
+import { Book, NotebookPen } from "lucide-react";
+import { BookFirstMeeting } from "./BookFirstMeeting";
 
 export const HeroFide = () => {
     const t = useTranslations("Fide.HeroFide");
@@ -29,12 +30,7 @@ export const HeroFide = () => {
                                 <div className="bullet bg-secondary-4 mt-[1px] md:mt-2"></div>
                                 <p className="text-lg lg:text-2xl">{t.rich("li2", intelRich())}</p>
                             </div>
-                            <Link href="#ContactForFIDECourses" className="no-underline w-full sm:w-auto">
-                                <ShimmerButton className="btn-primary button-row w-button flex items-center justify-center">
-                                    <NotebookPen className="mr-2 text-xl" />
-                                    {t("button")}
-                                </ShimmerButton>
-                            </Link>
+                            <BookFirstMeeting label={t("button")} />
                         </div>
                         <div className="grid lg:col-span-5 relative order-1 lg:order-2">
                             <div className="h-auto w-full">

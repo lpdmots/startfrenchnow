@@ -238,7 +238,7 @@
             "title": "Prepárate para el <hs2>examen FIDE</hs2>",
             "li1": "¿Necesitas prepararte para el examen FIDE para obtener tu <b>permiso B o C</b> o <b>naturalización</b>?",
             "li2": "¿Quieres un enfoque personalizado con un <hs4>experto en FIDE</hs4> dedicado a tu éxito?",
-            "button": "Reservar una clase",
+            "button": "¡Reserva tu consulta gratuita!",
             "videoSubtitle": "¡Obtén tu examen FIDE!"
         },
         "Formateur": {
@@ -300,7 +300,7 @@
         },
         "ContactForFide": {
             "title": "Obtén tu Plan de Estudio Gratuito",
-            "description": "Contáctame para recibir tu plan personalizado y prepararte mejor para el examen FIDE.",
+            "description": "Reserva una consulta para definir tu plan de estudio personalizado y prepararte mejor para tu examen FIDE.",
             "successMessage": "Tu solicitud ha sido enviada. Nos pondremos en contacto contigo lo antes posible, por favor, verifica tus correos no deseados si no ves nuestro correo electrónico.",
             "errorMessage": "¡Ups! Algo salió mal.",
             "placeholder": "Tu dirección de correo electrónico",
@@ -325,6 +325,7 @@
             "label": "Correo electrónico",
             "placeholder": "Mi dirección de correo electrónico",
             "button": "¡Comienza ahora!",
+            "or": "O",
             "ContactFideForm": {
                 "objectifPlaceholder": "Tu objetivo",
                 "objectifOptions": {
@@ -353,7 +354,8 @@
                 "additionalInfo2": "una breve charla sin compromiso a través de Zoom",
                 "additionalInfo3": " para ayudarte a preparar tu examen FIDE.",
                 "successMessage": "Tu solicitud ha sido enviada. Nos pondremos en contacto lo antes posible, por favor, verifica tus correos no deseados si no ves nuestro correo electrónico.",
-                "errorMessage": "¡Ups! Algo salió mal."
+                "errorMessage": "¡Ups! Algo salió mal.",
+                "subtitle": "Haznos tus preguntas por correo electrónico"
             }
         },
         "FideFAQ": {

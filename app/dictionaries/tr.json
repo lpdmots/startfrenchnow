@@ -238,7 +238,7 @@
             "title": "<hs2>FIDE Sınavı</hs2>'na Hazırlanın",
             "li1": "<b>B veya C izni</b> veya <b>vatandaşlık</b> almak için FIDE sınavına hazırlanmanız mı gerekiyor?",
             "li2": "Başarıya ulaşmanızı hedefleyen <hs4>FIDE uzmanı</hs4> ile kişiselleştirilmiş bir yaklaşım mı istiyorsunuz?",
-            "button": "Ders rezervasyonu yap",
+            "button": "Ücretsiz görüşmenizi rezerve edin!",
             "videoSubtitle": "FIDE sınavınızı alın!"
         },
         "Formateur": {
@@ -300,7 +300,7 @@
         },
         "ContactForFide": {
             "title": "Ücretsiz Çalışma Planınızı Alın",
-            "description": "FIDE sınavına en iyi şekilde hazırlanmanız için size özel planınızı almak için benimle iletişime geçin.",
+            "description": "FIDE sınavınıza en iyi şekilde hazırlanmak için özel çalışma planınızı belirlemek üzere bir görüşme ayırtın.",
             "successMessage": "Talebiniz alındı. En kısa sürede sizinle iletişime geçeceğiz, e-postamızı görmüyorsanız, lütfen spam klasörünüzü kontrol edin.",
             "errorMessage": "Oops! Bir hata oluştu.",
             "placeholder": "E-posta adresiniz",
@@ -325,6 +325,7 @@
             "label": "E-posta",
             "placeholder": "E-posta adresim",
             "button": "Hemen başlayın!",
+            "or": "VEYA",
             "ContactFideForm": {
                 "objectifPlaceholder": "Hedefiniz",
                 "objectifOptions": {
@@ -353,7 +354,8 @@
                 "additionalInfo2": "Zoom üzerinden kısa ve bağlayıcı olmayan bir görüşme",
                 "additionalInfo3": " teklif etmek için ulaşacağız.",
                 "successMessage": "Talebiniz gönderildi. En kısa sürede sizinle iletişime geçeceğiz, e-postamızı görmüyorsanız, lütfen spam klasörünüzü kontrol edin.",
-                "errorMessage": "Oops! Bir hata oluştu."
+                "errorMessage": "Oops! Bir hata oluştu.",
+                "subtitle": "Sorularınızı bize e-posta ile iletin"
             }
         },
         "FideFAQ": {

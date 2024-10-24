@@ -7,12 +7,32 @@ export interface ShimmerButtonProps extends React.ButtonHTMLAttributes<HTMLButto
     borderRadius?: string;
     shimmerDuration?: string;
     background?: string;
+    variant?: "primary" | "secondary";
     className?: string;
     children?: React.ReactNode;
 }
 
 const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
-    ({ shimmerColor = "var(--neutral-100)", shimmerSize = "0.05em", shimmerDuration = "3s", borderRadius = "15px", background = "var(--neutral-800)", className, children, ...props }, ref) => {
+    (
+        {
+            shimmerColor = "var(--neutral-100)",
+            shimmerSize = "0.05em",
+            shimmerDuration = "3s",
+            borderRadius = "15px",
+            background = "var(--neutral-800)",
+            variant = "primary",
+            className,
+            children,
+            ...props
+        },
+        ref
+    ) => {
+        const isSecondary = variant === "secondary";
+        if (isSecondary) {
+            shimmerColor = "var(--neutral-800)";
+            background = "var(--neutral-100)";
+        }
+
         return (
             <button
                 style={
@@ -26,9 +46,11 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
                     } as CSSProperties
                 }
                 className={cn(
+                    isSecondary && "border-neutral-100",
                     "group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden whitespace-nowrap",
                     "transform-gpu transition-transform duration-300 ease-in-out active:translate-y-px",
-                    className
+                    className,
+                    isSecondary ? "btn-secondary hover:bg-secondary-2 hover:border-secondary-2 hover:text-neutral-800 hover:border-2" : "btn-primary"
                 )}
                 ref={ref}
                 {...props}

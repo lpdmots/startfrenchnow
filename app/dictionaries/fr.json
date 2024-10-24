@@ -237,7 +237,7 @@
             "title": "Préparez <hs2>le Test FIDE</hs2>",
             "li1": "Vous devez préparer le test FIDE pour obtenir votre <b>permis B, C</b> ou <noWrap><b>naturalisation</b> ?</noWrap>",
             "li2": "Vous souhaitez une approche personnalisée avec un <hs4>expert FIDE</hs4> dédié à votre <noWrap>réussite ?</noWrap>",
-            "button": "Réserver un cours",
+            "button": "Réservez votre entretien gratuit !",
             "videoSubtitle": "Obtenez votre examen FIDE !"
         },
         "Formateur": {
@@ -299,7 +299,7 @@
         },
         "ContactForFide": {
             "title": "Obtenez votre plan d'étude gratuit",
-            "description": "Contactez-moi et recevez votre plan sur mesure pour préparer au mieux votre examen FIDE.",
+            "description": "Réservez un entretien pour définir votre plan de travail sur mesure et préparer au mieux votre examen FIDE.",
             "successMessage": "Votre demande a été envoyée. Nous vous contacterons dès que possible, veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
             "errorMessage": "Oups ! Quelque chose a mal tourné.",
             "placeholder": "Votre adresse e-mail",
@@ -330,6 +330,7 @@
             "label": "Email",
             "placeholder": "Mon adresse email",
             "button": "Commencer !",
+            "or": "OU",
             "ContactFideForm": {
                 "objectifPlaceholder": "Objectif",
                 "objectifOptions": {
@@ -358,7 +359,8 @@
                 "additionalInfo2": "entretien Zoom rapide et gratuit",
                 "additionalInfo3": " pour vous aider à préparer au mieux votre test FIDE.",
                 "successMessage": "Votre demande a été envoyée. Nous vous contacterons dès que possible, veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
-                "errorMessage": "Oups ! Quelque chose a mal tourné."
+                "errorMessage": "Oups ! Quelque chose a mal tourné.",
+                "subtitle": "Posez-nous vos questions par e-mail"
             }
         },
         "FideFAQ": {

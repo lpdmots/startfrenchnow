@@ -238,7 +238,7 @@
             "title": "Prepare-se para o <hs2>Exame FIDE</hs2>",
             "li1": "Precisa se preparar para o exame FIDE para obter seu <b>Permiso B ou C</b> ou <b>naturalização</b>?",
             "li2": "Quer uma abordagem personalizada com um <hs4>especialista em FIDE</hs4> dedicado ao seu sucesso?",
-            "button": "Agendar uma aula",
+            "button": "Reserve sua consulta gratuita!",
             "videoSubtitle": "Obtenha seu exame FIDE!"
         },
         "Formateur": {
@@ -300,7 +300,7 @@
         },
         "ContactForFide": {
             "title": "Obtenha Seu Plano de Estudo Gratuito",
-            "description": "Entre em contato comigo para receber seu plano personalizado para se preparar da melhor maneira para o exame FIDE.",
+            "description": "Agende uma consulta para definir seu plano de estudos personalizado e se preparar da melhor forma para o seu exame FIDE.",
             "successMessage": "Sua solicitação foi enviada. Entraremos em contato o mais rápido possível, por favor, verifique seu spam se você não vir nosso e-mail.",
             "errorMessage": "Opa! Algo deu errado.",
             "placeholder": "Seu endereço de e-mail",
@@ -325,6 +325,7 @@
             "label": "E-mail",
             "placeholder": "Meu endereço de e-mail",
             "button": "Começar agora!",
+            "or": "OU",
             "ContactFideForm": {
                 "objectifPlaceholder": "Seu objetivo",
                 "objectifOptions": {
@@ -353,7 +354,8 @@
                 "additionalInfo2": "uma breve conversa sem compromisso pelo Zoom",
                 "additionalInfo3": " para ajudá-lo a se preparar para o exame FIDE.",
                 "successMessage": "Sua solicitação foi enviada. Entraremos em contato o mais rápido possível, por favor, verifique seu spam se você não vir nosso e-mail.",
-                "errorMessage": "Opa! Algo deu errado."
+                "errorMessage": "Opa! Algo deu errado.",
+                "subtitle": "Envie-nos suas perguntas por e-mail"
             }
         },
         "FideFAQ": {

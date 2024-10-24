@@ -42,6 +42,7 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-8 w-full items-center" style={{ minWidth: "min(500px, 100%)" }}>
+            <h3 className="text-neutral-100">{messages["subtitle"]}</h3>
             <div className="w-full max-w-4xl grid grid-cols-3 gap-4 md:gap-8">
                 <Select name="objectif">
                     <SelectTrigger className="col-span-3 md:col-span-1 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]">

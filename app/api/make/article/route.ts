@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
 import { createSlug, getPossibleAnswers } from "@/app/lib/utils";
 import { Category, VocabItem } from "@/app/types/sfn/blog";
 import { htmlToBlocks } from "@sanity/block-tools";

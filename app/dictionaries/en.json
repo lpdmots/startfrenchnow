@@ -237,7 +237,7 @@
             "title": "Prepare for the <hs2>FIDE Test</hs2>",
             "li1": "Do you need to prepare for the FIDE test to obtain your <b>B or C permit</b> or <b>naturalization</b>?",
             "li2": "You want a personalized approach with a <hs4>FIDE expert</hs4> dedicated to your success?",
-            "button": "Book a lesson",
+            "button": "Book your free consultation!",
             "videoSubtitle": "Get your FIDE exam!"
         },
         "Formateur": {
@@ -299,7 +299,7 @@
         },
         "ContactForFide": {
             "title": "Get Your Free Study Plan",
-            "description": "Contact me to receive your customized plan to best prepare for your FIDE test.",
+            "description": "Book a consultation to create your custom study plan and best prepare for your FIDE exam.",
             "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
             "errorMessage": "Oops! Something went wrong.",
             "placeholder": "Your email address",
@@ -324,6 +324,7 @@
             "label": "Email",
             "placeholder": "My email address",
             "button": "Start now !",
+            "or": "OR",
             "ContactFideForm": {
                 "objectifPlaceholder": "Your goal",
                 "objectifOptions": {
@@ -352,7 +353,8 @@
                 "additionalInfo2": "a short, no-obligation chat via Zoom",
                 "additionalInfo3": " to help you prepare for your FIDE test.",
                 "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
-                "errorMessage": "Oops! Something went wrong."
+                "errorMessage": "Oops! Something went wrong.",
+                "subtitle": "Ask us your questions by email"
             }
         },
         "FideFAQ": {

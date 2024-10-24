@@ -36,7 +36,9 @@ export default function RootLayout({ children, params }: { children: React.React
         <html lang={locale} className={`${poppins.variable} font-sans`}>
             <head />
             <body>
-                <Providers>{children}</Providers>
+                <div id="root">
+                    <Providers>{children}</Providers>
+                </div>
             </body>
         </html>
     );
