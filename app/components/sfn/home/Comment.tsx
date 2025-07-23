@@ -1,11 +1,10 @@
-import Image from "next/image";
 import React from "react";
 import { CommentProps } from "../courses/LastComments";
 import { renderStars } from "../../common/CompteurIncrement";
 
 function Comment({ slideIndex, comments }: { slideIndex: any; comments: CommentProps[] }) {
     const selectedSlide = slideIndex < comments.length && slideIndex >= 0 ? comments[slideIndex] : comments[0];
-    const { userImage, rating, created } = selectedSlide;
+    const { userImage, rating, created, results } = selectedSlide;
     return (
         <div key={selectedSlide.userName} className="w-slide">
             <div className="inner-container testimonial-slider">
@@ -25,6 +24,7 @@ function Comment({ slideIndex, comments }: { slideIndex: any; comments: CommentP
                                         </div>
                                     </div>
                                 </div>
+                                {results && <div className="mt-2 text-base color-neutral-600">{results}</div>}
                             </div>
                         </div>
                         {rating && (

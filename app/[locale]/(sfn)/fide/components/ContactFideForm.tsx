@@ -22,8 +22,6 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
             email: formData.get("email"),
         };
 
-        console.log({ data });
-
         try {
             const response = await sendContactEmail(data);
 

@@ -11,8 +11,8 @@ interface Props {
         functionCancel?: () => void;
         imageUrl?: string;
         clickOutside?: boolean;
-        buttonOkStr?: string;
-        buttonAnnulerStr?: string;
+        buttonOkStr?: string | JSX.Element;
+        buttonAnnulerStr?: string | JSX.Element;
         oneButtonOnly?: boolean;
     };
 }

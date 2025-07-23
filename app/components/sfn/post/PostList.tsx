@@ -2,14 +2,11 @@ import { CATEGORIES } from "@/app/lib/constantes";
 import { Category, Post } from "@/app/types/sfn/blog";
 import { Locale } from "@/i18n";
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next-intl/link";
-import { ParentToChildrens } from "../../animations/ParentToChildrens";
-import { SlideFromBottom } from "../../animations/Slides";
 import { LinkBlog } from "../blog/LinkBlog";
-import SecondaryPost from "../blog/SecondaryPost";
 import { intelRich } from "@/app/lib/intelRich";
+import { PostsListInfiniteScroll } from "./PostsListInfiniteScroll";
 
-export default function PostsList({ posts, postLang }: { posts: Post[]; postLang: "en" | "fr" }) {
+export default function PostsList({ initialPosts, postLang }: { initialPosts: Post[]; postLang: "en" | "fr" }) {
     const t = useTranslations("Blog.BlogList");
     const tp = useTranslations("Blog.PostsList");
     const locale = useLocale();
@@ -54,11 +51,7 @@ export default function PostsList({ posts, postLang }: { posts: Post[]; postLang
                                     </div>
                                 </div>
                                 <div className="grid gap-12">
-                                    {posts.map((post) => (
-                                        <ParentToChildrens key={post.title}>
-                                            <SecondaryPost post={post} postLang={postLang as "fr" | "en"} />
-                                        </ParentToChildrens>
-                                    ))}
+                                    <PostsListInfiniteScroll initialPosts={initialPosts} postLang={postLang} locale={locale} />
                                 </div>
                             </div>
                         </div>

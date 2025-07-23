@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Locale } from "@/i18n";
 import { getTranslator } from "next-intl/server";
+import { Toaster } from "@/app/components/ui/toaster";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({ children, params }: { children: React.React
             <body>
                 <div id="root">
                     <Providers>{children}</Providers>
+                    <Toaster />
                 </div>
             </body>
         </html>

@@ -2,7 +2,6 @@ import React from "react";
 import { NavBarStory } from "@/app/components/stories/story/NavBarStory";
 import { LayoutsCarousel } from "@/app/components/stories/story/LayoutsCarousel";
 import { client } from "@/app/lib/sanity.client";
-import { ProtectedPage } from "@/app/components/auth/ProtectedPage";
 import { groqQueries } from "@/app/lib/groqQueries";
 
 type Props = {
@@ -13,11 +12,6 @@ type Props = {
 
 const Story = async ({ params: { slug } }: Props) => {
     const story = await client.fetch(groqQueries["adventure"], { slug });
-    /* return (
-        <ProtectedPage callbackUrl={`/stories/${slug}`} messageInfo="You need to log in to keep track of your stories.">
-            
-        </ProtectedPage>
-    ); */
     return (
         <div className="flex justify-center">
             <div className="container-default h-screen flex flex-col w-screen item-center ">

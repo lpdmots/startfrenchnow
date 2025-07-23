@@ -38,9 +38,9 @@ export const CompteurIncrement = ({ nombreDeBase, nombreFinal }: CompteurProps) 
     return <span>{valeurActuelle.toFixed(0)}</span>;
 };
 
-export const renderStars = (rating: number, areBig: boolean = false) => {
+export const renderStars = (rating: number, areBig: boolean = false, maxStars: number = 5) => {
     let stars = [];
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= maxStars; i++) {
         if (i <= rating) {
             // Étoile pleine
             stars.push(<FaStar key={i.toString()} className={`${areBig ? "text-2xl md:text-4xl" : "text-xl md:text-2xl"} fill-secondary-1`} />);

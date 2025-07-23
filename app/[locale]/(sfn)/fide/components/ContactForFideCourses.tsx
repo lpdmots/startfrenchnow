@@ -5,7 +5,7 @@ import { BookFirstMeeting } from "./BookFirstMeeting";
 
 export const ContactForFideCourses = () => {
     const t = useTranslations("Fide.ContactForFideCourses");
-    const tbuuton = useTranslations("Fide.HeroFide");
+    const tbutton = useTranslations("Fide.HeroFide");
     const messages = getMessages(t);
 
     return (
@@ -14,10 +14,10 @@ export const ContactForFideCourses = () => {
             <p className="text-center mb-12">{t.rich("description1", intelRich())}</p>
             <div className="flex flex-col gap-4 md:gap-8">
                 <div className="flex justify-center">
-                    <BookFirstMeeting label={tbuuton("button")} variant="secondary" />
+                    <BookFirstMeeting label={tbutton("button")} variant="secondary" />
                 </div>
                 <div className="gradient-line my-4 relative">
-                    <p className="separator-text">OR</p>
+                    <p className="separator-text">{t("or")}</p>
                 </div>
                 <ContactFideForm messages={messages} />
             </div>

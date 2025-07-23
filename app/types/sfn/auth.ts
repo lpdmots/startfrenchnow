@@ -1,3 +1,4 @@
+import { EVENT_TYPES } from "@/app/lib/constantes";
 import { Base } from "../stories/adventure";
 import { Reference } from "./blog";
 
@@ -13,6 +14,8 @@ export interface UserProps extends Base {
     password: string;
     isActive: boolean;
     name: string;
+    firstName: string;
+    lastName: string;
     isAdmin: boolean;
     isPremium: boolean;
     activateToken: string;
@@ -21,6 +24,22 @@ export interface UserProps extends Base {
     resetPasswordExpiration: string;
     oAuth?: string;
     stories: UserStory[] | undefined;
+    lessons?: Lesson[];
+    alias?: string[];
+    learningProgress?: Progress[];
+}
+
+export interface Progress {
+    _key: string;
+    type: string;
+    logs: Log[];
+}
+
+export interface Log {
+    _key: string;
+    exam: Reference;
+    score: number;
+    date: string;
 }
 
 export interface UserStory {
@@ -37,4 +56,9 @@ export interface UserScore {
     title: string;
     bestScore: number;
     lowestScore: number;
+}
+
+export interface Lesson {
+    eventType: keyof typeof EVENT_TYPES;
+    totalPurchasedMinutes: number;
 }

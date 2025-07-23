@@ -12,8 +12,9 @@ const queryVideo = groq`
 `;
 
 async function FreeVideo({ params: { data } }: { params: { data: string[] } }) {
-    const video = await client.fetch(queryVideo, { slug: "videos/video-presentation-fide.mp4" });
+    const video = await client.fetch(queryVideo, { slug: data[0] });
     const { subscriber } = await getSubscriberFromServer(data[1]);
+    console.log({ subscriber, video });
     if (!subscriber?.data?.id || !video) return <p className="w-full text-center py-12">Sorry, page not found</p>;
 
     return (

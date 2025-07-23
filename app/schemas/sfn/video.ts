@@ -69,7 +69,7 @@ export default defineType({
             },
             initialValue: "secondary",
             description:
-                "Un cours prioritaire sera mise en avant, par exemple il figurera sur la page d'accueil. Un cours secondaire apparaîtra seulement dans la liste des cours mis à disposition dans la page concernée. Les cours cachés ne seront pas visibles dans les listes, ce sont par exemple les vidéos de blog ou les vidéos offertes lors d'une souscription à la newsletter.",
+                "Un cours prioritaire sera mis en avant, par exemple il figurera sur la page d'accueil. Un cours secondaire apparaîtra seulement dans la liste des cours mis à disposition dans la page concernée. Les cours cachés ne seront pas visibles dans les listes, ce sont par exemple les vidéos de blog ou les vidéos offertes lors d'une souscription à la newsletter.",
         }),
         defineField({
             name: "price",
@@ -82,7 +82,7 @@ export default defineType({
             name: "reduction",
             title: "Le prix réduit",
             type: "number",
-            description: "Le prix avec la réduction. Si le champ reste nul, il n'y a pas de réduction.",
+            description: "Le prix avec la réduction. Si le champ reste null, il n'y a pas de réduction.",
         }),
         defineField({
             name: "order",

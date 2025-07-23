@@ -14,9 +14,6 @@ const Activated = () => {
                 <div className="container-default w-container">
                     <div className="position-relative z-index-1">
                         <div className="flex-horizontal">
-                            <div id="w-node-d245282e-bd6f-ff12-2569-ce176b30a962-33543d3f" data-w-id="d245282e-bd6f-ff12-2569-ce176b30a962" className="position-absolute _404-not-found">
-                                <div className="_404-not-found-number">200</div>
-                            </div>
                             <div className="grid-2-columns _1-col-tablet position-relative">
                                 <div className="flex justify-center w-full">
                                     <div className="image-wrapper hero-image" style={{ height: 270, width: 234, backgroundColor: "var(--primary)" }}>

@@ -2,6 +2,8 @@ import { ExamVideo } from "./ExamVideo";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { AskForPdf } from "./AskForPdf";
+import LinkArrow from "@/app/components/common/LinkArrow";
+import Link from "next-intl/link";
 
 export const WhatIsFide = () => {
     const t = useTranslations("Fide.WhatIsFide");
@@ -43,6 +45,9 @@ export const WhatIsFide = () => {
                                     <div className="bullet bg-secondary-5"></div>
                                     <p className="mb-0">{t.rich("point5", intelRich())}</p>
                                 </div>
+                                <LinkArrow url="/fide#FideFAQ" className="font-bold">
+                                    {t("linkToFAQ")}
+                                </LinkArrow>
                             </div>
                         </div>
                     </div>

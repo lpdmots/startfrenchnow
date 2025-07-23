@@ -5,9 +5,7 @@ import { NotebookPen } from "lucide-react";
 import { useState, useEffect } from "react";
 import { PopupModal } from "react-calendly";
 
-// VOIR L'HISTOIRE DU ROOT !
-
-export const BookFirstMeeting = ({ label, variant = "primary" }: { label: string; variant?: "primary" | "secondary" }) => {
+export const BookFirstMeeting = ({ label, variant = "primary", test = false }: { label: string; variant?: "primary" | "secondary"; test?: boolean }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
 
@@ -20,12 +18,17 @@ export const BookFirstMeeting = ({ label, variant = "primary" }: { label: string
 
     return (
         <div className="w-full flex justify-center">
-            <ShimmerButton className="button-row w-button flex items-center justify-center w-full sm:w-auto" variant={variant} onClick={() => setIsOpen(true)}>
+            <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto" variant={variant} onClick={() => setIsOpen(true)}>
                 <NotebookPen className="mr-2 text-xl" />
                 {label}
             </ShimmerButton>
 
-            <PopupModal url="https://calendly.com/yohann-startfrenchnow/15min" onModalClose={() => setIsOpen(false)} open={isOpen} rootElement={rootElement} />
+            <PopupModal
+                url={test ? "https://calendly.com/yohann-startfrenchnow/test" : "https://calendly.com/yohann-startfrenchnow/15min"}
+                onModalClose={() => setIsOpen(false)}
+                open={isOpen}
+                rootElement={rootElement}
+            />
         </div>
     );
 };

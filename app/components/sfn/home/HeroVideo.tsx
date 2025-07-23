@@ -13,7 +13,7 @@ export const HeroVideo = () => {
                     <TypingAnimation className="text-lg md:text-xl xl:text-2xl mb-0 min-w-40 md:min-w-44 xl:min-w-52 text-left" text="Start French Now" duration={100} />
                 </div>
                 <div id="hero-video" className="cms-featured-image-wrapper image-wrapper border-radius-40px mx-auto p-0">
-                    <LiteYouTubeEmbed id="0to0Aqas3Rg" title="Les Expressions Essentielles avec Y et EN" poster="maxresdefault" />
+                    <LiteYouTubeEmbed id="-UVoKCZM-5s" title="Testez votre niveau de français (A1 à C2)" poster="maxresdefault" />
                 </div>
             </>
         </SlideFromBottom>

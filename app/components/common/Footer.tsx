@@ -106,7 +106,7 @@ function Footer() {
                                         <LinkTranslation href="https://www.youtube.com/@startfrenchnow">
                                             <YoutubeFooter height={30} width={30} />
                                         </LinkTranslation>
-                                        <LinkTranslation href="https://www.instagram.com/startfrenchnow">
+                                        <LinkTranslation href="https://www.instagram.com/startfrenchnow/">
                                             <InstagramFooter height={30} width={30} />
                                         </LinkTranslation>
                                         <LinkTranslation href="https://www.tiktok.com/@startfrenchnow">

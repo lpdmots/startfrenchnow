@@ -11,7 +11,7 @@ export const ParentToChildrens = ({ delayChildren, staggerChildren, children }: 
     const parentToChildrens = {
         visible: {
             transition: {
-                delayChildren: delayChildren || 0.1,
+                delayChildren: delayChildren ?? 0.1,
                 staggerChildren: staggerChildren || 0.1,
             },
         },
@@ -44,13 +44,34 @@ export const ScaleChildren = ({ scale, duration, children }: ScaleProps) => {
     return <m.div variants={parentScaleChildren}>{children}</m.div>;
 };
 
-interface TranslateProps {
-    translate?: number;
+interface RotateProps {
+    rotation?: number;
     children: JSX.Element;
     duration?: number;
 }
 
-export const TranslateRightChildren = ({ translate, duration, children }: TranslateProps) => {
+export const RotateChildren = ({ rotation, duration, children }: RotateProps) => {
+    const parentRotateChildren = {
+        hidden: { rotate: 0 },
+        visible: {
+            rotate: rotation || 5,
+            transition: {
+                duration: duration || 0.3,
+            },
+        },
+    };
+
+    return <m.div variants={parentRotateChildren}>{children}</m.div>;
+};
+
+interface TranslateProps {
+    translate?: number;
+    children: JSX.Element;
+    duration?: number;
+    className?: string;
+}
+
+export const TranslateRightChildren = ({ translate, duration, children, className = "" }: TranslateProps) => {
     const parentTranslateChildren = {
         hidden: { y: 0, x: 0 },
         visible: {
@@ -61,7 +82,11 @@ export const TranslateRightChildren = ({ translate, duration, children }: Transl
         },
     };
 
-    return <m.div variants={parentTranslateChildren}>{children}</m.div>;
+    return (
+        <m.div className={className} variants={parentTranslateChildren}>
+            {children}
+        </m.div>
+    );
 };
 
 export const SlideInOneByOneParent = ({ children }: Props) => {

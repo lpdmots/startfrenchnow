@@ -5,6 +5,7 @@ import { m } from "framer-motion";
 import Link from "next-intl/link";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { CATEGORIESTEXTCOLORS } from "@/app/lib/constantes";
+import { cn } from "@/app/lib/schadcn-utils";
 
 interface Props {
     children: string | JSX.Element;
@@ -12,9 +13,10 @@ interface Props {
     target?: string;
     rel?: string;
     category?: string;
+    className?: string;
 }
 
-function LinkArrow({ children, url, target = "_blank", rel, category }: Props) {
+function LinkArrow({ children, url, target = "_blank", rel, category, className = "" }: Props) {
     const ParentVariants = {
         visible: {
             transition: {
@@ -31,11 +33,10 @@ function LinkArrow({ children, url, target = "_blank", rel, category }: Props) {
     };
 
     const hoverColor = "hover:!" + CATEGORIESTEXTCOLORS[(category || "tips") as keyof typeof CATEGORIESTEXTCOLORS];
-    const className = `link-wrapper w-inline-block ${hoverColor}`;
 
     return (
         <m.span variants={ParentVariants} whileHover="visible">
-            <Link href={url} className={className} target={target} rel={rel} onClick={(event) => event.stopPropagation()}>
+            <Link href={url} className={cn("link-wrapper w-inline-block", hoverColor, className)} target={target} rel={rel} onClick={(event) => event.stopPropagation()}>
                 <span className="flex items-center justify-between">
                     <span className="link-text underline mr-1">{children}</span>
                     <m.span variants={childrenVariant} style={{ width: 10 }}>

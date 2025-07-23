@@ -1,9 +1,20 @@
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { UserProps } from "@/app/types/sfn/auth";
 import { compare } from "bcrypt";
-import { type NextAuthOptions } from "next-auth";
+import { DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+
+declare module "next-auth" {
+    interface Session {
+        user: {
+            alias: string[];
+            _id: string;
+            name: string;
+            email: string;
+        };
+    }
+}
 
 export const authOptions: NextAuthOptions = {
     session: {
@@ -45,6 +56,7 @@ export const authOptions: NextAuthOptions = {
                     _id: user._id + "",
                     email: user.email,
                     name: user.name,
+                    alias: user.alias,
                 };
             },
         }),

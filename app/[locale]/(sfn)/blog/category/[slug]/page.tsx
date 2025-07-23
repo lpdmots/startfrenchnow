@@ -1,5 +1,4 @@
 import { groq } from "next-sanity";
-import { client } from "@/app/lib/sanity.client";
 import { Category, Post } from "@/app/types/sfn/blog";
 import SecondaryPost from "@/app/components/sfn/blog/SecondaryPost";
 import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
@@ -8,7 +7,8 @@ import { CATEGORIES, HEADINGSPANCOLORS } from "@/app/lib/constantes";
 import { BlogLangButton } from "@/app/components/sfn/blog/BlogLangButton";
 import { LinkBlog } from "@/app/components/sfn/blog/LinkBlog";
 import { Locale } from "@/i18n";
-import post from "@/app/schemas/sfn/post";
+import { PostsListInfiniteScroll } from "@/app/components/sfn/post/PostsListInfiniteScroll";
+import { getCategoryPostsSlice } from "@/app/serverActions/blogActions";
 
 type Props = {
     params: {
@@ -16,12 +16,6 @@ type Props = {
     };
     searchParams: { postLang: "en" | "fr" };
 };
-
-const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && $slug in categories] {
-        ...,
-    } | order(publishedAt desc)
-`;
 
 const queryCategories = groq`
     *[_type=='category'] {title, slug, description} | order(title asc)
@@ -42,7 +36,7 @@ export const revalidate = 60;
 } */
 
 async function Categories({ params: { slug }, searchParams }: Props) {
-    const posts: Post[] = await client.fetch(query, { slug });
+    const posts: Post[] = await getCategoryPostsSlice(slug, 0, 10);
     return <CategoriesNoAsync posts={posts} slug={slug} searchParams={searchParams} />;
 }
 
@@ -105,11 +99,7 @@ const CategoriesNoAsync = ({ posts: postsCatFiltred, slug, searchParams }: { pos
                                     </div>
                                 </div>
                                 <div className="grid gap-12">
-                                    {posts.map((post) => (
-                                        <ParentToChildrens key={post.title}>
-                                            <SecondaryPost post={post} postLang={postLang as "fr" | "en"} />
-                                        </ParentToChildrens>
-                                    ))}
+                                    <PostsListInfiniteScroll postLang={postLang} locale={locale} category={slug} initialPosts={posts} />
                                 </div>
                             </div>
                         </div>

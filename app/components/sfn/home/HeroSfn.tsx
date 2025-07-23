@@ -1,5 +1,4 @@
 import React from "react";
-import { AiOutlineUser } from "react-icons/ai";
 import { HiAcademicCap } from "react-icons/hi";
 import { HeroVideo } from "./HeroVideo";
 import { useTranslations } from "next-intl";

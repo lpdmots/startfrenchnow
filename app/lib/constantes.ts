@@ -184,3 +184,65 @@ export const natures = {
         english: "Article",
     },
 };
+
+export const NUMBER_OF_POSTS_TO_FETCH = 10;
+
+export const CATEGORY_NAMES = {
+    en: {
+        tips: "Tip",
+        grammar: "Grammar",
+        vocabulary: "Vocabulary",
+        culture: "Culture",
+        expressions: "Expression",
+        fide: "Fide",
+    },
+    es: {
+        tips: "Consejo",
+        grammar: "Gramática",
+        vocabulary: "Vocabulario",
+        culture: "Cultura",
+        expressions: "Expresión",
+        fide: "Fide",
+    },
+    fr: {
+        tips: "Conseil",
+        grammar: "Grammaire",
+        vocabulary: "Vocabulaire",
+        culture: "Culture",
+        expressions: "Expression",
+        fide: "Fide",
+    },
+    pt: {
+        tips: "Dica",
+        grammar: "Gramática",
+        vocabulary: "Vocabulário",
+        culture: "Cultura",
+        expressions: "Expressão",
+        fide: "Fide",
+    },
+    tr: {
+        tips: "İpucu",
+        grammar: "Dil Bilgisi",
+        vocabulary: "Kelime Dağarcığı",
+        culture: "Kültür",
+        expressions: "İfade",
+        fide: "Fide",
+    },
+};
+
+export const SLUG_TO_EVENT_TYPE = {
+    "fide-preparation-class": "Fide Preparation Class",
+    "your-fide-plan": "Your FIDE Plan",
+};
+
+export const EVENT_TYPES = {
+    "Fide Preparation Class": { uri: "https://api.calendly.com/event_types/785711d3-abf7-45f8-be99-0539335b613d", url: "https://calendly.com/yohann-startfrenchnow/fide-preparation-class" },
+    "Your FIDE Plan": { uri: "https://api.calendly.com/event_types/edc90d62-ffea-4815-96de-d0b537f2da11", url: "https://calendly.com/yohann-startfrenchnow/15min" },
+};
+
+export const HOURS_BEFOR_CANCEL = 24;
+
+export const LESSONS = [...Object.keys(EVENT_TYPES)];
+export const CREDITS = [];
+export const PERMISSIONS = [];
+export const LESSONS_CREDITS_PERMISSIONS = [...LESSONS, ...CREDITS, ...PERMISSIONS];

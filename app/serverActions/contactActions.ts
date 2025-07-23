@@ -46,7 +46,8 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     }
 
     // Email content to Yohann
-    const messageForYoh = type === "input" ? "Demande envoyée depuis le bandeau." : type === "pdf" ? "Demande de pdf effectuée." : type === "blog" ? "Demande depuis un article du blog" : message;
+    const messageForYoh =
+        type === "input" ? "Demande envoyée depuis le bandeau." : type === "pdf" ? "Demande de pdf effectuée." : type === "blog" ? "Demande d'entretien depuis un article du blog" : message;
     const yohannEmailContent = generateEmailContent({ email, objectif, niveauActuel, niveauSouhaite, message: messageForYoh });
 
     // Send email to Yohann
@@ -76,7 +77,7 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     // Email content to user
     const userHtmlContent =
         type === "pdf"
-            ? `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+            ? `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">
   <p>Salut, c'est Yohann.</p>
   
   <p>Thank you for requesting your free guide! You can download it by clicking the link below:</p>
@@ -101,7 +102,7 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
   
   <!-- Signature avec flexbox -->
   <div style="display: flex; align-items: center; margin-top: 20px;">
-    <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
+    <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
 
     <p style="margin: 0;">
       Yohann Coussot<br/>
@@ -112,10 +113,10 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
 
   <p style="margin-top: 20px; font-size: 14px; color: #666;">If you are expecting a response from us, please make sure to check your spam or junk folder as well, just in case our emails end up there.</p>
 </div>
-
+</html>
 `
             : `
-            <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+            <html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">
         <p>Salut, c'est Yohann.</p>
         
         <p>
@@ -134,7 +135,7 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
         <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
         
         <div style="display: flex; align-items: center; margin-top: 20px;">
-  <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
+  <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
 
   <p style="margin: 0;">
     Yohann Coussot<br/>
@@ -142,15 +143,25 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     <a href="https://www.startfrenchnow.com" style="color: #1a73e8; text-decoration: none;">www.startfrenchnow.com</a>
   </p>
 </div>
-        </div>
+        </div></html>
     `;
+
+    const userTextContent = `
+    Salut, c'est Yohann.
+
+Merci pour votre intérêt. Je vais vous répondre au plus vite et je vous proposerai, si vous le souhaitez, une entrevue rapide et gratuite pour mieux comprendre vos objectifs et élaborer ensemble un plan personnalisé qui vous convient parfaitement.
+
+À bientôt,
+Yohann
+  `;
 
     // Send confirmation email to the user
     try {
         await transporter.sendMail({
             from: emailYoh,
             to: email,
-            subject: type === "pdf" ? "Your free FIDE guide + a proposal to go further!" : "Confirmation of your FIDE learning plan request",
+            subject: type === "pdf" ? "Your FIDE guide + a proposal to go further!" : "Confirmation of your FIDE learning plan request",
+            text: userTextContent,
             html: userHtmlContent,
         });
     } catch (error) {

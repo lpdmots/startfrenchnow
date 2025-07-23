@@ -43,7 +43,9 @@ function NavBar() {
         button: t("resources.button"),
         videos: t("resources.videos"),
         blog: t("resources.blog"),
+        exercises: t("resources.exercises"),
         stories: t("resources.stories"),
+        testYourLevel: t("resources.testYourLevel"),
     };
 
     const links = (
@@ -76,7 +78,7 @@ function NavBar() {
                     <div className="flex items-center gap-2">
                         <LocaleSwitcher locale={locale as Locale} />
                         <DarkMode />
-                        <ProfilButton contact={t("contact")} logout={t("logout")} />
+                        <ProfilButton profil={t("profil")} logout={t("logout")} fideLessons={t("fideLessons")} />
                         <Link aria-label="Go to contact page" href="/contact" className="btn-primary small header-btn-hidde-on-mb flex items-center !p-2 !mr-2 lg:!mr-0">
                             <FaRegEnvelope style={{ fontSize: 22 }} />
                         </Link>

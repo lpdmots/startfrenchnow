@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next-intl/link";
 import urlFor from "@/app/lib/urlFor";
-import { BsCaretRightFill } from "react-icons/bs";
 import TabelVoc from "./RichTextSfnComponents/TabelVoc";
 import { FaFileDownload } from "react-icons/fa";
 import VideoBlog from "./RichTextSfnComponents/VideoBlog";
@@ -13,7 +12,6 @@ import lessonTeacher from "@/public/images/lesson-teacher.png";
 import Exercise from "../exercises/exercise/Exercise";
 import { ArticleVoc } from "./RichTextSfnComponents/ArticleVoc";
 import LinkArrow from "../common/LinkArrow";
-import { NotePopover, NotePopoverTransalation } from "../animations/BlogAnimations";
 import TranslationPopover from "./RichTextSfnComponents/TranslationPopover";
 import Sound from "./RichTextSfnComponents/Sound";
 

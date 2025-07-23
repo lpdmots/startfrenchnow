@@ -15,7 +15,6 @@ export const VideoFide = ({ videoKey, poster, subtitle }: { videoKey: string; po
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const handlePlayPause = () => {
-        console.log("handlePlayPause");
         if (videoRef.current) {
             if (isPlaying) {
                 videoRef.current.pause();
@@ -63,7 +62,7 @@ export const VideoFide = ({ videoKey, poster, subtitle }: { videoKey: string; po
                                         style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
                                         initial={{ backgroundColor: "rgba(128, 128, 128, 0.5)" }}
                                         animate={{
-                                            backgroundColor: isHovered ? "rgba(229,2,6,1)" : "rgba(128, 128, 128, 0.5)",
+                                            backgroundColor: isHovered ? "rgba(229,2,6,1)" : "rgba(229,2,6,0.8)",
                                             opacity: isHovered ? 1 : 0.8,
                                         }}
                                         transition={{ duration: 0.1 }}

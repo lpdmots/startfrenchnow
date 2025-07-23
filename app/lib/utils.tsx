@@ -1,4 +1,5 @@
 import { Reference, VocabItem } from "../types/sfn/blog";
+import { PricingDetails, PricingDetailsFetch, ProductFetch } from "../types/sfn/stripe";
 
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
@@ -318,3 +319,152 @@ export function transformObject(original: Record<string, Reference>): Transforme
     }
     return transformed;
 }
+
+export const getTimeData = (start_time: string, end_time: string) => {
+    const date = new Date(start_time).toLocaleDateString("fr-FR", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
+    const start_time_date = new Date(start_time);
+    const end_time_date = new Date(end_time);
+
+    const start_time_hours = start_time_date.getHours();
+    const start_time_minutes = start_time_date.getMinutes();
+    const end_time_hours = end_time_date.getHours();
+    const end_time_minutes = end_time_date.getMinutes();
+
+    const startTime = `${start_time_hours}:${start_time_minutes < 10 ? "0" : ""}${start_time_minutes}`;
+    const endTime = `${end_time_hours}:${end_time_minutes < 10 ? "0" : ""}${end_time_minutes}`;
+    const duration = (end_time_date.getTime() - start_time_date.getTime()) / 1000 / 60; // Durée en minutes
+
+    return { date, startTime, endTime, duration };
+};
+
+export const toHours = (minutes: number) => Math.floor(minutes / 60);
+
+export const convertToSubcurrency = (amount: number, factor = 100) => {
+    return Math.round(amount * factor);
+};
+
+export const getProductData = (product: ProductFetch, quantity: number, previousPurchasedLessons: number, currency: "EUR" | "USD" | "CHF"): PricingDetails => {
+    const { pricingDetails, ...rest } = product;
+    const pricingDetail = pricingDetails.find((pricingDetail) => pricingDetail.currency === currency);
+
+    const plan = pricingDetail?.plans.reverse().find((plan) => {
+        const minimumQuantity = plan.minimumQuantity || 0;
+        const maximumQuantity = plan.maximumQuantity || Infinity;
+        if (plan.isCountingPreviousPurchases) {
+            return minimumQuantity <= quantity + previousPurchasedLessons && maximumQuantity >= quantity + previousPurchasedLessons;
+        }
+        return minimumQuantity <= quantity && maximumQuantity >= quantity;
+    });
+
+    if (!pricingDetail) throw new Error("No pricing details found for the selected currency");
+
+    const { originalPrice } = pricingDetail;
+    const initialAmount = originalPrice * quantity;
+
+    if (!plan || !plan?.discount) {
+        return {
+            initialUnitPrice: originalPrice,
+            unitPrice: originalPrice,
+            amount: originalPrice * quantity,
+            initialAmount: originalPrice * quantity,
+            discountType: undefined,
+            currency,
+            currencies: pricingDetails.map((p) => p.currency),
+            planName: plan?.name,
+        };
+    }
+
+    const { discountValue, discountType, rounding } = plan.discount;
+    let unitPrice;
+
+    switch (discountType) {
+        case "percentage":
+            unitPrice = originalPrice * (1 - (discountValue || 0) / 100); // Applique un pourcentage de réduction
+            break;
+        case "flatDiscount":
+            unitPrice = originalPrice - (discountValue || 0); // Soustrait un montant fixe
+            break;
+        case "newPrice":
+            unitPrice = discountValue ? discountValue : originalPrice; // Utilise le nouveau prix directement
+            break;
+        default:
+            unitPrice = originalPrice; // Pas de réduction, utilise le prix original
+    }
+
+    unitPrice = unitPrice > 0 ? unitPrice : 0;
+
+    // arrondi selon le type d'arrondi: round, none, decimal
+    if (rounding === "round") {
+        unitPrice = Math.round(unitPrice);
+    } else if (rounding === "decimal") {
+        unitPrice = Math.round(unitPrice * 10) / 10;
+    } else if (rounding === "none") {
+        unitPrice = Math.round(unitPrice * 100) / 100;
+    }
+
+    const amount = unitPrice * quantity;
+
+    return {
+        initialUnitPrice: originalPrice,
+        unitPrice,
+        amount,
+        initialAmount,
+        discountType: amount < initialAmount ? discountType : undefined,
+        currency,
+        currencies: pricingDetails.map((p) => p.currency),
+        planName: plan?.name,
+    };
+};
+
+export function pick(obj: any, ...keys: any) {
+    return keys.reduce((result: any, key: any) => {
+        if (key in obj) {
+            result[key] = obj[key];
+        }
+        return result;
+    }, {});
+}
+
+/* export const calculateTotalPrice = (pricingDetails: PricingDetailsFetch, quantity: number, desiredCurrency: string) => {
+    const { prices, discountType, discountValue } = pricingDetails;
+    const firstPrice = prices.find((price) => price.currency === desiredCurrency) || prices[0];
+    const { price, currency } = firstPrice;
+
+    let unitPrice;
+
+    switch (discountType) {
+        case "percentage":
+            unitPrice = price * (1 - (discountValue || 0) / 100); // Applique un pourcentage de réduction
+            break;
+        case "flatDiscount":
+            unitPrice = price - (discountValue || 0); // Soustrait un montant fixe
+            break;
+        case "newPrice":
+            unitPrice = discountValue ? discountValue : price; // Utilise le nouveau prix directement
+            break;
+        default:
+            unitPrice = price; // Pas de réduction, utilise le prix original
+    }
+
+    unitPrice = unitPrice > 0 ? unitPrice : 0;
+
+    const amount = unitPrice * quantity;
+    const initialAmount = price * quantity;
+
+    return {
+        initialUnitPrice: price,
+        unitPrice,
+        amount,
+        initialAmount,
+        discountType: amount < initialAmount ? discountType : undefined,
+        currency,
+        currencies: prices.map((p) => p.currency),
+    };
+};
+ */

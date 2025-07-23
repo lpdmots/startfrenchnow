@@ -3,19 +3,18 @@ import Image from "next/image";
 import ClientSideRoute from "../../common/ClientSideRoute";
 import urlFor from "@/app/lib/urlFor";
 import { AiFillSignal } from "react-icons/ai";
-import { CATEGORIESCOLORS, LEVELDATA } from "@/app/lib/constantes";
+import { CATEGORIESCOLORS, CATEGORY_NAMES, LEVELDATA } from "@/app/lib/constantes";
 import { ScaleChildren } from "../../animations/ParentToChildrens";
-import { useLocale, useTranslations } from "next-intl";
 import { getDataInRightLang } from "@/app/lib/utils";
 import { Locale } from "@/i18n";
-import { CategoryBadge } from "./CategoryBadge";
 import { ImPlay2 } from "react-icons/im";
+import { CategoryBadge } from "./CategoryBadge";
 
-const SecondaryPost = ({ post, postLang = "en" }: { post: Post; postLang?: "en" | "fr" }) => {
-    const locale = useLocale();
+const SecondaryPost = ({ post, postLang = "en", locale }: { post: Post; postLang?: "en" | "fr"; locale: string }) => {
     const level = post.level?.length ? post.level.map((lev) => LEVELDATA[lev]) : null;
     const firstCategory = post?.categories?.[0] || "tips";
-    const tCat = useTranslations(`Categories.${firstCategory}`);
+    const categories = CATEGORY_NAMES[locale as keyof typeof CATEGORY_NAMES];
+    const categoryName = categories && firstCategory in categories ? categories[firstCategory as keyof typeof categories] : undefined;
     const title = getDataInRightLang(post, postLang, "title");
     const description = getDataInRightLang(post, postLang, "description");
     const hasVideo = post?.mainVideo?.url;
@@ -38,7 +37,7 @@ const SecondaryPost = ({ post, postLang = "en" }: { post: Post; postLang?: "en" 
                             />
                         </ScaleChildren>
                     </div>
-                    <CategoryBadge category={firstCategory} label={tCat("title")} />
+                    <CategoryBadge category={firstCategory} label={categoryName as unknown as string} />
                 </div>
                 <div className="inner-container blog-secondary-card-content flex flex-col justify-between" style={{ minHeight: 200 }}>
                     <div>

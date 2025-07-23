@@ -46,6 +46,7 @@ module.exports = {
             "neutral-500": "var(--neutral-500)",
             "neutral-600": "var(--neutral-600)",
             "neutral-700": "var(--neutral-700)",
+            "neutral-750": "var(--neutral-750)",
             "neutral-800": "var(--neutral-800)",
         },
         extend: {

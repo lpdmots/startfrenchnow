@@ -4,18 +4,17 @@ import ClientSideRoute from "../../common/ClientSideRoute";
 import urlFor from "@/app/lib/urlFor";
 import React from "react";
 import { AiFillSignal } from "react-icons/ai";
-import { CATEGORIESCOLORS, LEVELDATA } from "@/app/lib/constantes";
+import { CATEGORIESCOLORS, CATEGORY_NAMES, LEVELDATA } from "@/app/lib/constantes";
 import { ScaleChildren } from "../../animations/ParentToChildrens";
-import { useLocale, useTranslations } from "next-intl";
 import { Locale } from "@/i18n";
 import { CategoryBadge } from "./CategoryBadge";
 import { ImPlay2 } from "react-icons/im";
 
-const PrimaryPost = ({ post, postLang = "en" }: { post: Post; postLang?: "en" | "fr" }) => {
-    const locale = useLocale();
+const PrimaryPost = ({ post, postLang = "en", locale }: { post: Post; postLang?: "en" | "fr"; locale: string }) => {
     const level = post.level?.length ? post.level.map((lev) => LEVELDATA[lev]) : null;
     const firstCategory = post?.categories?.[0] || "tips";
-    const tCat = useTranslations(`Categories.${firstCategory}`);
+    const categories = CATEGORY_NAMES[locale as keyof typeof CATEGORY_NAMES];
+    const categoryName = categories && firstCategory in categories ? categories[firstCategory as keyof typeof categories] : undefined;
     const title = postLang === "fr" ? post.title : post.title_en;
     const description = postLang === "fr" ? post.description : post.description_en;
     const hasVideo = post?.mainVideo?.url;
@@ -36,7 +35,7 @@ const PrimaryPost = ({ post, postLang = "en" }: { post: Post; postLang?: "en" | 
                             style={{ minHeight: 150, objectFit: "contain" }}
                         />
                     </ScaleChildren>
-                    <CategoryBadge category={firstCategory} label={tCat("title")} primary={true} />
+                    <CategoryBadge category={firstCategory} label={categoryName as unknown as string} primary={true} />
                 </div>
                 <div className="blog-card-content-inside">
                     <div className="inner-container _350px---mbl">

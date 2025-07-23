@@ -14,7 +14,7 @@ function Spinner({ radius, message, maxHeight, color = "var(--neutral-100)" }: P
                 </div>
             </div>
             {message && (
-                <p className="w-full text-center" style={{ paddingTop: maxHeight }}>
+                <p className="w-full text-center text-neutral-400" style={{ paddingTop: maxHeight }}>
                     {message}
                 </p>
             )}

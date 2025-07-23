@@ -13,6 +13,7 @@ export interface CommentProps {
     comment: string;
     rating?: number;
     created?: string;
+    results?: React.ReactNode;
 }
 
 export const LastComments = ({ courseId, locale, t, courseUrl }: { courseId: string; locale: string; t: any; courseUrl: string }) => {

@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 const emailYoh = process.env.EMAILYOH;
 const emailNico = process.env.EMAILNICO;
 const pass = process.env.EMAIL_PASS;
+const passNico = process.env.EMAIL_PASS_NICO;
 
 export const transporter = nodemailer.createTransport({
     host: "smtp.hostinger.com",
@@ -11,6 +12,16 @@ export const transporter = nodemailer.createTransport({
     auth: {
         user: emailYoh,
         pass,
+    },
+});
+
+export const transporterNico = nodemailer.createTransport({
+    host: "smtp.hostinger.com",
+    port: 465, // Utilise 465 pour SSL ou 587 pour TLS
+    secure: true, // true pour SSL (port 465), false pour TLS (port 587)
+    auth: {
+        user: emailNico,
+        pass: passNico,
     },
 });
 

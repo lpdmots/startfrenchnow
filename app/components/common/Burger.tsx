@@ -74,9 +74,21 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                 </LinkCurrentBlog>
                             </div>
                             <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/exercises" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.resourcesDict.exercises}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog href="/stories" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
                                     <FaCaretRight />
                                     {messages.resourcesDict.stories}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/test-your-level" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {messages.resourcesDict.testYourLevel}
                                 </LinkCurrentBlog>
                             </div>
                         </div>

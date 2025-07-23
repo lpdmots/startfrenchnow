@@ -1,21 +1,11 @@
-//import { previewData } from "next/headers";
-import { groq } from "next-sanity";
-import { client } from "@/app/lib/sanity.client";
-//import PreviewSuspense from "../../../components/sanity/PreviewSuspense";
-//import PreviewBlogListe from "../../../components/sanity/PreviewBlogList";
-import BlogList from "@/app/components/sfn/blog/BlogList";
 import { Post } from "@/app/types/sfn/blog";
 import PostsList from "@/app/components/sfn/post/PostList";
-import CategoriesBand from "@/app/components/sfn/blog/CategoriesBand";
-import Marquee from "@/app/components/animations/Marquee";
 import { useLocale, useTranslations } from "next-intl";
 import { BlogLangButton } from "@/app/components/sfn/blog/BlogLangButton";
-
-const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true] {
-        ...,
-    } | order(publishedAt desc)
-`;
+import { getPostsSlice } from "@/app/serverActions/blogActions";
+import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
+import SecondaryPost from "@/app/components/sfn/blog/SecondaryPost";
+import { NUMBER_OF_POSTS_TO_FETCH } from "@/app/lib/constantes";
 
 export const revalidate = 60;
 
@@ -32,7 +22,7 @@ export const revalidate = 60;
 } */
 
 export default async function Blog({ searchParams }: { searchParams: { postLang: "en" | "fr" } }) {
-    const postsData: Post[] = await client.fetch(query);
+    const postsData: Post[] = await getPostsSlice(0, NUMBER_OF_POSTS_TO_FETCH);
     return <BlogNoAsync postsData={postsData} searchParams={searchParams} />;
 }
 
@@ -52,9 +42,7 @@ const BlogNoAsync = ({ postsData, searchParams }: { postsData: Post[]; searchPar
     return (
         <div className="page-wrapper mt-8 sm:mt-12">
             {isForcedLang && <BlogLangButton messages={messages} postLang={postLang} />}
-            {/* <BlogList posts={posts} postLang={postLang} /> */}
-            {/* <Marquee content={<CategoriesBand />} /> */}
-            <PostsList posts={posts} postLang={postLang} />
+            <PostsList postLang={postLang} initialPosts={posts} />
         </div>
     );
 };

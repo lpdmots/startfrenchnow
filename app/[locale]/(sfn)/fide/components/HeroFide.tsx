@@ -1,10 +1,6 @@
 import { VideoFide } from "./VideoFide";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import Link from "next-intl/link";
-import ShimmerButton from "@/app/components/ui/shimmer-button";
-import { MdPlayLesson } from "react-icons/md";
-import { Book, NotebookPen } from "lucide-react";
 import { BookFirstMeeting } from "./BookFirstMeeting";
 
 export const HeroFide = () => {

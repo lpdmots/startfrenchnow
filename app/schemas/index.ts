@@ -2,9 +2,11 @@
 import blockContent from "./sfn/blockContent";
 import post from "./sfn/post";
 import user from "./sfn/user";
+import product from "./sfn/product";
 import video from "./sfn/video";
 import videoBlog from "./sfn/blogTools/videoBlog";
 import theme from "./sfn/blogTools/theme";
+import fideExam from "./sfn/fideExam";
 
 // Blog Tools
 import flashcards from "./sfn/blogTools/flashcards";
@@ -32,8 +34,10 @@ import feedback from "./stories/feedback";
 export const schemaTypes = [
     user,
     post,
+    product,
     blockContent,
     video,
+    fideExam,
     videoBlog,
     tabelVoc,
     vocabItem,

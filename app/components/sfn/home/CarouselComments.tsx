@@ -51,7 +51,7 @@ export const CarouselComments = ({ comments }: any) => {
     };
     return (
         <>
-            <div className="slider-mask overflow-visible w-slider-mask ">
+            <div className="slider-mask overflow-visible w-slider-mask">
                 <AnimatePresence mode="wait">
                     <m.div key={slideIndex ? slideIndex : "empty"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
                         <Comment slideIndex={slideIndex} comments={commentsList} />

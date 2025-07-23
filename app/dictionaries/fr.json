@@ -28,6 +28,14 @@
             "title": "Préparez et Réussissez le Test FIDE avec un Accompagnement Sur Mesure",
             "description": "Boostez vos chances de réussite au test FIDE grâce à notre guide complet et bénéficiez d'un coaching personnalisé. Préparez-vous efficacement en toute confiance !"
         },
+        "testYourLevel": {
+            "title": "Test de niveau de français CECR (A1-C2) - Start French Now",
+            "description": "Testez gratuitement votre niveau de français avec l'évaluation CECR (A1 à C2). Améliorez vos compétences linguistiques et trouvez le cours idéal avec Start French Now."
+        },
+        "exercises": {
+            "title": "Exercices de français en ligne - Grammaire, vocabulaire et FLE | Start French Now",
+            "description": "Pratiquez votre français avec nos exercices interactifs en ligne : grammaire, vocabulaire, compréhension et plus. Progressez avec Start French Now !"
+        },
         "Courses": {
             "Beginners": {
                 "title": "Cours Complet de Français : Apprenez le Français - Débutants | Start French Now",
@@ -52,6 +60,8 @@
         "blog": "Blog",
         "about": "À propos",
         "contact": "Contact",
+        "profil": "Profil",
+        "fideLessons": "Mes leçons FIDE",
         "my_account": "Mon compte",
         "logout": "Se déconnecter",
         "contact_us": "Contactez-nous",
@@ -86,7 +96,9 @@
             "button": "Ressources",
             "videos": "Toutes nos Vidéos",
             "blog": "Articles & Ressources",
-            "stories": "Histoires Interactives"
+            "exercises": "Flashcards & Exercices",
+            "stories": "Histoires Interactives",
+            "testYourLevel": "Testez votre Niveau"
         }
     },
     "HeroSfn": {
@@ -145,6 +157,42 @@
             "fullMethod": {
                 "title": "Complet",
                 "content": "Une méthode complète avec accès à de nombreuses ressources : exercices, fiches de vocabulaire, quiz, un blog de qualité et des histoires interactives."
+            }
+        }
+    },
+    "TestPage": {
+        "heroTitle": "Quel est votre <hs2>niveau</hs2> de <hs4>français</hs4> ?",
+        "whyTestTitle": "<hs1>Pourquoi</hs1> tester votre niveau ?",
+        "whyTestDescription": "Connaître son niveau est très important pour pouvoir créer <hs2>un plan d'apprentissage</hs2> et déterminer <hs4>des objectifs</hs4>.",
+        "whyTestAdditional": "Si vous envisagez de suivre l’un de <hs2>nos cours Udemy</hs2>, nous vous invitons à passer ce test qui vous aidera à affiner le ciblage de vos compétences.",
+        "globalDistribution": "Répartition globale des niveaux",
+        "cecrImageAlt": "Niveaux du CECR",
+        "cefrLevelsTitle": "Les <hs2>6 niveaux</hs2> du CECR",
+        "cefrLevelsDescription": "Les niveaux du CECR (A1 à C2) évaluent les compétences linguistiques de débutant à expert. Ils sont <under>une référence universelle</under> pour l’apprentissage et les certifications.",
+        "levels": {
+            "a1": {
+                "title": "Connaissance basique de la langue.",
+                "content": "Vous comprenez de courts énoncés s’ils sont connus et répétés. Vous savez exprimer des besoins élémentaires."
+            },
+            "a2": {
+                "title": "Maîtrise des structures de base de la langue.",
+                "content": "Vous comprenez les informations pratiques de la vie courante. Vous pouvez vous faire comprendre dans des situations familières."
+            },
+            "b1": {
+                "title": "Maîtrise limitée de la langue.",
+                "content": "Vous comprenez les informations significatives des textes et des productions orales se rapportant à des situations connues. Vous vous exprimez de manière compréhensible sur des sujets de la vie quotidienne."
+            },
+            "b2": {
+                "title": "Maîtrise générale de la langue.",
+                "content": "Vous comprenez les informations détaillées des textes ou des productions orales traitant d’un sujet familier, concret ou abstrait. Vous vous exprimez clairement sur des sujets en relation avec votre domaine d’intérêt."
+            },
+            "c1": {
+                "title": "Bonne maîtrise de la langue.",
+                "content": "Vous comprenez dans le détail des textes complexes et des productions orales sur des sujets relatifs à la vie sociale et professionnelle. Vous vous exprimez avec assurance et précision sur des sujets variés."
+            },
+            "c2": {
+                "title": "Maîtrise complète de la langue.",
+                "content": "Vous comprenez tout ce que vous lisez ou écoutez dans des domaines variés. Vous saisissez les nuances de la langue et interprétez avec finesse des documents complexes."
             }
         }
     },
@@ -232,6 +280,93 @@
             }
         }
     },
+    "Checkout": {
+        "checkout": "Paiement",
+        "backToPrevious": "Retour à la page précédente",
+        "contactInformationsTitle": "Contact et Informations",
+        "yourPurchaseTitle": "Votre achat",
+        "paymentTitle": "Paiement",
+        "loading": "Chargement...",
+        "contactInformations": {
+            "email": "Email :",
+            "emailError": "Adresse e-mail invalide.",
+            "emailAliasInfo": "L'adresse diffère de celle enregistrée sur votre compte. Elle sera ajoutée comme adresse secondaire.",
+            "firstName": "Prénom :",
+            "firstNameError": "Le prénom est requis.",
+            "lastName": "Nom :",
+            "lastNameError": "Le nom est requis."
+        },
+        "yourPurchase": {
+            "courseImageAlt": "image du cours",
+            "quantity": "Quantité",
+            "unitPrice": "{currency} {price}.- /heure"
+        },
+        "priceLayout": {
+            "amountToPay": "Montant à Payer",
+            "subtotal": "Sous-total ({quantity}x)",
+            "discount": "Réduction",
+            "total": "Total",
+            "editChoices": "Modifier mes choix",
+            "proceedToPayment": "Procéder au paiement",
+            "termsConditions": "* Voir nos",
+            "termsLink": "conditions générales"
+        },
+        "PaymentSuccess": {
+            "thankYou": "Merci !",
+            "successMessage": "Vous avez envoyé avec succès",
+            "goHome": "Retour à l'accueil",
+            "bookLesson": "Réserver un cours !",
+            "successImageAlt": "Succès"
+        }
+    },
+    "PrivateLessons": {
+        "common": {
+            "buyLessons": "Acheter des leçons",
+            "lessonsAvailable1": "{hours} leçon{plural}",
+            "lessonsAvailable2": "à réserver",
+            "bookLesson": "Réserver un cours",
+            "followUpTitle": "Le <hs2>Suivi</hs2> de vos Heures",
+            "remainingHours": "Heures à Réserver",
+            "pendingHours": "En Attente",
+            "completedHours": "Heures Effectuées",
+            "calendarTitle": "Votre <hs4>Calendrier</hs4>",
+            "lessonsList1": "Voici la liste de vos cours, vous pouvez les",
+            "lessonsList2": "annuler gratuitement sous 48h",
+            "noLessons": "Vous n'avez pas de leçon à réserver.",
+            "noBookedLessons": "Vous n'avez pas encore réservé de leçon.",
+            "noPurchasedLessons": "Vous n'avez pas acheté de cours.",
+            "zoomLink": "Lien Zoom",
+            "status": "Statut",
+            "date": "Date",
+            "time": "Horaires",
+            "eventRow": {
+                "statusCompleted": "Leçon effectuée.",
+                "statusUpcoming": "Leçon à venir.",
+                "statusCanceled": "Leçon annulée.",
+                "statusCurrent": "Leçon en cours.",
+                "cancelLessonTitle": "Annuler ?",
+                "cancelLessonConfirmation1": "Veuillez confirmer que vous souhaitez annuler le cours du",
+                "cancelLessonConfirmation2": "{date} de {startTime} à {endTime}",
+                "cancelOk": "OUI, annuler",
+                "cancelNo": "NON, ne pas annuler",
+                "zoomLink": "Lien Zoom",
+                "noZoomLink": "N/A",
+                "errorTitle": "Oh oh! Une erreur s'est produite.",
+                "errorMessage": "Il y a eu un problème pour supprimer le cours. Veuillez me prévenir par mail.",
+                "successTitle": "Cours annulé",
+                "successMessage": "Le cours a été annulé avec succès.",
+                "optionalMessage": "Message optionnel"
+            }
+        },
+        "fide-preparation-class": {
+            "title": "Réservez vos <hs2>cours FIDE</hs2> privés",
+            "goToFidePage": "Se rendre sur la page FIDE"
+        }
+    },
+    "ExercisesPage": {
+        "title": "Choisissez un exercice et <hs4>entraînez-vous</hs4>",
+        "description": "Révisez le vocabulaire avec des flashcards, entraînez-vous sur des notions de grammaire, ou explorez d'autres thématiques. Bonne pratique !"
+    },
     "Fide": {
         "HeroFide": {
             "title": "Préparez <hs2>le Test FIDE</hs2>",
@@ -255,7 +390,37 @@
             "point2": "Explorez tous les thèmes FIDE, <under4>élargissez votre vocabulaire</under4> et anticipez les questions de l'examinateur.",
             "point3": "<under2>Mettez l'accent sur l'oral</under2> et <under2>pratiquez</under2> avec les scénarios du test les <noWrap>plus récents.</noWrap>",
             "point4": "Obtenez des <under4>conseils et des stratégies efficaces</under4> pour exceller lors du test.",
-            "point5": "Bénéficiez d'un <under2><b>plan d'étude personnalisé</b></under2> conçu pour garantir <noWrap>votre succès.</noWrap>"
+            "point5": "Bénéficiez d'un <under2><b>plan d'étude personnalisé</b></under2> conçu pour garantir <noWrap>votre succès.</noWrap>",
+            "citation": "<under1>L'alternative idéale</under1> pour réussir l'examen FIDE – flexibilité et efficacité",
+            "ComparativeTabel": {
+                "titles": {
+                    "FIDE_Expertise": "Expertise FIDE",
+                    "Personalized_Preparation": "Préparation personnalisée",
+                    "Flexible_Scheduling": "Horaires flexibles",
+                    "Latest_Scenarios": "Accès aux derniers scénarios",
+                    "Continuous_Support": "Accompagnement continu",
+                    "Self_Study_Platform": "Plateforme d'auto-apprentissage",
+                    "Price_Hour": "Tarif/heure"
+                },
+                "smallTitles": {
+                    "FIDE_Expertise": "Expertise FIDE",
+                    "Personalized_Preparation": "Préparation personnalisée",
+                    "Flexible_Scheduling": "Horaires flexibles",
+                    "Latest_Scenarios": "Derniers scénarios",
+                    "Continuous_Support": "Soutien continu",
+                    "Self_Study_Platform": "Auto-apprentissage",
+                    "Price_Hour": "Tarif/heure"
+                },
+                "offers": {
+                    "Price_From": "Dès <b5>65</b5> CHF",
+                    "Others_Range": "<b4>90</b4> à <b4>120</b4> CHF"
+                },
+                "headings": {
+                    "Others": "AUTRES",
+                    "OurOffer": "NOTRE OFFRE"
+                }
+            },
+            "cta": "Choisissez votre forfait"
         },
         "WhatIsFide": {
             "title": "Qu'est-ce que le test <noWrap><hs4>FIDE</hs4> ?</noWrap>",
@@ -271,7 +436,8 @@
                 "button": "Envoyer",
                 "successMessage": "Votre demande a été transmise et <under>un lien vers le pdf a été envoyé</under> sur votre boîte. Veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
                 "errorMessage": "Oups ! Quelque chose a mal tourné."
-            }
+            },
+            "linkToFAQ": "Consultez notre FAQ pour en savoir plus"
         },
         "HowClassLook": {
             "steps": {
@@ -295,7 +461,12 @@
         },
         "ReviewsFide": {
             "title": "<hs2>Avis d'Étudiants</hs2> FIDE : Leur Réussite, Votre Inspiration",
-            "description": "Découvrez les témoignages de nos étudiants qui ont suivi nos cours FIDE."
+            "description": "Découvrez les témoignages de nos étudiants qui ont suivi nos cours FIDE.",
+            "circularProgress": {
+                "score": "Score Fide :",
+                "lessons": "Leçons",
+                "progress": "De {progressFrom} à {progressTo}"
+            }
         },
         "ContactForFide": {
             "title": "Obtenez votre plan d'étude gratuit",
@@ -470,6 +641,22 @@
                     "link": "Contactez-moi"
                 }
             }
+        },
+        "PriceSliderFide": {
+            "title": "<hs4>Choisissez votre forfait</hs4> adapté à vos besoins",
+            "purchasedLessons1": "Vous avez déjà acheté ",
+            "purchasedLessonsHours": "heures",
+            "purchasedLessonsHour": "heure",
+            "purchasedLessons2": " de cours",
+            "session": "Déterminez le nombre d'heures dont vous avez besoin et trouvez le forfait idéal.",
+            "notConnected": "Déterminez le nombre d'heures dont vous avez besoin et trouvez le forfait idéal. Déjà client ? Pour bénéficier d'un tarif préférentiel, ",
+            "connectLink": "connectez-vous",
+            "slider": {
+                "hours": {
+                    "single": "heure",
+                    "plural": "heures"
+                }
+            }
         }
     },
     "Stories": {
@@ -582,7 +769,7 @@
         "Email": {
             "activationEmail": {
                 "subject": "Activation de votre compte Start French Now",
-                "body": "<p>Bonjour USERNAME,</p> <br><p>Merci de vous être inscrit à Start French Now.</p> <p>Veuillez cliquer <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/fr'>ici</a></span> pour activer votre compte.</p><br> <p>Nous vous souhaitons un excellent apprentissage du français.</p><br> <p>Cordialement,</p> <p>Yohann et Nicolas</p>"
+                "body": "<p>Bonjour USERNAME,</p> <br><p>Merci de vous être inscrit à Start French Now.</p> <p>Pour activer votre compte et commencer votre apprentissage, veuillez cliquer sur le lien suivant : <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/fr'>activer mon compte</a></span>.</p><br> <p>Nous sommes ravis de vous accompagner dans votre apprentissage du français et vous souhaitons une expérience enrichissante sur notre plateforme.</p><br><p>À très bientôt !</p><p>Cordialement,</p>"
             },
             "ResetPasswordMail": {
                 "subject": "Réinitialisation de votre mot de passe Start French Now",
@@ -619,6 +806,8 @@
             "createAccount": "Créer un compte",
             "or": "Ou",
             "infoMessages": {
+                "privateLessons": "Connectez-vous pour accéder à vos leçons privées.",
+                "checkout": "Connectez-vous pour accéder au paiement.",
                 "storyAccount": "Vous devez vous connecter pour garder le suivi des histoires."
             }
         },

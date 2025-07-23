@@ -58,7 +58,7 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
                                     <div role="listitem" className="height-100 w-dyn-item">
                                         {posts.length > 0 && (
                                             <ParentToChildrens>
-                                                <PrimaryPost post={posts[0]} postLang={postLang} />
+                                                <PrimaryPost post={posts[0]} postLang={postLang} locale={locale} />
                                             </ParentToChildrens>
                                         )}
                                     </div>
@@ -71,7 +71,7 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
                                     <div role="listitem" className="w-dyn-item">
                                         {posts.length > 1 && (
                                             <ParentToChildrens>
-                                                <SecondaryPost post={posts[1]} postLang={postLang} />
+                                                <SecondaryPost post={posts[1]} postLang={postLang} locale={locale} />
                                             </ParentToChildrens>
                                         )}
                                     </div>
@@ -80,7 +80,7 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
                                     <div role="listitem" className="w-dyn-item">
                                         {posts.length > 2 && (
                                             <ParentToChildrens>
-                                                <SecondaryPost post={posts[2]} postLang={postLang} />
+                                                <SecondaryPost post={posts[2]} postLang={postLang} locale={locale} />
                                             </ParentToChildrens>
                                         )}
                                     </div>

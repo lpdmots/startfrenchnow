@@ -1,7 +1,7 @@
 import { Accordion, AccordionContent, AccordionItem } from "@/app/components/ui/accordion";
 import * as RadixAccordion from "@radix-ui/react-accordion";
 import { Plus } from "lucide-react";
-import { AccordionButton } from "./AccordionButton";
+import { AccordionButton } from "@/app/components/common/Accordion/AccordionButton";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";

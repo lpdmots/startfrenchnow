@@ -35,11 +35,11 @@ export const SignUpForm = ({ messages }: { messages: any }) => {
     return (
         <form onSubmit={handleSubmit} className="utility-page-form w-password-page">
             <div className="flex flex-col w-full gap-2">
-                <input type="email" className="input w-password-page w-input" onChange={handleChange} name="email" placeholder={messages.enterYourEmail} autoComplete="on" />
-                <input type="text" className="input w-password-page w-input" onChange={handleChange} name="name" placeholder={messages.enterYourUsername} autoComplete="on" />
+                <input type="email" className="input w-password-page w-input" onChange={handleChange} name="email" placeholder={messages.enterYourEmail} autoComplete="email" />
+                <input type="text" className="input w-password-page w-input" onChange={handleChange} name="name" placeholder={messages.enterYourUsername} autoComplete="username" />
                 <div className="flex gap-4">
-                    <input type="password" className="input w-password-page w-input" onChange={handleChange} name="password1" placeholder={messages.password} autoComplete="on" />
-                    <input type="password" className="input w-password-page w-input" onChange={handleChange} name="password2" placeholder={messages.confirm} autoComplete="on" />
+                    <input type="password" className="input w-password-page w-input" onChange={handleChange} name="password1" placeholder={messages.password} autoComplete="new-password" />
+                    <input type="password" className="input w-password-page w-input" onChange={handleChange} name="password2" placeholder={messages.confirm} autoComplete="new-password" />
                 </div>
                 <div className="w-checkbox checkbox-field-wrapper mb-2">
                     <label className="w-form-label flex items-center" onClick={() => setChecked((prev) => !prev)}>

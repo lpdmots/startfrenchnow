@@ -28,6 +28,14 @@
             "title": "FIDE Sınavına Kişiye Özel Destek ile Hazırlanın ve Başarılı Olun",
             "description": "Kapsamlı rehberimiz ve kişiselleştirilmiş koçluğumuzla FIDE sınavını geçme şansınızı artırın. Etkili bir şekilde ve güvenle hazırlanın!"
         },
+        "testYourLevel": {
+            "title": "Fransızca Seviye Testi CEFR (A1-C2) - Start French Now",
+            "description": "Ücretsiz Fransızca seviye testimize katılın! CEFR (A1'den C2'ye) değerlendirmesiyle dil becerilerinizi geliştirin ve Start French Now ile en iyi kursu bulun."
+        },
+        "Exercises": {
+            "title": "Online Fransızca Egzersizleri - Dilbilgisi, Kelime Bilgisi ve FLE | Start French Now",
+            "description": "Etkileşimli çevrimiçi Fransızca egzersizleriyle pratik yapın: dilbilgisi, kelime bilgisi, anlama ve daha fazlası. Start French Now ile gelişin!"
+        },
         "Courses": {
             "Beginners": {
                 "title": "Fransızca Öğrenin: Başlangıç Seviyesi Kursları | Start French Now",
@@ -52,6 +60,8 @@
         "blog": "Blog",
         "about": "Hakkında",
         "contact": "İletişim",
+        "profil": "Profil",
+        "fideLessons": "FIDE derslerim",
         "my_account": "Hesabım",
         "logout": "Çıkış Yap",
         "contact_us": "Bizimle İletişime Geçin",
@@ -87,7 +97,9 @@
             "button": "Kaynaklar",
             "videos": "Tüm Videolarımız",
             "blog": "Makaleler & Kaynaklar",
-            "stories": "Etkileşimli Hikayeler"
+            "exercises": "Flash Kartlar ve Alıştırmalar",
+            "stories": "Etkileşimli Hikayeler",
+            "testYourLevel": "Seviyenizi Test Edin"
         }
     },
     "HeroSfn": {
@@ -146,6 +158,42 @@
             "fullMethod": {
                 "title": "Tam bir Metod",
                 "content": "Ekstra egzersizler, quizler, kelime listeleri, kaliteli bir blog ve harika Fransızca interaktif hikayeler ile erişilebilecek geniş kaynaklara sahip tam bir metod."
+            }
+        }
+    },
+    "TestPage": {
+        "heroTitle": "<hs2>Fransızca</hs2> <hs4>seviyeniz</hs4> nedir?",
+        "whyTestTitle": "<hs1>Neden</hs1> seviyenizi test etmelisiniz?",
+        "whyTestDescription": "Seviyenizi bilmek, <hs2>bir öğrenme planı</hs2> oluşturmak ve <hs4>hedefler belirlemek</hs4> için çok önemlidir.",
+        "whyTestAdditional": "<hs2>Udemy kurslarımızdan</hs2> birine katılmayı düşünüyorsanız, becerilerinizi daha iyi belirlemenize yardımcı olacak bu testi yapmanızı öneririz.",
+        "globalDistribution": "Seviye dağılımı",
+        "cecrImageAlt": "CEFR seviyeleri",
+        "cefrLevelsTitle": "CEFR'nin <hs2>6 seviyesi</hs2>",
+        "cefrLevelsDescription": "CEFR seviyeleri (A1'den C2'ye), başlangıçtan ileri düzeye kadar dil yeterliliğini değerlendirir. <under>Evrensel bir referans</under> olarak öğrenme ve sertifikalandırmada kullanılır.",
+        "levels": {
+            "a1": {
+                "title": "Temel dil bilgisi.",
+                "content": "Tekrar edildiğinde kısa ve tanıdık ifadeleri anlayabilirsiniz. Temel ihtiyaçlarınızı ifade edebilirsiniz."
+            },
+            "a2": {
+                "title": "Temel dil yapılarını anlama.",
+                "content": "Günlük yaşamla ilgili pratik bilgileri anlarsınız. Tanıdık durumlarda kendinizi ifade edebilirsiniz."
+            },
+            "b1": {
+                "title": "Sınırlı dil hakimiyeti.",
+                "content": "Tanıdık durumlarla ilgili metinlerden ve konuşmalardan temel bilgileri anlarsınız. Günlük konularda anlaşılır şekilde kendinizi ifade edebilirsiniz."
+            },
+            "b2": {
+                "title": "Genel dil hakimiyeti.",
+                "content": "Tanıdık, somut veya soyut konular hakkında yazılı veya sözlü metinlerden detaylı bilgileri anlarsınız. İlgi alanlarınızla ilgili konular hakkında net bir şekilde konuşabilirsiniz."
+            },
+            "c1": {
+                "title": "İyi düzeyde dil bilgisi.",
+                "content": "Sosyal ve profesyonel yaşamla ilgili karmaşık yazılı ve sözlü metinleri ayrıntılı olarak anlayabilirsiniz. Çeşitli konularda kendinizi güvenle ve hassasiyetle ifade edebilirsiniz."
+            },
+            "c2": {
+                "title": "Tam dil hakimiyeti.",
+                "content": "Çeşitli alanlarda okuduğunuz veya duyduğunuz her şeyi eksiksiz anlayabilirsiniz. Dilin nüanslarını kavrar ve karmaşık belgeleri ince bir şekilde yorumlarsınız. Kendinizi doğal, doğru ve akıcı bir şekilde ifade edebilir, karmaşık konular üzerine tartışabilirsiniz."
             }
         }
     },
@@ -233,6 +281,93 @@
             }
         }
     },
+    "Checkout": {
+        "checkout": "Ödeme",
+        "backToPrevious": "Önceki sayfaya dön",
+        "contactInformationsTitle": "İletişim ve Bilgi",
+        "yourPurchaseTitle": "Satın Alımınız",
+        "paymentTitle": "Ödeme",
+        "loading": "Yükleniyor...",
+        "contactInformations": {
+            "email": "E-posta:",
+            "emailError": "Geçersiz e-posta adresi.",
+            "emailAliasInfo": "Bu e-posta hesabınızda kayıtlı olandan farklıdır. İkincil adres olarak eklenecektir.",
+            "firstName": "Ad:",
+            "firstNameError": "Ad gerekli.",
+            "lastName": "Soyad:",
+            "lastNameError": "Soyad gerekli."
+        },
+        "yourPurchase": {
+            "courseImageAlt": "ders resmi",
+            "quantity": "Adet",
+            "unitPrice": "{currency} {price}.- /saat"
+        },
+        "priceLayout": {
+            "amountToPay": "Ödenecek Tutar",
+            "subtotal": "Ara Toplam ({quantity}x)",
+            "discount": "İndirim",
+            "total": "Toplam",
+            "editChoices": "Seçimlerimi düzenle",
+            "proceedToPayment": "Ödemeye geç",
+            "termsConditions": "* Şartlarımızı görün",
+            "termsLink": "şartlar ve koşullar"
+        },
+        "PaymentSuccess": {
+            "thankYou": "Teşekkürler!",
+            "successMessage": "Başarıyla gönderdiniz",
+            "goHome": "Ana sayfaya dön",
+            "bookLesson": "Ders rezervasyonu yap!",
+            "successImageAlt": "Başarılı"
+        }
+    },
+    "PrivateLessons": {
+        "common": {
+            "buyLessons": "Ders satın al",
+            "lessonsAvailable1": "{hours} ders{plural}",
+            "lessonsAvailable2": "rezervasyon için mevcut",
+            "bookLesson": "Ders ayırt",
+            "followUpTitle": "Saatlerinizin <hs2>Takibi</hs2>",
+            "remainingHours": "Rezerve Edilebilir Saatler",
+            "pendingHours": "Bekleyen Saatler",
+            "completedHours": "Tamamlanan Saatler",
+            "calendarTitle": "Programınız <hs4>Takvim</hs4>",
+            "lessonsList1": "Derslerinizin listesi burada, siz",
+            "lessonsList2": "onları 48 saat içinde ücretsiz iptal edebilirsiniz",
+            "noLessons": "Rezerve edilecek dersiniz yok.",
+            "noBookedLessons": "Henüz bir ders rezerve etmediniz.",
+            "noPurchasedLessons": "Henüz ders satın almadınız.",
+            "zoomLink": "Zoom Bağlantısı",
+            "status": "Durum",
+            "date": "Tarih",
+            "time": "Saat",
+            "eventRow": {
+                "statusCompleted": "Ders tamamlandı.",
+                "statusUpcoming": "Yaklaşan ders.",
+                "statusCanceled": "Ders iptal edildi.",
+                "statusCurrent": "Ders devam ediyor.",
+                "cancelLessonTitle": "İptal Et?",
+                "cancelLessonConfirmation1": "Lütfen şu dersi iptal etmek istediğinizi onaylayın:",
+                "cancelLessonConfirmation2": "{date} tarihinde, {startTime} ile {endTime} arasında",
+                "cancelOk": "EVET, iptal et",
+                "cancelNo": "HAYIR, iptal etme",
+                "zoomLink": "Zoom Bağlantısı",
+                "noZoomLink": "Yok",
+                "errorTitle": "Hata! Bir sorun oluştu.",
+                "errorMessage": "Dersi iptal etmede bir sorun oluştu. Lütfen bana e-posta ile bildirin.",
+                "successTitle": "Ders iptal edildi",
+                "successMessage": "Ders başarıyla iptal edildi.",
+                "optionalMessage": "İsteğe bağlı mesaj"
+            }
+        },
+        "fide-preparation-class": {
+            "title": "Özel <hs2>FIDE derslerinizi</hs2> ayırtın",
+            "goToFidePage": "FIDE sayfasına git"
+        }
+    },
+    "ExercisesPage": {
+        "title": "Bir alıştırma seçin ve <hs4>pratik yapın</hs4>",
+        "description": "Kelime bilgisini flash kartlarla gözden geçirin, dilbilgisi kavramlarını çalışın veya diğer konuları keşfedin. İyi çalışmalar!"
+    },
     "Fide": {
         "HeroFide": {
             "title": "<hs2>FIDE Sınavı</hs2>'na Hazırlanın",
@@ -256,7 +391,37 @@
             "point2": "Tüm FIDE konularını kapsayın, <under4>kelime dağarcığınızı genişletin</under4> ve sınav sorularına hazırlıklı olun.",
             "point3": "<under2>Sözlü bölüme odaklanın</under2> ve en son sınav senaryolarında <under2>pratik yapın</under2>.",
             "point4": "En iyi performans için <under4>değerli ipuçları ve stratejiler</under4> edinin.",
-            "point5": "Başarıya ulaşmanıza yardımcı olacak <under2><b>kişiselleştirilmiş çalışma planı</b></under2> alın."
+            "point5": "Başarıya ulaşmanıza yardımcı olacak <under2><b>kişiselleştirilmiş çalışma planı</b></under2> alın.",
+            "citation": "Yoğun profesyonellere FIDE sınavında başarıya ulaşmaları için yardımcı oluyoruz – <under1>en iyi alternatifiniz</under1> geleneksel dil okullarına",
+            "ComparativeTabel": {
+                "titles": {
+                    "FIDE_Expertise": "FIDE Uzmanlığı",
+                    "Personalized_Preparation": "Kişiselleştirilmiş Hazırlık",
+                    "Flexible_Scheduling": "Esnek Programlama",
+                    "Latest_Scenarios": "En Son Senaryolara Erişim",
+                    "Self_Study_Platform": "Kendi Kendine Çalışma Platformu",
+                    "Continuous_Support": "Sürekli Destek",
+                    "Price_Hour": "Saatlik Fiyat"
+                },
+                "smallTitles": {
+                    "FIDE_Expertise": "FIDE Uzmanlık",
+                    "Personalized_Preparation": "Özel Hazırlık",
+                    "Flexible_Scheduling": "Esnek Saatler",
+                    "Latest_Scenarios": "Son Senaryolar",
+                    "Self_Study_Platform": "Kendi Çalışma",
+                    "Continuous_Support": "Sürekli Destek",
+                    "Price_Hour": "Saatlik Ücret"
+                },
+                "offers": {
+                    "Price_From": "<b5>65</b5> CHF'den",
+                    "Others_Range": "<b4>90</b4> - <b4>120</b4> CHF"
+                },
+                "headings": {
+                    "Others": "DİĞER",
+                    "OurOffer": "TEKLİF"
+                }
+            },
+            "cta": "Planınızı seçin"
         },
         "WhatIsFide": {
             "title": "FIDE Sınavı nedir?",
@@ -272,7 +437,8 @@
                 "button": "Talep et",
                 "successMessage": "Talebiniz alındı, PDF'ye erişim linki e-posta kutunuza gönderildi. E-postamızı görmüyorsanız, lütfen spam klasörünüzü kontrol edin.",
                 "errorMessage": "Oops! Bir hata oluştu."
-            }
+            },
+            "linkToFAQ": "Daha fazla bilgi için SSS'imize göz atın"
         },
         "HowClassLook": {
             "steps": {
@@ -296,7 +462,12 @@
         },
         "ReviewsFide": {
             "title": "FIDE <hs2>Öğrenci Yorumları</hs2>: Onların Başarıları, Sizin İlhamınız",
-            "description": "Öğrencilerimizden gelen referansları keşfedin."
+            "description": "Öğrencilerimizden gelen referansları keşfedin.",
+            "circularProgress": {
+                "score": "Fide Skoru:",
+                "lessons": "Dersler",
+                "progress": "{progressFrom} ile {progressTo} arasında"
+            }
         },
         "ContactForFide": {
             "title": "Ücretsiz Çalışma Planınızı Alın",
@@ -465,6 +636,22 @@
                     "link": "Benimle iletişime geçin"
                 }
             }
+        },
+        "PriceSliderFide": {
+            "title": "<hs4>İhtiyaçlarınıza uygun</hs4> planınızı seçin",
+            "purchasedLessons1": "Zaten satın aldınız ",
+            "purchasedLessonsHours": "saat",
+            "purchasedLessonsHour": "saat",
+            "purchasedLessons2": " ders",
+            "session": "İhtiyacınız olan saat sayısını belirleyin ve size en uygun planı keşfedin.",
+            "notConnected": "İhtiyacınız olan saat sayısını belirleyin ve size en uygun planı keşfedin. Zaten müşterimiz misiniz? Özel fiyatlardan yararlanmak için ",
+            "connectLink": "giriş yapın",
+            "slider": {
+                "hours": {
+                    "single": "saat",
+                    "plural": "saat"
+                }
+            }
         }
     },
     "Stories": {
@@ -577,7 +764,7 @@
         "Email": {
             "activationEmail": {
                 "subject": "Lütfen hesabınızı aktifleştirin ve Hemen Fransızca Öğrenmeye Başlayın",
-                "body": "<p>Merhaba USERNAME,</p> <br><p>Hemen Fransızca Öğrenmeye Başla'ya kaydolduğunuz için teşekkür ederiz.</p> <p>Hesabınızı aktifleştirmek için <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/tr'>buraya</a></span> tıklayın.</p><br> <p>Fransızca öğreniminde size başarılar dileriz.</p><br> <p>Saygılarımla,</p> <p>Yohann ve Nicolas</p>"
+                "body": "<p>Bonjour USERNAME,</p> <br><p>Start French Now’a kaydolduğunuz için teşekkür ederiz.</p><p>Hesabınızı etkinleştirmek ve öğrenim yolculuğunuza başlamak için lütfen aşağıdaki bağlantıya tıklayın: <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/tr'>Hesabımı Etkinleştir</a></span>.</p><br><p>Fransızca öğrenme deneyiminizde size destek olmaktan heyecan duyuyoruz ve platformumuzda ödüllendirici bir yolculuk diliyoruz.</p><br><p>Yakında Start French Now’da görüşmek üzere!</p><p>Saygılarımızla,</p>"
             },
             "ResetPasswordMail": {
                 "subject": "Şifrenizi sıfırlayın",
@@ -614,6 +801,8 @@
             "createAccount": "Hesap oluştur",
             "or": "Veya",
             "infoMessages": {
+                "privateLessons": "Özel derslerinize erişmek için giriş yapın.",
+                "checkout": "Ödeme yapmak için giriş yapın.",
                 "storyAccount": "Hikayelerinizi takip edebilmek için giriş yapmalısınız."
             }
         },

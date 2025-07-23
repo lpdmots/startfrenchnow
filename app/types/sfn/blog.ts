@@ -107,6 +107,12 @@ export interface Theme extends Base {
     children: Reference[];
     vocabItems: Reference[];
     questions: Question[];
+    tags?: {
+        _key: string;
+        name: string;
+        french: string;
+        english: string;
+    }[];
 }
 
 export interface ThemeWithVocab extends Base {

@@ -17,9 +17,17 @@ export const ResourcesButton = ({ locale, dictionnary }: { locale: Locale; dicti
                         <FaCaretRight />
                         {dictionnary.blog}
                     </LinkCurrentBlog>
+                    <LinkCurrentBlog href="/exercises" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
+                        <FaCaretRight />
+                        {dictionnary.exercises}
+                    </LinkCurrentBlog>
                     <LinkCurrentBlog href="/stories" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
                         <FaCaretRight />
                         {dictionnary.stories}
+                    </LinkCurrentBlog>
+                    <LinkCurrentBlog href="/test-your-level" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
+                        <FaCaretRight />
+                        {dictionnary.testYourLevel}
                     </LinkCurrentBlog>
                 </div>
             </div>

@@ -1,13 +1,12 @@
 "use client";
-import { FaRegUser, FaUserGraduate } from "react-icons/fa";
+import { FaCaretRight, FaRegUser, FaUserGraduate } from "react-icons/fa";
 import Link from "next-intl/link";
 import DropdownMenu from "../common/DropdownMenu";
 import { LogOut } from "./LogOut";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next-intl/client";
-import { BsConeStriped } from "react-icons/bs";
 
-export const ProfilButton = ({ contact, logout }: { contact: string; logout: string }) => {
+export const ProfilButton = ({ profil, logout, fideLessons }: { profil: string; logout: string; fideLessons: string }) => {
     const { data: session } = useSession();
     const pathname = usePathname();
 
@@ -21,12 +20,18 @@ export const ProfilButton = ({ contact, logout }: { contact: string; logout: str
     const dropdownProfil = {
         content: (
             <div className="card p-4 mt-2">
-                <div className="flex flex-col gap-2" style={{ minWidth: 125 }}>
+                <div className="flex flex-col" style={{ minWidth: 125 }}>
                     <div>
-                        <span className="flex items-center color-neutral-500 opacity-25 font-bold">
-                            <BsConeStriped className="text-xl" style={{ marginRight: 4 }} />
-                            {contact}
+                        <span className="flex items-center color-neutral-500 opacity-25 p-1">
+                            <FaCaretRight />
+                            {profil}
                         </span>
+                    </div>
+                    <div>
+                        <Link href="/private-lessons/fide-preparation-class" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center">
+                            <FaCaretRight />
+                            {fideLessons}
+                        </Link>
                     </div>
                     <div>
                         <LogOut logout={logout} />

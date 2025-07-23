@@ -2,7 +2,7 @@
 import { hash } from "bcrypt";
 import { SignupFormData } from "../types/sfn/auth";
 import { getTokenExpiration } from "../lib/constantes";
-import { transporter } from "../lib/nodemailer";
+import { transporterNico } from "../lib/nodemailer";
 import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { getActivateToken, isStrongPassword, isValidEmail, replaceInString } from "../lib/utils";
 
@@ -57,6 +57,7 @@ export const handleSignup = async (formData: SignupFormData, mailMessages: any) 
         });
         await sendActivationEmail(user, mailMessages);
     } catch (error: any) {
+        console.error(error);
         return { error: "error500", status: 500 };
     }
 
@@ -78,10 +79,18 @@ export const sendNewActivationLink = async (email: string, mailMessages: any) =>
 
 export const sendActivationEmail = async (user: any, mailMessages: any) => {
     const body = replaceInString(mailMessages.body, { USERNAME: user.name, DOMAIN: process.env.NEXTAUTH_URL, ACTIVATETOKEN: user.activateToken });
-    const message = await transporter.sendMail({
+    await transporterNico.sendMail({
         from: "Start French Now <nicolas@startfrenchnow.com>",
         to: user.email,
-        html: body,
+        html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${body}<div style="display: flex; align-items: center; margin-top: 20px;">
+    <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
+
+    <p style="margin: 0;">
+      Yohann Coussot<br/>
+      Professeur de français<br/>
+      <a href="https://www.startfrenchnow.com" style="color: #1a73e8; text-decoration: none;">www.startfrenchnow.com</a>
+    </p>
+  </div></div></html>`,
         subject: mailMessages.subject,
     });
 };
@@ -113,7 +122,7 @@ export const updateUserPasswordToken = async (id: string) => {
 
 export const sendPasswordEmail = async (user: any, mailMessages: any) => {
     const body = replaceInString(mailMessages.body, { USERNAME: user.name, DOMAIN: process.env.NEXTAUTH_URL, PASSWORDTOKEN: user.resetPasswordToken });
-    await transporter.sendMail({
+    await transporterNico.sendMail({
         from: "Start French Now <nicolas@startfrenchnow.com>",
         to: user.email,
         html: body,

@@ -99,7 +99,7 @@ const PostNoAsync = ({ post, latestPosts, searchParams }: PropsNoAsync) => {
                                 <div role="list" className="grid-2-columns blog-post-section---grid w-dyn-items">
                                     {latestPosts.slice(0, 2).map((post) => (
                                         <ParentToChildrens key={post.title}>
-                                            <PrimaryPost post={post} postLang={postLang} />
+                                            <PrimaryPost post={post} postLang={postLang} locale={locale} />
                                         </ParentToChildrens>
                                     ))}
                                 </div>
