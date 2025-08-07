@@ -44,6 +44,7 @@
         "framer-motion": "^8.5.5",
         "get-youtube-id": "^1.0.1",
         "jsdom": "^22.1.0",
+        "jsonrepair": "^3.13.0",
         "ky": "^0.33.3",
         "lucide-react": "^0.445.0",
         "next": "^13.4.12",
@@ -71,7 +72,7 @@
         "sanity": "^3.0.0",
         "sanity-plugin-iframe-pane": "^2.1.1",
         "sharp": "^0.32.6",
-        "stripe": "^18.3.0",
+        "stripe": "^17.3.0",
         "tailwind-merge": "^2.5.3",
         "tailwindcss-animate": "^1.0.7",
         "theme-change": "^2.3.0",
@@ -89,5 +90,8 @@
         "autoprefixer": "^10.4.13",
         "postcss": "^8.4.21",
         "tailwindcss": "^3.4.13"
+    },
+    "engines": {
+        "node": "22.x"
     }
 }

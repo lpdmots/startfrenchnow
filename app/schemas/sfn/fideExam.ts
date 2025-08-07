@@ -64,22 +64,16 @@ export default defineType({
         defineField({
             name: "responsesB1",
             title: "Responses B1",
-            type: "object",
-            fields: [
+            type: "array",
+            of: [
                 {
-                    name: "response1",
-                    title: "Réponse type 1",
-                    type: "string",
-                },
-                {
-                    name: "response2",
-                    title: "Réponse type 2",
-                    type: "string",
-                },
-                {
-                    name: "response3",
-                    title: "Réponse type 3",
-                    type: "string",
+                    type: "object",
+                    fields: [
+                        { name: "modelAnswer", type: "string", title: "Réponse type" },
+                        { name: "correctIf", type: "string", title: "Réponse juste si" },
+                        { name: "partialIf", type: "string", title: "Réponse approximative si" },
+                        { name: "incorrectIf", type: "string", title: "Réponse fausse si" },
+                    ],
                 },
             ],
         }),

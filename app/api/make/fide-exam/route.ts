@@ -38,10 +38,10 @@ export async function POST(request: NextRequest) {
 
         // Téléchargement des images
         const images = [data.image, ...data.images1, ...data.images2, ...data.images3];
-        if (images.length != 10) {
+        if (level !== "B1" && images.length != 10) {
             return NextResponse.json({ message: "You must provide 10 images" }, { status: 400 });
         }
-        const { image, responses } = await loadImagesToSanity(images, examId);
+        const { image, responses } = await loadImagesToSanity(images, examId, data.level || "A1");
 
         // Créer les tracks
         const audios = [data.situationAudio, data.question1Audio, data.audio1, data.question2Audio, data.audio2, data.question3Audio, data.audio3];
@@ -101,11 +101,32 @@ export async function POST(request: NextRequest) {
             _id: examId,
             image,
             responses,
-            responsesB1: {
-                response1: data.responsesB1?.response1 || "",
-                response2: data.responsesB1?.response2 || "",
-                response3: data.responsesB1?.response3 || "",
-            },
+            responsesB1:
+                level === "B1"
+                    ? [
+                          {
+                              _key: uuidv4(),
+                              modelAnswer: data.b1q1.split("/")[0],
+                              correctIf: data.b1q1.split("/")[1],
+                              partialIf: data.b1q1.split("/")[2],
+                              incorrectIf: data.b1q1.split("/")[3],
+                          },
+                          {
+                              _key: uuidv4(),
+                              modelAnswer: data.b1q2.split("/")[0],
+                              correctIf: data.b1q2.split("/")[1],
+                              partialIf: data.b1q2.split("/")[2],
+                              incorrectIf: data.b1q2.split("/")[3],
+                          },
+                          {
+                              _key: uuidv4(),
+                              modelAnswer: data.b1q3.split("/")[0],
+                              correctIf: data.b1q3.split("/")[1],
+                              partialIf: data.b1q3.split("/")[2],
+                              incorrectIf: data.b1q3.split("/")[3],
+                          },
+                      ]
+                    : [],
         });
         return NextResponse.json({ createdFideExam }, { status: 200 });
     } catch (error: any) {
@@ -113,7 +134,7 @@ export async function POST(request: NextRequest) {
     }
 }
 
-async function loadImagesToSanity(images: string[], examId: string): Promise<{ image: any; responses: Response[] }> {
+async function loadImagesToSanity(images: string[], examId: string, level: string): Promise<{ image: any; responses: Response[] }> {
     const newImages: any[] = [];
     for (let index = 0; index < images.length; index++) {
         const image = images[index];
@@ -144,23 +165,26 @@ async function loadImagesToSanity(images: string[], examId: string): Promise<{ i
 
     return {
         image: newImages[0],
-        responses: [
-            ...newImages.slice(1, 4).map((img, idx) => ({
-                _key: uuidv4(),
-                image: img,
-                isCorrect: idx === 0,
-            })),
-            ...newImages.slice(4, 7).map((img, idx) => ({
-                _key: uuidv4(),
-                image: img,
-                isCorrect: idx === 0,
-            })),
-            ...newImages.slice(7).map((img, idx) => ({
-                _key: uuidv4(),
-                image: img,
-                isCorrect: idx === 0,
-            })),
-        ],
+        responses:
+            level === "B1"
+                ? []
+                : [
+                      ...newImages.slice(1, 4).map((img, idx) => ({
+                          _key: uuidv4(),
+                          image: img,
+                          isCorrect: idx === 0,
+                      })),
+                      ...newImages.slice(4, 7).map((img, idx) => ({
+                          _key: uuidv4(),
+                          image: img,
+                          isCorrect: idx === 0,
+                      })),
+                      ...newImages.slice(7).map((img, idx) => ({
+                          _key: uuidv4(),
+                          image: img,
+                          isCorrect: idx === 0,
+                      })),
+                  ],
     };
 }
 

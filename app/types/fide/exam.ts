@@ -1,4 +1,4 @@
-import { Block, Image } from "../sfn/blog";
+import { Image } from "../sfn/blog";
 
 export interface Exam {
     description: string;
@@ -8,11 +8,7 @@ export interface Exam {
     _id: string;
     tracks: Track[];
     responses: Response[];
-    responsesB1: {
-        response1: string;
-        response2: string;
-        response3: string;
-    };
+    responsesB1: ResponseB1[];
 }
 
 export type Track = {
@@ -22,6 +18,15 @@ export type Track = {
 };
 
 export type Response = {
+    _key: string;
     image: Image;
     isCorrect: boolean;
+};
+
+export type ResponseB1 = {
+    _key: string;
+    modelAnswer: string;
+    correctIf: string;
+    partialIf: string;
+    incorrectIf: string;
 };

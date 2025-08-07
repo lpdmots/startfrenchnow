@@ -4,6 +4,8 @@ import { groq } from "next-sanity";
 import { Log, UserProps } from "../types/sfn/auth";
 import { v4 as uuidv4 } from "uuid";
 import { OpenAI } from "openai";
+import { extractJsonSafe } from "../lib/utils";
+import { ResponseB1 } from "../types/fide/exam";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -86,40 +88,63 @@ type EvaluationResult = {
     feedback?: string;
 };
 
-export async function evaluateB1Answer({ audioText, answerText, modelAnswer }: { audioText: string; answerText: string; modelAnswer: string }): Promise<EvaluationResult | { error: string }> {
-    if (!audioText || !answerText || !modelAnswer) {
+export async function evaluateB1Answer({
+    audioText,
+    answerText,
+    responseB1,
+    question,
+}: {
+    audioText: string;
+    answerText: string;
+    responseB1: ResponseB1;
+    question: string;
+}): Promise<EvaluationResult | { error: string }> {
+    if (!audioText || !answerText || !responseB1 || !question) {
         return { error: "Paramètres manquants" };
     }
-
+    console.log(responseB1);
     const prompt = `
-Tu es examinateur FIDE pour l'examen B1 (compréhension orale).
+        Tu es examinateur FIDE pour l'examen B1 (compréhension orale).
 
-Texte audio :
-"""
-${audioText}
-"""
+        Texte audio :
+        """
+        ${audioText}
+        """
 
-Réponse de l’étudiant :
-"""
-${answerText}
-"""
+        La question : :
+        """
+        ${question}
+        """
 
-Réponse attendue :
-"""
-${modelAnswer}
-"""
+        Réponse de l’étudiant :
+        """
+        ${answerText}
+        """
 
-Donne une évaluation au format JSON sans aucun autre commentaire :
+        Donne une évaluation au format JSON brut :
 
-{
-  "score": 0 | 0.5 | 1,
-  "feedback": string | undefined // max 30 mots. Donne uniquement les erreurs grammaticales ou de contenu dans la réponse. Ne fais aucun commentaire inutile. Adresse-toi directement à l’étudiant.
-}
-`;
+        {
+        "score": 0 | 0.5 | 1,
+        "feedback": string | undefined 
+        }
+
+        La réponse de l'étudiant est une transcription de l'oral, donc il peut y avoir des incohérences. À toi de les déceler et les prendre en compte intelligemment dans l'évaluation. Le score et le feedback ignorent les fautes de grammaire ou d'orthographe (surtout les noms propres !) contenues dans la réponse.
+
+        Score: 
+        - 1 pour une réponse juste similaire à "${responseB1.modelAnswer}". Où encore si ${responseB1.correctIf}. 
+        - 0.5 pour une réponse approximative si ${responseB1.partialIf}.
+        - 0 pour une réponse fausse : ${responseB1.incorrectIf}.
+
+        feedback: max 20 mots. Aucune remarque générale. Il s'adresse directement à l'étudiant avec vous.
+        - si score est 1, de courtes et simples félicitations.
+        - si score est 0.5, donne un feedback court expliquant pourquoi c'est approximatif.
+        - si score est 0, donne un feedback court expliquant pourquoi c'est faux.
+
+    `;
 
     try {
         const res = await openai.chat.completions.create({
-            model: "gpt-4.1-nano",
+            model: "gpt-4.1-mini", //gpt-4.1-nano
             messages: [{ role: "user", content: prompt }],
             temperature: 0.2,
         });
@@ -127,8 +152,7 @@ Donne une évaluation au format JSON sans aucun autre commentaire :
         const content = res.choices[0].message?.content;
 
         if (!content) return { error: "Réponse vide du modèle" };
-
-        const parsed = JSON.parse(content);
+        const parsed = extractJsonSafe(content);
         return parsed;
     } catch (err: any) {
         console.error("Erreur GPT ou parsing :", err);

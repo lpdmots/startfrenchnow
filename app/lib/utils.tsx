@@ -1,5 +1,6 @@
 import { Reference, VocabItem } from "../types/sfn/blog";
 import { PricingDetails, PricingDetailsFetch, ProductFetch } from "../types/sfn/stripe";
+import { jsonrepair } from "jsonrepair";
 
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
@@ -431,40 +432,9 @@ export function pick(obj: any, ...keys: any) {
     }, {});
 }
 
-/* export const calculateTotalPrice = (pricingDetails: PricingDetailsFetch, quantity: number, desiredCurrency: string) => {
-    const { prices, discountType, discountValue } = pricingDetails;
-    const firstPrice = prices.find((price) => price.currency === desiredCurrency) || prices[0];
-    const { price, currency } = firstPrice;
+export function extractJsonSafe(content: string): any {
+    const cleaned = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/g, "");
 
-    let unitPrice;
-
-    switch (discountType) {
-        case "percentage":
-            unitPrice = price * (1 - (discountValue || 0) / 100); // Applique un pourcentage de réduction
-            break;
-        case "flatDiscount":
-            unitPrice = price - (discountValue || 0); // Soustrait un montant fixe
-            break;
-        case "newPrice":
-            unitPrice = discountValue ? discountValue : price; // Utilise le nouveau prix directement
-            break;
-        default:
-            unitPrice = price; // Pas de réduction, utilise le prix original
-    }
-
-    unitPrice = unitPrice > 0 ? unitPrice : 0;
-
-    const amount = unitPrice * quantity;
-    const initialAmount = price * quantity;
-
-    return {
-        initialUnitPrice: price,
-        unitPrice,
-        amount,
-        initialAmount,
-        discountType: amount < initialAmount ? discountType : undefined,
-        currency,
-        currencies: prices.map((p) => p.currency),
-    };
-};
- */
+    const repaired = jsonrepair(cleaned);
+    return JSON.parse(repaired);
+}

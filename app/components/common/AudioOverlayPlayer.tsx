@@ -21,7 +21,7 @@ import {
 import { motion } from "framer-motion";
 import VisualizerBars from "./VisualizerBars";
 import Image from "next/image";
-import { Exam, Response, Track } from "@/app/types/fide/exam";
+import { Exam, Response, ResponseB1, Track } from "@/app/types/fide/exam";
 import { shuffleArray } from "@/app/lib/utils";
 import urlFor from "@/app/lib/urlFor";
 import { ConfettiFireworks } from "../ui/ConfettiFireworks";
@@ -56,6 +56,7 @@ export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { ex
     const [isNextButtonForced, setIsNextButtonForced] = useState(false);
     const [evaluationResult, setEvaluationResult] = useState<null | EvaluationResult>(null);
     const showNextButton = !isClickableResponse || isNextButtonForced;
+    const isRecordingRef = useRef(false);
 
     const togglePlay = (stop = false) => {
         if (!audioRef.current) return;
@@ -107,7 +108,9 @@ export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { ex
         if (!clickedResponse) {
             setClickedResponse(index);
             setTimeout(() => {
-                responseClickActions(isCorrect ? 1 : 0);
+                setCorrectAnswers((prev) => prev + (isCorrect ? 1 : 0));
+                setTotalAnswers((prev) => prev + 1);
+                setClickedResponse(null);
                 nextTrack();
             }, 1500);
         }
@@ -141,7 +144,8 @@ export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { ex
             if (!isPlayingFollowUp && followUpSrc) {
                 setIsPlayingFollowUp(true);
                 setTimeout(() => {
-                    if (!clickedResponse) {
+                    console.log({ isRecording: isRecordingRef.current, followUpSrc });
+                    if (!clickedResponse && !isRecordingRef.current) {
                         audio.src = getAudioUrl(followUpSrc);
                         audio.volume = 1;
                         audio.play();
@@ -214,9 +218,9 @@ export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { ex
                                 <button
                                     onClick={() => togglePlay()}
                                     aria-label={playing ? "Pause" : "Lecture"}
-                                    disabled={ended}
+                                    disabled={ended || isNextButtonForced}
                                     className={`bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid ${
-                                        ended ? "opacity-50 cursor-not-allowed" : ""
+                                        ended || isNextButtonForced ? "opacity-50 cursor-not-allowed" : ""
                                     }`}
                                 >
                                     {playing ? <FaPause size={32} className="text-neutral-800" /> : <FaPlay size={32} className="text-neutral-800" />}
@@ -228,10 +232,10 @@ export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { ex
                                     className={`bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid transition-opacity duration-300 ${
                                         showNextButton ? "opacity-100" : "opacity-0 pointer-events-none"
                                     }`}
-                                    animate={ended ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                                    animate={ended || isNextButtonForced ? { scale: [1, 1.15, 1] } : { scale: 1 }}
                                     transition={{
                                         duration: 1,
-                                        repeat: ended ? Infinity : 0,
+                                        repeat: ended || isNextButtonForced ? Infinity : 0,
                                         ease: "easeInOut",
                                     }}
                                 >
@@ -248,13 +252,15 @@ export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { ex
             {withResponses != null && !isA1A2Level && (
                 <ResponseBlockB1
                     togglePlay={togglePlay}
-                    modelAnswer={exam.responsesB1[`response${totalAnswers + 1}` as keyof typeof exam.responsesB1]}
+                    responseB1={exam.responsesB1[totalAnswers]}
                     audioText={currentTrackData.text}
                     isClickableResponse={isClickableResponse}
                     responseClickActions={responseClickActions}
                     setIsNextButtonForced={setIsNextButtonForced}
                     evaluationResult={evaluationResult}
                     setEvaluationResult={setEvaluationResult}
+                    question={tracks[currentTrack - 1].text}
+                    isRecordingRef={isRecordingRef}
                 />
             )}
             {totalAnswers === 3 && <ResultBlock correctAnswers={correctAnswers} />}
@@ -355,19 +361,32 @@ const ResponseBlock = ({ responses, isClickableResponse, clickedResponse, handle
 
 interface ResponseBlockB1Props {
     togglePlay: (stop?: boolean) => void;
-    modelAnswer: string;
+    responseB1: ResponseB1;
     audioText: string;
     isClickableResponse: boolean;
     responseClickActions: (score: number) => void;
     setIsNextButtonForced: (forced: boolean) => void;
     evaluationResult: EvaluationResult | null;
     setEvaluationResult: (result: EvaluationResult | null) => void;
+    question: string;
+    isRecordingRef: React.MutableRefObject<boolean>;
 }
 
-const ResponseBlockB1 = ({ togglePlay, audioText, modelAnswer, isClickableResponse, responseClickActions, setIsNextButtonForced, evaluationResult, setEvaluationResult }: ResponseBlockB1Props) => {
+const ResponseBlockB1 = ({
+    togglePlay,
+    audioText,
+    responseB1,
+    isClickableResponse,
+    responseClickActions,
+    setIsNextButtonForced,
+    evaluationResult,
+    setEvaluationResult,
+    question,
+    isRecordingRef,
+}: ResponseBlockB1Props) => {
     const [isEvaluating, setIsEvaluating] = useState(false);
     const [transcript, setTranscript] = useState<string | null>(null);
-
+    console.log({ question });
     const handleEvaluate = async () => {
         if (!transcript) return;
         setIsEvaluating(true);
@@ -375,7 +394,8 @@ const ResponseBlockB1 = ({ togglePlay, audioText, modelAnswer, isClickableRespon
         const res = await evaluateB1Answer({
             audioText,
             answerText: transcript,
-            modelAnswer,
+            responseB1: responseB1,
+            question,
         });
 
         setIsEvaluating(false);
@@ -392,9 +412,9 @@ const ResponseBlockB1 = ({ togglePlay, audioText, modelAnswer, isClickableRespon
 
     return (
         <div className="absolute -bottom-60 w-full h-60 bg-neutral-100 flex flex-col items-center gap-4">
-            {(isEvaluating || evaluationResult) && <ResponseFeedback isLoading={isEvaluating} result={evaluationResult} modelAnswer={modelAnswer} />}
+            {(isEvaluating || evaluationResult) && <ResponseFeedback isLoading={isEvaluating} result={evaluationResult} modelAnswer={responseB1.modelAnswer} />}
             {isClickableResponse && !isEvaluating && !evaluationResult && (
-                <ResponseRecorder togglePlay={togglePlay} setTranscript={setTranscript} handleEvaluate={handleEvaluate} transcript={transcript} />
+                <ResponseRecorder togglePlay={togglePlay} setTranscript={setTranscript} handleEvaluate={handleEvaluate} transcript={transcript} isRecordingRef={isRecordingRef} />
             )}
         </div>
     );
@@ -410,13 +430,14 @@ const ResponseRecorder = ({
     transcript,
     setTranscript,
     handleEvaluate,
+    isRecordingRef,
 }: {
     togglePlay: (stop?: boolean) => void;
     transcript: string | null;
     setTranscript: (transcript: string | null) => void;
     handleEvaluate: () => void;
+    isRecordingRef: React.MutableRefObject<boolean>;
 }) => {
-    const [isRecording, setIsRecording] = useState(false);
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     const [isTranscribing, setIsTranscribing] = useState(false);
@@ -465,7 +486,13 @@ const ResponseRecorder = ({
 
                 const data = await res.json();
                 setIsTranscribing(false);
-                setTranscript(data.transcription);
+
+                const suspectTerms = ["para la communauté", "true", "!", "Sous-titrage ST", "Merci."];
+                const fallback = "Vous n'avez pas enregistré de réponse.";
+                const isInvalid = suspectTerms.some((term) => data.transcription.toLowerCase().includes(term.toLowerCase())) || data.transcription === "";
+                const transcription = isInvalid ? fallback : data.transcription;
+
+                setTranscript(transcription);
             } catch (err) {
                 console.error("Erreur STT :", err);
             }
@@ -473,20 +500,20 @@ const ResponseRecorder = ({
 
         recorder.start();
         setMediaRecorder(recorder);
-        setIsRecording(true);
+        isRecordingRef.current = true;
 
-        // ⏱️ Arrêt automatique après 60 secondes
+        // ⏱️ Arrêt automatique après 30 secondes
         setTimeout(() => {
             if (recorder.state !== "inactive") {
                 recorder.stop();
-                setIsRecording(false);
+                isRecordingRef.current = false;
             }
-        }, 60_000);
+        }, 30_000);
     };
 
     const stopRecording = () => {
         mediaRecorder?.stop();
-        setIsRecording(false);
+        isRecordingRef.current = false;
         beepStop.play();
     };
 
@@ -498,7 +525,7 @@ const ResponseRecorder = ({
 
     return (
         <div className="flex flex-col items-center gap-4 p-4 bg-neutral-100 w-full">
-            {!isRecording && !audioUrl && (
+            {!isRecordingRef.current && !audioUrl && (
                 <>
                     <p className="italic bs mt-4 mb-0 font-bold text-neutral-800 animate-pulse">À toi de répondre</p>
                     <button onClick={startRecording} className="roundButton">
@@ -507,7 +534,7 @@ const ResponseRecorder = ({
                 </>
             )}
 
-            {isRecording && (
+            {isRecordingRef.current && (
                 <div className="flex flex-col items-center gap-4">
                     <p className="italic bs mt-4 mb-0 font-bold text-neutral-800 animate-pulse">À toi de répondre</p>
                     <button onClick={stopRecording} className="roundButton">
@@ -532,8 +559,8 @@ const ResponseRecorder = ({
                             <button
                                 onClick={handleEvaluate}
                                 className={clsx(
-                                    `h-full rounded-full aspect-square flex justify-center items-center transition transform hover:opacity-80 ${
-                                        !transcript || isTranscribing ? "opacity-50 cursor-not-allowed" : "translate_on_hover"
+                                    `h-full rounded-full aspect-square flex justify-center items-center transition transform ${
+                                        !transcript || isTranscribing ? "opacity-50 cursor-not-allowed" : "translate_on_hover hover:opacity-80"
                                     }`
                                 )}
                                 style={{ backgroundColor: "var(--secondary-2)" }}
@@ -548,7 +575,7 @@ const ResponseRecorder = ({
                                 <p className="text-neutral-400 bs">Transcription en cours...</p>
                             </div>
                         )}
-                        {!isTranscribing && transcript && (
+                        {!isTranscribing && transcript !== null && (
                             <textarea
                                 value={transcript}
                                 onChange={(e) => setTranscript(e.target.value)}
@@ -604,17 +631,17 @@ function ResponseFeedback({ isLoading, result, modelAnswer }: ResponseFeedbackPr
         <div className="flex flex-col sm:flex-row gap-4 w-full items-center p-4">
             <div>{scoreIcon}</div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
                 {feedback && (
                     <div className="border border-solid border-neutral-300 rounded p-2 w-full">
                         <p className="mb-0 text-sm font-semibold  text-neutral-600">Commentaire</p>
-                        <p className="mb-0 text-neutral-800">{feedback}</p>
+                        <p className="mb-0 text-neutral-800 w-full">{feedback}</p>
                     </div>
                 )}
 
                 <div className="border border-solid border-neutral-300 rounded p-2 w-full">
                     <p className="mb-0 text-sm font-semibold text-neutral-600">Réponse attendue</p>
-                    <p className="mb-0 text-neutral-800 italic">{modelAnswer}</p>
+                    <p className="mb-0 text-neutral-800 italic w-full">{modelAnswer}</p>
                 </div>
             </div>
         </div>
