@@ -17,20 +17,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoices";
 
-export const revalidate = 60;
-
-/* export async function generateStaticParams() {
-    const query = groq`*[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true]
-    {
-        slug
-    }`;
-
-    const slugs: Post[] = await client.fetch(query);
-    const slugRoutes = slugs.map((slug) => slug.slug.current);
-
-    return slugRoutes.map((slug) => ({ slug }));
-} */
-
 const COURSE_ID = "4931486";
 const COURSE_URL = "https://www.udemy.com/course/the-complete-french-course-learn-french-low-intermediate/";
 

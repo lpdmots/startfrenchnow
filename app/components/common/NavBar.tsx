@@ -11,6 +11,7 @@ import { Locale } from "@/i18n"; /*
 import { LearnButton } from "./LearnButton"; */
 import { CoursesButton } from "./CoursesButton";
 import { ResourcesButton } from "./ResourcesButton";
+import { FideButton } from "./FideButton";
 
 function NavBar() {
     const t = useTranslations("Navigation");
@@ -53,14 +54,16 @@ function NavBar() {
             <li className="header-nav-list-item middle !px-0">
                 <CoursesButton locale={locale as Locale} dictionnary={coursesDict} />
             </li>
-            <li className="header-nav-list-item middle !px-0">
-                <LinkCurrent href="/fide" className="nav-link header-nav-link">
-                    {t("fide")}
-                </LinkCurrent>
-            </li>
-            <li className="header-nav-list-item middle !px-0">
-                <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
-            </li>
+            <Link href="/fide" className="!no-underline !text-neutral-700">
+                <li className="header-nav-list-item middle !px-0">
+                    <FideButton locale={locale as Locale} />
+                </li>
+            </Link>
+            <Link href="/blog" className="!no-underline !text-neutral-700">
+                <li className="header-nav-list-item middle !px-0">
+                    <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
+                </li>
+            </Link>
         </>
     );
 
@@ -78,7 +81,7 @@ function NavBar() {
                     <div className="flex items-center gap-2">
                         <LocaleSwitcher locale={locale as Locale} />
                         <DarkMode />
-                        <ProfilButton profil={t("profil")} logout={t("logout")} fideLessons={t("fideLessons")} />
+                        <ProfilButton profil={t("profil")} logout={t("logout")} />
                         <Link aria-label="Go to contact page" href="/contact" className="btn-primary small header-btn-hidde-on-mb flex items-center !p-2 !mr-2 lg:!mr-0">
                             <FaRegEnvelope style={{ fontSize: 22 }} />
                         </Link>

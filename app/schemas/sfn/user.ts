@@ -1,4 +1,4 @@
-import { CREDITS, LESSONS } from "@/app/lib/constantes";
+import { CREDITS, LESSONS, PROGRESSION_TYPES } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -229,8 +229,13 @@ export default defineType({
                             type: "string",
                         },
                         {
-                            name: "expiration",
-                            title: "Expiration",
+                            name: "grantedAt",
+                            title: "Accordé le",
+                            type: "datetime",
+                        },
+                        {
+                            name: "expiresAt",
+                            title: "Expire le",
                             type: "datetime",
                         },
                     ],
@@ -263,43 +268,209 @@ export default defineType({
                     type: "object",
                     title: "Progression",
                     fields: [
-                        {
+                        // Ex. "pack_fide" pour les vidéos et exam du pack
+                        defineField({
                             name: "type",
                             title: "Type de progression",
                             type: "string",
                             validation: (Rule) => Rule.required(),
-                        },
-                        {
-                            name: "logs",
-                            title: "Données de progression",
+                            options: {
+                                list: PROGRESSION_TYPES,
+                                layout: "radio",
+                                direction: "horizontal",
+                            },
+                        }),
+
+                        defineField({
+                            name: "current",
+                            title: "En cours (unique)",
+                            type: "object",
+                            fields: [
+                                defineField({
+                                    name: "post",
+                                    title: "Vidéo en cours",
+                                    type: "reference",
+                                    to: [{ type: "post" }],
+                                }),
+                                defineField({
+                                    name: "updatedAt",
+                                    title: "Dernière mise à jour",
+                                    type: "datetime",
+                                    initialValue: () => new Date().toISOString(),
+                                    validation: (Rule) => Rule.required(),
+                                }),
+                            ],
+                        }),
+
+                        // -------------------------
+                        // Logs vidéo
+                        // -------------------------
+                        defineField({
+                            name: "videoLogs",
+                            title: "Vidéos (logs)",
                             type: "array",
                             of: [
                                 {
-                                    name: "log",
+                                    name: "videoLog",
                                     type: "object",
+                                    title: "Log vidéo",
                                     fields: [
-                                        {
-                                            name: "exam",
-                                            title: "Référence de l'examen",
+                                        defineField({
+                                            name: "post",
+                                            title: "Leçon (Post)",
                                             type: "reference",
-                                            to: [{ type: "fideExam" }],
-                                        },
-                                        {
-                                            name: "score",
-                                            title: "Score obtenu",
-                                            type: "number",
-                                        },
-                                        {
-                                            name: "date",
-                                            title: "Date de l'exercice",
+                                            to: [{ type: "post" }],
+                                            validation: (Rule) => Rule.required(),
+                                        }),
+                                        defineField({
+                                            name: "status",
+                                            title: "Statut",
+                                            type: "string",
+                                            options: {
+                                                list: [
+                                                    { title: "Non vu", value: "unwatched" },
+                                                    { title: "En cours", value: "in-progress" },
+                                                    { title: "Vu", value: "watched" },
+                                                ],
+                                                layout: "radio",
+                                                direction: "horizontal",
+                                            },
+                                            validation: (Rule) => Rule.required(),
+                                        }),
+                                        defineField({
+                                            name: "lastSeenAt",
+                                            title: "Dernier visionnage",
+                                            type: "datetime",
+                                        }),
+                                        defineField({
+                                            name: "lastCompletedAt",
+                                            title: "Date de complétion",
+                                            type: "datetime",
+                                        }),
+                                        defineField({
+                                            name: "updatedAt",
+                                            title: "Dernière mise à jour",
                                             type: "datetime",
                                             initialValue: () => new Date().toISOString(),
-                                        },
+                                            validation: (Rule) => Rule.required(),
+                                        }),
+                                        defineField({
+                                            name: "progress",
+                                            title: "Progression (0..1)",
+                                            type: "number",
+                                            description: "Part unique de la vidéo vue (sans double comptage).",
+                                            validation: (Rule) => Rule.min(0).max(1),
+                                        }),
+                                        // (NOUVEAU) dernier palier franchi pour éviter les ré-écritures
+                                        defineField({
+                                            name: "lastMilestone",
+                                            title: "Dernier palier atteint",
+                                            type: "number",
+                                            options: {
+                                                list: [
+                                                    { title: "20%", value: 0.2 },
+                                                    { title: "40%", value: 0.4 },
+                                                    { title: "60%", value: 0.6 },
+                                                    { title: "80%", value: 0.8 },
+                                                    { title: "100%", value: 1 },
+                                                ],
+                                                layout: "radio",
+                                                direction: "horizontal",
+                                            },
+                                        }),
                                     ],
+                                    preview: {
+                                        select: {
+                                            title: "post.title",
+                                            status: "status",
+                                            lastSeenAt: "lastSeenAt",
+                                            progress: "progress",
+                                        },
+                                        prepare: ({ title, status, lastSeenAt, progress }) => ({
+                                            title: title || "Leçon",
+                                            subtitle: `${status || "unwatched"}${progress != null ? ` • ${Math.round((progress || 0) * 100)}%` : ""}${lastSeenAt ? " • " + lastSeenAt : ""}`,
+                                        }),
+                                    },
                                 },
                             ],
-                        },
+                        }),
+
+                        // -------------------------
+                        // Logs examens
+                        // -------------------------
+                        defineField({
+                            name: "examLogs",
+                            title: "Examens (logs)",
+                            type: "array",
+                            of: [
+                                {
+                                    name: "examLog",
+                                    type: "object",
+                                    title: "Log examen",
+                                    fields: [
+                                        defineField({
+                                            name: "exam",
+                                            title: "Examen",
+                                            type: "reference",
+                                            to: [{ type: "fideExam" }],
+                                            validation: (Rule) => Rule.required(),
+                                        }),
+                                        defineField({
+                                            name: "bestScore",
+                                            title: "Meilleur score",
+                                            type: "number",
+                                            validation: (Rule) => Rule.required().min(0).max(3),
+                                        }),
+                                        defineField({
+                                            name: "scores",
+                                            title: "Historique des scores",
+                                            type: "array",
+                                            of: [{ type: "number" }],
+                                        }),
+                                        defineField({
+                                            name: "bestScoreAt",
+                                            title: "Date du meilleur score",
+                                            type: "datetime",
+                                        }),
+                                        defineField({
+                                            name: "lastCompletedAt",
+                                            title: "Dernière tentative complétée",
+                                            type: "datetime",
+                                        }),
+                                        defineField({
+                                            name: "updatedAt",
+                                            title: "Dernière mise à jour",
+                                            type: "datetime",
+                                            initialValue: () => new Date().toISOString(),
+                                            validation: (Rule) => Rule.required(),
+                                        }),
+                                    ],
+                                    preview: {
+                                        select: {
+                                            title: "exam.title",
+                                            best: "bestScore",
+                                            bestAt: "bestScoreAt",
+                                        },
+                                        prepare: ({ title, best, bestAt }) => ({
+                                            title: title || "Examen",
+                                            subtitle: `Best: ${best ?? "-"}${bestAt ? " • " + bestAt : ""}`,
+                                        }),
+                                    },
+                                },
+                            ],
+                        }),
                     ],
+                    preview: {
+                        select: {
+                            type: "type",
+                            vCount: "videoLogs.length",
+                            eCount: "examLogs.length",
+                        },
+                        prepare: ({ type, vCount = 0, eCount = 0 }) => ({
+                            title: type || "Progression",
+                            subtitle: `Vidéos: ${vCount} • Examens: ${eCount}`,
+                        }),
+                    },
                 },
             ],
         }),

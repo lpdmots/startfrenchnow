@@ -1,4 +1,3 @@
-import { usePostLang } from "@/app/hooks/usePostLang";
 import { useExerciseStore } from "@/app/stores/exerciseStore";
 import Image from "next/image";
 import { DEFAULTCONTENT } from "./Exercise";
@@ -7,6 +6,7 @@ import { useQuestions } from "@/app/hooks/exercises/exercise/useQuestions";
 import Spinner from "../../common/Spinner";
 import { useMemo } from "react";
 import { COLORVARIABLES, STARTLAYOUTIMAGE } from "@/app/lib/constantes";
+import { useLocale } from "next-intl";
 
 const SCOREPROMPTS = {
     fr: {
@@ -24,7 +24,7 @@ const SCOREPROMPTS = {
 };
 
 export const StartLayout = ({ _key, exercise }: { _key: string; exercise: ExerciseProps }) => {
-    const postLang = usePostLang();
+    const locale = useLocale() as "fr" | "en";
     const { setStatus } = useExerciseStore();
     const imageUrl = STARTLAYOUTIMAGE[exercise.exerciseTypes?.[0] || "buttons"];
 
@@ -36,31 +36,31 @@ export const StartLayout = ({ _key, exercise }: { _key: string; exercise: Exerci
         <div className="flex flex-col justify-between items-center h-full gap-6 md:gap-12">
             <Image src={imageUrl} alt="learning" width={100} height={100} />
             <button className="btn-secondary small col-span-2 sm:col-span-1" style={{ maxWidth: 300, minWidth: 250 }} onClick={handleClick}>
-                {DEFAULTCONTENT[postLang].startButton}
+                {DEFAULTCONTENT[locale].startButton}
             </button>
         </div>
     );
 };
 
 export const FetchLayout = ({ exercise, _id }: { exercise: ExerciseProps; _id: string }) => {
-    const postLang = usePostLang();
+    const locale = useLocale() as "fr" | "en";
     const { getExercise } = useExerciseStore();
     const { levelChoice } = getExercise(_id);
     useQuestions(exercise, levelChoice);
 
     return (
         <div className="flex justify-center items-center w-full">
-            <Spinner radius maxHeight="40px" message={DEFAULTCONTENT[postLang].loading} />
+            <Spinner radius maxHeight="40px" message={DEFAULTCONTENT[locale].loading} />
         </div>
     );
 };
 
 export const EndLayout = ({ _key }: { _key: string }) => {
-    const postLang = usePostLang();
+    const locale = useLocale() as "fr" | "en";
     const { restart, getExercise } = useExerciseStore();
     const { score, scoreMax } = getExercise(_key);
     const percentage = useMemo(() => Math.round((score / scoreMax) * 100), []); // eslint-disable-line react-hooks/exhaustive-deps
-    const { scoreColor, imageUrl, prompt } = useMemo(() => getContentFromScore(percentage, postLang), [percentage, postLang]);
+    const { scoreColor, imageUrl, prompt } = useMemo(() => getContentFromScore(percentage, locale), [percentage, locale]);
 
     const handleClick = () => {
         restart(_key);
@@ -71,40 +71,40 @@ export const EndLayout = ({ _key }: { _key: string }) => {
             <Image src={imageUrl} alt="learning" width={150} height={150} />
             <p className="text-center w-full">{prompt}</p>
             <p className="font-bold text-2xl sm:text-4xl" style={{ color: scoreColor }}>
-                {DEFAULTCONTENT[postLang].yourScore} {percentage}%
+                {DEFAULTCONTENT[locale].yourScore} {percentage}%
             </p>
             <button className="btn-secondary small col-span-2 sm:col-span-1" style={{ maxWidth: 300, minWidth: 250 }} onClick={handleClick}>
-                {DEFAULTCONTENT[postLang].restartButton}
+                {DEFAULTCONTENT[locale].restartButton}
             </button>
         </div>
     );
 };
 
-const getContentFromScore = (score: number, postLang: "en" | "fr") => {
+const getContentFromScore = (score: number, locale: "en" | "fr") => {
     if (score === 100) {
         return {
             scoreColor: "darkgreen",
             imageUrl: "/images/trophee.png",
-            prompt: SCOREPROMPTS[postLang].success,
+            prompt: SCOREPROMPTS[locale].success,
         };
     }
     if (score >= 70) {
         return {
             scoreColor: "darkgreen",
             imageUrl: "/images/medaille.png",
-            prompt: SCOREPROMPTS[postLang].good,
+            prompt: SCOREPROMPTS[locale].good,
         };
     }
     if (score >= 40) {
         return {
             scoreColor: COLORVARIABLES.yellow,
             imageUrl: "/images/bad2.png",
-            prompt: SCOREPROMPTS[postLang].ok,
+            prompt: SCOREPROMPTS[locale].ok,
         };
     }
     return {
         scoreColor: "darkred",
         imageUrl: "/images/bad.png",
-        prompt: SCOREPROMPTS[postLang].fail,
+        prompt: SCOREPROMPTS[locale].fail,
     };
 };

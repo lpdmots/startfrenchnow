@@ -10,6 +10,9 @@ module.exports = {
         {
             pattern: /\[.*\]/, // Pattern pour capturer toutes les classes dynamiques avec des crochets
         },
+        "msw-sm",
+        "msw-md",
+        "msw-lg",
     ],
     theme: {
         screens: {
@@ -17,6 +20,7 @@ module.exports = {
             md: "768px",
             lg: "992px",
             xl: "1200px",
+            xxl: "1536px",
         },
         container: {
             center: "true",

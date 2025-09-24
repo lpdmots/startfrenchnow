@@ -2,9 +2,9 @@ import { ElementDataProps } from "../types/stories/state";
 
 export const LEVELDATA = {
     a1: { label: "A1", color: "var(--secondary-5)" },
-    a2: { label: "A2", color: "var(--secondary-5)" },
-    b1: { label: "B1", color: "var(--secondary-1)" },
-    b2: { label: "B2", color: "var(--secondary-6)" },
+    a2: { label: "A2", color: "var(--secondary-1)" },
+    b1: { label: "B1", color: "var(--secondary-6)" },
+    b2: { label: "B2", color: "var(--secondary-4)" },
     c1: { label: "C1", color: "var(--secondary-4)" },
     c2: { label: "C2", color: "var(--secondary-4)" },
 };
@@ -32,11 +32,9 @@ export const HEADINGSPANCOLORS = {
     vocabulary: "heading-span-secondary-2",
     grammar: "heading-span-secondary-4",
     fide: "heading-span-secondary-6",
+    pack_fide: "heading-span-secondary-6",
     culture: "heading-span-secondary-5",
     expressions: "heading-span-secondary-3",
-    video: "heading-span-secondary-1",
-    toLoad: "heading-span-secondary-1",
-    exercise: "heading-span-secondary-1",
 };
 
 export const HIGHLIGHTCOLORS = {
@@ -46,6 +44,7 @@ export const HIGHLIGHTCOLORS = {
     fide: "hightlightOrange",
     culture: "hightlightGreen",
     expressions: "hightlightPurple",
+    pack_fide: "hightlightOrange",
 };
 
 export const CATEGORIESCOLORS = {
@@ -55,6 +54,7 @@ export const CATEGORIESCOLORS = {
     fide: "var(--secondary-6)",
     culture: "var(--secondary-5)",
     expressions: "var(--secondary-3)",
+    pack_fide: "var(--secondary-6)",
 };
 
 export const CATEGORIESTEXTCOLORS = {
@@ -64,6 +64,7 @@ export const CATEGORIESTEXTCOLORS = {
     fide: "text-secondary-6",
     culture: "text-secondary-5",
     expressions: "text-secondary-3",
+    pack_fide: "text-secondary-6",
 };
 
 export const CATEGORIESCOLORSSHADES = {
@@ -73,6 +74,7 @@ export const CATEGORIESCOLORSSHADES = {
     expressions: "var(--secondaryShades-3)",
     culture: "var(--secondaryShades-5)",
     fide: "var(--secondaryShades-6)",
+    pack_fide: "var(--secondaryShades-6)",
 };
 
 export const STORYCATEGORIES = {
@@ -106,24 +108,9 @@ export const langData = {
         image: "/images/france.png",
         alt: "France",
     },
-    es: {
-        abreviation: "ES",
-        image: "/images/espagne.png",
-        alt: "España",
-    },
-    pt: {
-        abreviation: "PT",
-        image: "/images/portugal.png",
-        alt: "Português",
-    },
-    tr: {
-        abreviation: "TR",
-        image: "/images/turquie.png",
-        alt: "Türkçe",
-    },
 };
 
-export const CATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions", "fide"];
+export const CATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions", "fide", "pack_fide"];
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];
@@ -196,36 +183,12 @@ export const CATEGORY_NAMES = {
         expressions: "Expression",
         fide: "Fide",
     },
-    es: {
-        tips: "Consejo",
-        grammar: "Gramática",
-        vocabulary: "Vocabulario",
-        culture: "Cultura",
-        expressions: "Expresión",
-        fide: "Fide",
-    },
     fr: {
         tips: "Conseil",
         grammar: "Grammaire",
         vocabulary: "Vocabulaire",
         culture: "Culture",
         expressions: "Expression",
-        fide: "Fide",
-    },
-    pt: {
-        tips: "Dica",
-        grammar: "Gramática",
-        vocabulary: "Vocabulário",
-        culture: "Cultura",
-        expressions: "Expressão",
-        fide: "Fide",
-    },
-    tr: {
-        tips: "İpucu",
-        grammar: "Dil Bilgisi",
-        vocabulary: "Kelime Dağarcığı",
-        culture: "Kültür",
-        expressions: "İfade",
         fide: "Fide",
     },
 };
@@ -240,9 +203,11 @@ export const EVENT_TYPES = {
     "Your FIDE Plan": { uri: "https://api.calendly.com/event_types/edc90d62-ffea-4815-96de-d0b537f2da11", url: "https://calendly.com/yohann-startfrenchnow/15min" },
 };
 
+export const PROGRESSION_TYPES = [{ title: "Pack FIDE", value: "pack_fide" }];
+
 export const HOURS_BEFOR_CANCEL = 24;
 
 export const LESSONS = [...Object.keys(EVENT_TYPES)];
 export const CREDITS = [];
-export const PERMISSIONS = [];
+export const PERMISSIONS = ["pack_fide"];
 export const LESSONS_CREDITS_PERMISSIONS = [...LESSONS, ...CREDITS, ...PERMISSIONS];

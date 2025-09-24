@@ -5,7 +5,6 @@ import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { PortableText } from "@portabletext/react";
 import { ReactElement, useEffect, useMemo, useState } from "react";
 import { formatStringToNoWrap, getRandomItem, listToString, safeInputAnswer } from "@/app/lib/utils";
-import { usePostLang } from "@/app/hooks/usePostLang";
 import { useExerciseStore } from "@/app/stores/exerciseStore";
 import QuestionPrompt from "./QuestionPrompt";
 import { ImageMapLayout } from "./ImageMapLayout";
@@ -21,6 +20,7 @@ import OrderLayout from "./OrderLayout";
 import { fetchExercise } from "@/app/serverActions/exerciseActions";
 import Spinner from "../../common/Spinner";
 import { LevelChoiceButtons } from "./LevelChoiceButtons";
+import { useLocale } from "next-intl";
 
 interface Props {
     _ref: string;
@@ -47,7 +47,7 @@ export const DEFAULTCONTENT = {
 
 export default function Exercise({ _ref }: Props) {
     const [exercise, setExercise] = useState<string | null | Exercise>(null);
-    const postLang = usePostLang();
+    const locale = useLocale() as "fr" | "en";
 
     useEffect(() => {
         (async () => {
@@ -60,14 +60,14 @@ export default function Exercise({ _ref }: Props) {
     if (!exercise)
         return (
             <div className="flex justify-center items-center w-full" style={{ minHeight: "662px" }}>
-                <Spinner radius maxHeight="40px" message={DEFAULTCONTENT[postLang].loading} color="var(--neutral-700)" />
+                <Spinner radius maxHeight="40px" message={DEFAULTCONTENT[locale].loading} color="var(--neutral-700)" />
             </div>
         );
     if (exercise === "error")
         return (
             <div className="flex justify-center items-center w-full" style={{ minHeight: "662px" }}>
                 <p>
-                    {postLang === "en"
+                    {locale === "en"
                         ? "Oops sorry an error has occurred. This exercise is not currently available."
                         : "Oups, désolé une erreur s'est produite. Cet exercice n'est pas disponible pour l'instant."}
                 </p>
@@ -81,8 +81,8 @@ const ExerciseContent = ({ exercise }: { exercise: Exercise }) => {
     const { getExercise, initializeExercise } = useExerciseStore();
     const { status, questionIndex, data } = getExercise(_id) || {};
     const colorVar = CATEGORIESCOLORS[category || "vocabulary"];
-    const postLang = usePostLang();
-    const { title, instruction } = useMemo(() => getContent(exercise, postLang), [exercise, postLang]);
+    const locale = useLocale() as "fr" | "en";
+    const { title, instruction } = useMemo(() => getContent(exercise, locale), [exercise, locale]);
     const islevelChoice = data?.automatedTypes?.includes("levelChoice");
 
     useEffect(() => {
@@ -232,10 +232,10 @@ export const getSelectPoints = (correctResponses: { [key: string]: string[] }, s
     return (rightAnswers / keys.length) * scoreCalculation;
 };
 
-const getContent = (exercise: ExerciseProps, postLang: "en" | "fr") => {
-    const title = formatStringToNoWrap(exercise[`title${postLang === "en" ? "_en" : ""}`]) || DEFAULTCONTENT[postLang].title;
-    const instructionData = exercise[`instruction${postLang === "en" ? "_en" : ""}`];
-    const instruction = instructionData ? <PortableText value={instructionData} components={RichTextComponents(exercise?.category)} /> : <p>{DEFAULTCONTENT[postLang].instruction}</p>;
+const getContent = (exercise: ExerciseProps, locale: "en" | "fr") => {
+    const title = formatStringToNoWrap(exercise[`title${locale === "en" ? "_en" : ""}`]) || DEFAULTCONTENT[locale].title;
+    const instructionData = exercise[`instruction${locale === "en" ? "_en" : ""}`];
+    const instruction = instructionData ? <PortableText value={instructionData} components={RichTextComponents(exercise?.category)} /> : <p>{DEFAULTCONTENT[locale].instruction}</p>;
 
     return { title, instruction };
 };

@@ -7,24 +7,18 @@ import NewsletterCard from "../../common/newsletter/NewsletterCard";
 import Helper from "./Helper";
 import VideoBlog from "../../sanity/RichTextSfnComponents/VideoBlog";
 import { useLocale, useTranslations } from "next-intl";
-import { getDataInRightLang } from "@/app/lib/utils";
-import { BlogLangButton } from "../blog/BlogLangButton";
-import { LinkBlog } from "../blog/LinkBlog";
+import Link from "next-intl/link";
 import { Locale } from "@/i18n";
 import { CategoryBadge } from "../blog/CategoryBadge";
 import { CATEGORIESCOLORS } from "@/app/lib/constantes";
 import { ContactFideCard } from "./ContactFideCard";
 
-function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "en" | "fr"; isForcedLang: boolean }) {
-    const locale = useLocale();
-    const tCat = useTranslations(`Categories.${post?.categories?.[0] || "tips"}`);
-    const tBut = useTranslations("Blog.BlogLangButton");
-    const messages = {
-        title: tBut("title"),
-        message: tBut("message"),
-        okString: tBut("okString"),
-    };
-    const firstCategory = post?.categories?.[0] || "tips";
+function PostContent({ post }: { post: Post }) {
+    const locale = useLocale() as Locale;
+    const { title, description, categories, mainVideo, mainImage, externLinks, body } = post;
+    const tCat = useTranslations(`Categories.${categories?.[0] || "tips"}`);
+
+    const firstCategory = categories?.[0] || "tips";
 
     return (
         <>
@@ -32,29 +26,28 @@ function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "
                 <div className="container-default w-container">
                     <div className="inner-container _600px---mbl center">
                         <div className="flex w-full justify-center items-center gap-8 mb-8">
-                            <LinkBlog href={`/blog/category/${firstCategory}`} locale={locale as Locale}>
+                            <Link href={`/blog/category/${firstCategory}`}>
                                 <CategoryBadge category={firstCategory} label={tCat("title")} />
-                            </LinkBlog>
-                            {post.langage === "both" && <BlogLangButton messages={messages} postLang={postLang} />}
+                            </Link>
                         </div>
                         <div className="text-center">
                             <div className="inner-container _1015px center">
-                                <h1 className="display-1 mg-bottom-12px">{getDataInRightLang(post, postLang, "title")}</h1>
+                                <h1 className="display-1 mg-bottom-12px">{title}</h1>
                             </div>
                         </div>
                     </div>
-                    {post.mainVideo ? (
+                    {mainVideo ? (
                         <div className=" mt-12">
-                            <VideoBlog values={{ url: post.mainVideo.url, title: post.mainVideo.title }} />
-                            <Helper post={post} postLang={postLang} />
+                            <VideoBlog values={{ url: mainVideo.url, title: mainVideo.title }} />
+                            <Helper post={post} locale={locale} />
                         </div>
-                    ) : post.mainImage ? (
+                    ) : mainImage ? (
                         <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto mt-8" style={{ maxWidth: "800px" }}>
-                            <Image src={urlFor(post.mainImage).url()} height={800} width={800} loading="eager" alt={post.title} className="image object-contain rounded-lg" />
-                            <Helper post={post} postLang={postLang} />
+                            <Image src={urlFor(mainImage).url()} height={800} width={800} loading="eager" alt={title} className="image object-contain rounded-lg" />
+                            <Helper post={post} locale={locale} />
                         </div>
                     ) : (
-                        <Helper post={post} postLang={postLang} />
+                        <Helper post={post} locale={locale} />
                     )}
                 </div>
             </section>
@@ -64,13 +57,13 @@ function PostContent({ post, postLang, isForcedLang }: { post: Post; postLang: "
                         <div className="grid-2-columns post-rigth-sidebar _1-col-tablet">
                             <div className="inner-container _758px">
                                 <div className="mg-bottom-48px">
-                                    <PortableText value={getDataInRightLang(post, postLang, "body") as any} components={RichTextComponents(post.categories[0] as keyof typeof CATEGORIESCOLORS)} />
+                                    <PortableText value={body} components={RichTextComponents(categories[0] as keyof typeof CATEGORIESCOLORS)} />
                                 </div>
-                                {post.externLinks?.length > 0 && (
+                                {externLinks?.length > 0 && (
                                     <div>
                                         <p className="underline">Sources:</p>
                                         <ul>
-                                            {post.externLinks.map((link, index) => (
+                                            {externLinks.map((link, index) => (
                                                 <li key={index}>
                                                     <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-neutral-500">
                                                         {link.title}

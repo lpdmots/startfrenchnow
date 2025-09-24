@@ -7,7 +7,7 @@ import Spinner from "../../common/Spinner";
 import Image from "next/image";
 import { TabelVocSoundButton } from "../../animations/BlogAnimations";
 import { NoteWithLang } from "./NoteWithLang";
-import { NaturePostLang } from "./FrontComponents";
+import { NatureLang } from "./FrontComponents";
 import urlFor from "@/app/lib/urlFor";
 
 const queryThemes = groq`
@@ -53,7 +53,7 @@ export const ArticleVoc = async ({ data }: TabelVocProps) => {
                                 </h3>
                                 <BsCaretRightFill style={{ color: "var(--neutral-600)", marginRight: 2, height: 16, objectFit: "contain", flexShrink: 0 }} />
                                 <span className="text-neutral-600 italic">{english}</span>
-                                <span className="bs italic">{!!natureLang && <NaturePostLang natureLang={natureLang} />}</span>
+                                <span className="bs italic">{!!natureLang && <NatureLang natureLang={natureLang} />}</span>
                             </div>
                             {!!alternatives?.length && (
                                 <p>

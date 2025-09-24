@@ -99,6 +99,14 @@
             "exercises": "Flashcards & Exercises",
             "stories": "Interactive Stories",
             "testYourLevel": "Test Your Level"
+        },
+        "fideButton": {
+            "buttonLabel": "FIDE",
+            "fide": "FIDE Test",
+            "packFide": "Pack FIDE",
+            "dashboard": "Dashboard",
+            "videos": "FIDE Videos",
+            "exams": "Mock Exams"
         }
     },
     "HeroSfn": {
@@ -315,52 +323,8 @@
             "thankYou": "Thank you!",
             "successMessage": "You have successfully sent",
             "goHome": "Go home",
-            "bookLesson": "Book a lesson!",
+            "bookLesson": "Start now!",
             "successImageAlt": "Success"
-        }
-    },
-    "PrivateLessons": {
-        "common": {
-            "buyLessons": "Buy lessons",
-            "lessonsAvailable1": "{hours} lesson{plural}",
-            "lessonsAvailable2": "available to book",
-            "bookLesson": "Book a lesson",
-            "followUpTitle": "Your <hs2>Hours Tracking</hs2>",
-            "remainingHours": "Hours Available to Book",
-            "pendingHours": "Pending Hours",
-            "completedHours": "Completed Hours",
-            "calendarTitle": "Your <hs4>Schedule</hs4>",
-            "lessonsList1": "Here is the list of your lessons, you can",
-            "lessonsList2": "cancel them for free within 48 hours",
-            "noLessons": "You have no lessons to book.",
-            "noBookedLessons": "You haven’t booked any lessons yet.",
-            "noPurchasedLessons": "You haven’t purchased any lessons.",
-            "zoomLink": "Zoom Link",
-            "status": "Status",
-            "date": "Date",
-            "time": "Time",
-            "eventRow": {
-                "statusCompleted": "Lesson completed.",
-                "statusUpcoming": "Upcoming lesson.",
-                "statusCanceled": "Lesson canceled.",
-                "statusCurrent": "Lesson in progress.",
-                "cancelLessonTitle": "Cancel?",
-                "cancelLessonConfirmation1": "Please confirm that you want to cancel the lesson on",
-                "cancelLessonConfirmation2": "{date} from {startTime} to {endTime}",
-                "cancelOk": "YES, cancel",
-                "cancelNo": "NO, don’t cancel",
-                "zoomLink": "Zoom Link",
-                "noZoomLink": "N/A",
-                "errorTitle": "Oops! An error occurred.",
-                "errorMessage": "There was an issue canceling the lesson. Please notify me by email.",
-                "successTitle": "Lesson canceled",
-                "successMessage": "The lesson was successfully canceled.",
-                "optionalMessage": "Optional message"
-            }
-        },
-        "fide-preparation-class": {
-            "title": "Book your private <hs2>FIDE lessons</hs2>",
-            "goToFidePage": "Go to the FIDE page"
         }
     },
     "ExercisesPage": {
@@ -368,6 +332,50 @@
         "description": "Review vocabulary with flashcards, practice grammar concepts, or explore other topics. Happy learning!"
     },
     "Fide": {
+        "dashboard": {
+            "PrivateLessons": {
+                "common": {
+                    "buyLessons": "Buy lessons",
+                    "lessonsAvailable1": "{hours} lesson{plural}",
+                    "lessonsAvailable2": "available to book",
+                    "bookLesson": "Book a lesson",
+                    "followUpTitle": "Your <hs2>Hours Tracking</hs2>",
+                    "remainingHours": "Hours Available to Book",
+                    "pendingHours": "Pending Hours",
+                    "completedHours": "Completed Hours",
+                    "calendarTitle": "Your <hs4>Schedule</hs4>",
+                    "lessonsList1": "Here is the list of your lessons, you can",
+                    "lessonsList2": "cancel them for free within 48 hours",
+                    "noLessons": "You have no lessons to book.",
+                    "noBookedLessons": "You haven’t booked any lessons yet.",
+                    "noPurchasedLessons": "You haven’t purchased any lessons.",
+                    "zoomLink": "Zoom Link",
+                    "status": "Status",
+                    "date": "Date",
+                    "time": "Time",
+                    "eventRow": {
+                        "statusCompleted": "Lesson completed.",
+                        "statusUpcoming": "Upcoming lesson.",
+                        "statusCanceled": "Lesson canceled.",
+                        "statusCurrent": "Lesson in progress.",
+                        "cancelLessonTitle": "Cancel?",
+                        "cancelLessonConfirmation1": "Please confirm that you want to cancel the lesson on",
+                        "cancelLessonConfirmation2": "{date} from {startTime} to {endTime}",
+                        "cancelOk": "YES, cancel",
+                        "cancelNo": "NO, don’t cancel",
+                        "zoomLink": "Zoom Link",
+                        "noZoomLink": "N/A",
+                        "errorTitle": "Oops! An error occurred.",
+                        "errorMessage": "There was an issue canceling the lesson. Please notify me by email.",
+                        "successTitle": "Lesson canceled",
+                        "successMessage": "The lesson was successfully canceled.",
+                        "optionalMessage": "Optional message"
+                    }
+                },
+                "title": "Book your private <hs2>FIDE lessons</hs2>",
+                "goToFidePage": "Go to the FIDE page"
+            }
+        },
         "HeroFide": {
             "title": "Prepare for the <hs2>FIDE Test</hs2>",
             "li1": "Do you need to prepare for the FIDE test to obtain your <b>B or C permit</b> or <b>naturalization</b>?",
@@ -378,7 +386,7 @@
         "Formateur": {
             "title": "Why choose <hs4>our FIDE lessons</hs4>?",
             "competences": {
-                "description1": "6+ years of experience as a FIDE expert.",
+                "description1": "7+ years of experience as a FIDE expert.",
                 "description2": "100+ students who passed successfully their FIDE.",
                 "description3": "15 years of teaching French for Foreigners.",
                 "description4": "Top Udemy Instructor of French."

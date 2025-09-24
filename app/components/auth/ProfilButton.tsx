@@ -6,7 +6,7 @@ import { LogOut } from "./LogOut";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next-intl/client";
 
-export const ProfilButton = ({ profil, logout, fideLessons }: { profil: string; logout: string; fideLessons: string }) => {
+export const ProfilButton = ({ profil, logout }: { profil: string; logout: string }) => {
     const { data: session } = useSession();
     const pathname = usePathname();
 
@@ -26,12 +26,6 @@ export const ProfilButton = ({ profil, logout, fideLessons }: { profil: string; 
                             <FaCaretRight />
                             {profil}
                         </span>
-                    </div>
-                    <div>
-                        <Link href="/private-lessons/fide-preparation-class" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center">
-                            <FaCaretRight />
-                            {fideLessons}
-                        </Link>
                     </div>
                     <div>
                         <LogOut logout={logout} />

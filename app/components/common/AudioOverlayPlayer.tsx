@@ -25,16 +25,15 @@ import { Exam, Response, ResponseB1, Track } from "@/app/types/fide/exam";
 import { shuffleArray } from "@/app/lib/utils";
 import urlFor from "@/app/lib/urlFor";
 import { ConfettiFireworks } from "../ui/ConfettiFireworks";
-import { Log } from "@/app/types/sfn/auth";
+import { ExamLog } from "@/app/types/sfn/auth";
 import { evaluateB1Answer, updateUserProgress } from "@/app/serverActions/fideExamActions";
 import clsx from "clsx";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
-export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { exam: Exam; logs: Log[] | null; setLogs: any; userId?: string }) {
+export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Exam; setLogs: any; userId?: string }) {
     const tracks = exam.tracks as Track[];
     const responses = useMemo(() => (exam.level !== "B1" ? getResponses(exam.responses) : []), [exam.responses]);
-    const previousScore = logs?.find((log) => log.exam._ref === exam._id)?.score ?? null;
 
     const [playing, setPlaying] = useState<boolean>(false);
     const [ended, setEnded] = useState<boolean>(false);
@@ -166,9 +165,9 @@ export default function AudioOverlayPlayer({ exam, logs, setLogs, userId }: { ex
 
     useEffect(() => {
         (async () => {
-            if (totalAnswers === 3 && (previousScore === null || correctAnswers > (previousScore ?? 1000))) {
+            if (totalAnswers === 3) {
                 // Mise à jour de la data:
-                const newLogs = await updateUserProgress("fideExam", exam._id, correctAnswers, userId);
+                const newLogs = await updateUserProgress("pack_fide", "examLogs", exam._id, correctAnswers, userId);
                 console.log("User progress updated:", newLogs);
                 if (newLogs) {
                     setLogs(newLogs);

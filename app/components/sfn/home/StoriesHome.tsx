@@ -6,15 +6,6 @@ import { SlideFromBottom, SlideInOneByOneChild, SlideInOneByOneParent } from "..
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 
-/* "StoriesHome": {
-    "title": "Choisissez votre chemin : Engagez-vous avec nos <hs1>Histoires françaises interactives</hs1> pour un apprentissage efficace.",
-    "description": "Plonger dans le français peut devenir une aventure palpitante avec notre application d'histoires interactives, conçue pour vous emmener au cœur de la langue française. En vous plongeant dans ces contes, vous améliorerez votre français de manière ludique et engageante. Alors, pourquoi ne pas <noWrap>essayer ?</noWrap>",
-    "bullet1": "Choisissez votre héros, armé de <noWrap>compétences uniques.</noWrap>",
-    "bullet2": "Guidez-les à travers un labyrinthe <noWrap>de possibilités.</noWrap>",
-    "bullet3": "Débloquez une pléthore <noWrap>d'accomplissements.</noWrap>",
-    "button": "Aller aux histoires"
-} */
-
 export const StoriesHome = () => {
     const t = useTranslations("StoriesHome");
     return (

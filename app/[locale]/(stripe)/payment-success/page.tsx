@@ -27,7 +27,7 @@ export default function PaymentSuccess({ searchParams: { amount, currency, slug 
                         <FaHome className="mr-2 text-xl" /> {t("goHome")}
                     </Link>
                     {slug && (
-                        <Link href={`/private-lessons/${slug}`} className="btn btn-primary flex items-center justify-center">
+                        <Link href={slug} className="btn btn-primary flex items-center justify-center">
                             <NotebookPen className="mr-2 text-xl" />
                             {t("bookLesson")}
                         </Link>

@@ -1,23 +1,11 @@
-import { defineField, defineType } from "sanity";
+import { CATEGORIES } from "@/app/lib/constantes";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 export default defineType({
     name: "post",
     title: "Post",
     type: "document",
     fields: [
-        defineField({
-            name: "langage",
-            title: "Langue",
-            type: "string",
-            options: {
-                list: [
-                    { value: "en", title: "Anglais" },
-                    { value: "fr", title: "Français" },
-                    { value: "both", title: "Les deux" },
-                ],
-            },
-            initialValue: "both",
-        }),
         defineField({
             name: "title",
             title: "Title",
@@ -86,7 +74,7 @@ export default defineType({
             name: "categories",
             title: "Catégories",
             type: "array",
-            of: [{ type: "string", options: { list: ["tips", "video", "grammar", "vocabulary", "culture", "expressions", "orthography", "exercise", "toLoad", "fide"] } }],
+            of: [{ type: "string", options: { list: CATEGORIES } }],
         }),
         defineField({
             name: "publishedAt",
@@ -135,17 +123,58 @@ export default defineType({
                 },
             ],
         }),
+        defineField({
+            name: "isPreview",
+            title: "Preview libre (Pack)",
+            type: "boolean",
+            initialValue: false,
+            description: "Si vrai ET que ce post est dans la catégorie pack_fide, la vidéo est accessible à tous.",
+        }),
+        defineField({
+            name: "durationSec",
+            title: "Durée (sec)",
+            type: "number",
+            description: "Durée de la vidéo en secondes.",
+        }),
+        defineField({
+            name: "resources",
+            title: "Ressources",
+            type: "array",
+            of: [
+                defineArrayMember({
+                    type: "object",
+                    name: "resource",
+                    fields: [
+                        defineField({
+                            name: "title",
+                            title: "Titre",
+                            type: "string",
+                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "key",
+                            title: "Clé de stockage (S3/CloudFront)",
+                            type: "string",
+                            validation: (Rule) => Rule.required(),
+                            description: "Ex: docs/a1/fiche-01.pdf",
+                        }),
+                    ],
+                    preview: {
+                        select: { title: "title", key: "key" },
+                        prepare: ({ title, key }) => ({ title, subtitle: key }),
+                    },
+                }),
+            ],
+        }),
     ],
 
     preview: {
         select: {
             title: "title",
-            author: "author.name",
             media: "mainImage",
         },
         prepare(selection) {
-            const { author } = selection;
-            return { ...selection, subtitle: author && `by ${author}` };
+            return { ...selection };
         },
     },
 });

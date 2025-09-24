@@ -7,7 +7,7 @@ import { FaArrowLeft } from "react-icons/fa";
 type Props = {
     params: {
         productSlug: string;
-        locale: "fr" | "en" | "es" | "pt" | "tr";
+        locale: "fr" | "en";
     };
     searchParams: { quantity: string; callbackUrl: string };
 };

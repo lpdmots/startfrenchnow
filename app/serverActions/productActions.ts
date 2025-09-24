@@ -3,6 +3,7 @@ import { groq } from "next-sanity";
 import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { EVENT_TYPES } from "../lib/constantes";
 import { Lesson } from "../types/sfn/auth";
+import { Image, Level, Slug } from "../types/sfn/blog";
 
 const queryUserLessons = groq`
 *[_type == "user" && _id == $userId] {
@@ -60,7 +61,7 @@ const getDefaultEventLesson = (eventType: keyof typeof EVENT_TYPES) => ({
 export const getCalendlyData = async (userId: string, eventType: keyof typeof EVENT_TYPES) => {
     const userLessons = await client.fetch(queryUserLessons, { userId });
     const userEventLessons = userLessons?.lessons?.find((lesson: any) => lesson.eventType === eventType) || getDefaultEventLesson(eventType);
-
+    console.log("User Lessons:", userLessons, userEventLessons, eventType);
     // Récupérer les réservations Calendly pour l'email de l'utilisateur et le type de cours
     const emails = [userLessons.email, ...(userLessons.alias || [])];
     const calendlyEvents = userEventLessons.totalPurchasedMinutes ? await fetchCalendlyReservations(emails, eventType) : [];
@@ -118,3 +119,75 @@ export const getUserPurchases = async (userId: string, reference: string): Promi
     const userLessons = await client.fetch(queryUserLessons, { userId });
     return userLessons?.lessons?.find((lesson: any) => lesson.eventType === reference) || getDefaultEventLesson(reference as keyof typeof EVENT_TYPES);
 };
+
+export type FidePackSommaire = {
+    packages: Array<{
+        title: string;
+        title_en: string;
+        referenceKey: string;
+        modules: Array<{
+            _key: string;
+            title?: string;
+            title_en?: string;
+            subtitle?: string;
+            subtitle_en?: string;
+            level?: Array<Level>;
+            posts: Array<{
+                _id: string;
+                slug: Slug;
+                title: string;
+                title_en: string;
+                mainVideo?: { url: string };
+                mainImage: Image;
+                description: string;
+                description_en: string;
+                level?: Level[];
+                durationSec?: number;
+                isPreview?: boolean;
+            }>;
+        }>;
+    }>;
+};
+
+const FIDE_TOC_QUERY = groq`
+*[_type == "product" && referenceKey == $referenceKey][0]{
+  packages[]->{
+    title,
+    title_en,
+    referenceKey,
+    "modules": modules[]{
+      _key,
+      title,
+      title_en,
+      subtitle,
+      subtitle_en,
+      level,
+      posts[]->{
+        _id,
+        slug,
+        mainVideo,
+        mainImage,
+        title,
+        title_en,
+        level,
+        description,
+        description_en,
+        durationSec,
+        isPreview,
+        resources[]{
+          title,
+          "url": url.current
+        }
+      }
+    }
+  }
+}
+`;
+
+export async function getFidePackSommaire(): Promise<FidePackSommaire> {
+    // Pas de cache pour garantir un sommaire toujours frais en édition
+    const data = await client.fetch<FidePackSommaire>(FIDE_TOC_QUERY, { referenceKey: "Pack FIDE" });
+
+    // Normalisation douce: si le produit est introuvable, renvoyer un shape vide
+    return data ?? { packages: [] };
+}

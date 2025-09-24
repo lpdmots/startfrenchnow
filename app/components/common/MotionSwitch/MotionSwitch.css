@@ -1,0 +1,110 @@
+/* ------------------------------------------------------------------ */
+/* MotionSwitch.css                                                    */
+/* Place this content in MotionSwitch.css (same folder as .tsx file).  */
+/* ------------------------------------------------------------------ */
+:root {
+    /* You can override these CSS variables in your app/theme */
+    --msw-track-on: var(--secondary-5); /* blue-600 */
+    --msw-track-off: var(--neutral-300);
+    --msw-track-off-dark: var(--neutral-300); /* zinc-700 */
+    --msw-ring: var(--neutral-400); /* blue-700 */
+    --msw-knob-bg: var(--neutral-100);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --msw-track-off: var(--msw-track-off-dark);
+    }
+}
+
+.msw-root {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.msw-root.is-disabled {
+    opacity: 0.6;
+}
+
+/* Size presets via CSS vars */
+.msw-sm {
+    --msw-w: 36px;
+    --msw-h: 20px;
+    --msw-knob: 16px;
+}
+.msw-md {
+    --msw-w: 44px;
+    --msw-h: 24px;
+    --msw-knob: 20px;
+}
+.msw-lg {
+    --msw-w: 56px;
+    --msw-h: 28px;
+    --msw-knob: 24px;
+}
+
+/* Button (track) */
+.msw {
+    position: relative;
+    width: var(--msw-w);
+    height: var(--msw-h);
+    border-radius: calc(var(--msw-h) / 2);
+    background: var(--msw-track-off);
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.msw.is-on {
+    background: var(--msw-track-on);
+}
+.msw.is-disabled {
+    cursor: not-allowed;
+}
+
+/* Focus ring */
+.msw:focus-visible {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--msw-ring);
+}
+
+/* Decorative gradient overlay when ON */
+.msw-track-grad {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.25), rgba(29, 78, 216, 0.25));
+}
+.msw-track-grad.is-on {
+    opacity: 1;
+}
+
+/* Knob */
+.msw-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px; /* inner padding */
+    width: var(--msw-knob);
+    height: var(--msw-knob);
+    transform: translate(0, -50%);
+    border-radius: 9999px;
+    background: var(--msw-knob-bg);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Label */
+.msw-label {
+    user-select: none;
+    color: var(--neutral-800);
+    cursor: pointer;
+}
+.msw-label.is-disabled {
+    cursor: not-allowed;
+}
+
+/* Subtle note text for demos */
+.msw-note {
+    font-size: 0.85rem;
+    color: #6b7280;
+}

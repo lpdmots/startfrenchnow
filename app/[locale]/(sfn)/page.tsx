@@ -10,7 +10,7 @@ import { HeroSfn } from "@/app/components/sfn/home/HeroSfn";
 import { Locale } from "@/i18n";
 import Marquee from "@/app/components/ui/marquee";
 
-function Home({ params }: { params: { locale: Locale } }) {
+function Home({ params: { locale } }: { params: { locale: Locale } }) {
     return (
         <div className="page-wrapper flex flex-col gap-8 md:gap-12">
             <HeroSfn />
@@ -34,7 +34,7 @@ function Home({ params }: { params: { locale: Locale } }) {
             <section className="section py-0 wf-section">
                 <WhoIAm />
             </section>
-            <BlogHome />
+            <BlogHome locale={locale} />
         </div>
     );
 }

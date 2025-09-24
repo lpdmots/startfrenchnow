@@ -90,7 +90,6 @@ export async function POST(request: NextRequest) {
             mainImage,
             externLinks,
             categories,
-            langage: "both",
             internLink: lien_interne,
         });
         return NextResponse.json({ createdPost, link }, { status: 200 });

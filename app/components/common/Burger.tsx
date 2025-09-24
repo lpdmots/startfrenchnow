@@ -6,11 +6,13 @@ import Link from "next-intl/link";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { FaCaretRight } from "react-icons/fa";
 import { Locale } from "@/i18n";
+import { useTranslations } from "next-intl";
 
 const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLElement | null>(null);
     const pathname = usePathname();
+    const t = useTranslations("Navigation.fideButton");
 
     useOutsideClick(ref, () => {
         setOpen(false);
@@ -55,11 +57,47 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                             </div>
                         </div>
                         <li onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0">
-                            <LinkCurrentBlog href="/fide" className={`nav-link header-nav-link !p-2 ${pathname === "/stories" && "current"}`} locale={locale}>
-                                {messages.fide}
+                            <LinkCurrentBlog href="/fide" className={`nav-link header-nav-link !p-2 ${pathname === "/fide" && "current"}`} locale={locale}>
+                                {t("buttonLabel")}
                             </LinkCurrentBlog>
                         </li>
-                        <div className="p-2 font-bold">{messages.resourcesDict.resourcesTitle}</div>
+                        <div className="grid grid-cols-2 w-full">
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/fide" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {t("fide")}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/fide/pack-fide" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center  pl-0" locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {t("packFide")}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/fide/dashboard" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {t("dashboard")}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/fide/videos" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {t("videos")}
+                                </LinkCurrentBlog>
+                            </div>
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0 " locale={locale as Locale}>
+                                    <FaCaretRight />
+                                    {t("exams")}
+                                </LinkCurrentBlog>
+                            </div>
+                        </div>
+                        <li onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0">
+                            <LinkCurrentBlog href="/blog" className={`nav-link header-nav-link !p-2 ${pathname === "/blog" && "current"}`} locale={locale}>
+                                {messages.resourcesDict.resourcesTitle}
+                            </LinkCurrentBlog>
+                        </li>
                         <div className="flex flex-col w-full">
                             <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center  pl-0" locale={locale as Locale}>

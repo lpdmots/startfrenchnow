@@ -6,8 +6,10 @@ import SecondaryPost from "../blog/SecondaryPost";
 import { NUMBER_OF_POSTS_TO_FETCH } from "@/app/lib/constantes";
 import { FaSpinner } from "react-icons/fa";
 import VideoList from "../videos/VideoList";
+import { localizePosts } from "@/app/lib/utils";
+import { Locale } from "@/i18n";
 
-export const PostsListInfiniteScroll = ({ initialPosts, postLang, locale, category }: { initialPosts: Post[]; postLang: string; locale: string; category?: string }) => {
+export const PostsListInfiniteScroll = ({ initialPosts, locale, category }: { initialPosts: Post[]; locale: string; category?: string }) => {
     const [posts, setPosts] = useState<Post[]>(initialPosts);
     const [offset, setOffset] = useState(NUMBER_OF_POSTS_TO_FETCH);
     const [loading, setLoading] = useState(false);
@@ -23,11 +25,12 @@ export const PostsListInfiniteScroll = ({ initialPosts, postLang, locale, catego
             return;
         }
         setLoading(true);
-        const newPosts = !category
+        const newPostsData = !category
             ? await getPostsSlice(offset, offset + NUMBER_OF_POSTS_TO_FETCH)
             : category === "video"
             ? await getVideosPostsSlice(offset, offset + NUMBER_OF_POSTS_TO_FETCH)
             : await getCategoryPostsSlice(category, offset, offset + NUMBER_OF_POSTS_TO_FETCH);
+        const newPosts = localizePosts(newPostsData, locale as Locale);
 
         // Si le nombre de posts est inférieur à NUMBER_OF_POSTS_TO_FETCH, c'est qu'il n'y en a plus
         if (newPosts.length < NUMBER_OF_POSTS_TO_FETCH) {
@@ -58,11 +61,7 @@ export const PostsListInfiniteScroll = ({ initialPosts, postLang, locale, catego
 
     return (
         <>
-            {category === "video" ? (
-                <VideoList posts={posts} postLang={postLang as "fr" | "en"} locale={locale} />
-            ) : (
-                posts.map((post) => <SecondaryPost key={post._id} post={post} postLang={postLang as "fr" | "en"} locale={locale} />)
-            )}
+            {["video", "pack_fide"].includes(category || "") ? <VideoList posts={posts} locale={locale} /> : posts.map((post) => <SecondaryPost key={post._id} post={post} locale={locale} />)}
             <div ref={lastPostRef} style={{ height: "1px" }} />
             {loading && (
                 <div className="w-full flex flex-col justify-center items-center">

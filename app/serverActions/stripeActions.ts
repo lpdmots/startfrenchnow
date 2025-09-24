@@ -21,11 +21,11 @@ export const getAmount = async (
     const totalPurchasedMinutes = userPurchasedLesson?.totalPurchasedMinutes || 0;
     const minutesPerLesson = benefits?.find((benefit) => benefit.referenceKey === product?.referenceKey)?.creditAmount;
 
-    if (!minutesPerLesson) {
+    /* if (!minutesPerLesson) {
         throw new Error("Ce produit n'ajoute pas de crédits de leçon");
-    }
+    } */
 
-    const previousPurchasedLessons = totalPurchasedMinutes / minutesPerLesson;
+    const previousPurchasedLessons = totalPurchasedMinutes / (minutesPerLesson || 1);
 
     if (parseInt(quantity) > product.maxQuantity || parseInt(quantity) < 1) {
         throw new Error("Invalid quantity");

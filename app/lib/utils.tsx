@@ -1,4 +1,5 @@
-import { Reference, VocabItem } from "../types/sfn/blog";
+import { Locale } from "@/i18n";
+import { Post, Reference, VocabItem } from "../types/sfn/blog";
 import { PricingDetails, PricingDetailsFetch, ProductFetch } from "../types/sfn/stripe";
 import { jsonrepair } from "jsonrepair";
 
@@ -141,6 +142,16 @@ export function replaceInString(template: string, variables: any) {
         result = result.replace(placeholder, value as string);
     }
     return result;
+}
+
+export function localizePosts(posts: Post[], locale: Locale): Post[] {
+    return posts.map((p) => ({
+        ...p,
+        title: locale === "fr" ? p.title : p.title_en,
+        description: locale === "fr" ? p.description : p.description_en,
+        metaDescription: locale === "fr" ? p.metaDescription : p.metaDescription_en,
+        body: locale === "fr" ? p.body : p.body_en,
+    }));
 }
 
 export const getDataInRightLang = <T extends object>(item: T, lang: "en" | "fr", attribute: keyof T) => {
@@ -437,4 +448,19 @@ export function extractJsonSafe(content: string): any {
 
     const repaired = jsonrepair(cleaned);
     return JSON.parse(repaired);
+}
+
+export function secondsToMinutes(seconds?: number, withSeconds = false): string {
+    if (!seconds || seconds <= 0) return "0 min";
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    if (withSeconds) {
+        if (minutes === 0) return `${remainingSeconds} s`;
+        if (remainingSeconds === 0) return `${minutes} min`;
+        return `${minutes} min ${remainingSeconds} s`;
+    }
+
+    return `${Math.ceil(seconds / 60)} min`;
 }

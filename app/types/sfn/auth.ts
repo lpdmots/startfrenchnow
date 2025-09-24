@@ -25,22 +25,53 @@ export interface UserProps extends Base {
     oAuth?: string;
     stories: UserStory[] | undefined;
     lessons?: Lesson[];
+    permissions?: Permission[];
     alias?: string[];
     learningProgress?: Progress[];
 }
 
-export interface Progress {
-    _key: string;
-    type: string;
-    logs: Log[];
+export interface Permission {
+    referenceKey: string;
+    grantedAt: string;
+    expiresAt: string;
 }
 
+export interface Progress {
+    _key: string;
+    type: string; // "fidePack"
+    videoLogs?: VideoLog[];
+    examLogs?: ExamLog[];
+}
+
+export interface VideoLog {
+    _key: string;
+    post: Reference; // Post (vidéo)
+    status: "watched" | "unwatched" | "in-progress";
+    lastSeenAt?: string; // ISO
+    lastCompletedAt?: string; // ISO (quand 'watched' devient vrai)
+    updatedAt: string;
+    progress: number; // 0..1
+    lastMilestone: number; // ex: 0.2, 0.4, ..., 1
+}
+
+export interface ExamLog {
+    _key: string;
+    exam: Reference;
+    bestScore: number;
+    scores: number[];
+    bestScoreAt?: string;
+    lastCompletedAt?: string; // ISO (fin de la dernière tentative)
+    updatedAt: string;
+}
+
+/* 
 export interface Log {
     _key: string;
     exam: Reference;
     score: number;
     date: string;
 }
+*/
 
 export interface UserStory {
     story: Reference;

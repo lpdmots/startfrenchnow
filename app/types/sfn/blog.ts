@@ -1,3 +1,5 @@
+import { CATEGORIES } from "@/app/lib/constantes";
+
 type Base = {
     _createdAt: string;
     _id: string;
@@ -6,11 +8,9 @@ type Base = {
     _updatedAt: string;
 };
 
-type Level = "a1" | "a2" | "b1" | "b2" | "c1" | "c2";
+export type Level = "a1" | "a2" | "b1" | "b2" | "c1" | "c2";
 
 export interface Post extends Base {
-    langage: "both" | "en" | "fr";
-    author: Author;
     body: Block[];
     body_en: Block[];
     categories: Category[];
@@ -28,13 +28,9 @@ export interface Post extends Base {
     publishedAt: string;
     externLinks: { url: string; title: string }[];
     internLink: string;
-}
-
-export interface Author extends Base {
-    bio: Block[];
-    image: Image;
-    name: string;
-    slug: Slug;
+    isPreview?: boolean;
+    durationSec?: number;
+    resources?: { title: string; key: string }[];
 }
 
 export interface Image {
@@ -151,8 +147,8 @@ export interface VocabItemNew extends VocabItem {
     instruction: "new" | "keep" | "update" | undefined; // undefined ou new --> on créera un nouveau vocabItem, keep --> on prendra le vocabItem existant, update --> on mettra à jour le vocabItem existant
 }
 
-export type Category = "tips" | "video" | "grammar" | "vocabulary" | "culture" | "expressions" | "exercise" | "toLoad" | "fide";
-export type PrimaryCategory = "tips" | "grammar" | "vocabulary" | "culture" | "expressions" | "fide";
+export type Category = (typeof CATEGORIES)[number];
+export type PrimaryCategory = "tips" | "grammar" | "vocabulary" | "culture" | "expressions" | "fide" | "pack_fide";
 export type ResponsesLayouts = "true-false" | "buttons" | "checkbox" | "select" | "input" | "imgMap" | "link" | "order";
 export type ExerciseType = "true-false" | "buttons" | "checkbox" | "select" | "input" | "image" | "sound" | "imgMap" | "link" | "order";
 export type ColorsTypes = "yellow" | "blue" | "red" | "purple" | "green";

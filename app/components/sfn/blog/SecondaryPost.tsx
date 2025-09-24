@@ -10,18 +10,19 @@ import { Locale } from "@/i18n";
 import { ImPlay2 } from "react-icons/im";
 import { CategoryBadge } from "./CategoryBadge";
 
-const SecondaryPost = ({ post, postLang = "en", locale }: { post: Post; postLang?: "en" | "fr"; locale: string }) => {
+const SecondaryPost = ({ post, locale }: { post: Post; locale: string }) => {
+    const { title, description } = post;
     const level = post.level?.length ? post.level.map((lev) => LEVELDATA[lev]) : null;
     const firstCategory = post?.categories?.[0] || "tips";
     const categories = CATEGORY_NAMES[locale as keyof typeof CATEGORY_NAMES];
     const categoryName = categories && firstCategory in categories ? categories[firstCategory as keyof typeof categories] : undefined;
-    const title = getDataInRightLang(post, postLang, "title");
-    const description = getDataInRightLang(post, postLang, "description");
     const hasVideo = post?.mainVideo?.url;
     const categoryColor = CATEGORIESCOLORS[firstCategory as keyof typeof CATEGORIESCOLORS];
 
+    const pathBase = ["pack_fide", "fide"].includes(firstCategory) ? `/fide/videos/` : `/blog/post/`;
+
     return (
-        <ClientSideRoute route={`/blog/post/${post.slug.current}`} locale={locale as Locale}>
+        <ClientSideRoute route={pathBase + post.slug.current} locale={locale as Locale}>
             <div className="card blog-secondary-card link-card w-inline-block !p-4 !sm:p-8">
                 <div className="blog-card-image-wrapper inside-card blog-secondary-card-image flex flex-col gap-4 h-full" style={{ maxHeight: "none", overflow: "visible" }}>
                     <div className="rounded-2xl sm:rounded-3xl" style={{ overflow: "hidden" }}>
@@ -65,7 +66,7 @@ const SecondaryPost = ({ post, postLang = "en", locale }: { post: Post; postLang
                                 <p className="mb-0"> - </p>
                             </div>
                         )}
-                        {new Date(post.publishedAt).toLocaleDateString(postLang, { day: "numeric", month: "long", year: "numeric" })}
+                        {new Date(post.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })}
                     </div>
                 </div>
             </div>

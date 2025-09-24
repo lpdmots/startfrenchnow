@@ -6,11 +6,10 @@ import { splitArrayIntoChunks } from "@/app/lib/utils";
 
 type Props = {
     posts: Post[];
-    postLang: "en" | "fr";
     locale: string;
 };
 
-function VideoList({ posts, postLang, locale }: Props) {
+function VideoList({ posts, locale }: Props) {
     const chunkedPosts = splitArrayIntoChunks(posts, 3);
 
     return (
@@ -22,7 +21,7 @@ function VideoList({ posts, postLang, locale }: Props) {
                             <div role="listitem" className="height-100 w-dyn-item">
                                 {chunk.length > 0 && (
                                     <ParentToChildrens>
-                                        <PrimaryPost post={chunk[0]} postLang={postLang} locale={locale} />
+                                        <PrimaryPost post={chunk[0]} locale={locale} />
                                     </ParentToChildrens>
                                 )}
                             </div>
@@ -33,14 +32,14 @@ function VideoList({ posts, postLang, locale }: Props) {
                             <div role="listitem" className="w-dyn-item">
                                 {chunk.length > 1 && (
                                     <ParentToChildrens>
-                                        <SecondaryPost post={chunk[1]} postLang={postLang} locale={locale} />
+                                        <SecondaryPost post={chunk[1]} locale={locale} />
                                     </ParentToChildrens>
                                 )}
                             </div>
                             <div role="listitem" className="w-dyn-item">
                                 {chunk.length > 2 && (
                                     <ParentToChildrens>
-                                        <SecondaryPost post={chunk[2]} postLang={postLang} locale={locale} />
+                                        <SecondaryPost post={chunk[2]} locale={locale} />
                                     </ParentToChildrens>
                                 )}
                             </div>

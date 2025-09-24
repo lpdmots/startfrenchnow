@@ -30,9 +30,6 @@ const FideExamPageNoAsync = ({ exams }: { exams: Exam[] }) => {
             <div className="w-full max-w-7xl">
                 <ExpandableCardDemo exams={exams} />
             </div>
-            {/* <div className="w-full max-w-7xl">
-                <Exercises exercises={exercises} allThemes={allThemes} />
-            </div> */}
         </div>
     );
 };

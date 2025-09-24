@@ -16,7 +16,7 @@ import { groq } from "next-sanity";
 import { useTranslations } from "next-intl";
 
 interface CheckoutProps {
-    locale: "fr" | "en" | "es" | "pt" | "tr";
+    locale: "fr" | "en";
     productSlug: string;
     quantity: string;
 }
@@ -54,7 +54,6 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
 
     useEffect(() => {
         if (session) {
-            console.log("session", session);
             setFormData((state) => ({ ...state, email: session.user?.email || "" }));
         }
     }, [session]);

@@ -2,11 +2,11 @@ import { CATEGORIES } from "@/app/lib/constantes";
 import { Category, Post } from "@/app/types/sfn/blog";
 import { Locale } from "@/i18n";
 import { useLocale, useTranslations } from "next-intl";
-import { LinkBlog } from "../blog/LinkBlog";
+import Link from "next-intl/link";
 import { intelRich } from "@/app/lib/intelRich";
 import { PostsListInfiniteScroll } from "./PostsListInfiniteScroll";
 
-export default function PostsList({ initialPosts, postLang }: { initialPosts: Post[]; postLang: "en" | "fr" }) {
+export default function PostsList({ initialPosts }: { initialPosts: Post[] }) {
     const t = useTranslations("Blog.BlogList");
     const tp = useTranslations("Blog.PostsList");
     const locale = useLocale();
@@ -36,9 +36,9 @@ export default function PostsList({ initialPosts, postLang }: { initialPosts: Po
                                     <div className="inner-container _380">
                                         <div className="text-center---tablet">
                                             <div className="card categories-card !p-8">
-                                                <LinkBlog href="/blog" className="blog-categories-item-wrapper w-inline-block current pointer-events-none" locale={locale as Locale}>
+                                                <Link href="/blog" className="blog-categories-item-wrapper w-inline-block current pointer-events-none">
                                                     {tp("all")}
-                                                </LinkBlog>
+                                                </Link>
                                                 <div className="w-dyn-list">
                                                     <div role="list" className="collection-list categories w-dyn-items">
                                                         {CATEGORIES.map((category) => (
@@ -51,7 +51,7 @@ export default function PostsList({ initialPosts, postLang }: { initialPosts: Po
                                     </div>
                                 </div>
                                 <div className="grid gap-12">
-                                    <PostsListInfiniteScroll initialPosts={initialPosts} postLang={postLang} locale={locale} />
+                                    <PostsListInfiniteScroll initialPosts={initialPosts} locale={locale} />
                                 </div>
                             </div>
                         </div>
@@ -66,9 +66,9 @@ const CategoryItem = ({ category, locale }: { category: Category; locale: Locale
     const tCat = useTranslations(`Categories.${category}`);
     return (
         <div role="listitem" key={category} className="w-dyn-item">
-            <LinkBlog href={`/blog/category/${category}`} className="blog-categories-item-wrapper w-inline-block" locale={locale}>
+            <Link href={`/blog/category/${category}`} className="blog-categories-item-wrapper w-inline-block" locale={locale}>
                 {tCat("title")}
-            </LinkBlog>
+            </Link>
         </div>
     );
 };

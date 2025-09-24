@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import { renderStars } from "../common/CompteurIncrement";
@@ -10,21 +10,21 @@ import { Exam } from "@/app/types/fide/exam";
 import urlFor from "@/app/lib/urlFor";
 import { useSession } from "next-auth/react";
 import { getFideExamProgress } from "@/app/serverActions/fideExamActions";
-import { Log } from "@/app/types/sfn/auth";
+import { ExamLog } from "@/app/types/sfn/auth";
 import { FaRegStar } from "react-icons/fa";
 
-export default function ExpandableCardDemo({ exams }: { exams: Exam[] }) {
+export default function ExpandableCardDemo({ exams, withStars = true }: { exams: Exam[]; withStars?: boolean }) {
     const { data: session } = useSession();
-    const [logs, setLogs] = useState<Log[] | null>(null);
+    const [logs, setLogs] = useState<ExamLog[] | null>(null);
     const [active, setActive] = useState<(typeof exams)[number] | boolean | null>(null);
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         (async () => {
             if (session?.user?._id) {
-                const user = await getFideExamProgress(session.user._id, "fideExam");
+                const user = await getFideExamProgress(session.user._id, "pack_fide");
                 console.log("Progress fetched:", { user });
-                setLogs(user?.learningProgress?.[0]?.logs || []);
+                setLogs(user?.learningProgress?.[0]?.examLogs || []);
             }
         })();
     }, [session]);
@@ -95,7 +95,7 @@ export default function ExpandableCardDemo({ exams }: { exams: Exam[] }) {
                                     className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
                                 />
                                 <div className="absolute w-full h-full top-0">
-                                    <AudioOverlayPlayer exam={active} logs={logs} setLogs={setLogs} userId={session?.user?._id} />
+                                    <AudioOverlayPlayer exam={active} setLogs={setLogs} userId={session?.user?._id} />
                                 </div>
                             </motion.div>
 
@@ -128,7 +128,7 @@ export default function ExpandableCardDemo({ exams }: { exams: Exam[] }) {
                                 layoutId={`card-${exam.title}-${exam._id}`}
                                 key={`card-${exam.title}-${exam._id}`}
                                 onClick={() => setActive(exam)}
-                                className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 my-4"
+                                className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 my-2"
                             >
                                 <div className="flex gap-4 flex-col md:flex-row items-center">
                                     <motion.div layoutId={`image-${exam.title}-${exam._id}`}>
@@ -149,9 +149,11 @@ export default function ExpandableCardDemo({ exams }: { exams: Exam[] }) {
                                         </motion.p>
                                     </div>
                                 </div>
-                                <motion.div layoutId={`stars-${exam.title}-${exam._id}`} className="flex flex-grow items-center justify-end mt-4 md:mt-0">
-                                    <RenderStars active={exam} logs={logs} />
-                                </motion.div>
+                                {withStars && (
+                                    <motion.div layoutId={`stars-${exam.title}-${exam._id}`} className="flex flex-grow items-center justify-end mt-4 md:mt-0">
+                                        <RenderStars active={exam} logs={logs} />
+                                    </motion.div>
+                                )}
                             </motion.div>
                         );
                     })}
@@ -160,8 +162,8 @@ export default function ExpandableCardDemo({ exams }: { exams: Exam[] }) {
     );
 }
 
-const RenderStars = ({ active, logs }: { active: Exam; logs: Log[] | null }) => {
-    const stars = logs?.find((log) => log.exam._ref === active._id)?.score ?? null;
+const RenderStars = ({ active, logs }: { active: Exam; logs: ExamLog[] | null }) => {
+    const stars = logs?.find((log) => log.exam._ref === active._id)?.bestScore ?? null;
     if (stars === undefined || stars === null) {
         return (
             <>

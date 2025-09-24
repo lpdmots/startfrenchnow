@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 interface YourPourchaseProps {
     productInfos: ProductInfos;
     pricingDetails: PricingDetails;
-    locale: "fr" | "en" | "es" | "pt" | "tr";
+    locale: "fr" | "en";
     setQuantity: React.Dispatch<React.SetStateAction<string>>;
     setCurrency: React.Dispatch<React.SetStateAction<"CHF" | "EUR" | "USD">>;
     quantity: string;

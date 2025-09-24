@@ -1,5 +1,5 @@
 import { LESSONS_CREDITS_PERMISSIONS } from "@/app/lib/constantes";
-import { Block, Image, Slug } from "./blog";
+import { Block, Image, Level, Reference, Slug } from "./blog";
 
 export interface PricingDetails {
     initialUnitPrice: number;
@@ -17,7 +17,7 @@ export interface ProductFetch {
     title: MultiLangString;
     description: MultiLangString;
     slug: Slug;
-    defaultLangage: "fr" | "en" | "es" | "pt" | "tr";
+    defaultLangage: "fr" | "en";
     maxQuantity: number;
     minQuantity: number;
     image: Image;
@@ -25,6 +25,23 @@ export interface ProductFetch {
     pricingDetails: PricingDetailsFetch[];
     benefits: BenefitFetch[];
     onSuccessUrl: string;
+    packages: ProductPackage[];
+}
+
+export interface ProductPackage {
+    title: string;
+    title_en: string;
+    referenceKey: string;
+    modules: PackageModule[];
+}
+
+export interface PackageModule {
+    title: string;
+    title_en: string;
+    subtitle?: string;
+    subtitle_en?: string;
+    level: Level[];
+    posts: Reference[];
 }
 
 export interface PricingDetailsFetch {
@@ -59,14 +76,11 @@ export interface ProductInfos {
     description: MultiLangString;
     maxQuantity: number;
     image: Image;
-    defaultLangage: "fr" | "en" | "es" | "pt" | "tr";
+    defaultLangage: "fr" | "en";
     onSuccessUrl: string;
 }
 
 export interface MultiLangString {
     fr: string;
     en: string;
-    es: string;
-    pt: string;
-    tr: string;
 }

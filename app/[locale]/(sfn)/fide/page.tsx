@@ -10,7 +10,7 @@ import { ContactForFideCourses } from "./components/ContactForFideCourses";
 import PriceSliderFide from "./components/PriceSliderFide";
 import { Locale } from "@/i18n";
 
-function FidePage({ params: { locale } }: { params: { locale: Locale } }) {
+function ExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
     return (
         <div className="w-full">
             <div className="page-wrapper flex flex-col max-w-7xl m-auto">
@@ -51,4 +51,4 @@ function FidePage({ params: { locale } }: { params: { locale: Locale } }) {
     );
 }
 
-export default FidePage;
+export default ExamsPage;

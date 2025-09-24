@@ -7,9 +7,9 @@ import { PortableText } from "@portabletext/react";
 import { RichTextComponents } from "../sanity/RichTextComponents";
 import { Block, PrimaryCategory, VocabItem } from "@/app/types/sfn/blog";
 import { useEffect, useState } from "react";
-import { usePostLang } from "@/app/hooks/usePostLang";
 import { CATEGORIESCOLORS, natures } from "@/app/lib/constantes";
 import { FaInfoCircle } from "react-icons/fa";
+import { useLocale } from "next-intl";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -72,10 +72,10 @@ export const NotePopoverTransalation = ({ vocabItem, category }: { vocabItem: Vo
 };
 
 export const usePopoverText = (vocabItem: VocabItem, category: PrimaryCategory) => {
-    const postLang = usePostLang();
+    const locale = useLocale() as "fr" | "en";
     const { noteFr, noteEn, alternatives, example } = vocabItem;
-    const note = postLang === "fr" && noteFr ? noteFr : noteEn || noteFr;
-    const nature = natures[vocabItem.nature as keyof typeof natures]?.[postLang === "fr" ? "french" : "english"];
+    const note = locale === "fr" && noteFr ? noteFr : noteEn || noteFr;
+    const nature = natures[vocabItem.nature as keyof typeof natures]?.[locale === "fr" ? "french" : "english"];
     const alternativesString = alternatives?.join(" - ");
     const isSomethingToShow = !!note || !!alternativesString || !!nature || !!example;
 
@@ -95,7 +95,7 @@ export const usePopoverText = (vocabItem: VocabItem, category: PrimaryCategory) 
             {!!note && <PortableText value={note} components={RichTextComponents(category)} />}
             {!!example && (
                 <p>
-                    <span className="underline">{postLang === "fr" ? "Exemple :" : "Example:"}</span>
+                    <span className="underline">{locale === "fr" ? "Exemple :" : "Example:"}</span>
                     <span className="italic"> {example}</span>
                 </p>
             )}

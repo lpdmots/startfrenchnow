@@ -68,6 +68,7 @@ async function applyPurchaseEffect(quantity: string, user: { _id: string; alias?
     const benefits = product.benefits;
     for (const benefit of benefits) {
         if (benefit.benefitType === "lessons") {
+            console.log("Appliquer l'effet de l'achat de leçons");
             const newMinutes = benefit.creditAmount * parseInt(quantity);
 
             const existingLesson = await client
@@ -93,7 +94,46 @@ async function applyPurchaseEffect(quantity: string, user: { _id: string; alias?
         } else if (benefit.benefitType === "credits") {
             // Appliquer l'effet de l'achat de crédits
         } else if (benefit.benefitType === "permission") {
-            // Appliquer l'effet de l'achat de permission
+            const qty = parseInt(quantity, 10) || 1;
+            const addedDays = (benefit.accessDuration || 0) * qty;
+
+            const userPerm = await client
+                .fetch(`*[_type == "user" && _id == $userId][0]{ permissions }`, { userId: user._id })
+                .then((res) => res?.permissions?.find((p: any) => p.referenceKey === benefit.referenceKey));
+
+            const nowIso = new Date().toISOString();
+
+            const computeExpiry = (baseIso?: string) => {
+                if (addedDays <= 0) return ""; // accès sans expiration (string requis par l'interface)
+                const base = baseIso && !isNaN(Date.parse(baseIso)) && new Date(baseIso) > new Date() ? new Date(baseIso) : new Date();
+                base.setUTCDate(base.getUTCDate() + addedDays);
+                return base.toISOString();
+            };
+
+            if (userPerm) {
+                // Prolonge la date d'expiration existante (ou la laisse vide pour accès à vie)
+                const newExpiresAt = computeExpiry(userPerm.expiresAt);
+                await client
+                    .patch(user._id)
+                    .set({
+                        [`permissions[_key=="${userPerm._key}"].grantedAt`]: userPerm.grantedAt || nowIso,
+                        [`permissions[_key=="${userPerm._key}"].expiresAt`]: newExpiresAt,
+                    })
+                    .commit();
+            } else {
+                // Ajoute une nouvelle permission
+                await client
+                    .patch(user._id)
+                    .setIfMissing({ permissions: [] })
+                    .append("permissions", [
+                        {
+                            referenceKey: benefit.referenceKey,
+                            grantedAt: nowIso,
+                            expiresAt: computeExpiry(), // "" si pas d'expiration
+                        },
+                    ])
+                    .commit({ autoGenerateArrayKeys: true });
+            }
         }
     }
 }

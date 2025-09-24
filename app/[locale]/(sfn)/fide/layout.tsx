@@ -18,18 +18,5 @@ interface Props {
 }
 
 export default async function FideLayout({ children, params: { locale } }: Props) {
-    let messages;
-
-    try {
-        const fullMessages = (await import(`@/app/dictionaries/${locale}.json`)).default;
-        messages = fullMessages["Fide"];
-    } catch (error) {
-        throw new Error(`Impossible de charger les messages pour la locale ${locale}`);
-    }
-
-    return (
-        <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-        </NextIntlClientProvider>
-    );
+    return <>{children}</>;
 }

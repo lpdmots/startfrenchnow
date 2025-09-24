@@ -99,6 +99,14 @@
             "exercises": "Flashcards & Exercices",
             "stories": "Histoires Interactives",
             "testYourLevel": "Testez votre Niveau"
+        },
+        "fideButton": {
+            "buttonLabel": "FIDE",
+            "fide": "Test FIDE",
+            "packFide": "Pack FIDE",
+            "dashboard": "Tableau de bord",
+            "videos": "Vidéos FIDE",
+            "exams": "Examens blancs"
         }
     },
     "HeroSfn": {
@@ -313,54 +321,10 @@
         },
         "PaymentSuccess": {
             "thankYou": "Merci !",
-            "successMessage": "Vous avez envoyé avec succès",
+            "successMessage": "Vous avez payé avec succès",
             "goHome": "Retour à l'accueil",
-            "bookLesson": "Réserver un cours !",
+            "bookLesson": "Commencer !",
             "successImageAlt": "Succès"
-        }
-    },
-    "PrivateLessons": {
-        "common": {
-            "buyLessons": "Acheter des leçons",
-            "lessonsAvailable1": "{hours} leçon{plural}",
-            "lessonsAvailable2": "à réserver",
-            "bookLesson": "Réserver un cours",
-            "followUpTitle": "Le <hs2>Suivi</hs2> de vos Heures",
-            "remainingHours": "Heures à Réserver",
-            "pendingHours": "En Attente",
-            "completedHours": "Heures Effectuées",
-            "calendarTitle": "Votre <hs4>Calendrier</hs4>",
-            "lessonsList1": "Voici la liste de vos cours, vous pouvez les",
-            "lessonsList2": "annuler gratuitement sous 48h",
-            "noLessons": "Vous n'avez pas de leçon à réserver.",
-            "noBookedLessons": "Vous n'avez pas encore réservé de leçon.",
-            "noPurchasedLessons": "Vous n'avez pas acheté de cours.",
-            "zoomLink": "Lien Zoom",
-            "status": "Statut",
-            "date": "Date",
-            "time": "Horaires",
-            "eventRow": {
-                "statusCompleted": "Leçon effectuée.",
-                "statusUpcoming": "Leçon à venir.",
-                "statusCanceled": "Leçon annulée.",
-                "statusCurrent": "Leçon en cours.",
-                "cancelLessonTitle": "Annuler ?",
-                "cancelLessonConfirmation1": "Veuillez confirmer que vous souhaitez annuler le cours du",
-                "cancelLessonConfirmation2": "{date} de {startTime} à {endTime}",
-                "cancelOk": "OUI, annuler",
-                "cancelNo": "NON, ne pas annuler",
-                "zoomLink": "Lien Zoom",
-                "noZoomLink": "N/A",
-                "errorTitle": "Oh oh! Une erreur s'est produite.",
-                "errorMessage": "Il y a eu un problème pour supprimer le cours. Veuillez me prévenir par mail.",
-                "successTitle": "Cours annulé",
-                "successMessage": "Le cours a été annulé avec succès.",
-                "optionalMessage": "Message optionnel"
-            }
-        },
-        "fide-preparation-class": {
-            "title": "Réservez vos <hs2>cours FIDE</hs2> privés",
-            "goToFidePage": "Se rendre sur la page FIDE"
         }
     },
     "ExercisesPage": {
@@ -368,6 +332,50 @@
         "description": "Révisez le vocabulaire avec des flashcards, entraînez-vous sur des notions de grammaire, ou explorez d'autres thématiques. Bonne pratique !"
     },
     "Fide": {
+        "dashboard": {
+            "PrivateLessons": {
+                "common": {
+                    "buyLessons": "Acheter des leçons",
+                    "lessonsAvailable1": "{hours} leçon{plural}",
+                    "lessonsAvailable2": "à réserver",
+                    "bookLesson": "Réserver un cours",
+                    "followUpTitle": "Le <hs2>Suivi</hs2> de vos Heures",
+                    "remainingHours": "Heures à Réserver",
+                    "pendingHours": "En Attente",
+                    "completedHours": "Heures Effectuées",
+                    "calendarTitle": "Votre <hs4>Calendrier</hs4>",
+                    "lessonsList1": "Voici la liste de vos cours, vous pouvez les",
+                    "lessonsList2": "annuler gratuitement sous 48h",
+                    "noLessons": "Vous n'avez pas de leçon à réserver.",
+                    "noBookedLessons": "Vous n'avez pas encore réservé de leçon.",
+                    "noPurchasedLessons": "Vous n'avez pas acheté de cours.",
+                    "zoomLink": "Lien Zoom",
+                    "status": "Statut",
+                    "date": "Date",
+                    "time": "Horaires",
+                    "eventRow": {
+                        "statusCompleted": "Leçon effectuée.",
+                        "statusUpcoming": "Leçon à venir.",
+                        "statusCanceled": "Leçon annulée.",
+                        "statusCurrent": "Leçon en cours.",
+                        "cancelLessonTitle": "Annuler ?",
+                        "cancelLessonConfirmation1": "Veuillez confirmer que vous souhaitez annuler le cours du",
+                        "cancelLessonConfirmation2": "{date} de {startTime} à {endTime}",
+                        "cancelOk": "OUI, annuler",
+                        "cancelNo": "NON, ne pas annuler",
+                        "zoomLink": "Lien Zoom",
+                        "noZoomLink": "N/A",
+                        "errorTitle": "Oh oh! Une erreur s'est produite.",
+                        "errorMessage": "Il y a eu un problème pour supprimer le cours. Veuillez me prévenir par mail.",
+                        "successTitle": "Cours annulé",
+                        "successMessage": "Le cours a été annulé avec succès.",
+                        "optionalMessage": "Message optionnel"
+                    }
+                },
+                "title": "Réservez vos <hs2>cours FIDE</hs2> privés",
+                "goToFidePage": "Se rendre sur la page FIDE"
+            }
+        },
         "HeroFide": {
             "title": "Préparez <hs2>le Test FIDE</hs2>",
             "li1": "Vous devez préparer le test FIDE pour obtenir votre <b>permis B, C</b> ou <noWrap><b>naturalisation</b> ?</noWrap>",
@@ -378,7 +386,7 @@
         "Formateur": {
             "title": "Pourquoi choisir <noWrap><hs4>nos leçons</hs4> ?</noWrap>",
             "competences": {
-                "description1": "Plus de 6 ans d'expérience en tant qu'expert FIDE.",
+                "description1": "Plus de 7 ans d'expérience en tant qu'expert FIDE.",
                 "description2": "Plus de 100 étudiants qui ont réussi leur test FIDE avec succès.",
                 "description3": "15 ans d'expérience dans l'enseignement du français pour les étrangers.",
                 "description4": "Formateur de français reconnu sur Udemy."

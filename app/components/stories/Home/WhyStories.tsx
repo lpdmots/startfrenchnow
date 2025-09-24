@@ -4,7 +4,7 @@ import Image from "next/image";
 import { SlideFromBottom } from "../../animations/Slides";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import { LinkBlog } from "../../sfn/blog/LinkBlog";
+import Link from "next-intl/link";
 import { Locale } from "@/i18n";
 
 export const WhyStories = () => {
@@ -65,16 +65,12 @@ export const WhyStories = () => {
                                         <SlideFromBottom>
                                             <>
                                                 <p className="color-neutral-300 mg-bottom-40px">{t("description")}</p>
-                                                <LinkBlog
-                                                    href="/blog/post/decouvrez-les-bienfaits-des-histoires-interactives-pour-apprendre-le-francais"
-                                                    className="btn-secondary variant w-button"
-                                                    locale={locale as Locale}
-                                                >
+                                                <Link href="/blog/post/decouvrez-les-bienfaits-des-histoires-interactives-pour-apprendre-le-francais" className="btn-secondary variant w-button">
                                                     <div className="flex items-center justify-center">
                                                         <FaPenFancy className="mr-2" />
                                                         {t("btnReadMore")}
                                                     </div>
-                                                </LinkBlog>
+                                                </Link>
                                             </>
                                         </SlideFromBottom>
                                     </div>

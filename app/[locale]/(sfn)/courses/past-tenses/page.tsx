@@ -6,7 +6,6 @@ import { SlideFromBottom, SlideFromLeft, SlideFromRight, SlideInOneByOneChild, S
 import { LastComments } from "@/app/components/sfn/courses/LastComments";
 import Image from "next/image";
 import { MdOndemandVideo } from "react-icons/md";
-import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiFolderDownloadLine } from "react-icons/ri";
 import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 import { BsInfinity, BsTrophy } from "react-icons/bs";
@@ -14,23 +13,8 @@ import Link from "next-intl/link";
 import { CourseRatings } from "@/app/components/sfn/courses/CourseRatings";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useLocale, useTranslations } from "next-intl";
-import { LessonCardsRender } from "@/app/components/sfn/home/LessonCards";
 import { intelRich } from "@/app/lib/intelRich";
 import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoices";
-
-export const revalidate = 60;
-
-/* export async function generateStaticParams() {
-    const query = groq`*[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true]
-    {
-        slug
-    }`;
-
-    const slugs: Post[] = await client.fetch(query);
-    const slugRoutes = slugs.map((slug) => slug.slug.current);
-
-    return slugRoutes.map((slug) => ({ slug }));
-} */
 
 const COURSE_ID = "4440636";
 const COURSE_URL = "https://www.udemy.com/course/french-grammar-the-past-tenses/";

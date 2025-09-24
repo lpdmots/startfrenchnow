@@ -7,21 +7,21 @@ import { groq } from "next-sanity";
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
         {
-            ...,
-            author->,
-            categories[]->,
+            title,
+            title_en,
+            metaDescription,
+            metaDescription_en
         }
     `;
 
 export async function generateMetadata({ params: { locale, slug } }: { params: { locale: Locale; slug: string } }) {
     const post: Post = await client.fetch(query, { slug });
-    const postLang = ["fr", "en"].includes(locale) ? (locale as "fr" | "en") : "en";
-    const title = getDataInRightLang(post, postLang, "title");
-    const description = getDataInRightLang(post, postLang, "metaDescription");
+    const title = getDataInRightLang(post, locale, "title");
+    const metaDescription = getDataInRightLang(post, locale, "metaDescription");
 
     return {
         title,
-        description,
+        description: metaDescription,
     };
 }
 

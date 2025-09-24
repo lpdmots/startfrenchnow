@@ -7,77 +7,57 @@ import PostContent from "@/app/components/sfn/post/PostContent";
 import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import { LinkBlog } from "@/app/components/sfn/blog/LinkBlog";
 import { Locale } from "@/i18n";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
-
-type Props = {
-    params: {
-        slug: string;
-    };
-    searchParams: { postLang: "en" | "fr" };
-};
-
-export const revalidate = 60;
-
-/* export async function generateStaticParams() {
-    const query = groq`*[_type=='post']
-    {
-        slug
-    }`;
-
-    const slugs: Post[] = await client.fetch(query);
-    const slugRoutes = slugs.map((slug) => slug.slug.current);
-
-    return slugRoutes.map((slug) => ({ slug }));
-} */
+import { localizePosts } from "@/app/lib/utils";
+import Link from "next-intl/link";
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
         {
             ...,
-            author->,
         }
     `;
 const queryLatest = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && langage == 'both' && isReady == true] 
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true] 
     {
         ...,
     } | order(publishedAt desc) [0...3]
 `;
 
-// Vérifier si la langue correspond au post
-// Récupérer les derniers posts correspondant à la langue.
-
-async function Post({ params: { slug }, searchParams }: Props) {
+async function Post({ params }: { params: { locale: Locale; slug: string } }) {
+    const { locale, slug } = params;
     const postData: Promise<Post> = client.fetch(query, { slug });
     const rowLatestPostsData: Promise<Post[]> = client.fetch(queryLatest);
     const [post, rowLatestPosts] = await Promise.all([postData, rowLatestPostsData]);
 
-    const latestPosts = rowLatestPosts.filter((post) => post.slug.current !== slug);
+    const latestPostsRaw = rowLatestPosts.filter((post) => post.slug.current !== slug) as Post[];
 
     if (!post) return <p className="h-64 flex justify-center items-center">Sorry this post has been deleted...</p>;
 
-    return <PostNoAsync post={post} latestPosts={latestPosts} searchParams={searchParams} />;
+    const localizedPost = localizePosts([post], locale)[0];
+    const latestPosts = localizePosts(
+        latestPostsRaw.filter((p) => p.slug.current !== slug),
+        locale
+    );
+
+    return <PostNoAsync post={localizedPost} latestPosts={latestPosts} />;
 }
 
 export default Post;
 
 interface PropsNoAsync {
-    searchParams: { postLang: "en" | "fr" };
     post: Post;
     latestPosts: Post[];
 }
 
-const PostNoAsync = ({ post, latestPosts, searchParams }: PropsNoAsync) => {
+const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {
     const locale = useLocale();
-    const postLang = searchParams.postLang ? searchParams.postLang : ["fr", "en"].includes(locale) ? (locale as "fr" | "en") : "en";
-    const isForcedLang = locale !== postLang;
     const t = useTranslations(`Blog.Post`);
 
     return (
         <>
-            <PostContent post={post} postLang={postLang} isForcedLang={isForcedLang} />
+            <PostContent post={post} />
             <div className="page-wrapper">
                 <div className="section pd-top-0 wf-section">
                     <div className="container-default w-container">
@@ -86,12 +66,12 @@ const PostNoAsync = ({ post, latestPosts, searchParams }: PropsNoAsync) => {
                                 <div className="text-center---mbl">
                                     <div className="w-layout-grid grid-2-columns title-and-buttons">
                                         <h2 className="display-2 mg-bottom-0">{t.rich("latestPosts", intelRich())}</h2>
-                                        <LinkBlog href="/blog" className="btn-secondary w-button" locale={locale as Locale}>
+                                        <Link href="/blog" className="btn-secondary w-button">
                                             <span className="flex items-center">
                                                 {t("browseAllPosts")}
                                                 <AiOutlineArrowRight className="ml-2" />
                                             </span>
-                                        </LinkBlog>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +79,7 @@ const PostNoAsync = ({ post, latestPosts, searchParams }: PropsNoAsync) => {
                                 <div role="list" className="grid-2-columns blog-post-section---grid w-dyn-items">
                                     {latestPosts.slice(0, 2).map((post) => (
                                         <ParentToChildrens key={post.title}>
-                                            <PrimaryPost post={post} postLang={postLang} locale={locale} />
+                                            <PrimaryPost post={post} locale={locale} />
                                         </ParentToChildrens>
                                     ))}
                                 </div>

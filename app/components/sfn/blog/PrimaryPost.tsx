@@ -10,18 +10,19 @@ import { Locale } from "@/i18n";
 import { CategoryBadge } from "./CategoryBadge";
 import { ImPlay2 } from "react-icons/im";
 
-const PrimaryPost = ({ post, postLang = "en", locale }: { post: Post; postLang?: "en" | "fr"; locale: string }) => {
+const PrimaryPost = ({ post, locale }: { post: Post; locale: string }) => {
+    const { title, description } = post;
     const level = post.level?.length ? post.level.map((lev) => LEVELDATA[lev]) : null;
     const firstCategory = post?.categories?.[0] || "tips";
     const categories = CATEGORY_NAMES[locale as keyof typeof CATEGORY_NAMES];
     const categoryName = categories && firstCategory in categories ? categories[firstCategory as keyof typeof categories] : undefined;
-    const title = postLang === "fr" ? post.title : post.title_en;
-    const description = postLang === "fr" ? post.description : post.description_en;
     const hasVideo = post?.mainVideo?.url;
     const categoryColor = CATEGORIESCOLORS[firstCategory as keyof typeof CATEGORIESCOLORS];
 
+    const pathBase = ["pack_fide", "fide"].includes(firstCategory) ? `/fide/videos/` : `/blog/post/`;
+
     return (
-        <ClientSideRoute route={`/blog/post/${post.slug.current}`} locale={locale as Locale}>
+        <ClientSideRoute route={pathBase + post.slug.current} locale={locale as Locale}>
             <div className="blog-card-wrapper card link-card w-inline-block">
                 <div className="blog-card-image-wrapper inside-card max-heigth-330px">
                     <ScaleChildren>
@@ -66,7 +67,7 @@ const PrimaryPost = ({ post, postLang = "en", locale }: { post: Post; postLang?:
                                     </div>
                                 )}
 
-                                {new Date(post.publishedAt).toLocaleDateString(postLang, { day: "numeric", month: "long", year: "numeric" })}
+                                {new Date(post.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })}
                             </div>
                         </div>
                     </div>

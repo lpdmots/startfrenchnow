@@ -2,8 +2,7 @@
 import { Block, PrimaryCategory } from "@/app/types/sfn/blog";
 import { PortableText } from "@portabletext/react";
 import { RichTextComponents } from "../RichTextComponents";
-import { usePostLang } from "@/app/hooks/usePostLang";
-import { CATEGORIESCOLORS } from "@/app/lib/constantes";
+import { useLocale } from "next-intl";
 
 interface NoteWithLangProps {
     noteFr?: Block[];
@@ -12,8 +11,8 @@ interface NoteWithLangProps {
 }
 
 export const NoteWithLang = ({ noteFr, noteEn, category }: NoteWithLangProps) => {
-    const postLang = usePostLang();
-    const note = postLang === "fr" && noteFr ? noteFr : noteEn || noteFr;
+    const locale = useLocale() as "fr" | "en";
+    const note = locale === "fr" && noteFr ? noteFr : noteEn || noteFr;
 
     if (!note) return null;
     return <PortableText value={note} components={RichTextComponents(category)} />;

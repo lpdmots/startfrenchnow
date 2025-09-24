@@ -1,5 +1,5 @@
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
-import { UserProps } from "@/app/types/sfn/auth";
+import { Permission, UserProps } from "@/app/types/sfn/auth";
 import { compare } from "bcrypt";
 import { DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -12,7 +12,15 @@ declare module "next-auth" {
             _id: string;
             name: string;
             email: string;
+            permissions?: Permission[];
         };
+    }
+}
+
+declare module "next-auth/jwt" {
+    interface JWT {
+        _id?: string;
+        permissions?: Permission[];
     }
 }
 
@@ -57,6 +65,7 @@ export const authOptions: NextAuthOptions = {
                     email: user.email,
                     name: user.name,
                     alias: user.alias,
+                    permissions: user.permissions || [],
                 };
             },
         }),
@@ -83,14 +92,17 @@ export const authOptions: NextAuthOptions = {
             return true;
         },
         async jwt({ token, user }) {
-            const u = (user as unknown as any) || ((await client.fetch('*[_type == "user" && email == $email][0]', { email: token.email })) as UserProps);
-            if (!u) {
-                return token;
-            }
+            const u: Partial<UserProps> | null = (user as any) || ((await client.fetch('*[_type == "user" && email == $email][0]', { email: token.email })) as UserProps | null);
+
+            if (!u) return token;
+
+            const now = Date.now();
+            const perms = Array.isArray(u.permissions) ? u.permissions.filter((p) => !p.expiresAt || new Date(p.expiresAt).getTime() > now) : [];
 
             return {
                 ...token,
-                _id: u._id,
+                _id: (u as any)._id ?? token._id,
+                permissions: perms,
             };
         },
         session: ({ session, token }) => {
@@ -98,7 +110,8 @@ export const authOptions: NextAuthOptions = {
                 ...session,
                 user: {
                     ...session.user,
-                    _id: token._id,
+                    _id: token._id as string,
+                    permissions: (token.permissions as Permission[]) || [],
                 },
             };
         },

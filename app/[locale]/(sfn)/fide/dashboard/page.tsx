@@ -3,13 +3,12 @@ import Image from "next/image";
 import { ProtectedPage } from "@/app/components/auth/ProtectedPage";
 import ClientLessonFetcher from "@/app/components/sfn/privateLessons/ClientLessonFetcher";
 import { ReservationList } from "@/app/components/sfn/privateLessons/ReservationList";
-import { EVENT_TYPES, SLUG_TO_EVENT_TYPE } from "@/app/lib/constantes";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { Locale } from "@/i18n";
 
 function PrivateLessons({ params: { slug, locale } }: { params: { slug: string; locale: Locale } }) {
-    const t = useTranslations(`PrivateLessons.${slug}`);
+    const tPrivateLessons = useTranslations("Fide.dashboard.PrivateLessons");
 
     return (
         <ProtectedPage callbackUrl={`/private-lessons/${slug}`} messageInfo="privateLessons">
@@ -18,10 +17,10 @@ function PrivateLessons({ params: { slug, locale } }: { params: { slug: string; 
                     <div className="max-w-3xl py-8 md:py-12 text-center">
                         <div className="flex flex-col items-center gap-4 md:gap-8">
                             <div>
-                                <h1 className="display-1">{t.rich("title", intelRich())}</h1>
+                                <h1 className="display-1">{tPrivateLessons.rich("title", intelRich())}</h1>
                             </div>
 
-                            <ClientLessonFetcher slug={slug} />
+                            <ClientLessonFetcher eventType={"Fide Preparation Class"} />
                         </div>
                     </div>
                     <Fade>
@@ -63,7 +62,7 @@ function PrivateLessons({ params: { slug, locale } }: { params: { slug: string; 
                 </div>
             </div>
             <div className="w-full max-w-7xl m-auto px-2 md:px-4 py-12 md:py-24">
-                <ReservationList slug={slug} locale={locale} />
+                <ReservationList eventType={"Fide Preparation Class"} locale={locale} />
             </div>
         </ProtectedPage>
     );

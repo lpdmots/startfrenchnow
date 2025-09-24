@@ -39,7 +39,7 @@ function LinkArrow({ children, url, target = "_blank", rel, category, className 
             <Link href={url} className={cn("link-wrapper w-inline-block", hoverColor, className)} target={target} rel={rel} onClick={(event) => event.stopPropagation()}>
                 <span className="flex items-center justify-between">
                     <span className="link-text underline mr-1">{children}</span>
-                    <m.span variants={childrenVariant} style={{ width: 10 }}>
+                    <m.span className="flex items-center" variants={childrenVariant} style={{ width: 20 }}>
                         <HiOutlineArrowRight />
                     </m.span>
                     <span style={{ width: 15 }}></span>

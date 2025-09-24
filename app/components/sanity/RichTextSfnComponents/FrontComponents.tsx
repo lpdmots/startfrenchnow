@@ -1,8 +1,9 @@
 "use client";
-import { usePostLang } from "@/app/hooks/usePostLang";
+import { useLocale } from "next-intl";
 
-export const NaturePostLang = ({ natureLang }: { natureLang: { french: string; english: string } }) => {
-    const postLang = usePostLang();
-    const natureString = postLang === "fr" ? natureLang.french : natureLang.english;
+export const NatureLang = ({ natureLang }: { natureLang: { french: string; english: string } }) => {
+    const locale = useLocale() as "fr" | "en";
+
+    const natureString = locale === "fr" ? natureLang.french : natureLang.english;
     return <span>{natureString && "(" + natureString + ")"}</span>;
 };

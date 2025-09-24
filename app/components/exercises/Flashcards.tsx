@@ -10,10 +10,10 @@ import SimpleButton from "../animations/SimpleButton";
 import Spinner from "../common/Spinner";
 import { AiOutlineSound } from "react-icons/ai";
 import { m } from "framer-motion";
-import { usePostLang } from "@/app/hooks/usePostLang";
 import { PortableText } from "@portabletext/react";
 import { RichTextComponents } from "../sanity/RichTextComponents";
 import { getThemes } from "@/app/serverActions/exerciseActions";
+import { useLocale } from "next-intl";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 const DEFAULTCONTENT = {
@@ -66,8 +66,8 @@ const FlashCardsWrapper = ({ data, theme }: { data: FlashcardsProps; theme: Them
     const options = data.options;
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    const postLang = usePostLang();
-    const { title, instruction, shuffle, swapFaces, withSound, loading } = useMemo(() => getContent(postLang, data), [postLang, data]);
+    const locale = useLocale() as "fr" | "en";
+    const { title, instruction, shuffle, swapFaces, withSound, loading } = useMemo(() => getContent(locale, data), [locale, data]);
 
     useEffect(() => {
         setShuffledCards(shuffleArray(theme?.vocabItems || []));
@@ -343,15 +343,15 @@ const BackCardContent: React.FC<CardContentProps> = ({ isFrontFrench, voices, ca
     }
 };
 
-const getContent = (postLang: "fr" | "en", data: FlashcardsProps) => {
-    const instructionData = data[`instruction${postLang === "en" ? "_en" : ""}`];
+const getContent = (locale: "fr" | "en", data: FlashcardsProps) => {
+    const instructionData = data[`instruction${locale === "en" ? "_en" : ""}`];
     return {
-        title: data[`title${postLang === "en" ? "_en" : ""}`] || DEFAULTCONTENT[postLang].title,
+        title: data[`title${locale === "en" ? "_en" : ""}`] || DEFAULTCONTENT[locale].title,
         instruction: instructionData ? <PortableText value={instructionData} components={RichTextComponents(data?.category)} /> : <p></p>,
-        shuffle: DEFAULTCONTENT[postLang].shuffle,
-        swapFaces: DEFAULTCONTENT[postLang].swapFaces,
-        withSound: DEFAULTCONTENT[postLang].withSound,
-        loading: DEFAULTCONTENT[postLang].loading,
+        shuffle: DEFAULTCONTENT[locale].shuffle,
+        swapFaces: DEFAULTCONTENT[locale].swapFaces,
+        withSound: DEFAULTCONTENT[locale].withSound,
+        loading: DEFAULTCONTENT[locale].loading,
     };
 };
 

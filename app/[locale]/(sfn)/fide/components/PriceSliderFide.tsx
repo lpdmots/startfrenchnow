@@ -146,198 +146,6 @@ const PRICECATEGORIES = {
             buttonLabelPlural: "Acheter {quantity} heures pour ",
         },
     },
-    es: {
-        "fide-boost": {
-            image: "/images/fide-booster.png",
-            title: "FIDE",
-            subtitle: "BOOST",
-            description: (
-                <p className="mb-0">
-                    ¿Necesitas un <b>impulso de última hora</b> para sentirte completamente preparado para tu examen?
-                </p>
-            ),
-            whatYouGet: "Lo que ofrecemos",
-            features: ["Preparación rápida y enfocada", "Práctica de escenarios clave", "Aumenta tu confianza", "Recibe consejos de expertos"],
-            extrasTitle: "¿Poco tiempo antes del examen?",
-            extras: ["¡Reserva tu clase para mañana mismo!"],
-            color: "1",
-            buttonLabelSingular: "Compra {quantity} hora por ",
-            buttonLabelPlural: "Compra {quantity} horas por ",
-        },
-        "fide-essentials": {
-            image: "/images/fide-essentials.png",
-            title: "FIDE",
-            subtitle: "ESSENTIALS",
-            description: (
-                <p className="mb-0">
-                    Una preparación completa para dominar tanto los <b>escenarios del examen</b> como los <b>temas clave</b>.
-                </p>
-            ),
-            whatYouGet: "Lo que ofrecemos",
-            features: ["Práctica de todos los escenarios FIDE", 'Ampliar el vocabulario "FIDE"', "Aumenta tu confianza", "Recibe consejos de expertos"],
-            extrasTitle: "+ Recursos exclusivos para FIDE",
-            extras: [
-                "Acceso a todos los escenarios de examen A2 y B1",
-                <span key="es-1">
-                    Acceso a los <b>temas del examen del mes pasado</b>
-                </span>,
-            ],
-            color: "2",
-            buttonLabelSingular: "Compra {quantity} hora por ",
-            buttonLabelPlural: "Compra {quantity} horas por ",
-        },
-        "fide-mastery": {
-            image: "/images/fide-mastery.png",
-            title: "FIDE",
-            subtitle: "MASTERY",
-            description: (
-                <p className="mb-0">
-                    Logra un <b>dominio completo</b> y <b>confianza</b> para el día del examen.
-                </p>
-            ),
-            whatYouGet: "Lo que ofrecemos",
-            features: ["Práctica de todos los escenarios FIDE", 'Ampliar el vocabulario "FIDE"', "Aumenta tu confianza", "Recibe consejos de expertos"],
-            extrasTitle: "+ Recursos exclusivos para FIDE",
-            extras: [
-                "Acceso a todos los escenarios de examen A2 y B1",
-                <span key="es-2">
-                    Acceso a los <b>temas del examen del mes pasado</b>
-                </span>,
-                "Acceso gratuito a todos mis cursos en Udemy (50 horas de contenido, más de 100 audios)",
-            ],
-            color: "4",
-            buttonLabelSingular: "Compra {quantity} hora por ",
-            buttonLabelPlural: "Compra {quantity} horas por ",
-        },
-    },
-    pt: {
-        "fide-boost": {
-            image: "/images/fide-booster.png",
-            title: "FIDE",
-            subtitle: "BOOST",
-            description: (
-                <p className="mb-0">
-                    Precisa de um <b>impulso de última hora</b> para se sentir totalmente preparado para o exame?
-                </p>
-            ),
-            whatYouGet: "O que oferecemos",
-            features: ["Preparação rápida e direcionada", "Pratique cenários chave", "Ganhe confiança", "Receba dicas de especialistas"],
-            extrasTitle: "Sem tempo antes do exame?",
-            extras: ["Agende sua aula para amanhã mesmo!"],
-            color: "1",
-            buttonLabelSingular: "Compre {quantity} hora por ",
-            buttonLabelPlural: "Compre {quantity} horas por ",
-        },
-        "fide-essentials": {
-            image: "/images/fide-essentials.png",
-            title: "FIDE",
-            subtitle: "ESSENTIALS",
-            description: (
-                <p className="mb-0">
-                    Uma preparação completa para dominar os <b>cenários do exame</b> e os <b>tópicos principais</b>.
-                </p>
-            ),
-            whatYouGet: "O que oferecemos",
-            features: ["Pratique todos os cenários FIDE", 'Amplie o vocabulário "FIDE"', "Ganhe confiança", "Receba dicas de especialistas"],
-            extrasTitle: "+ Recursos exclusivos para FIDE",
-            extras: [
-                "Acesso a todos os cenários dos exames A2 e B1",
-                <span key="pt-1">
-                    Acesso aos <b>tópicos do exame do mês passado</b>
-                </span>,
-            ],
-            color: "2",
-            buttonLabelSingular: "Compre {quantity} hora por ",
-            buttonLabelPlural: "Compre {quantity} horas por ",
-        },
-        "fide-mastery": {
-            image: "/images/fide-mastery.png",
-            title: "FIDE",
-            subtitle: "MASTERY",
-            description: (
-                <p className="mb-0">
-                    Alcance <b>domínio total</b> e <b>confiança</b> para o dia do exame.
-                </p>
-            ),
-            whatYouGet: "O que oferecemos",
-            features: ["Pratique todos os cenários FIDE", 'Amplie o vocabulário "FIDE"', "Ganhe confiança", "Receba dicas de especialistas"],
-            extrasTitle: "+ Recursos exclusivos para FIDE",
-            extras: [
-                "Acesso a todos os cenários dos exames A2 e B1",
-                <span key="pt-2">
-                    Acesso aos <b>tópicos do exame do mês passado</b>
-                </span>,
-                "Acesso gratuito a todos os meus cursos no Udemy (50 horas de conteúdo, mais de 100 áudios)",
-            ],
-            color: "4",
-            buttonLabelSingular: "Compre {quantity} hora por ",
-            buttonLabelPlural: "Compre {quantity} horas por ",
-        },
-    },
-    tr: {
-        "fide-boost": {
-            image: "/images/fide-booster.png",
-            title: "FIDE",
-            subtitle: "BOOST",
-            description: (
-                <p className="mb-0">
-                    Sınava tamamen hazır hissetmek için <b>son dakika</b> bir desteğe mi ihtiyacınız var?
-                </p>
-            ),
-            whatYouGet: "Neler sunuyoruz?",
-            features: ["Hızlı ve hedefe yönelik hazırlık", "Ana senaryoları pratik yapın", "Kendinize güven kazanın", "Uzman ipuçları alın"],
-            extrasTitle: "Sınav öncesinde zamanınız mı yok?",
-            extras: ["Yarına dersinizi hemen ayırtın!"],
-            color: "1",
-            buttonLabelSingular: "{quantity} saat için satın alın ",
-            buttonLabelPlural: "{quantity} saat için satın alın ",
-        },
-        "fide-essentials": {
-            image: "/images/fide-essentials.png",
-            title: "FIDE",
-            subtitle: "ESSENTIALS",
-            description: (
-                <p className="mb-0">
-                    Hem <b>sınav senaryolarını</b> hem de <b>temel konuları</b> ustalıkla öğrenmek için kapsamlı bir hazırlık.
-                </p>
-            ),
-            whatYouGet: "Neler sunuyoruz?",
-            features: ["Tüm FIDE senaryolarını pratik yapın", "FIDE kelime dağarcığınızı geliştirin", "Kendinize güven kazanın", "Uzman ipuçları alın"],
-            extrasTitle: "+ Özel FIDE kaynakları",
-            extras: [
-                "A2 ve B1 sınav senaryolarına erişim",
-                <span key="tr-1">
-                    Geçen ayın <b>sınav konularına</b> erişim
-                </span>,
-            ],
-            color: "2",
-            buttonLabelSingular: "{quantity} saat için satın alın ",
-            buttonLabelPlural: "{quantity} saat için satın alın ",
-        },
-        "fide-mastery": {
-            image: "/images/fide-mastery.png",
-            title: "FIDE",
-            subtitle: "MASTERY",
-            description: (
-                <p className="mb-0">
-                    Sınav gününe <b>tam hakimiyet</b> ve <b>güven</b> kazanın.
-                </p>
-            ),
-            whatYouGet: "Neler sunuyoruz?",
-            features: ["Tüm FIDE senaryolarını pratik yapın", "FIDE kelime dağarcığınızı geliştirin", "Kendinize güven kazanın", "Uzman ipuçları alın"],
-            extrasTitle: "+ Özel FIDE kaynakları",
-            extras: [
-                "A2 ve B1 sınav senaryolarına erişim",
-                <span key="tr-2">
-                    Geçen ayın <b>sınav konularına</b> erişim
-                </span>,
-                "Tüm Udemy kurslarıma ücretsiz erişim (50 saatlik içerik, 100+ ses kaydı)",
-            ],
-            color: "4",
-            buttonLabelSingular: "{quantity} saat için satın alın ",
-            buttonLabelPlural: "{quantity} saat için satın alın ",
-        },
-    },
 };
 
 interface PriceCategory {
@@ -366,7 +174,7 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
     const max = product?.maxQuantity || 20;
     const min = product?.minQuantity || 1;
     const userId = session?.user._id;
-    const t = useTranslations("PriceSliderFide");
+    const t = useTranslations("Fide.PriceSliderFide");
 
     useEffect(() => {
         (async () => {
@@ -469,7 +277,7 @@ const PriceCategory = ({ productData, quantity, slug }: PriceCategoryProps) => {
     const bgColor = `bg-secondary-${color}`;
     const textColor = `text-${color}`;
     const isDiscounted = initialUnitPrice !== unitPrice;
-    const t = useTranslations("PriceSliderFide");
+    const t = useTranslations("Fide.PriceSliderFide");
 
     return (
         <div className="card grid grid-cols-1 md:grid-cols-2 overflow-hidden shadow-2 relative">

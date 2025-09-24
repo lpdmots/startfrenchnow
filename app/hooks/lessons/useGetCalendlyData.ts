@@ -65,6 +65,7 @@ export const useGetCalendlyData = (eventType: keyof typeof EVENT_TYPES) => {
         (async () => {
             const response: CalendlyData = await getCalendlyData(session?.user?._id, eventType);
             const formattedData: PrivateLesson = getFormattedData(response);
+            console.log("Fetched Calendly Data:", formattedData);
             setPrivateLesson(formattedData);
         })();
     }, []); // eslint-disable-line

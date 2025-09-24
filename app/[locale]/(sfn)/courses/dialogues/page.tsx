@@ -19,18 +19,6 @@ import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoice
 
 export const revalidate = 60;
 
-/* export async function generateStaticParams() {
-    const query = groq`*[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true]
-    {
-        slug
-    }`;
-
-    const slugs: Post[] = await client.fetch(query);
-    const slugRoutes = slugs.map((slug) => slug.slug.current);
-
-    return slugRoutes.map((slug) => ({ slug }));
-} */
-
 const COURSE_ID = "5651144";
 const COURSE_URL = "https://www.udemy.com/course/the-complete-french-course-daily-life-conversations/";
 

@@ -7,13 +7,13 @@ import { AiFillSignal } from "react-icons/ai";
 
 interface Props {
     post: Post;
-    postLang: "en" | "fr";
+    locale: "en" | "fr";
 }
 
-function Helper({ post, postLang }: Props) {
+function Helper({ post, locale }: Props) {
     const [help, setHelp] = useState<boolean>(true);
     const [level, setLevel] = useState<{ label: string; color: string } | null>(null);
-    const difficultyLabel = postLang === "fr" ? "Difficulté" : "Difficulty";
+    const difficultyLabel = locale === "fr" ? "Difficulté" : "Difficulty";
 
     const handleHelp = () => {
         const newHelp = !help;
@@ -68,7 +68,7 @@ function Helper({ post, postLang }: Props) {
                     </>
                 )}
                 <div className="flex items-center justify-center gap-4 mb-2">
-                    {level && (postLang === "fr" || help) ? (
+                    {level && (locale === "fr" || help) ? (
                         <>
                             <p className="flex items-end mb-0">
                                 {difficultyLabel}:
@@ -96,8 +96,8 @@ function Helper({ post, postLang }: Props) {
                             <p className="mb-0"> - </p>
                         </>
                     ) : null}
-                    <p className="hidden md:block mb-0">{new Date(post.publishedAt).toLocaleDateString(postLang, { day: "numeric", month: "long", year: "numeric" })}</p>
-                    <p className="block md:hidden mb-0">{new Date(post.publishedAt).toLocaleDateString(postLang, { day: "numeric", month: "numeric", year: "numeric" })}</p>
+                    <p className="hidden md:block mb-0">{new Date(post.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })}</p>
+                    <p className="block md:hidden mb-0">{new Date(post.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "numeric", year: "numeric" })}</p>
                 </div>
             </div>
         </>

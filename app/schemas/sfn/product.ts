@@ -27,21 +27,6 @@ export default defineType({
                     title: "Anglais",
                     type: "string",
                 }),
-                defineField({
-                    name: "es",
-                    title: "Espagnol",
-                    type: "string",
-                }),
-                defineField({
-                    name: "pt",
-                    title: "Portugais",
-                    type: "string",
-                }),
-                defineField({
-                    name: "tr",
-                    title: "Turc",
-                    type: "string",
-                }),
             ],
             description: "2-3 mots dans l'idéal pour la mise en page.",
         }),
@@ -60,21 +45,6 @@ export default defineType({
                     title: "Anglais",
                     type: "string",
                 }),
-                defineField({
-                    name: "es",
-                    title: "Espagnol",
-                    type: "string",
-                }),
-                defineField({
-                    name: "pt",
-                    title: "Portugais",
-                    type: "string",
-                }),
-                defineField({
-                    name: "tr",
-                    title: "Turc",
-                    type: "string",
-                }),
             ],
         }),
         defineField({
@@ -85,9 +55,6 @@ export default defineType({
                 list: [
                     { value: "fr", title: "Français" },
                     { value: "en", title: "Anglais" },
-                    { value: "es", title: "Espagnol" },
-                    { value: "pt", title: "Portugais" },
-                    { value: "tr", title: "Turc" },
                 ],
             },
         }),
@@ -282,6 +249,17 @@ export default defineType({
                 },
             ],
         }),
+        defineField({
+            name: "packages",
+            title: "Packs",
+            type: "array",
+            of: [
+                {
+                    type: "reference",
+                    to: [{ type: "productPackage" }],
+                },
+            ],
+        }),
     ],
     preview: {
         select: {
@@ -293,94 +271,3 @@ export default defineType({
         },
     },
 });
-
-/* 
-fields: [
-                defineField({
-                    name: "prices",
-                    title: "Tarifs",
-                    type: "array",
-                    of: [
-                        {
-                            type: "object",
-                            fields: [
-                                defineField({
-                                    name: "originalPrice",
-                                    title: "Prix d'origine",
-                                    type: "number",
-                                }),
-                                defineField({
-                                    name: "currency",
-                                    title: "Devise",
-                                    type: "string",
-                                    options: {
-                                        list: [
-                                            { value: "EUR", title: "Euro (€)" },
-                                            { value: "USD", title: "Dollar ($)" },
-                                            { value: "CHF", title: "Franc suisse (CHF)" },
-                                        ],
-                                    },
-                                    initialValue: "CHF",
-                                }),
-                                defineField({
-                                    name: "discounts",
-                                    title: "Réductions",
-                                    type: "array",
-                                    of: [
-                                        {
-                                            type: "object",
-                                            fields: [
-                                                defineField({
-                                                    name: "discountValue",
-                                                    title: "Valeur de la réduction",
-                                                    type: "number",
-                                                }),
-                                                defineField({
-                                                    name: "discountType",
-                                                    title: "Type de réduction",
-                                                    type: "string",
-                                                    options: {
-                                                        list: [
-                                                            { value: "percentage", title: "Réduction en Pourcentage" },
-                                                            { value: "flatDiscount", title: "Remise à montant fixe" },
-                                                            { value: "newPrice", title: "Nouveau Montant" },
-                                                        ],
-                                                    },
-                                                }),
-                                                defineField({
-                                                    name: "minimumQuantity",
-                                                    title: "Quantité minimale",
-                                                    type: "number",
-                                                }),
-                                                defineField({
-                                                    name: "maximumQuantity",
-                                                    title: "Quantité maximale",
-                                                    type: "number",
-                                                }),
-                                                defineField({
-                                                    name: "rounding",
-                                                    title: "Arrondi",
-                                                    type: "string",
-                                                    options: {
-                                                        list: [
-                                                            { value: "round", title: "Arrondi à l'entier" },
-                                                            { value: "none", title: "Aucun arrondi" },
-                                                            { value: "decimal", title: "Arrondi au dixième" },
-                                                        ],
-                                                    },
-                                                }),
-                                                defineField({
-                                                    name: "isCountingPreviousPurchases",
-                                                    title: "Compter les achats précédents",
-                                                    type: "boolean",
-                                                }),
-                                            ],
-                                        },
-                                    ],
-                                }),
-                            ],
-                        },
-                    ],
-                }),
-            ],
-*/

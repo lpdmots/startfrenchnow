@@ -9,9 +9,8 @@ import { NotebookPen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next-intl/link";
 
-export default function ClientLessonFetcher({ slug }: { slug: string }) {
-    const t = useTranslations("common");
-    const eventType = SLUG_TO_EVENT_TYPE[slug as keyof typeof SLUG_TO_EVENT_TYPE] as keyof typeof EVENT_TYPES;
+export default function ClientLessonFetcher({ eventType }: { eventType: keyof typeof EVENT_TYPES }) {
+    const t = useTranslations("dashboard.PrivateLessons.common");
     const { privateLesson } = useGetCalendlyData(eventType as keyof typeof EVENT_TYPES);
     const areRemainingMinutes = privateLesson?.remainingMinutes || 0 > 0;
     if (!privateLesson) return <div className="h-8"></div>;

@@ -1,24 +1,6 @@
 /** @type {import('next').NextConfig} */
-/* const nextConfig = {
-    reactStrictMode: true,
-    experimental: {
-        appDir: true,
-        serverActions: true,
-    },
-    images: {
-        domains: ["encrypted-tbn0.gstatic.com", "cdn.sanity.io", "i-don-t-speak-french.s3.eu-central-1.amazonaws.com"],
-    },
-    redirects() {
-        return [process.env.MAINTENANCE_MODE === "1" ? { source: "/((?!maintenance).*)", destination: "/maintenance", permanent: false } : null].filter(Boolean);
-    },
-};
 
-module.exports = nextConfig;
- */
-const withNextIntl = require("next-intl/plugin")(
-    // This is the default (also the `src` folder is supported out of the box)
-    "./i18n.ts"
-);
+const withNextIntl = require("next-intl/plugin")("./i18n.ts");
 
 module.exports = withNextIntl({
     reactStrictMode: true,
@@ -29,25 +11,38 @@ module.exports = withNextIntl({
     images: {
         domains: ["encrypted-tbn0.gstatic.com", "cdn.sanity.io", "i-don-t-speak-french.s3.eu-central-1.amazonaws.com"],
     },
-    redirects() {
-        return [
-            // Redirection pour les chemins /blog avec une locale spécifiée
-            process.env.MAINTENANCE_MODE === "1"
-                ? {
-                      source: "/:locale/blog/:path*",
-                      destination: "/maintenance",
-                      permanent: false,
-                      locale: false, // Ne pas préfixer automatiquement avec la locale par défaut
-                  }
-                : null,
-            // Redirection pour les chemins /blog sans locale
-            process.env.MAINTENANCE_MODE === "1"
-                ? {
-                      source: "/blog/:path*",
-                      destination: "/maintenance",
-                      permanent: false,
-                  }
-                : null,
-        ].filter(Boolean);
+    async redirects() {
+        const redirects = [];
+
+        // ----- Maintenance mode -----
+        if (process.env.MAINTENANCE_MODE === "1") {
+            // Blog avec locale
+            redirects.push({
+                source: "/:locale/blog/:path*",
+                destination: "/maintenance",
+                permanent: false,
+                locale: false, // Empêche le préfixe automatique
+            });
+            // Blog sans locale
+            redirects.push({
+                source: "/blog/:path*",
+                destination: "/maintenance",
+                permanent: false,
+            });
+        }
+
+        // ----- Redirections locales supprimées → EN -----
+        redirects.push(
+            {
+                source: "/:locale(es|pt|tr)/:path*",
+                destination: "/en/:path*",
+                permanent: true,
+            },
+            { source: "/es", destination: "/en", permanent: true },
+            { source: "/pt", destination: "/en", permanent: true },
+            { source: "/tr", destination: "/en", permanent: true }
+        );
+
+        return redirects;
     },
 });

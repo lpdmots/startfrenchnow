@@ -1249,6 +1249,11 @@ button {
     transition: transform 300ms;
 }
 
+btn.active {
+    transform: translateY(-2px);
+    transition: transform 300ms;
+}
+
 .clickable-image {
     transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
@@ -1256,4 +1261,10 @@ button {
 .clickable-image:active {
     transform: scale(0.95);
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.center-y {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }

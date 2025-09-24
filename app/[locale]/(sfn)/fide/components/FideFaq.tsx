@@ -160,7 +160,7 @@ export function FideFaq() {
     ];
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center px-2">
             <SlideFromBottom>
                 <div className="flex w-full justify-center">
                     <div className="text-center max-w-5xl">
@@ -169,7 +169,7 @@ export function FideFaq() {
                     </div>
                 </div>
             </SlideFromBottom>
-            <Accordion type="multiple" className="w-full flex flex-col gap-4 max-w-5xl">
+            <Accordion type="multiple" className="w-full flex flex-col gap-2 md:gap-4 max-w-5xl">
                 {data.map((item, index) => (
                     <div key={index} className="card link-card w-full">
                         <AccordionItem key={index} value={`item-${index}`}>

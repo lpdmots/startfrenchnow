@@ -1295,9 +1295,9 @@ label {
     font-weight: 400;
 }
 
-.link-wrapper:hover {
+/* .link-wrapper:hover {
     color: var(--primary);
-}
+} */
 
 .link-wrapper.color-neutral-300 {
     display: flex;

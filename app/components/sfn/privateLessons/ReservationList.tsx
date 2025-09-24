@@ -26,13 +26,12 @@ const getCancellable = (date: string) => {
     return new Date(startTime) > in48Hours;
 };
 
-export const ReservationList = ({ slug, locale }: { slug: string; locale: Locale }) => {
-    const eventType = SLUG_TO_EVENT_TYPE[slug as keyof typeof SLUG_TO_EVENT_TYPE] as keyof typeof EVENT_TYPES;
+export const ReservationList = ({ eventType, locale }: { eventType: "Fide Preparation Class" | "Your FIDE Plan"; locale: Locale }) => {
     const { privateLessons } = useSfnStore();
     const privateLesson = privateLessons.find((lesson) => lesson.eventType === eventType);
     const { completedMinutes, upcomingMinutes, remainingMinutes } = privateLesson || {};
-    const t = useTranslations("common");
-    const tSpe = useTranslations(slug);
+    const t = useTranslations("dashboard.PrivateLessons.common");
+    const tSpe = useTranslations("dashboard.PrivateLessons");
 
     return (
         <div className="w-full flex flex-col gap-12 md:gap-24">
@@ -117,7 +116,7 @@ const EventRow = ({ eventType, event, index, locale }: { eventType: keyof typeof
     const { data: session } = useSession();
     const { setPrivateLesson } = useSfnStore();
     const [message, setMessage] = useState<null | { title: string; description: string }>(null);
-    const t = useTranslations("common.eventRow");
+    const t = useTranslations("dashboard.PrivateLessons.common.eventRow");
 
     useEffect(() => {
         if (message) {
