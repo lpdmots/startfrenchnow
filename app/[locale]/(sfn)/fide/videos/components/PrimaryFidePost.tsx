@@ -16,9 +16,10 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
     const level = postLevel?.map((lev) => LEVELDATA[lev]) ?? moduleLevel?.map((lev) => LEVELDATA[lev]) ?? null;
 
     const hasVideo = !!postMainVideo?.url;
-    const isLocked = !hasPack && !postIsPreview;
+    const isFree = packageTitle === (locale === "en" ? "Free" : "Gratuites");
+    const isLocked = !hasPack && !postIsPreview && !isFree;
 
-    const href = isLocked ? "/fide/pack-fide#plans" : "/fide/videos/" + postSlug.current;
+    const href = isFree ? "/blog/post/" + postSlug.current : isLocked ? "/fide/pack-fide#plans" : "/fide/videos/" + postSlug.current;
     const ariaLabel = isLocked ? `${postTitle} — contenu réservé au Pack FIDE. Voir les plans.` : postTitle || "Voir la leçon";
 
     return (
@@ -61,15 +62,15 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
                         <div className="flex-col gap-24px _15px---mbp">
                             <p className="line-clamp-4">{postDescription}</p>
 
-                            <div className="flex justify-end items-center text-300 medium color-neutral-600 gap-2 flex-wrap">
+                            <div className="flex justify-end items-center text-300 medium color-neutral-600 gap-2 flex-wrap text-base">
                                 {hasVideo && (
                                     <div className="flex items-center gap-2">
                                         <ImPlay2 className="text-2xl" style={{ color: packageColor }} />
-                                        <p className="mb-0"> - </p>
                                     </div>
                                 )}
                                 {level && (
                                     <div className="flex gap-2 items-center">
+                                        <p className="mb-0"> - </p>
                                         {[...level].reverse().map(
                                             (
                                                 lv,
@@ -82,21 +83,25 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
                                                 </div>
                                             )
                                         )}
-                                        <p className="mb-0"> - </p>
                                     </div>
                                 )}
-                                <div>{postDurationSec && `${Math.floor(postDurationSec / 60)} min`}</div> - <div>{moduleTitle}</div>
+                                {!!postDurationSec && !!moduleTitle && (
+                                    <>
+                                        <p className="mb-0"> - </p>
+                                        <div>{postDurationSec && `${Math.floor(postDurationSec / 60)} min`}</div> - <div>{moduleTitle}</div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* Overlay CTA au hover (visible en desktop au hover, visible en permanence sur mobile) */}
                 {isLocked && (
-                    <div className="absolute inset-0 z-10 h-full w-full group pointer-events-none">
-                        <div className="absolute inset-0 bg-neutral-300 opacity-0 transition-opacity duration-300 group-hover:opacity-90" />
+                    <div className="absolute inset-0 z-10 h-full w-full group pointer-events-none [@media(hover:none)]:hidden">
+                        <div className="absolute inset-0 bg-neutral-300 opacity-0 transition-opacity duration-300 [@media(hover:hover)]:group-hover:opacity-90" />
                         <div
                             className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4
-                    opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    opacity-0 transition-opacity duration-300 [@media(hover:hover)]:group-hover:opacity-100"
                         >
                             <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack FIDE" width={64} height={64} className="h-16 w-16 mb-4" />
                             <p className="text-base md:text-xl font-medium">

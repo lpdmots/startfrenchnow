@@ -1,71 +1,57 @@
-import { Fade } from "@/app/components/animations/Fades";
-import Image from "next/image";
-import { ProtectedPage } from "@/app/components/auth/ProtectedPage";
-import ClientLessonFetcher from "@/app/components/sfn/privateLessons/ClientLessonFetcher";
-import { ReservationList } from "@/app/components/sfn/privateLessons/ReservationList";
-import { useTranslations } from "next-intl";
-import { intelRich } from "@/app/lib/intelRich";
 import { Locale } from "@/i18n";
+import { DashboardHero } from "./components/DashboardHero";
+import { groq } from "next-sanity";
+import { getCalendlyData, getFidePackSommaire } from "@/app/serverActions/productActions";
+import { Progress } from "@/app/types/sfn/auth";
+import { client } from "@/app/lib/sanity.client";
+import { Exam } from "@/app/types/fide/exam";
+import { CalendlyData, PrivateLesson } from "@/app/types/sfn/lessons";
+import { getFormattedData } from "@/app/lib/calendlyUtils";
+import { buildHeroData } from "./components/dashboardUtils";
+import { requireSessionAndFide } from "@/app/components/auth/requireSession";
+import DashboardVideos from "./components/DashboardVideos";
+import { DashboardCoaching } from "./components/DashboardCoaching";
+import { DashboardExams } from "./components/DashboardExams";
 
-function PrivateLessons({ params: { slug, locale } }: { params: { slug: string; locale: Locale } }) {
-    const tPrivateLessons = useTranslations("Fide.dashboard.PrivateLessons");
+const FIDE_USER_PROGRESS_QUERY = groq`
+  *[_type == "user" && _id == $userId][0].learningProgress[type == "pack_fide"][0]{
+    _key,
+    type,
+    videoLogs,
+    examLogs
+  }
+`;
+
+export const dynamic = "force-dynamic";
+
+const queryExams = groq`*[_type=='fideExam']{ ..., _id }`;
+
+async function DashboardPage({ params: { locale } }: { params: { locale: Locale } }) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "privateLessons" });
+    const userId = session?.user?._id ?? null;
+    const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
+
+    // Fetch de PrivatLesson
+    const response: CalendlyData = await getCalendlyData(session?.user?._id || "", "Fide Preparation Class");
+    const privateLesson: PrivateLesson = getFormattedData(response);
+
+    // Fetch des Exams
+    const exams: Exam[] = await client.fetch(queryExams);
+
+    const [fidePackSommaire, fideUserProgress] = await Promise.all([getFidePackSommaire(locale), userId ? client.fetch<Progress>(FIDE_USER_PROGRESS_QUERY, { userId }) : Promise.resolve(null)]);
+
+    const hero = buildHeroData(fideUserProgress, fidePackSommaire, exams, privateLesson);
 
     return (
-        <ProtectedPage callbackUrl={`/private-lessons/${slug}`} messageInfo="privateLessons">
-            <div className="w-full flex flex-col items-center gap-24 mt-8 md:mt-12 overflow-hidden pb-2">
-                <div className="max-w-7xl m-auto relative px-2 md:px-4">
-                    <div className="max-w-3xl py-8 md:py-12 text-center">
-                        <div className="flex flex-col items-center gap-4 md:gap-8">
-                            <div>
-                                <h1 className="display-1">{tPrivateLessons.rich("title", intelRich())}</h1>
-                            </div>
-
-                            <ClientLessonFetcher eventType={"Fide Preparation Class"} />
-                        </div>
-                    </div>
-                    <Fade>
-                        <div className="hidden md:block absolute -left-72 bottom-0 left-shadow-1 rounded-full">
-                            <Image src="/images/swissflag3.png" width={270} height={270} alt="about teacher image" className="object-contain rounded-full" style={{ border: "3px solid black" }} />
-                        </div>
-                    </Fade>
-                    <Fade>
-                        <div className="hidden md:block absolute -right-72 top-0 shadow-1 rounded-full">
-                            <Image src="/images/calendarfide.png" width={270} height={270} alt="about pencil" className="object-contain rounded-full" style={{ border: "3px solid black" }} />
-                        </div>
-                    </Fade>
-                    <div className="md:hidden flex gap-4 justify-center">
-                        <Fade>
-                            <div className="left-shadow-1 rounded-full">
-                                <Image
-                                    src="/images/swissflag3.png"
-                                    width={150}
-                                    height={150}
-                                    alt={"about teacher image"}
-                                    className="grid-span-1 object-contain rounded-full"
-                                    style={{ border: "3px solid black" }}
-                                />
-                            </div>
-                        </Fade>
-                        <Fade>
-                            <div className="shadow-1 rounded-full">
-                                <Image
-                                    src="/images/calendarfide.png"
-                                    width={150}
-                                    height={150}
-                                    alt="about pencil"
-                                    className="grid-span-1 object-contain rounded-full"
-                                    style={{ border: "3px solid black" }}
-                                />
-                            </div>
-                        </Fade>
-                    </div>
-                </div>
+        <>
+            <div className="w-full flex flex-col items-center gap-24 mt-8 md:mt-12 p-2 mb-12 lg:mb-24">
+                <DashboardHero hero={hero} locale={locale} hasPack={hasPack} />
+                <DashboardVideos hero={hero} locale={locale} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />
+                <DashboardExams hero={hero} locale={locale} hasPack={hasPack} />
+                <DashboardCoaching hero={hero} locale={locale} />
             </div>
-            <div className="w-full max-w-7xl m-auto px-2 md:px-4 py-12 md:py-24">
-                <ReservationList eventType={"Fide Preparation Class"} locale={locale} />
-            </div>
-        </ProtectedPage>
+        </>
     );
 }
 
-export default PrivateLessons;
+export default DashboardPage;

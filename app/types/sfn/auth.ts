@@ -38,7 +38,7 @@ export interface Permission {
 
 export interface Progress {
     _key: string;
-    type: string; // "fidePack"
+    type: string; // "pack_fide"
     videoLogs?: VideoLog[];
     examLogs?: ExamLog[];
 }

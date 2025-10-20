@@ -1,6 +1,5 @@
 "use client";
 import { ModalFromBottom } from "@/app/components/animations/Modals";
-import { ProtectedPage } from "@/app/components/auth/ProtectedPage";
 import Spinner from "@/app/components/common/Spinner";
 import { sendContactForm } from "@/app/lib/apiNavigation";
 import { useSession } from "next-auth/react";

@@ -3,15 +3,36 @@ import { useTranslations } from "next-intl";
 import DropdownMenu from "./DropdownMenu";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { Locale } from "@/i18n";
-import { FaCaretDown, FaCaretRight } from "react-icons/fa";
+import { FaCaretDown, FaCaretRight, FaLock } from "react-icons/fa";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export const FideButton = ({ locale }: { locale: Locale }) => {
     const t = useTranslations("Navigation.fideButton");
+    const { data: session } = useSession();
+    const [hasDashboardAccess, setHasDashboardAccess] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (session) {
+            console.log({ session });
+            const hasAccess = session.user?.permissions?.some((p) => p.referenceKey === "pack_fide") || session.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class");
+            setHasDashboardAccess(!!hasAccess);
+        }
+    }, [session]);
 
     const dropdownLearn = {
         content: (
             <div className="card p-4 pr-12 mt-4">
                 <div className="flex flex-col" style={{ minWidth: 125 }}>
+                    <LinkCurrentBlog
+                        href={hasDashboardAccess ? "/fide/dashboard" : "#"}
+                        className={clsx("nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center", !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600")}
+                        locale={locale as Locale}
+                    >
+                        {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
+                        {t("dashboard")}
+                    </LinkCurrentBlog>
                     <LinkCurrentBlog href="/fide" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {t("fide")}
@@ -20,15 +41,11 @@ export const FideButton = ({ locale }: { locale: Locale }) => {
                         <FaCaretRight />
                         {t("packFide")}
                     </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide/dashboard" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
-                        <FaCaretRight />
-                        {t("dashboard")}
-                    </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide/videos" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
+                    <LinkCurrentBlog href="/fide/videos" withParams="fide-videos" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
                         <FaCaretRight />
                         {t("videos")}
                     </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
+                    <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" withParams="fide-exams" locale={locale as Locale}>
                         <FaCaretRight />
                         {t("exams")}
                     </LinkCurrentBlog>

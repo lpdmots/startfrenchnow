@@ -4,6 +4,7 @@ import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { EVENT_TYPES } from "../lib/constantes";
 import { Lesson } from "../types/sfn/auth";
 import { Image, Level, Slug } from "../types/sfn/blog";
+import { Locale } from "@/i18n";
 
 const queryUserLessons = groq`
 *[_type == "user" && _id == $userId] {
@@ -61,7 +62,7 @@ const getDefaultEventLesson = (eventType: keyof typeof EVENT_TYPES) => ({
 export const getCalendlyData = async (userId: string, eventType: keyof typeof EVENT_TYPES) => {
     const userLessons = await client.fetch(queryUserLessons, { userId });
     const userEventLessons = userLessons?.lessons?.find((lesson: any) => lesson.eventType === eventType) || getDefaultEventLesson(eventType);
-    console.log("User Lessons:", userLessons, userEventLessons, eventType);
+
     // Récupérer les réservations Calendly pour l'email de l'utilisateur et le type de cours
     const emails = [userLessons.email, ...(userLessons.alias || [])];
     const calendlyEvents = userEventLessons.totalPurchasedMinutes ? await fetchCalendlyReservations(emails, eventType) : [];
@@ -121,6 +122,30 @@ export const getUserPurchases = async (userId: string, reference: string): Promi
 };
 
 export type FidePackSommaire = {
+    packages: Array<{
+        title: string;
+        referenceKey: string;
+        modules: Array<{
+            _key: string;
+            title?: string;
+            subtitle?: string;
+            level?: Array<Level>;
+            posts: Array<{
+                _id: string;
+                slug: Slug;
+                title: string;
+                mainVideo?: { url: string };
+                mainImage: Image;
+                description: string;
+                level?: Level[];
+                durationSec?: number;
+                isPreview?: boolean;
+            }>;
+        }>;
+    }>;
+};
+
+export type FidePackSommaireNoLocale = {
     packages: Array<{
         title: string;
         title_en: string;
@@ -184,10 +209,43 @@ const FIDE_TOC_QUERY = groq`
 }
 `;
 
-export async function getFidePackSommaire(): Promise<FidePackSommaire> {
+export async function getFidePackSommaire(locale: Locale = "fr"): Promise<FidePackSommaire> {
     // Pas de cache pour garantir un sommaire toujours frais en édition
-    const data = await client.fetch<FidePackSommaire>(FIDE_TOC_QUERY, { referenceKey: "Pack FIDE" });
+    const data = await client.fetch<FidePackSommaireNoLocale>(FIDE_TOC_QUERY, { referenceKey: "pack_fide" });
 
     // Normalisation douce: si le produit est introuvable, renvoyer un shape vide
-    return data ?? { packages: [] };
+    return data ? normalizeFidePackSommaire(data, locale) : { packages: [] };
+}
+
+function normalizeFidePackSommaire(data: FidePackSommaireNoLocale, locale: Locale): FidePackSommaire {
+    // Treat empty strings as missing, then pick the best value per locale with graceful fallback.
+    const coalesce = (...vals: Array<string | undefined>): string | undefined => vals.find((v) => typeof v === "string" && v.trim().length > 0);
+
+    const pickOpt = (fr?: string, en?: string): string | undefined => (locale === "en" ? coalesce(en, fr) : coalesce(fr, en));
+
+    const pickReq = (fr?: string, en?: string, fb: string = ""): string => pickOpt(fr, en) ?? fb;
+
+    return {
+        packages: (data?.packages ?? []).map((pkg) => ({
+            title: pickReq(pkg.title, pkg.title_en, pkg.referenceKey),
+            referenceKey: pkg.referenceKey,
+            modules: (pkg.modules ?? []).map((mod) => ({
+                _key: mod._key,
+                title: pickOpt(mod.title, mod.title_en),
+                subtitle: pickOpt(mod.subtitle, mod.subtitle_en),
+                level: mod.level,
+                posts: (mod.posts ?? []).map((post) => ({
+                    _id: post._id,
+                    slug: post.slug,
+                    title: pickReq(post.title, post.title_en, "Untitled"),
+                    mainVideo: post.mainVideo,
+                    mainImage: post.mainImage,
+                    description: pickReq(post.description, post.description_en, ""),
+                    level: post.level,
+                    durationSec: post.durationSec,
+                    isPreview: post.isPreview,
+                })),
+            })),
+        })),
+    };
 }

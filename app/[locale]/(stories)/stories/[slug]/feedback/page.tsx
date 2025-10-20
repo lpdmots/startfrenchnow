@@ -1,5 +1,4 @@
 "use client";
-import { ProtectedPage } from "@/app/components/auth/ProtectedPage";
 import { StarRating } from "@/app/components/common/StarRating.js";
 import { forwardRef, MouseEvent, useRef, useState } from "react";
 import Image from "next/image";
@@ -199,10 +198,6 @@ export default function Feedback({ params: { slug } }: Props) {
         setLanguage((prev) => (prev === "fr" ? "en" : "fr"));
     };
 
-    /* return (
-        <ProtectedPage callbackUrl={`/stories/${slug}/select-heros`} messageInfo="You need to log in to keep track of your stories.">
-            
-        </ProtectedPage> */
     return (
         <div className="container-default mx-auto h-screen flex flex-col item-center">
             <LanguageButton language={language} handleLanguage={handleLanguage} />

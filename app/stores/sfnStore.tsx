@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { PrivateLesson } from "../types/sfn/lessons";
+import { LevelParam, TypeParam } from "../[locale]/(sfn)/fide/exams/page";
 
 type VideoProgressEntry = {
     timestamp: number; // secondes
@@ -16,13 +17,16 @@ interface DefaultProps {
     privateLessons: PrivateLesson[];
     videoProgress: Record<string, VideoProgressEntry>;
     watchedVideos: string[];
+    fideVideosSelectedPackage?: string;
+    fideExamsSelectedLevel?: LevelParam;
+    fideExamsSelectedType?: TypeParam | "all";
 }
 
 interface SfnStore extends DefaultProps {
     setPrivateLesson: (newPrivateLessons: PrivateLesson) => void;
     setVideoTimestamp: (videoId: string, timestamp: number, duration?: number) => void;
     clearVideoTimestamp: (videoId: string) => void;
-    getVideoTimestamp: (videoId: string) => number | undefined;
+    getVideoTimestamp: (videoId: string) => number;
 
     setVideoDuration: (videoId: string, duration: number) => void;
     markBucketSeen: (videoId: string, bucketIndex: number, opts?: { bucketSize?: number; duration?: number }) => boolean; // true si on a coché un nouveau bucket
@@ -33,12 +37,21 @@ interface SfnStore extends DefaultProps {
     setWatchedVideos: (ids: string[]) => void;
     addWatchedVideo: (id: string) => void;
     removeWatchedVideo: (id: string) => void;
+
+    getFideVideosSelectedPackage: () => string | undefined;
+    setFideVideosSelectedPackage: (packageName: string) => void;
+
+    setFideExamsSelectedLevel: (v: LevelParam) => void;
+    setFideExamsSelectedType: (v: TypeParam | "all") => void;
 }
 
 const DEFAULT_PROPS: DefaultProps = {
     privateLessons: [],
     videoProgress: {},
     watchedVideos: [],
+    fideVideosSelectedPackage: undefined,
+    fideExamsSelectedLevel: "all",
+    fideExamsSelectedType: "all",
 };
 
 /** ===== Utils internes ===== */
@@ -222,6 +235,16 @@ export const useSfnStore = create<SfnStore>()(
                     if (!curr.includes(id)) return;
                     set({ watchedVideos: curr.filter((vid) => vid !== id) });
                 },
+
+                getFideVideosSelectedPackage: () => {
+                    return get().fideVideosSelectedPackage;
+                },
+
+                setFideVideosSelectedPackage: (packageName: string) => {
+                    set({ fideVideosSelectedPackage: packageName });
+                },
+                setFideExamsSelectedLevel: (v) => set({ fideExamsSelectedLevel: v }),
+                setFideExamsSelectedType: (v) => set({ fideExamsSelectedType: v }),
             }),
             {
                 name: "sfn-storage",

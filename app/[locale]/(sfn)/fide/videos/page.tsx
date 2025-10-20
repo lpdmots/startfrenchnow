@@ -4,35 +4,59 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { FidePackSommaire, getFidePackSommaire } from "@/app/serverActions/productActions";
 import FideVideoList from "./components/FideVideoList";
-import { Image, Level, Slug } from "@/app/types/sfn/blog";
+import { Image, Level, Post, Slug } from "@/app/types/sfn/blog";
+import { VideoPackageSelect } from "./components/VideoPackageSelect";
+import { getCategoryPostsSlice } from "@/app/serverActions/blogActions";
+import { intelRich } from "@/app/lib/intelRich";
+import { useTranslations } from "next-intl";
 
-export default async function VideosFidePage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function VideosFidePage({ params: { locale }, searchParams }: { params: { locale: Locale }; searchParams: Record<string, string | string[] | undefined> }) {
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
-    const fidePackSommaire = await getFidePackSommaire();
-    //const posts = localizePosts(postsData, locale);
-    return <VideosFidePageNoAsync fidePackSommaire={fidePackSommaire} locale={locale} hasPack={hasPack} />;
+    const fidePackSommaire = await getFidePackSommaire(locale);
+    const freeFideVideos = await getCategoryPostsSlice("fide", 0, 100);
+    const packageParamRaw = searchParams?.package;
+    const initialPackageKey = Array.isArray(packageParamRaw) ? packageParamRaw[0] : packageParamRaw;
+
+    return <VideosFidePageNoAsync fidePackSommaire={fidePackSommaire} freeFideVideos={freeFideVideos} locale={locale} hasPack={hasPack} initialPackageKey={initialPackageKey} />;
 }
 
-function VideosFidePageNoAsync({ fidePackSommaire, locale, hasPack }: { fidePackSommaire: any; locale: Locale; hasPack: boolean }) {
-    const FlatFidePackSommaire = flattenFidePackSommaire(fidePackSommaire, locale);
+function VideosFidePageNoAsync({
+    fidePackSommaire,
+    freeFideVideos,
+    locale,
+    hasPack,
+    initialPackageKey,
+}: {
+    fidePackSommaire: FidePackSommaire;
+    freeFideVideos: Post[];
+    locale: Locale;
+    hasPack: boolean;
+    initialPackageKey?: string;
+}) {
+    const t = useTranslations("Fide.FideVideosPage");
+
+    const { FlatFidePackSommaire, packages } = flattenFidePackSommaire(fidePackSommaire, locale, freeFideVideos);
+
+    // Clés valides = referenceKey des packs Sanity + "free" + "all"
+    const validKeys = new Set<string>([...(fidePackSommaire?.packages?.map((p) => p.referenceKey) ?? []), "free", "all"]);
+
+    // Normalisation du choix initial
+    const selectedKey = initialPackageKey && validKeys.has(initialPackageKey) ? initialPackageKey : "all";
+
     return (
         <div className="page-wrapper mt-8 sm:mt-12">
-            <div className="section hero v3 wf-section">
+            <div className="section hero v3 wf-section !pt-6">
                 <div className="container-default w-container">
                     <div className="inner-container _600px---tablet center">
                         <div className="inner-container _500px---mbl center mb-8">
                             <div className="inner-container _725px center---full-width-mbl">
                                 <div className="text-center mg-bottom-40px">
-                                    <h1 className="display-1 mg-bottom-8px mb-8">
-                                        Toutes nos <span className="heading-span-secondary-6">Vidéos FIDE</span>
-                                    </h1>
-                                    <p className="mg-bottom-0">
-                                        Découvrez notre sélection de vidéos FIDE pour obtenir toutes les chances de <span className="heading-span-secondary-6">réussir votre examen</span>.
-                                    </p>
+                                    <h1 className="display-1 mg-bottom-8px mb-8">{t.rich("title", intelRich())}</h1>
+                                    <p className="mg-bottom-0">{t.rich("subtitleRich", intelRich())}</p>
                                 </div>
                             </div>
-                            <FideVideoList FlatFidePackSommaire={FlatFidePackSommaire} locale={locale} hasPack={hasPack} />
+                            <VideoPackageSelect flatFidePackSommaire={FlatFidePackSommaire} packages={packages} locale={locale} hasPack={hasPack} initialPackageKey={selectedKey} />
                         </div>
                     </div>
                 </div>
@@ -44,7 +68,7 @@ function VideosFidePageNoAsync({ fidePackSommaire, locale, hasPack }: { fidePack
 export type FlatFidePackSommaire = FlatFidePackItem[];
 
 const COLORS = ["var(--secondary-1)", "var(--secondary-2)", "var(--secondary-4)", "var(--secondary-6)", "var(--secondary-5)", "var(--secondary-3)", "var(--secondary-6)"];
-type ColorType = (typeof COLORS)[number];
+export type ColorType = (typeof COLORS)[number];
 
 export interface FlatFidePackItem {
     packageTitle: string;
@@ -64,7 +88,7 @@ export interface FlatFidePackItem {
     postDescription: string;
     postLevel?: Level[]; // niveau(s) au niveau du post
     postDurationSec?: number;
-    postIsPreview?: boolean;
+    postIsPreview?: boolean; // AJOUTER CATEGORIES
 }
 
 /**
@@ -72,22 +96,38 @@ export interface FlatFidePackItem {
  * - Localise titres/sous-titres selon `locale`, avec fallback de bon sens.
  * - Ne modifie pas l’ordre: packages -> modules -> posts.
  */
-function flattenFidePackSommaire(data: FidePackSommaire, locale: Locale = "fr"): FlatFidePackSommaire {
+
+const FREE_PACKAGE_COLOR = "var(--neutral-600)" as ColorType;
+
+function flattenFidePackSommaire(
+    data: FidePackSommaire,
+    locale: Locale = "fr",
+    freeFideVideos: Post[]
+): { FlatFidePackSommaire: FlatFidePackSommaire; packages: { title: string; packageColor: ColorType; referenceKey: string }[] } {
     const isEn = locale === "en";
     const pick = (fr?: string, en?: string): string => (isEn ? en ?? fr ?? "" : fr ?? en ?? "");
 
-    const out: FlatFidePackSommaire = [];
+    const packages = [
+        ...(data?.packages?.map((pack, packIndex) => ({
+            title: pack.title,
+            packageColor: COLORS[packIndex % COLORS.length] as ColorType,
+            referenceKey: pack.referenceKey,
+        })) || []),
+        { title: pick("Gratuites", "Free"), packageColor: FREE_PACKAGE_COLOR, referenceKey: "free" },
+    ];
+
+    const FlatFidePackSommaire: FlatFidePackSommaire = [];
 
     for (const [packIndex, pack] of (data?.packages ?? []).entries()) {
-        const packageTitle = pick(pack.title, pack.title_en);
+        const packageTitle = pack.title;
         const packageColor = COLORS[packIndex % COLORS.length] as ColorType;
 
         for (const mod of pack?.modules ?? []) {
-            const moduleTitle = pick(mod.title, mod.title_en) || undefined;
-            const moduleSubtitle = pick(mod.subtitle, mod.subtitle_en) || undefined;
+            const moduleTitle = mod.title || undefined;
+            const moduleSubtitle = mod.subtitle || undefined;
 
             for (const post of mod?.posts ?? []) {
-                out.push({
+                FlatFidePackSommaire.push({
                     packageTitle,
                     packageReferenceKey: pack.referenceKey,
                     packageColor,
@@ -101,8 +141,8 @@ function flattenFidePackSommaire(data: FidePackSommaire, locale: Locale = "fr"):
                     postSlug: post.slug,
                     postMainVideo: post.mainVideo,
                     postMainImage: post.mainImage,
-                    postTitle: pick(post.title, post.title_en),
-                    postDescription: pick(post.description, post.description_en),
+                    postTitle: post.title,
+                    postDescription: post.description,
                     postLevel: post.level,
                     postDurationSec: post.durationSec,
                     postIsPreview: post.isPreview,
@@ -111,5 +151,29 @@ function flattenFidePackSommaire(data: FidePackSommaire, locale: Locale = "fr"):
         }
     }
 
-    return out;
+    const flatFreeFideVideos = freeFideVideos.map((post) => ({
+        packageTitle: pick("Gratuites", "Free"),
+        packageReferenceKey: "free",
+        packageColor: FREE_PACKAGE_COLOR,
+
+        moduleKey: "free",
+        moduleTitle: undefined,
+        moduleSubtitle: undefined,
+        moduleLevel: undefined,
+
+        postId: post._id,
+        postSlug: post.slug,
+        postMainVideo: post.mainVideo,
+        postMainImage: post.mainImage,
+        postTitle: pick(post.title, post.title_en),
+        postDescription: pick(post.description, post.description_en),
+        postLevel: post.level,
+        postDurationSec: undefined,
+        postIsPreview: true,
+    }));
+
+    // Ajouter les vidéos gratuites à la fin
+    FlatFidePackSommaire.push(...flatFreeFideVideos);
+
+    return { FlatFidePackSommaire, packages };
 }

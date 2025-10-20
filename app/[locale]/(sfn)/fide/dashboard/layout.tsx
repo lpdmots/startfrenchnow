@@ -12,18 +12,5 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 }
 
 export default async function RootLayout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: Locale } }) {
-    let messages;
-
-    try {
-        const fullMessages = (await import(`@/app/dictionaries/${locale}.json`)).default;
-        messages = fullMessages["Fide"];
-    } catch (error) {
-        throw new Error(`Impossible de charger les messages de "Fide" pour la locale ${locale}`);
-    }
-
-    return (
-        <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-        </NextIntlClientProvider>
-    );
+    return <>{children}</>;
 }

@@ -3,7 +3,10 @@ import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { groq } from "next-sanity";
 
 const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true] {
+    *[_type=='post' 
+    && dateTime(publishedAt) < dateTime(now()) 
+    && isReady == true
+    ] {
         ...,
     } | order(publishedAt desc)
     [$offset...$limit]

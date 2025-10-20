@@ -5,7 +5,6 @@ import urlFor from "@/app/lib/urlFor";
 import { AiFillSignal } from "react-icons/ai";
 import { CATEGORIESCOLORS, CATEGORY_NAMES, LEVELDATA } from "@/app/lib/constantes";
 import { ScaleChildren } from "../../animations/ParentToChildrens";
-import { getDataInRightLang } from "@/app/lib/utils";
 import { Locale } from "@/i18n";
 import { ImPlay2 } from "react-icons/im";
 import { CategoryBadge } from "./CategoryBadge";
@@ -19,7 +18,7 @@ const SecondaryPost = ({ post, locale }: { post: Post; locale: string }) => {
     const hasVideo = post?.mainVideo?.url;
     const categoryColor = CATEGORIESCOLORS[firstCategory as keyof typeof CATEGORIESCOLORS];
 
-    const pathBase = ["pack_fide", "fide"].includes(firstCategory) ? `/fide/videos/` : `/blog/post/`;
+    const pathBase = ["pack_fide"].includes(firstCategory) ? `/fide/videos/` : `/blog/post/`;
 
     return (
         <ClientSideRoute route={pathBase + post.slug.current} locale={locale as Locale}>

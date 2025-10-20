@@ -50,25 +50,19 @@ async function CoursFidePage({ params }: { params: { locale: Locale; slug: strin
         );
 
         if (!hasPack) {
-            // Choisis ta destination (paywall/checkout ou login)
-            redirect("/fide/pack-fide");
-            // ou: redirect(`/auth/signIn?callbackUrl=${encodeURIComponent(`/fide/videos/${slug}`)}`);
+            redirect("/fide/pack-fide#plans");
         }
     }
 
     // 3) TOC pour navigation adjacente
-    const fidePackSommaire = await getFidePackSommaire();
+    const fidePackSommaire = await getFidePackSommaire(locale);
 
     // 4) Adjacent avec filtrage preview si pas d’accès
     const { previous, next } = findAdjacentFromTOC(fidePackSommaire, slug, hasPack);
 
     const localizedPost = localizePosts([post], locale)[0];
 
-    // Localisation titres prev/next
-    const prevL = previous ? { ...previous, title: locale === "fr" ? previous.title : previous.title_en } : null;
-    const nextL = next ? { ...next, title: locale === "fr" ? next.title : next.title_en } : null;
-
-    return <CoursFidePageNoAsync post={localizedPost} previous={prevL} next={nextL} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />;
+    return <CoursFidePageNoAsync post={localizedPost} previous={previous} next={next} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />;
 }
 
 export default CoursFidePage;

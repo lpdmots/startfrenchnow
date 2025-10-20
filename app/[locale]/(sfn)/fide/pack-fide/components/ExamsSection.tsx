@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { LuBarChart3, LuClock, LuFileCheck2, LuCheckCircle2, LuActivity } from "react-icons/lu";
 import { LucideSparkles } from "lucide-react";
 import Image from "next/image";
-import LinkArrow from "@/app/components/common/LinkArrow";
 import { HiCheckCircle } from "react-icons/hi";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
+import { LinkArrowToFideExams } from "@/app/components/common/LinkToFideExams";
 
 export default function ExamsSection({
     stats = { totalExams: 100, avgDurationMin: 12, completionRate: 0.82 },
@@ -77,11 +77,11 @@ export default function ExamsSection({
 
                 {/* CTAs */}
                 <div className="flex gap-4 justify-center items-center w-full flex-wrap">
-                    <LinkArrow url="/fide/videos" className="text-xl font-bold text-neutral-700" category="culture">
+                    <LinkArrowToFideExams className="text-xl font-bold text-neutral-700" category="culture">
                         <span className="flex items-center">
                             <HiCheckCircle className="text-6xl mr-2 text-secondary-5" /> <span>Voir tous les examens disponibles</span>
                         </span>
-                    </LinkArrow>
+                    </LinkArrowToFideExams>
                     {hasPack ? (
                         <Link href="/fide#priceSliderFide" className="w-full sm:w-auto !no-underline">
                             <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto">Acheter des cours privés</ShimmerButton>

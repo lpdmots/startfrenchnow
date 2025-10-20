@@ -203,8 +203,6 @@ export const EVENT_TYPES = {
     "Your FIDE Plan": { uri: "https://api.calendly.com/event_types/edc90d62-ffea-4815-96de-d0b537f2da11", url: "https://calendly.com/yohann-startfrenchnow/15min" },
 };
 
-export const PROGRESSION_TYPES = [{ title: "Pack FIDE", value: "pack_fide" }];
-
 export const HOURS_BEFOR_CANCEL = 24;
 
 export const LESSONS = [...Object.keys(EVENT_TYPES)];

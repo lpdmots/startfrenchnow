@@ -71,16 +71,11 @@ const updateExamLogs = async (userId: string | undefined, examId: string, newSco
         // Mettre à jour la progression de l'utilisateur
         await client
             .patch(userId || "")
-            .unset([`learningProgress[type == "${progressType}"]`]) // supprimer l'existante
-            .insert("after", "learningProgress[-1]", [
-                // en réinsérant une nouvelle
-                {
-                    _key: uuidv4(),
-                    type: progressType,
-                    examLogs: logs,
-                },
-            ])
+            .set({
+                [`learningProgress[type == "${progressType}"].examLogs`]: logs,
+            })
             .commit();
+
         return logs;
     } else {
         const newLog = {
@@ -96,12 +91,13 @@ const updateExamLogs = async (userId: string | undefined, examId: string, newSco
         // Créer une nouvelle progression de l'utilisateur
         await client
             .patch(userId || "")
-            .setIfMissing({ learningProgress: [] }) // Assurez-vous que le tableau learningProgress existe
+            .setIfMissing({ learningProgress: [] })
             .insert("after", "learningProgress[-1]", [
                 {
                     _key: uuidv4(),
                     type: progressType,
                     examLogs: logs,
+                    videoLogs: [],
                 },
             ])
             .commit();

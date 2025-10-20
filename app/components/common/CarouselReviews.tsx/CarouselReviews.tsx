@@ -39,7 +39,7 @@ function Comment({ slideIndex, comments }: { slideIndex: any; comments: any[] })
     const locale = useLocale();
     const selectedSlide = slideIndex < comments.length && slideIndex >= 0 ? comments[slideIndex] : comments[0];
     const { userImage, userName, comment, score, title, progressFrom, progressTo, lessons, date } = selectedSlide;
-    const t = useTranslations("Fide.ReviewsFide.circularProgress");
+    const t = useTranslations("ReviewsFide.circularProgress");
 
     const getDate = () => {
         const dateString = new Date(date);

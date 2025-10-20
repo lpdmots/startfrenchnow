@@ -453,14 +453,33 @@ export function extractJsonSafe(content: string): any {
 export function secondsToMinutes(seconds?: number, withSeconds = false): string {
     if (!seconds || seconds <= 0) return "0 min";
 
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+    // When we don't show seconds, round up to the next minute (same behavior as original)
+    if (!withSeconds) {
+        const totalMinutes = Math.ceil(seconds / 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
 
-    if (withSeconds) {
+        if (hours > 0) {
+            if (minutes === 0) return `${hours} h`;
+            return `${hours} h ${minutes} min`;
+        }
+        return `${totalMinutes} min`;
+    }
+
+    // With seconds: show exact h / min / s without rounding
+    const hours = Math.floor(seconds / 3600);
+    const remainingAfterHours = seconds % 3600;
+    const minutes = Math.floor(remainingAfterHours / 60);
+    const remainingSeconds = remainingAfterHours % 60;
+
+    if (hours === 0) {
         if (minutes === 0) return `${remainingSeconds} s`;
         if (remainingSeconds === 0) return `${minutes} min`;
         return `${minutes} min ${remainingSeconds} s`;
     }
 
-    return `${Math.ceil(seconds / 60)} min`;
+    if (minutes === 0 && remainingSeconds === 0) return `${hours} h`;
+    if (remainingSeconds === 0) return `${hours} h ${minutes} min`;
+    if (minutes === 0) return `${hours} h ${remainingSeconds} s`;
+    return `${hours} h ${minutes} min ${remainingSeconds} s`;
 }

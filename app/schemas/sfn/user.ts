@@ -1,4 +1,4 @@
-import { CREDITS, LESSONS, PROGRESSION_TYPES } from "@/app/lib/constantes";
+import { CREDITS, LESSONS, PERMISSIONS } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -275,7 +275,7 @@ export default defineType({
                             type: "string",
                             validation: (Rule) => Rule.required(),
                             options: {
-                                list: PROGRESSION_TYPES,
+                                list: PERMISSIONS,
                                 layout: "radio",
                                 direction: "horizontal",
                             },

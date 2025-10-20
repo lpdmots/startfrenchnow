@@ -1,4 +1,5 @@
 import { cn } from "@/app/lib/schadcn-utils";
+import clsx from "clsx";
 
 interface Props {
     max: number;
@@ -7,16 +8,18 @@ interface Props {
     gaugePrimaryColor: string;
     gaugeSecondaryColor: string;
     className?: string;
+    fontHeight?: string;
+    withSize?: boolean;
 }
 
-export default function CircularProgressMagic({ max = 100, min = 0, value = 0, gaugePrimaryColor, gaugeSecondaryColor, className }: Props) {
+export default function CircularProgressMagic({ max = 100, min = 0, value = 0, gaugePrimaryColor, gaugeSecondaryColor, className, fontHeight = "text-base", withSize = true }: Props) {
     const circumference = 2 * Math.PI * 45;
     const percentPx = circumference / 104;
     const currentPercent = Math.round(((value - min) / (max - min)) * 100);
 
     return (
         <div
-            className={cn("relative size-40 text-2xl font-semibold", className)}
+            className={cn("relative text-2xl font-semibold", withSize && " size-40", className)}
             style={
                 {
                     "--circle-size": "100px",
@@ -78,7 +81,10 @@ export default function CircularProgressMagic({ max = 100, min = 0, value = 0, g
                     }
                 />
             </svg>
-            <span data-current-value={currentPercent} className="duration-[var(--transition-length)] delay-[var(--delay)] absolute inset-0 m-auto size-fit ease-linear animate-in fade-in text-base">
+            <span
+                data-current-value={currentPercent}
+                className={clsx("duration-[var(--transition-length)] delay-[var(--delay)] absolute inset-0 m-auto size-fit ease-linear animate-in fade-in", fontHeight)}
+            >
                 {currentPercent}%
             </span>
         </div>

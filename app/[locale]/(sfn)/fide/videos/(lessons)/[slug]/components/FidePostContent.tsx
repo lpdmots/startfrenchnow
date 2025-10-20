@@ -66,7 +66,7 @@ function FidePostContent({
                     </div>
                 ) : null}
             </div>
-            <div className="text-center !mt-4">
+            <div className="text-center !mt-4 sm:!mt-12">
                 <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center w-full gap-2 flex-wrap">
                     <div className="flex justify-center gap-4 w-full sm:hidden">
                         <Link href={previous ? `/fide/videos/${previous.slug}` : "#"} className="flex items-center justify-center">
@@ -92,7 +92,13 @@ function FidePostContent({
                 </div>
             </div>
             <div className="mg-bottom-48px">
-                <PortableText value={body} components={RichTextComponents(categories[0] as keyof typeof CATEGORIESCOLORS)} />
+                {!!body?.length ? (
+                    <PortableText value={body} components={RichTextComponents(categories[0] as keyof typeof CATEGORIESCOLORS)} />
+                ) : (
+                    <div className="flex justify-center w-full min-h-96 font-bold text-neutral-400 mt-24">
+                        {locale === "fr" ? "Aucun contenu associé à cette vidéo" : "No content associated with this video"}
+                    </div>
+                )}
             </div>
         </div>
     );

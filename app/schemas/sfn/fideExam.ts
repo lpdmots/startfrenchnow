@@ -24,6 +24,21 @@ export default defineType({
             },
         }),
         defineField({
+            name: "competence",
+            title: "Competence",
+            type: "string",
+            options: {
+                list: ["Parler", "Comprendre", "Lire", "Écrire"],
+                layout: "dropdown",
+            },
+        }),
+        defineField({
+            name: "isPreview",
+            title: "En preview ?",
+            type: "boolean",
+            initialValue: false,
+        }),
+        defineField({
             name: "level",
             title: "Level",
             type: "string",

@@ -45,10 +45,10 @@ const CARDS = [
 
 export function PricingPlans({ hasPack }: { hasPack?: boolean }) {
     return (
-        <section id="plans" className="pt-24 pb-12">
+        <section className="pt-24 pb-12">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 {/* Intro courte */}
-                <div className="mb-10 text-center">
+                <div id="plans" className="mb-10 text-center">
                     <h2 className="display-2">
                         <span className="heading-span-secondary-1">Choisissez</span> votre Pack FIDE
                     </h2>

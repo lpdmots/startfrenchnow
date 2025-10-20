@@ -26,7 +26,6 @@ export function HeroPackFide({ hasPack }: { hasPack: boolean }) {
             emoji: "🎓",
         },
     ];
-    console.log({ hasPack });
 
     return (
         <>

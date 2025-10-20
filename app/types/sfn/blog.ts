@@ -31,6 +31,7 @@ export interface Post extends Base {
     isPreview?: boolean;
     durationSec?: number;
     resources?: { title: string; key: string }[];
+    isReady?: boolean;
 }
 
 export interface Image {

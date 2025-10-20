@@ -3,12 +3,10 @@ import Burger from "./Burger";
 import Link from "next-intl/link";
 import DarkMode from "./DarkMode";
 import Logo from "./logos/Logo";
-import { LinkCurrent } from "./LinkCurrent";
 import { ProfilButton } from "../auth/ProfilButton";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { useLocale, useTranslations } from "next-intl";
-import { Locale } from "@/i18n"; /* 
-import { LearnButton } from "./LearnButton"; */
+import { Locale } from "@/i18n";
 import { CoursesButton } from "./CoursesButton";
 import { ResourcesButton } from "./ResourcesButton";
 import { FideButton } from "./FideButton";
@@ -52,18 +50,14 @@ function NavBar() {
     const links = (
         <>
             <li className="header-nav-list-item middle !px-0">
+                <FideButton locale={locale as Locale} />
+            </li>
+            <li className="header-nav-list-item middle !px-0">
                 <CoursesButton locale={locale as Locale} dictionnary={coursesDict} />
             </li>
-            <Link href="/fide" className="!no-underline !text-neutral-700">
-                <li className="header-nav-list-item middle !px-0">
-                    <FideButton locale={locale as Locale} />
-                </li>
-            </Link>
-            <Link href="/blog" className="!no-underline !text-neutral-700">
-                <li className="header-nav-list-item middle !px-0">
-                    <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
-                </li>
-            </Link>
+            <li className="header-nav-list-item middle !px-0">
+                <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
+            </li>
         </>
     );
 

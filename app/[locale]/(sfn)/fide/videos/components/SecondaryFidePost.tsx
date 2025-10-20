@@ -14,9 +14,10 @@ const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; 
     const level = postLevel?.map((lev) => LEVELDATA[lev]) ?? moduleLevel?.map((lev) => LEVELDATA[lev]) ?? null;
 
     const hasVideo = !!postMainVideo?.url;
-    const isLocked = !hasPack && !postIsPreview;
+    const isFree = packageTitle === (locale === "en" ? "Free" : "Gratuites");
+    const isLocked = !hasPack && !postIsPreview && !isFree;
 
-    const href = isLocked ? "/fide/pack-fide#plans" : "/fide/videos/" + postSlug.current;
+    const href = isFree ? "/blog/post/" + postSlug.current : isLocked ? "/fide/pack-fide#plans" : "/fide/videos/" + postSlug.current;
     const ariaLabel = isLocked ? `${postTitle} — contenu réservé au Pack FIDE. Voir les plans.` : postTitle || "Voir la leçon";
 
     return (
@@ -55,15 +56,15 @@ const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; 
                         <p className="mg-bottom-0 line-clamp-5">{postDescription || "Pas de description"}</p>
                     </div>
 
-                    <div className="flex justify-end items-center text-300 medium color-neutral-600 mt-4 gap-2 flex-wrap" style={{ fontSize: 16 }}>
+                    <div className="flex justify-end items-center text-300 medium color-neutral-600 mt-4 gap-2 flex-wrap text-base">
                         {hasVideo && (
                             <div className="flex items-center gap-2">
                                 <ImPlay2 className="text-2xl" style={{ color: packageColor }} />
-                                <p className="mb-0"> - </p>
                             </div>
                         )}
                         {level && (
                             <div className="flex gap-2 items-center">
+                                <p className="mb-0"> - </p>
                                 {[...level].reverse().map((lv, index) => (
                                     <div className="flex items-center gap-2" key={lv.label}>
                                         {!!index && " / "}
@@ -71,10 +72,14 @@ const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; 
                                         {lv.label}
                                     </div>
                                 ))}
-                                <p className="mb-0"> - </p>
                             </div>
                         )}
-                        <div>{postDurationSec && `${Math.floor(postDurationSec / 60)} min`}</div> - <div>{moduleTitle}</div>
+                        {!!postDurationSec && !!moduleTitle && (
+                            <>
+                                <p className="mb-0"> - </p>
+                                <div>{postDurationSec && `${Math.floor(postDurationSec / 60)} min`}</div> - <div>{moduleTitle}</div>
+                            </>
+                        )}
                     </div>
                 </div>
 

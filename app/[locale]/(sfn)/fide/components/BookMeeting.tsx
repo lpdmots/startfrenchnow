@@ -1,5 +1,5 @@
 "use client";
-import { updateCalendlyData } from "@/app/hooks/lessons/useGetCalendlyData";
+import { updateCalendlyData } from "@/app/lib/calendlyUtils";
 import { EVENT_TYPES } from "@/app/lib/constantes";
 import { checkIfAlias } from "@/app/serverActions/productActions";
 import { useSfnStore } from "@/app/stores/sfnStore";
@@ -10,9 +10,10 @@ import { PopupModal, useCalendlyEventListener } from "react-calendly";
 interface BookMeetingProps {
     eventType: keyof typeof EVENT_TYPES;
     children: ReactNode;
+    wFull?: boolean;
 }
 
-export const BookMeeting = ({ eventType, children }: BookMeetingProps) => {
+export const BookMeeting = ({ eventType, wFull = false, children }: BookMeetingProps) => {
     const { data: session } = useSession();
     const [isOpen, setIsOpen] = useState(false);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
@@ -37,8 +38,10 @@ export const BookMeeting = ({ eventType, children }: BookMeetingProps) => {
     if (!rootElement) return null;
 
     return (
-        <div>
-            <div onClick={() => setIsOpen(true)}>{children}</div>
+        <div className={wFull ? "w-full" : ""}>
+            <div className={wFull ? "w-full" : ""} onClick={() => setIsOpen(true)}>
+                {children}
+            </div>
 
             <PopupModal
                 url={EVENT_TYPES[eventType as keyof typeof EVENT_TYPES].url}

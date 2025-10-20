@@ -332,18 +332,103 @@
         "description": "Révisez le vocabulaire avec des flashcards, entraînez-vous sur des notions de grammaire, ou explorez d'autres thématiques. Bonne pratique !"
     },
     "Fide": {
+        "FidePack": {
+            "CoursesAccordionClient": {
+                "summary": "{modules, plural, one {# module} other {# modules}} • {lessons, plural, one {# leçon} other {# leçons}}",
+                "progress": "{watched}/{total} {total, plural, one {leçon} other {leçons}} • {duration}",
+                "freePreview": "Offert"
+            }
+        },
         "dashboard": {
+            "DashboardHero": {
+                "title": "<hs2>Reprenez</hs2> votre apprentissage <hs6>FIDE</hs6> en un clic.",
+                "VideoCard": {
+                    "heading": "VIDÉOS",
+                    "emptyTitle": "Aucune vidéo récemment visionnée",
+                    "resume": "Reprendre",
+                    "percentWatched": "{percent}% vu",
+                    "views": "vues",
+                    "lastActivity": "Dernière activité\u00a0: {time}",
+                    "altVideoThumb": "Miniature de la vidéo",
+                    "lockedOverlayHeadline": "Contenu réservé au Pack FIDE",
+                    "lockedOverlayHeadlineRich": "Contenu réservé au <strong>Pack FIDE</strong>",
+                    "ctaBuyPack": "Acheter le Pack FIDE",
+                    "status": {
+                        "watched": "Vu",
+                        "unwatched": "Non vu",
+                        "in-progress": "En cours"
+                    }
+                },
+                "ExamCard": {
+                    "resume": "Reprendre",
+                    "heading": "EXAMENS",
+                    "fallbackTitle": "Louer un appartement",
+                    "badgeUnderstand": "Comprendre",
+                    "lastActivity": "Dernière activité\u00a0: {time}",
+                    "lockedOverlayHeadline": "Contenu réservé au Pack FIDE",
+                    "lockedOverlayHeadlineRich": "Contenu réservé au <b>Pack FIDE</b>",
+                    "ctaBuyPack": "Acheter le Pack FIDE"
+                },
+                "PrivateCoursesCard": {
+                    "urgent": "Urgent",
+                    "book": "Réserver",
+                    "heading": "COURS PRIVÉS",
+                    "manageHours": "Gérer mes heures",
+                    "nextLesson": "Prochain cours :",
+                    "noBooking": "aucune réservation",
+                    "hours": "heures",
+                    "hour": "heure",
+                    "lastActivity": "Dernière activité\u00a0: {time}",
+                    "altPrivate": "Cours privés",
+                    "altThumb": "Illustration des cours privés",
+                    "lockedOverlayHeadline": "Fonctionnalité indisponible",
+                    "lockedOverlayHeadlineRich": "Aucune heure de <b>cours privé</b> accessible",
+                    "ctaBuyPrivate": "Acheter des cours privés"
+                }
+            },
+            "DashboardVideos": {
+                "title": "Mes <hs6>Vidéos</hs6>",
+                "selectedForYou": "Sélectionnées pour vous",
+                "summary": "Sommaire",
+                "altVideo": "vidéo",
+                "globalProgress": "PROGRESSION GÉNÉRALE",
+                "lastActivityRich": "Dernière activité\u00a0: <b>{time}</b>",
+                "ctaBuyPack": "Acheter le Pack FIDE",
+                "ctaBuyPackStrong": "Acheter le <b>Pack FIDE</b>",
+                "lockedOverlayHeadline": "Contenu réservé au Pack FIDE",
+                "allVideos": "Toutes les vidéos"
+            },
+            "Exams": {
+                "title": "Mes <hs5>Examens</hs5>",
+                "altExamsImage": "examens",
+                "myProgress": "Ma progression",
+                "allExams": "Tous les examens",
+                "ExamsSuggestions": {
+                    "selectedForYou": "Sélectionnés pour vous",
+                    "loading": "Chargement…",
+                    "empty": "Aucun examen à suggérer pour le moment."
+                },
+                "StatsTabel": {
+                    "headings": {
+                        "allExams": "Effectué",
+                        "avg": "Réussite"
+                    },
+                    "levelA1": "Niveau A1",
+                    "levelA2": "Niveau A2",
+                    "levelB1": "Niveau B1"
+                }
+            },
             "PrivateLessons": {
                 "common": {
                     "buyLessons": "Acheter des leçons",
-                    "lessonsAvailable1": "{hours} leçon{plural}",
+                    "lessonsAvailable1": "Il reste {hours} leçon{plural}",
                     "lessonsAvailable2": "à réserver",
                     "bookLesson": "Réserver un cours",
-                    "followUpTitle": "Le <hs2>Suivi</hs2> de vos Heures",
+                    "followUpTitle": "Le Suivi de mes Heures",
                     "remainingHours": "Heures à Réserver",
                     "pendingHours": "En Attente",
                     "completedHours": "Heures Effectuées",
-                    "calendarTitle": "Votre <hs4>Calendrier</hs4>",
+                    "calendarTitle": "Mon Calendrier",
                     "lessonsList1": "Voici la liste de vos cours, vous pouvez les",
                     "lessonsList2": "annuler gratuitement sous 48h",
                     "noLessons": "Vous n'avez pas de leçon à réserver.",
@@ -372,8 +457,41 @@
                         "optionalMessage": "Message optionnel"
                     }
                 },
-                "title": "Réservez vos <hs2>cours FIDE</hs2> privés",
+                "title": "Mes <hs2>cours privés</hs2>",
                 "goToFidePage": "Se rendre sur la page FIDE"
+            }
+        },
+        "FideVideosPage": {
+            "title": "Toutes nos <hs6>Vidéos FIDE</hs6>",
+            "subtitleRich": "Découvrez notre sélection de vidéos FIDE pour mettre <hs6>toutes les chances de votre côté</hs6> et réussir votre examen.",
+            "packageSelect": {
+                "all": "Toutes",
+                "targetedVideos": "Vidéos ciblées"
+            }
+        },
+        "FideExams": {
+            "title": "Tous nos <hs5>Examens FIDE</hs5>",
+            "subtitle": "Préparez chaque épreuve étape par étape : choisissez votre niveau et le type d’épreuve pour des révisions ciblées.",
+            "filters": {
+                "level": {
+                    "placeholder": "Niveau",
+                    "options": {
+                        "all": "Tous niveaux",
+                        "a1": "A1",
+                        "a2": "A2",
+                        "b1": "B1"
+                    }
+                },
+                "type": {
+                    "placeholder": "Épreuve",
+                    "options": {
+                        "all": "Toutes épreuves",
+                        "speak": "Parler",
+                        "understand": "Comprendre",
+                        "read": "Lire",
+                        "write": "Écrire"
+                    }
+                }
             }
         },
         "HeroFide": {
@@ -814,7 +932,7 @@
             "createAccount": "Créer un compte",
             "or": "Ou",
             "infoMessages": {
-                "privateLessons": "Connectez-vous pour accéder à vos leçons privées.",
+                "privateLessons": "Connectez-vous pour accéder à votre suivi.",
                 "checkout": "Connectez-vous pour accéder au paiement.",
                 "storyAccount": "Vous devez vous connecter pour garder le suivi des histoires."
             }

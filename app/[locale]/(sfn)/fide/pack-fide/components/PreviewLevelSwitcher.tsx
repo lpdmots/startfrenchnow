@@ -2,13 +2,12 @@
 import { Exam } from "@/app/types/fide/exam";
 import React, { useState } from "react";
 import { VideoFide } from "../../components/VideoFide";
-import LinkArrow from "@/app/components/common/LinkArrow";
 import ExpandableCardDemo from "@/app/components/ui/expandable-card-demo-standard";
-import clsx from "clsx";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/app/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 import { AiFillSignal } from "react-icons/ai";
-import Link from "next-intl/link";
 import { HiCheckCircle, HiPlay } from "react-icons/hi";
+import { LinkArrowToFideVideos } from "@/app/components/common/LinkToFideVideos";
+import { LinkArrowToFideExams } from "@/app/components/common/LinkToFideExams";
 
 interface Props {
     exams: {
@@ -90,11 +89,11 @@ export const PreviewLevelSwitcher = ({ exams, videosUrl }: Props) => {
                                 </div>
                             </div>
                             <div className="flex w-full justify-center">
-                                <LinkArrow url="/fide/videos" className="text-lg md:text-xl font-bold mt-6 xl:mt-12 mb-12 xl:mb-0 text-neutral-700" category="grammar">
+                                <LinkArrowToFideVideos className="text-lg md:text-xl font-bold mt-6 xl:mt-12 mb-12 xl:mb-0 text-neutral-700" category="grammar">
                                     <span className="flex items-center">
                                         <HiPlay className="text-4xl md:text-6xl mr-2 text-secondary-4" /> <span>Plus de vidéos gratuites</span>
                                     </span>
-                                </LinkArrow>
+                                </LinkArrowToFideVideos>
                             </div>
                         </div>
                         <div className="col-span-7 xl:col-span-3 flex flex-col justify-between">
@@ -113,11 +112,11 @@ export const PreviewLevelSwitcher = ({ exams, videosUrl }: Props) => {
                             </div>
 
                             <div className="flex w-full justify-center">
-                                <LinkArrow url="/fide/exams" className="text-lg md:text-xl font-bold mt-4 xl:mt-12 xl:mb-0 text-neutral-700" category="culture">
+                                <LinkArrowToFideExams className="text-lg md:text-xl font-bold mt-4 xl:mt-12 xl:mb-0 text-neutral-700" category="culture">
                                     <span className="flex items-center">
                                         <HiCheckCircle className="text-4xl md:text-6xl mr-2 text-secondary-5" /> <span>Plus d'examens blancs</span>
                                     </span>
-                                </LinkArrow>
+                                </LinkArrowToFideExams>
                             </div>
                         </div>
                     </div>

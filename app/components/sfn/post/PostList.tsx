@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next-intl/link";
 import { intelRich } from "@/app/lib/intelRich";
 import { PostsListInfiniteScroll } from "./PostsListInfiniteScroll";
+import LinkToFideVideos from "../../common/LinkToFideVideos";
 
 export default function PostsList({ initialPosts }: { initialPosts: Post[] }) {
     const t = useTranslations("Blog.BlogList");
@@ -41,9 +42,12 @@ export default function PostsList({ initialPosts }: { initialPosts: Post[] }) {
                                                 </Link>
                                                 <div className="w-dyn-list">
                                                     <div role="list" className="collection-list categories w-dyn-items">
-                                                        {CATEGORIES.map((category) => (
+                                                        {CATEGORIES.slice(0, 5).map((category) => (
                                                             <CategoryItem key={category} category={category as Category} locale={locale as Locale} />
                                                         ))}
+                                                        <div role="listitem" className="w-dyn-item">
+                                                            <LinkToFideVideos className="blog-categories-item-wrapper w-inline-block">FIDE</LinkToFideVideos>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

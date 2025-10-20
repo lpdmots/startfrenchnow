@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
     try {
         const data = await request.json();
-        const { title, description, level } = data;
+        const { title, description, level, competence } = data;
         console.log("Received data:", data);
 
         const examId = uuidv4();
@@ -100,7 +100,9 @@ export async function POST(request: NextRequest) {
             _type: "fideExam",
             _id: examId,
             image,
+            isPreview: false,
             responses,
+            competence: competence,
             responsesB1:
                 level === "B1"
                     ? [

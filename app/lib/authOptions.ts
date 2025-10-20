@@ -1,5 +1,5 @@
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
-import { Permission, UserProps } from "@/app/types/sfn/auth";
+import { Lesson, Permission, UserProps } from "@/app/types/sfn/auth";
 import { compare } from "bcrypt";
 import { DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -13,6 +13,7 @@ declare module "next-auth" {
             name: string;
             email: string;
             permissions?: Permission[];
+            lessons?: Lesson[];
         };
     }
 }
@@ -66,6 +67,7 @@ export const authOptions: NextAuthOptions = {
                     name: user.name,
                     alias: user.alias,
                     permissions: user.permissions || [],
+                    lessons: user.lessons || [],
                 };
             },
         }),
@@ -103,6 +105,7 @@ export const authOptions: NextAuthOptions = {
                 ...token,
                 _id: (u as any)._id ?? token._id,
                 permissions: perms,
+                lessons: Array.isArray(u.lessons) ? u.lessons : [],
             };
         },
         session: ({ session, token }) => {
@@ -112,6 +115,7 @@ export const authOptions: NextAuthOptions = {
                     ...session.user,
                     _id: token._id as string,
                     permissions: (token.permissions as Permission[]) || [],
+                    lessons: (token.lessons as Lesson[]) || [],
                 },
             };
         },

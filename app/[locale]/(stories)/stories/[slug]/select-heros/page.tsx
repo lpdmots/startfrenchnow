@@ -5,7 +5,6 @@ import { IsDesktop, IsTablet } from "@/app/components/stories/WithMediaQuery";
 import { Slug } from "@/app/types/sfn/blog";
 import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
-import { ProtectedPage } from "@/app/components/auth/ProtectedPage";
 import { groqQueries } from "@/app/lib/groqQueries";
 
 type Props = {
@@ -47,12 +46,6 @@ async function StartStory({ params: { slug } }: Props) {
             </IsTablet>
         </div>
     );
-
-    /* return (
-        <ProtectedPage callbackUrl={`/stories/${story.slug.current}/select-heros`} messageInfo="storyAccount">
-            
-        </ProtectedPage>
-    ); */
 }
 
 export default StartStory;

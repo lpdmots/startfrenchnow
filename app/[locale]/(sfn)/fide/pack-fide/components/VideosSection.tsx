@@ -8,9 +8,10 @@ import { BsInfinity, BsTrophy } from "react-icons/bs";
 import { SlideFromBottom, SlideFromLeft, SlideFromRight, SlideInOneByOneChild, SlideInOneByOneParent } from "@/app/components/animations/Slides";
 import { getFidePackSommaire } from "@/app/serverActions/productActions";
 import { CoursesAccordionClient } from "./CoursesAccordionClient";
+import { Locale } from "@/i18n";
 
-export async function VideosSection({ hasPack = false }: { hasPack?: boolean }) {
-    const fidePackSommaire = await getFidePackSommaire();
+export async function VideosSection({ locale, hasPack = false }: { locale: Locale; hasPack?: boolean }) {
+    const fidePackSommaire = await getFidePackSommaire(locale);
 
     return (
         <section id="videosSection" className="max-w-7xl m-auto py-24 px-4 lg:px-8">

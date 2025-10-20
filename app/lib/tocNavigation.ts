@@ -10,7 +10,6 @@ export type AdjacentItem = {
     _id: string;
     slug: SlugStr;
     title: string;
-    title_en: string;
 };
 
 export type AdjacentResult = {
@@ -50,7 +49,6 @@ export function findAdjacentFromTOC(
                         _id: post._id,
                         slug: post.slug.current,
                         title: post.title,
-                        title_en: post.title_en,
                     };
                     break outer;
                 }
@@ -73,7 +71,7 @@ export function findAdjacentFromTOC(
             for (let idx = li + 1; idx < posts.length; idx++) {
                 const p = posts[idx];
                 if (p && canOffer(p)) {
-                    return { packIndex: pi, moduleIndex: mi, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title, title_en: p.title_en };
+                    return { packIndex: pi, moduleIndex: mi, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title };
                 }
             }
         }
@@ -84,7 +82,7 @@ export function findAdjacentFromTOC(
             for (let idx = 0; idx < posts.length; idx++) {
                 const p = posts[idx];
                 if (p && canOffer(p)) {
-                    return { packIndex: pi, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title, title_en: p.title_en };
+                    return { packIndex: pi, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title };
                 }
             }
         }
@@ -97,7 +95,7 @@ export function findAdjacentFromTOC(
                 for (let idx = 0; idx < posts.length; idx++) {
                     const p = posts[idx];
                     if (p && canOffer(p)) {
-                        return { packIndex: p2, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title, title_en: p.title_en };
+                        return { packIndex: p2, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title };
                     }
                 }
             }
@@ -116,7 +114,7 @@ export function findAdjacentFromTOC(
             for (let idx = li - 1; idx >= 0; idx--) {
                 const p = posts[idx];
                 if (p && canOffer(p)) {
-                    return { packIndex: pi, moduleIndex: mi, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title, title_en: p.title_en };
+                    return { packIndex: pi, moduleIndex: mi, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title };
                 }
             }
         }
@@ -127,7 +125,7 @@ export function findAdjacentFromTOC(
             for (let idx = posts.length - 1; idx >= 0; idx--) {
                 const p = posts[idx];
                 if (p && canOffer(p)) {
-                    return { packIndex: pi, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title, title_en: p.title_en };
+                    return { packIndex: pi, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title };
                 }
             }
         }
@@ -140,7 +138,7 @@ export function findAdjacentFromTOC(
                 for (let idx = posts.length - 1; idx >= 0; idx--) {
                     const p = posts[idx];
                     if (p && canOffer(p)) {
-                        return { packIndex: p2, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title, title_en: p.title_en };
+                        return { packIndex: p2, moduleIndex: m2, postIndex: idx, _id: p._id, slug: p.slug.current, title: p.title };
                     }
                 }
             }

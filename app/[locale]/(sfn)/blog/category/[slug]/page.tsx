@@ -6,6 +6,7 @@ import { PostsListInfiniteScroll } from "@/app/components/sfn/post/PostsListInfi
 import { getCategoryPostsSlice } from "@/app/serverActions/blogActions";
 import Link from "next/link";
 import { localizePosts } from "@/app/lib/utils";
+import LinkToFideVideos from "@/app/components/common/LinkToFideVideos";
 
 type Props = {
     params: {
@@ -62,9 +63,12 @@ const CategoriesNoAsync = ({ posts: posts, slug }: { posts: Post[]; slug: string
                                                 </Link>
                                                 <div className="w-dyn-list">
                                                     <div role="list" className="collection-list categories w-dyn-items">
-                                                        {CATEGORIES.map((category) => (
+                                                        {CATEGORIES.slice(0, 5).map((category) => (
                                                             <CategoryItem key={category} category={category as Category} slug={slug} locale={locale as Locale} />
                                                         ))}
+                                                        <div role="listitem" className="w-dyn-item">
+                                                            <LinkToFideVideos className="blog-categories-item-wrapper w-inline-block">FIDE</LinkToFideVideos>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

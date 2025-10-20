@@ -10,9 +10,15 @@ function DarkMode() {
         // 👆 false parameter is required for react project
     }, []);
 
-    const handleClick = (theme: string) => {
+    const handleClick = (theme: "light" | "dark") => {
         setToggle(theme);
         localStorage.setItem("sfn-theme", theme);
+        document.cookie = `sfn-theme=${theme}; path=/; max-age=31536000; samesite=lax`;
+        if (theme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            document.documentElement.removeAttribute("data-theme");
+        }
     };
 
     useEffect(() => {

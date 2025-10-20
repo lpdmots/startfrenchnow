@@ -15,10 +15,10 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     };
 }
 
-export default async function VideosPostLayout({ children }: { children: React.ReactNode }) {
+export default async function VideosPostLayout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
-    const fidePackSommaire = await getFidePackSommaire();
+    const fidePackSommaire = await getFidePackSommaire(locale);
 
     return (
         <div className="grid grid-cols-12 gap-4 xl:gap-8 px-2 sm:px-4 md:px-12 xxl:px-24">

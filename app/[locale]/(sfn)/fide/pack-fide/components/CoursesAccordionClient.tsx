@@ -14,11 +14,13 @@ import { MdOndemandVideo } from "react-icons/md";
 import { FaRegArrowAltCircleRight, FaRegCheckCircle } from "react-icons/fa";
 import { useInitializePackFideWatched } from "@/app/hooks/lessons/useInitializePackFideWatched";
 import { useSfnStore } from "@/app/stores/sfnStore";
+import { useTranslations } from "next-intl";
 
 export function CoursesAccordionClient({ hasPack = false, fidePackSommaire, expandAll }: { hasPack?: boolean; fidePackSommaire: FidePackSommaire; expandAll?: boolean }) {
+    const t = useTranslations("FidePack.CoursesAccordionClient");
     const params = useParams();
     const activeSlug = (params?.slug ?? null) as string | null;
-    console.log("activeSlug", activeSlug);
+
     useInitializePackFideWatched();
     const { watchedVideos } = useSfnStore((s) => ({
         watchedVideos: s.watchedVideos,
@@ -66,12 +68,17 @@ export function CoursesAccordionClient({ hasPack = false, fidePackSommaire, expa
 
     return (
         <>
-            {fidePackSommaire.packages.map((block) => (
-                <div key={block.referenceKey} className="p-0 pb-2 sm:p-4" style={{ borderBottom: "2px solid var(--neutral-300)" }}>
+            {fidePackSommaire.packages.map((block, idx) => (
+                <div key={block.referenceKey} className="p-0 pb-2 sm:p-4" style={{ borderBottom: idx === fidePackSommaire.packages.length - 1 ? undefined : "2px solid var(--neutral-300)" }}>
                     <div className="mb-3 flex items-center justify-between">
                         <h3 className="m-0 text-lg font-semibold text-neutral-900">{block.title}</h3>
                         <div className="text-sm text-neutral-600">
-                            {block.modules.length} modules • {block.modules.reduce((a, m) => a + m.posts.length, 0)} leçons
+                            <div className="text-sm text-neutral-600">
+                                {t("summary", {
+                                    modules: block.modules.length,
+                                    lessons: block.modules.reduce((a, m) => a + m.posts.length, 0),
+                                })}
+                            </div>
                         </div>
                     </div>
 
@@ -89,7 +96,11 @@ export function CoursesAccordionClient({ hasPack = false, fidePackSommaire, expa
                                                 </div>
                                             </div>
                                             <div className="text-xs text-neutral-600 flex" suppressHydrationWarning>
-                                                {numberOfWatchedLessons}/{mod.posts.length} leçons • {secondsToMinutes(mod.posts.reduce((a, l) => a + (l.durationSec ?? 0), 0))}
+                                                {t("progress", {
+                                                    watched: numberOfWatchedLessons,
+                                                    total: mod.posts.length,
+                                                    duration: secondsToMinutes(mod.posts.reduce((a, l) => a + (l.durationSec ?? 0), 0)),
+                                                })}
                                             </div>
                                         </div>
                                     </AccordionTrigger>
@@ -119,6 +130,7 @@ export function CoursesAccordionClient({ hasPack = false, fidePackSommaire, expa
 }
 
 function LessonRow({ lesson, hasPack, moduleLevel, activeSlug, watchedVideos }: { lesson: Post; hasPack: boolean; moduleLevel?: Level; activeSlug: string | null; watchedVideos: string[] }) {
+    const t = useTranslations("FidePack.CoursesAccordionClient");
     const isActive = lesson.slug.current === activeSlug;
     const locked = !lesson.isPreview && !hasPack;
     const level = lesson.level?.[0] || moduleLevel || undefined;
@@ -151,7 +163,7 @@ function LessonRow({ lesson, hasPack, moduleLevel, activeSlug, watchedVideos }: 
                     </div>
                 </div>
                 <div>
-                    {lesson.isPreview && !hasPack && <span className="rounded bg-secondary-2 px-2 py-0.5 text-xs text-neutral-100">Offert</span>}
+                    {lesson.isPreview && !hasPack && <span className="rounded bg-secondary-2 px-2 py-0.5 text-xs text-neutral-100">{t("freePreview")}</span>}
                     {locked && (
                         <span className="inline-flex items-center gap-1 rounded bg-neutral-900 px-2 py-0.5 text-xs font-medium text-white">
                             <LuLock className="text-[20px]" />

@@ -7,6 +7,7 @@ import { getTranslator } from "next-intl/server";
 import { Toaster } from "@/app/components/ui/toaster";
 import { Metadata } from "next";
 import { locales, type Locale } from "@/i18n";
+import { cookies } from "next/headers"; // ← Solution B: lecture du cookie côté serveur
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -34,22 +35,22 @@ export async function generateMetadata({ params: { locale } }: { params: { local
             languages,
         },
         /* openGraph: {
-            type: "website",
-            url: locale === "fr" ? "/fr" : "/en",
-            title: t("title"),
-            description: t("description"),
-            siteName: "Start French Now",
-            locale: locale === "fr" ? "fr_FR" : "en_US",
-            alternateLocale: locale === "fr" ? ["en_US"] : ["fr_FR"],
-            images: [{ url: "/og/home.jpg" }],
-        },
-        twitter: {
-            card: "summary_large_image",
-            title: t("title"),
-            description: t("description"),
-            images: ["/og/home.jpg"],
-            creator: "@startfrenchnow",
-        }, */
+        type: "website",
+        url: locale === "fr" ? "/fr" : "/en",
+        title: t("title"),
+        description: t("description"),
+        siteName: "Start French Now",
+        locale: locale === "fr" ? "fr_FR" : "en_US",
+        alternateLocale: locale === "fr" ? ["en_US"] : ["fr_FR"],
+        images: [{ url: "/og/home.jpg" }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: t("title"),
+        description: t("description"),
+        images: ["/og/home.jpg"],
+        creator: "@startfrenchnow",
+      }, */
         robots: { index: true, follow: true },
         viewport: "width=device-width, initial-scale=1",
         themeColor: [
@@ -68,6 +69,10 @@ export default async function RootLayout({ children, params }: { children: React
         notFound();
     }
 
+    // Applique le thème dès le rendu serveur
+    const cookieTheme = cookies().get("sfn-theme")?.value;
+    const ssrTheme = cookieTheme === "dark" ? "dark" : "light";
+
     let messages;
     try {
         messages = (await import(`@/app/dictionaries/${locale}.json`)).default;
@@ -76,7 +81,10 @@ export default async function RootLayout({ children, params }: { children: React
     }
 
     return (
-        <html lang={locale} dir="ltr" className={`${poppins.variable} font-sans`}>
+        <html lang={locale} dir="ltr" data-theme={ssrTheme} suppressHydrationWarning className={`${poppins.variable} font-sans`}>
+            <head>
+                <meta name="color-scheme" content="light dark" />
+            </head>
             <body>
                 <div id="root">
                     <NextIntlClientProvider locale={locale} messages={messages}>

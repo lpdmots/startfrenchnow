@@ -174,7 +174,7 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
     const max = product?.maxQuantity || 20;
     const min = product?.minQuantity || 1;
     const userId = session?.user._id;
-    const t = useTranslations("Fide.PriceSliderFide");
+    const t = useTranslations("PriceSliderFide");
 
     useEffect(() => {
         (async () => {
@@ -277,7 +277,7 @@ const PriceCategory = ({ productData, quantity, slug }: PriceCategoryProps) => {
     const bgColor = `bg-secondary-${color}`;
     const textColor = `text-${color}`;
     const isDiscounted = initialUnitPrice !== unitPrice;
-    const t = useTranslations("Fide.PriceSliderFide");
+    const t = useTranslations("PriceSliderFide");
 
     return (
         <div className="card grid grid-cols-1 md:grid-cols-2 overflow-hidden shadow-2 relative">

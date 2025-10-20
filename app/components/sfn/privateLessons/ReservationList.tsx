@@ -13,11 +13,12 @@ import { EVENT_TYPES, HOURS_BEFOR_CANCEL, SLUG_TO_EVENT_TYPE } from "@/app/lib/c
 import { FaSpinner } from "react-icons/fa";
 import { cancelEventAction } from "@/app/serverActions/productActions";
 import { useToast } from "@/app/hooks/use-toast";
-import { updateCalendlyData } from "@/app/hooks/lessons/useGetCalendlyData";
 import { useSession } from "next-auth/react";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 import { Locale } from "@/i18n";
+import { updateCalendlyData } from "@/app/lib/calendlyUtils";
+import ClientLessonFetcher from "./ClientLessonFetcher";
 
 const getCancellable = (date: string) => {
     const startTime = new Date(date);
@@ -34,36 +35,48 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
     const tSpe = useTranslations("dashboard.PrivateLessons");
 
     return (
-        <div className="w-full flex flex-col gap-12 md:gap-24">
-            <div className="w-full">
-                <h2 className="display-2 mb-4 lg:mb-8">{t.rich("followUpTitle", intelRich())}</h2>
-                {privateLesson ? (
-                    <div className="flex flex-col md:flex-row gap-6 text-center">
-                        {/* Heures Restantes */}
-                        <div className="flex flex-col items-center p-4 card shadow-1 min-w-60 gap-4">
-                            <Image src="/images/schedule.png" alt="calendar" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
-                            <p className="text-lg font-semibold text-gray-700 mb-0">{t("remainingHours")}</p>
-                            <p className="text-xl font-bold text-blue-600 mb-0">{toHours(remainingMinutes || 0)} h</p>
+        <div className="w-full flex flex-col gap-6 md:gap-12">
+            <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <div className="col-span-1 xl:col-span-2 flex flex-col gap-4 xl:gap-8 order-2 xl:order-1">
+                    <h3 className="underline decoration-secondary-2 text-xl md:text-3xl">{t.rich("followUpTitle", intelRich())}</h3>
+                    {privateLesson ? (
+                        <div className="flex flex-col md:flex-row gap-6 text-center">
+                            {/* Heures Restantes */}
+                            <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 shadow-1 min-w-60 gap-4 rounded-2xl">
+                                <Image src="/images/schedule.png" alt="calendar" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
+                                <p className="text-lg font-semibold text-gray-700 mb-0">{t("remainingHours")}</p>
+                                <p className="text-xl font-bold text-blue-600 mb-0">{toHours(remainingMinutes || 0)} h</p>
+                            </div>
+                            {/* Heures En Attente */}
+                            <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 min-w-60 gap-4 rounded-2xl">
+                                <Image src="/images/hourglass.png" alt="hourglass" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
+                                <p className="text-lg font-semibold  text-gray-700 mb-0">{t("pendingHours")}</p>
+                                <p className="text-xl font-bold text-yellow-600 mb-0">{toHours(upcomingMinutes || 0)} h</p>
+                            </div>
+                            {/* Heures Effectuées */}
+                            <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 min-w-60 gap-4 rounded-2xl">
+                                <Image src="/images/completed.png" alt="check" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
+                                <p className="text-lg font-semibold  text-gray-600 mb-0">{t("completedHours")}</p>
+                                <p className="text-xl font-bold text-green-600 mb-0">{toHours(completedMinutes || 0)} h</p>
+                            </div>
                         </div>
-                        {/* Heures En Attente */}
-                        <div className="flex flex-col items-center p-4 card min-w-60 gap-4">
-                            <Image src="/images/hourglass.png" alt="hourglass" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
-                            <p className="text-lg font-semibold  text-gray-700 mb-0">{t("pendingHours")}</p>
-                            <p className="text-xl font-bold text-yellow-600 mb-0">{toHours(upcomingMinutes || 0)} h</p>
-                        </div>
-                        {/* Heures Effectuées */}
-                        <div className="flex flex-col items-center p-4 card border-neutral-600 min-w-60 gap-4">
-                            <Image src="/images/completed.png" alt="check" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
-                            <p className="text-lg font-semibold  text-gray-600 mb-0">{t("completedHours")}</p>
-                            <p className="text-xl font-bold text-green-600 mb-0">{toHours(completedMinutes || 0)} h</p>
-                        </div>
-                    </div>
-                ) : (
-                    <p className="text-neutral-600">{t("noPurchasedLessons")}</p>
-                )}
+                    ) : (
+                        <p className="text-neutral-600">{t("noPurchasedLessons")}</p>
+                    )}
+                    <ClientLessonFetcher eventType="Fide Preparation Class" />
+                </div>
+                <div className="col-span-1 flex flex-col gap-4 items-center order-1 xl:order-2">
+                    <Image
+                        src="/images/private-lessons-dashboard.png"
+                        alt="private lessons"
+                        width={400}
+                        height={400}
+                        className="px-2 object-contain w-full overflow-hidden max-w-56 xl:max-w-none h-auto"
+                    />
+                </div>
             </div>
             <div className="w-full">
-                <h2 className="display-2">{t.rich("calendarTitle", intelRich())}</h2>
+                <h3 className="underline decoration-secondary-2 text-xl md:text-3xl mb-8">{t.rich("calendarTitle", intelRich())}</h3>
                 <p>
                     {t("lessonsList1")} <span className=" font-bold underline decoration-secondary-2">{t("lessonsList2")}</span>.
                 </p>
@@ -109,6 +122,7 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
 };
 
 const EventRow = ({ eventType, event, index, locale }: { eventType: keyof typeof EVENT_TYPES; event: Event; index: number; locale: Locale }) => {
+    console.log("event", event);
     const isMoreThan48HoursAway = getCancellable(event.date);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);

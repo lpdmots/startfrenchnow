@@ -12,18 +12,21 @@ import { useSession } from "next-auth/react";
 import { getFideExamProgress } from "@/app/serverActions/fideExamActions";
 import { ExamLog } from "@/app/types/sfn/auth";
 import { FaRegStar } from "react-icons/fa";
+import clsx from "clsx";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-export default function ExpandableCardDemo({ exams, withStars = true }: { exams: Exam[]; withStars?: boolean }) {
+export default function ExpandableCardDemo({ exams, withStars = true, twoColumns = false, hasPack = true }: { exams: Exam[]; withStars?: boolean; twoColumns?: boolean; hasPack?: boolean }) {
     const { data: session } = useSession();
     const [logs, setLogs] = useState<ExamLog[] | null>(null);
     const [active, setActive] = useState<(typeof exams)[number] | boolean | null>(null);
     const ref = useRef<HTMLDivElement>(null);
+    const router = useRouter();
 
     useEffect(() => {
         (async () => {
             if (session?.user?._id) {
                 const user = await getFideExamProgress(session.user._id, "pack_fide");
-                console.log("Progress fetched:", { user });
                 setLogs(user?.learningProgress?.[0]?.examLogs || []);
             }
         })();
@@ -87,7 +90,7 @@ export default function ExpandableCardDemo({ exams, withStars = true }: { exams:
                             className="w-full max-w-2xl h-full md:h-fit md:max-h-[90%] flex flex-col bg-neutral-100 sm:rounded-3xl overflow-hidden border-2 border-solid border-neutral-800"
                         >
                             <motion.div layoutId={`image-${active.title}-${active._id}`} className="relative">
-                                <img
+                                <Image
                                     width={670}
                                     height={500}
                                     src={urlFor(active.image).url()}
@@ -119,20 +122,21 @@ export default function ExpandableCardDemo({ exams, withStars = true }: { exams:
                     </div>
                 ) : null}
             </AnimatePresence>
-            <ul className="max-w-3xl mx-auto w-full gap-4 p-0">
+            <div className={clsx("max-w-3xl mx-auto w-full gap-4 p-0", twoColumns && "grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-4 lg:max-w-none")}>
                 {exams
                     .sort((a, b) => a.level.localeCompare(b.level))
                     .map((exam, index) => {
+                        const isLocked = !hasPack && !exam.isPreview;
                         return (
                             <motion.div
                                 layoutId={`card-${exam.title}-${exam._id}`}
                                 key={`card-${exam.title}-${exam._id}`}
-                                onClick={() => setActive(exam)}
-                                className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 my-2"
+                                onClick={isLocked ? () => router.push("/fide/pack-fide#plans") : () => setActive(exam)}
+                                className="group relative p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 my-2 overflow-hidden"
                             >
                                 <div className="flex gap-4 flex-col md:flex-row items-center">
                                     <motion.div layoutId={`image-${exam.title}-${exam._id}`}>
-                                        <img
+                                        <Image
                                             width={400}
                                             height={300}
                                             src={urlFor(exam.image).url()}
@@ -142,6 +146,7 @@ export default function ExpandableCardDemo({ exams, withStars = true }: { exams:
                                     </motion.div>
                                     <div>
                                         <motion.h3 layoutId={`title-${exam.title}-${exam._id}`} className="font-medium text-neutral-800 text-center md:text-left">
+                                            {isLocked ? "🔒- " : ""}
                                             {exam.level} - {exam.title}
                                         </motion.h3>
                                         <motion.p layoutId={`description-${exam.description}-${exam._id}`} className="text-neutral-600 dark:text-neutral-400 text-center md:text-left mb-0">
@@ -154,10 +159,21 @@ export default function ExpandableCardDemo({ exams, withStars = true }: { exams:
                                         <RenderStars active={exam} logs={logs} />
                                     </motion.div>
                                 )}
+                                {isLocked && (
+                                    <div className="absolute inset-0 z-10 h-full w-full pointer-events-none [@media(hover:none)]:hidden">
+                                        <div className="absolute inset-0 bg-neutral-300 opacity-0 transition-opacity duration-300 group-hover:opacity-90" />
+                                        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                            <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack FIDE" width={64} height={64} className="h-10 w-10 mb-2" />
+                                            <p className="text-sm font-medium mb-0">
+                                                Acheter le <strong>Pack FIDE</strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
                             </motion.div>
                         );
                     })}
-            </ul>
+            </div>
         </>
     );
 }
