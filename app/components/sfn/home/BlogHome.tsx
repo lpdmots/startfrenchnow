@@ -13,15 +13,16 @@ import { intelRich } from "@/app/lib/intelRich";
 import Link from "next-intl/link";
 import { localizePosts } from "@/app/lib/utils";
 import { Locale } from "@/i18n";
+import { BLOGCATEGORIES } from "@/app/lib/constantes";
 
 const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true] {
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && count(categories[@ in $categories]) > 0] {
         ...,
     } | order(publishedAt desc)[0...3]
 `;
 
 export default async function BlogHome({ locale }: { locale: Locale }) {
-    const postsData: Post[] = await client.fetch(query);
+    const postsData: Post[] = await client.fetch(query, { categories: BLOGCATEGORIES });
     const posts = localizePosts(postsData, locale);
     return <BlogHomeRender posts={posts} />;
 }

@@ -1,19 +1,16 @@
 import { groq } from "next-sanity";
 import { client } from "@/app/lib/sanity.client";
 import { Post } from "@/app/types/sfn/blog";
-import { useLocale, useTranslations } from "next-intl";
-import { intelRich } from "@/app/lib/intelRich";
 import { Locale } from "@/i18n";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
-import Link from "next-intl/link";
-import FidePostContent from "./components/FidePostContent";
 import { findAdjacentFromTOC } from "@/app/lib/tocNavigation";
-import { FidePackSommaire, getFidePackSommaire } from "@/app/serverActions/productActions";
+import { FidePackSommaire, getFidePackSommaire, getPackSommaire } from "@/app/serverActions/productActions";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { Permission } from "@/app/types/sfn/auth";
 import { redirect } from "next/navigation";
+import FidePostContent from "../../videos/(lessons)/[slug]/components/FidePostContent";
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -28,7 +25,7 @@ const queryLatest = groq`
     } | order(publishedAt desc) [0...3]
 `;
 
-async function CoursFidePage({ params }: { params: { locale: Locale; slug: string } }) {
+async function ScenariosFidePage({ params }: { params: { locale: Locale; slug: string } }) {
     const { locale, slug } = params;
 
     // 0) Session → déterminer l’accès Pack FIDE
@@ -55,17 +52,17 @@ async function CoursFidePage({ params }: { params: { locale: Locale; slug: strin
     }
 
     // 3) TOC pour navigation adjacente
-    const fidePackSommaire = await getFidePackSommaire(locale);
+    const fidePackSommaire = await getPackSommaire(locale);
 
     // 4) Adjacent avec filtrage preview si pas d’accès
     const { previous, next } = findAdjacentFromTOC(fidePackSommaire, slug, hasPack);
 
     const localizedPost = localizePosts([post], locale)[0];
 
-    return <CoursFidePageNoAsync post={localizedPost} previous={previous} next={next} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />;
+    return <ScenariosFidePageNoAsync post={localizedPost} previous={previous} next={next} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />;
 }
 
-export default CoursFidePage;
+export default ScenariosFidePage;
 
 interface PropsNoAsync {
     post: Post;
@@ -75,9 +72,9 @@ interface PropsNoAsync {
     fidePackSommaire: FidePackSommaire;
 }
 
-const CoursFidePageNoAsync = ({ post, previous, next, hasPack, fidePackSommaire }: PropsNoAsync) => {
-    const previousUrl = previous ? `/fide/videos/${previous.slug}` : null;
-    const nextUrl = next ? `/fide/videos/${next.slug}` : null;
+const ScenariosFidePageNoAsync = ({ post, previous, next, hasPack, fidePackSommaire }: PropsNoAsync) => {
+    const previousUrl = previous ? `/fide/scenarios/${previous.slug}` : null;
+    const nextUrl = next ? `/fide/scenarios/${next.slug}` : null;
 
     return (
         <div className="mb-24">

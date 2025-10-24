@@ -28,7 +28,7 @@ export default defineType({
             title: "Competence",
             type: "string",
             options: {
-                list: ["Parler", "Comprendre", "Lire", "Écrire"],
+                list: ["Parler", "Comprendre", "Lire & Écrire"],
                 layout: "dropdown",
             },
         }),
@@ -39,13 +39,17 @@ export default defineType({
             initialValue: false,
         }),
         defineField({
-            name: "level",
-            title: "Level",
-            type: "string",
-            options: {
-                list: ["A1", "A2", "B1"],
-                layout: "dropdown",
-            },
+            name: "levels",
+            title: "Levels",
+            type: "array",
+            of: [
+                {
+                    type: "string",
+                    options: {
+                        list: ["A1", "A2", "B1", "A1+", "A2+", "all"],
+                    },
+                },
+            ],
         }),
         defineField({
             name: "tracks",
@@ -92,18 +96,24 @@ export default defineType({
                 },
             ],
         }),
+        defineField({
+            name: "pdf",
+            title: "PDF",
+            type: "string",
+            description: 'Lien vers le PDF de des examens de type "Lire & Écrire"',
+        }),
     ],
 
     preview: {
         select: {
             title: "title",
             description: "description",
-            level: "level",
+            levels: "levels",
             media: "image",
         },
-        prepare({ title, level, media, description }) {
+        prepare({ title, levels, media, description }) {
             return {
-                title: `${level} - ${title}`,
+                title: `${levels.join(", ")} - ${title}`,
                 media,
                 subtitle: description,
             };

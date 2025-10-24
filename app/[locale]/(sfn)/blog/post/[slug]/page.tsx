@@ -11,6 +11,7 @@ import { Locale } from "@/i18n";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
 import Link from "next-intl/link";
+import { BLOGCATEGORIES } from "@/app/lib/constantes";
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -19,7 +20,7 @@ const query = groq`
         }
     `;
 const queryLatest = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true] 
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && count(categories[@ in $categories]) > 0] 
     {
         ...,
     } | order(publishedAt desc) [0...3]
@@ -28,7 +29,7 @@ const queryLatest = groq`
 async function Post({ params }: { params: { locale: Locale; slug: string } }) {
     const { locale, slug } = params;
     const postData: Promise<Post> = client.fetch(query, { slug });
-    const rowLatestPostsData: Promise<Post[]> = client.fetch(queryLatest);
+    const rowLatestPostsData: Promise<Post[]> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
     const [post, rowLatestPosts] = await Promise.all([postData, rowLatestPostsData]);
 
     const latestPostsRaw = rowLatestPosts.filter((post) => post.slug.current !== slug) as Post[];

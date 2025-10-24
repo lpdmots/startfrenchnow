@@ -37,7 +37,7 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
 
     return (
         <Link
-            href={!hasPack ? "/fide/pack-fide#plans" : last ? `/fide/exams?level=${last?.level}` : `/fide/exams`}
+            href={!hasPack ? "/fide/pack-fide#plans" : last ? `/fide/exams?level=${last?.levels[0]}` : `/fide/exams`}
             className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4"
         >
             {isKind && (
@@ -58,8 +58,10 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
 
             <div className="grow w-full">
                 <div className="flex items-center justify-between gap-2 w-full">
-                    <div className="flex gap-2">{[t("badgeUnderstand"), ...(last?.level ? [last.level] : [])].map((lvl) => formatToBadge(lvl, "bg-secondary-5"))}</div>
-                    <p className="mb-0 text-sm italic text-neutral-600">{stats?.avgByLevel[last?.level || "A1"] ? <RenderStars stars={stats?.avgByLevel[last?.level || "A1"]} /> : ""}</p>
+                    <div className="flex gap-2">{[t("badgeUnderstand"), ...(last?.levels ? last.levels : [])].map((lvl) => formatToBadge(lvl, "bg-secondary-5"))}</div>
+                    <p className="mb-0 text-sm italic text-neutral-600">
+                        {stats?.avgByLevel[(last?.levels[0] || "A1") as "A1" | "A2" | "B1"] ? <RenderStars stars={stats?.avgByLevel[(last?.levels[0] || "A1") as "A1" | "A2" | "B1"]} /> : ""}
+                    </p>
                 </div>
             </div>
 
@@ -79,7 +81,7 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
                     <span className="font-bold">
                         {examsDone}/{allexamsForLastLevel}
                     </span>{" "}
-                    {last?.level}
+                    {last?.levels[0]}
                 </p>
                 {lastActivity && <p className="text-sm text-neutral-600 mb-0">{t("lastActivity", { time: lastActivity })}</p>}
             </div>

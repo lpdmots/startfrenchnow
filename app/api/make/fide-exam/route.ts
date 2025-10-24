@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
         const createdFideExam: Exam = await client.create({
             title,
             description,
-            level,
+            levels: [level],
             tracks,
             _type: "fideExam",
             _id: examId,

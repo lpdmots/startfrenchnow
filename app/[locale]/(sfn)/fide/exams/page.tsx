@@ -14,7 +14,7 @@ const queryExams = groq`
 `;
 
 export type LevelParam = "a1" | "a2" | "b1" | "all";
-export type TypeParam = "speak" | "understand" | "read" | "write";
+export type TypeParam = "speak" | "understand" | "read-write";
 
 function parseLevelParam(v?: string | string[]): LevelParam {
     const s = Array.isArray(v) ? v[0] : v;
@@ -25,7 +25,7 @@ function parseLevelParam(v?: string | string[]): LevelParam {
 function parseTypeParam(v?: string | string[]): TypeParam | undefined {
     const s = Array.isArray(v) ? v[0] : v;
     const norm = (s ?? "").toLowerCase();
-    return (["speak", "understand", "read", "write"] as const).includes(norm as any) ? (norm as TypeParam) : undefined;
+    return (["speak", "understand", "read-write"] as const).includes(norm as any) ? (norm as TypeParam) : undefined;
 }
 
 export default async function FideExamPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
@@ -48,18 +48,14 @@ const FideExamPageNoAsync = ({ exams, initialLevel, initialType, hasPack }: { ex
             <div className="w-full max-w-7xl">
                 <div className="section hero v3 wf-section !pt-6">
                     <div className="container-default w-container">
-                        <div className="inner-container _600px---tablet center">
-                            <div className="inner-container _500px---mbl center mb-8">
-                                <div className="inner-container _725px center---full-width-mbl">
-                                    <div className="text-center mg-bottom-40px">
-                                        <h1 className="display-1 mg-bottom-8px mb-8">{t.rich("title", intelRich())}</h1>
-                                        <p className="mg-bottom-0">{t("subtitle")}</p>
-                                    </div>
-                                </div>
-
-                                <ExamCardsList exams={exams} initialLevel={initialLevel} initialType={initialType} hasPack={hasPack} />
+                        <div className="inner-container _725px center---full-width-mbl">
+                            <div className="text-center mg-bottom-40px">
+                                <h1 className="display-1 mg-bottom-8px mb-8">{t.rich("title", intelRich())}</h1>
+                                <p className="mg-bottom-0">{t("subtitle")}</p>
                             </div>
                         </div>
+
+                        <ExamCardsList exams={exams} initialLevel={initialLevel} initialType={initialType} hasPack={hasPack} />
                     </div>
                 </div>
             </div>

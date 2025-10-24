@@ -209,12 +209,53 @@ const FIDE_TOC_QUERY = groq`
 }
 `;
 
-export async function getFidePackSommaire(locale: Locale = "fr"): Promise<FidePackSommaire> {
+export async function getFidePackSommaire(locale: Locale = "fr", referenceKey: string = "pack_fide"): Promise<FidePackSommaire> {
     // Pas de cache pour garantir un sommaire toujours frais en édition
-    const data = await client.fetch<FidePackSommaireNoLocale>(FIDE_TOC_QUERY, { referenceKey: "pack_fide" });
+    const data = await client.fetch<FidePackSommaireNoLocale>(FIDE_TOC_QUERY, { referenceKey });
 
     // Normalisation douce: si le produit est introuvable, renvoyer un shape vide
     return data ? normalizeFidePackSommaire(data, locale) : { packages: [] };
+}
+
+const FIDE_PACK_QUERY = groq`
+*[_type == "productPackage" && referenceKey == $referenceKey][0]{
+    title,
+    title_en,
+    referenceKey,
+    "modules": modules[]{
+      _key,
+      title,
+      title_en,
+      subtitle,
+      subtitle_en,
+      level,
+      posts[]->{
+        _id,
+        slug,
+        mainVideo,
+        mainImage,
+        title,
+        title_en,
+        level,
+        description,
+        description_en,
+        durationSec,
+        isPreview,
+        resources[]{
+          title,
+          "url": url.current
+        }
+      }
+    }
+  }
+`;
+
+export async function getPackSommaire(locale: Locale = "fr", referenceKey: string = "pack_fide_scenarios"): Promise<FidePackSommaire> {
+    // Pas de cache pour garantir un sommaire toujours frais en édition
+    const data = await client.fetch<FidePackSommaireNoLocale["packages"][0]>(FIDE_PACK_QUERY, { referenceKey });
+
+    // Normalisation douce: si le produit est introuvable, renvoyer un shape vide
+    return data ? normalizeFidePackSommaire({ packages: [data] }, locale) : { packages: [] };
 }
 
 function normalizeFidePackSommaire(data: FidePackSommaireNoLocale, locale: Locale): FidePackSommaire {

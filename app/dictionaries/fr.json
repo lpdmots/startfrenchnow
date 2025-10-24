@@ -488,8 +488,7 @@
                         "all": "Toutes épreuves",
                         "speak": "Parler",
                         "understand": "Comprendre",
-                        "read": "Lire",
-                        "write": "Écrire"
+                        "read-write": "Lire & Écrire"
                     }
                 }
             }

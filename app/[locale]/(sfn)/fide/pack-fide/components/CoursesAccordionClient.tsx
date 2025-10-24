@@ -16,7 +16,17 @@ import { useInitializePackFideWatched } from "@/app/hooks/lessons/useInitializeP
 import { useSfnStore } from "@/app/stores/sfnStore";
 import { useTranslations } from "next-intl";
 
-export function CoursesAccordionClient({ hasPack = false, fidePackSommaire, expandAll }: { hasPack?: boolean; fidePackSommaire: FidePackSommaire; expandAll?: boolean }) {
+export function CoursesAccordionClient({
+    hasPack = false,
+    fidePackSommaire,
+    expandAll,
+    linkPrefix = "/fide/videos/",
+}: {
+    hasPack?: boolean;
+    fidePackSommaire: FidePackSommaire;
+    expandAll?: boolean;
+    linkPrefix?: string;
+}) {
     const t = useTranslations("FidePack.CoursesAccordionClient");
     const params = useParams();
     const activeSlug = (params?.slug ?? null) as string | null;
@@ -115,6 +125,7 @@ export function CoursesAccordionClient({ hasPack = false, fidePackSommaire, expa
                                                     moduleLevel={mod.level?.[0]}
                                                     activeSlug={activeSlug}
                                                     watchedVideos={safeWatched}
+                                                    linkPrefix={linkPrefix}
                                                 />
                                             ))}
                                         </div>
@@ -129,7 +140,21 @@ export function CoursesAccordionClient({ hasPack = false, fidePackSommaire, expa
     );
 }
 
-function LessonRow({ lesson, hasPack, moduleLevel, activeSlug, watchedVideos }: { lesson: Post; hasPack: boolean; moduleLevel?: Level; activeSlug: string | null; watchedVideos: string[] }) {
+function LessonRow({
+    lesson,
+    hasPack,
+    moduleLevel,
+    activeSlug,
+    watchedVideos,
+    linkPrefix,
+}: {
+    lesson: Post;
+    hasPack: boolean;
+    moduleLevel?: Level;
+    activeSlug: string | null;
+    watchedVideos: string[];
+    linkPrefix: string;
+}) {
     const t = useTranslations("FidePack.CoursesAccordionClient");
     const isActive = lesson.slug.current === activeSlug;
     const locked = !lesson.isPreview && !hasPack;
@@ -137,11 +162,7 @@ function LessonRow({ lesson, hasPack, moduleLevel, activeSlug, watchedVideos }: 
     const isWatched = watchedVideos.includes(lesson._id);
 
     return (
-        <Link
-            href={locked ? "/fide/pack-fide#plans" : `/fide/videos/${lesson.slug.current}`}
-            prefetch
-            className={clsx("!text-neutral-800 !no-underline", isActive && "pointer-events-none cursor-default")}
-        >
+        <Link href={locked ? "/fide/pack-fide#plans" : linkPrefix + lesson.slug.current} prefetch className={clsx("!text-neutral-800 !no-underline", isActive && "pointer-events-none cursor-default")}>
             <div className={clsx("flex items-center gap-4 py-3 hover:bg-neutral-200 rounded-lg px-2", isActive && "bg-neutral-300", locked && "opacity-60")}>
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700 border border-solid border-neutral-700">
                     {isWatched ? <FaRegCheckCircle className="text-xl" /> : isActive ? <FaRegArrowAltCircleRight className="text-xl" /> : <MdOndemandVideo className="text-xl" />}

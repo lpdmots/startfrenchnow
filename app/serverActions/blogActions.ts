@@ -1,4 +1,5 @@
 "use server";
+import { BLOGCATEGORIES } from "../lib/constantes";
 import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { groq } from "next-sanity";
 
@@ -6,6 +7,7 @@ const query = groq`
     *[_type=='post' 
     && dateTime(publishedAt) < dateTime(now()) 
     && isReady == true
+    && count(categories[@ in $categories]) > 0
     ] {
         ...,
     } | order(publishedAt desc)
@@ -13,7 +15,7 @@ const query = groq`
 `;
 
 export const getPostsSlice = async (offset: number, limit: number) => {
-    return await client.fetch(query, { offset, limit });
+    return await client.fetch(query, { offset, limit, categories: BLOGCATEGORIES });
 };
 
 const queryOnlyCategory = groq`
@@ -28,12 +30,12 @@ export const getCategoryPostsSlice = async (category: string, offset: number, li
 };
 
 const queryOnlyVideos = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && defined(mainVideo.url) && mainVideo.url != ''] {
+    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && defined(mainVideo.url) && mainVideo.url != '' && count(categories[@ in $categories]) > 0] {
         ...,
     } | order(publishedAt desc)
     [$offset...$limit]
 `;
 
 export const getVideosPostsSlice = async (offset: number, limit: number) => {
-    return await client.fetch(queryOnlyVideos, { offset, limit });
+    return await client.fetch(queryOnlyVideos, { offset, limit, categories: BLOGCATEGORIES });
 };

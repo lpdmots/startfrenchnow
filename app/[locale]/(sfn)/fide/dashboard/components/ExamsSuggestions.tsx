@@ -19,7 +19,11 @@ const USER_DONE_EXAMS_IDS = groq`
 
 // Suggestions au même niveau (exclure IDs déjà faits)
 const EXAMS_BY_LEVEL_NOT_IN = groq`
-  *[_type=="fideExam" && level==$level && !(_id in $done)][0...$limit]{
+  *[
+    _type == "fideExam" &&
+    $level in coalesce(levels, []) &&
+    !(_id in $done)
+  ][0...$limit]{
     ...
   }
 `;
@@ -36,7 +40,7 @@ export const ExamsSuggestions = ({ hero, hasPack }: { hero: HeroData; hasPack: b
     const { data: session } = useSession();
     const userId = (session as any)?.user?._id as string | undefined;
 
-    const lastLevel = hero?.exams?.last?.level; // A1 | A2 | B1 | undefined
+    const lastLevel = hero?.exams?.last?.levels[0]; // A1 | A2 | B1 | undefined
 
     const [exams, setExams] = React.useState<Exam[]>([]);
     const [loading, setLoading] = React.useState(false);
@@ -53,7 +57,7 @@ export const ExamsSuggestions = ({ hero, hasPack }: { hero: HeroData; hasPack: b
                 if (cancelled) return;
 
                 // 2) Batch prioritaire: même niveau que le dernier examen
-                const limit = 4;
+                const limit = 3;
                 let sameLevel: Exam[] = [];
                 if (lastLevel) {
                     sameLevel = await client.fetch(EXAMS_BY_LEVEL_NOT_IN, {

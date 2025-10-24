@@ -33,7 +33,7 @@ const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
 export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Exam; setLogs: any; userId?: string }) {
     const tracks = exam.tracks as Track[];
-    const responses = useMemo(() => (exam.level !== "B1" ? getResponses(exam.responses) : []), [exam.responses]);
+    const responses = useMemo(() => (exam.levels[0] !== "B1" ? getResponses(exam.responses) : []), [exam.responses]);
 
     const [playing, setPlaying] = useState<boolean>(false);
     const [ended, setEnded] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
     const withResponses = ["Question", "Audio"].some((keyword) => currentTrackData.title.includes(keyword)) ? totalAnswers : null;
     const isClickableResponse = currentTrackData.title.includes("Audio") ? true : false;
     const followUpSrc = isClickableResponse ? tracks[currentTrack - 1]?.src : undefined;
-    const isA1A2Level = exam.level === "A1" || exam.level === "A2";
+    const isA1A2Level = exam.levels[0] === "A1" || exam.levels[0] === "A2";
 
     // Pour le B1
     const [isNextButtonForced, setIsNextButtonForced] = useState(false);

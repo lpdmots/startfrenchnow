@@ -46,16 +46,16 @@ export type HeroExamData = {
     last?: {
         examId: string;
         title: string;
-        level: ExamLevel;
+        levels: ExamLevel[];
         image?: Image;
         description?: string;
         competence: ExamCompetence;
         score?: number;
     };
     stats: {
-        avgByLevel: Record<ExamLevel, number | null>; // moyenne perso par niveau
-        allexamsByLevel: Record<ExamLevel, number>; // nb total d’exams par niveau
-        doneCountByLevel: Record<ExamLevel, number>; // nb d’exams terminés par niveau
+        avgByLevel: Record<"A1" | "A2" | "B1", number | null>; // moyenne perso par niveau
+        allexamsByLevel: Record<"A1" | "A2" | "B1", number>; // nb total d’exams par niveau
+        doneCountByLevel: Record<"A1" | "A2" | "B1", number>; // nb d’exams terminés par niveau
         allexamsForLastLevel?: number; // tous les exams pour le niveau du dernier exam
         todoCountForLastLevel?: number; // nb d’exams à faire pour le niveau du dernier exam
         lastActivityAt?: string; // ISO (côté exams)
@@ -114,7 +114,9 @@ const MAX_MINI_VIDEOS = 4;
 
 export function computeHeroVideoData(progress: Progress | null | undefined, toc: FidePackSommaire, hasPack?: boolean): HeroVideoData {
     const posts = flattenPostsFromToc(toc);
-    const logs = (progress?.videoLogs ?? []).slice();
+    const postIds = posts.map((p) => p._id);
+    const allLogs = (progress?.videoLogs ?? []).slice();
+    const logs = allLogs.filter((l) => l.post?._ref && postIds.includes(l.post._ref));
 
     // Tri par dernière activité (updatedAt > lastSeenAt > lastCompletedAt)
     const decorated = logs.map((l) => ({
@@ -297,11 +299,11 @@ export function computeHeroExamData(progress: Progress | null | undefined, exams
 
     // Suggestions : 2 du même "type" (niveau + compétence) non faits
     const completedIds = new Set(logs.map((l) => l.exam?._ref));
-    const lastLevel = lastExam?.level;
+    const lastLevel = lastExam?.levels[0];
 
     // Stats : moyenne perso par niveau + nb "à faire" pour le niveau du dernier
     const levels: ExamLevel[] = ["A1", "A2", "B1"];
-    const avgByLevel: Record<ExamLevel, number | null> = {
+    const avgByLevel: Record<"A1" | "A2" | "B1", number | null> = {
         A1: null,
         A2: null,
         B1: null,
@@ -311,35 +313,35 @@ export function computeHeroExamData(progress: Progress | null | undefined, exams
         const scores = logs
             .map((l) => {
                 const d = findExam(l.exam?._ref);
-                return d?.level === lvl ? l.bestScore : undefined;
+                return d?.levels[0] === lvl ? l.bestScore : undefined;
             })
             .filter((x): x is number => typeof x === "number");
-        avgByLevel[lvl] = scores.length ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10 : null;
+        avgByLevel[lvl as unknown as "A1" | "A2" | "B1"] = scores.length ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10 : null;
     }
 
-    const allexamsByLevel: Record<ExamLevel, number> = {
-        A1: exams.filter((e) => e.level === "A1").length,
-        A2: exams.filter((e) => e.level === "A2").length,
-        B1: exams.filter((e) => e.level === "B1").length,
+    const allexamsByLevel: Record<"A1" | "A2" | "B1", number> = {
+        A1: exams.filter((e) => e.levels[0] === "A1").length,
+        A2: exams.filter((e) => e.levels[0] === "A2").length,
+        B1: exams.filter((e) => e.levels[0] === "B1").length,
     };
 
-    const doneCountByLevel: Record<ExamLevel, number> = {
+    const doneCountByLevel: Record<"A1" | "A2" | "B1", number> = {
         A1: logs.filter((l) => {
             const d = findExam(l.exam?._ref);
-            return d?.level === "A1" && l.bestScore != null;
+            return d?.levels[0] === "A1" && l.bestScore != null;
         }).length,
         A2: logs.filter((l) => {
             const d = findExam(l.exam?._ref);
-            return d?.level === "A2" && l.bestScore != null;
+            return d?.levels[0] === "A2" && l.bestScore != null;
         }).length,
         B1: logs.filter((l) => {
             const d = findExam(l.exam?._ref);
-            return d?.level === "B1" && l.bestScore != null;
+            return d?.levels[0] === "B1" && l.bestScore != null;
         }).length,
     };
 
-    const allexamsForLastLevel = lastLevel != null ? allexamsByLevel[lastLevel] : 0;
-    const todoCountForLastLevel = lastLevel != null ? exams.filter((e) => e.level === lastLevel && !completedIds.has(e._id)).length : undefined;
+    const allexamsForLastLevel = lastLevel != null ? allexamsByLevel[lastLevel as unknown as "A1" | "A2" | "B1"] : 0;
+    const todoCountForLastLevel = lastLevel != null ? exams.filter((e) => e.levels[0] === lastLevel && !completedIds.has(e._id)).length : undefined;
 
     const lastActivityAt = isoMax(logs.map((l) => isoMax([l.bestScoreAt, l.lastCompletedAt, l.updatedAt])));
 
@@ -347,7 +349,7 @@ export function computeHeroExamData(progress: Progress | null | undefined, exams
         last: lastExam && {
             examId: lastExam._id,
             title: lastExam.title,
-            level: lastExam.level,
+            levels: lastExam.levels,
             competence: lastExam.competence,
             image: lastExam.image,
             description: lastExam.description,

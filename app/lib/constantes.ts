@@ -110,7 +110,8 @@ export const langData = {
     },
 };
 
-export const CATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions", "fide", "pack_fide"];
+export const BLOGCATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions", "fide"];
+export const CATEGORIES = [...BLOGCATEGORIES, "pack_fide"];
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];

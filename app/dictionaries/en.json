@@ -488,8 +488,7 @@
                         "all": "All exam types",
                         "speak": "Speaking",
                         "understand": "Listening",
-                        "read": "Reading",
-                        "write": "Writing"
+                        "read-write": "Reading & Writing"
                     }
                 }
             }

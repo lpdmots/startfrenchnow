@@ -24,7 +24,7 @@ const FIDE_USER_PROGRESS_QUERY = groq`
 
 export const dynamic = "force-dynamic";
 
-const queryExams = groq`*[_type=='fideExam']{ ..., _id }`;
+const queryExams = groq`*[_type=='fideExam' && competence=="Comprendre"]{ ..., _id }`;
 
 async function DashboardPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "privateLessons" });

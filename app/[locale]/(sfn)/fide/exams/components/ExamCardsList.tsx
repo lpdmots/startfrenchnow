@@ -17,34 +17,21 @@ type Props = {
 
 // Clés "source of truth"
 const LEVEL_KEYS: LevelParam[] = ["all", "a1", "a2", "b1"];
-const TYPE_KEYS: (TypeParam | "all")[] = ["all", "speak", "understand", "read", "write"];
-
-// Normalisation de chaînes (pour matcher FR/EN, accents, casse)
-const normalize = (s?: string) =>
-    (s || "")
-        .toString()
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "")
-        .trim()
-        .toLowerCase();
+const TYPE_KEYS: (TypeParam | "all")[] = ["all", "speak", "understand", "read-write"];
 
 // Map libellé (FR/EN) -> clé interne
 const TYPE_BY_LABEL = new Map<string, TypeParam>([
     // FR
     ["parler", "speak"],
+    ["Parler", "speak"],
     ["comprendre", "understand"],
-    ["lire", "read"],
-    ["ecrire", "write"],
-    ["écrire", "write"],
+    ["Comprendre", "understand"],
+    ["lire-ecrire", "read-write"],
+    ["Lire & Écrire", "read-write"],
     // EN (et variantes)
     ["speak", "speak"],
-    ["speaking", "speak"],
     ["understand", "understand"],
-    ["listening", "understand"],
-    ["read", "read"],
-    ["reading", "read"],
-    ["write", "write"],
-    ["writing", "write"],
+    ["read-write", "read-write"],
 ]);
 
 export const ExamCardsList: React.FC<Props> = ({ exams, initialLevel = "all", initialType, hasPack }) => {
@@ -60,7 +47,7 @@ export const ExamCardsList: React.FC<Props> = ({ exams, initialLevel = "all", in
     // 3) À l’hydratation, si le store a une valeur valide, on l’applique (sinon on pousse nos valeurs SSR dans le store)
     useEffect(() => {
         const validLevel = (v: any): v is LevelParam => v === "a1" || v === "a2" || v === "b1" || v === "all";
-        const validType = (v: any): v is TypeParam | "all" => v === "speak" || v === "understand" || v === "read" || v === "write" || v === "all";
+        const validType = (v: any): v is TypeParam | "all" => v === "speak" || v === "understand" || v === "read-write" || v === "all";
 
         const l = validLevel(storeLevel) ? storeLevel : level;
         const tpe = validType(storeType) ? storeType : type;
@@ -101,20 +88,15 @@ export const ExamCardsList: React.FC<Props> = ({ exams, initialLevel = "all", in
     };
 
     // 6) Normalisation (sécurité runtime sans “inventer” le typage)
-    const getExamLevel = (e: Exam): string | undefined => e?.level?.toString().toLowerCase();
-
-    const getExamType = (e: Exam): TypeParam | undefined => {
-        const n = normalize(e?.competence);
-        return TYPE_BY_LABEL.get(n);
-    };
+    const getExamLevel = (e: Exam): string | undefined => e?.levels?.map((l) => l.toString().toLowerCase().replace("+", "")).toString();
 
     // 7) Filtrage en mémoire
     const filteredExams = useMemo(() => {
         return exams.filter((ex) => {
-            const exLevel = getExamLevel(ex);
-            const exType = getExamType(ex) || "understand"; // par défaut
+            const exLevels = getExamLevel(ex);
+            const exType = TYPE_BY_LABEL.get(ex?.competence || "understand") || "understand";
 
-            const levelOk = level === "all" ? true : exLevel === level;
+            const levelOk = level === "all" || exLevels?.includes("all") ? true : exLevels?.includes(level);
             const typeOk = type === "all" ? true : exType === type;
 
             return levelOk && typeOk;
@@ -156,7 +138,6 @@ export const ExamCardsList: React.FC<Props> = ({ exams, initialLevel = "all", in
                 </Select>
             </div>
 
-            {/* Liste filtrée */}
             <ExpandableCardDemo exams={filteredExams} withStars={true} twoColumns={true} hasPack={hasPack} />
         </div>
     );

@@ -19,7 +19,7 @@ const PrimaryPost = ({ post, locale }: { post: Post; locale: string }) => {
     const hasVideo = post?.mainVideo?.url;
     const categoryColor = CATEGORIESCOLORS[firstCategory as keyof typeof CATEGORIESCOLORS];
 
-    const pathBase = ["pack_fide", "fide"].includes(firstCategory) ? `/fide/videos/` : `/blog/post/`;
+    const pathBase = ["pack_fide"].includes(firstCategory) ? `/fide/videos/` : `/blog/post/`;
 
     return (
         <ClientSideRoute route={pathBase + post.slug.current} locale={locale as Locale}>

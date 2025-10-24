@@ -5,9 +5,10 @@ import { ContentRenderer, Popover } from "react-tiny-popover";
 interface DropdownProps {
     content: ReactNode;
     children: React.ReactNode;
+    position?: "top" | "bottom" | "left" | "right";
 }
 
-const DropdownMenu: React.FC<DropdownProps> = ({ content, children }) => {
+const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "bottom" }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isMouseOverPopover, setIsMouseOverPopover] = useState(false);
     const closeTimer = useRef<NodeJS.Timeout | null>(null); // pour stocker le timer
@@ -31,7 +32,7 @@ const DropdownMenu: React.FC<DropdownProps> = ({ content, children }) => {
     );
 
     return (
-        <Popover isOpen={isOpen} positions={["bottom"]} onClickOutside={() => setIsOpen(false)} content={contentWithHandlers}>
+        <Popover isOpen={isOpen} positions={[position]} onClickOutside={() => setIsOpen(false)} content={contentWithHandlers}>
             <div
                 className="cursor-pointer"
                 onMouseEnter={() => {
