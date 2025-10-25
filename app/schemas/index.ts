@@ -8,6 +8,7 @@ import videoBlog from "./sfn/blogTools/videoBlog";
 import theme from "./sfn/blogTools/theme";
 import fideExam from "./sfn/fideExam";
 import productPackage from "./sfn/package";
+import comment from "./sfn/comment";
 
 // Blog Tools
 import flashcards from "./sfn/blogTools/flashcards";
@@ -35,6 +36,7 @@ import feedback from "./stories/feedback";
 export const schemaTypes = [
     user,
     post,
+    comment,
     product,
     productPackage,
     blockContent,

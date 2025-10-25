@@ -1,5 +1,5 @@
 "use server";
-import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { groq } from "next-sanity";
 import { ExamLog, UserProps, VideoLog } from "../types/sfn/auth";
 import { v4 as uuidv4 } from "uuid";

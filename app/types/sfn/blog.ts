@@ -1,4 +1,5 @@
 import { CATEGORIES } from "@/app/lib/constantes";
+import type { Descendant } from "slate";
 
 type Base = {
     _createdAt: string;
@@ -231,4 +232,18 @@ export interface TabelVocProps {
         isArticle?: boolean;
         isOnlyFrench?: boolean;
     };
+}
+
+export interface Comment {
+    _id: string;
+    parentRef?: Reference;
+    resourceType: "post" | "user";
+    resourceRef: Reference;
+    body: Descendant[];
+    createdBy?: Reference;
+    guestName?: string;
+    guestEmail?: string;
+    upvoters?: Reference[];
+    voteCount: number;
+    status: "active" | "hidden";
 }

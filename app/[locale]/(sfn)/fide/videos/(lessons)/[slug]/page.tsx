@@ -14,6 +14,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { Permission } from "@/app/types/sfn/auth";
 import { redirect } from "next/navigation";
+import CommentComposer from "@/app/components/comments/CommentComposer";
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -82,6 +83,7 @@ const CoursFidePageNoAsync = ({ post, previous, next, hasPack, fidePackSommaire 
     return (
         <div className="mb-24">
             <FidePostContent post={post} previous={previousUrl} next={nextUrl} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />
+            <CommentComposer resourceType="post" resourceId={post._id} />
             <BlogLangFixedButton />
         </div>
     );
