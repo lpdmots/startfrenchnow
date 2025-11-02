@@ -1,4 +1,4 @@
-import { CREDITS, LESSONS, PERMISSIONS } from "@/app/lib/constantes";
+import { CREDITS, LESSONS, NOTIFICATIONKINDS, PERMISSIONS } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -257,6 +257,42 @@ export default defineType({
             name: "stripeCustomerId",
             title: "Stripe Customer ID",
             type: "string",
+        }),
+        defineField({
+            name: "notifications",
+            title: "Notifications",
+            type: "array",
+            of: [
+                {
+                    name: "notification",
+                    title: "Notification",
+                    type: "object",
+                    fields: [
+                        defineField({
+                            name: "kind",
+                            title: "Kind",
+                            type: "string",
+                            initialValue: "comment",
+                            options: {
+                                list: [...NOTIFICATIONKINDS],
+                                layout: "radio",
+                            },
+                        }),
+                        defineField({
+                            name: "reference",
+                            title: "Référence",
+                            type: "reference",
+                            to: [{ type: "comment" }],
+                        }),
+                        defineField({
+                            name: "createdAt",
+                            title: "Created at",
+                            type: "datetime",
+                        }),
+                    ],
+                },
+            ],
+            validation: (Rule) => Rule.max(500), // limite douce pour éviter l'enflure du doc
         }),
         defineField({
             name: "learningProgress",

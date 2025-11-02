@@ -122,7 +122,6 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
 };
 
 const EventRow = ({ eventType, event, index, locale }: { eventType: keyof typeof EVENT_TYPES; event: Event; index: number; locale: Locale }) => {
-    console.log("event", event);
     const isMoreThan48HoursAway = getCancellable(event.date);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);

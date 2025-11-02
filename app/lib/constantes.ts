@@ -210,3 +210,10 @@ export const LESSONS = [...Object.keys(EVENT_TYPES)];
 export const CREDITS = [];
 export const PERMISSIONS = ["pack_fide"];
 export const LESSONS_CREDITS_PERMISSIONS = [...LESSONS, ...CREDITS, ...PERMISSIONS];
+
+export const NOTIFICATIONKINDS = ["comment"] as const;
+
+export const POSTCOMMENTRESOURCE = ["blog", "pack_fide"];
+export const COMMENTRESOURCES = ["blog", "pack_fide", "fide_dashboard"] as const;
+
+export const ADMINASSIGNEES = ["Nico", "Yoh"] as const;

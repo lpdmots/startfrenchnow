@@ -459,6 +459,9 @@
                 },
                 "title": "Mes <hs2>cours privés</hs2>",
                 "goToFidePage": "Se rendre sur la page FIDE"
+            },
+            "Questions": {
+                "title": "Mes <hs3>Questions</hs3>/Réponses"
             }
         },
         "FideVideosPage": {

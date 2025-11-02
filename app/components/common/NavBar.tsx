@@ -10,6 +10,7 @@ import { Locale } from "@/i18n";
 import { CoursesButton } from "./CoursesButton";
 import { ResourcesButton } from "./ResourcesButton";
 import { FideButton } from "./FideButton";
+import NotificationsMenuServer from "../notifications/NotificationsMenuServer";
 
 function NavBar() {
     const t = useTranslations("Navigation");
@@ -71,8 +72,8 @@ function NavBar() {
                     <nav>
                         <ul className="header-nav-menu-list onNav">{links}</ul>
                     </nav>
-
                     <div className="flex items-center gap-2">
+                        <NotificationsMenuServer />
                         <LocaleSwitcher locale={locale as Locale} />
                         <DarkMode />
                         <ProfilButton profil={t("profil")} logout={t("logout")} />

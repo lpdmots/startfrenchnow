@@ -215,7 +215,7 @@ const LinkCard = ({ exam, isLocked, isScenarios = false }: { exam: Exam; isLocke
         >
             <Link
                 target={isScenarios ? undefined : "_blank"}
-                href={isLocked ? "" : isScenarios ? exam.pdf || "" : cloudFrontDomain + (exam.pdf || "")}
+                href={isLocked ? "#" : isScenarios ? exam.pdf || "#" : cloudFrontDomain + (exam.pdf || "")}
                 className="no-underline text-neutral-800 flex flex-col items-center h-full w-full gap-2"
             >
                 <div>

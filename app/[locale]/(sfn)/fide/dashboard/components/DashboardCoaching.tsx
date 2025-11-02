@@ -2,9 +2,6 @@ import React from "react";
 import { buildHeroData } from "./dashboardUtils";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import ClientLessonFetcher from "@/app/components/sfn/privateLessons/ClientLessonFetcher";
-import { Fade } from "@/app/components/animations/Fades";
-import Image from "next/image";
 import { ReservationList } from "@/app/components/sfn/privateLessons/ReservationList";
 
 interface Props {

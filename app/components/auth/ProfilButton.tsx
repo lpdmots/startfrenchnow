@@ -5,10 +5,12 @@ import DropdownMenu from "../common/DropdownMenu";
 import { LogOut } from "./LogOut";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next-intl/client";
+import { LinkCurrentBlog } from "../common/LinkCurrentBlog";
 
 export const ProfilButton = ({ profil, logout }: { profil: string; logout: string }) => {
     const { data: session } = useSession();
     const pathname = usePathname();
+    const isAdmin = session?.user?.isAdmin === true;
 
     if (!session)
         return (
@@ -27,6 +29,12 @@ export const ProfilButton = ({ profil, logout }: { profil: string; logout: strin
                             {profil}
                         </span>
                     </div>
+                    {isAdmin && (
+                        <LinkCurrentBlog href="/admin/comments" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale="fr">
+                            <FaCaretRight />
+                            Commentaires (Admin)
+                        </LinkCurrentBlog>
+                    )}
                     <div>
                         <LogOut logout={logout} />
                     </div>

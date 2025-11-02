@@ -233,17 +233,3 @@ export interface TabelVocProps {
         isOnlyFrench?: boolean;
     };
 }
-
-export interface Comment {
-    _id: string;
-    parentRef?: Reference;
-    resourceType: "post" | "user";
-    resourceRef: Reference;
-    body: Descendant[];
-    createdBy?: Reference;
-    guestName?: string;
-    guestEmail?: string;
-    upvoters?: Reference[];
-    voteCount: number;
-    status: "active" | "hidden";
-}

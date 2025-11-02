@@ -14,6 +14,8 @@ declare module "next-auth" {
             email: string;
             permissions?: Permission[];
             lessons?: Lesson[];
+            isAdmin?: boolean;
+            notificationsLength: number;
         };
     }
 }
@@ -103,19 +105,31 @@ export const authOptions: NextAuthOptions = {
 
             return {
                 ...token,
-                _id: (u as any)._id ?? token._id,
+                _id: (u as any)._id,
+                name: u.name,
+                email: u.email,
+                alias: u.alias ?? [],
+                // /ajout
                 permissions: perms,
                 lessons: Array.isArray(u.lessons) ? u.lessons : [],
+                isAdmin: (u as any).isAdmin === true,
+                notificationsLength: Array.isArray(u.notifications) ? u.notifications.length : 0,
             };
         },
         session: ({ session, token }) => {
             return {
                 ...session,
                 user: {
-                    ...session.user,
+                    // on ne spread PAS session.user en premier,
+                    // car il contient le mauvais `name`
                     _id: token._id as string,
+                    name: token.name as string, // <- Sanity
+                    email: token.email as string,
+                    alias: (token as any).alias ?? [],
                     permissions: (token.permissions as Permission[]) || [],
                     lessons: (token.lessons as Lesson[]) || [],
+                    isAdmin: (token as any).isAdmin === true,
+                    notificationsLength: (token as any).notificationsLength || 0,
                 },
             };
         },

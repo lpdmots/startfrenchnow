@@ -51,7 +51,7 @@ function PostContent({ post }: { post: Post }) {
                     )}
                 </div>
             </section>
-            <section className="section pd-bottom-220px pd-top-0 wf-section">
+            <section className="section pb-12 md:pb-24 pd-top-0 wf-section">
                 <div className="container-default w-container">
                     <div className="inner-container _600px---tablet center">
                         <div className="grid-2-columns post-rigth-sidebar _1-col-tablet">

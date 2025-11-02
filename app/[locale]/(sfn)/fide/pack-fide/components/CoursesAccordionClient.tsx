@@ -74,7 +74,7 @@ export function CoursesAccordionClient({
 
         if (!nextKey) return;
         setOpenModuleKeys((prev) => removeDuplicates([...prev, nextKey]));
-    }, [mounted, expandAll, activeSlug, computeOpenModuleKey, firstModuleKey, fidePackSommaire]);
+    }, [mounted, expandAll, computeOpenModuleKey, firstModuleKey, fidePackSommaire]);
 
     return (
         <>

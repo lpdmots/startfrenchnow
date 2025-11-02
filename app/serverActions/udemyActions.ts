@@ -41,7 +41,6 @@ export const getLastComments = async (courseId: string, page: number) => {
         }
 
         const data = await response.json();
-        console.log(data);
         return data.results;
     } catch (error: any) {
         return { message: error.message };

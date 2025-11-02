@@ -459,6 +459,9 @@
                 },
                 "title": "My <hs2>private lessons</hs2>",
                 "goToFidePage": "Go to the FIDE page"
+            },
+            "Questions": {
+                "title": "My <hs6>Questions</hs6>"
             }
         },
         "FideVideosPage": {

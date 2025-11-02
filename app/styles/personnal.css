@@ -161,7 +161,7 @@ section {
 button {
     display: inline-block;
     padding: 9px 15px;
-    background-color: var(--secondary-2);
+    background-color: transparent;
     color: var(--neutral-100);
     border: 0;
     line-height: inherit;

@@ -1,12 +1,9 @@
 import { groq } from "next-sanity";
 import { client } from "@/app/lib/sanity.client";
 import { Post } from "@/app/types/sfn/blog";
-import { useLocale, useTranslations } from "next-intl";
-import { intelRich } from "@/app/lib/intelRich";
 import { Locale } from "@/i18n";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
-import Link from "next-intl/link";
 import FidePostContent from "./components/FidePostContent";
 import { findAdjacentFromTOC } from "@/app/lib/tocNavigation";
 import { FidePackSommaire, getFidePackSommaire } from "@/app/serverActions/productActions";
@@ -15,6 +12,7 @@ import { authOptions } from "@/app/lib/authOptions";
 import { Permission } from "@/app/types/sfn/auth";
 import { redirect } from "next/navigation";
 import CommentComposer from "@/app/components/comments/CommentComposer";
+import CommentList from "@/app/components/comments/CommentList";
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -22,12 +20,6 @@ const query = groq`
             ...,
         }
     `;
-const queryLatest = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true] 
-    {
-        ...,
-    } | order(publishedAt desc) [0...3]
-`;
 
 async function CoursFidePage({ params }: { params: { locale: Locale; slug: string } }) {
     const { locale, slug } = params;
@@ -63,7 +55,7 @@ async function CoursFidePage({ params }: { params: { locale: Locale; slug: strin
 
     const localizedPost = localizePosts([post], locale)[0];
 
-    return <CoursFidePageNoAsync post={localizedPost} previous={previous} next={next} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />;
+    return <CoursFidePageNoAsync post={localizedPost} previous={previous} next={next} hasPack={hasPack} fidePackSommaire={fidePackSommaire} locale={locale} />;
 }
 
 export default CoursFidePage;
@@ -74,16 +66,18 @@ interface PropsNoAsync {
     next: { slug: string; title: string } | null;
     hasPack: boolean;
     fidePackSommaire: FidePackSommaire;
+    locale: "fr" | "en";
 }
 
-const CoursFidePageNoAsync = ({ post, previous, next, hasPack, fidePackSommaire }: PropsNoAsync) => {
+const CoursFidePageNoAsync = ({ post, previous, next, hasPack, fidePackSommaire, locale }: PropsNoAsync) => {
     const previousUrl = previous ? `/fide/videos/${previous.slug}` : null;
     const nextUrl = next ? `/fide/videos/${next.slug}` : null;
 
     return (
-        <div className="mb-24">
+        <div className="mb-24 flex w-full flex-col gap-8 md:gap-12">
             <FidePostContent post={post} previous={previousUrl} next={nextUrl} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />
-            <CommentComposer resourceType="post" resourceId={post._id} />
+            <CommentComposer resourceType="pack_fide" resourceId={post._id} />
+            <CommentList resourceType="pack_fide" resourceId={post._id} locale={locale} />
             <BlogLangFixedButton />
         </div>
     );

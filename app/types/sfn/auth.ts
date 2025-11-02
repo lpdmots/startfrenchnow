@@ -1,4 +1,4 @@
-import { EVENT_TYPES } from "@/app/lib/constantes";
+import { EVENT_TYPES, NOTIFICATIONKINDS } from "@/app/lib/constantes";
 import { Base } from "../stories/adventure";
 import { Reference } from "./blog";
 
@@ -28,6 +28,15 @@ export interface UserProps extends Base {
     permissions?: Permission[];
     alias?: string[];
     learningProgress?: Progress[];
+    notifications?: Notification[];
+}
+
+export type NotificationKind = (typeof NOTIFICATIONKINDS)[number];
+export interface Notification {
+    _key: string;
+    kind: NotificationKind;
+    reference: Reference;
+    createdAt: string;
 }
 
 export interface Permission {

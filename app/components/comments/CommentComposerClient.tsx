@@ -1,136 +1,85 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
-import { createEditor, Descendant, Editor, Node, Transforms, Text } from "slate";
-import { Slate, Editable, withReact, RenderLeafProps } from "slate-react";
-import { withHistory } from "slate-history";
-
-// Emoji picker v5
-const Picker = dynamic(() => import("@emoji-mart/react").then((m) => m.default), { ssr: false });
-import data from "@emoji-mart/data";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { Popover } from "../animations/Popover";
+import { CommentResourceType } from "@/app/types/sfn/comment";
 
 type Props = {
     action: (state: any, formData: FormData) => Promise<{ ok: boolean; error: string | null; data?: any }>;
-    resourceType: "post" | "user";
+    resourceType: CommentResourceType;
     resourceId: string;
     parentId: string | null;
     isAuthenticated: boolean;
     userDisplayName: string | null;
 };
 
-const MAX = 1000;
+export const MAXCOMMENTLENGTH = 1000;
+const EMOJIS = ["🙂", "😄", "😁", "😂", "😉", "😊", "😍", "😎", "🤔", "🙌", "🎉", "👍", "👎", "🔥", "💡", "❓"];
 
-function countLinksInText(s: string) {
+function countLinks(s: string) {
     const re = /(https?:\/\/|www\.)/gi;
     return (s.match(re) || []).length;
 }
 
-function ToolbarButton(props: React.ComponentProps<"button">) {
-    const { className = "", ...rest } = props;
-    return <button type="button" className={"rounded-md border border-neutral-700 bg-neutral-100 px-2 py-1 text-sm hover:bg-neutral-200 disabled:opacity-50 " + className} {...rest} />;
-}
-
-// Slate helpers (marks)
-const isMarkActive = (editor: Editor, mark: "bold" | "italic") => {
-    const marks = Editor.marks(editor) as any;
-    return marks ? !!marks[mark] : false;
-};
-const toggleMark = (editor: Editor, mark: "bold" | "italic") => {
-    if (isMarkActive(editor, mark)) Editor.removeMark(editor, mark);
-    else Editor.addMark(editor, mark, true);
-};
-
-const initialValue: Descendant[] = [{ type: "p", children: [{ text: "" }] } as any];
-
 export default function CommentComposerClient(props: Props) {
-    const [editorKey, setEditorKey] = useState(0);
-    const editor = useMemo(() => withHistory(withReact(createEditor())), [editorKey]);
     const [pending, setPending] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
-    const [value, setValue] = useState<Descendant[]>(initialValue);
-    const [showPicker, setShowPicker] = useState(false);
+    const [value, setValue] = useState("");
 
-    // Mesures (texte / liens) pour les limites UI
-    const plainText = useMemo(() => value.map((n) => Node.string(n)).join(""), [value]);
-    const linkCount = countLinksInText(plainText);
-    const tooLong = plainText.length > MAX;
-    const isEmpty = plainText.trim().length === 0;
+    const nameRef = useRef<HTMLInputElement | null>(null);
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const linkCount = useMemo(() => countLinks(value), [value]);
+    const tooLong = value.length > MAXCOMMENTLENGTH;
+    const isEmpty = value.trim().length === 0;
     const tooManyLinks = linkCount > 3;
+
     const disableSubmit = pending || isEmpty || tooLong || tooManyLinks;
 
-    // Insertion helpers
-    const insertText = useCallback(
+    const insertAtCursor = useCallback(
         (text: string) => {
-            Transforms.insertText(editor, text);
+            const el = textareaRef.current;
+            if (!el) return;
+            const start = el.selectionStart ?? value.length;
+            const end = el.selectionEnd ?? value.length;
+            const next = value.slice(0, start) + text + value.slice(end);
+            setValue(next);
+            requestAnimationFrame(() => {
+                el.focus();
+                const pos = start + text.length;
+                el.setSelectionRange(pos, pos);
+            });
         },
-        [editor]
+        [value]
     );
 
-    // Raccourcis clavier (Ctrl/Cmd + B/I)
-    const onKeyDown = useCallback(
-        (e: React.KeyboardEvent) => {
-            if (!(e.ctrlKey || e.metaKey)) return;
-            const k = e.key.toLowerCase();
-            if (k === "b") {
-                e.preventDefault();
-                toggleMark(editor, "bold");
-            } else if (k === "i") {
-                e.preventDefault();
-                toggleMark(editor, "italic");
+    const onSubmit = useCallback(
+        async (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            if (disableSubmit) return;
+            setPending(true);
+            setServerError(null);
+            try {
+                const fd = new FormData(e.currentTarget);
+                const res = await props.action(null as any, fd);
+                if (res.ok) {
+                    setValue("");
+                    if (nameRef.current) nameRef.current.value = "";
+                } else {
+                    setServerError(res.error || "Erreur inconnue");
+                }
+            } catch (err: any) {
+                setServerError(err?.message || "Erreur inconnue");
+            } finally {
+                setPending(false);
             }
         },
-        [editor]
+        [disableSubmit, props]
     );
-
-    async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        if (disableSubmit) return;
-        setPending(true);
-        setServerError(null);
-        try {
-            const fd = new FormData(e.currentTarget);
-            fd.set("body", JSON.stringify(value));
-            const res = await props.action(null as any, fd);
-            if (res.ok) {
-                setEditorKey((k) => k + 1);
-                setValue(initialValue);
-                setShowPicker(false);
-            } else {
-                setServerError(res.error || "Erreur inconnue");
-            }
-        } catch (err: any) {
-            setServerError(err?.message || "Erreur inconnue");
-        } finally {
-            setPending(false);
-        }
-    }
-
-    // Rendu des feuilles (gras/italique)
-    const renderLeaf = useCallback((props: RenderLeafProps) => {
-        const { attributes, children, leaf } = props as any;
-        let out = children;
-        if (leaf.bold) out = <strong>{out}</strong>;
-        if (leaf.italic) out = <em>{out}</em>;
-        return <span {...attributes}>{out}</span>;
-    }, []);
 
     return (
-        <div className="w-full rounded-xl border border-neutral-800 bg-neutral-100 p-4 text-neutral-800">
-            {/* Entête identité */}
-            <div className="mb-2 text-sm text-neutral-800">
-                {props.isAuthenticated ? (
-                    <span>
-                        Posté en tant que <b>{props.userDisplayName ?? "Utilisateur"}</b>
-                    </span>
-                ) : (
-                    <span>
-                        Posté en tant qu’<b>invité</b>
-                    </span>
-                )}
-            </div>
-
-            <form onSubmit={onSubmit} className="space-y-3">
+        <div className="w-full">
+            <form onSubmit={onSubmit} className="space-y-2">
                 {/* Contexte */}
                 <input type="hidden" name="resourceType" value={props.resourceType} />
                 <input type="hidden" name="resourceId" value={props.resourceId} />
@@ -140,114 +89,117 @@ export default function CommentComposerClient(props: Props) {
 
                 {/* Invité */}
                 {!props.isAuthenticated && (
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        <div className="flex flex-col">
-                            <label className="mb-1 text-sm text-neutral-800">Nom (requis)</label>
+                    <div className="flex gap-4 flex-wrap">
+                        <div className="w-full sm:w-auto">
+                            <label className="mb-1 text-sm text-neutral-700">Nom (requis)</label>
                             <input
+                                ref={nameRef}
                                 name="guestName"
                                 required
                                 maxLength={80}
                                 placeholder="Votre nom"
-                                className="rounded-md border border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-600"
+                                className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
-                        <div className="flex flex-col">
-                            <label className="mb-1 text-sm text-neutral-800">Email (optionnel)</label>
+                        <div className="w-full sm:w-auto">
+                            <label className="mb-1 text-sm text-neutral-700">Email (optionnel)</label>
                             <input
                                 type="email"
                                 name="guestEmail"
                                 placeholder="ex: vous@mail.com"
-                                className="rounded-md border border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-600"
+                                className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
                     </div>
                 )}
 
-                {/* Toolbar */}
-                <div className="flex flex-wrap items-center gap-2">
-                    <ToolbarButton title="Gras (Ctrl/Cmd+B)" onClick={() => toggleMark(editor, "bold")}>
-                        B
-                    </ToolbarButton>
-                    <ToolbarButton title="Italique (Ctrl/Cmd+I)" onClick={() => toggleMark(editor, "italic")}>
-                        I
-                    </ToolbarButton>
-                    <ToolbarButton title="Liste (insert '- ')" onClick={() => insertText("\n- ")}>
-                        •
-                    </ToolbarButton>
-                    <ToolbarButton title="Lien (insert URL)" onClick={() => insertText(" https://")}>
-                        🔗
-                    </ToolbarButton>
-                    <ToolbarButton title="Emoji" onClick={() => setShowPicker((v) => !v)}>
-                        😊
-                    </ToolbarButton>
+                <div className="flex justify-between items-end pb-2">
+                    {/* Entête identité */}
+                    <div className="text-neutral-700 flex items-end">
+                        {props.resourceType === "fide_dashboard" ? (
+                            <h4 className="underline decoration-secondary-3 text-xl md:text-3xl w-full mb-0">Poser une question à mon coach</h4>
+                        ) : props.isAuthenticated ? (
+                            <span>
+                                Posté en tant que <b>{props.userDisplayName ?? "Utilisateur"}</b>
+                            </span>
+                        ) : (
+                            <span>
+                                Posté en tant qu’<b>invité</b>
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Toolbar minimale */}
+                    <div className="relative flex flex-wrap items-center gap-2">
+                        <Popover
+                            content={<span className="mb-0 cursor-pointer p-1 border-2 border-solid border-neutral-600 rounded-lg translate_on_hover">😊</span>}
+                            popover={
+                                <div
+                                    onMouseDown={(e) => e.preventDefault()} // évite de blur le textarea
+                                >
+                                    <div className="flex flex-wrap gap-2 max-w-sm">
+                                        {EMOJIS.map((emo) => (
+                                            <div
+                                                key={emo}
+                                                className="cursor-pointer rounded px-1 py-1 text-lg hover:bg-neutral-100"
+                                                onMouseDown={(e) => {
+                                                    e.preventDefault(); // évite le blur du textarea
+                                                    e.stopPropagation(); // évite une éventuelle fermeture anticipée
+                                                    insertAtCursor(emo); // insertion au caret
+                                                }}
+                                            >
+                                                {emo}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            }
+                            isOnClick={true}
+                            withShadow={false}
+                            small={true}
+                        />
+                    </div>
                 </div>
 
-                {/* Emoji picker (v5) */}
-                {showPicker && (
-                    <div className="relative">
-                        <div className="absolute z-20 mt-2">
-                            <Picker
-                                data={data}
-                                onEmojiSelect={(e: any) => {
-                                    const emoji: string = e?.native || "";
-                                    if (emoji) insertText(emoji);
-                                }}
-                                previewPosition="none"
-                                searchPosition="none"
-                                theme="light"
-                            />
-                        </div>
-                    </div>
-                )}
-
-                {/* Éditeur Slate */}
+                {/* Zone de texte simple */}
                 <div className="flex flex-col">
-                    <div className="min-h-[120px] w-full rounded-md border border-neutral-700 bg-white px-3 py-2">
-                        <Slate key={editorKey} editor={editor} initialValue={initialValue} onChange={setValue}>
-                            <Editable
-                                renderLeaf={renderLeaf}
-                                placeholder="Écrivez votre message… (Gras/Italique, emoji, URLs autorisées)"
-                                onKeyDown={onKeyDown}
-                                className="text-sm leading-6"
-                                spellCheck
-                                autoCorrect="on"
-                                autoCapitalize="sentences"
-                            />
-                        </Slate>
-                    </div>
-                    <div className="mt-1 flex items-center justify-between text-xs">
-                        <span className={tooManyLinks ? "text-secondary-4" : "text-neutral-700"}>
-                            Liens (détectés) : {linkCount} / 3 {tooManyLinks && "• max dépassé"}
-                        </span>
-                        <span className={tooLong ? "text-secondary-4" : "text-neutral-700"}>
-                            {plainText.length} / {MAX}
-                        </span>
-                    </div>
+                    <textarea
+                        ref={textareaRef}
+                        name="body"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        rows={5}
+                        maxLength={MAXCOMMENTLENGTH * 2} // on laisse taper un peu plus mais on bloque à l’envoi
+                        placeholder="Écrivez votre message…"
+                        className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                    />
                 </div>
 
                 {/* Erreur serveur */}
-                {serverError && <div className="rounded-md border border-red-900 bg-red-50 px-3 py-2 text-sm text-red-700">{serverError}</div>}
+                {serverError && <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{serverError}</div>}
 
                 {/* Actions */}
-                <div className="flex items-center gap-2">
-                    <button
-                        type="submit"
-                        disabled={disableSubmit}
-                        className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        {pending ? "Publication…" : "Publier"}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setValue(initialValue);
-                            setShowPicker(false);
-                        }}
-                        disabled={pending}
-                        className="rounded-md border border-neutral-700 bg-neutral-100 px-3 py-2 text-sm hover:bg-neutral-200 disabled:opacity-50"
-                    >
-                        Effacer
-                    </button>
+                <div className="flex w-full justify-between items-center">
+                    <div className="flex items-center gap-2">
+                        <button type="submit" disabled={disableSubmit} className="btn btn-primary small !py-3 !text-sm">
+                            {pending ? "Publication…" : "Publier"}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setValue("");
+                            }}
+                            disabled={pending}
+                            className="btn btn-secondary small !py-3 !text-sm"
+                        >
+                            Effacer
+                        </button>
+                    </div>
+                    <div className="mt-1 flex items-center justify-end text-xs">
+                        <span className={tooLong ? "text-secondary-3" : "text-neutral-500"}>
+                            {value.length} / {MAXCOMMENTLENGTH}
+                        </span>
+                    </div>
                 </div>
             </form>
         </div>

@@ -74,7 +74,7 @@ function FidePostContent({ post, previous, next, hasPack, fidePackSommaire }: { 
                                 <CoursesAccordionClient fidePackSommaire={fidePackSommaire} hasPack={hasPack} expandAll={false} />
                             </SommaireModal>
                         </div>
-                        <ManualWatched postId={post._id} />
+                        {hasPack && <ManualWatched postId={post._id} />}
                     </div>
                 </div>
             </div>

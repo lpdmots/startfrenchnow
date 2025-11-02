@@ -1,3 +1,4 @@
+import { COMMENTRESOURCES } from "@/app/lib/constantes";
 import { defineType, defineField } from "sanity";
 
 export default defineType({
@@ -11,10 +12,7 @@ export default defineType({
             type: "string",
             validation: (Rule) => Rule.required(),
             options: {
-                list: [
-                    { title: "Post (blog/vidéo)", value: "post" },
-                    { title: "User (dashboard)", value: "user" },
-                ],
+                list: [...COMMENTRESOURCES],
                 layout: "radio",
                 direction: "horizontal",
             },
@@ -34,12 +32,13 @@ export default defineType({
             to: [{ type: "comment" }],
         }),
         defineField({
-            name: "body",
-            title: "Message (Rich JSON)",
-            type: "text", // on stocke JSON.stringify(slate)
-            readOnly: true,
-            validation: (Rule) => Rule.required(),
+            name: "replyToRef",
+            title: "Reply to",
+            type: "reference",
+            to: [{ type: "comment" }],
+            description: "Le commentaire ciblé (réponse directe). Optionnel.",
         }),
+        defineField({ name: "body", title: "Message", type: "text", rows: 6, validation: (Rule) => Rule.required().min(1).max(1000) }),
         defineField({
             name: "createdBy",
             title: "Created by (user ref)",
@@ -75,6 +74,12 @@ export default defineType({
             initialValue: 0,
         }),
         defineField({
+            name: "isEdited",
+            title: "Édité",
+            type: "boolean",
+            initialValue: false,
+        }),
+        defineField({
             name: "status",
             title: "Status",
             type: "string",
@@ -87,6 +92,24 @@ export default defineType({
                 layout: "radio",
                 direction: "horizontal",
             },
+        }),
+        defineField({
+            name: "isSeen",
+            title: "Vu/Traité",
+            type: "boolean",
+            initialValue: false,
+        }),
+        defineField({
+            name: "assignedTo",
+            title: "Assigné à",
+            type: "string",
+            options: { list: ["Nico", "Yoh"] },
+        }),
+        defineField({
+            name: "isAnswered",
+            title: "Répondu (par un admin)",
+            type: "boolean",
+            initialValue: false,
         }),
     ],
     preview: {
