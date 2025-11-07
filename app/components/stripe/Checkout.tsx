@@ -3,7 +3,6 @@ import { YourPurchase } from "@/app/components/stripe/YourPurchase";
 import { useEffect, useState } from "react";
 import { PricingDetails, ProductFetch, ProductInfos } from "@/app/types/sfn/stripe";
 import { ContactInformations } from "./ContactInformations";
-import { Payment } from "./Payment";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { FaCheckCircle, FaSpinner, FaTimesCircle } from "react-icons/fa";
 import { PriceLayout } from "./PriceLayout";
@@ -14,6 +13,8 @@ import { getUserPurchases } from "@/app/serverActions/productActions";
 import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
 import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
+const Payment = dynamic(() => import("./Payment").then((m) => m.Payment), { ssr: false });
 
 interface CheckoutProps {
     locale: "fr" | "en";

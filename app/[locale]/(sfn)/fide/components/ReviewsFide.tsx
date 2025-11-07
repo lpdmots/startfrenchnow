@@ -8,6 +8,149 @@ import Image from "next/image";
 
 const reviewsComments = [
     {
+        userName: "Rachael",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/rachael-3.png" height={100} width={100} alt="rachael" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Passed FIDE B1 easily with only 6 lessons",
+        comment:
+            "Yohann did a fantastic job preparing me for the B1 FIDE exam. Despite being uncertain that I would pass, I passed easily thanks to Yohann's help. Yohann's lessons were very engaging and a very efficient use of my time - I only needed 6 lessons.",
+        score: 100,
+        lessons: 6,
+        progressFrom: "B1",
+        progressTo: "B1",
+        date: 1761264000000, // 24 octobre 2025
+    },
+    {
+        userName: "Aneela",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/aneela.png" height={100} width={100} alt="aneela" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Enjoyable and effective lessons",
+        comment:
+            "Yohann has played an essential role in my journey of learning French. His well-organized lessons, engaging teaching style and regular encouragement made the process both effective and enjoyable. Thanks to him, I improved my language skills and successfully earned my B1 certification. I strongly recommend him to anyone aiming to pass their French exam confidently. It's absolutely worth it!",
+        score: 83,
+        lessons: 20,
+        progressFrom: "A2",
+        progressTo: "B1",
+        date: 1760572800000, // 16 octobre 2025
+    },
+    {
+        userName: "Hrvoje",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/hrvoje.png" height={100} width={100} alt="hrvoje" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "From rusty A2 to confident B1",
+        comment:
+            "Yohann is an excellent teacher. In just 5 hours, he guided me with a strategy that proved highly effective. I started with a rather rusty A2 level in French and managed to achieve a B1 in both the written and oral sections. This success was entirely thanks to Yohann’s targeted preparation for the exam. He knows exactly what to emphasize and how to navigate the FIDE. It was the best investment I could have made for my exam preparation. Highly recommended!",
+        score: 83,
+        lessons: 5,
+        progressFrom: "A2",
+        progressTo: "B1",
+        date: 1757808000000, // 14 septembre 2025
+    },
+    {
+        userName: "Samanta Capolicchio",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/samanta.png" height={100} width={100} alt="samanta-capolicchio" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Well-structured and friendly FIDE preparation",
+        comment:
+            "I had a great experience with the Fide preparation course with Yohann. The teacher was very friendly and knowledgeable, especially when it came to the topics for the oral exam. The course was well-structured and focused on helping me get ready for the speaking portion. I would definitely recommend this to anyone getting ready for the Fide oral exam.",
+        score: 100,
+        lessons: 7,
+        progressFrom: "B1",
+        progressTo: "B1",
+        date: 1744934400000, // 18 avril 2025
+    },
+    {
+        userName: "Suleyman Karacay",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/suleyman.png" height={100} width={100} alt="suleyman-karacay" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Gained confidence and passed B1 FIDE",
+        comment:
+            "Merci à Yohann pour son excellent accompagnement pendant mes cours de français. Sa méthode est claire, structurée et adaptée au rythme de chaque élève. J’ai particulièrement apprécié ses exercices de scénario, très efficaces pour se préparer à l’oral du test FIDE.\nSes cours sur Udemy sont aussi très bien faits et offrent une bonne opportunité de s’exercer seul à la maison, en complément des cours en direct.\nGrâce à son soutien, j’ai gagné en confiance et j’ai réussi à atteindre le niveau B1 à l’examen FIDE.\nJe recommande vivement Yohann à toute personne souhaitant progresser en français.",
+        lessons: 21,
+        progressFrom: "A2",
+        progressTo: "B1",
+        date: 1747699200000, // 20 mai 2025
+    },
+    {
+        userName: "Aakriti Thakur",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/aakriti.png" height={100} width={100} alt="aakriti-thakur" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "From low confidence to B1 success",
+        comment:
+            "I highly recommend taking lessons from Yohann for the FIDE exam. When I started, my French level was quite low and I lacked confidence, but thanks to his focused and well-structured lessons, I was able to improve significantly and successfully pass the B1 level. He is patient, encouraging, and really knows how to prepare you for the exam. Taking lessons from him was a great decision.",
+        score: 89,
+        lessons: 15,
+        progressFrom: "A2",
+        progressTo: "B1",
+        date: 1747958400000, // 23 mai 2025
+    },
+    {
+        userName: "Anant Murthy",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/anant.png" height={100} width={100} alt="anant-murthy" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Rapid improvement before FIDE exam",
+        comment:
+            "Yohann was a great French tutor! I worked with him on an urgent basis, just a few weeks before my FIDE exam, and he helped improve my oral from a low of 60% to 87%, reaching the B1 level. Very targeted instruction and practical examples!",
+        score: 87,
+        lessons: 6,
+        progressFrom: "A2",
+        progressTo: "B1",
+        date: 1750204800000, // 18 juin 2025
+    },
+    {
+        userName: "Siddharth Kaushik",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/siddharth.png" height={100} width={100} alt="siddharth-kaushik" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "The perfect FIDE preparation course",
+        comment:
+            "J’ai contacté Yohann quelques semaines avant mon examen FIDE afin de me préparer efficacement. Grâce à sa parfaite connaissance du format de l’examen, il a su cibler les points clés et me donner de précieux conseils. Résultat : j’ai obtenu 85% à l’oral et 81% à l’écrit ! Je recommande vivement Yohann à toute personne souhaitant se préparer sérieusement et efficacement au FIDE.",
+        score: 85,
+        lessons: 15,
+        progressFrom: "A2",
+        progressTo: "B1",
+        date: 1750204800000, // 18 juin 2025
+    },
+    {
+        userName: "Nyalleng Pii",
+        userImage: (
+            <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/nyalleng.png" height={100} width={100} alt="nyalleng-pii" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "From no confidence to flying colours at FIDE",
+        comment:
+            "A few months ago I realised that if I would ever pass FIDE, I would need one on one lessons. Group lessons were just not working for me. A few searches on YouTube let me to Yohann and we started our Zoom classes. The lessons were relaxed  and I found Yohann s teaching materials comprehensive and easy to follow. He took me through all the possible scenarios with ease. Two months later I  scheduled an appointment to take the exam. With the skills and knowledge I had acquired in our one on one lessons, I found the Exam easy to manage. I received my Fide Language Passport two weeks after the exam and I had passed with flying colours!!!! If you need to pass FIDE, you have limited time, you have confidence issues (like me) you need an excellent teacher who is also familiar with the FIDE exam, then I highly recommend Yohann. Thanks Yohann. You rock!",
+        score: 90,
+        lessons: 13,
+        progressFrom: "A1",
+        progressTo: "A2",
+        date: 1753228800000, // 23 juillet 2025
+    },
+    {
         userName: "Esabel",
         userImage: (
             <div className="rounded-full w-[100px] md:w-[100px] overflow-hidden" style={{ border: "solid 2px var(--neutral-800)" }}>

@@ -85,7 +85,7 @@ export default function CircularProgressMagic({ max = 100, min = 0, value = 0, g
                 data-current-value={currentPercent}
                 className={clsx("duration-[var(--transition-length)] delay-[var(--delay)] absolute inset-0 m-auto size-fit ease-linear animate-in fade-in", fontHeight)}
             >
-                {currentPercent}%
+                {currentPercent ? `${currentPercent}%` : "?"}
             </span>
         </div>
     );

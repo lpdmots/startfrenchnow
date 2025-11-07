@@ -1,5 +1,4 @@
 "use client";
-import GoogleAnalytics from "@/app/components/common/Analytics/GoogleAnalytics";
 import { AnalyticsWrapper } from "@/app/components/common/Analytics/Analytics";
 import LazyM from "@/app/components/animations/LazyM";
 import { SessionProvider, useSession } from "next-auth/react";
@@ -12,9 +11,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 <UserIdProvider />
                 <AnalyticsWrapper />
                 <LazyM>
-                    <main>{children}</main>
+                    <div>{children}</div>
                 </LazyM>
-                <GoogleAnalytics />
             </SessionProvider>
         </>
     );

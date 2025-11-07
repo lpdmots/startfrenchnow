@@ -63,7 +63,10 @@ function Comment({ slideIndex, comments }: { slideIndex: any; comments: any[] })
                         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 w-full">
                             <div className="flex flex-col justify-center">
                                 <p className="text-lg font-bold mb-0">
-                                    {userName.toUpperCase()} ({lessons} {t("lessons")})
+                                    <span className="inline-block">{userName.toUpperCase()}</span>{" "}
+                                    <span className="inline-block">
+                                        ({lessons} {t("lessons")})
+                                    </span>
                                 </p>
                                 <p className="mb-0">{!!progressFrom && t("progress", { progressFrom, progressTo })}</p>
                                 <p className="mb-0 italic">{!!date && getDate()}</p>

@@ -11,6 +11,7 @@ import { FacebookFooter } from "./logos/FacebookFooter";
 import { YoutubeFooter } from "./logos/Youtube";
 import { InstagramFooter } from "./logos/Instagram";
 import { TiktokFooter } from "./logos/Tiktok";
+import { TarteauCitronLink } from "./TarteauCitronLink";
 
 function Footer() {
     const t = useTranslations("Navigation");
@@ -113,6 +114,7 @@ function Footer() {
                                             <TiktokFooter height={30} width={30} />
                                         </LinkTranslation>
                                     </div>
+                                    <TarteauCitronLink />
                                 </div>
                             </div>
                         </Fade>

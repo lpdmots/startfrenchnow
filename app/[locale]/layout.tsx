@@ -7,7 +7,8 @@ import { getTranslator } from "next-intl/server";
 import { Toaster } from "@/app/components/ui/toaster";
 import { Metadata } from "next";
 import { locales, type Locale } from "@/i18n";
-import { cookies } from "next/headers"; // ← Solution B: lecture du cookie côté serveur
+import { cookies } from "next/headers";
+import Script from "next/script";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -84,14 +85,35 @@ export default async function RootLayout({ children, params }: { children: React
         <html lang={locale} dir="ltr" data-theme={ssrTheme} suppressHydrationWarning className={`${poppins.variable} font-sans`}>
             <head>
                 <meta name="color-scheme" content="light dark" />
+                <Script src="/tarteaucitron/tarteaucitron.min.js" strategy="beforeInteractive" />
+                <Script id="tac-init" strategy="beforeInteractive">
+                    {`
+                        tarteaucitron.init({
+                            bodyPosition: "top",
+                            orientation: "bottom",         
+                            DenyAllCta: true,
+                            AcceptAllCta: true,
+                            highPrivacy: true,
+                            showIcon: false,
+                            showAlertSmall: false,
+                            cookieslist: true,
+                            googleConsentMode: true,
+                            iconPosition: "BottomLeft",
+                            removeCredit: true,
+                            moreInfoLink: false,
+                        });
+                        tarteaucitron.user.gtagUa = "G-PPY9RQ1KFB";
+                        (tarteaucitron.job = tarteaucitron.job || []).push("gtag");
+                    `}
+                </Script>
             </head>
             <body>
-                <div id="root">
+                <main id="root">
                     <NextIntlClientProvider locale={locale} messages={messages}>
                         <Providers>{children}</Providers>
                     </NextIntlClientProvider>
                     <Toaster />
-                </div>
+                </main>
             </body>
         </html>
     );
