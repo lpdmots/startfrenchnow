@@ -21,17 +21,19 @@ export const DashboardHero = ({ hero, locale, hasPack }: Props) => {
         <section className="flex flex-col max-w-7xl w-full gap-4 lg:gap-8 py-0">
             <div className="text-center---tablet">
                 <div className="inner-container _550px---tablet center">
-                    <h1 className="display-1">{t.rich("title", intelRich())}</h1>
+                    <h1 className="display-2 font-medium">{t.rich("title", intelRich())}</h1>
                 </div>
             </div>
             <div className="flex justify-center lg:grid lg:grid-cols-3 gap-8 xl:gap-12 w-full h-[400px]">
-                <div className={clsx("card link-card col-span-1 h-full w-full overflow-hidden hidden lg:block max-w-96", kind === "video" && "!block")}>
+                <div className={clsx("card col-span-1 h-full w-full overflow-hidden hidden lg:block max-w-96 border-2 border-solid border-neutral-700 shadow-on-hover", kind === "video" && "!block")}>
                     <VideoCard hero={hero} locale={locale} hasPack={hasPack} />
                 </div>
-                <div className={clsx("card link-card col-span-1 h-full w-full overflow-hidden hidden lg:block max-w-96", kind === "exams" && "!block")}>
+                <div className={clsx("card col-span-1 h-full w-full overflow-hidden hidden lg:block max-w-96 border-2 border-solid border-neutral-700 shadow-on-hover", kind === "exams" && "!block")}>
                     <ExamCard hero={hero} locale={locale} hasPack={hasPack} />
                 </div>
-                <div className={clsx("card link-card col-span-1 h-full w-full overflow-hidden hidden lg:block max-w-96", kind === "coaching" && "!block")}>
+                <div
+                    className={clsx("card col-span-1 h-full w-full overflow-hidden hidden lg:block max-w-96 border-2 border-solid border-neutral-700 shadow-on-hover", kind === "coaching" && "!block")}
+                >
                     <PrivateCoursesCard hero={hero} locale={locale} />
                 </div>
             </div>

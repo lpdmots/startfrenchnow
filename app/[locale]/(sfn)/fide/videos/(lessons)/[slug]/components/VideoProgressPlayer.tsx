@@ -6,6 +6,9 @@ import { useSfnStore } from "@/app/stores/sfnStore";
 
 // ⬇️ Ajuste ce chemin si besoin
 import { syncVideoMilestone, markVideoCompleted } from "@/app/serverActions/fideExamActions";
+import { useEffect } from "react";
+
+const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
 type Props = {
     /** Identifiant du post/vidéo (sera utilisé côté Sanity) */
@@ -19,6 +22,8 @@ type Props = {
     className?: string;
     autoPlay?: boolean;
     controls?: boolean;
+    subtitleFRUrl?: string;
+    subtitleENUrl?: string;
 
     /** Config buckets/dwell */
     bucketSizeSec?: number; // défaut 5s
@@ -41,6 +46,8 @@ export default function VideoProgressPlayer({
     className,
     autoPlay,
     controls = true,
+    subtitleFRUrl,
+    subtitleENUrl,
     bucketSizeSec = 5,
     dwellMinSec = 2,
     onProgress,
@@ -58,9 +65,11 @@ export default function VideoProgressPlayer({
     const getWatchedPercent = useSfnStore((s) => s.getWatchedPercent);
     const getVideoTimestamp = useSfnStore((s) => s.getVideoTimestamp);
     const addWatchedVideo = useSfnStore((s) => s.addWatchedVideo);
+    const subtitlePreference = useSfnStore((s) => s.subtitlePreference);
+    const setSubtitlePreference = useSfnStore((s) => s.setSubtitlePreference);
 
     // ===== Reprise au chargement =====
-    React.useEffect(() => {
+    useEffect(() => {
         const el = videoRef.current;
         if (!el) return;
 
@@ -86,7 +95,7 @@ export default function VideoProgressPlayer({
     }, [postId, getVideoTimestamp, setVideoDuration]);
 
     // ===== Gestion dwell/buckets + timestamp (throttle) + synchro serveur =====
-    React.useEffect(() => {
+    useEffect(() => {
         const el = videoRef.current;
         if (!el) return;
 
@@ -260,6 +269,84 @@ export default function VideoProgressPlayer({
         getWatchedPercent,
     ]);
 
+    // 1) Appliquer la préférence enregistrée quand la vidéo est prête
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        const video = videoRef.current;
+        if (!video) return;
+
+        const applyPreference = () => {
+            if (!subtitlePreference) return; // laisse le comportement natif si aucune préférence
+
+            const tracks = video.textTracks;
+            if (!tracks || tracks.length === 0) return;
+
+            for (let i = 0; i < tracks.length; i++) {
+                const track = tracks[i];
+                const lang = (track.language || "").toLowerCase();
+
+                if (subtitlePreference === "off") {
+                    track.mode = "disabled";
+                } else if (lang.startsWith(subtitlePreference)) {
+                    track.mode = "showing";
+                } else {
+                    track.mode = "disabled";
+                }
+            }
+        };
+
+        // ✅ Si les metadata sont déjà prêtes, on applique tout de suite
+        if (video.readyState >= 1) {
+            applyPreference();
+            return;
+        }
+
+        // Sinon, on attend l'événement loadedmetadata
+        const handler = () => {
+            applyPreference();
+        };
+
+        video.addEventListener("loadedmetadata", handler);
+
+        return () => {
+            video.removeEventListener("loadedmetadata", handler);
+        };
+    }, [src, subtitlePreference]);
+
+    // 2) Sauvegarder chaque changement de sous-titres vers le store
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        const video = videoRef.current;
+        if (!video) return;
+
+        const tracks = video.textTracks;
+        if (!tracks) return;
+
+        const handleChange = () => {
+            let value: "fr" | "en" | "off" = "off";
+
+            for (let i = 0; i < tracks.length; i++) {
+                const track = tracks[i];
+                if (track.mode === "showing") {
+                    const lang = track.language.toLowerCase();
+                    if (lang.startsWith("fr")) value = "fr";
+                    else if (lang.startsWith("en")) value = "en";
+                    else value = "off";
+                    break;
+                }
+            }
+
+            setSubtitlePreference(value);
+        };
+
+        // TextTrackList est un EventTarget, mais TS ne le sait pas toujours
+        tracks.addEventListener("change", handleChange);
+
+        return () => {
+            tracks.removeEventListener("change", handleChange);
+        };
+    }, [src, setSubtitlePreference]);
+
     return (
         <video
             ref={videoRef}
@@ -278,6 +365,10 @@ export default function VideoProgressPlayer({
                 // Recharge la première frame = réaffiche le poster
                 v.load();
             }}
-        />
+            crossOrigin="anonymous"
+        >
+            {subtitleFRUrl && <track kind="subtitles" src={subtitleFRUrl} srcLang="fr" label="Français" />}
+            {subtitleENUrl && <track kind="subtitles" src={subtitleENUrl} srcLang="en" label="English" />}
+        </video>
     );
 }

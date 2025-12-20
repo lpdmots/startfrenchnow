@@ -1,4 +1,4 @@
-import { LESSONS_CREDITS_PERMISSIONS } from "@/app/lib/constantes";
+import { LESSONS_CREDITS_PERMISSIONS, PACKAGES_KEYS } from "@/app/lib/constantes";
 import { Block, Image, Level, Reference, Slug } from "./blog";
 
 export interface PricingDetails {
@@ -28,19 +28,21 @@ export interface ProductFetch {
     packages: ProductPackage[];
 }
 
+export type PackagesKey = (typeof PACKAGES_KEYS)[number];
 export interface ProductPackage {
     title: string;
     title_en: string;
-    referenceKey: string;
+    referenceKey: PackagesKey;
     modules: PackageModule[];
 }
 
 export interface PackageModule {
+    _key?: string;
     title: string;
     title_en: string;
     subtitle?: string;
     subtitle_en?: string;
-    level: Level[];
+    level?: Level[];
     posts: Reference[];
 }
 

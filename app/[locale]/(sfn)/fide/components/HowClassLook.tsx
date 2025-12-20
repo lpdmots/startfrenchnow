@@ -31,7 +31,7 @@ function HowClassLook() {
     return (
         <div className="grid grid-cols-2 w-full gap-8 lg:gap-12">
             <div className="col-span-2 lg:col-span-1 order-2 lg:order-1 flex items-center">
-                <div className="grid-1-column gap-4">
+                <div className="grid-1-column gap-4 lg:gap-8">
                     {STEPS.map(({ title, description, icon, background }) => (
                         <Scale className="card grid grid-cols-5 overflow-hidden border-neutral-800" key={title}>
                             <>
@@ -59,7 +59,7 @@ function HowClassLook() {
                     <div className="h-auto w-full">
                         <SlideFromBottom>
                             <>
-                                <VideoFide videoKey={t("videoKey")} poster={t("posterImage")} />
+                                <VideoFide videoKey={t("videoKey")} poster={t("posterImage")} subtitleFRUrl="fide/apercu-d-une-classe.vtt" />
                                 <p className="mt-8 text-lg w-full text-center">{t.rich("videoDescription", intelRich())}</p>
                             </>
                         </SlideFromBottom>

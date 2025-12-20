@@ -4,7 +4,7 @@ import { SlideFromBottom, SlideFromRight } from "@/app/components/animations/Sli
 import Image from "next/image";
 import Link from "next-intl/link";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
-import { CoursesAccordionClient } from "../../pack-fide/components/CoursesAccordionClient";
+import { CoursesAccordionClient } from "../../components/CoursesAccordionClient";
 import { FidePackSommaire } from "@/app/serverActions/productActions";
 import urlFor from "@/app/lib/urlFor";
 import { formatRelative, formatToBadge } from "./VideoCard";
@@ -14,25 +14,28 @@ import { LinkArrowToFideVideos } from "@/app/components/common/LinkToFideVideos"
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { Locale } from "@/i18n";
+import { UdemyBeginnerAccordion } from "./UdemyBeginnerAccordion";
 
 interface DashboardVideosProps {
     hero: HeroData;
     locale: "fr" | "en";
     hasPack: boolean;
     fidePackSommaire: FidePackSommaire;
+    userId: string;
 }
 
-const DashboardVideos = ({ hero, locale, hasPack, fidePackSommaire }: DashboardVideosProps) => {
+const DashboardVideos = ({ hero, locale, hasPack, fidePackSommaire, userId }: DashboardVideosProps) => {
     const t = useTranslations("Fide.dashboard.DashboardVideos");
     const videos = hero.video;
     const pourcentageCompleted = Math.round(((videos?.stats?.watched || 0) / (videos?.stats?.total || 1)) * 100);
     const lastActivity = formatRelative(videos?.stats?.lastActivityAt, locale);
+    const defaultModuleKeyIndex = fidePackSommaire?.packages[0]?.modules.findIndex((mod) => mod.posts.some((p) => p._id === hero.video?.main?.postId)) ?? 0;
 
     return (
         <section className="page-wrapper flex flex-col max-w-7xl m-auto gap-6 lg:gap-12 w-full py-0">
-            <h2 className="mb-0 w-full display-2">{t.rich("title", intelRich())}</h2>
+            <h2 className="mb-0 w-full display-2 font-medium">{t.rich("title", intelRich())}</h2>
 
-            <h4 className="underline decoration-secondary-6  text-xl md:text-3xl">{t("selectedForYou")}</h4>
+            <h4 className="underline decoration-secondary-6 font-medium text-xl md:text-3xl">{t("selectedForYou")}</h4>
 
             <SlideFromBottom>
                 <div className="grid grid-cols-4 gap-4 w-full">
@@ -44,8 +47,17 @@ const DashboardVideos = ({ hero, locale, hasPack, fidePackSommaire }: DashboardV
 
             <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-3 gap-6 w-full">
                 <div className="col-span-2 flex flex-col gap-4 order-2 lg:order-1">
-                    <h4 className="underline decoration-secondary-6 text-xl md:text-3xl">{t("summary")}</h4>
-                    <CoursesAccordionClient fidePackSommaire={fidePackSommaire} hasPack={hasPack} expandAll={true} />
+                    <h4 className="underline decoration-secondary-6 font-medium text-xl md:text-3xl">{t("summary")}</h4>
+
+                    <p className="mb-0 text-lg font-semibold sm:mx-4 text-neutral-800">{t("areYouBeginner")}</p>
+                    <UdemyBeginnerAccordion locale={locale} userId={userId} hasPack={hasPack} />
+                    <CoursesAccordionClient
+                        fidePackSommaire={fidePackSommaire}
+                        hasPack={hasPack}
+                        expandAll={false}
+                        defaultModuleKeyIndex={defaultModuleKeyIndex}
+                        currentPostSlug={hero.video?.main?.slug}
+                    />
                 </div>
 
                 <div className="col-span-2 xl:col-span-1 px-0 sm:px-4 lg:px-0 order-1 lg:order-2">
@@ -68,7 +80,7 @@ const DashboardVideos = ({ hero, locale, hasPack, fidePackSommaire }: DashboardV
                                         <p className="mb-0 mt-6 lg:mt-12 text-center w-full ">{t.rich("lastActivityRich", { ...intelRich(), time: lastActivity || "-" })}</p>
                                     </div>
                                 ) : (
-                                    <Link href="/fide/pack-fide#plans" className="w-full no-underline mt-2 lg:mt-8 flex justify-center">
+                                    <Link href="/fide#plans" className="w-full no-underline mt-2 lg:mt-8 flex justify-center">
                                         <ShimmerButton className="w-full max-w-lg">{t("ctaBuyPack")}</ShimmerButton>
                                     </Link>
                                 )}
@@ -102,8 +114,8 @@ const MiniVideoCard = ({ video, hasPack, locale }: { video: HeroVideoData["mini"
     const isLocked = !hasPack && !video.isPreview;
 
     return (
-        <div className="group relative col-span-4 md:col-span-2 xl:col-span-1 p-2 border-2 border-solid border-neutral-600 rounded-lg h-full translate_on_hover overflow-hidden">
-            <Link href={isLocked ? "/fide/pack-fide#plans" : `/fide/videos/${video.slug}`} className="no-underline w-full h-full text-neutral-800 flex gap-4 items-center">
+        <div className="group relative col-span-4 md:col-span-2 xl:col-span-1 p-2 border-2 border-solid border-neutral-600 rounded-lg h-full shadow-on-hover overflow-hidden">
+            <Link href={isLocked ? "/fide#plans" : `/fide/videos/${video.slug}`} className="no-underline w-full h-full text-neutral-800 flex gap-4 items-center">
                 <div className="shrink-0">
                     <img width={400} height={300} src={urlFor(video.mainImage).url()} alt={video.title} className="mx-auto w-20 h-20 md:mx-0 rounded-lg object-cover object-top" />
                 </div>

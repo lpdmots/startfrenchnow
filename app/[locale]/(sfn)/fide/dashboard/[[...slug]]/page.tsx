@@ -51,7 +51,7 @@ async function DashboardPage({ params: { locale, slug: specifiedId } }: { params
         <>
             <div className="w-full flex flex-col items-center gap-24 mt-8 md:mt-12 p-2 mb-12 lg:mb-24">
                 <DashboardHero hero={hero} locale={locale} hasPack={hasPack} />
-                <DashboardVideos hero={hero} locale={locale} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />
+                <DashboardVideos hero={hero} locale={locale} hasPack={hasPack} fidePackSommaire={fidePackSommaire} userId={userId} />
                 <DashboardExams hero={hero} locale={locale} hasPack={hasPack} />
                 <DashboardCoaching hero={hero} locale={locale} />
                 <DashboardComments locale={locale} userId={dataId} />

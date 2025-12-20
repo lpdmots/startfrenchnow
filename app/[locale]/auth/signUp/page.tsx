@@ -6,6 +6,10 @@ import { SignUpForm } from "@/app/components/auth/SignUpForm";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 
+export const metadata = {
+    robots: { index: false, follow: false },
+};
+
 const SignUp = () => {
     const t = useTranslations("Auth.SignUp");
     const tGoogle = useTranslations("Auth.ContinueWithGoogle");

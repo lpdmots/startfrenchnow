@@ -5,6 +5,10 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 
+export const metadata = {
+    robots: { index: false, follow: false },
+};
+
 const Activated = () => {
     const t = useTranslations("Auth.Activated");
 

@@ -14,6 +14,7 @@ import clsx from "clsx"; // FIX: import par défaut
 import { AiOutlineLike } from "react-icons/ai";
 import { FaEdit, FaRegEye, FaRegEyeSlash, FaRegTrashAlt, FaTrash } from "react-icons/fa";
 import { ModalFromBottom } from "../animations/Modals";
+import { useTranslations } from "next-intl";
 
 type Props = {
     resourceType: CommentResourceType;
@@ -83,18 +84,21 @@ function scrollToComment(id: string, highlight = true) {
     }
 }
 
-export function AuthorLine({ name, isYou, isAdmin, status }: { name: string; isYou?: boolean; isAdmin?: boolean; status?: string }) {
+export function AuthorLine({ name, isYou, isAdmin, status, resourceType }: { name: string; isYou?: boolean; isAdmin?: boolean; status?: string; resourceType: CommentResourceType }) {
+    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const t = useTranslations(translationKey);
+
     return (
         <div className="flex items-center gap-2 flex-wrap">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-300 text-sm font-semibold text-neutral-700" aria-hidden>
                 {getInitials(name)}
             </div>
             <div className="text-sm font-bold text-neutral-700">{name}</div>
-            {isYou && <span className="rounded bg-secondary-2 px-2 py-0.5 text-xs font-medium text-neutral-100">Vous</span>}
-            {isAdmin && <span className="rounded bg-secondary-5 px-2 py-0.5 text-xs font-medium text-neutral-100">Admin</span>}
+            {isYou && <span className="rounded bg-secondary-2 px-2 py-0.5 text-xs font-medium text-neutral-100">{t("tagYou")}</span>}
+            {isAdmin && <span className="rounded bg-secondary-5 px-2 py-0.5 text-xs font-medium text-neutral-100">{t("tagAdmin")}</span>}
             {isAdmin && status === "hidden" && (
-                <span className="rounded bg-neutral-300 text-neutral-700 px-2 py-0.5 text-xs font-medium" title="Masqué (visible staff)">
-                    Masqué
+                <span className="rounded bg-neutral-300 text-neutral-700 px-2 py-0.5 text-xs font-medium" title={t("tagHiddenTitle")}>
+                    {t("tagHidden")}
                 </span>
             )}
         </div>
@@ -103,6 +107,8 @@ export function AuthorLine({ name, isYou, isAdmin, status }: { name: string; isY
 
 export default function CommentThread({ resourceType, resourceId, items, isAuthenticated, viewerIsAdmin, locale = "fr" }: Props) {
     const router = useRouter();
+    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const t = useTranslations(translationKey);
     const [voteBusyId, setVoteBusyId] = useState<string | null>(null);
     const [replyOpenFor, setReplyOpenFor] = useState<string | null>(null);
     const [returnFocusEl, setReturnFocusEl] = useState<HTMLElement | null>(null);
@@ -203,12 +209,12 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
         <div className="card py-4 px-2 md:p-8 border-2 w-full">
             {/* Header compteur (total messages) */}
             <div className="text-neutral-700 text-2xl mb-4 px-2 sm:px-4">
-                <span className="font-bold">{totalAll}</span> <span className="heading-span-secondary-3">commentaire{totalAll > 1 ? "s" : ""}</span>
+                <span className="font-bold">{totalAll}</span> <span className="heading-span-secondary-3">{totalAll > 1 ? t("header.commentsPlural") : t("header.commentsSingular")}</span>
             </div>
 
             {/* Liste top-level */}
             {items.length === 0 ? (
-                <div className="text-sm text-neutral-600 flex justify-center w-full items-center min-h-40 px-2 sm:px-4">Aucun commentaire pour le moment.</div>
+                <div className="text-sm text-neutral-600 flex justify-center w-full items-center min-h-40 px-2 sm:px-4">{t("noComments")}</div>
             ) : (
                 <div className="flex w-full flex-col gap-4">
                     {items.map((c, i) => (
@@ -217,10 +223,10 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                 <div className="p-2 sm:p-4 pt-0 sm:pt-0">
                                     {/* Ligne auteur + date */}
                                     <div className="flex items-center justify-between mb-2">
-                                        <AuthorLine name={c.author.name} isYou={c.author.isYou} isAdmin={c.author.isAdmin} status={c.status} />
+                                        <AuthorLine name={c.author.name} isYou={c.author.isYou} isAdmin={c.author.isAdmin} status={c.status} resourceType={resourceType} />
                                         <div className="flex items-center gap-2 shrink-0">
                                             <RelativeDate iso={c.createdAt} locale={locale} />
-                                            {c.isEdited && <span className="text-xs text-neutral-500">(édité)</span>}
+                                            {c.isEdited && <span className="text-xs text-neutral-500">{t("edited")}</span>}
                                         </div>
                                     </div>
 
@@ -234,6 +240,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                             hasVoted={c.hasVoted}
                                             disabled={voteBusyId === c.id || !isAuthenticated || !!c.author.isYou}
                                             onClick={() => handleVote(c.id)}
+                                            resourceType={resourceType}
                                         />
 
                                         <button
@@ -247,10 +254,10 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                             className="!border-none p-2 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed text-neutral-700 flex items-center gap-1"
                                             aria-expanded={replyOpenFor === c.id}
                                             aria-controls={`replyform-${c.id}`}
-                                            title="Répondre"
+                                            title={t("reply")}
                                         >
                                             <PiArrowBendDownRightDuotone />
-                                            Répondre
+                                            {t("reply")}
                                         </button>
 
                                         {/* --- ACTIONS auteur/admin --- */}
@@ -258,7 +265,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                             <button
                                                 type="button"
                                                 className="!border-none p-2 text-sm font-bold text-neutral-700"
-                                                title="Éditer"
+                                                title={t("edit")}
                                                 onClick={() => {
                                                     const opening = editOpenFor !== c.id;
                                                     setEditOpenFor(opening ? c.id : null);
@@ -275,7 +282,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                             <button
                                                 type="button"
                                                 className="!border-none p-2 font-bold text-sm text-neutral-700"
-                                                title={c.status === "hidden" ? "Ré-afficher" : "Masquer"}
+                                                title={c.status === "hidden" ? t("unhide") : t("hide")}
                                                 onClick={() => handleToggleHide(c.id, c.status)}
                                                 disabled={actionBusyId === c.id}
                                             >
@@ -288,7 +295,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                             <button
                                                 type="button"
                                                 className="!border-none p-2 font-bold text-sm text-neutral-700"
-                                                title="Supprimer"
+                                                title={t("delete")}
                                                 onClick={() => setDeleteOpenFor(c.id)}
                                                 disabled={actionBusyId === c.id}
                                             >
@@ -308,7 +315,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                             c.isSeen ? "w--redirected-checked" : ""
                                                         } ${actionBusyId === c.id ? "opacity-60" : ""}`}
                                                     />
-                                                    <p className="mb-0">Vu</p>
+                                                    <p className="mb-0">{t("seen")}</p>
                                                 </label>
                                             </div>
                                         )}
@@ -324,6 +331,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                 setEditDraft("");
                                             }}
                                             onSave={(next) => handleEditSave(c.id, next)}
+                                            resourceType={resourceType}
                                         />
                                     )}
 
@@ -362,10 +370,10 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                         >
                                                             <div className="p-2 sm:p-4">
                                                                 <div className="mb-2 flex items-center justify-between text-lg">
-                                                                    <AuthorLine name={r.author.name} isYou={r.author.isYou} isAdmin={r.author.isAdmin} status={r.status} />
+                                                                    <AuthorLine name={r.author.name} isYou={r.author.isYou} isAdmin={r.author.isAdmin} status={r.status} resourceType={resourceType} />
                                                                     <div className="flex items-center gap-2 shrink-0">
                                                                         <RelativeDate iso={r.createdAt} locale={locale} />
-                                                                        {r.isEdited && <span className="text-xs text-neutral-500">(édité)</span>}
+                                                                        {r.isEdited && <span className="text-xs text-neutral-500">{t("edited")}</span>}
                                                                     </div>
                                                                 </div>
                                                                 <div
@@ -376,7 +384,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                             type="button"
                                                                             onClick={() => scrollToComment(r.replyTo!.id)}
                                                                             className="mx-2 rounded bg-neutral-200 px-2 py-0.5 text-sm text-secondary-2 inline-block font-bold hover:bg-neutral-300"
-                                                                            title={`Voir le message de ${r.replyTo.name}`}
+                                                                            title={t("seeMessageOf", { name: r.replyTo.name })}
                                                                         >
                                                                             @{r.replyTo.name}
                                                                         </button>
@@ -389,6 +397,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                         hasVoted={r.hasVoted}
                                                                         disabled={voteBusyId === r.id || !isAuthenticated || !!r.author.isYou}
                                                                         onClick={() => handleVote(r.id)}
+                                                                        resourceType={resourceType}
                                                                     />
                                                                     <button
                                                                         type="button"
@@ -400,10 +409,10 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                         className="!border-none p-2 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed text-neutral-700 flex items-center gap-1"
                                                                         aria-expanded={replyOpenFor === r.id}
                                                                         aria-controls={`replyform-${r.id}`}
-                                                                        title="Répondre"
+                                                                        title={t("reply")}
                                                                     >
                                                                         <PiArrowBendDownRightDuotone />
-                                                                        Répondre
+                                                                        {t("reply")}
                                                                     </button>
                                                                     {isAuthenticated && (r.author.isYou || viewerIsAdmin) && (
                                                                         <>
@@ -411,7 +420,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                                 <button
                                                                                     type="button"
                                                                                     className="!border-none p-2 font-bold text-sm text-neutral-700"
-                                                                                    title="Éditer"
+                                                                                    title={t("edit")}
                                                                                     onClick={() => {
                                                                                         const opening = editOpenFor !== r.id;
                                                                                         setEditOpenFor(opening ? r.id : null);
@@ -427,7 +436,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                                 <button
                                                                                     type="button"
                                                                                     className="!border-none p-2 font-bold text-sm text-neutral-700"
-                                                                                    title="Masquer (admin)"
+                                                                                    title={t("hideAdmin")}
                                                                                     onClick={() => handleToggleHide(r.id, (r as any).status)}
                                                                                     disabled={actionBusyId === r.id}
                                                                                 >
@@ -439,7 +448,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                                 <button
                                                                                     type="button"
                                                                                     className="!border-none p-2 font-bold text-sm text-neutral-700"
-                                                                                    title="Supprimer"
+                                                                                    title={t("delete")}
                                                                                     onClick={() => setDeleteOpenFor(r.id)}
                                                                                     disabled={actionBusyId === r.id}
                                                                                 >
@@ -459,7 +468,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                                                 r.isSeen ? "w--redirected-checked" : ""
                                                                                             } ${actionBusyId === r.id ? "opacity-60" : ""}`}
                                                                                         />
-                                                                                        <p className="mb-0">Vu</p>
+                                                                                        <p className="mb-0">{t("seen")}</p>
                                                                                     </label>
                                                                                 </div>
                                                                             )}
@@ -479,6 +488,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                                                                     setEditDraft("");
                                                                 }}
                                                                 onSave={(next) => handleEditSave(r.id, next)}
+                                                                resourceType={resourceType}
                                                             />
                                                         )}
 
@@ -513,15 +523,11 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                 <ModalFromBottom
                     data={{
                         setOpen: (open) => setDeleteOpenFor(open ? deleteOpenFor : null),
-                        title: "Confirmer la suppression",
+                        title: t("deleteModal.title"),
                         message: (
                             <div className="text-neutral-900 text-sm mt-2">
-                                <p className="mb-2">Cette action va supprimer définitivement le message.</p>
-                                <p className="text-neutral-600">
-                                    {viewerIsAdmin
-                                        ? "En tant qu’administrateur, la suppression peut être appliquée à n’importe quel message (les réponses associées peuvent aussi être supprimées)."
-                                        : "En tant qu’auteur, vous pouvez supprimer votre message pendant 15 minutes après sa création."}
-                                </p>
+                                <p className="mb-2">{t("deleteModal.messageLine1")}</p>
+                                <p className="text-neutral-600">{viewerIsAdmin ? t("deleteModal.messageAdmin") : t("deleteModal.messageAuthor")}</p>
                             </div>
                         ),
                         functionOk: async () => {
@@ -540,8 +546,8 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                         functionCancel: () => {
                             setDeleteOpenFor(null);
                         },
-                        buttonOkStr: "Supprimer",
-                        buttonAnnulerStr: "Annuler",
+                        buttonOkStr: t("deleteModal.ok"),
+                        buttonAnnulerStr: t("deleteModal.cancel"),
                         clickOutside: true,
                     }}
                 />
@@ -565,6 +571,8 @@ function ReplyForm({
     isAuthenticated: boolean;
     onDone: () => void;
 }) {
+    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const t = useTranslations(translationKey);
     const [body, setBody] = useState("");
     const [guestName, setGuestName] = useState("");
     const [guestEmail, setGuestEmail] = useState("");
@@ -602,7 +610,7 @@ function ReplyForm({
             setGuestEmail("");
             onDone(); // le parent remet le focus et refresh
         } catch (e: any) {
-            setError(e?.message || "Erreur inconnue");
+            setError(e?.message || t("unknownError"));
         } finally {
             setPending(false);
         }
@@ -634,7 +642,7 @@ function ReplyForm({
                             <input
                                 value={guestName}
                                 onChange={(e) => setGuestName(e.target.value)}
-                                placeholder="Nom (requis)"
+                                placeholder={t("nameRequired")}
                                 maxLength={80}
                                 className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
@@ -643,7 +651,7 @@ function ReplyForm({
                             <input
                                 value={guestEmail}
                                 onChange={(e) => setGuestEmail(e.target.value)}
-                                placeholder="Email (optionnel)"
+                                placeholder={t("emailOptional")}
                                 type="email"
                                 className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
@@ -685,7 +693,7 @@ function ReplyForm({
                 onChange={(e) => setBody(e.target.value)}
                 rows={3}
                 maxLength={2000}
-                placeholder="Votre réponse…"
+                placeholder={t("replyPlaceholder")}
                 className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
             />
 
@@ -694,7 +702,7 @@ function ReplyForm({
             <div className="flex w-full justify-between items-center">
                 <div className="flex items-center gap-2">
                     <button type="button" onClick={submit} disabled={disable} className="btn btn-primary small !py-3 !text-sm">
-                        {pending ? "Envoi…" : "Répondre"}
+                        {pending ? t("sending") : t("reply")}
                     </button>
                     <button
                         type="button"
@@ -706,20 +714,34 @@ function ReplyForm({
                         disabled={pending}
                         className="btn btn-secondary small !py-3 !text-sm"
                     >
-                        Effacer
+                        {t("clear")}
                     </button>
                 </div>
                 <div className="flex items-center justify-end text-xs">
-                    <span className={tooLong ? "text-secondary-3" : "text-neutral-500"}>
-                        {body.length} / {MAXCOMMENTLENGTH}
-                    </span>
+                    <span className={tooLong ? "text-secondary-3" : "text-neutral-500"}>{t("counter", { current: body.length, max: MAXCOMMENTLENGTH })}</span>
                 </div>
             </div>
         </div>
     );
 }
 
-function InlineEditForm({ id, initialValue, onCancel, onSave, busy }: { id: string; initialValue: string; onCancel: () => void; onSave: (next: string) => void; busy: boolean }) {
+function InlineEditForm({
+    id,
+    initialValue,
+    onCancel,
+    onSave,
+    busy,
+    resourceType,
+}: {
+    id: string;
+    initialValue: string;
+    onCancel: () => void;
+    onSave: (next: string) => void;
+    busy: boolean;
+    resourceType: CommentResourceType;
+}) {
+    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const t = useTranslations(translationKey);
     const [value, setValue] = useState(initialValue);
     const tooLong = value.length > 1000;
     const linkCount = (value.match(/(https?:\/\/|www\.)/gi) || []).length;
@@ -785,28 +807,43 @@ function InlineEditForm({ id, initialValue, onCancel, onSave, busy }: { id: stri
             <div className="flex w-full justify-between items-center">
                 <div className="flex items-center gap-2">
                     <button type="button" className="btn btn-primary small !py-3 !text-sm" disabled={disable} onClick={() => onSave(value)}>
-                        {busy ? "Enregistrement…" : "Enregistrer"}
+                        {busy ? t("saving") : t("save")}
                     </button>
                     <button type="button" className="btn btn-secondary small !py-3 !text-sm" onClick={onCancel} disabled={busy}>
-                        Annuler
+                        {t("cancel")}
                     </button>
                 </div>
                 <div className="text-xs">
-                    <span className={tooLong ? "text-secondary-3" : "text-neutral-500"}>{value.length} / 1000</span>
+                    <span className={tooLong ? "text-secondary-3" : "text-neutral-500"}>{t("editCounter", { current: value.length, max: 1000 })}</span>
                 </div>
             </div>
         </div>
     );
 }
 
-export function UpvoteIconButton({ count, hasVoted, disabled, onClick }: { count: number; hasVoted?: boolean; disabled: boolean; onClick: () => void }) {
+export function UpvoteIconButton({
+    count,
+    hasVoted,
+    disabled,
+    onClick,
+    resourceType,
+}: {
+    count: number;
+    hasVoted?: boolean;
+    disabled: boolean;
+    onClick: () => void;
+    resourceType: CommentResourceType;
+}) {
+    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const t = useTranslations(translationKey);
+
     return (
         <button
             type="button"
             onClick={onClick}
             disabled={disabled}
             aria-pressed={!!hasVoted}
-            title={hasVoted ? "Retirer mon vote" : "Utile"}
+            title={hasVoted ? t("upvoteTitleOn") : t("upvoteTitleOff")}
             className={clsx(
                 "!border-none px-0 text-lg disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1",
                 hasVoted ? "text-secondary-2" : "text-neutral-600 hover:text-neutral-700"

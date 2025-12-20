@@ -35,12 +35,13 @@ module.exports = withNextIntl({
         redirects.push(
             {
                 source: "/:locale(es|pt|tr)/:path*",
-                destination: "/en/:path*",
+                destination: "/:path*",
                 permanent: true,
+                locale: false,
             },
-            { source: "/es", destination: "/en", permanent: true },
-            { source: "/pt", destination: "/en", permanent: true },
-            { source: "/tr", destination: "/en", permanent: true }
+            { source: "/es", destination: "/", permanent: true },
+            { source: "/pt", destination: "/", permanent: true },
+            { source: "/tr", destination: "/", permanent: true }
         );
 
         return redirects;

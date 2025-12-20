@@ -31,6 +31,16 @@ const videoBlog = {
             title: "URL Youtube ou s3Key",
             type: "string",
         }),
+        defineField({
+            name: "subtitleFr",
+            title: "Sous-titre (Français)",
+            type: "string",
+        }),
+        defineField({
+            name: "subtitleEn",
+            title: "Sous-titre (Anglais)",
+            type: "string",
+        }),
     ],
     preview: {
         select: {

@@ -1,27 +1,30 @@
 "use client";
+import clsx from "clsx";
 import { AnimatePresence, m } from "framer-motion";
 import Image from "next/image";
+import { ReactNode } from "react";
 
 interface Props {
     data: {
         setOpen?: (value: boolean) => void;
-        title?: string | JSX.Element;
+        title?: string | JSX.Element | Iterable<ReactNode>;
         message: JSX.Element;
-        functionOk: () => void;
+        functionOk?: () => void;
         functionCancel?: () => void;
         imageUrl?: string;
         clickOutside?: boolean;
         buttonOkStr?: string | JSX.Element;
         buttonAnnulerStr?: string | JSX.Element;
         oneButtonOnly?: boolean;
+        className?: string;
     };
 }
 
 export const ModalFromBottom = ({ data }: Props) => {
-    const { setOpen, message, title, functionOk, functionCancel, imageUrl, clickOutside, buttonOkStr, oneButtonOnly, buttonAnnulerStr } = data;
+    const { setOpen, message, title, functionOk, functionCancel, imageUrl, clickOutside, buttonOkStr, oneButtonOnly, buttonAnnulerStr, className } = data;
 
     const handleClickOk = () => {
-        functionOk();
+        functionOk && functionOk();
         setOpen && setOpen(false);
     };
 
@@ -58,7 +61,7 @@ export const ModalFromBottom = ({ data }: Props) => {
                         opacity: 0,
                     }}
                     transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-                    className="absolute z-100 p-5 bg-neutral-200 h-auto max-w-md text-white rounded-lg"
+                    className={clsx("absolute z-100 p-5 bg-neutral-200 h-auto max-w-md text-white rounded-lg", className)}
                     style={{ width: "98%" }}
                 >
                     <div className="grid grid-cols-5 gap-4 mb-2">

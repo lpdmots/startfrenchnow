@@ -12,5 +12,5 @@ export default createMiddleware({
 export const config = {
     // Skip all paths that should not be internationalized. This example skips the
     // folders "api", "_next" and all files with an extension (e.g. favicon.ico)
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico|images/|admin|studio|tarteaucitron).*)"],
+    matcher: ["/((?!api|_next/static|robots\\.txt|sitemap\\.xml|_next/image|favicon.ico|images/|audio/|admin|studio|tarteaucitron).*)"],
 };

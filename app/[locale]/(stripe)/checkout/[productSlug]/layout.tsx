@@ -5,6 +5,9 @@ interface Props {
     children: ReactNode;
     params: { locale: string };
 }
+export const metadata = {
+    robots: { index: false, follow: false },
+};
 
 export default async function CheckoutLayout({ children, params: { locale } }: Props) {
     let messages;

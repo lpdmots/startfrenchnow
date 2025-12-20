@@ -134,12 +134,6 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
                     </button>
                 </div>
             )}
-
-            <p className="max-w-2xl text-center">
-                {messages["additionalInfo1"]}
-                <span className="underline decoration-secondary-1 text-xl">{messages["additionalInfo2"]}</span>
-                {messages["additionalInfo3"]}
-            </p>
         </form>
     );
 };

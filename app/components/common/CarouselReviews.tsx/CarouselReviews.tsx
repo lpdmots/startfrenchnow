@@ -4,6 +4,11 @@ import { useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import CircularProgressMagic from "../CircularProgressMagic";
 import { useLocale, useTranslations } from "next-intl";
+import Video from "@/app/schemas/sfn/video";
+import { VideoFide } from "@/app/[locale]/(sfn)/fide/components/VideoFide";
+import { LuMaximize2 } from "react-icons/lu";
+import { ModalFromBottom } from "../../animations/Modals";
+import { ModalFromBottomWithPortal } from "../../animations/ModalFromBottomWithPortal";
 
 export const CarouselReviews = ({ comments }: any) => {
     const [slideIndex, setSlideIndex] = useState(0);
@@ -36,28 +41,32 @@ export const CarouselReviews = ({ comments }: any) => {
 };
 
 function Comment({ slideIndex, comments }: { slideIndex: any; comments: any[] }) {
-    const locale = useLocale();
     const selectedSlide = slideIndex < comments.length && slideIndex >= 0 ? comments[slideIndex] : comments[0];
-    const { userImage, userName, comment, score, title, progressFrom, progressTo, lessons, date } = selectedSlide;
-    const t = useTranslations("ReviewsFide.circularProgress");
 
+    if (selectedSlide?.isVideo) return <VideoSlide selectedSlide={selectedSlide} />;
+    return <CommentSlide selectedSlide={selectedSlide} />;
+}
+
+export default Comment;
+
+const CommentSlide = ({ selectedSlide }: { selectedSlide: any }) => {
+    const locale = useLocale();
+    const t = useTranslations("ReviewsFide.circularProgress");
+    const { userImage, userName, comment, score, title, progressFrom, progressTo, lessons, date } = selectedSlide;
     const getDate = () => {
         const dateString = new Date(date);
         const options: Intl.DateTimeFormatOptions = { day: "numeric", month: "long", year: "numeric" };
         return dateString.toLocaleDateString(locale, options);
     };
-
     return (
         <div key={selectedSlide.userName} className="w-slide">
             <div className="relative card p-4 md:p-8 max-w-3xl m-auto">
                 <div className="mg-bottom-24px mg-top--80px keep absolute top-12">
                     <Quote />
                 </div>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 min-h-[390px]">
                     <p className="text-2xl font-bold mb-0 mt-8">"{title}"</p>
-                    <div className="flex items-center min-h-32">
-                        <p className="mb-0 text-sm">"{comment}"</p>
-                    </div>
+                    <div className="flex items-center min-h-32">{comment}</div>
                     <div className="flex items-center gap-4 w-full">
                         {userImage}
                         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 w-full">
@@ -88,9 +97,131 @@ function Comment({ slideIndex, comments }: { slideIndex: any; comments: any[] })
             </div>
         </div>
     );
-}
+};
 
-export default Comment;
+const VideoSlide = ({ selectedSlide }: { selectedSlide: any }) => {
+    const locale = useLocale();
+    const [open, setOpen] = useState(false);
+    const t = useTranslations("ReviewsFide.circularProgress");
+    const { userName, comment, score, title, progressFrom, progressTo, lessons, date, videoUrl, videoThumbnail, modalComment, subtitleENUrl, subtitleFRUrl } = selectedSlide;
+    const getDate = () => {
+        const dateString = new Date(date);
+        const options: Intl.DateTimeFormatOptions = { day: "numeric", month: "long", year: "numeric" };
+        return dateString.toLocaleDateString(locale, options);
+    };
+
+    const onClickComment = () => {
+        setOpen(true);
+    };
+
+    const data = {
+        setOpen,
+        title: "",
+        message: modalComment,
+        functionOk: () => setOpen(false),
+        buttonOkStr: "OK",
+        clickOutside: true,
+        oneButtonOnly: true,
+        className: "max-h-[80vh] overflow-y-auto",
+    };
+
+    return (
+        <div key={selectedSlide.userName} className="w-slide">
+            <div className="relative card p-4 md:p-8 max-w-3xl m-auto">
+                <div className="mg-bottom-24px mg-top--80px keep absolute top-12">
+                    <Quote />
+                </div>
+                <div className="flex flex-col gap-4 min-h-[390px]">
+                    <div className="grid grid-cols-3 gap-4 lg:gap-8">
+                        <p className="col-span-3 text-lg md:text-2xl font-bold mb-0 mt-8 text-justify md:hidden">"{title}"</p>
+                        <div className="md:hidden col-span-3 max-h-96 mx-auto">
+                            <VideoFide
+                                videoKey={videoUrl}
+                                poster={videoThumbnail}
+                                isAnimated={false}
+                                subtitleENUrl={subtitleENUrl}
+                                subtitleFRUrl={subtitleFRUrl}
+                                videoClassName="max-h-96 w-auto"
+                                className="shadow-none"
+                            />
+                        </div>
+                        <div className="col-span-3 md:col-span-2 flex flex-col gap-4">
+                            <p className="hidden md:block text-2xl font-bold mb-0 mt-8 text-justify">"{title}"</p>
+                            <CommentPreview comment={comment} onClick={onClickComment} />
+                            <div className="flex w-full justify-between gap-4">
+                                <div className="flex flex-col justify-center">
+                                    <p className="text-lg font-bold mb-0">
+                                        <span className="inline-block">{userName.toUpperCase()}</span>{" "}
+                                        <span className="inline-block">
+                                            ({lessons} {t("lessons")})
+                                        </span>
+                                    </p>
+                                    <p className="mb-0">{!!progressFrom && t("progress", { progressFrom, progressTo })}</p>
+                                    <p className="mb-0 italic">{!!date && getDate()}</p>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <p className="text-xl mb-0 font-bold">{t("score")}</p>
+                                    <CircularProgressMagic
+                                        max={100}
+                                        min={0}
+                                        value={score}
+                                        gaugePrimaryColor="var(--secondary-5)"
+                                        gaugeSecondaryColor="var(--neutral-300)"
+                                        className="h-[60px] -ml-10 -mr-12"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="hidden md:block col-span-1 max-h-96">
+                            <VideoFide
+                                videoKey={videoUrl}
+                                poster={videoThumbnail}
+                                isAnimated={false}
+                                subtitleENUrl={subtitleENUrl}
+                                subtitleFRUrl={subtitleFRUrl}
+                                videoClassName="max-h-96 w-auto"
+                                className="shadow-none"
+                            />
+                        </div>
+                    </div>
+                    <ModalFromBottomWithPortal data={data} open={open} />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+type CommentPreviewProps = {
+    comment: string;
+    onClick?: () => void; // ouvrir le modal / page détail
+};
+
+export function CommentPreview({ comment, onClick }: CommentPreviewProps) {
+    const t = useTranslations("ReviewsFide");
+    return (
+        <m.button
+            type="button"
+            onClick={onClick}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className="relative w-full text-left p-0 group cursor-pointer rounded-lg border border-transparent transition-colors"
+        >
+            {/* Texte clampé */}
+            <div className="min-h-32 text-sm text-neutral-600 line-clamp-5">{comment}</div>
+
+            {/* Dégradé en bas pour suggérer qu'il y a une suite */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white via-white/80 to-transparent group-hover:from-neutral-50 group-hover:via-neutral-50/80" />
+
+            {/* Badge "Voir plus" au hover */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-1 flex justify-end pr-2">
+                <span className="inline-flex items-center gap-1 rounded-full bg-neutral-300 px-2.5 py-0.5 text-sm font-bold text-neutral-600 shadow-sm ring-1 ring-neutral-200 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all">
+                    <LuMaximize2 className="h-3 w-3" />
+                    {t("seeFullComment")}
+                </span>
+            </div>
+        </m.button>
+    );
+}
 
 const Quote = () => {
     return (

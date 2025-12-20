@@ -19,7 +19,7 @@ export default function CircularProgressMagic({ max = 100, min = 0, value = 0, g
 
     return (
         <div
-            className={cn("relative text-2xl font-semibold", withSize && " size-40", className)}
+            className={cn("relative text-2xl font-semibold", withSize && "size-40", className)}
             style={
                 {
                     "--circle-size": "100px",
@@ -45,7 +45,7 @@ export default function CircularProgressMagic({ max = 100, min = 0, value = 0, g
                         strokeDashoffset="0"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className=" opacity-100"
+                        className="opacity-100"
                         style={
                             {
                                 stroke: gaugeSecondaryColor,

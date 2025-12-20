@@ -5,11 +5,12 @@ import { useGetCalendlyData } from "@/app/hooks/lessons/useGetCalendlyData";
 import { EVENT_TYPES, SLUG_TO_EVENT_TYPE } from "@/app/lib/constantes";
 import { cn } from "@/app/lib/schadcn-utils";
 import { toHours } from "@/app/lib/utils";
+import { clsx } from "clsx";
 import { NotebookPen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next-intl/link";
 
-export default function ClientLessonFetcher({ eventType }: { eventType: keyof typeof EVENT_TYPES }) {
+export default function ClientLessonFetcher({ eventType, isSmall = false }: { eventType: keyof typeof EVENT_TYPES; isSmall?: boolean }) {
     const t = useTranslations("dashboard.PrivateLessons.common");
     const { privateLesson } = useGetCalendlyData(eventType as keyof typeof EVENT_TYPES);
     const areRemainingMinutes = privateLesson?.remainingMinutes || 0 > 0;
@@ -32,15 +33,15 @@ export default function ClientLessonFetcher({ eventType }: { eventType: keyof ty
             )}
             <div>
                 <div className="flex gap-2 flex-wrap">
-                    <Link href="/fide#priceSliderFide" className="no-underline w-full sm:max-w-72">
-                        <button className="btn btn-secondary flex items-center justify-center w-full">
+                    <Link href="/fide#plans" className="no-underline w-full sm:max-w-72">
+                        <button className={clsx("btn btn-secondary flex items-center justify-center w-full", isSmall ? "small" : "")}>
                             <span className="h-6 flex items-center">{t("buyLessons")}</span>
                         </button>
                     </Link>
                     {areRemainingMinutes && (
                         <div className="sm:max-w-72 w-full">
                             <BookMeeting eventType={eventType} wFull={true}>
-                                <button className={cn("btn btn-primary flex items-center justify-center w-full sm:w-auto")}>
+                                <button className={clsx("btn btn-primary flex items-center justify-center w-full sm:w-auto", isSmall && "small")}>
                                     <NotebookPen className="mr-2 text-xl" />
                                     {t("bookLesson")}
                                 </button>

@@ -30,12 +30,12 @@ export const Payment = ({ productSlug, quantity, currency, locale, formData, ses
     const pk = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY;
     const stripePromise = useMemo(() => (pk ? loadStripe(pk) : null), [pk]);
 
+    const { errorIntentMessage, clientSecret, pricingDetails, productInfos } = usePaymentIntent(productSlug, quantity, currency, formData, sessionEmail, userId);
+
     if (!pk) {
         // Message propre en dev si la clé manque
         return <div>Stripe public key manquante (NEXT_PUBLIC_STRIPE_PUBLIC_KEY)</div>;
     }
-
-    const { errorIntentMessage, clientSecret, pricingDetails, productInfos } = usePaymentIntent(productSlug, quantity, currency, formData, sessionEmail, userId);
 
     if (errorIntentMessage) {
         return (

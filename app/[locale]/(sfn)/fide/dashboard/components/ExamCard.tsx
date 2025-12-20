@@ -37,11 +37,11 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
 
     return (
         <Link
-            href={!hasPack ? "/fide/pack-fide#plans" : last ? `/fide/exams?level=${last?.levels[0]}` : `/fide/exams`}
+            href={!hasPack ? "/fide#plans" : last ? `/fide/exams?level=${last?.levels[0]}` : `/fide/exams`}
             className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4"
         >
             {isKind && (
-                <div className="new-banner py-1 bg-secondary-5" style={{ border: "solid 1px black", boxShadow: "3px 3px 0px 0px var(--neutral-800)" }}>
+                <div className="new-banner py-1 bg-secondary-5" style={{ border: "solid 1px black" }}>
                     {t("resume")}
                 </div>
             )}
@@ -51,8 +51,8 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
                     <Image width={65} height={65} src={hasPack ? "/images/pack-fide-icon.png" : "/images/cadenas-ferme.png"} alt={last?.title || ""} className="object-contain" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <p className="mb-0 text-3xl font-bold underline decoration-secondary-5">{t("heading")}</p>
-                    <p className="text-lg font-bold mb-0">{last?.title || t("fallbackTitle")}</p>
+                    <p className="mb-0 text-3xl underline decoration-secondary-5">{t("heading")}</p>
+                    <p className="text-lg mb-0">{last?.title || t("fallbackTitle")}</p>
                 </div>
             </div>
 

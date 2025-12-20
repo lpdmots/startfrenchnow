@@ -410,7 +410,6 @@ export async function resetVideoProgress({ progressType, postId }: { progressTyp
     const current = user?.learningProgress?.[0] ?? {};
     const existingVideoLogs = current?.videoLogs ?? [];
     const existingExamLogs = current?.examLogs ?? [];
-    console.log("resetVideoProgress", { userId, type, postId, existingVideoLogs });
 
     const patch: Partial<VideoLog> = {
         post: toRef(postId),

@@ -94,7 +94,7 @@ export const ExamsSuggestions = ({ hero, hasPack }: { hero: HeroData; hasPack: b
 
     return (
         <div>
-            <h4 className="underline decoration-secondary-5 text-xl md:text-3xl mb-8">{t("selectedForYou")}</h4>
+            <h4 className="underline decoration-secondary-5 text-xl md:text-3xl mb-8 font-medium">{t("selectedForYou")}</h4>
 
             {loading && <p>{t("loading")}</p>}
 

@@ -8,6 +8,7 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     return {
         title: t("title"),
         description: t("description"),
+        robots: { index: false },
     };
 }
 

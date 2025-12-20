@@ -102,6 +102,18 @@ export default defineType({
             type: "string",
             description: 'Lien vers le PDF de des examens de type "Lire & Écrire"',
         }),
+        defineField({
+            name: "secondaryTitle",
+            title: "Titre secondaire",
+            type: "string",
+            description: "Optionnel, utilisé si le titre principal ne doit pas être montré sans la permission adéquate.",
+        }),
+        defineField({
+            name: "order",
+            title: "Ordre",
+            type: "number",
+            description: "Utilisé pour ordonner les exams dans une liste.",
+        }),
     ],
 
     preview: {

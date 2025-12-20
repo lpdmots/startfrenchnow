@@ -18,10 +18,23 @@ import { RiSpeakLine } from "react-icons/ri";
 import { LuFileText, LuGlasses, LuGraduationCap, LuLightbulb, LuPencil, LuVideo } from "react-icons/lu";
 import DropdownMenu from "../common/DropdownMenu";
 import Link from "next-intl/link";
+import clsx from "clsx";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
-export default function ExpandableCardDemo({ exams, withStars = true, twoColumns = false, hasPack = true }: { exams: Exam[]; withStars?: boolean; twoColumns?: boolean; hasPack?: boolean }) {
+export default function ExpandableCardDemo({
+    exams,
+    withStars = true,
+    twoColumns = false,
+    hasPack = true,
+    isPreviewSection = false,
+}: {
+    exams: Exam[];
+    withStars?: boolean;
+    twoColumns?: boolean;
+    hasPack?: boolean;
+    isPreviewSection?: boolean;
+}) {
     const { data: session } = useSession();
     const [logs, setLogs] = useState<ExamLog[] | null>(null);
     const [active, setActive] = useState<(typeof exams)[number] | boolean | null>(null);
@@ -126,16 +139,14 @@ export default function ExpandableCardDemo({ exams, withStars = true, twoColumns
                     </div>
                 ) : null}
             </AnimatePresence>
-            <div className="mx-auto w-full p-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 lg:max-w-none">
-                {exams
-                    .sort((a, b) => a.levels[0].localeCompare(b.levels[0]))
-                    .map((exam, index) => {
-                        const isLocked = !hasPack && !exam.isPreview;
-                        const contentType = exam.pdf?.includes("scenarios") ? "scenarios" : exam.pdf ? "pdf" : "exam";
-                        if (contentType === "exam") return <ExamCard key={exam._id} exam={exam} isLocked={isLocked} setActive={setActive} withStars={withStars} logs={logs} />;
-                        if (contentType === "pdf") return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} />;
-                        return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} isScenarios={true} />;
-                    })}
+            <div className={clsx("mx-auto w-full p-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 lg:max-w-none", isPreviewSection && "!grid-cols-1")}>
+                {exams.map((exam, index) => {
+                    const isLocked = !hasPack && !exam.isPreview;
+                    const contentType = exam.pdf?.includes("scenarios") ? "scenarios" : exam.pdf ? "pdf" : "exam";
+                    if (contentType === "exam") return <ExamCard key={exam._id} exam={exam} isLocked={isLocked} setActive={setActive} withStars={withStars} logs={logs} />;
+                    if (contentType === "pdf") return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} />;
+                    return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} isScenarios={true} />;
+                })}
             </div>
         </>
     );
@@ -159,7 +170,7 @@ const ExamCard = ({
         <motion.div
             layoutId={`card-${exam.title}-${exam._id}`}
             key={`card-${exam.title}-${exam._id}`}
-            onClick={isLocked ? () => router.push("/fide/pack-fide#plans") : () => setActive(exam)}
+            onClick={isLocked ? () => router.push("/fide#plans") : () => setActive(exam)}
             className="group relative p-4 flex flex-col justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 overflow-hidden h-full w-full max-w-md mx-auto"
         >
             <div className="flex flex-col items-center h-full w-full gap-2">
@@ -169,8 +180,7 @@ const ExamCard = ({
                 <div className="w-full">
                     <div className="flex justify-between w-full items-center">
                         <motion.h3 layoutId={`title-${exam.title}-${exam._id}`} className="font-medium text-neutral-800 text-left mb-0">
-                            {isLocked ? "🔒- " : ""}
-                            {exam.title}
+                            {isLocked ? "🔒- " + (exam.secondaryTitle ?? exam.title) : exam.title}
                         </motion.h3>
 
                         {withStars && (
@@ -210,11 +220,11 @@ const LinkCard = ({ exam, isLocked, isScenarios = false }: { exam: Exam; isLocke
     const router = useRouter();
     return (
         <div
-            onClick={isLocked ? () => router.push("/fide/pack-fide#plans") : undefined}
+            onClick={isLocked ? () => router.push("/fide#plans") : undefined}
             className="group relative p-4 flex flex-col justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 overflow-hidden h-full w-full max-w-md mx-auto"
         >
             <Link
-                target={isScenarios ? undefined : "_blank"}
+                target={isScenarios || isLocked ? undefined : "_blank"}
                 href={isLocked ? "#" : isScenarios ? exam.pdf || "#" : cloudFrontDomain + (exam.pdf || "")}
                 className="no-underline text-neutral-800 flex flex-col items-center h-full w-full gap-2"
             >
@@ -223,10 +233,7 @@ const LinkCard = ({ exam, isLocked, isScenarios = false }: { exam: Exam; isLocke
                 </div>
                 <div className="w-full">
                     <div className="flex w-full items-center">
-                        <h3 className="font-medium text-neutral-800 text-left mb-0">
-                            {isLocked ? "🔒- " : ""}
-                            {exam.title}
-                        </h3>
+                        <h3 className="font-medium text-neutral-800 text-left mb-0">{isLocked ? "🔒- " + (exam.secondaryTitle ?? exam.title) : exam.title}</h3>
                     </div>
                     <p className="text-neutral-600 dark:text-neutral-400 mb-0 line-clamp-2">{exam.description}</p>
                 </div>

@@ -163,15 +163,15 @@ interface PriceCategory {
 }
 
 type ProductData = PriceCategory & PricingDetails;
-type PlanName = "fide-boost" | "fide-essentials" | "fide-mastery";
+type PlanName = "fide-boost" | "fide-mastery";
 
 export default function PriceSliderFide({ locale }: { locale: Locale }) {
     const { data: session } = useSession();
-    const [quantity, setQuantity] = useState<number>(6);
-    const [previousPurchasedLessons, setPreviousPurchasedLessons] = useState<number>(0);
+    const [quantity, setQuantity] = useState<number>(7);
+    const [previousPurchasedLessons, setPreviousPurchasedLessons] = useState<number | null>(null);
     const [product, setProduct] = useState<ProductFetch | null>(null);
     const [productData, setProductData] = useState<null | ProductData>(null);
-    const max = product?.maxQuantity || 20;
+    const max = product?.maxQuantity || 15;
     const min = product?.minQuantity || 1;
     const userId = session?.user._id;
     const t = useTranslations("PriceSliderFide");
@@ -181,6 +181,8 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
             if (userId) {
                 const userPurchases = await getUserPurchases(userId, "Fide Preparation Class");
                 setPreviousPurchasedLessons(toHours(userPurchases?.totalPurchasedMinutes || 0));
+            } else {
+                setPreviousPurchasedLessons(0);
             }
         })();
     }, [session]);
@@ -188,17 +190,18 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
     useEffect(() => {
         (async () => {
             const product: ProductFetch = await client.fetch(groq`*[_type == "product" && referenceKey == $referenceKey][0]`, { referenceKey: "Fide Preparation Class" });
+            console.log("Fetched product:", product);
             setProduct(product);
         })();
     }, []);
 
     useEffect(() => {
-        if (!product) return;
+        if (!product || previousPurchasedLessons === null) return;
         const pricingDetails = getProductData(product, quantity, previousPurchasedLessons, "CHF");
         const planName = (pricingDetails?.planName || "fide-booster") as PlanName;
         const categoryData = PRICECATEGORIES[locale as keyof typeof PRICECATEGORIES][planName];
         setProductData({ ...categoryData, ...pricingDetails });
-    }, [product, quantity]);
+    }, [product, quantity, previousPurchasedLessons]);
 
     const handleChange = (val: number[]) => {
         setQuantity(val[0]); // Le slider retourne un tableau, on prend la première valeur
@@ -211,12 +214,10 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
 
     return (
         <>
-            <div id="priceSliderFide" className="max-w-5xl m-auto py-24 px-4 lg:px-8 flex flex-col items-center w-full gap-4">
-                <SlideFromBottom>
-                    <h2 className="display-2 w-full text-center mb-0">{t.rich("title", intelRich())}</h2>
-                </SlideFromBottom>
+            <div id="priceSliderFide" className="max-w-5xl m-auto py-4 px-4 lg:px-8 flex flex-col items-center w-full gap-2">
+                <h3 className="w-full text-center mb-0 text-xl">{t.rich("title", intelRich())}</h3>
                 {previousPurchasedLessons ? (
-                    <p className="mb-0 max-w-3xl text-center">
+                    <p className="mb-0 text-center">
                         {t("purchasedLessons1")}
                         <span className="font-bold underline">
                             {previousPurchasedLessons} {previousPurchasedLessons > 1 ? t("purchasedLessonsHours") : t("purchasedLessonsHour")}
@@ -224,11 +225,11 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
                         {t("purchasedLessons2")}.
                     </p>
                 ) : session ? (
-                    <p className="mb-0 max-w-3xl text-center">{t("session")}</p>
+                    <p className="mb-0 text-center">{t("session")}</p>
                 ) : (
-                    <p className="mb-0 max-w-3xl text-center">
+                    <p className="mb-0 bs text-center">
                         {t("notConnected")}
-                        <LinkArrow url="/auth/signIn?callbackUrl=/fide#priceSliderFide" className="inline-block">
+                        <LinkArrow url="/auth/signIn?callbackUrl=/fide#plans" className="inline-block">
                             {t("connectLink")}
                         </LinkArrow>
                     </p>
@@ -248,11 +249,9 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
                         />
                     </div>
                 </div>
-                <div className="w-full max-w-3xl mt-6 mb-12">
+                <div className="w-full max-w-3xl mt-6 mb-6">
                     {productData ? (
-                        <SlideFromBottom>
-                            <PriceCategory productData={productData} quantity={quantity} slug={product?.slug.current} />
-                        </SlideFromBottom>
+                        <PriceCategory productData={productData} quantity={quantity} slug={product?.slug.current} />
                     ) : (
                         <div className="flex flex-col justify-center items-center w-full gap-4">
                             <FaSpinner className="animate-spin text-neutral-400 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />
@@ -288,19 +287,19 @@ const PriceCategory = ({ productData, quantity, slug }: PriceCategoryProps) => {
             )}
             <div className="flex flex-col gap-4 lg:gap-8 p-4 md:p-8">
                 <div className="flex gap-4 w-full">
-                    <div className={cn("p-4 rounded-xl", bgColor)}>
+                    <div className={cn("p-4 rounded-xl shrink-0", bgColor)}>
                         <Image className="h-14 w-14 object-contain" src={image} alt={"image du cours"} height={150} width={150} />
                     </div>
                     <div>
-                        <p className="mb-0 text-4xl font-bold">{title}</p>
-                        <p className="mb-0 text-4xl font-bold w-full text-center">{subtitle}</p>
+                        <p className="mb-0 text-3xl md:text-4xl font-bold">{title}</p>
+                        <p className="mb-0 text-3xl md:text-4xl font-bold w-full text-center">{subtitle}</p>
                     </div>
                 </div>
                 <div className="md:min-h-[100px]">{description}</div>
                 <p className="mb-0 text-5xl font-bold">
                     CHF {unitPrice}.-<span className="text-2xl font-thin">/{t("purchasedLessonsHour")}</span>
                 </p>
-                <Link href={`/checkout/${slug}?quantity=${quantity}&callbackUrl=/fide`} className="btn btn-primary p-4 min-h-[76px] flex items-center">
+                <Link href={`/checkout/${slug}?quantity=${quantity}&callbackUrl=/fide#plans`} className="btn btn-primary p-4 min-h-[76px] flex items-center">
                     <div>
                         {quantity > 1 ? buttonLabelPlural.replace("{quantity}", quantity.toString()) : buttonLabelSingular.replace("{quantity}", quantity.toString())}
                         <span className={cn("underline underline-offset-4", `decoration-secondary-${color}`)} style={{ whiteSpace: "nowrap" }}>

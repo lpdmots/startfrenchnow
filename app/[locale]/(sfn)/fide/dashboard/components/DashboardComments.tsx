@@ -10,7 +10,7 @@ export const DashboardComments = ({ locale, userId }: { locale: Locale; userId: 
 
     return (
         <div className="w-full flex items-center flex-col m-auto max-w-7xl gap-6 lg:gap-12 mb-12 lg:my-12">
-            <h2 className="mb-0 w-full display-2">{t.rich("title", intelRich())}</h2>
+            <h2 className="mb-0 w-full display-2 font-medium">{t.rich("title", intelRich())}</h2>
             <CommentComposer resourceType="fide_dashboard" resourceId={userId} />
             <CommentList resourceType="fide_dashboard" resourceId={userId} locale={locale as Locale} />
         </div>

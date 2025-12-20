@@ -5,6 +5,7 @@ import { EVENT_TYPES } from "../lib/constantes";
 import { Lesson } from "../types/sfn/auth";
 import { Image, Level, Slug } from "../types/sfn/blog";
 import { Locale } from "@/i18n";
+import { PackagesKey } from "../types/sfn/stripe";
 
 const queryUserLessons = groq`
 *[_type == "user" && _id == $userId] {
@@ -124,7 +125,7 @@ export const getUserPurchases = async (userId: string, reference: string): Promi
 export type FidePackSommaire = {
     packages: Array<{
         title: string;
-        referenceKey: string;
+        referenceKey: PackagesKey;
         modules: Array<{
             _key: string;
             title?: string;
@@ -149,7 +150,7 @@ export type FidePackSommaireNoLocale = {
     packages: Array<{
         title: string;
         title_en: string;
-        referenceKey: string;
+        referenceKey: PackagesKey;
         modules: Array<{
             _key: string;
             title?: string;
@@ -169,6 +170,10 @@ export type FidePackSommaireNoLocale = {
                 level?: Level[];
                 durationSec?: number;
                 isPreview?: boolean;
+                resources?: Array<{
+                    title: string;
+                    url: string;
+                }>;
             }>;
         }>;
     }>;
@@ -176,7 +181,7 @@ export type FidePackSommaireNoLocale = {
 
 const FIDE_TOC_QUERY = groq`
 *[_type == "product" && referenceKey == $referenceKey][0]{
-  packages[]->{
+  "packages": packages[0...1]->{
     title,
     title_en,
     referenceKey,
@@ -199,10 +204,7 @@ const FIDE_TOC_QUERY = groq`
         description_en,
         durationSec,
         isPreview,
-        resources[]{
-          title,
-          "url": url.current
-        }
+        resources
       }
     }
   }
@@ -241,10 +243,7 @@ const FIDE_PACK_QUERY = groq`
         description_en,
         durationSec,
         isPreview,
-        resources[]{
-          title,
-          "url": url.current
-        }
+        resources
       }
     }
   }
@@ -285,6 +284,7 @@ function normalizeFidePackSommaire(data: FidePackSommaireNoLocale, locale: Local
                     level: post.level,
                     durationSec: post.durationSec,
                     isPreview: post.isPreview,
+                    resources: post.resources,
                 })),
             })),
         })),

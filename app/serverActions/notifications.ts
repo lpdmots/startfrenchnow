@@ -187,7 +187,7 @@ export async function listNotificationsComment(locale: Locale = "fr"): Promise<{
 
     // tri des groupes: plus récent (par createdAt groupe) en premier
     items.sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0));
-    console.log({ items });
+
     return { items };
 }
 

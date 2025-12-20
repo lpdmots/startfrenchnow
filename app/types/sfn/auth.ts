@@ -1,6 +1,7 @@
 import { EVENT_TYPES, NOTIFICATIONKINDS } from "@/app/lib/constantes";
 import { Base } from "../stories/adventure";
 import { Reference } from "./blog";
+import { PackagesKey } from "./stripe";
 
 export interface SignupFormData {
     email: string;
@@ -47,7 +48,7 @@ export interface Permission {
 
 export interface Progress {
     _key: string;
-    type: string; // "pack_fide"
+    type: PackagesKey;
     videoLogs?: VideoLog[];
     examLogs?: ExamLog[];
 }

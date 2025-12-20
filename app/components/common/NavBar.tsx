@@ -51,13 +51,19 @@ function NavBar() {
     const links = (
         <>
             <li className="header-nav-list-item middle !px-0">
-                <FideButton locale={locale as Locale} />
+                <Link href="/fide" className="text-neutral-700 no-underline">
+                    <FideButton locale={locale as Locale} />
+                </Link>
             </li>
             <li className="header-nav-list-item middle !px-0">
-                <CoursesButton locale={locale as Locale} dictionnary={coursesDict} />
+                <Link href="/courses/beginners" className="text-neutral-700 no-underline">
+                    <CoursesButton locale={locale as Locale} dictionnary={coursesDict} />
+                </Link>
             </li>
             <li className="header-nav-list-item middle !px-0">
-                <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
+                <Link href="/blog" className="text-neutral-700 no-underline">
+                    <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
+                </Link>
             </li>
         </>
     );
@@ -73,7 +79,7 @@ function NavBar() {
                         <ul className="header-nav-menu-list onNav">{links}</ul>
                     </nav>
                     <div className="flex items-center gap-2">
-                        <NotificationsMenuServer />
+                        <NotificationsMenuServer locale={locale as Locale} />
                         <LocaleSwitcher locale={locale as Locale} />
                         <DarkMode />
                         <ProfilButton profil={t("profil")} logout={t("logout")} />

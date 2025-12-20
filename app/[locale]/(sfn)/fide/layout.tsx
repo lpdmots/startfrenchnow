@@ -6,9 +6,20 @@ import { ReactNode } from "react";
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
     const t = await getTranslator(locale, "Metadata.Fide");
 
+    const path = "/fide";
+    const canonical = locale === "fr" ? `/fr${path}` : path;
+
     return {
         title: t("title"),
         description: t("description"),
+        alternates: {
+            canonical,
+            languages: {
+                en: path,
+                fr: `/fr${path}`,
+                "x-default": path,
+            },
+        },
     };
 }
 

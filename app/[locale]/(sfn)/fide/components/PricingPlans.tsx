@@ -1,0 +1,169 @@
+// app/[locale]/fide/pack-fide/components/PricingSection.tsx
+"use client";
+
+import { PiArrowBendRightDownDuotone } from "react-icons/pi";
+import { PriceCard } from "./PackFideCard";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { FaTimes } from "react-icons/fa";
+import PriceSliderFide from "./PriceSliderFide";
+import { Locale } from "@/i18n";
+import { useOutsideClick } from "@/app/hooks/use-outside-click";
+import { intelRich } from "@/app/lib/intelRich";
+import { useTranslations } from "next-intl";
+
+export function PricingPlans({ hasPack, locale }: { hasPack?: boolean; locale: string }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const panelRef = useRef<HTMLDivElement>(null);
+    const t = useTranslations("PricingPlans");
+
+    const close = () => setIsOpen(false);
+
+    useOutsideClick(panelRef, () => {
+        setIsOpen(false);
+    });
+
+    const CARDS = [
+        {
+            title: t("card1.title"),
+            description: (
+                <>
+                    <p className="bs mb-0" style={{ minHeight: 64 }}>
+                        {t.rich("card1.description", intelRich())}
+                    </p>
+                </>
+            ),
+            price: "499 CHF",
+            features: [t("card1.features.f1"), t("card1.features.f2"), t("card1.features.f3")],
+            extras: [t("card1.extras.e1"), t("card1.extras.e2")],
+            color: "secondary-4",
+            labelCTA: t("card1.labelCTA"),
+            checkoutUrl: `/checkout/pack-fide?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}`,
+        },
+        {
+            title: t("card2.title"),
+            description: (
+                <>
+                    <p className="bs mb-0" style={{ minHeight: 64 }}>
+                        {t.rich("card2.description", intelRich())}
+                    </p>
+                </>
+            ),
+            price: "875 CHF",
+            features: [t("card2.features.f1"), t("card2.features.f2"), t("card2.features.f3")],
+            extras: [t("card2.extras.e1"), t("card2.extras.e2")],
+            color: "secondary-1",
+            labelCTA: t("card2.labelCTA"),
+            checkoutUrl: `/checkout/pack-fide-accompagne?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}`,
+        },
+        {
+            title: t("card3.title"),
+            description: (
+                <>
+                    <p className="bs mb-0" style={{ minHeight: 64 }}>
+                        {t.rich("card3.description", intelRich())}
+                    </p>
+                </>
+            ),
+            price: "70 CHF*",
+            features: [t("card3.features.f1"), t("card3.features.f2"), t("card3.features.f3")],
+            extras: [t("card3.extras.e1"), t("card3.extras.e2")],
+            color: "secondary-2",
+            labelCTA: t("card3.labelCTA"),
+            checkoutUrl: `/checkout/fide-preparation-class?quantity=12&callbackUrl=${encodeURIComponent("/fide#plans")}`,
+        },
+    ];
+
+    return (
+        <section className="pt-24 pb-12">
+            <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                {/* Intro courte */}
+                <div id="plans" className="mb-10 text-center">
+                    <h2 className="display-2">
+                        <span className="heading-span-secondary-1">{t("titleHighlight")}</span> {t("titleRest")}
+                    </h2>
+                    <p className="text-lg">{t("subtitle")}</p>
+                </div>
+                <div className="w-full text-center mb-10">
+                    <p className="text-neutral-700 mb-0 flex justify-center w-full font-bold text-lg">
+                        {t("mostPopular")}
+                        <span className="relative">
+                            <PiArrowBendRightDownDuotone className="text-2xl md:text-4xl absolute left-2 -bottom-6" />
+                        </span>
+                    </p>
+                </div>
+                {/* Layout 3 colonnes (Free allégé + 2 vraies cards) */}
+                <div className="flex flex-col lg:flex-row flex-nowrap gap-6 lg:gap-2 xl:gap-8">
+                    <div className="flex justify-center order-2 lg:order-1">
+                        <PriceCard card={CARDS[0]} hasPack={hasPack} />
+                    </div>
+                    <div className="flex justify-center order-1 lg:order-2">
+                        <PriceCard card={CARDS[1]} hasPack={hasPack} />
+                    </div>
+                    <div className="flex justify-center order-3 lg:order-3">
+                        <PriceCard card={CARDS[2]} hasPack={hasPack} bookReservation={true} />
+                    </div>
+                </div>
+                {/* Mentions sous la zone plans */}
+                <div className="mt-12 text-center text-sm text-neutral-600">
+                    <p className="mb-0">
+                        {t("tailoredPrefix")}{" "}
+                        <span onClick={() => setIsOpen((isOpen) => !isOpen)} className="text-secondary-2 cursor-pointer">
+                            {t("chooseHours")}
+                        </span>
+                        .
+                    </p>
+                </div>
+            </div>
+            {/* MODAL */}
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        {/* Overlay */}
+                        <motion.div key="backdrop" initial={{ opacity: 0 }} animate={{ opacity: 0.2 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-neutral-800 z-50" />
+
+                        {/* Conteneur centré */}
+                        <div className="fixed inset-0 grid place-items-center z-[60]">
+                            {/* Bouton X flottant (mobile) */}
+                            <motion.button
+                                className="flex absolute top-4 lg:hidden right-2 items-center justify-center bg-neutral-200 rounded-full h-8 w-8 z-[70] !p-0"
+                                onClick={close}
+                                aria-label={t("modalCloseLabel")}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1, transition: { delay: 0.5 } }}
+                                exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                            >
+                                <FaTimes className="h-4 w-4 text-neutral-800" />
+                            </motion.button>
+
+                            {/* Carte / Panneau */}
+                            <motion.div
+                                role="dialog"
+                                aria-modal="true"
+                                aria-labelledby="choose-hours"
+                                ref={panelRef}
+                                initial={{ borderRadius: 16 }}
+                                className="w-full h-full md:h-auto md:max-w-5xl bg-neutral-100 sm:rounded-3xl overflow-auto border-2 border-solid border-neutral-800 flex flex-col"
+                            >
+                                {/* En-tête (reprend l’icône + label animés) */}
+                                <motion.div layoutId="sommaire-header" className="flex items-center gap-2 p-0 lg:p-4 border-b border-neutral-300 relative">
+                                    <PriceSliderFide locale={locale as Locale} />
+                                    <motion.button
+                                        className="flex absolute top-4 right-2 items-center justify-center bg-neutral-200 rounded-full h-8 w-8 z-[70] !p-0"
+                                        onClick={close}
+                                        aria-label={t("modalCloseLabel")}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1, transition: { delay: 0.5 } }}
+                                        exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                                    >
+                                        <FaTimes className="h-4 w-4 text-neutral-800" />
+                                    </motion.button>
+                                </motion.div>
+                            </motion.div>
+                        </div>
+                    </>
+                )}
+            </AnimatePresence>
+        </section>
+    );
+}

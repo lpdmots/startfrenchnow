@@ -8,28 +8,42 @@ import { FidePackSommaire } from "@/app/serverActions/productActions";
 import { Level, Post } from "@/app/types/sfn/blog";
 import { LEVELDATA } from "@/app/lib/constantes";
 import { removeDuplicates, secondsToMinutes } from "@/app/lib/utils";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { MdOndemandVideo } from "react-icons/md";
-import { FaRegArrowAltCircleRight, FaRegCheckCircle } from "react-icons/fa";
+import { FaCaretDown, FaCaretRight, FaRegArrowAltCircleRight, FaRegCheckCircle } from "react-icons/fa";
 import { useInitializePackFideWatched } from "@/app/hooks/lessons/useInitializePackFideWatched";
 import { useSfnStore } from "@/app/stores/sfnStore";
 import { useTranslations } from "next-intl";
+import { Locale } from "@/i18n";
+import { PdfDropdown } from "./PdfDropdown";
+
+const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
 export function CoursesAccordionClient({
     hasPack = false,
     fidePackSommaire,
     expandAll,
+    defaultModuleKeyIndex,
+    currentPostSlug,
     linkPrefix = "/fide/videos/",
+    noPadding = false,
+    withPackageName = true,
 }: {
     hasPack?: boolean;
     fidePackSommaire: FidePackSommaire;
     expandAll?: boolean;
+    defaultModuleKeyIndex?: number;
+    currentPostSlug?: string;
     linkPrefix?: string;
+    noPadding?: boolean;
+    withPackageName?: boolean;
 }) {
-    const t = useTranslations("FidePack.CoursesAccordionClient");
+    const pathname = usePathname();
+    const isFideSection = pathname?.includes("/fide") || false;
+    const t = useTranslations(isFideSection ? "FidePack.CoursesAccordionClient" : "Fide.FidePack.CoursesAccordionClient");
     const params = useParams();
-    const activeSlug = (params?.slug ?? null) as string | null;
+    const activeSlug = (params?.slug || null) as string | null;
 
     useInitializePackFideWatched();
     const { watchedVideos } = useSfnStore((s) => ({
@@ -43,9 +57,9 @@ export function CoursesAccordionClient({
     const safeWatched = mounted ? watchedVideos : [];
 
     // 0) Clé du premier module (fallback si pas de slug)
-    const firstModuleKey = useMemo(() => {
+    const defaultModuleKey = useMemo(() => {
         const firstPkg = fidePackSommaire.packages?.[0];
-        const firstMod = firstPkg?.modules?.[0];
+        const firstMod = firstPkg?.modules?.[defaultModuleKeyIndex ?? 0];
         return firstMod?._key as string | undefined;
     }, [fidePackSommaire]);
 
@@ -70,18 +84,22 @@ export function CoursesAccordionClient({
         }
 
         const fromSlug = computeOpenModuleKey(activeSlug);
-        const nextKey = fromSlug ?? firstModuleKey;
+        const nextKey = fromSlug ?? defaultModuleKey;
 
         if (!nextKey) return;
         setOpenModuleKeys((prev) => removeDuplicates([...prev, nextKey]));
-    }, [mounted, expandAll, computeOpenModuleKey, firstModuleKey, fidePackSommaire]);
+    }, [mounted, expandAll, computeOpenModuleKey, defaultModuleKey, fidePackSommaire, activeSlug]);
 
     return (
         <>
             {fidePackSommaire.packages.map((block, idx) => (
-                <div key={block.referenceKey} className="p-0 pb-2 sm:p-4" style={{ borderBottom: idx === fidePackSommaire.packages.length - 1 ? undefined : "2px solid var(--neutral-300)" }}>
+                <div
+                    key={block.referenceKey}
+                    className={clsx("p-0 pb-2 sm:p-4", noPadding && "p-0")}
+                    style={{ borderBottom: idx === fidePackSommaire.packages.length - 1 ? undefined : "2px solid var(--neutral-300)" }}
+                >
                     <div className="mb-3 flex items-center justify-between">
-                        <h3 className="m-0 text-lg font-semibold text-neutral-900">{block.title}</h3>
+                        {withPackageName && <h3 className="m-0 text-lg font-semibold text-neutral-900">{block.title}</h3>}
                         <div className="text-sm text-neutral-600">
                             <div className="text-sm text-neutral-600">
                                 {t("summary", {
@@ -96,6 +114,7 @@ export function CoursesAccordionClient({
                     <Accordion type="multiple" value={openModuleKeys} onValueChange={setOpenModuleKeys} className="w-full text-neutral-800">
                         {block.modules.map((mod) => {
                             const numberOfWatchedLessons = mod.posts.map((post) => post._id).filter((id) => safeWatched.includes(id)).length;
+
                             return (
                                 <AccordionItem key={mod._key} value={mod._key}>
                                     <AccordionTrigger className="hover:no-underline rounded-lg text-neutral-800 border-2 border-solid border-neutral-800 bg-neutral-100">
@@ -126,6 +145,7 @@ export function CoursesAccordionClient({
                                                     activeSlug={activeSlug}
                                                     watchedVideos={safeWatched}
                                                     linkPrefix={linkPrefix}
+                                                    currentPostSlug={currentPostSlug}
                                                 />
                                             ))}
                                         </div>
@@ -147,6 +167,7 @@ function LessonRow({
     activeSlug,
     watchedVideos,
     linkPrefix,
+    currentPostSlug,
 }: {
     lesson: Post;
     hasPack: boolean;
@@ -154,31 +175,35 @@ function LessonRow({
     activeSlug: string | null;
     watchedVideos: string[];
     linkPrefix: string;
+    currentPostSlug?: string;
 }) {
-    const t = useTranslations("FidePack.CoursesAccordionClient");
+    const pathname = usePathname();
+    const isFideSection = pathname?.includes("/fide") || false;
+    const t = useTranslations(isFideSection ? "FidePack.CoursesAccordionClient" : "Fide.FidePack.CoursesAccordionClient");
     const isActive = lesson.slug.current === activeSlug;
     const locked = !lesson.isPreview && !hasPack;
     const level = lesson.level?.[0] || moduleLevel || undefined;
     const isWatched = watchedVideos.includes(lesson._id);
+    const isCurrentPostSlug = currentPostSlug === lesson.slug.current;
 
     return (
-        <Link href={locked ? "/fide/pack-fide#plans" : linkPrefix + lesson.slug.current} prefetch className={clsx("!text-neutral-800 !no-underline", isActive && "pointer-events-none cursor-default")}>
-            <div className={clsx("flex items-center gap-4 py-3 hover:bg-neutral-200 rounded-lg px-2", isActive && "bg-neutral-300", locked && "opacity-60")}>
+        <Link href={locked ? "/fide#plans" : linkPrefix + lesson.slug.current} prefetch className={clsx("!text-neutral-800 !no-underline", isActive && "pointer-events-none cursor-default")}>
+            <div className={clsx("flex items-center gap-4 py-3 hover:bg-neutral-200 rounded-lg px-2", (isActive || isCurrentPostSlug) && "bg-neutral-300", locked && "opacity-60")}>
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700 border border-solid border-neutral-700">
-                    {isWatched ? <FaRegCheckCircle className="text-xl" /> : isActive ? <FaRegArrowAltCircleRight className="text-xl" /> : <MdOndemandVideo className="text-xl" />}
+                    {isWatched ? <FaRegCheckCircle className="text-xl" /> : isActive || isCurrentPostSlug ? <FaRegArrowAltCircleRight className="text-xl" /> : <MdOndemandVideo className="text-xl" />}
                 </div>
                 <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                         <span className="truncate font-medium text-neutral-900 shrink">{lesson.title}</span>
                         {!!level && <span className={clsx("text-sm")}>({LEVELDATA[level]?.label})</span>}
                     </div>
-                    <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs text-neutral-600">
+                    <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs text-neutral-600 w-full justify-between relative">
                         <span className="inline-flex items-center gap-1">
                             <LuClock /> {secondsToMinutes(lesson.durationSec ?? 0)}
                         </span>
                         {lesson.resources && lesson.resources.length > 0 && (
-                            <span className="inline-flex items-center gap-1">
-                                <LuFileText /> {lesson.resources.length} PDF
+                            <span style={{ pointerEvents: isActive ? "auto" : "initial" }}>
+                                <PdfButton locale={isFideSection ? "fr" : "en"} resources={lesson.resources} />
                             </span>
                         )}
                     </div>
@@ -210,3 +235,41 @@ export function levelBadgeColor(level?: Level | undefined) {
             return "text-neutral-700";
     }
 }
+
+const PdfButton = ({ locale, resources }: { locale: Locale; resources: { title_fr: string; title_en: string; key: string }[] }) => {
+    const dropdownLearn = {
+        content: (
+            <div
+                className="bg-neutral-100 p-4 rounded-lg border border-solid border-neutral-800"
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
+            >
+                <div className="flex flex-col gap-2">
+                    {resources.map((res) => (
+                        <Link
+                            key={res.key}
+                            href={cloudFrontDomain + res.key}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm no-underline text-neutral-700 flex items-center"
+                        >
+                            <FaCaretRight />
+                            {locale === "fr" ? res.title_fr : res.title_en}
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        ),
+        button: (
+            <div className="font-bold flex items-center">
+                <LuFileText className="mr-1" /> {resources.length} PDF <FaCaretDown className="ml-1" />
+            </div>
+        ),
+    };
+
+    return <PdfDropdown content={dropdownLearn.content}>{dropdownLearn.button}</PdfDropdown>;
+};

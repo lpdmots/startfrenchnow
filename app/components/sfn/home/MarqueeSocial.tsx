@@ -166,11 +166,11 @@ function Comment({ review }: { review: CommentProps }) {
                     </div>
                     <div className="flex flex-row items-end justify-between gap-2 w-full mt-4">
                         <div className="flex flex-col justify-center">
-                            <p className="font-bold mb-0">{userName}</p>
+                            <p className="font-bold mb-0 line-clamp-1">{userName}</p>
                             <p className="italic mb-0">{created ? created : ""}</p>
                         </div>
                         {rating && (
-                            <div className="flex flex-col items-center justify-center h-full">
+                            <div className="flex flex-col items-center justify-center h-full shrink-0">
                                 <p className="text-2xl md:text-4xl font-extrabold mb-0">{rating}</p>
                                 <div>{renderStars(rating)}</div>
                             </div>

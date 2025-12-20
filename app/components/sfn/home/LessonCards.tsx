@@ -54,6 +54,16 @@ function LessonCards() {
             difficulty: "B1",
             time: "23h",
             link: "/courses/dialogues",
+        },
+        {
+            title: t("lessons.packFide.title"),
+            image: "/images/fide-presentation-thumbnail.png",
+            description: t("lessons.packFide.description"),
+            price: 499,
+            reduction: 0,
+            difficulty: "A1→B1",
+            time: "20h",
+            link: "/fide",
             isNew: t("lessons.lowIntermediateLevel3.new"),
         },
     ];
@@ -67,28 +77,8 @@ function LessonCards() {
                     </h2>
                     <p className="bd py-4">{t("description")}</p>
                 </div>
-                <div className="grid grid-cols-6 gap-4 lg:gap-8 max-w-7xl">
+                <div className="grid grid-cols-6 gap-4 lg:gap-8 max-w-4xl">
                     <LessonCardsRender lessons={lessons} />
-
-                    <div className="h-full hidden md:grid xl:hidden col-span-3">
-                        <SlideInOneByOneChild>
-                            <div className="card card-secondary-1 flex-vertical-center card-contact-featured h-full">
-                                <div className="mg-bottom-24px keep">
-                                    <Image src="/images/get-in-touch-image-paperfolio-webflow-template.svg" height={90} width={90} alt="get in touch" />
-                                </div>
-                                <div className="text-center">
-                                    <h3 className="display-4">{t("notSureTitle")}</h3>
-                                    <p className="color-neutral-800 mg-bottom-32px">{t("notSureDescription")}</p>
-                                    <Link href="/contact" className="btn-primary w-button">
-                                        <div className="flex items-center justify-center">
-                                            <MdOutlineEmail className="mr-2" />
-                                            {t("contactButton")}
-                                        </div>
-                                    </Link>
-                                </div>
-                            </div>
-                        </SlideInOneByOneChild>
-                    </div>
                 </div>
                 <SlideFromBottom>
                     <div className="flex justify-center md:hidden xl:grid">
@@ -118,10 +108,10 @@ export default LessonCards;
 
 export const LessonCardsRender = ({ lessons }: { lessons: LessonCard[] }) => {
     return lessons.map(({ image, title, description, isNew, difficulty, time, link }) => (
-        <div key={title} className="col-span-6 md:col-span-3 xl:col-span-2">
+        <div key={title} className="col-span-6 md:col-span-3 xl:col-span-3 flex justify-center">
             <SlideInOneByOneChild>
                 <ParentToChildrens>
-                    <Link href={link} className="card link-card flex flex-col h-full w-full relative overflow-hidden">
+                    <Link href={link} className="card link-card flex flex-col h-full w-full relative overflow-hidden max-w-lg">
                         {isNew && (
                             <div className="new-banner" style={{ border: "solid 1px black", boxShadow: "3px 3px 3px 0px var(--neutral-800)" }}>
                                 {isNew}
@@ -145,7 +135,14 @@ export const LessonCardsRender = ({ lessons }: { lessons: LessonCard[] }) => {
                                         className=" mr-2"
                                         style={{
                                             fontSize: "1.5rem",
-                                            color: difficulty === "A1" ? "var(--secondary-5)" : difficulty === "A2" ? "var(--secondary-1)" : "var(--secondary-4)",
+                                            color:
+                                                difficulty === "A1"
+                                                    ? "var(--secondary-5)"
+                                                    : difficulty === "A2"
+                                                    ? "var(--secondary-1)"
+                                                    : difficulty === "B1"
+                                                    ? "var(--secondary-4)"
+                                                    : "var(--neutral-400)",
                                         }}
                                     />
                                     <p className="m-0">{difficulty}</p>

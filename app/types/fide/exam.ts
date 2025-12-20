@@ -16,6 +16,8 @@ export interface Exam {
     responsesB1: ResponseB1[];
     isPreview: boolean;
     pdf?: string;
+    order?: number;
+    secondaryTitle?: string;
 }
 
 export type Track = {

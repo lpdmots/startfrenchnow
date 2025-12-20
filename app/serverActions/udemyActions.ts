@@ -16,9 +16,7 @@ export const getCourseDetails = async (courseId: string) => {
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
-
         const data = await response.json();
-        //console.log(data);
         return data;
     } catch (error: any) {
         return { message: error.message };
@@ -39,7 +37,6 @@ export const getLastComments = async (courseId: string, page: number) => {
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
-
         const data = await response.json();
         return data.results;
     } catch (error: any) {

@@ -12,7 +12,7 @@ export const ExamVideo = ({ text }: { text: string }) => {
                 <>
                     <div className="flex w-full justify-end mb-2">
                         <PiArrowBendLeftDownDuotone className="text-2xl md:text-4xl mt-2 lg:mt-4 mr-2" />
-                        <TypingAnimation className="text-lg md:text-xl xl:text-2xl mb-0 min-w-[180px] md:min-w-52 xl:min-w-60 text-left" text={text} duration={100} />
+                        <TypingAnimation className="text-lg md:text-xl xl:text-2xl mb-0 min-w-[180px] md:min-w-52 xl:min-w-60 text-left text-neutral-800" text={text} duration={100} />
                     </div>
                     <div id="hero-video" className="cms-featured-image-wrapper image-wrapper border-radius-40px mx-auto p-0">
                         <LiteYouTubeEmbed id="mDia5R8CTuM" title="The Swiss FIDE Exam - The Full Explanation" poster="maxresdefault" />

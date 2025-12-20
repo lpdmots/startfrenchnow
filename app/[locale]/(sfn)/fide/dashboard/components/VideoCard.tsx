@@ -48,28 +48,21 @@ export const VideoCard = ({ hero, locale, hasPack }: Props) => {
     const lastActivity = stats?.lastActivityAt ? formatRelative(stats.lastActivityAt, locale) : null;
     const isKind = hero?.kind === "video";
 
-    const badges = [
-        ...(statusLabel ? [statusLabel] : []),
-        ...levels, // A1/A2 restent tels quels
-    ];
+    const badges = [...(statusLabel ? [statusLabel] : []), ...levels];
 
-    const href = !hasPack ? "/fide/pack-fide#plans" : `/fide/videos/${main?.slug}`;
+    const href = !hasPack ? "/fide#plans" : `/fide/videos/${main?.slug}`;
 
     return (
         <Link href={href} className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4">
-            {isKind && (
-                <div className="new-banner py-1 bg-secondary-6" style={{ border: "solid 1px black", boxShadow: "3px 3px 0px 0px var(--neutral-800)" }}>
-                    {t("resume")}
-                </div>
-            )}
+            {isKind && <div className="new-banner py-1 bg-secondary-6 bs">{t("resume")}</div>}
 
             <div className="flex gap-2">
                 <div className="h-full flex items-center justify-end">
                     <Image width={65} height={65} src={hasPack ? "/images/pack-fide-video.png" : "/images/cadenas-ferme.png"} alt={title} className="object-contain" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <p className="mb-0 text-3xl font-bold underline decoration-secondary-6">{t("heading")}</p>
-                    <p className="text-lg font-bold mb-0">{title}</p>
+                    <p className="mb-0 text-3xl underline decoration-secondary-6">{t("heading")}</p>
+                    <p className="text-lg mb-0">{title}</p>
                 </div>
             </div>
 

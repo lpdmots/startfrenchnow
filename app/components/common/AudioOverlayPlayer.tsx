@@ -25,11 +25,11 @@ import { Exam, Response, ResponseB1, Track } from "@/app/types/fide/exam";
 import { shuffleArray } from "@/app/lib/utils";
 import urlFor from "@/app/lib/urlFor";
 import { ConfettiFireworks } from "../ui/ConfettiFireworks";
-import { ExamLog } from "@/app/types/sfn/auth";
 import { evaluateB1Answer, updateUserProgress } from "@/app/serverActions/fideExamActions";
 import clsx from "clsx";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
+const SITUATION_INTRO_SRC = "/audio/situation-intro.mp3";
 
 export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Exam; setLogs: any; userId?: string }) {
     const tracks = exam.tracks as Track[];
@@ -45,6 +45,7 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [totalAnswers, setTotalAnswers] = useState(0);
+    const [isPlayingSituationIntro, setIsPlayingSituationIntro] = useState(false);
     const currentTrackData = tracks[currentTrack];
     const withResponses = ["Question", "Audio"].some((keyword) => currentTrackData.title.includes(keyword)) ? totalAnswers : null;
     const isClickableResponse = currentTrackData.title.includes("Audio") ? true : false;
@@ -58,16 +59,26 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
     const isRecordingRef = useRef(false);
 
     const togglePlay = (stop = false) => {
-        if (!audioRef.current) return;
+        const audio = audioRef.current;
+        if (!audio) return;
         setEnded(false);
 
         if (playing || stop) {
-            audioRef.current.pause();
+            audio.pause();
             setPlaying(false);
-        } else {
-            audioRef.current.play();
-            setPlaying(true);
+            return;
         }
+
+        if (currentTrackData.title.includes("Situation")) {
+            setIsPlayingSituationIntro(true);
+            audio.src = SITUATION_INTRO_SRC;
+        } else {
+            setIsPlayingSituationIntro(false);
+            audio.src = getAudioUrl(currentTrackData.src);
+        }
+
+        audio.play();
+        setPlaying(true);
     };
 
     const nextTrack = () => {
@@ -120,13 +131,6 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
         const audio = audioRef.current;
         if (!audio) return;
 
-        // 🎯 Ajustement du volume selon le titre
-        if (currentTrackData.title.includes("Question") || currentTrackData.title.includes("Situation")) {
-            audio.volume = 1.0; // volume max
-        } else {
-            audio.volume = 0.8; // volume standard (ou plus bas)
-        }
-
         if (playing) {
             audio.src = getAudioUrl(currentTrackData.src);
             audio.play().catch((e) => console.error("Erreur lors de la lecture :", e));
@@ -140,13 +144,19 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
         if (!audio) return;
 
         const handleEnded = () => {
+            if (isPlayingSituationIntro && currentTrackData.title.includes("Situation")) {
+                setIsPlayingSituationIntro(false);
+                audio.src = getAudioUrl(currentTrackData.src);
+                audio.play();
+                return;
+            }
+
             if (!isPlayingFollowUp && followUpSrc) {
                 setIsPlayingFollowUp(true);
                 setTimeout(() => {
                     console.log({ isRecording: isRecordingRef.current, followUpSrc });
                     if (!clickedResponse && !isRecordingRef.current) {
                         audio.src = getAudioUrl(followUpSrc);
-                        audio.volume = 1;
                         audio.play();
                     }
                 }, 2000);
@@ -161,12 +171,11 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
         return () => {
             audio.removeEventListener("ended", handleEnded);
         };
-    }, [currentTrackData, isPlayingFollowUp]);
+    }, [currentTrackData, isPlayingFollowUp, isPlayingSituationIntro, clickedResponse]);
 
     useEffect(() => {
         (async () => {
             if (totalAnswers === 3) {
-                // Mise à jour de la data:
                 const newLogs = await updateUserProgress("pack_fide", "examLogs", exam._id, correctAnswers, userId);
                 console.log("User progress updated:", newLogs);
                 if (newLogs) {

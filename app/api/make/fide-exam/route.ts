@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 //import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
 
 import fetch from "node-fetch";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
-import { Exam, Response } from "@/app/types/fide/exam";
+import { Exam, ExamCompetence, Response } from "@/app/types/fide/exam";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+const COMPETENCE: ExamCompetence = "Comprendre";
 
 // AWS S3
 const region = process.env.AWS_REGION || "";
@@ -31,7 +32,7 @@ export async function POST(request: NextRequest) {
 
     try {
         const data = await request.json();
-        const { title, description, level, competence } = data;
+        const { title, description, level } = data;
         console.log("Received data:", data);
 
         const examId = uuidv4();
@@ -102,7 +103,7 @@ export async function POST(request: NextRequest) {
             image,
             isPreview: false,
             responses,
-            competence: competence,
+            competence: COMPETENCE,
             responsesB1:
                 level === "B1"
                     ? [
@@ -204,7 +205,7 @@ async function loadAudiosToS3(audioUrls: string[], examId: string, level: string
         const buffer = await audioResponse.buffer();
         const contentType = audioResponse.headers.get("content-type") || "audio/mpeg";
         const extension = contentType.split("/")[1];
-        const filename = `fide-exam/parler/${level}/${examId}-${index + 1}.${extension}`;
+        const filename = `fide-exam/comprendre/${level}/${examId}-${index + 1}.${extension}`;
 
         const uploadParams = {
             Bucket: "start-french-now",

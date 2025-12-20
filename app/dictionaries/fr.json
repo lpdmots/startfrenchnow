@@ -1,8 +1,8 @@
 {
     "Metadata": {
         "Home": {
-            "title": "Apprenez le Français à Votre Rythme avec des Leçons Vidéo Dirigées par des Experts",
-            "description": "Perfectionnez vos compétences en langue française grâce à nos leçons vidéo exhaustives. Nous vous proposons une méthode pratique, sérieuse et ludique pour apprendre le français comme langue étrangère et atteindre la maîtrise. Commencez le français dès maintenant !"
+            "title": "Apprendre le français en ligne à votre rythme | Start French Now",
+            "description": "Leçons vidéo claires, exercices et parcours structuré pour progresser en français. Spécialiste de la préparation au test FIDE Suisse (A1–B1)."
         },
         "StoriesApp": {
             "title": "Apprenez le Français avec Start French Now : Histoires Interactives et Cours en Ligne",
@@ -16,6 +16,10 @@
             "title": "Blog Start French Now : Votre Guide Ultime pour Apprendre le Français",
             "description": "Découvrez les secrets de l'apprentissage du français avec le blog Start French Now. De la grammaire au vocabulaire, nos articles offrent un guide complet et compréhensible pour maîtriser la langue."
         },
+        "Category": {
+            "title": "Articles de blog par catégorie | Start French Now",
+            "description": "Explorez nos articles de blog sur pour améliorer votre français. Des conseils pratiques, des leçons de grammaire et du vocabulaire pour tous les niveaux. Start French Now !"
+        },
         "Videos": {
             "title": "Nos Vidéos Educatives – Apprendre Facilement et Efficacement | Start French Now",
             "description": "Explorez notre collection de vidéos éducatives pour apprendre le français. Que vous soyez débutant ou intermédiaire, nos vidéos ludiques et informatives vous guideront à chaque étape de votre apprentissage."
@@ -25,11 +29,23 @@
             "description": "Découvrez le parcours de Yohann, de professeur des écoles à expert mondial dans l'enseignement du français aux débutants. Commencez votre propre voyage d'apprentissage du français avec nous !"
         },
         "Fide": {
-            "title": "Préparez et Réussissez le Test FIDE avec un Accompagnement Sur Mesure",
-            "description": "Boostez vos chances de réussite au test FIDE grâce à notre guide complet et bénéficiez d'un coaching personnalisé. Préparez-vous efficacement en toute confiance !"
+            "title": "Préparation test FIDE Suisse (A1–B1) | Start French Now",
+            "description": "Réussissez le test FIDE en Suisse : cours en ligne A1–B1, vrais scénarios à jour, suivi 1:1. Obtenez votre plan d’étude gratuit – Start French Now."
+        },
+        "FideDashboard": {
+            "title": "Mon espace FIDE – progression & RDV | Start French Now",
+            "description": "Votre espace FIDE privé : suivez vos cours vidéo, vos scénarios, vos heures de cours privés, réservez vos RDV et chattez avec votre coach."
+        },
+        "FideExams": {
+            "title": "Scénarios actuels FIDE : examens blancs A1–B1 | Start French Now",
+            "description": "100+ examens blancs FIDE (A1–B1) : lire, écrire, comprendre et parler, scénarios actuels, PDF, vidéos et entraînement interactif. Start French Now."
+        },
+        "FideVideos": {
+            "title": "Vidéos FIDE Suisse A1–B1 | Pack FIDE | Start French Now",
+            "description": "Accédez à toutes nos vidéos FIDE Suisse (A1–B1) : vocabulaire, grammaire et situations d’examen. Des leçons claires + previews gratuites. Start French Now."
         },
         "testYourLevel": {
-            "title": "Test de niveau de français CECR (A1-C2) - Start French Now",
+            "title": "Test de niveau de français CECR (A1-C2) | Start French Now",
             "description": "Testez gratuitement votre niveau de français avec l'évaluation CECR (A1 à C2). Améliorez vos compétences linguistiques et trouvez le cours idéal avec Start French Now."
         },
         "exercises": {
@@ -105,7 +121,7 @@
             "fide": "Test FIDE",
             "packFide": "Pack FIDE",
             "dashboard": "Tableau de bord",
-            "videos": "Vidéos FIDE",
+            "videos": "Cours FIDE",
             "exams": "Examens blancs"
         }
     },
@@ -134,6 +150,10 @@
                 "title": "Les dialogues du quotidien - Niveau 3 (A2-B1)",
                 "description": "Améliorez vos compétences en français avec un cours qui intègre la vie quotidienne française à vos leçons à travers des dialogues captivants, une pratique ciblée de la grammaire et du vocabulaire. Vous serez prêt à vivre et à communiquer en France aisément.",
                 "new": "Nouveau !"
+            },
+            "packFide": {
+                "title": "Pack FIDE (A1 à B1)",
+                "description": "Préparez-vous efficacement au test FIDE avec notre Pack FIDE complet. Accédez à des vidéos, aux examens actuels expliqués et à un suivi personnalisé pour maîtriser les compétences nécessaires et réussir votre test."
             },
             "masterPastTenses": {
                 "title": "Maîtrisez les temps du passé",
@@ -331,6 +351,23 @@
         "title": "Choisissez un exercice et <hs4>entraînez-vous</hs4>",
         "description": "Révisez le vocabulaire avec des flashcards, entraînez-vous sur des notions de grammaire, ou explorez d'autres thématiques. Bonne pratique !"
     },
+    "NotificationsMenu": {
+        "title": "Notifications",
+        "refreshing": "Actualisation…",
+        "statusCount": "{count, plural, one {# commentaire} other {# commentaires}}",
+        "statusNone": "Aucune",
+
+        "markAllSeenLabel": "Tout marquer comme vu",
+        "markAllSeenShort": "Vu",
+        "markAllSeenBusy": "…",
+
+        "imageAlt": "Image",
+        "defaultTitle": "Mon suivi FIDE",
+
+        "moreReplies": "+ {count, plural, one {# autre réponse} other {# autres réponses}}",
+
+        "empty": "Aucune notification pour le moment."
+    },
     "Fide": {
         "FidePack": {
             "CoursesAccordionClient": {
@@ -339,9 +376,83 @@
                 "freePreview": "Offert"
             }
         },
+        "CommentComposer": {
+            "nameLabel": "Nom (requis)",
+            "namePlaceholder": "Votre nom",
+            "emailLabel": "Email (optionnel)",
+            "emailPlaceholder": "ex: vous@mail.com",
+
+            "askQuestionHeading": "Poser une question",
+
+            "postedAsAuthenticatedPrefix": "Posté en tant que",
+            "defaultUser": "Utilisateur",
+            "postedAsGuestPrefix": "Posté en tant qu’",
+            "guestLabel": "invité",
+
+            "textareaPlaceholder": "Écrivez votre message…",
+
+            "unknownError": "Erreur inconnue",
+
+            "publishing": "Publication…",
+            "publish": "Publier",
+            "clear": "Effacer",
+
+            "counter": "{current} / {max}"
+        },
+        "CommentThread": {
+            "header": {
+                "commentsSingular": "commentaire",
+                "commentsPlural": "commentaires"
+            },
+            "noComments": "Aucun commentaire pour le moment.",
+            "edited": "(édité)",
+
+            "tagYou": "Vous",
+            "tagAdmin": "Admin",
+            "tagHidden": "Masqué",
+            "tagHiddenTitle": "Masqué (visible staff)",
+
+            "reply": "Répondre",
+            "seen": "Vu",
+
+            "delete": "Supprimer",
+
+            "deleteModal": {
+                "title": "Confirmer la suppression",
+                "messageLine1": "Cette action va supprimer définitivement le message.",
+                "messageAdmin": "En tant qu’administrateur, la suppression peut être appliquée à n’importe quel message (les réponses associées peuvent aussi être supprimées).",
+                "messageAuthor": "En tant qu’auteur, vous pouvez supprimer votre message pendant 15 minutes après sa création.",
+                "ok": "Supprimer",
+                "cancel": "Annuler"
+            },
+
+            "seeMessageOf": "Voir le message de {name}",
+
+            "edit": "Éditer",
+            "hide": "Masquer",
+            "unhide": "Ré-afficher",
+            "hideAdmin": "Masquer (admin)",
+
+            "nameRequired": "Nom (requis)",
+            "emailOptional": "Email (optionnel)",
+            "replyPlaceholder": "Votre réponse…",
+            "unknownError": "Erreur inconnue",
+
+            "sending": "Envoi…",
+            "clear": "Effacer",
+            "counter": "{current} / {max}",
+
+            "saving": "Enregistrement…",
+            "save": "Enregistrer",
+            "cancel": "Annuler",
+            "editCounter": "{current} / {max}",
+
+            "upvoteTitleOn": "Retirer mon vote",
+            "upvoteTitleOff": "Utile"
+        },
         "dashboard": {
             "DashboardHero": {
-                "title": "<hs2>Reprenez</hs2> votre apprentissage <hs6>FIDE</hs6> en un clic.",
+                "title": "<b2>Reprenez</b2> votre apprentissage <b6>FIDE</b6> en un clic.",
                 "VideoCard": {
                     "heading": "VIDÉOS",
                     "emptyTitle": "Aucune vidéo récemment visionnée",
@@ -387,7 +498,7 @@
                 }
             },
             "DashboardVideos": {
-                "title": "Mes <hs6>Vidéos</hs6>",
+                "title": "Mes <b6>Vidéos</b6>",
                 "selectedForYou": "Sélectionnées pour vous",
                 "summary": "Sommaire",
                 "altVideo": "vidéo",
@@ -396,10 +507,11 @@
                 "ctaBuyPack": "Acheter le Pack FIDE",
                 "ctaBuyPackStrong": "Acheter le <b>Pack FIDE</b>",
                 "lockedOverlayHeadline": "Contenu réservé au Pack FIDE",
-                "allVideos": "Toutes les vidéos"
+                "allVideos": "Toutes les vidéos",
+                "areYouBeginner": "Cours Débutant"
             },
             "Exams": {
-                "title": "Mes <hs5>Examens</hs5>",
+                "title": "Mes <b5>Examens</b5>",
                 "altExamsImage": "examens",
                 "myProgress": "Ma progression",
                 "allExams": "Tous les examens",
@@ -457,11 +569,11 @@
                         "optionalMessage": "Message optionnel"
                     }
                 },
-                "title": "Mes <hs2>cours privés</hs2>",
+                "title": "Mes <b2>cours privés</b2>",
                 "goToFidePage": "Se rendre sur la page FIDE"
             },
             "Questions": {
-                "title": "Mes <hs3>Questions</hs3>/Réponses"
+                "title": "Mes <b3>Questions</b3>/Réponses"
             }
         },
         "FideVideosPage": {
@@ -497,19 +609,22 @@
             }
         },
         "HeroFide": {
-            "title": "Préparez <hs2>le Test FIDE</hs2>",
-            "li1": "Vous devez préparer le test FIDE pour obtenir votre <b>permis B, C</b> ou <noWrap><b>naturalisation</b> ?</noWrap>",
-            "li2": "Vous souhaitez une approche personnalisée avec un <hs4>expert FIDE</hs4> dédié à votre <noWrap>réussite ?</noWrap>",
-            "button": "Réservez votre entretien gratuit !",
-            "videoSubtitle": "Obtenez votre examen FIDE !"
+            "title": "Réussissez <hs6>l'examen FIDE</hs6>",
+            "li1": "Atteignez vos objectifs Fide avec la <under4><b>plateforme E-learning</b></under4> la plus complète <noWrap>sur l'examen.</noWrap>",
+            "li2": "Pratiquez directement sur <under5><b>les scénarios actuels</b></under5> de l’examen, <noWrap>toujours à jour.</noWrap>",
+            "li3": "Bénéficiez de l'accompagnement continu d'un véritable <under2><b>expert Fide</b></under2>.",
+            "proof": "Une méthode <hs2>validée</hs2>",
+            "buttonPrimary": "Obtenir mon plan gratuit",
+            "buttonSecondary": "Acheter maintenant",
+            "videoSubtitle": "Découvrez notre préparation FIDE"
         },
         "Formateur": {
             "title": "Pourquoi choisir <noWrap><hs4>nos leçons</hs4> ?</noWrap>",
             "competences": {
-                "description1": "Plus de 7 ans d'expérience en tant qu'expert FIDE.",
-                "description2": "Plus de 100 étudiants qui ont réussi leur test FIDE avec succès.",
-                "description3": "15 ans d'expérience dans l'enseignement du français pour les étrangers.",
-                "description4": "Formateur de français reconnu sur Udemy."
+                "description1": "Plus de <b>8 ans</b> d'expérience en tant qu'expert FIDE.",
+                "description2": "Plus de <b>300</b> étudiants qui ont réussi leur test FIDE → <b>98%</b> de réussite.",
+                "description3": "Plus de <b>20 heures</b> de vidéos de préparation spécifique FIDE.",
+                "description4": "Meilleur formateur de français sur Udemy."
             },
             "formateurName": "Yohann Coussot",
             "formateurTitle": "Votre formateur",
@@ -548,7 +663,59 @@
                     "OurOffer": "NOTRE OFFRE"
                 }
             },
-            "cta": "Choisissez votre forfait"
+            "cta": "Choisir ma formule"
+        },
+        "VideosSection": {
+            "titlePart1": "Un",
+            "titleHighlight1": "programme",
+            "titlePart2": "vidéo",
+            "titleHighlight2": "complet",
+            "titlePart3": "pour réussir le FIDE",
+            "subtitle": "50+ leçons claires, classées par niveaux A1 à B1, avec objectifs concrets et exemples réels.",
+            "openSommaireLabel": "Ouvrir le sommaire",
+            "closeButton": "Fermer",
+            "areYouBeginner": "Cours Débutant"
+        },
+        "InfosVideos": {
+            "title": "Vous obtenez :",
+            "formationComplete": "Une formation complète de A0 à B1",
+            "video": "20h+ de vidéo à la demande",
+            "downloads": "Ressources téléchargeables",
+            "access": "Accès sur mobiles et TV",
+            "lifetime": "Accès à vie, mises à jour incluses",
+            "buttonHasPack": "Reprendre les cours",
+            "buttonNoPack": "Acheter maintenant"
+        },
+        "MarqueePackFideContent": {
+            "lifetime": "Accès à vie",
+            "updates": "Mises à jour",
+            "guarantee": "Satisfait/remboursé",
+            "fullTraining": "Formation complète",
+            "flexible": "Flexible & autonome"
+        },
+        "ExamsSection": {
+            "title": "<hs5>Testez-vous</hs5> avec <under>{exams}+ examens</under> blancs",
+            "subtitle": "Passez des examens proches du jour J, obtenez votre score instantanément et suivez votre progression jusqu’à l’examen.",
+            "benefit1": {
+                "title": "Progression suivie",
+                "desc": "Vos notes et tentatives sont enregistrées dans un tableau de bord, avec des statistiques par niveau."
+            },
+            "benefit2": {
+                "title": "Feedback immédiat (IA)",
+                "desc": "Après chaque question, la correction s’affiche directement pour vous aider à comprendre vos erreurs."
+            },
+            "benefit3": {
+                "title": "Format réaliste",
+                "desc": "Exercices conformes au format officiel pour vous mettre en condition le jour J."
+            },
+            "benefit4": {
+                "title": "Variété de sujets",
+                "desc": "Un grand nombre de situations du quotidien couvrant tous les thèmes FIDE possibles."
+            },
+            "ctaHasPack": "Acheter des cours privés",
+            "ctaNoPack": "Acheter maintenant",
+            "linkAllExams": "Voir tous les examens disponibles",
+            "imageAlt": "Infographie sur les examens"
         },
         "WhatIsFide": {
             "title": "Qu'est-ce que le test <noWrap><hs4>FIDE</hs4> ?</noWrap>",
@@ -560,6 +727,8 @@
             "fullExplanation": "L'explication complète !",
             "AskForPdf": {
                 "ask": "Demandez votre <hs4>guide gratuit</hs4> pour le test FIDE",
+                "askTitelBand": "Demandez votre guide gratuit",
+                "askDescription": "Et apprenez tout ce qu'il faut savoir sur le test FIDE.",
                 "emailPlaceholder": "Votre adresse e-mail",
                 "button": "Envoyer",
                 "successMessage": "Votre demande a été transmise et <under>un lien vers le pdf a été envoyé</under> sur votre boîte. Veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
@@ -570,7 +739,7 @@
         "HowClassLook": {
             "steps": {
                 "oralProduction": {
-                    "title": "Production orale",
+                    "title": "Expression orale",
                     "description": "Mettez le vocabulaire en pratique grâce à la production orale. Travaillez sur les scénarios FIDE : au niveau A2, l'accent est mis sur les descriptions, les jeux de rôle et les questions simples, tandis qu'au niveau B1, les questions deviennent plus complexes."
                 },
                 "listeningReading": {
@@ -582,19 +751,85 @@
                     "description": "Consolidez vos acquis avec des devoirs sur les sujets étudiés. Faites des exercices de vocabulaire, de grammaire ou de production écrite pour renforcer vos compétences."
                 }
             },
-            "title": "À quoi ressemble <noWrap><hs3>un cours</hs3></noWrap>",
-            "videoDescription": "Un exemple de scénario <hs4>FIDE</hs4> avec mon étudiante, Jessica.",
+            "title": "Boostez votre préparation FIDE avec des <hs2>cours privés</hs2>",
+            "videoDescription": "Un exemple de scénario <hs2>FIDE</hs2> avec une étudiante, Jessica.",
             "videoKey": "fide/apercu-d-une-classe.mp4",
             "posterImage": "/images/jessica-apercu-thumbnail.jpg"
         },
+        "PricingPlans": {
+            "titleHighlight": "Choisissez",
+            "titleRest": "votre formule FIDE",
+            "subtitle": "Autonome, mixte ou 1:1 : à vous de choisir",
+            "mostPopular": "La plus populaire",
+            "tailoredPrefix": "Faites à votre mesure :",
+            "chooseHours": "choisissez vos heures",
+            "modalCloseLabel": "Fermer",
+
+            "card1": {
+                "title": "Pack Autonomie",
+                "description": "Accédez à notre plateforme d'auto-apprentissage FIDE, de débutant complet au niveau B1, et progressez <b>à votre rythme</b>.",
+                "features": {
+                    "f1": "14h de parcours vidéo FIDE, A0 → B1",
+                    "f2": "100+ scénarios dont les sujets actuels",
+                    "f3": "Suivi des progrès + Messagerie"
+                },
+                "extras": {
+                    "e1": "Mises à jour régulières",
+                    "e2": "Progression garantie"
+                },
+                "labelCTA": "OBTENIR LA FORMATION"
+            },
+
+            "card2": {
+                "title": "Pack Accompagné",
+                "description": "Préparez l'examen via notre plateforme <b>d'auto-apprentissage</b> puis pratiquez les scénarios FIDE avec 6h de <b>coaching privé</b>.",
+                "features": {
+                    "f1": "Tous les avantages de la formation FIDE",
+                    "f2": "6 heures de cours privés en visio",
+                    "f3": "Conseils experts et personnalisés"
+                },
+                "extras": {
+                    "e1": "1h de coaching offerte",
+                    "e2": "Réservation sous 12h possible"
+                },
+                "labelCTA": "CHOISIR L'OFFRE MIXTE"
+            },
+
+            "card3": {
+                "title": "Cours Privés",
+                "description": "Bénéficiez d'un <b>coaching privé 1:1</b> pour booster votre confiance avant l'examen.",
+                "features": {
+                    "f1": "Flexibilité totale & coaching sur mesure.",
+                    "f2": "Pratique intensive des sujets actuels.",
+                    "f3": "Conseils experts et personnalisés."
+                },
+                "extras": {
+                    "e1": "Réservation sous 12h possible",
+                    "e2": "Annulation flexible"
+                },
+                "labelCTA": "RÉSERVER UN ENTRETIEN"
+            }
+        },
+        "PreviewsSection": {
+            "title": "<hs2>Essayez</hs2> <under>gratuitement</under> notre plateforme FIDE",
+            "subtitle": "Accédez gratuitement à une leçon FIDE et passez des examens blancs comme au jour J.",
+            "targetLevel": "Niveau ciblé",
+            "videosBadge": "3 vidéos offertes • 50+ dans le Pack",
+            "videosTitle": "Nos <hs4>vidéos</hs4> gratuites",
+            "moreVideos": "Plus de vidéos gratuites",
+            "examsTitle": "Vos <hs5>examens</hs5>",
+            "examsBadge": "3 examens offerts • 100+ dans le Pack",
+            "moreExams": "Plus d'examens blancs"
+        },
         "ReviewsFide": {
-            "title": "<hs2>Avis d'Étudiants</hs2> FIDE : Leur Réussite, Votre Inspiration",
+            "title": "<hs3>Avis d'Étudiants</hs3> FIDE : Leur Réussite, Votre Inspiration",
             "description": "Découvrez les témoignages de nos étudiants qui ont suivi nos cours FIDE.",
             "circularProgress": {
                 "score": "Score Fide :",
                 "lessons": "Leçons",
                 "progress": "De {progressFrom} à {progressTo}"
-            }
+            },
+            "seeFullComment": "Voir le commentaire complet"
         },
         "ContactForFide": {
             "title": "Obtenez votre plan d'étude gratuit",
@@ -624,7 +859,7 @@
             }
         },
         "ContactForFideCourses": {
-            "title": "Commencez votre <hs1>préparation</hs1> <noWrap> FIDE !</noWrap>",
+            "title": "Décidez en toute <hs1>confiance</hs1> !",
             "description1": "Établissons <textxl><under1>GRATUITEMENT</under1></textxl> votre <textxl><under1>plan d'apprentissage</under1></textxl> personnalisé.",
             "label": "Email",
             "placeholder": "Mon adresse email",
@@ -654,9 +889,6 @@
                 "specificRequestPlaceholder": "Une demande spécifique ?",
                 "emailPlaceholder": "Mon adresse email",
                 "button": "Envoyer",
-                "additionalInfo1": "Nous vous contacterons sous les 24h, et vous proposerons, si vous le souhaitez, un premier ",
-                "additionalInfo2": "entretien Zoom rapide et gratuit",
-                "additionalInfo3": " pour vous aider à préparer au mieux votre test FIDE.",
                 "successMessage": "Votre demande a été envoyée. Nous vous contacterons dès que possible, veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
                 "errorMessage": "Oups ! Quelque chose a mal tourné.",
                 "subtitle": "Posez-nous vos questions par e-mail"

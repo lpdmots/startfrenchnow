@@ -17,6 +17,16 @@ export default defineType({
             type: "string",
         }),
         defineField({
+            name: "slug",
+            title: "Slug",
+            type: "slug",
+            options: {
+                source: "title",
+                maxLength: 96,
+            },
+            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
+        }),
+        defineField({
             name: "description",
             description: "Enter a short snippet for the blog...",
             title: "Description",
@@ -43,16 +53,6 @@ export default defineType({
             title: "Niveau",
             type: "array",
             of: [{ type: "string", options: { list: ["a1", "a2", "b1", "b2", "c1", "c2"] } }],
-        }),
-        defineField({
-            name: "slug",
-            title: "Slug",
-            type: "slug",
-            options: {
-                source: "title",
-                maxLength: 96,
-            },
-            validation: (Rule) => Rule.required().warning("Ce champ est requis"),
         }),
         defineField({
             name: "mainImage",
@@ -146,8 +146,14 @@ export default defineType({
                     name: "resource",
                     fields: [
                         defineField({
-                            name: "title",
-                            title: "Titre",
+                            name: "title_fr",
+                            title: "Titre FR",
+                            type: "string",
+                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "title_en",
+                            title: "Titre EN",
                             type: "string",
                             validation: (Rule) => Rule.required(),
                         }),
@@ -160,11 +166,23 @@ export default defineType({
                         }),
                     ],
                     preview: {
-                        select: { title: "title", key: "key" },
+                        select: { title: "title_fr", key: "key" },
                         prepare: ({ title, key }) => ({ title, subtitle: key }),
                     },
                 }),
             ],
+        }),
+        defineField({
+            name: "secondaryTitle",
+            title: "Titre secondaire",
+            type: "string",
+            description: "Optionnel, utilisé si le titre principal ne doit pas être montré sans la permission adéquate.",
+        }),
+        defineField({
+            name: "order",
+            title: "Ordre",
+            type: "number",
+            description: "Utilisé pour ordonner les posts dans une liste.",
         }),
     ],
 

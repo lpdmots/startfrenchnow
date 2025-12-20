@@ -14,7 +14,7 @@ export const DashboardCoaching = ({ hero, locale }: Props) => {
 
     return (
         <section id="private-courses" className="page-wrapper flex flex-col max-w-7xl m-auto gap-6 lg:gap-12 w-full py-0">
-            <h2 className="mb-0 w-full display-2">{t.rich("title", intelRich())}</h2>
+            <h2 className="mb-0 w-full display-2 font-medium">{t.rich("title", intelRich())}</h2>
 
             <div className="w-full max-w-7xl">
                 <ReservationList eventType="Fide Preparation Class" locale={locale} />

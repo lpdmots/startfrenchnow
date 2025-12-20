@@ -1,4 +1,4 @@
-import { CREDITS, LESSONS, NOTIFICATIONKINDS, PERMISSIONS } from "@/app/lib/constantes";
+import { CREDITS, LESSONS, NOTIFICATIONKINDS, PACKAGES_KEYS, PERMISSIONS } from "@/app/lib/constantes";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -227,6 +227,9 @@ export default defineType({
                             name: "referenceKey",
                             title: "Clé de référence",
                             type: "string",
+                            options: {
+                                list: PERMISSIONS,
+                            },
                         },
                         {
                             name: "grantedAt",
@@ -311,7 +314,7 @@ export default defineType({
                             type: "string",
                             validation: (Rule) => Rule.required(),
                             options: {
-                                list: PERMISSIONS,
+                                list: [...PACKAGES_KEYS],
                                 layout: "radio",
                                 direction: "horizontal",
                             },

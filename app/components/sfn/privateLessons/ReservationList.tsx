@@ -38,11 +38,11 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
         <div className="w-full flex flex-col gap-6 md:gap-12">
             <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-6">
                 <div className="col-span-1 xl:col-span-2 flex flex-col gap-4 xl:gap-8 order-2 xl:order-1">
-                    <h3 className="underline decoration-secondary-2 text-xl md:text-3xl">{t.rich("followUpTitle", intelRich())}</h3>
+                    <h3 className="underline decoration-secondary-2 text-xl md:text-3xl font-medium">{t.rich("followUpTitle", intelRich())}</h3>
                     {privateLesson ? (
                         <div className="flex flex-col md:flex-row gap-6 text-center">
                             {/* Heures Restantes */}
-                            <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 shadow-1 min-w-60 gap-4 rounded-2xl">
+                            <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 small-shadow min-w-60 gap-4 rounded-2xl">
                                 <Image src="/images/schedule.png" alt="calendar" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
                                 <p className="text-lg font-semibold text-gray-700 mb-0">{t("remainingHours")}</p>
                                 <p className="text-xl font-bold text-blue-600 mb-0">{toHours(remainingMinutes || 0)} h</p>
@@ -63,7 +63,7 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
                     ) : (
                         <p className="text-neutral-600">{t("noPurchasedLessons")}</p>
                     )}
-                    <ClientLessonFetcher eventType="Fide Preparation Class" />
+                    <ClientLessonFetcher eventType="Fide Preparation Class" isSmall={true} />
                 </div>
                 <div className="col-span-1 flex flex-col gap-4 items-center order-1 xl:order-2">
                     <Image
@@ -76,12 +76,12 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
                 </div>
             </div>
             <div className="w-full">
-                <h3 className="underline decoration-secondary-2 text-xl md:text-3xl mb-8">{t.rich("calendarTitle", intelRich())}</h3>
+                <h3 className="underline decoration-secondary-2 text-xl md:text-3xl mb-8 font-medium">{t.rich("calendarTitle", intelRich())}</h3>
                 <p>
                     {t("lessonsList1")} <span className=" font-bold underline decoration-secondary-2">{t("lessonsList2")}</span>.
                 </p>
 
-                <div className="overflow-x-auto w-full card shadow-2 min-h-96">
+                <div className="overflow-x-auto w-full min-h-96 small-shadow card border-2 border-solid border-neutral-700">
                     {privateLesson?.totalPurchasedMinutes && privateLesson?.events?.length ? (
                         <table className="min-w-full rounded-lg overflow-hidden px-12">
                             <thead style={{ borderBottom: "solid var(--neutral-800) 2px" }}>

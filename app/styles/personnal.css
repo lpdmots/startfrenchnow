@@ -1268,3 +1268,19 @@ btn.active {
     top: 50%;
     transform: translateY(-50%);
 }
+
+.shadow-on-hover {
+    transition: box-shadow 300ms ease, transform 300ms ease, color 300ms ease;
+    color: var(--neutral-700);
+    text-decoration: none;
+    transform-style: preserve-3d;
+}
+
+.shadow-on-hover:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translate3d(0px, -5px, 0.01px);
+}
+
+.small-shadow {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+}

@@ -15,7 +15,6 @@ export const FideButton = ({ locale }: { locale: Locale }) => {
 
     useEffect(() => {
         if (session) {
-            console.log({ session });
             const hasAccess = session.user?.permissions?.some((p) => p.referenceKey === "pack_fide") || session.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class");
             setHasDashboardAccess(!!hasAccess);
         }
@@ -36,10 +35,6 @@ export const FideButton = ({ locale }: { locale: Locale }) => {
                     <LinkCurrentBlog href="/fide" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {t("fide")}
-                    </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide/pack-fide" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
-                        <FaCaretRight />
-                        {t("packFide")}
                     </LinkCurrentBlog>
                     <LinkCurrentBlog href="/fide/videos" withParams="fide-videos" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
                         <FaCaretRight />

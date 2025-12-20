@@ -1,13 +1,13 @@
 import { getTranslator } from "next-intl/server";
 import { Locale } from "@/i18n";
-import { NextIntlClientProvider } from "next-intl";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Metadata.Home");
+    const t = await getTranslator(locale, "Metadata.FideDashboard");
 
     return {
         title: t("title"),
         description: t("description"),
+        robots: { index: false },
     };
 }
 

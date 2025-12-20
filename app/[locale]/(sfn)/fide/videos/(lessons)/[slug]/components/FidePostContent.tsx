@@ -13,12 +13,28 @@ import VideoProgressPlayer from "./VideoProgressPlayer";
 import { ManualWatched } from "./ManualWatched";
 import SommaireModal from "@/app/components/common/SommaireModal";
 import { FidePackSommaire } from "@/app/serverActions/productActions";
-import { CoursesAccordionClient } from "../../../../pack-fide/components/CoursesAccordionClient";
+import { CoursesAccordionClient } from "../../../../components/CoursesAccordionClient";
 import clsx from "clsx";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
-function FidePostContent({ post, previous, next, hasPack, fidePackSommaire }: { post: Post; previous: string | null; next: string | null; hasPack: boolean; fidePackSommaire: FidePackSommaire }) {
+function FidePostContent({
+    post,
+    previous,
+    next,
+    hasPack,
+    fidePackSommaire,
+    linkPrefix, // pour avoir le bon link vers la vidéo
+    progressType = "pack_fide", // pour suivre la progression du user
+}: {
+    post: Post;
+    previous: string | null;
+    next: string | null;
+    hasPack: boolean;
+    fidePackSommaire: FidePackSommaire;
+    linkPrefix?: string;
+    progressType?: string;
+}) {
     const locale = useLocale() as Locale;
     const { title, categories, mainVideo, mainImage, body } = post;
 
@@ -28,7 +44,16 @@ function FidePostContent({ post, previous, next, hasPack, fidePackSommaire }: { 
                 {mainVideo ? (
                     <div className="mt-12 sm:mt-4">
                         <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto relative" style={{ width: "100%", lineHeight: 0 }}>
-                            <VideoProgressPlayer postId={post._id} src={cloudFrontDomain + mainVideo.url} poster={mainImage ? urlFor(mainImage).url() : undefined} className="w-full" controls />
+                            <VideoProgressPlayer
+                                postId={post._id}
+                                src={cloudFrontDomain + mainVideo.url}
+                                poster={mainImage ? urlFor(mainImage).url() : undefined}
+                                className="w-full"
+                                controls
+                                progressType={progressType}
+                                subtitleFRUrl={mainVideo.subtitleFr ? cloudFrontDomain + mainVideo.subtitleFr : undefined}
+                                subtitleENUrl={mainVideo.subtitleEn ? cloudFrontDomain + mainVideo.subtitleEn : undefined}
+                            />
 
                             {previous && (
                                 <Link href={previous} className="hidden -left-2 sm:flex items-center justify-center center-y ">
@@ -71,10 +96,10 @@ function FidePostContent({ post, previous, next, hasPack, fidePackSommaire }: { 
                     <div className="flex items-center justify-between w-full lg:w-auto">
                         <div className="lg:hidden">
                             <SommaireModal>
-                                <CoursesAccordionClient fidePackSommaire={fidePackSommaire} hasPack={hasPack} expandAll={false} />
+                                <CoursesAccordionClient fidePackSommaire={fidePackSommaire} hasPack={hasPack} expandAll={false} linkPrefix={linkPrefix} />
                             </SommaireModal>
                         </div>
-                        {hasPack && <ManualWatched postId={post._id} />}
+                        {hasPack && <ManualWatched postId={post._id} progressType={progressType} />}
                     </div>
                 </div>
             </div>

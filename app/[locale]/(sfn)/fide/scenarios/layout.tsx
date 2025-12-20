@@ -1,19 +1,9 @@
 import { getServerSession } from "next-auth";
-import { getTranslator } from "next-intl/server";
 import { Locale } from "@/i18n";
 import { authOptions } from "@/app/lib/authOptions";
-import { getFidePackSommaire, getPackSommaire } from "@/app/serverActions/productActions";
-import { CoursesAccordionClient } from "../pack-fide/components/CoursesAccordionClient";
+import { getPackSommaire } from "@/app/serverActions/productActions";
+import { CoursesAccordionClient } from "../components/CoursesAccordionClient";
 import { StickyCol } from "../videos/(lessons)/[slug]/components/StickyCol";
-
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Metadata.exercises");
-
-    return {
-        title: t("title"),
-        description: t("description"),
-    };
-}
 
 export default async function VideosPostLayout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);

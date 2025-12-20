@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
-import { FaCommentDots, FaStar, FaStarHalfAlt, FaUserGraduate } from "react-icons/fa";
+import { FaUserGraduate } from "react-icons/fa";
 import { CompteurIncrement, CompteurStarsIncrement } from "../../common/CompteurIncrement";
 import { getCourseDetails } from "@/app/serverActions/udemyActions";
-import { UdemyBig, UdemyColor } from "../../common/logos/Udemy";
-import Image from "next/image";
+import { UdemyColor } from "../../common/logos/Udemy";
+import Link from "next-intl/link";
 
 interface CourseDetails {
     avg_rating: number;
@@ -47,9 +47,9 @@ export const CourseRatings = ({ courseIds, baseNumbers }: Props) => {
             <div className="flex justify-center w-full">
                 <div className="flex justify-around gap-2 md:gap-8 lg:gap-12" style={{ maxWidth: "95vw" }}>
                     <SlideInOneByOneChild>
-                        <div className="w-full md:w-auto">
-                            <UdemyColor width={150} height={50} />
-                        </div>
+                        <Link href="https://www.udemy.com/user/yohann-coussot/" target="_blank" className="w-full md:w-auto">
+                            <UdemyColor width={120} height={50} />
+                        </Link>
                     </SlideInOneByOneChild>
                     <SlideInOneByOneChild>
                         <div className="flex flex-col  justify-center items-center gap-2" style={{ minWidth: 80 }}>
@@ -62,14 +62,6 @@ export const CourseRatings = ({ courseIds, baseNumbers }: Props) => {
                     <SlideInOneByOneChild>
                         <CompteurStarsIncrement nombreDeBase={rating} nombreFinal={isComponentVisible && course?.avg_rating ? course?.avg_rating : rating} />
                     </SlideInOneByOneChild>
-                    {/* <SlideInOneByOneChild>
-                        <div className="flex flex-col justify-center items-center gap-2" style={{ minWidth: 80 }}>
-                            <p className="font-extrabold text-2xl  mb-0">
-                                <CompteurIncrement nombreDeBase={reviews} nombreFinal={isComponentVisible && course?.num_reviews ? course?.num_reviews : reviews} />
-                            </p>
-                            <FaCommentDots className="text-3xl" />
-                        </div>
-                    </SlideInOneByOneChild> */}
                 </div>
             </div>
         </SlideInOneByOneParent>

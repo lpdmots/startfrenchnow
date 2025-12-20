@@ -54,12 +54,6 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                 </LinkCurrentBlog>
                             </div>
                             <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog href="/fide/pack-fide" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
-                                    <FaCaretRight />
-                                    {t("packFide")}
-                                </LinkCurrentBlog>
-                            </div>
-                            <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog
                                     href={hasDashboardAccess ? "/fide/dashboard" : "#"}
                                     className={clsx(

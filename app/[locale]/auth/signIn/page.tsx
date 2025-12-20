@@ -6,6 +6,10 @@ import { ContinueWithGoogle } from "@/app/components/auth/ContinueWithGoogle";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 
+export const metadata = {
+    robots: { index: false, follow: false },
+};
+
 const SignIn = ({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) => {
     const callbackUrl = searchParams?.callbackUrl || "/";
     const info = searchParams?.info || "";

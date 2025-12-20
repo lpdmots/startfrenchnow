@@ -28,7 +28,7 @@ export const ContactForFide = () => {
                                 <p className="color-neutral-300 mb-0 text-center md:text-left">{t("description")}</p>
                             </div>
                             <div className="newsletter-form-block w-form">
-                                <BookFirstMeeting label={tbutton("button")} variant="secondary" />
+                                <BookFirstMeeting label={tbutton("buttonPrimary")} variant="secondary" />
                             </div>
                         </div>
                     </div>

@@ -4,7 +4,7 @@ import Spinner from "@/app/components/common/Spinner";
 import { sendContactEmail } from "@/app/serverActions/contactActions";
 import { useState } from "react";
 
-export const AskForPdf = ({ messages }: { messages: any }) => {
+export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withLabel?: boolean }) => {
     const [pending, setPending] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -42,7 +42,7 @@ export const AskForPdf = ({ messages }: { messages: any }) => {
                 <p className="card p-4 md:p-8 w-full">{messages["errorMessage"]}</p>
             ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col items-center">
-                    <p>{messages["ask"]}</p>
+                    {withLabel && <p>{messages["ask"]}</p>}
                     <div className="position-relative w-full md:w-auto md:min-w-full">
                         <input type="email" name="email" className="input button-inside w-input" placeholder={messages["emailPlaceholder"]} id="Email" required />
                         <button type="submit" className="btn-primary border border-neutral-100 sm:border-0 inside-input default w-button" style={{ minWidth: 145 }}>

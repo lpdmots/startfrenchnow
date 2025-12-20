@@ -13,6 +13,8 @@ type VideoProgressEntry = {
     uniqueCount?: number; // nb de buckets à 1
 };
 
+type SubtitlePreference = "fr" | "en" | "off";
+
 interface DefaultProps {
     privateLessons: PrivateLesson[];
     videoProgress: Record<string, VideoProgressEntry>;
@@ -20,6 +22,7 @@ interface DefaultProps {
     fideVideosSelectedPackage?: string;
     fideExamsSelectedLevel?: LevelParam;
     fideExamsSelectedType?: TypeParam | "all";
+    subtitlePreference?: SubtitlePreference;
 }
 
 interface SfnStore extends DefaultProps {
@@ -43,6 +46,8 @@ interface SfnStore extends DefaultProps {
 
     setFideExamsSelectedLevel: (v: LevelParam) => void;
     setFideExamsSelectedType: (v: TypeParam | "all") => void;
+
+    setSubtitlePreference: (pref: SubtitlePreference) => void;
 }
 
 const DEFAULT_PROPS: DefaultProps = {
@@ -52,6 +57,7 @@ const DEFAULT_PROPS: DefaultProps = {
     fideVideosSelectedPackage: undefined,
     fideExamsSelectedLevel: "all",
     fideExamsSelectedType: "all",
+    subtitlePreference: "off",
 };
 
 /** ===== Utils internes ===== */
@@ -81,7 +87,7 @@ export const useSfnStore = create<SfnStore>()(
         persist(
             (set, get) => ({
                 ...DEFAULT_PROPS,
-
+                setSubtitlePreference: (pref) => set({ subtitlePreference: pref }, false, "setSubtitlePreference"),
                 setPrivateLesson: (newPrivateLessons: PrivateLesson) =>
                     set(
                         (state) => ({

@@ -19,19 +19,15 @@ const PrivateCoursesCard = ({ hero, locale }: { hero: HeroData | undefined; loca
     const hasNotPurchased = totalPurchasedMinutes === 0;
 
     return (
-        <Link href={hasNotPurchased ? "/fide#priceSliderFide" : "#private-courses"} className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4">
-            {isKind && (
-                <div className="new-banner py-1 bg-secondary-5" style={{ border: "solid 1px black", boxShadow: "3px 3px 0px 0px var(--neutral-800)" }}>
-                    {hero?.kind === "coaching-urgent" ? t("urgent") : t("book")}
-                </div>
-            )}
+        <Link href={hasNotPurchased ? "/fide#plans" : "#private-courses"} className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4">
+            {isKind && <div className="new-banner py-1 bg-secondary-5 bs">{hero?.kind === "coaching-urgent" ? t("urgent") : t("book")}</div>}
             <div className="flex gap-2">
                 <div className="h-full flex items-center justify-end">
-                    <Image width={65} height={65} src="/images/pack-fide-cours-prives.png" alt={t("altPrivate")} className="object-contain" />
+                    <Image width={65} height={65} src="/images/cours-prives.png" alt={t("altPrivate")} className="object-contain" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <p className="mb-0 text-3xl font-bold underline decoration-secondary-2">{t("heading")}</p>
-                    <p className="text-lg font-bold mb-0">{t("manageHours")}</p>
+                    <p className="mb-0 text-3xl underline decoration-secondary-2">{t("heading")}</p>
+                    <p className="text-lg mb-0">{t("manageHours")}</p>
                 </div>
             </div>
 

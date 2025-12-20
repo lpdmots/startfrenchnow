@@ -23,7 +23,7 @@ export async function requireSessionAndFide({ callbackUrl = "/", info = "" }: { 
     }
 
     if (!session.user.permissions?.some((p) => p.referenceKey === "pack_fide") && !session.user.lessons?.some((l) => l.eventType === "Fide Preparation Class")) {
-        redirect("/fide/pack-fide?#plans");
+        redirect("/fide#plans");
     }
 
     return session;

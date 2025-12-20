@@ -19,7 +19,7 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
     const isFree = packageTitle === (locale === "en" ? "Free" : "Gratuites");
     const isLocked = !hasPack && !postIsPreview && !isFree;
 
-    const href = isFree ? "/blog/post/" + postSlug.current : isLocked ? "/fide/pack-fide#plans" : "/fide/videos/" + postSlug.current;
+    const href = isFree ? "/blog/post/" + postSlug.current : isLocked ? "/fide#plans" : "/fide/videos/" + postSlug.current;
     const ariaLabel = isLocked ? `${postTitle} — contenu réservé au Pack FIDE. Voir les plans.` : postTitle || "Voir la leçon";
 
     return (
@@ -110,7 +110,7 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
 
                             <button className="mt-4 btn btn-primary small pointer-events-auto transform transition-transform duration-200 hover:-translate-y-0.5">Acheter le Pack FIDE</button>
 
-                            <span className="sr-only">— lien vers /fide/pack-fide#plans</span>
+                            <span className="sr-only">— lien vers /fide#plans</span>
                         </div>
                     </div>
                 )}

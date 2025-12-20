@@ -5,16 +5,17 @@ import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 interface CompteurProps {
     nombreDeBase: number;
     nombreFinal: number | undefined;
+    defaultDuration?: number;
 }
 
-export const CompteurIncrement = ({ nombreDeBase, nombreFinal }: CompteurProps) => {
+export const CompteurIncrement = ({ nombreDeBase, nombreFinal, defaultDuration }: CompteurProps) => {
     const [valeurActuelle, setValeurActuelle] = useState(nombreDeBase);
 
     useEffect(() => {
         if (nombreFinal === undefined) return;
 
         let start: any = null;
-        const duration = 2000; // Durée totale de l'animation en ms
+        const duration = defaultDuration ?? 2000; // Durée totale de l'animation en ms
 
         const step = (timestamp: any) => {
             if (!start) start = timestamp;

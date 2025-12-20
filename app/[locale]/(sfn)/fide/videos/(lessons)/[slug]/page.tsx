@@ -38,12 +38,10 @@ async function CoursFidePage({ params }: { params: { locale: Locale; slug: strin
         const session = await getServerSession(authOptions);
         const now = Date.now();
 
-        const hasPack = !!session?.user?.permissions?.some(
-            (p) => p.referenceKey === "pack_fide" && (!p.expiresAt || new Date(p.expiresAt).getTime() > now) // enlève cette ligne si tu ne gères pas l’expiration
-        );
+        const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide" && (!p.expiresAt || new Date(p.expiresAt).getTime() > now));
 
         if (!hasPack) {
-            redirect("/fide/pack-fide#plans");
+            redirect("/fide/videos");
         }
     }
 

@@ -34,6 +34,7 @@ export default async function CommentComposer(props: Props) {
     const session = await getServerSession(authOptions);
     const isAuthenticated = !!session?.user;
     const userDisplayName = session?.user?.name ?? null;
+
     return (
         <CommentComposerClient
             action={submitAction}

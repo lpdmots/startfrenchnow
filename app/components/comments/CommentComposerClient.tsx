@@ -3,6 +3,7 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Popover } from "../animations/Popover";
 import { CommentResourceType } from "@/app/types/sfn/comment";
+import { useTranslations } from "next-intl";
 
 type Props = {
     action: (state: any, formData: FormData) => Promise<{ ok: boolean; error: string | null; data?: any }>;
@@ -25,6 +26,9 @@ export default function CommentComposerClient(props: Props) {
     const [pending, setPending] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
     const [value, setValue] = useState("");
+
+    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(props.resourceType) ? "CommentComposer" : "Fide.CommentComposer";
+    const t = useTranslations(translationKey);
 
     const nameRef = useRef<HTMLInputElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -66,15 +70,15 @@ export default function CommentComposerClient(props: Props) {
                     setValue("");
                     if (nameRef.current) nameRef.current.value = "";
                 } else {
-                    setServerError(res.error || "Erreur inconnue");
+                    setServerError(res.error || t("unknownError"));
                 }
             } catch (err: any) {
-                setServerError(err?.message || "Erreur inconnue");
+                setServerError(err?.message || t("unknownError"));
             } finally {
                 setPending(false);
             }
         },
-        [disableSubmit, props]
+        [disableSubmit, props, t]
     );
 
     return (
@@ -91,22 +95,22 @@ export default function CommentComposerClient(props: Props) {
                 {!props.isAuthenticated && (
                     <div className="flex gap-4 flex-wrap">
                         <div className="w-full sm:w-auto">
-                            <label className="mb-1 text-sm text-neutral-700">Nom (requis)</label>
+                            <label className="mb-1 text-sm text-neutral-700">{t("nameLabel")}</label>
                             <input
                                 ref={nameRef}
                                 name="guestName"
                                 required
                                 maxLength={80}
-                                placeholder="Votre nom"
+                                placeholder={t("namePlaceholder")}
                                 className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
                         <div className="w-full sm:w-auto">
-                            <label className="mb-1 text-sm text-neutral-700">Email (optionnel)</label>
+                            <label className="mb-1 text-sm text-neutral-700">{t("emailLabel")}</label>
                             <input
                                 type="email"
                                 name="guestEmail"
-                                placeholder="ex: vous@mail.com"
+                                placeholder={t("emailPlaceholder")}
                                 className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
@@ -117,14 +121,14 @@ export default function CommentComposerClient(props: Props) {
                     {/* Entête identité */}
                     <div className="text-neutral-700 flex items-end">
                         {props.resourceType === "fide_dashboard" ? (
-                            <h4 className="underline decoration-secondary-3 text-xl md:text-3xl w-full mb-0">Poser une question à mon coach</h4>
+                            <h4 className="underline decoration-secondary-3 text-xl md:text-3xl font-medium w-full mb-0">{t("askQuestionHeading")}</h4>
                         ) : props.isAuthenticated ? (
                             <span>
-                                Posté en tant que <b>{props.userDisplayName ?? "Utilisateur"}</b>
+                                {t("postedAsAuthenticatedPrefix")} <b>{props.userDisplayName ?? t("defaultUser")}</b>
                             </span>
                         ) : (
                             <span>
-                                Posté en tant qu’<b>invité</b>
+                                {t("postedAsGuestPrefix")} <b>{t("guestLabel")}</b>
                             </span>
                         )}
                     </div>
@@ -170,7 +174,7 @@ export default function CommentComposerClient(props: Props) {
                         onChange={(e) => setValue(e.target.value)}
                         rows={5}
                         maxLength={MAXCOMMENTLENGTH * 2} // on laisse taper un peu plus mais on bloque à l’envoi
-                        placeholder="Écrivez votre message…"
+                        placeholder={t("textareaPlaceholder")}
                         className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                     />
                 </div>
@@ -182,7 +186,7 @@ export default function CommentComposerClient(props: Props) {
                 <div className="flex w-full justify-between items-center">
                     <div className="flex items-center gap-2">
                         <button type="submit" disabled={disableSubmit} className="btn btn-primary small !py-3 !text-sm">
-                            {pending ? "Publication…" : "Publier"}
+                            {pending ? t("publishing") : t("publish")}
                         </button>
                         <button
                             type="button"
@@ -192,13 +196,11 @@ export default function CommentComposerClient(props: Props) {
                             disabled={pending}
                             className="btn btn-secondary small !py-3 !text-sm"
                         >
-                            Effacer
+                            {t("clear")}
                         </button>
                     </div>
                     <div className="mt-1 flex items-center justify-end text-xs">
-                        <span className={tooLong ? "text-secondary-3" : "text-neutral-500"}>
-                            {value.length} / {MAXCOMMENTLENGTH}
-                        </span>
+                        <span className={tooLong ? "text-secondary-3" : "text-neutral-500"}>{t("counter", { current: value.length, max: MAXCOMMENTLENGTH })}</span>
                     </div>
                 </div>
             </form>

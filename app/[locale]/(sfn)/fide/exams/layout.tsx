@@ -2,11 +2,22 @@ import { getTranslator } from "next-intl/server";
 import { Locale } from "@/i18n";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Metadata.exercises");
+    const t = await getTranslator(locale, "Metadata.FideExams");
+
+    const path = "/fide/exams";
+    const canonical = locale === "fr" ? `/fr${path}` : path;
 
     return {
         title: t("title"),
         description: t("description"),
+        alternates: {
+            canonical,
+            languages: {
+                en: path,
+                fr: `/fr${path}`,
+                "x-default": path,
+            },
+        },
     };
 }
 

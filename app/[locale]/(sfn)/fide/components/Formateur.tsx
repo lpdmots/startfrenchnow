@@ -1,45 +1,57 @@
 import { SlideFromBottom, SlideFromRight } from "@/app/components/animations/Slides";
+import { CompteurStarsIncrement } from "@/app/components/common/CompteurIncrement";
+import { UdemySmall } from "@/app/components/common/logos/Udemy";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 import Link from "next-intl/link";
 import Image from "next/image";
 import { AiOutlineTags } from "react-icons/ai";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { FaCheck, FaStar, FaStarHalfAlt, FaTimes, FaUserGraduate } from "react-icons/fa";
 
 export const Formateur = () => {
     const t = useTranslations("Fide.Formateur");
 
     let COMPETENCES = [
         {
-            description: t("competences.description1"),
-            icon: "🎓",
-            color: "#00C9A7",
-        },
-        {
-            description: t("competences.description2"),
+            description: t.rich("competences.description2", intelRich()),
             icon: "🎉",
             color: "#FF3D71",
         },
         {
-            description: t("competences.description3"),
+            description: t.rich("competences.description3", intelRich()),
             icon: "📚",
             color: "#FFB800",
         },
         {
-            description: t("competences.description4"),
-            icon: "🏅",
+            description: t.rich("competences.description1", intelRich()),
+            icon: "🎓",
+            color: "#00C9A7",
+        },
+        {
+            description: (
+                <div className="flex flex-col w-full">
+                    <p className="mb-0">{t.rich("competences.description4", intelRich())}</p>
+                    <div className="flex gap-1">
+                        <p className="mb-0 font-bold">60000+</p>
+                        <FaUserGraduate className="text-md" />
+                        <p className="mb-0"> - </p>
+                        <Stars />
+                    </div>
+                </div>
+            ),
+            icon: <UdemySmall height={40} width={40} />,
             color: "#1E86FF",
         },
     ];
 
     return (
-        <div className="section hero v1 wf-section !py-24 px-4 lg:px-8 flex flex-col items-center max-w-7xl gap-6 lg:gap-12">
+        <div className="section hero v1 wf-section !pt-24 !pb-12 px-4 lg:px-8 flex flex-col items-center max-w-7xl gap-6 lg:gap-12">
             <h2 className="mb-6 color-neutral-100 w-full text-center display-1">{t.rich("title", intelRich())}</h2>
             <SlideFromBottom>
                 <div className="grid grid-cols-4 gap-4">
                     {COMPETENCES.map((item, idx) => (
-                        <CompetenceCard {...item} key={idx} />
+                        <CompetenceCard {...item} key={idx} index={idx} />
                     ))}
                 </div>
             </SlideFromBottom>
@@ -62,7 +74,7 @@ export const Formateur = () => {
                         </div>
                     </div>
                     <div className="flex w-full justify-center">
-                        <Link href="#priceSliderFide" className="no-underline w-full sm:w-auto">
+                        <Link href="#plans" className="no-underline w-full sm:w-auto">
                             <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto" variant="secondary">
                                 <AiOutlineTags className="mr-2 text-xl" />
                                 {t("cta")}
@@ -86,12 +98,33 @@ export const Formateur = () => {
 };
 
 interface Competence {
-    description: string;
-    icon: string;
+    description: string | JSX.Element | React.ReactNode;
+    icon: string | JSX.Element;
     color: string;
+    index: number;
 }
 
-const CompetenceCard = ({ description, icon, color }: Competence) => {
+const CompetenceCard = ({ description, icon, color, index }: Competence) => {
+    if (index === 3)
+        return (
+            <div className="col-span-4 md:col-span-2 xl:col-span-1 p-2 lg:p-4 rounded-xl w-full bg-neutral-200 color-neutral-800 flex items-center">
+                {" "}
+                <Link href="https://www.udemy.com/user/yohann-coussot/" target="_blank" className="no-underline" style={{ lineHeight: 0 }}>
+                    <div className="flex w-full gap-4 place-items-center text-neutral-800">
+                        <div
+                            className="flex size-16 items-center justify-center rounded-2xl col-span-1 aspect-square"
+                            style={{
+                                backgroundColor: color,
+                            }}
+                        >
+                            <span className="text-4xl">{icon}</span>
+                        </div>
+                        <div className="text-sm mb-0 w-full">{description}</div>
+                    </div>
+                </Link>
+            </div>
+        );
+
     return (
         <div className="col-span-4 md:col-span-2 xl:col-span-1 p-2 lg:p-4 rounded-xl w-full bg-neutral-200 color-neutral-800 flex items-center">
             <div className="flex w-full gap-4 place-items-center">
@@ -103,7 +136,7 @@ const CompetenceCard = ({ description, icon, color }: Competence) => {
                 >
                     <span className="text-4xl">{icon}</span>
                 </div>
-                <p className="text-sm mb-0 h-full flex items-center w-full">{description}</p>
+                <div className="text-sm mb-0 w-full">{description}</div>
             </div>
         </div>
     );
@@ -148,12 +181,6 @@ const ComparativeTabel = () => {
             smallTitle: t("smallTitles.Continuous_Support"),
             sfn: <FaCheck className="h-6 w-6 text-secondary-5" />,
             others: <FaTimes className="h-6 w-6 text-secondary-4" />,
-        },
-        {
-            title: t("titles.Price_Hour"),
-            smallTitle: t("smallTitles.Price_Hour"),
-            sfn: <span>{t.rich("offers.Price_From", intelRich())}</span>,
-            others: <span>{t.rich("offers.Others_Range", intelRich())}</span>,
         },
     ];
 
@@ -228,25 +255,14 @@ const ComparativeTabel = () => {
     );
 };
 
-/* 
-<div className="flex gap-2 lg:gap-4 items-center">
-    <div className="bullet bg-secondary-2"></div>
-    <p className="mb-0">{t.rich("point1", intelRich())}</p>
-</div>
-<div className="flex gap-2 lg:gap-4 items-center">
-    <div className="bullet bg-secondary-4"></div>
-    <p className="mb-0">{t.rich("point2", intelRich())}</p>
-</div>
-<div className="flex gap-2 lg:gap-4 items-center">
-    <div className="bullet bg-secondary-2"></div>
-    <p className="mb-0">{t.rich("point3", intelRich())}</p>
-</div>
-<div className="flex gap-2 lg:gap-4 items-center">
-    <div className="bullet bg-secondary-4"></div>
-    <p className="mb-0">{t.rich("point4", intelRich())}</p>
-</div>
-<div className="flex gap-2 lg:gap-4 items-center">
-    <div className="bullet bg-secondary-2"></div>
-    <p className="mb-0">{t.rich("point5", intelRich())}</p>
-</div>
-*/
+const Stars = () => {
+    return (
+        <div className="flex">
+            <FaStar className="text-md fill-secondary-1" />
+            <FaStar className="text-md fill-secondary-1" />
+            <FaStar className="text-md fill-secondary-1" />
+            <FaStar className="text-md fill-secondary-1" />
+            <FaStar className="text-md fill-secondary-1" />
+        </div>
+    );
+};

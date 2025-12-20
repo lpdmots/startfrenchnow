@@ -42,7 +42,7 @@ function VideosFidePageNoAsync({
     const validKeys = new Set<string>([...(fidePackSommaire?.packages?.map((p) => p.referenceKey) ?? []), "free", "all"]);
 
     // Normalisation du choix initial
-    const selectedKey = initialPackageKey && validKeys.has(initialPackageKey) ? initialPackageKey : "all";
+    const selectedKey = initialPackageKey && validKeys.has(initialPackageKey) ? initialPackageKey : "pack_fide";
 
     return (
         <div className="page-wrapper mt-8 sm:mt-12">
@@ -67,7 +67,7 @@ function VideosFidePageNoAsync({
 
 export type FlatFidePackSommaire = FlatFidePackItem[];
 
-const COLORS = ["var(--secondary-1)", "var(--secondary-2)", "var(--secondary-4)", "var(--secondary-6)", "var(--secondary-5)", "var(--secondary-3)", "var(--secondary-6)"];
+const COLORS = ["var(--secondary-6)", "var(--secondary-2)", "var(--secondary-4)", "var(--secondary-5)", "var(--secondary-1)", "var(--secondary-3)", "var(--secondary-6)"];
 export type ColorType = (typeof COLORS)[number];
 
 export interface FlatFidePackItem {

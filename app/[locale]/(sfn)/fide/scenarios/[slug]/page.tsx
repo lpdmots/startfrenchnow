@@ -11,6 +11,8 @@ import { authOptions } from "@/app/lib/authOptions";
 import { Permission } from "@/app/types/sfn/auth";
 import { redirect } from "next/navigation";
 import FidePostContent from "../../videos/(lessons)/[slug]/components/FidePostContent";
+import CommentComposer from "@/app/components/comments/CommentComposer";
+import CommentList from "@/app/components/comments/CommentList";
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -47,7 +49,7 @@ async function ScenariosFidePage({ params }: { params: { locale: Locale; slug: s
         );
 
         if (!hasPack) {
-            redirect("/fide/pack-fide#plans");
+            redirect("/fide/exams");
         }
     }
 
@@ -59,7 +61,7 @@ async function ScenariosFidePage({ params }: { params: { locale: Locale; slug: s
 
     const localizedPost = localizePosts([post], locale)[0];
 
-    return <ScenariosFidePageNoAsync post={localizedPost} previous={previous} next={next} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />;
+    return <ScenariosFidePageNoAsync post={localizedPost} previous={previous} next={next} hasPack={hasPack} fidePackSommaire={fidePackSommaire} locale={locale} />;
 }
 
 export default ScenariosFidePage;
@@ -70,15 +72,18 @@ interface PropsNoAsync {
     next: { slug: string; title: string } | null;
     hasPack: boolean;
     fidePackSommaire: FidePackSommaire;
+    locale: Locale;
 }
 
-const ScenariosFidePageNoAsync = ({ post, previous, next, hasPack, fidePackSommaire }: PropsNoAsync) => {
+const ScenariosFidePageNoAsync = ({ post, previous, next, hasPack, fidePackSommaire, locale }: PropsNoAsync) => {
     const previousUrl = previous ? `/fide/scenarios/${previous.slug}` : null;
     const nextUrl = next ? `/fide/scenarios/${next.slug}` : null;
 
     return (
-        <div className="mb-24">
-            <FidePostContent post={post} previous={previousUrl} next={nextUrl} hasPack={hasPack} fidePackSommaire={fidePackSommaire} />
+        <div className="mb-24 flex w-full flex-col gap-8 md:gap-12">
+            <FidePostContent post={post} previous={previousUrl} next={nextUrl} hasPack={hasPack} fidePackSommaire={fidePackSommaire} linkPrefix="/fide/scenarios/" />
+            <CommentComposer resourceType="fide_scenario" resourceId={post._id} />
+            <CommentList resourceType="fide_scenario" resourceId={post._id} locale={locale} />
             <BlogLangFixedButton />
         </div>
     );

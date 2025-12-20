@@ -17,6 +17,10 @@ export function getResourceTypeLabel(resourceType: string) {
             return "Pack FIDE";
         case "fide_dashboard":
             return <span className="font-bold text-secondary-6">Tableau de bord FIDE</span>;
+        case "fide_scenario":
+            return "Scénario FIDE";
+        case "udemy_course_beginner":
+            return "Cours Débutant";
         default:
             return "Inconnu";
     }

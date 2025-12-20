@@ -12,6 +12,7 @@ import Image from "next/image";
 import urlFor from "@/app/lib/urlFor";
 import { MdChatBubbleOutline, MdNotifications, MdDoneAll } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type Props = {
     locale?: "fr" | "en";
@@ -86,15 +87,17 @@ export default function NotificationsMenuClient({ locale = "fr", className, coun
 /* ====== UI SUB-COMPONENTS ====== */
 
 function Header({ isPending, count, hasItems, isClearing, onClearAll }: { isPending: boolean; count: number; hasItems: boolean; isClearing: boolean; onClearAll: () => void }) {
+    const t = useTranslations("NotificationsMenu");
+
     return (
         <div className="flex items-center justify-between px-2 py-1 mb-2">
             <div className="text-sm font-bold text-neutral-700 flex items-center gap-2">
                 <MdNotifications className="text-neutral-700 h-4 w-4" />
-                <span>Notifications</span>
+                <span>{t("title")}</span>
             </div>
 
             <div className="flex items-center gap-3">
-                <div className="text-xs text-neutral-500">{isPending ? "Actualisation…" : count > 0 ? `${count} commentaire(s)` : "Aucune"}</div>
+                <div className="text-xs text-neutral-500">{isPending ? t("refreshing") : count > 0 ? t("statusCount", { count }) : t("statusNone")}</div>
 
                 {hasItems && (
                     <button
@@ -102,11 +105,11 @@ function Header({ isPending, count, hasItems, isClearing, onClearAll }: { isPend
                         onClick={onClearAll}
                         disabled={isClearing}
                         className={clsx("btn small btn-primary inline-flex items-center gap-1 rounded-md border border-neutral-300 !px-2 !py-1 text-xs font-medium")}
-                        aria-label="Tout marquer comme vu"
-                        title="Tout marquer comme vu"
+                        aria-label={t("markAllSeenLabel")}
+                        title={t("markAllSeenLabel")}
                     >
                         <MdDoneAll className="h-4 w-4" />
-                        {isClearing ? "… " : "Vu"}
+                        {isClearing ? t("markAllSeenBusy") : t("markAllSeenShort")}
                     </button>
                 )}
             </div>
@@ -115,6 +118,7 @@ function Header({ isPending, count, hasItems, isClearing, onClearAll }: { isPend
 }
 
 function GroupCard({ item, locale, onVisitGroup }: { item: UINotificationCommentGroup; locale?: "fr" | "en"; onVisitGroup: (item: UINotificationCommentGroup) => void }) {
+    const t = useTranslations("NotificationsMenu");
     const comments = item.comments.slice(0, 3);
     const moreCount = item.comments.length - comments.length;
 
@@ -139,7 +143,7 @@ function GroupCard({ item, locale, onVisitGroup }: { item: UINotificationComment
                     <div className="h-9 w-9 rounded-lg bg-neutral-200/70 flex items-center justify-center">
                         <Image
                             src={item.image ? urlFor(item.image).url() : "/images/instructeur-cours-prives.png"}
-                            alt={item.title || "Image"}
+                            alt={item.title || t("imageAlt")}
                             width={36}
                             height={36}
                             className="h-9 rounded-lg object-contain"
@@ -148,7 +152,7 @@ function GroupCard({ item, locale, onVisitGroup }: { item: UINotificationComment
 
                     <div className="min-w-0 flex-1 grow-1">
                         <div className="flex items-start justify-between gap-2">
-                            <h3 className="text-sm font-semibold text-neutral-900 line-clamp-2">{item.title || "Mon suivi FIDE"}</h3>
+                            <h3 className="text-sm font-semibold text-neutral-900 line-clamp-2">{item.title || t("defaultTitle")}</h3>
                             <span className="shrink-0 ml-auto inline-flex items-center rounded-full bg-neutral-900 text-white px-2 py-0.5 text-xs">{item.comments.length}</span>
                         </div>
                     </div>
@@ -170,7 +174,7 @@ function GroupCard({ item, locale, onVisitGroup }: { item: UINotificationComment
                             <p className="text-sm text-neutral-700 line-clamp-2 italic mb-0">{c.truncatedText}</p>
                         </div>
                     ))}
-                    {moreCount > 0 && <div className="pl-3 text-xs text-neutral-500">+ {moreCount} autre(s) réponse(s)</div>}
+                    {moreCount > 0 && <div className="pl-3 text-xs text-neutral-500">{t("moreReplies", { count: moreCount })}</div>}
                 </div>
             </div>
         </Link>
@@ -178,7 +182,8 @@ function GroupCard({ item, locale, onVisitGroup }: { item: UINotificationComment
 }
 
 function EmptyState() {
-    return <div className="px-3 py-6 text-center text-sm text-neutral-600">Aucune notification pour le moment.</div>;
+    const t = useTranslations("NotificationsMenu");
+    return <div className="px-3 py-6 text-center text-sm text-neutral-600">{t("empty")}</div>;
 }
 
 function SkeletonList() {

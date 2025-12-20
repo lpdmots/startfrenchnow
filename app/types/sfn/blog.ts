@@ -31,7 +31,7 @@ export interface Post extends Base {
     internLink: string;
     isPreview?: boolean;
     durationSec?: number;
-    resources?: { title: string; key: string }[];
+    resources?: { title_fr: string; title_en: string; key: string }[];
     isReady?: boolean;
 }
 
@@ -80,6 +80,8 @@ export interface VideoBlog {
     _type: "videoBlog";
     title: string;
     url: string;
+    subtitleFr?: string;
+    subtitleEn?: string;
 }
 
 export interface FlashcardsProps {

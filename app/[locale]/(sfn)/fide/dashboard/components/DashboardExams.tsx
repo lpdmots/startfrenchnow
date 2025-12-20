@@ -19,7 +19,7 @@ export const DashboardExams = ({ hero, locale, hasPack }: DashboardExamsProps) =
 
     return (
         <section className="page-wrapper flex flex-col max-w-7xl m-auto gap-8 lg:gap-12 w-full py-0">
-            <h2 className="mb-0 w-full display-2">{t.rich("title", intelRich())}</h2>
+            <h2 className="mb-0 w-full display-2 font-medium">{t.rich("title", intelRich())}</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
                 <div className="col-span-1 flex justify-center w-full">
@@ -33,7 +33,7 @@ export const DashboardExams = ({ hero, locale, hasPack }: DashboardExamsProps) =
                 </div>
 
                 <div className="col-span-1 lg:col-span-2 flex flex-col items-center w-full">
-                    <h4 className="underline decoration-secondary-5 text-xl md:text-3xl mb-8">{t("myProgress")}</h4>
+                    <h4 className="underline decoration-secondary-5 text-xl md:text-3xl mb-8 font-medium">{t("myProgress")}</h4>
                     <StatsTabel hero={hero} locale={locale} hasPack={hasPack} />
                 </div>
             </div>

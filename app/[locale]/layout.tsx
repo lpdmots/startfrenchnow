@@ -3,7 +3,6 @@ import { Poppins } from "next/font/google";
 import Providers from "./providers";
 import { NextIntlClientProvider, useLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { getTranslator } from "next-intl/server";
 import { Toaster } from "@/app/components/ui/toaster";
 import { Metadata } from "next";
 import { locales, type Locale } from "@/i18n";
@@ -18,47 +17,18 @@ const poppins = Poppins({
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }): Promise<Metadata> {
     if (!locales.includes(locale)) notFound();
-    const t = await getTranslator(locale, "Metadata.Home");
 
-    const baseUrl = new URL(process.env.NEXT_PUBLIC_BASE_URL!);
-    const languages: Record<string, string> = {
-        en: `${baseUrl}/en`,
-        fr: `${baseUrl}/fr`,
-        "x-default": `${baseUrl}/en`,
-    };
+    const baseUrl = new URL((process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, ""));
 
     return {
         metadataBase: baseUrl,
-        title: t("title"),
-        description: t("description"),
-        alternates: {
-            canonical: locale === "fr" ? "/fr" : "/en",
-            languages,
-        },
-        /* openGraph: {
-        type: "website",
-        url: locale === "fr" ? "/fr" : "/en",
-        title: t("title"),
-        description: t("description"),
-        siteName: "Start French Now",
-        locale: locale === "fr" ? "fr_FR" : "en_US",
-        alternateLocale: locale === "fr" ? ["en_US"] : ["fr_FR"],
-        images: [{ url: "/og/home.jpg" }],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: t("title"),
-        description: t("description"),
-        images: ["/og/home.jpg"],
-        creator: "@startfrenchnow",
-      }, */
+        title: "Start French Now",
         robots: { index: true, follow: true },
-        viewport: "width=device-width, initial-scale=1",
         themeColor: [
             { media: "(prefers-color-scheme: light)", color: "#ffffff" },
             { media: "(prefers-color-scheme: dark)", color: "#0b0b0b" },
         ],
-        icons: { icon: "/favicon.ico" /* apple: "/apple-touch-icon.png" */ },
+        icons: { icon: "/favicon.ico" },
     };
 }
 

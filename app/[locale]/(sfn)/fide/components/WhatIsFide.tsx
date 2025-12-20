@@ -21,7 +21,7 @@ export const WhatIsFide = () => {
                 <div id="w-node-d6ab327c-c12b-e1a4-6a28-7aaa783883be-b9543dac" data-w-id="d6ab327c-c12b-e1a4-6a28-7aaa783883be" className="inner-container test" style={{ maxWidth: 650 }}>
                     <div className="text-center---tablet flex flex-col gap-6 lg:gap-12 h-full">
                         <div className="inner-container _550px---tablet center">
-                            <h1 className="hero-title">{t.rich("title", intelRich())}</h1>
+                            <h1 className="hero-title text-neutral-800">{t.rich("title", intelRich())}</h1>
                         </div>
                         <div className="flex grow flex-col justify-center text-left">
                             <div className="flex flex-col gap-4 lg:gap-8">
@@ -45,9 +45,10 @@ export const WhatIsFide = () => {
                                     <div className="bullet bg-secondary-5"></div>
                                     <p className="mb-0">{t.rich("point5", intelRich())}</p>
                                 </div>
+                                {/* 
                                 <LinkArrow url="/fide#FideFAQ" className="font-bold">
                                     {t("linkToFAQ")}
-                                </LinkArrow>
+                                </LinkArrow> */}
                             </div>
                         </div>
                     </div>

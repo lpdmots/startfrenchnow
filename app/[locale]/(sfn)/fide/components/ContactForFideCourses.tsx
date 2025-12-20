@@ -14,7 +14,7 @@ export const ContactForFideCourses = () => {
             <p className="text-center mb-12">{t.rich("description1", intelRich())}</p>
             <div className="flex flex-col gap-4 md:gap-8">
                 <div className="flex justify-center">
-                    <BookFirstMeeting label={tbutton("button")} variant="secondary" />
+                    <BookFirstMeeting label={tbutton("buttonPrimary")} variant="secondary" />
                 </div>
                 <div className="gradient-line my-4 relative">
                     <p className="separator-text">{t("or")}</p>
@@ -49,9 +49,6 @@ const getMessages = (t: any) => ({
     specificRequestPlaceholder: t("ContactFideForm.specificRequestPlaceholder"),
     emailPlaceholder: t("ContactFideForm.emailPlaceholder"),
     button: t("ContactFideForm.button"),
-    additionalInfo1: t("ContactFideForm.additionalInfo1"),
-    additionalInfo2: t.rich("ContactFideForm.additionalInfo2", intelRich()),
-    additionalInfo3: t("ContactFideForm.additionalInfo3"),
     successMessage: t("ContactFideForm.successMessage"),
     errorMessage: t("ContactFideForm.errorMessage"),
     subtitle: t("ContactFideForm.subtitle"),

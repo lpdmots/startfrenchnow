@@ -6,6 +6,10 @@ import { groq } from "next-sanity";
 import { SanityServerClient as sanity } from "@/app/lib/sanity.clientServerDev";
 import AdminCommentsPageClient from "./components/AdminCommentsPageClient";
 
+export const metadata = {
+    robots: { index: false, follow: false },
+};
+
 const QUERY = groq`
 *[
   _type == "comment"

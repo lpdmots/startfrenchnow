@@ -4,6 +4,10 @@ import Link from "next-intl/link";
 import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 
+export const metadata = {
+    robots: { index: false, follow: false },
+};
+
 export default function PaymentSuccess({ searchParams: { amount, currency, slug } }: { searchParams: { amount: string; currency: string; slug: string } }) {
     const t = useTranslations("Checkout.PaymentSuccess");
     return (
