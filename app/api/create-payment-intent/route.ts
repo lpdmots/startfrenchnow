@@ -27,15 +27,22 @@ async function getOrCreateCustomer(sessionEmail: string): Promise<string> {
         return user.stripeCustomerId;
     }
 
-    // Si `stripeCustomerId` n'existe pas, crée un nouveau client Stripe
+    // Crée un customer Stripe même si le user n'existe pas encore côté Sanity
     const customer = await stripe.customers.create({
         email: sessionEmail,
-        metadata: {
-            userId: user._id,
-        },
+        ...(user?._id
+            ? {
+                  metadata: {
+                      userId: user._id,
+                  },
+              }
+            : {}),
     });
 
-    await client.patch(user._id).set({ stripeCustomerId: customer.id }).commit();
+    // Patch uniquement si user existe
+    if (user?._id) {
+        await client.patch(user._id).set({ stripeCustomerId: customer.id }).commit();
+    }
 
     return customer.id;
 }
@@ -43,20 +50,30 @@ async function getOrCreateCustomer(sessionEmail: string): Promise<string> {
 export async function POST(request: NextRequest) {
     try {
         const { productSlug, quantity, currency, email, sessionEmail, userId, firstName, lastName } = await request.json();
+
+        // Email “effectif” : si pas de session (guest), on utilise l’email du form
+        const effectiveEmail = (sessionEmail || email || "").trim().toLowerCase();
+        if (!effectiveEmail) {
+            return NextResponse.json({ error: "Missing email" }, { status: 400 });
+        }
+
         const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch;
-        const userPurchasedLesson = await getUserPurchases(userId, product.referenceKey);
+
+        // ✅ Guest-safe : si pas de userId, on considère “pas d’achats précédents”
+        const userPurchasedLesson = userId ? ((await getUserPurchases(userId, product.referenceKey)) ?? undefined) : undefined;
 
         const { pricingDetails, productInfos } = await getAmount(product, quantity, currency, userPurchasedLesson);
 
-        const stripeCustomerId = await getOrCreateCustomer(sessionEmail);
+        const stripeCustomerId = await getOrCreateCustomer(effectiveEmail);
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: convertToSubcurrency(pricingDetails.amount),
             currency: pricingDetails.currency,
-            receipt_email: sessionEmail,
+            receipt_email: effectiveEmail,
             customer: stripeCustomerId,
             automatic_payment_methods: { enabled: true },
-            metadata: { productSlug, quantity, email, firstName, lastName },
+            // ✅ On force l’email dans metadata à être le même que celui du paiement
+            metadata: { productSlug, quantity, email: effectiveEmail, firstName, lastName },
         });
 
         return NextResponse.json({ clientSecret: paymentIntent.client_secret, pricingDetails, productInfos, paymentIntentId: paymentIntent.id });

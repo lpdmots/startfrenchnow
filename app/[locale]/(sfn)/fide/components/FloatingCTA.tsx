@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import { HiOutlineCalendar } from "react-icons/hi";
 import { PopupModal } from "react-calendly";
+import { useRouter } from "next/navigation";
 
 export default function FloatingCTA() {
+    const router = useRouter();
+
     const [show, setShow] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [inactiveTimer, setInactiveTimer] = useState<NodeJS.Timeout | null>(null);
@@ -25,20 +27,17 @@ export default function FloatingCTA() {
             if (inactiveTimer) clearTimeout(inactiveTimer);
 
             if (isDesktop) {
-                // Desktop : n'affiche qu'après avoir scrollé un peu
                 setShow(currentScrollY > DESKTOP_SCROLL_TRIGGER);
             } else {
-                // Mobile
                 if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                    // Scroll vers le bas → cacher le bouton
                     setShow(false);
                     const timer = setTimeout(() => setShow(true), INACTIVITY_DELAY);
                     setInactiveTimer(timer);
                 } else {
-                    // Scroll vers le haut → montrer
                     setShow(true);
                 }
             }
+
             setLastScrollY(currentScrollY);
         };
 
@@ -52,10 +51,12 @@ export default function FloatingCTA() {
     // Animation attention grabber
     useEffect(() => {
         if (!show) return;
+
         const interval = setInterval(() => {
             setAnimateShake(true);
             setTimeout(() => setAnimateShake(false), 800);
         }, ATTENTION_INTERVAL);
+
         return () => clearInterval(interval);
     }, [show]);
 
@@ -63,11 +64,44 @@ export default function FloatingCTA() {
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
 
     useEffect(() => {
-        // Exécuter après le montage du composant pour récupérer le root element
         setRootElement(document.getElementById("root"));
     }, []);
 
-    if (!rootElement) return null; // Assure que rien n'est rendu si rootElement n'est pas prêt
+    // ✅ Calendly -> redirect avec event_uri
+    useEffect(() => {
+        const onMessage = (e: MessageEvent) => {
+            // sécurité : n'accepter que calendly.com
+            try {
+                const host = new URL(e.origin).hostname;
+                if (!host.endsWith("calendly.com")) return;
+            } catch {
+                return;
+            }
+
+            const data = e.data as any;
+            if (!data || typeof data !== "object") return;
+
+            const eventName = data.event as string | undefined;
+            if (eventName !== "calendly.event_scheduled") return;
+
+            const eventUri = data.payload?.event?.uri as string | undefined;
+            if (!eventUri) return;
+
+            // fermer le modal + rediriger
+            setIsOpen(false);
+
+            const slug = "your-fide-plan";
+            const qs = new URLSearchParams();
+            qs.set("event_uri", eventUri);
+
+            router.push(`/rdv-success/${slug}?${qs.toString()}`);
+        };
+
+        window.addEventListener("message", onMessage);
+        return () => window.removeEventListener("message", onMessage);
+    }, [router]);
+
+    if (!rootElement) return null;
 
     return (
         <AnimatePresence>
@@ -97,6 +131,7 @@ export default function FloatingCTA() {
                             </motion.div>
                             <span className="hidden md:inline font-semibold !no-underline">Entretien gratuit</span>
                         </button>
+
                         <PopupModal url="https://calendly.com/yohann-startfrenchnow/15min" onModalClose={() => setIsOpen(false)} open={isOpen} rootElement={rootElement} />
                     </div>
                 </motion.div>

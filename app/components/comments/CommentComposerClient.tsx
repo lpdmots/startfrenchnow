@@ -54,7 +54,7 @@ export default function CommentComposerClient(props: Props) {
                 el.setSelectionRange(pos, pos);
             });
         },
-        [value]
+        [value],
     );
 
     const onSubmit = useCallback(
@@ -78,7 +78,7 @@ export default function CommentComposerClient(props: Props) {
                 setPending(false);
             }
         },
-        [disableSubmit, props, t]
+        [disableSubmit, props, t],
     );
 
     return (
@@ -120,7 +120,7 @@ export default function CommentComposerClient(props: Props) {
                 <div className="flex justify-between items-end pb-2">
                     {/* Entête identité */}
                     <div className="text-neutral-700 flex items-end">
-                        {props.resourceType === "fide_dashboard" ? (
+                        {["fide_dashboard", "french_dashboard"].includes(props.resourceType) ? (
                             <h4 className="underline decoration-secondary-3 text-xl md:text-3xl font-medium w-full mb-0">{t("askQuestionHeading")}</h4>
                         ) : props.isAuthenticated ? (
                             <span>

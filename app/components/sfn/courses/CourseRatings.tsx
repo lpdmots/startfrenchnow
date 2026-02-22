@@ -20,9 +20,10 @@ interface Props {
         rating: number;
         reviews: number;
     };
+    isUdemy?: boolean;
 }
 
-export const CourseRatings = ({ courseIds, baseNumbers }: Props) => {
+export const CourseRatings = ({ courseIds, baseNumbers, isUdemy = true }: Props) => {
     const [course, setCourse] = useState<CourseDetails | null>(null);
     const [isComponentVisible, setIsComponentVisible] = useState(false);
     const { subscribers, rating, reviews } = baseNumbers;
@@ -46,11 +47,13 @@ export const CourseRatings = ({ courseIds, baseNumbers }: Props) => {
         <SlideInOneByOneParent onVisible={setIsComponentVisible}>
             <div className="flex justify-center w-full">
                 <div className="flex justify-around gap-2 md:gap-8 lg:gap-12" style={{ maxWidth: "95vw" }}>
-                    <SlideInOneByOneChild>
-                        <Link href="https://www.udemy.com/user/yohann-coussot/" target="_blank" className="w-full md:w-auto">
-                            <UdemyColor width={120} height={50} />
-                        </Link>
-                    </SlideInOneByOneChild>
+                    {isUdemy && (
+                        <SlideInOneByOneChild>
+                            <Link href="https://www.udemy.com/user/yohann-coussot/" target="_blank" className="w-full md:w-auto">
+                                <UdemyColor width={120} height={50} />
+                            </Link>
+                        </SlideInOneByOneChild>
+                    )}
                     <SlideInOneByOneChild>
                         <div className="flex flex-col  justify-center items-center gap-2" style={{ minWidth: 80 }}>
                             <p className="font-extrabold text-xl md:text-2xl mb-0">

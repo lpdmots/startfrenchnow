@@ -73,7 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "slug": slug.current,
         "updatedAt": coalesce(_updatedAt, _createdAt)
       }`,
-        { blogCats: blogCatsNoFide }
+        { blogCats: blogCatsNoFide },
     );
 
     for (const p of blogPosts) {
@@ -96,11 +96,57 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ]{
         "slug": slug.current,
         "updatedAt": coalesce(_updatedAt, _createdAt)
-      }`
+      }`,
     );
 
     for (const p of beginnerPosts) {
         const path = `/courses/beginners/${p.slug}`;
+        for (const loc of withLocales(path)) {
+            entries.push({
+                url: abs(loc),
+                lastModified: new Date(p.updatedAt),
+            });
+        }
+    }
+
+    // 4.b) /courses/intermediates/[slug] : catégorie "udemy_course_intermediate"
+    const intermediatePosts: { slug: string; updatedAt: string }[] = await client.fetch(
+        `*[
+        _type == "post"
+        && defined(slug.current)
+        && !(_id in path("drafts.**"))
+        && "udemy_course_intermediate" in categories
+      ]{
+        "slug": slug.current,
+        "updatedAt": coalesce(_updatedAt, _createdAt)
+      }`,
+    );
+
+    for (const p of intermediatePosts) {
+        const path = `/courses/intermediates/${p.slug}`;
+        for (const loc of withLocales(path)) {
+            entries.push({
+                url: abs(loc),
+                lastModified: new Date(p.updatedAt),
+            });
+        }
+    }
+
+    // 4.c) /courses/dialogues/[slug] : catégorie "udemy_course_dialogs"
+    const dialoguesPosts: { slug: string; updatedAt: string }[] = await client.fetch(
+        `*[
+        _type == "post"
+        && defined(slug.current)
+        && !(_id in path("drafts.**"))
+        && "udemy_course_dialogs" in categories
+      ]{
+        "slug": slug.current,
+        "updatedAt": coalesce(_updatedAt, _createdAt)
+      }`,
+    );
+
+    for (const p of dialoguesPosts) {
+        const path = `/courses/dialogues/${p.slug}`;
         for (const loc of withLocales(path)) {
             entries.push({
                 url: abs(loc),
@@ -125,7 +171,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             }
           }
         }`,
-            { referenceKey }
+            { referenceKey },
         );
 
         // dédoublonnage + date la plus récente

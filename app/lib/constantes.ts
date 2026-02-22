@@ -111,7 +111,7 @@ export const langData = {
 };
 
 export const BLOGCATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions", "fide"];
-export const CATEGORIES = [...BLOGCATEGORIES, "pack_fide", "udemy_course_beginner"];
+export const CATEGORIES = [...BLOGCATEGORIES, "pack_fide", "udemy_course_beginner", "udemy_course_dialogs", "udemy_course_intermediate"];
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];
@@ -208,13 +208,15 @@ export const HOURS_BEFOR_CANCEL = 24;
 
 export const LESSONS = [...Object.keys(EVENT_TYPES)];
 export const CREDITS = [];
-export const PERMISSIONS = ["pack_fide", "udemy_course_beginner"] as const;
-export const PACKAGES_KEYS = ["pack_fide", "udemy_course_beginner"] as const;
+export const PERMISSIONS = ["pack_fide", "udemy_course_beginner", "udemy_course_dialogs", "udemy_course_intermediate"] as const;
+const FIDE_PACKAGES_KEYS = ["pack_fide"] as const;
+export const COURSES_PACKAGES_KEYS = ["udemy_course_beginner", "udemy_course_dialogs", "udemy_course_intermediate"] as const;
+export const PACKAGES_KEYS = [...FIDE_PACKAGES_KEYS, ...COURSES_PACKAGES_KEYS] as const;
 export const LESSONS_CREDITS_PERMISSIONS = [...LESSONS, ...CREDITS, ...PERMISSIONS];
 
 export const NOTIFICATIONKINDS = ["comment"] as const;
 
-export const POSTCOMMENTRESOURCE = ["blog", "pack_fide", "udemy_course_beginner", "fide_scenario"];
-export const COMMENTRESOURCES = [...POSTCOMMENTRESOURCE, "fide_dashboard"] as const;
+export const POSTCOMMENTRESOURCE = ["blog", "pack_fide", "udemy_course_beginner", "fide_scenario", "udemy_course_intermediate", "udemy_course_dialogs"] as const;
+export const COMMENTRESOURCES = [...POSTCOMMENTRESOURCE, "fide_dashboard", "french_dashboard"] as const;
 
 export const ADMINASSIGNEES = ["Nico", "Yoh"] as const;

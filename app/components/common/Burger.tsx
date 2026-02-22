@@ -9,6 +9,7 @@ import { Locale } from "@/i18n";
 import { useTranslations } from "next-intl";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
+import { COURSES_PACKAGES_KEYS } from "@/app/lib/constantes";
 
 const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
     const [open, setOpen] = useState(false);
@@ -18,11 +19,14 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
 
     const { data: session } = useSession();
     const [hasDashboardAccess, setHasDashboardAccess] = useState<boolean>(false);
+    const [hasDashboardFrAccess, setHasDashboardFrAccess] = useState<boolean>(false);
 
     useEffect(() => {
         if (session) {
             const hasAccess = session.user?.permissions?.some((p) => p.referenceKey === "pack_fide") || session.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class");
             setHasDashboardAccess(!!hasAccess);
+            const hasFrAccess = session.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
+            setHasDashboardFrAccess(!!hasFrAccess);
         }
     }, [session]);
 
@@ -58,7 +62,7 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                     href={hasDashboardAccess ? "/fide/dashboard" : "#"}
                                     className={clsx(
                                         "nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0",
-                                        !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600"
+                                        !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
                                     )}
                                     locale={locale as Locale}
                                 >
@@ -91,6 +95,19 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                         </div>
                         <div className="p-2 font-bold">{messages.coursesDict.coursesTitle}</div>
                         <div className="grid grid-cols-2 w-full">
+                            <div onClick={() => setOpen(false)}>
+                                <LinkCurrentBlog
+                                    href={hasDashboardFrAccess ? "/courses/dashboard" : "#"}
+                                    className={clsx(
+                                        "nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0",
+                                        !hasDashboardFrAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
+                                    )}
+                                    locale={locale as Locale}
+                                >
+                                    {hasDashboardFrAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
+                                    {messages.coursesDict.dashboard}
+                                </LinkCurrentBlog>
+                            </div>
                             <div onClick={() => setOpen(false)}>
                                 <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
                                     <FaCaretRight />

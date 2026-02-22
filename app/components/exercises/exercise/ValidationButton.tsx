@@ -1,6 +1,6 @@
 "use client";
 import { useExerciseStore } from "@/app/stores/exerciseStore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiMessageError } from "react-icons/bi";
 import { FaArrowRight, FaCheck, FaExclamationCircle } from "react-icons/fa";
 import SimpleButton from "../../animations/SimpleButton";
@@ -22,6 +22,8 @@ const ValidationButton = ({ _key, handleValidation, disabled, isCorrect, feedbac
     const isFinished = questionIndex === questions.length - 1;
     const [openFeedback, setOpenFeedback] = useState(false);
     const [open, setOpen] = useState(false);
+    const mainBtnRef = useRef<HTMLButtonElement | null>(null);
+    const drawerContinueRef = useRef<HTMLButtonElement | null>(null);
 
     const handleNextQuestion = () => {
         setOpenFeedback(false);
@@ -35,6 +37,24 @@ const ValidationButton = ({ _key, handleValidation, disabled, isCorrect, feedbac
     useEffect(() => {
         if (control === "open") setOpenFeedback(true);
     }, [control]);
+
+    useEffect(() => {
+        if (!openFeedback) return;
+
+        // petit timeout pour être sûr que le bouton existe (SlideFromBottom / render)
+        const id = window.setTimeout(() => {
+            if (control) {
+                // en mode "control", le bouton du haut est visibility:hidden,
+                // donc on focus celui du drawer
+                drawerContinueRef.current?.focus();
+            } else {
+                // sinon le bouton du haut se transforme en "Continuer"
+                mainBtnRef.current?.focus();
+            }
+        }, 0);
+
+        return () => window.clearTimeout(id);
+    }, [openFeedback, control]);
 
     const validation = () => {
         setShowAnswers(_key, questions[questionIndex]._key, true);
@@ -50,7 +70,7 @@ const ValidationButton = ({ _key, handleValidation, disabled, isCorrect, feedbac
         <div className="w-full pt-12">
             <SlideInOneByOneChild>
                 <div className="w-full flex justify-center" style={{ visibility: control ? "hidden" : undefined }}>
-                    <button type="submit" disabled={disabled} className="btn-secondary small w-full sm:w-60 z-20 btn-hover" onClick={openFeedback ? handleNextQuestion : validation}>
+                    <button ref={mainBtnRef} type="button" disabled={disabled} className="btn-secondary small w-full sm:w-60 z-20 btn-hover" onClick={openFeedback ? handleNextQuestion : validation}>
                         {openFeedback ? (
                             <div className="w-full flex items-center justify-center gap-2">
                                 <p className="mb-0">Continuer</p>
@@ -92,7 +112,7 @@ const ValidationButton = ({ _key, handleValidation, disabled, isCorrect, feedbac
                                     </div>
                                 </div>
                                 <div className="w-full flex justify-center" style={{ visibility: control ? undefined : "hidden" }}>
-                                    <button className="btn-secondary small w-full sm:w-60 z-20 btn-hover" onClick={handleNextQuestion}>
+                                    <button ref={drawerContinueRef} type="button" className="btn-secondary small w-full sm:w-60 z-20 btn-hover" onClick={handleNextQuestion}>
                                         <div className="w-full flex items-center justify-center gap-2">
                                             <p className="mb-0">Continuer</p>
                                             <FaArrowRight className="icon-translate" />

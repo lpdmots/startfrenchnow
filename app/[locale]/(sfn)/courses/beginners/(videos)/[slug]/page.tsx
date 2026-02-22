@@ -41,7 +41,7 @@ async function BeginnersVideosPage({ params }: { params: { locale: Locale; slug:
         const hasPermission = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_beginner" && (!p.expiresAt || new Date(p.expiresAt).getTime() > now));
 
         if (!hasPermission) {
-            redirect("/fide#plans");
+            redirect("/courses/beginners");
         }
     }
 

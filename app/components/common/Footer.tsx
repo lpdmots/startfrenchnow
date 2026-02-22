@@ -26,10 +26,10 @@ function Footer() {
                         <Fade>
                             <div className=" grid grid-row-2 md:grid-cols-2 w-full">
                                 <div className="flex flex-col items-center">
-                                    <div className="text-400 medium footer-title">Pages</div>
+                                    <div className="text-400 medium footer-title !mt-0">Pages</div>
                                     <ul role="list" className="flex !pl-0 justify-center gap-4 md:gap-8 flex-wrap list-none">
                                         <li className="footer-list-item">
-                                            <LinkCurrent href="/" className="footer-link">
+                                            <LinkCurrent href="/videos" className="footer-link">
                                                 {t("videos")}
                                             </LinkCurrent>
                                         </li>
@@ -39,8 +39,8 @@ function Footer() {
                                             </LinkCurrentBlog>
                                         </li>
                                         <li className="footer-list-item">
-                                            <LinkCurrent href="/stories" className="footer-link">
-                                                {t("stories")}
+                                            <LinkCurrent href="/exercises" className="footer-link">
+                                                {t("exercises")}
                                             </LinkCurrent>
                                         </li>
                                         <li className="footer-list-item">
@@ -48,14 +48,14 @@ function Footer() {
                                                 {t("about")}
                                             </LinkCurrent>
                                         </li>
+                                    </ul>
+                                    <div className="text-400 medium footer-title !mt-0">{t("courses.button")}</div>
+                                    <ul role="list" className="flex !pl-0 justify-center gap-4 md:gap-8 flex-wrap list-none">
                                         <li className="footer-list-item">
-                                            <LinkCurrent href="/contact" className="footer-link">
-                                                {t("contact")}
+                                            <LinkCurrent href="/fide" className="footer-link">
+                                                FIDE
                                             </LinkCurrent>
                                         </li>
-                                    </ul>
-                                    <div className="text-400 medium footer-title">{t("courses.button")}</div>
-                                    <ul role="list" className="flex !pl-0 justify-center gap-4 md:gap-8 flex-wrap list-none">
                                         <li className="footer-list-item">
                                             <LinkCurrent href="/courses/beginners" className="footer-link">
                                                 {t("courses.beginners")}
@@ -77,6 +77,21 @@ function Footer() {
                                             </LinkCurrent>
                                         </li>
                                     </ul>
+                                    <div className="text-400 medium footer-title !mt-0">{t("reseaux_sociaux")}</div>
+                                    <div className="flex gap-2 md:gap-4">
+                                        <LinkTranslation href="https://www.facebook.com/groups/1274260010235504/">
+                                            <FacebookFooter height={30} width={30} />
+                                        </LinkTranslation>
+                                        <LinkTranslation href="https://www.youtube.com/@startfrenchnow">
+                                            <YoutubeFooter height={30} width={30} />
+                                        </LinkTranslation>
+                                        <LinkTranslation href="https://www.instagram.com/startfrenchnow/">
+                                            <InstagramFooter height={30} width={30} />
+                                        </LinkTranslation>
+                                        <LinkTranslation href="https://www.tiktok.com/@startfrenchnow">
+                                            <TiktokFooter height={30} width={30} />
+                                        </LinkTranslation>
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-col items-center">
@@ -100,21 +115,12 @@ function Footer() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <div className="flex gap-2 md:gap-4">
-                                        <LinkTranslation href="https://www.facebook.com/groups/1274260010235504/">
-                                            <FacebookFooter height={30} width={30} />
-                                        </LinkTranslation>
-                                        <LinkTranslation href="https://www.youtube.com/@startfrenchnow">
-                                            <YoutubeFooter height={30} width={30} />
-                                        </LinkTranslation>
-                                        <LinkTranslation href="https://www.instagram.com/startfrenchnow/">
-                                            <InstagramFooter height={30} width={30} />
-                                        </LinkTranslation>
-                                        <LinkTranslation href="https://www.tiktok.com/@startfrenchnow">
-                                            <TiktokFooter height={30} width={30} />
-                                        </LinkTranslation>
+                                    <div className="flex justify-center gap-4 md:gap-8 mb-4 mt-8">
+                                        <LinkCurrent href="/mentions-legales" className="footer-link">
+                                            {t("legal_mentions")}
+                                        </LinkCurrent>
+                                        <TarteauCitronLink />
                                     </div>
-                                    <TarteauCitronLink />
                                 </div>
                             </div>
                         </Fade>

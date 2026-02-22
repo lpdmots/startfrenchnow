@@ -41,7 +41,7 @@ function VideosSectionNoAsync({ fidePackSommaire, hasPack = false, locale, userI
                     <div className="col-span-2 flex flex-col gap-4">
                         <p className="mb-0 text-lg font-semibold sm:mx-4 text-neutral-800">{t("areYouBeginner")}</p>
                         <UdemyBeginnerAccordion locale={locale} userId={userId} hasPack={hasPack} />
-                        <CoursesAccordionClient fidePackSommaire={fidePackSommaire} hasPack={hasPack} expandAll={false} defaultModuleKeyIndex={1} />
+                        <CoursesAccordionClient fidePackSommaire={fidePackSommaire} hasPack={hasPack} expandAll={false} defaultModuleKeyIndex={2} />
                     </div>
                     <div className="col-span-2 xl:col-span-1 px-0 sm:px-4 lg:px-0">
                         <div id="w-node-_5477c579-dd4f-3f5a-c700-1cd0a30d540b-7a543d63" className="lg:sticky lg:top-11 col-span-2 lg:col-span-1 order-1 lg:order-2 overflow-hidden">

@@ -5,6 +5,7 @@ import { UserProps } from "@/app/types/sfn/auth";
 import { getActivateToken } from "@/app/lib/utils";
 import { getTokenExpiration } from "@/app/lib/constantes";
 import { sendActivationEmail } from "@/app/serverActions/authActions";
+import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 
 interface Props {
     params: { args: string[] };
@@ -37,5 +38,12 @@ export async function GET(_request: NextRequest, { params }: Props) {
     }
 
     await client.patch(user._id).set({ isActive: true }).commit();
-    redirect(`/${locale}/auth/activated`);
+
+    try {
+        await claimPendingPurchases({ email: user.email, userId: user._id });
+    } catch (e) {
+        console.error("claimPendingPurchases (activate) failed:", e);
+    }
+
+    return redirect(`/${locale}/auth/activated`);
 }

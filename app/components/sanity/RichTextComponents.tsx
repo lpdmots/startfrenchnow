@@ -28,7 +28,7 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
         },
         videoBlog: ({ value }: any) => <VideoBlog values={value} />,
         tabelVoc: ({ value }: any) => {
-            console.log("value", value);
+            //console.log("value", value);
             return value.isArticle ? <ArticleVoc data={value} /> : <TabelVoc data={value} />;
         },
         flashcards: ({ value }: any) => {

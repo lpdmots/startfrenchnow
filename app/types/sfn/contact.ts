@@ -4,4 +4,5 @@ export interface ContactForm {
     subject: string;
     message: string;
     mailTo: string;
+    website?: string; // honeypot
 }

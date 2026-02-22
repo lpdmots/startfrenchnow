@@ -46,7 +46,7 @@ export const HeroFide = () => {
                         </div>
                         <div className="grid lg:col-span-5 relative order-1 lg:order-2">
                             <div className="h-auto w-full">
-                                <VideoFide videoKey="fide/video-presentation-fide.mp4" subtitle={t("videoSubtitle")} poster="/images/fide-presentation-thumbnail.png" isAnimated={false} />
+                                <VideoFide videoKey="fide/videopresentation-soustitres-encode.mp4" subtitle={t("videoSubtitle")} poster="/images/fide-presentation-thumbnail.png" isAnimated={false} />
                             </div>
                         </div>
                     </div>

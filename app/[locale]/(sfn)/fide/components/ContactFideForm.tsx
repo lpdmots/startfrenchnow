@@ -7,6 +7,10 @@ import { useState } from "react";
 export const ContactFideForm = ({ messages }: { messages: any }) => {
     const [pending, setPending] = useState(false);
     const [message, setMessage] = useState<React.ReactElement | null>(null);
+    const [startedAt] = useState(() => Date.now());
+    const [objectif, setObjectif] = useState<string>("");
+    const [niveauActuel, setNiveauActuel] = useState<string>("");
+    const [niveauSouhaite, setNiveauSouhaite] = useState<string>("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -20,6 +24,9 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
             niveauSouhaite: formData.get("niveauSouhaite"),
             message: formData.get("message"),
             email: formData.get("email"),
+
+            website: formData.get("website"),
+            startedAt: formData.get("startedAt"),
         };
 
         try {
@@ -40,9 +47,29 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-8 w-full items-center" style={{ minWidth: "min(500px, 100%)" }}>
+            <input type="hidden" name="startedAt" value={startedAt} />
+
+            <input type="hidden" name="objectif" value={objectif} />
+            <input type="hidden" name="niveauActuel" value={niveauActuel} />
+            <input type="hidden" name="niveauSouhaite" value={niveauSouhaite} />
+
+            <div
+                aria-hidden="true"
+                style={{
+                    position: "absolute",
+                    left: "-5000px",
+                    top: "auto",
+                    width: "1px",
+                    height: "1px",
+                    overflow: "hidden",
+                }}
+            >
+                <label htmlFor="website">Website</label>
+                <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
             <h3 className="text-neutral-100">{messages["subtitle"]}</h3>
             <div className="w-full max-w-4xl grid grid-cols-3 gap-4 md:gap-8">
-                <Select name="objectif">
+                <Select value={objectif} onValueChange={setObjectif}>
                     <SelectTrigger className="col-span-3 md:col-span-1 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]">
                         <SelectValue className="color-neutral-800" placeholder={messages["objectifPlaceholder"]} />
                     </SelectTrigger>
@@ -59,7 +86,7 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
                     </SelectContent>
                 </Select>
 
-                <Select name="niveauActuel">
+                <Select value={niveauActuel} onValueChange={setNiveauActuel}>
                     <SelectTrigger className="col-span-3 md:col-span-1 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]">
                         <SelectValue className="color-neutral-800" placeholder={messages["niveauActuelPlaceholder"]} />
                     </SelectTrigger>
@@ -85,7 +112,7 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
                     </SelectContent>
                 </Select>
 
-                <Select name="niveauSouhaite">
+                <Select value={niveauSouhaite} onValueChange={setNiveauSouhaite}>
                     <SelectTrigger className="col-span-3 md:col-span-1 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]">
                         <SelectValue className="color-neutral-800" placeholder={messages["niveauSouhaitePlaceholder"]} />
                     </SelectTrigger>

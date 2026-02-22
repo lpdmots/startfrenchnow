@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getMailOptions, transporter } from "@/app/lib/nodemailer";
 
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const RATE_MAX = 5; // 5 messages / fenêtre
+
+const getRateStore = () => {
+    const g = globalThis as any;
+    if (!g.__contactRateStore) g.__contactRateStore = new Map<string, number[]>();
+    return g.__contactRateStore as Map<string, number[]>;
+};
+
 interface MessageFields {
     name: string;
     email: string;
@@ -31,9 +40,32 @@ const generateEmailContent = (data: MessageFields) => {
 
 export async function POST(request: NextRequest) {
     const data = await request.json();
-    const { mailTo, ...mail } = data;
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown";
 
-    if (!data.email) {
+    const store = getRateStore();
+    const now = Date.now();
+    const timestamps = (store.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);
+
+    if (timestamps.length >= RATE_MAX) {
+        return NextResponse.json({ message: "Trop de requêtes. Réessayez dans quelques minutes." }, { status: 429 });
+    }
+
+    timestamps.push(now);
+    store.set(ip, timestamps);
+    const { mailTo, website = "", startedAt = 0, ...mail } = data;
+
+    // Honeypot
+    if (typeof website === "string" && website.trim() !== "") {
+        return NextResponse.json({ success: true }, { status: 200 });
+    }
+
+    // Time-trap: soumis trop vite => bot probable
+    const deltaMs = Date.now() - Number(startedAt || 0);
+    if (!Number.isFinite(deltaMs) || deltaMs < 2500) {
+        return NextResponse.json({ success: true }, { status: 200 });
+    }
+
+    if (!mail?.email) {
         return NextResponse.json({ message: "Bad request" }, { status: 400 });
     }
 

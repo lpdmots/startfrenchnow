@@ -81,7 +81,7 @@ export default function PastTensesPage() {
                 <Marquee />
             </div> */}
             <IsForYou />
-            <LastComments courseId={COURSE_ID} locale={locale} t={tLastComments} courseUrl={COURSE_URL} />
+            <LastComments courseId={COURSE_ID} locale={locale} t={tLastComments} courseUrl={COURSE_URL} udemyCourseUrl={COURSE_URL} />
             <CoursesOtherChoices courseUrl={"/courses/past-tenses"} courseRef="PastTenses" />
         </div>
     );

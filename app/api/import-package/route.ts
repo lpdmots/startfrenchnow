@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
 import path from "node:path";
 import fs from "node:fs";
 import fsp from "node:fs/promises";
@@ -11,6 +11,8 @@ import { v4 as uuidv4 } from "uuid";
 export const runtime = "nodejs"; // lecture disque locale
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
+const REFERENCE_KEY = "udemy_course_dialogs"; //"udemy_course_intermediate"; // "pack_fide_scenarios";
+const CATEGORIES = ["udemy_course_dialogs"]; // ex: ["udemy_course_dialogs"]
 
 // --------------------
 // Types d'entrée JSON (identiques à ta route actuelle + modules)
@@ -31,8 +33,8 @@ type RawItem = {
     s3_key: string;
     imagePath: string;
     durationSec: number;
-    subtitle_fr: string;
-    subtitle_en: string;
+    subtitle_fr?: string;
+    subtitle_en?: string;
     resources?: Resource[];
     levels?: Level[];
 };
@@ -69,14 +71,21 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: "JSON vide" }, { status: 400 });
         }
 
+        validateAllImagePathsOrThrow(modulesPayload);
+
         // 1) Récupérer le productPackage cible
         const productPackage = await client.fetch<(ProductPackage & { _id: string; modules?: PackageModule[] }) | null>(`*[_type == "productPackage" && referenceKey == $referenceKey][0]`, {
-            referenceKey: "pack_fide_scenarios",
+            referenceKey: REFERENCE_KEY,
         });
 
         if (!productPackage || !productPackage._id) {
-            return NextResponse.json({ message: 'Aucun "productPackage" trouvé pour referenceKey = "pack_fide_scenarios"' }, { status: 404 });
+            return NextResponse.json({ message: `Aucun "productPackage" trouvé pour referenceKey = "${REFERENCE_KEY}"` }, { status: 404 });
         }
+
+        // 1.b) Récupérer tous les slugs de posts existants (pour garantir l'unicité)
+        const existingSlugs = await client.fetch<string[]>(`*[_type == "post" && defined(slug.current)].slug.current`);
+
+        const usedSlugs = new Set((existingSlugs ?? []).filter(Boolean).map((s) => s.toLowerCase()));
 
         const allCreatedPostIds: string[] = [];
         const newModules: PackageModule[] = [];
@@ -119,6 +128,9 @@ export async function POST(request: NextRequest) {
 
                 const publishedAt = new Date().toISOString();
 
+                const baseSlug = createSlug(it.title_fr ?? "");
+                const uniqueSlug = makeUniqueSlug(baseSlug, usedSlugs);
+
                 const postDoc: Partial<Post> = {
                     _type: "post",
                     title: it.title_fr ?? "",
@@ -128,7 +140,7 @@ export async function POST(request: NextRequest) {
                     metaDescription: it.metadescription_fr,
                     metaDescription_en: it.metadescription_en,
                     mainImage,
-                    categories: ["pack_fide"],
+                    categories: CATEGORIES,
                     mainVideo: {
                         _type: "videoBlog",
                         title: "",
@@ -136,7 +148,7 @@ export async function POST(request: NextRequest) {
                         subtitleFr: it.subtitle_fr,
                         subtitleEn: it.subtitle_en,
                     },
-                    slug: { _type: "slug", current: createSlug(it.title_fr) },
+                    slug: { _type: "slug", current: uniqueSlug },
                     help: false,
                     publishedAt,
                     isReady: true,
@@ -149,7 +161,7 @@ export async function POST(request: NextRequest) {
                 postIdsForModule.push(created._id);
 
                 // Création de l'exam:
-                const examDoc = {
+                /* const examDoc = {
                     _type: "fideExam",
                     title: it.title_fr ?? "",
                     description: it.description_fr,
@@ -159,7 +171,7 @@ export async function POST(request: NextRequest) {
                     levels: it.levels ? it.levels : [],
                     pdf: `/fide/scenarios/${createSlug(it.title_fr)}`,
                 };
-                await client.create(examDoc);
+                await client.create(examDoc); */
             }
 
             // 2.b) Construire le module pour le productPackage
@@ -174,7 +186,7 @@ export async function POST(request: NextRequest) {
                         _type: "reference",
                         _ref: id,
                         _key: uuidv4(),
-                    })
+                    }),
                 ) as any, // cast pour coller au type PackageModule.posts
             };
 
@@ -201,9 +213,97 @@ export async function POST(request: NextRequest) {
                 addedModulesCount: newModules.length,
                 productPackage: updated,
             },
-            { status: 200 }
+            { status: 200 },
         );
     } catch (error: any) {
+        // Erreur validation imagePath : on renvoie la liste détaillée
+        if (error?.code === "INVALID_IMAGE_PATH") {
+            return NextResponse.json(
+                {
+                    message: error.message,
+                    invalidImagePaths: error.invalidImagePaths, // [{module,title,imagePath,reason}, ...]
+                },
+                { status: 400 },
+            );
+        }
+
         return NextResponse.json({ message: error?.message ?? "Unknown error" }, { status: 400 });
+    }
+}
+
+function makeUniqueSlug(base: string, used: Set<string>) {
+    const cleanBase = (base ?? "").trim().toLowerCase();
+
+    // fallback si jamais createSlug renvoie ""
+    if (!cleanBase) {
+        let fallback = `post-${uuidv4().slice(0, 8)}`;
+        while (used.has(fallback)) {
+            fallback = `post-${uuidv4().slice(0, 8)}`;
+        }
+        used.add(fallback);
+        return fallback;
+    }
+
+    let slug = cleanBase;
+    let i = 2;
+
+    while (used.has(slug)) {
+        slug = `${cleanBase}-${i}`;
+        i++;
+    }
+
+    used.add(slug); // <- super important : on "réserve" le slug
+    return slug;
+}
+
+function validateAllImagePathsOrThrow(modulesPayload: ModulePayload[]) {
+    const invalid: Array<{ module: string; title: string; imagePath: string; reason: string }> = [];
+
+    for (const m of modulesPayload) {
+        const moduleName = m.module_title_fr || m.module_title_en || "(module sans titre)";
+
+        for (const p of m.posts ?? []) {
+            const imagePath = (p.imagePath ?? "").trim();
+
+            // Si tu veux autoriser les posts sans imagePath, on skip.
+            if (!imagePath) continue;
+
+            try {
+                if (!fs.existsSync(imagePath)) {
+                    invalid.push({
+                        module: moduleName,
+                        title: p.title_fr || p.title_en || "(post sans titre)",
+                        imagePath,
+                        reason: "File not found",
+                    });
+                    continue;
+                }
+
+                const stat = fs.statSync(imagePath);
+                if (!stat.isFile()) {
+                    invalid.push({
+                        module: moduleName,
+                        title: p.title_fr || p.title_en || "(post sans titre)",
+                        imagePath,
+                        reason: "Path exists but is not a file",
+                    });
+                }
+            } catch (e: any) {
+                invalid.push({
+                    module: moduleName,
+                    title: p.title_fr || p.title_en || "(post sans titre)",
+                    imagePath,
+                    reason: e?.message ?? "Unknown fs error",
+                });
+            }
+        }
+    }
+
+    if (invalid.length) {
+        const sample = invalid.slice(0, 50);
+        const err = new Error(`ImagePath invalide (${invalid.length}). Exemple: ${sample[0]?.imagePath}`);
+        (err as any).code = "INVALID_IMAGE_PATH";
+        (err as any).invalidImagePaths = invalid; // renvoyé par l'API
+        throw err;
     }
 }

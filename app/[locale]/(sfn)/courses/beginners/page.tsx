@@ -1,7 +1,3 @@
-//import { previewData } from "next/headers";
-//import PreviewSuspense from "../../../components/sanity/PreviewSuspense";
-//import PreviewBlogListe from "../../../components/sanity/PreviewBlogList";
-
 import { SlideFromBottom, SlideFromLeft, SlideFromRight, SlideInOneByOneChild, SlideInOneByOneParent } from "@/app/components/animations/Slides";
 import { LastComments } from "@/app/components/sfn/courses/LastComments";
 import Image from "next/image";
@@ -13,17 +9,40 @@ import { BsInfinity, BsTrophy } from "react-icons/bs";
 import Link from "next-intl/link";
 import { CourseRatings } from "@/app/components/sfn/courses/CourseRatings";
 import LinkArrow from "@/app/components/common/LinkArrow";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoices";
+import { CoursesAccordionClient } from "../../fide/components/CoursesAccordionClient";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
+import { FidePackSommaire, getPackSommaire } from "@/app/serverActions/productActions";
+import { Locale } from "@/i18n";
+import { Progress } from "@/app/types/sfn/auth";
+import { client } from "@/app/lib/sanity.client";
+import { HeroData, buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
+import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
 
 export const revalidate = 60;
 
 const COURSE_ID = "3693426";
-const COURSE_URL = "https://www.udemy.com/course/french-for-beginners-a1/";
+const CHECKOUT_URL = `/checkout/udemy_course_beginner?quantity=1&callbackUrl=${encodeURIComponent("/courses/beginners")}&currency=EUR`;
 
-export default function BeginnersPage() {
-    const locale = useLocale();
+export default async function BeginnersPage({ params: { locale } }: { params: { locale: Locale } }) {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?._id ?? null;
+    const hasBeginnerCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_beginner");
+
+    const [frenchBeginnerSommaire, frenchBeginnerUserProgress] = await Promise.all([
+        getPackSommaire(locale, "udemy_course_beginner"),
+        userId ? client.fetch<Progress>(FRENCH_USER_PROGRESS_QUERY, { userId, courseKey: "udemy_course_beginner" }) : Promise.resolve(null),
+    ]);
+
+    const hero = buildHeroData(frenchBeginnerUserProgress, frenchBeginnerSommaire, []);
+
+    return <BeginnerPageNoAsync hero={hero} locale={locale} hasBeginnerCourse={hasBeginnerCourse} frenchBeginnerSommaire={frenchBeginnerSommaire} />;
+}
+
+const BeginnerPageNoAsync = ({ hero, locale, hasBeginnerCourse, frenchBeginnerSommaire }: { hero: HeroData; locale: Locale; hasBeginnerCourse: boolean; frenchBeginnerSommaire: FidePackSommaire }) => {
     const t = useTranslations("Courses.Beginners.PrimaryPage");
     const tLastCom = useTranslations("Courses.Beginners.LastComments");
     const baseNumbers = {
@@ -35,6 +54,7 @@ export default function BeginnersPage() {
         title: tLastCom.rich("title", intelRich()),
         description: tLastCom("description"),
         buyNow: tLastCom("buyNow"),
+        continue: tLastCom("continue"),
     };
 
     return (
@@ -56,7 +76,7 @@ export default function BeginnersPage() {
                             <Image width={1186} height={667.13} src="/images/cours1.jpg" loading="eager" alt="the first course" className="image" />
                         </div>
                     </div>
-                    <CourseRatings courseIds={[COURSE_ID]} baseNumbers={baseNumbers} />
+                    <CourseRatings courseIds={[COURSE_ID]} baseNumbers={baseNumbers} isUdemy={false} />
                 </div>
             </section>
             <div className="flex flex-col items-center justify-center w-full my-24 md:my-36">
@@ -68,11 +88,11 @@ export default function BeginnersPage() {
                         <div className="inner-container _600px---mbl center">
                             <div className="grid-2-columns post-rigth-sidebar gap-48px items-start">
                                 <div id="w-node-_37753ff7-31f0-69be-55cd-ec34f268f026-7a543d63" className="col-span-2 lg:col-span-1 order-2 lg:order-1 mt-24 lg:mt-0">
-                                    <Description />
+                                    <Description hasBeginnerCourse={hasBeginnerCourse} frenchBeginnerSommaire={frenchBeginnerSommaire} hero={hero} />
                                 </div>
                                 <div id="w-node-_5477c579-dd4f-3f5a-c700-1cd0a30d540b-7a543d63" className="lg:sticky lg:top-11 col-span-2 lg:col-span-1 order-1 lg:order-2 overflow-hidden">
                                     <SlideFromRight>
-                                        <Infos />
+                                        <Infos hasBeginnerCourse={hasBeginnerCourse} />
                                     </SlideFromRight>
                                 </div>
                             </div>
@@ -80,15 +100,19 @@ export default function BeginnersPage() {
                     </div>
                 </div>
             </div>
-            {/* <div className="section pd-top-5---bottom-5 wf-section">
-                <Marquee />
-            </div> */}
-            <IsForYou />
-            <LastComments courseId={COURSE_ID} locale={locale} t={tLastComments} courseUrl={COURSE_URL} />
+            <IsForYou hasBeginnerCourse={hasBeginnerCourse} />
+            <LastComments
+                courseId={COURSE_ID}
+                locale={locale}
+                t={tLastComments}
+                courseUrl={CHECKOUT_URL}
+                hasCourse={hasBeginnerCourse}
+                udemyCourseUrl="https://www.udemy.com/course/french-for-beginners-a1/"
+            />
             <CoursesOtherChoices courseUrl={"/courses/beginners"} courseRef="Beginners" />
         </div>
     );
-}
+};
 
 const YouLearn = () => {
     const t = useTranslations("Courses.Beginners.YouLearn");
@@ -165,8 +189,9 @@ const YouLearn = () => {
     );
 };
 
-const Description = () => {
+const Description = ({ hasBeginnerCourse, frenchBeginnerSommaire, hero }: { hasBeginnerCourse: boolean; frenchBeginnerSommaire: FidePackSommaire; hero: HeroData }) => {
     const t = useTranslations("Courses.Beginners.Description");
+    const defaultModuleKeyIndex = frenchBeginnerSommaire?.packages[0]?.modules.findIndex((mod) => mod.posts.some((p) => p._id === hero.video?.main?.postId)) ?? 0;
     return (
         <div data-w-id="373dab4e-675b-8306-ad45-ad12f418b14c" className="rich-text-v2 w-richtext">
             <SlideFromBottom>
@@ -194,87 +219,20 @@ const Description = () => {
             <SlideFromBottom>
                 <h2 className="mt-4 sm:mt-8">{t.rich("header3", intelRich())}</h2>
             </SlideFromBottom>
-            <SlideInOneByOneParent>
-                <ul>
-                    <SlideInOneByOneChild>
-                        <li>{t("content1")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content2")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content3")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content4")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content5")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content6")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content7")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content8")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content9")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content10")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content11")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content12")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content13")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content14")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content15")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content16")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content17")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content18")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content19")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content20")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content21")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content22")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content23")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content24")}</li>
-                    </SlideInOneByOneChild>
-                </ul>
-            </SlideInOneByOneParent>
+
+            <CoursesAccordionClient
+                fidePackSommaire={frenchBeginnerSommaire}
+                hasPack={hasBeginnerCourse}
+                expandAll={false}
+                defaultModuleKeyIndex={defaultModuleKeyIndex}
+                currentPostSlug={hero.video?.main?.slug}
+                linkPrefix="/courses/beginners/"
+            />
         </div>
     );
 };
 
-const Infos = () => {
+const Infos = ({ hasBeginnerCourse }: { hasBeginnerCourse: boolean }) => {
     const t = useTranslations("Courses.Beginners.Infos");
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
@@ -299,19 +257,14 @@ const Infos = () => {
                 <BsInfinity className="text-2xl mr-2 sm:mr-4" />
                 <span>{t("unlimitedAccess")}</span>
             </p>
-            <p>
-                <BsTrophy className="text-2xl mr-2 sm:mr-4" />
-                <span>{t("certificate")}</span>
-            </p>
-            <Link href={COURSE_URL} className="btn-primary full-width project-btn w-inline-block">
-                <span className="line-rounded-icon link-icon-right"> {t("buyNow")}</span>
+            <Link href={hasBeginnerCourse ? "/courses/dashboard" : CHECKOUT_URL} className="btn-primary full-width project-btn w-inline-block">
+                <span className="line-rounded-icon link-icon-right"> {hasBeginnerCourse ? t("continue") : t("buyNow")}</span>
             </Link>
-            <p className="bs pt-2">{t("guarantee")}</p>
         </div>
     );
 };
 
-const IsForYou = () => {
+const IsForYou = ({ hasBeginnerCourse }: { hasBeginnerCourse: boolean }) => {
     const t = useTranslations("Courses.Beginners.IsForYou");
     return (
         <div className="section pd-top-150px---bottom-150px wf-section pt-0">
@@ -324,7 +277,7 @@ const IsForYou = () => {
                                     <div>
                                         <h2 className="display-2 mg-bottom-12px">{t.rich("title", intelRich())}</h2>
                                         <p>
-                                            {t("description")} <LinkArrow url={COURSE_URL}>{t("help")}</LinkArrow>
+                                            {t("description")} <LinkArrow url={"/contact"}>{t("help")}</LinkArrow>
                                         </p>
                                     </div>
                                 </SlideFromBottom>
@@ -379,8 +332,11 @@ const IsForYou = () => {
                                                 </div>
                                             </div>
                                             <SlideFromBottom>
-                                                <Link href={COURSE_URL} className="btn-secondary full-width project-btn w-inline-block hover:bg-secondary-2">
-                                                    <span className="line-rounded-icon link-icon-right">{t("buyNow")}</span>
+                                                <Link
+                                                    href={hasBeginnerCourse ? "/courses/dashboard" : CHECKOUT_URL}
+                                                    className="btn-secondary full-width project-btn w-inline-block hover:bg-secondary-2"
+                                                >
+                                                    <span className="line-rounded-icon link-icon-right">{hasBeginnerCourse ? t("continue") : t("buyNow")}</span>
                                                 </Link>
                                             </SlideFromBottom>
                                         </div>

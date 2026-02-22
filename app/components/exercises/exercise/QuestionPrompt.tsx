@@ -33,6 +33,7 @@ export default function QuestionPrompt({ currentQuestion, htmlElement, handler }
                                     <input
                                         key={respIndex}
                                         type="text"
+                                        enterKeyHint="done"
                                         className="rounded-lg px-2 text-secondary-2 text-center my-1"
                                         style={{ width: 150, minHeight: 40 }}
                                         disabled
@@ -89,6 +90,7 @@ const TextInput: React.FC<{ index: number; handler: HandlerFunction }> = ({ inde
     <input
         key={index}
         type="text"
+        enterKeyHint="done"
         className="rounded-lg px-2 text-secondary-2 my-1 mx-1 focus:border-secondary-2"
         style={{ width: 150, minHeight: 40 }}
         onChange={(e) => handler(index, e)}

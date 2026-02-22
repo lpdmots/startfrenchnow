@@ -15,7 +15,7 @@ export const sendContactForm = async (data: ContactForm) =>
         return res.json();
     });
 
-export const subscribeNewsletter = async (data: string) =>
+export const subscribeNewsletter = async (data: { email: string; website?: string; startedAt?: number }) =>
     fetch("/api/subscribers", {
         method: "POST",
         body: JSON.stringify(data),
@@ -24,7 +24,7 @@ export const subscribeNewsletter = async (data: string) =>
             Accept: "application/json",
         },
     }).then((res) => {
-        console.log({ res });
+        //console.log({ res });
         if (!res.ok) throw new Error("Failed to subscribe");
         return res.json();
     });

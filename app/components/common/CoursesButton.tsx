@@ -1,15 +1,36 @@
 "use client";
+import { COURSES_PACKAGES_KEYS } from "@/app/lib/constantes";
 import DropdownMenu from "./DropdownMenu";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { Locale } from "@/i18n";
-import { FaCaretDown, FaCaretRight, FaPenFancy } from "react-icons/fa";
-import { MdVideoLibrary } from "react-icons/md";
+import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { FaCaretDown, FaCaretRight, FaLock } from "react-icons/fa";
 
 export const CoursesButton = ({ locale, dictionnary }: { locale: Locale; dictionnary: any }) => {
+    const { data: session } = useSession();
+    const [hasDashboardFrAccess, setHasDashboardFrAccess] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (session) {
+            const hasAccess = session.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
+            setHasDashboardFrAccess(!!hasAccess);
+        }
+    }, [session]);
+
     const dropdownLearn = {
         content: (
             <div className="card p-4 pr-12 mt-4">
                 <div className="flex flex-col" style={{ minWidth: 125 }}>
+                    <LinkCurrentBlog
+                        href={hasDashboardFrAccess ? "/courses/dashboard" : "#"}
+                        className={clsx("nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center", !hasDashboardFrAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600")}
+                        locale={locale as Locale}
+                    >
+                        {hasDashboardFrAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
+                        {dictionnary.dashboard}
+                    </LinkCurrentBlog>
                     <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {dictionnary.beginners}

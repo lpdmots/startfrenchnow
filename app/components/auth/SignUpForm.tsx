@@ -12,6 +12,7 @@ export const SignUpForm = ({ messages }: { messages: any }) => {
     const [checked, setChecked] = useState(false);
     const [message, setMessage] = useState({ error: "", success: "", spinner: false });
     const { error, success, spinner } = message;
+    const [startedAt] = useState(() => Date.now());
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prevState) => ({
@@ -24,16 +25,35 @@ export const SignUpForm = ({ messages }: { messages: any }) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage({ error: "", success: "", spinner: true });
-        const response = await handleSignup(formData, messages.mailMessages);
-        if (checked && response?.success) {
-            await subscribeNewsletter(formData.email);
-        }
+        const fd = new FormData(e.currentTarget);
+        const antiBot = {
+            website: String(fd.get("website") ?? ""),
+            startedAt: Number(fd.get("startedAt") ?? 0),
+        };
+        const response = await handleSignup({ ...formData, subscribeNewsletter: checked }, messages.mailMessages, antiBot);
+
         console.log(messages, response.error, messages.errorMessages[response?.error || ""]);
         setMessage({ error: response?.error ? messages.errorMessages[response.error] : "", success: response?.success ? messages.successMessage : "", spinner: false });
     };
 
     return (
         <form onSubmit={handleSubmit} className="utility-page-form w-password-page">
+            <input type="hidden" name="startedAt" value={startedAt} />
+
+            <div
+                aria-hidden="true"
+                style={{
+                    position: "absolute",
+                    left: "-5000px",
+                    top: "auto",
+                    width: "1px",
+                    height: "1px",
+                    overflow: "hidden",
+                }}
+            >
+                <label htmlFor="website">Website</label>
+                <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
             <div className="flex flex-col w-full gap-2">
                 <input type="email" className="input w-password-page w-input" onChange={handleChange} name="email" placeholder={messages.enterYourEmail} autoComplete="email" />
                 <input type="text" className="input w-password-page w-input" onChange={handleChange} name="name" placeholder={messages.enterYourUsername} autoComplete="username" />

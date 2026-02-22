@@ -8,6 +8,7 @@ export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withL
     const [pending, setPending] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [startedAt] = useState(() => Date.now());
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -16,6 +17,8 @@ export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withL
         const formData = new FormData(e.currentTarget);
         const data = {
             email: formData.get("email"),
+            website: formData.get("website"),
+            startedAt: formData.get("startedAt"),
         };
 
         try {
@@ -42,6 +45,22 @@ export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withL
                 <p className="card p-4 md:p-8 w-full">{messages["errorMessage"]}</p>
             ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col items-center">
+                    <input type="hidden" name="startedAt" value={startedAt} />
+
+                    <div
+                        aria-hidden="true"
+                        style={{
+                            position: "absolute",
+                            left: "-5000px",
+                            top: "auto",
+                            width: "1px",
+                            height: "1px",
+                            overflow: "hidden",
+                        }}
+                    >
+                        <label htmlFor="website">Website</label>
+                        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                    </div>
                     {withLabel && <p>{messages["ask"]}</p>}
                     <div className="position-relative w-full md:w-auto md:min-w-full">
                         <input type="email" name="email" className="input button-inside w-input" placeholder={messages["emailPlaceholder"]} id="Email" required />

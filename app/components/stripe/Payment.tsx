@@ -20,7 +20,7 @@ interface PaymentProps {
     formData: FormData;
     sessionEmail: string | undefined;
     setAreReady: React.Dispatch<React.SetStateAction<AreReadyState>>;
-    userId: string;
+    userId?: string;
 }
 
 export const Payment = ({ productSlug, quantity, currency, locale, formData, sessionEmail, setAreReady, userId }: PaymentProps) => {
@@ -51,27 +51,37 @@ export const Payment = ({ productSlug, quantity, currency, locale, formData, ses
         <div className="flex items-center w-full justify-center">
             {clientSecret && stripePromise && (
                 <Elements stripe={stripePromise} options={{ clientSecret, locale: locale as StripeElementLocale | undefined }}>
-                    <CheckoutForm pricingDetails={pricingDetails} setAreReady={setAreReady} formData={formData} onSuccessUrl={productInfos.onSuccessUrl} />
+                    <CheckoutForm pricingDetails={pricingDetails} setAreReady={setAreReady} formData={formData} onSuccessUrl={productInfos.onSuccessUrl} productSlug={productSlug} locale={locale} />
                 </Elements>
             )}
         </div>
     );
 };
 
-const usePaymentIntent = (productSlug: string, quantity: string, currency: string, formData: FormData, sessionEmail: string | undefined, userId: string) => {
+const usePaymentIntent = (productSlug: string, quantity: string, currency: string, formData: FormData, sessionEmail: string | undefined, userId?: string) => {
     const [pricingDetails, setPricingDetails] = useState<PricingDetails | null>(null);
     const [productInfos, setProductInfos] = useState<null | ProductInfos>(null);
     const [errorIntentMessage, setErrorIntentMessage] = useState<any>(null);
     const [clientSecret, setClientSecret] = useState("");
 
     useEffect(() => {
-        if (!formData.email || !sessionEmail) return;
+        if (!formData.email) return;
+
+        const effectiveSessionEmail = sessionEmail || formData.email;
+
         setClientSecret("");
 
         fetch("/api/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ productSlug, quantity, currency, sessionEmail, userId, ...formData }),
+            body: JSON.stringify({
+                productSlug,
+                quantity,
+                currency,
+                sessionEmail: effectiveSessionEmail,
+                userId,
+                ...formData,
+            }),
         })
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to create payment intent");

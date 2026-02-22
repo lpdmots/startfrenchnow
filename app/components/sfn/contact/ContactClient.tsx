@@ -8,23 +8,25 @@ import { sendContactForm, subscribeNewsletter } from "@/app/lib/apiNavigation";
 import Spinner from "@/app/components/common/Spinner";
 import SimpleButton from "@/app/components/animations/SimpleButton";
 
-const initialValue = {
+const initialValue = () => ({
     name: "",
     email: "",
     subject: "",
     message: "",
     mailTo: "",
-};
+    website: "",
+    startedAt: Date.now(),
+});
 
 interface FormDataProps {
-    values: typeof initialValue;
+    values: ReturnType<typeof initialValue>;
     isLoading: boolean;
     error: boolean;
     mailTo: string;
     newsletterCheck: boolean;
 }
 
-const initState = { values: initialValue, isLoading: false, error: false, mailTo: "yohann", newsletterCheck: false };
+const initState = { values: initialValue(), isLoading: false, error: false, mailTo: "yohann", newsletterCheck: false };
 
 export const ContactClient = ({ nameList, messages }: { nameList: string; messages: any }) => {
     const name = ["yohann", "nicolas"].includes(nameList?.[0]) && nameList?.[0];
@@ -95,10 +97,10 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
         try {
             await sendContactForm({ ...values, mailTo });
             if (newsletterCheck) {
-                await subscribeNewsletter(values.email);
+                await subscribeNewsletter({ email: values.email });
             }
 
-            setFormData({ ...initState, mailTo });
+            setFormData({ ...initState, mailTo, values: initialValue() });
             setSubmitted(true);
         } catch (error: any) {
             setFormData((prev) => ({
@@ -128,6 +130,21 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
                                 </div>
 
                                 <form onSubmit={handleSubmit}>
+                                    <input type="hidden" name="startedAt" value={values.startedAt} />
+                                    <div
+                                        aria-hidden="true"
+                                        style={{
+                                            position: "absolute",
+                                            left: "-5000px",
+                                            top: "auto",
+                                            width: "1px",
+                                            height: "1px",
+                                            overflow: "hidden",
+                                        }}
+                                    >
+                                        <label htmlFor="website">Website</label>
+                                        <input id="website" name="website" type="text" value={(values as any).website} onChange={handleChange} tabIndex={-1} autoComplete="off" />
+                                    </div>
                                     <div className="w-layout-grid grid-2-columns form">
                                         <div className="position-relative col-span-2 md:col-span-1">
                                             <label htmlFor="name">{messages["nameLabel"]}</label>

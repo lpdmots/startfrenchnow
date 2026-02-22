@@ -34,7 +34,7 @@ async function fetchCalendlyReservations(emails: string[], eventType: string) {
             },
             next: { revalidate: 0 }, // Désactive le cache ISR
         });
-
+        //console.log({ response });
         if (!response.ok) throw new Error("Erreur lors de la récupération des données Calendly");
 
         const data = await response.json();
@@ -252,7 +252,7 @@ const FIDE_PACK_QUERY = groq`
 export async function getPackSommaire(locale: Locale = "fr", referenceKey: string = "pack_fide_scenarios"): Promise<FidePackSommaire> {
     // Pas de cache pour garantir un sommaire toujours frais en édition
     const data = await client.fetch<FidePackSommaireNoLocale["packages"][0]>(FIDE_PACK_QUERY, { referenceKey });
-
+    console.log({ data });
     // Normalisation douce: si le produit est introuvable, renvoyer un shape vide
     return data ? normalizeFidePackSommaire({ packages: [data] }, locale) : { packages: [] };
 }

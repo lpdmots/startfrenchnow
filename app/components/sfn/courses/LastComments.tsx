@@ -16,7 +16,21 @@ export interface CommentProps {
     results?: React.ReactNode;
 }
 
-export const LastComments = ({ courseId, locale, t, courseUrl }: { courseId: string; locale: string; t: any; courseUrl: string }) => {
+export const LastComments = ({
+    courseId,
+    locale,
+    t,
+    courseUrl,
+    hasCourse = false,
+    udemyCourseUrl,
+}: {
+    courseId: string;
+    locale: string;
+    t: any;
+    courseUrl: string;
+    hasCourse?: boolean;
+    udemyCourseUrl: string;
+}) => {
     const [comments, setComments] = useState<CommentProps[]>([]);
 
     const getDate = (dateString: string) => {
@@ -68,10 +82,10 @@ export const LastComments = ({ courseId, locale, t, courseUrl }: { courseId: str
                                     </div>
                                 </div>
                                 <p className="mg-bottom-48px">
-                                    {t["description"]} <LinkArrow url="https://www.udemy.com/course/french-for-beginners-a1/">Udemy</LinkArrow>.
+                                    {t["description"]} <LinkArrow url={udemyCourseUrl}>Udemy</LinkArrow>.
                                 </p>
-                                <Link href={courseUrl} className="btn-primary project-btn w-inline-block">
-                                    <span className="line-rounded-icon link-icon-right">{t["buyNow"]}</span>
+                                <Link href={hasCourse ? "/courses/dashboard" : courseUrl} className="btn-primary project-btn w-inline-block">
+                                    <span className="line-rounded-icon link-icon-right">{hasCourse ? t["continue"] : t["buyNow"]}</span>
                                 </Link>
                             </div>
                         </div>

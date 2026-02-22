@@ -9,7 +9,11 @@ import { useTranslations } from "next-intl";
 export function formatToBadge(level?: string, classname?: string) {
     if (!level) return null;
     const upper = level.toUpperCase();
-    return <span className={clsx("flex justify-center items-center rounded-lg border border-solid border-neutral-600 px-3 py-1 text-xs text-neutral-100", classname)}>{upper}</span>;
+    return (
+        <span key={level} className={clsx("flex justify-center items-center rounded-lg border border-solid border-neutral-600 px-3 py-1 text-xs text-neutral-100", classname)}>
+            {upper}
+        </span>
+    );
 }
 
 export function formatRelative(iso?: string, locale?: "en" | "fr") {

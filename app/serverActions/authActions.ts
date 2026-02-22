@@ -6,7 +6,18 @@ import { transporterNico } from "../lib/nodemailer";
 import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { getActivateToken, isStrongPassword, isValidEmail, replaceInString } from "../lib/utils";
 
-export const handleSignup = async (formData: SignupFormData, mailMessages: any) => {
+export const handleSignup = async (formData: SignupFormData, mailMessages: any, antiBot?: { website?: string; startedAt?: number }) => {
+    // Anti-bot (best effort)
+    if (antiBot?.website && antiBot.website.trim() !== "") {
+        // On répond comme si c'était OK (évite de donner un signal)
+        return { success: "ok", status: 200 };
+    }
+
+    const deltaMs = Date.now() - Number(antiBot?.startedAt || 0);
+    if (Number.isFinite(deltaMs) && deltaMs > 0 && deltaMs < 1500) {
+        return { success: "ok", status: 200 };
+    }
+
     const email = formData.email.toLowerCase().trim();
     const password1 = formData.password1.trim();
     const password2 = formData.password2.trim();
@@ -59,6 +70,11 @@ export const handleSignup = async (formData: SignupFormData, mailMessages: any) 
     } catch (error: any) {
         console.error(error);
         return { error: "error500", status: 500 };
+    }
+
+    if (formData.subscribeNewsletter) {
+        // NE BLOQUE PAS le signup si MailerLite échoue
+        subscribeMailerLite(email).catch((err) => console.error("MailerLite subscribe error:", err));
     }
 
     return { success: "Account created. Please check your email to activate it.", status: 201 };
@@ -146,3 +162,25 @@ export const updateUserPassword = async (password: string, token: string) => {
         return { error: "Something went wrong, please contact us.", status: 500 };
     }
 };
+
+const mailerToken = process.env.MAILERLITE_API_ACCESS_TOKEN;
+const MAILERLITE_GROUP_ID = "79392045100173113";
+
+async function subscribeMailerLite(email: string) {
+    if (!mailerToken) throw new Error("Missing MAILERLITE_API_ACCESS_TOKEN");
+
+    const res = await fetch("https://connect.mailerlite.com/api/subscribers", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${mailerToken}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+        body: JSON.stringify({ email, groups: [MAILERLITE_GROUP_ID] }),
+    });
+
+    if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error(txt || "MailerLite subscribe failed");
+    }
+}

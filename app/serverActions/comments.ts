@@ -143,7 +143,7 @@ export async function createComment(input: CreateCommentInput) {
     }
 
     // Vérifier existence ressource
-    const exists = await sanity.fetch<number>(`count(*[_type==$t && _id==$rid])`, { t: POSTCOMMENTRESOURCE.includes(resourceType) ? "post" : "user", rid: resourceId });
+    const exists = await sanity.fetch<number>(`count(*[_type==$t && _id==$rid])`, { t: POSTCOMMENTRESOURCE.includes(resourceType as any) ? "post" : "user", rid: resourceId });
     if (exists === 0) throw new Error("Ressource introuvable.");
 
     // 2 niveaux max : si parentId fourni, il doit référencer un top-level de la même ressource
@@ -199,7 +199,6 @@ export async function createComment(input: CreateCommentInput) {
         const recipients = new Set<string>();
 
         if (parentId) {
-            // Auteur du commentaire directement ciblé (replyTo)
             const replyTo = await sanity.fetch<{
                 _id: string;
                 createdBy?: { _ref: string } | null;
@@ -210,7 +209,6 @@ export async function createComment(input: CreateCommentInput) {
                 recipients.add(replyTo.createdBy._ref);
             }
 
-            // Auteur du top-level (propriétaire du fil)
             const topLevelId = replyTo?.parentRef?._ref ?? replyTo?._id ?? null;
             if (topLevelId && topLevelId !== replyTo?._id) {
                 const root = await sanity.fetch<{ createdBy?: { _ref: string } | null } | null>(`*[_type=="comment" && _id==$id][0]{ createdBy }`, { id: topLevelId });
@@ -220,17 +218,21 @@ export async function createComment(input: CreateCommentInput) {
             }
         }
 
-        // Retirer l'auteur lui-même (pas d'auto-notif) + valeurs nulles
+        // ✅ AJOUT : notifier tous les admins si l'auteur n'est pas admin
+        if (!isAdmin) {
+            const adminIds = await sanity.fetch<string[]>(`*[_type=="user" && isAdmin==true]._id`);
+            for (const adminId of adminIds) recipients.add(adminId);
+        }
+
+        // Retirer l'auteur lui-même (pas d'auto-notif)
         const me = (session && userRef?._ref) || null;
         if (me) recipients.delete(me);
-        console.log({ recipients });
+
         if (recipients.size > 0) {
             const nowIsoStr = new Date().toISOString();
             const tx = sanity.transaction();
 
             for (const userId of recipients) {
-                // Dédup à l'écriture : on enlève une éventuelle notif identique
-                // puis on ajoute l'objet minimal { kind, reference, createdAt }.
                 tx.patch(userId, (p) =>
                     p
                         .setIfMissing({ notifications: [] })
@@ -241,7 +243,7 @@ export async function createComment(input: CreateCommentInput) {
                                 reference: { _type: "reference", _ref: created._id },
                                 createdAt: nowIsoStr,
                             },
-                        ])
+                        ]),
                 );
             }
 
@@ -283,7 +285,7 @@ export async function listComments(input: ListCommentsInput) {
 
     // Dashboard : seul le propriétaire (ou admin) peut lister
     const canGetThisData = isAdmin || (session && userRef?._ref === resourceId);
-    if (resourceType === "fide_dashboard" && !canGetThisData) {
+    if (["fide_dashboard", "french_dashboard"].includes(resourceType) && !canGetThisData) {
         return { totalTopLevel: 0, items: [], page, pageSize };
     }
 
@@ -450,7 +452,7 @@ async function computeCascadeOrderForResource(rootId: string, resourceType: Comm
         `*[_type=="comment" && resourceType==$rt && resourceRef._ref==$rid]{
       _id, replyToRef
     }`,
-        { rt: resourceType, rid: resourceRef }
+        { rt: resourceType, rid: resourceRef },
     );
 
     const toDelete = [[rootId]];

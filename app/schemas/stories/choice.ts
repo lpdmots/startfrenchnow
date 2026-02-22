@@ -98,7 +98,7 @@ export default defineType({
         },
         prepare(selection) {
             const { label, name, aventure, code, image } = selection;
-            console.log({ label });
+            //console.log({ label });
             return {
                 title: label && code ? label[0].children[0].text + "(" + code + ")" : label ? label[0].children[0].text : name && code ? name + "(" + code + ")" : name,
                 subtitle: aventure,

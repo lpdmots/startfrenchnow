@@ -4,7 +4,7 @@ import useSubscribe from "../../../hooks/useSubscribe";
 import Spinner from "../Spinner";
 
 export const NewsLetterForm = ({ formMessages }: { formMessages: any }) => {
-    const { handleChange, handleSubmit, pending, error, success, email } = useSubscribe();
+    const { handleChange, handleSubmit, pending, error, success, email, startedAt } = useSubscribe();
 
     return (
         <>
@@ -21,6 +21,22 @@ export const NewsLetterForm = ({ formMessages }: { formMessages: any }) => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
+                    <input type="hidden" name="startedAt" value={startedAt} />
+
+                    <div
+                        aria-hidden="true"
+                        style={{
+                            position: "absolute",
+                            left: "-5000px",
+                            top: "auto",
+                            width: "1px",
+                            height: "1px",
+                            overflow: "hidden",
+                        }}
+                    >
+                        <label htmlFor="website">Website</label>
+                        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                    </div>
                     <label className="field-label">Label</label>
                     <div className="position-relative">
                         <input type="email" className="input button-inside w-input" value={email} placeholder={formMessages["placeholder"]} id="Email" onChange={handleChange} />

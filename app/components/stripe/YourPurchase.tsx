@@ -35,7 +35,7 @@ export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity
     return (
         <div className="flex flex-col gap-4">
             <div className="p-4 rounded-xl" style={{ border: "solid 1px var(--neutral-400)" }}>
-                <div className="flex gap-4 w-full">
+                <div className="flex flex-col sm:flex-row flex-nowrap gap-4 w-full">
                     <Image className="h-[72px] md:h-20 w-auto object-contain rounded-xl" src={urlFor(productInfos.image).url()} alt={t("courseImageAlt")} height={150} width={150} />
                     <div>
                         <p className="mb-0 text-3xl md:text-4xl font-bold">{title1}</p>
@@ -50,7 +50,7 @@ export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity
                                 <SelectTrigger
                                     className={cn(
                                         "col-span-3 md:col-span-1 rounded-md p-2 transition-shadow duration-300 color-neutral-800 bg-neutral-100 w-20 order-2 sm:order-1",
-                                        payment && "bg-neutral-200 pointer-events-none"
+                                        payment && "bg-neutral-200 pointer-events-none",
                                     )}
                                     style={{ border: "1px solid var(--neutral-600)" }}
                                 >
@@ -77,7 +77,7 @@ export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity
                                     <SelectTrigger
                                         className={cn(
                                             "col-span-3 md:col-span-1 rounded-md p-2 transition-shadow duration-300 color-neutral-800 bg-neutral-100 w-20",
-                                            payment && "bg-neutral-200 pointer-events-none"
+                                            payment && "bg-neutral-200 pointer-events-none",
                                         )}
                                         style={{ border: "1px solid var(--neutral-600)" }}
                                     >

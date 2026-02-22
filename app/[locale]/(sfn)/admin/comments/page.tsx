@@ -60,8 +60,10 @@ export default async function AdminCommentsPage() {
             c.resourceType === "blog" && c.resource?.slug
                 ? `/blog/post/${c.resource.slug}${anchor}`
                 : c.resourceType === "pack_fide" && c.resource?.slug
-                ? `/fide/videos/${c.resource.slug}${anchor}`
-                : `/fide/dashboard/${c?.author?._id ?? ""}${anchor}`;
+                  ? `/fide/videos/${c.resource.slug}${anchor}`
+                  : c.resourceType === "french_dashboard"
+                    ? `/courses/dashboard/${c?.author?._id ?? ""}${anchor}`
+                    : `/fide/dashboard/${c?.author?._id ?? ""}${anchor}`;
 
         return {
             id: c._id,
@@ -70,7 +72,7 @@ export default async function AdminCommentsPage() {
             status: c.status ?? "active",
             isSeen: c.isSeen === true,
             assignedTo: (c.assignedTo ?? null) as "Nico" | "Yoh" | null,
-            resourceType: c.resourceType as "blog" | "pack_fide",
+            resourceType: c.resourceType,
             authorName: c.author?.name ?? "Invité",
             authorIsAdmin: c.author?.isAdmin === true,
             resourceTitle: c.resource?.title ?? null,

@@ -5,9 +5,10 @@ import { PackagesKey } from "./stripe";
 
 export interface SignupFormData {
     email: string;
+    name: string;
     password1: string;
     password2: string;
-    name: string;
+    subscribeNewsletter?: boolean;
 }
 
 export interface UserProps extends Base {

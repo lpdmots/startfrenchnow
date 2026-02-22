@@ -5,15 +5,54 @@ import clsx from "clsx";
 import { NotebookPen } from "lucide-react";
 import { useState, useEffect } from "react";
 import { PopupModal } from "react-calendly";
+import { useRouter } from "next/navigation";
 
 export const BookFirstMeeting = ({ label, variant = "primary", test = false, small = false }: { label: string; variant?: "primary" | "secondary"; test?: boolean; small?: boolean }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         // Exécuter après le montage du composant pour récupérer le root element
         setRootElement(document.getElementById("root"));
     }, []);
+
+    // ✅ écoute l'event Calendly "event_scheduled" et redirige
+    useEffect(() => {
+        const onMessage = (e: MessageEvent) => {
+            // ✅ sécurité minimale : n'accepter que calendly.com
+            try {
+                const host = new URL(e.origin).hostname;
+                if (!host.endsWith("calendly.com")) return;
+            } catch {
+                return;
+            }
+
+            const data = e.data as any;
+            if (!data || typeof data !== "object") return;
+
+            const eventName = data.event as string | undefined;
+            if (eventName !== "calendly.event_scheduled") return;
+
+            const eventUri = data.payload?.event?.uri as string | undefined;
+            if (!eventUri) return;
+
+            setIsOpen(false);
+
+            // ✅ ton slug “connu”
+            const slug = "your-fide-plan";
+
+            const qs = new URLSearchParams();
+            qs.set("event_uri", eventUri);
+            if (test) qs.set("test", "1");
+            qs.set("continue_url", "/fide");
+
+            router.push(`/rdv-success/${slug}?${qs.toString()}`);
+        };
+
+        window.addEventListener("message", onMessage);
+        return () => window.removeEventListener("message", onMessage);
+    }, [router, test]);
 
     if (!rootElement) return null; // Assure que rien n'est rendu si rootElement n'est pas prêt
 
@@ -34,7 +73,19 @@ export const BookFirstMeeting = ({ label, variant = "primary", test = false, sma
     );
 };
 
-export const BookReservation = ({ label, hasPack, test = false, small = false }: { label: string; hasPack?: boolean; test?: boolean; small?: boolean }) => {
+export const BookReservation = ({
+    label,
+    hasPack,
+    test = false,
+    small = false,
+    openFreeHours,
+}: {
+    label: string;
+    hasPack?: boolean;
+    test?: boolean;
+    small?: boolean;
+    openFreeHours?: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
 
@@ -52,10 +103,10 @@ export const BookReservation = ({ label, hasPack, test = false, small = false }:
                 className={clsx(
                     "btn btn-primary small w-full text-center",
                     hasPack && "pointer-events-none opacity-60 cursor-not-allowed",
-                    `hover:bg-[var(--hover-color)] border-secondary-2 hover:!border-[var(--hover-color)]`
+                    `hover:bg-[var(--hover-color)] border-secondary-2 hover:!border-[var(--hover-color)]`,
                 )}
                 aria-disabled={hasPack}
-                onClick={() => setIsOpen(true)}
+                onClick={openFreeHours ? () => openFreeHours(true) : () => setIsOpen(true)}
             >
                 {label}
             </button>

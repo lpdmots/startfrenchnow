@@ -28,3 +28,19 @@ export async function requireSessionAndFide({ callbackUrl = "/", info = "" }: { 
 
     return session;
 }
+
+export async function requireSessionAndFrench({ callbackUrl = "/", info = "" }: { callbackUrl?: string; info?: string } = {}) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        const qs = new URLSearchParams();
+        if (callbackUrl) qs.set("callbackUrl", callbackUrl);
+        if (info) qs.set("info", info);
+        redirect(`/auth/signIn?${qs.toString()}`);
+    }
+
+    if (!session.user.permissions?.some((p) => p.referenceKey === "udemy_course_beginner" || p.referenceKey === "udemy_course_intermediate" || p.referenceKey === "udemy_course_dialogs")) {
+        redirect("/courses/beginners");
+    }
+
+    return session;
+}

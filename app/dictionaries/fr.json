@@ -53,6 +53,10 @@
             "description": "Pratiquez votre français avec nos exercices interactifs en ligne : grammaire, vocabulaire, compréhension et plus. Progressez avec Start French Now !"
         },
         "Courses": {
+            "FrenchDashboard": {
+                "title": "Mon espace d'apprentissage – progression | Start French Now",
+                "description": "Votre espace privé d’apprentissage du français : suivez vos cours vidéo, vos exercices et vos parcours, consultez vos contenus et échangez avec votre coach."
+            },
             "Beginners": {
                 "title": "Cours Complet de Français : Apprenez le Français - Débutants | Start French Now",
                 "description": "Langue française pour les débutants (A0 > A2). Expression orale, écoute, grammaire, lecture, vocabulaire avec un enseignant natif."
@@ -77,8 +81,11 @@
         "about": "À propos",
         "contact": "Contact",
         "profil": "Profil",
+        "exercises": "Exercices",
         "fideLessons": "Mes leçons FIDE",
         "my_account": "Mon compte",
+        "legal_mentions": "Informations légales",
+        "reseaux_sociaux": "Réseaux sociaux",
         "logout": "Se déconnecter",
         "contact_us": "Contactez-nous",
         "videos": "Vidéos",
@@ -96,6 +103,7 @@
             "stories": "Histoires"
         },
         "courses": {
+            "dashboard": "Tableau de bord FR",
             "coursesTitle": "Nos cours",
             "button": "Cours",
             "beginners": "Débutant",
@@ -120,7 +128,7 @@
             "buttonLabel": "FIDE",
             "fide": "Test FIDE",
             "packFide": "Pack FIDE",
-            "dashboard": "Tableau de bord",
+            "dashboard": "Tableau de bord FIDE",
             "videos": "Cours FIDE",
             "exams": "Examens blancs"
         }
@@ -327,7 +335,7 @@
         "yourPurchase": {
             "courseImageAlt": "image du cours",
             "quantity": "Quantité",
-            "unitPrice": "{currency} {price}.- /heure"
+            "unitPrice": "{currency} {price}.-"
         },
         "priceLayout": {
             "amountToPay": "Montant à Payer",
@@ -344,7 +352,10 @@
             "successMessage": "Vous avez payé avec succès",
             "goHome": "Retour à l'accueil",
             "bookLesson": "Commencer !",
-            "successImageAlt": "Succès"
+            "successImageAlt": "Succès",
+            "guestCopy": "Pour accéder à votre achat et commencer dès maintenant, connectez-vous. Si vous n'avez pas de compte, créez-en un en utilisant <b>l'adresse e-mail utilisée pour le paiement</b>, votre achat sera ajouté automatiquement.",
+            "guestCta": "Me connecter",
+            "noAccount": "Vous n'avez pas de compte ? Inscrivez-vous ici."
         }
     },
     "ExercisesPage": {
@@ -367,6 +378,12 @@
         "moreReplies": "+ {count, plural, one {# autre réponse} other {# autres réponses}}",
 
         "empty": "Aucune notification pour le moment."
+    },
+    "RdvSuccess": {
+        "thankYou": "Merci !",
+        "successMessage": "Votre rendez-vous a bien été pris en compte.",
+        "backToPage": "Continuer",
+        "successImageAlt": "Succès"
     },
     "Fide": {
         "FidePack": {
@@ -468,7 +485,8 @@
                         "watched": "Vu",
                         "unwatched": "Non vu",
                         "in-progress": "En cours"
-                    }
+                    },
+                    "noAccess": "Vous n'avez pas accès à ce cours."
                 },
                 "ExamCard": {
                     "resume": "Reprendre",
@@ -615,7 +633,7 @@
             "li3": "Bénéficiez de l'accompagnement continu d'un véritable <under2><b>expert Fide</b></under2>.",
             "proof": "Une méthode <hs2>validée</hs2>",
             "buttonPrimary": "Obtenir mon plan gratuit",
-            "buttonSecondary": "Acheter maintenant",
+            "buttonSecondary": "Choisir ma formule",
             "videoSubtitle": "Découvrez notre préparation FIDE"
         },
         "Formateur": {
@@ -684,7 +702,7 @@
             "access": "Accès sur mobiles et TV",
             "lifetime": "Accès à vie, mises à jour incluses",
             "buttonHasPack": "Reprendre les cours",
-            "buttonNoPack": "Acheter maintenant"
+            "buttonNoPack": "Choisir ma formule"
         },
         "MarqueePackFideContent": {
             "lifetime": "Accès à vie",
@@ -713,7 +731,7 @@
                 "desc": "Un grand nombre de situations du quotidien couvrant tous les thèmes FIDE possibles."
             },
             "ctaHasPack": "Acheter des cours privés",
-            "ctaNoPack": "Acheter maintenant",
+            "ctaNoPack": "Choisir ma formule",
             "linkAllExams": "Voir tous les examens disponibles",
             "imageAlt": "Infographie sur les examens"
         },
@@ -807,7 +825,8 @@
                     "e1": "Réservation sous 12h possible",
                     "e2": "Annulation flexible"
                 },
-                "labelCTA": "RÉSERVER UN ENTRETIEN"
+                "labelCTA": "RÉSERVER UN ENTRETIEN GRATUIT",
+                "labelByMore": "ACHETER PLUS D'HEURES"
             }
         },
         "PreviewsSection": {
@@ -1168,7 +1187,8 @@
             "infoMessages": {
                 "privateLessons": "Connectez-vous pour accéder à votre suivi.",
                 "checkout": "Connectez-vous pour accéder au paiement.",
-                "storyAccount": "Vous devez vous connecter pour garder le suivi des histoires."
+                "storyAccount": "Vous devez vous connecter pour garder le suivi des histoires.",
+                "frenchCourses": "Connectez-vous pour accéder à vos cours de français."
             }
         },
         "CredentialsForm": {
@@ -1289,6 +1309,41 @@
         }
     },
     "Courses": {
+        "Dashboard": {
+            "DashboardHero": {
+                "title": "<b2>Reprenez</b2> votre apprentissage du <b6>Français</b6> en un clic."
+            },
+            "Beginner": {
+                "title": "Cours <b2>Débutant</b2>",
+                "selectedForYou": "Sélectionnées pour vous",
+                "summary": "Sommaire",
+                "globalProgress": "PROGRESSION GÉNÉRALE",
+                "lastActivityRich": "Dernière activité\u00a0: <b>{time}</b>",
+                "ctaBuyPack": "Acheter le Cours Débutant",
+                "ctaBuyPackStrong": "Acheter le <b>Cours Débutant</b>",
+                "lockedOverlayHeadline": "Contenu réservé au Cours Débutant"
+            },
+            "Intermediate": {
+                "title": "Cours <b4>Intermédiaire</b4>",
+                "selectedForYou": "Sélectionnées pour vous",
+                "summary": "Sommaire",
+                "globalProgress": "PROGRESSION GÉNÉRALE",
+                "lastActivityRich": "Dernière activité\u00a0: <b>{time}</b>",
+                "ctaBuyPack": "Acheter le Cours Intermédiaire",
+                "ctaBuyPackStrong": "Acheter le <b>Cours Intermédiaire</b>",
+                "lockedOverlayHeadline": "Contenu réservé au Cours Intermédiaire"
+            },
+            "Dialogs": {
+                "title": "Cours <b5>Dialogues</b5>",
+                "selectedForYou": "Sélectionnées pour vous",
+                "summary": "Sommaire",
+                "globalProgress": "PROGRESSION GÉNÉRALE",
+                "lastActivityRich": "Dernière activité\u00a0: <b>{time}</b>",
+                "ctaBuyPack": "Acheter le Cours Dialogues",
+                "ctaBuyPackStrong": "Acheter le <b>Cours Dialogues</b>",
+                "lockedOverlayHeadline": "Contenu réservé au Cours Dialogues"
+            }
+        },
         "Beginners": {
             "PrimaryPage": {
                 "title": "Cours Complet de Français : Apprenez le Français - <hs2>Débutants</hs2>",
@@ -1314,31 +1369,7 @@
                 "para2": "Le cours est divisé en 28 leçons (16 heures de vidéos) suivant toutes une progression très logique basée sur de nombreuses années d'enseignement et des dizaines de méthodes françaises. J'utilise également exactement le même matériel avec mes étudiants privés en leçons individuelles et je peux vous assurer qu'ils progressent !",
                 "para3": "Chaque leçon a un objectif spécifique ou un thème et vient avec du vocabulaire et de la grammaire. Toutes ces nouvelles connaissances sont testées à travers de nombreux exercices. Pour cette partie (exercices) vous aurez besoin d'un stylo et d'une feuille de papier pour faire les exercices avec moi. C'est facile, suivez juste les instructions sur la vidéo !",
                 "para4": "<b>Après chaque leçon, vous aurez accès au résumé de la leçon, à des exercices supplémentaires (avec corrections) et à une liste de vocabulaire. Alors s'il vous plaît, faites vos devoirs :)</b>",
-                "header3": "Contenu du <hs2>Cours</hs2>",
-                "content1": "Se présenter - L'alphabet",
-                "content2": "Faire connaissance - Les nationalités",
-                "content3": "Saluer & dire au revoir",
-                "content4": "Les nombres",
-                "content5": "Parler de soi",
-                "content6": "Les articles",
-                "content7": "Parler de sa famille",
-                "content8": "Questionner",
-                "content9": "Décrire sa ville",
-                "content10": "Comprendre un itinéraire",
-                "content11": "Parler de ses goûts et de ses activités",
-                "content12": "Réserver un hébergement",
-                "content13": "Proposer une sortie",
-                "content14": "Décrire la personnalité et le physique",
-                "content15": "Faire du shopping",
-                "content16": "Parler de son quotidien",
-                "content17": "Parler de ses vacances",
-                "content18": "Chez le docteur",
-                "content19": "Parler de son alimentation",
-                "content20": "Donner des conseils",
-                "content21": "Questionner (les 3 formes du questionnement)",
-                "content22": "Parler de ses projets (le futur)",
-                "content23": "Révision des temps",
-                "content24": "La construction de la phrase"
+                "header3": "Contenu du <hs2>Cours</hs2>"
             },
             "Infos": {
                 "header": "Ce cours comprend :",
@@ -1348,8 +1379,8 @@
                 "accessMobileTV": "Accès sur mobiles et TV",
                 "unlimitedAccess": "Accès illimité",
                 "certificate": "Certificat de fin de formation",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
-                "guarantee": "* Garantie satisfait ou remboursé de 30 jours"
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours"
             },
             "IsForYou": {
                 "title": "Ce Cours est-il <hs2>Fait pour Vous</hs2> ?",
@@ -1360,7 +1391,8 @@
                 "prerequisite2": "Le cours est recommandé à toute personne souhaitant apprendre le français de manière rapide et efficace.",
                 "prerequisite3": "Il est en français, ne vous inquiétez pas : l'immersion est la meilleure méthode pour apprendre une langue.",
                 "prerequisite4": "Enseignant de langue maternelle française avec un accent parfait.",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours",
                 "levelTitle": "Quel niveau atteindrez-vous ?",
                 "levelDescription": "À la fin de ce cours, vous aurez complété le niveau A1.2 et atteint un niveau intermédiaire bas en français (A2) vous <noWrap>permettant de :</noWrap>",
                 "level1": "comprendre des phrases et des expressions fréquemment utilisées liées à des domaines de pertinence immédiate (ex. : informations personnelles et familiales de base, achats, géographie locale, emploi).",
@@ -1371,7 +1403,8 @@
             "LastComments": {
                 "title": "<hs2>Retours</hs2> & Expériences",
                 "description": "Voici ce que nos étudiants disent de ce cours. Faites-vous votre propre avis sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous trouverez des milliers d'autres avis sur ",
-                "buyNow": "ACHETEZ-LE MAINTENANT !"
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours"
             }
         },
         "Intermediates": {
@@ -1399,25 +1432,7 @@
                 "para2": "Le cours se divise en <b>18 leçons (~12 heures de vidéos)</b> suivant toutes une progression très logique, basée sur de nombreuses années d'enseignement et des dizaines de méthodes françaises. J'utilise également le même matériel avec mes étudiants privés en cours particuliers et je peux vous assurer qu'ils progressent !",
                 "para3": "Chaque leçon a un objectif spécifique ou un thème utilisant des situations réelles pour apprendre un nouveau vocabulaire et de la grammaire. Toutes ces nouvelles connaissances sont testées à travers de nombreux exercices. Pour cette partie, vous aurez besoin d'un stylo et d'une feuille de papier pour faire les exercices avec moi. C'est facile, suivez simplement les instructions de la vidéo !",
                 "para4": "Après chaque leçon, vous aurez accès au <b>résumé de la leçon, à des exercices supplémentaires (avec corrections) et une liste de vocabulaire</b>. Alors s'il vous plaît, faites vos devoirs 😊",
-                "header3": "Contenu <hs4>du cours</hs4>",
-                "content1": "Parler de la météo",
-                "content2": "La France et ses régions",
-                "content3": "Décrire un lieu",
-                "content4": "Comprendre & Écrire un programme",
-                "content5": "Choisir un cadeau",
-                "content6": "Faire du shopping dans un magasin",
-                "content7": "Décrire un objet et sa fonction",
-                "content8": "Faire une liste de courses",
-                "content9": "Chez le commerçant",
-                "content10": "Caractériser un restaurant",
-                "content11": "Commander dans un restaurant",
-                "content12": "Parler du passé",
-                "content13": "Faire des comparaisons",
-                "content14": "Décrire un logement",
-                "content15": "Transformations / Rénovations de la maison",
-                "content16": "Rechercher un logement",
-                "content17": "Colocation",
-                "content18": "Conjugaison (Révision)"
+                "header3": "Contenu <hs4>du cours</hs4>"
             },
             "Infos": {
                 "header": "Ce cours inclut:",
@@ -1426,8 +1441,8 @@
                 "accessMobileTV": "Accès sur mobiles et TV",
                 "unlimitedAccess": "Accès illimité",
                 "certificate": "Certificat de complétion",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
-                "guarantee": "* Garantie de satisfaction ou remboursement de 30 jours"
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours"
             },
             "IsForYou": {
                 "title": "Ce cours est-il <hs4>fait pour vous</hs4> ?",
@@ -1436,7 +1451,8 @@
                 "prerequisitesTitle": "Prérequis",
                 "prerequisite1": "Vous devriez avoir une bonne connaissance du vocabulaire et de la grammaire français A1.",
                 "prerequisite2": "Idéalement mon premier cours : Cours Complet de Français : Apprendre le Français - Débutants.",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours",
                 "levelTitle": "Quel niveau vais-je atteindre ?",
                 "levelDescription": "À la fin de ce cours, vous aurez complété le niveau A2.1. Vous devrez terminer la deuxième partie de ce cours (sur laquelle je travaille déjà) pour finir le niveau A2.2 et atteindre le début de B1."
             },
@@ -1444,7 +1460,8 @@
             "LastComments": {
                 "title": "<hs4>Avis</hs4> & Expériences",
                 "description": "Voici ce que nos étudiants disent de ce cours. Formez votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
-                "buyNow": "ACHETEZ-LE MAINTENANT !"
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours"
             }
         },
         "Dialogues": {
@@ -1474,49 +1491,7 @@
                 "para4": "Pour la partie exercice, n'oubliez pas que vous aurez besoin d'un stylo et d'un papier pour les compléter avec moi. C'est facile, il suffit de suivre les instructions sur la vidéo !",
                 "para5": "Et très important ! Après chaque leçon, vous aurez accès à <b>un résumé de la leçon et une liste de vocabulaire</b> avec toutes les bonnes expressions à utiliser pour chaque situation de communication, accompagnées de la traduction et d'un document audio pour garantir une prononciation parfaite !",
                 "para6": "Vous trouverez également des bilans ou évaluations avec de nombreux exercices tout au long du cours. Alors, s'il vous plaît, faites vos devoirs 😉",
-                "header3": "Contenu du <hs5>cours</hs5>",
-                "content1": "Faire les courses",
-                "content2": "Préciser les quantités",
-                "content3": "Passer une commande - Commander",
-                "content4": "Réserver",
-                "content5": "Modifier une réservation",
-                "content6": "Parler d'argent",
-                "content7": "Demander l'échange, le remboursement",
-                "content8": "Hésiter - Ne pas être sûr(e)",
-                "content9": "Demander, donner des informations",
-                "content10": "S'inscrire à une activité",
-                "content11": "Chercher, localiser",
-                "content12": "Décrire un lieu - Les vacances",
-                "content13": "Son lieu de vie - S'installer",
-                "content14": "S'abonner - Internet et Téléphonie",
-                "content15": "Demander des explications",
-                "content16": "Chercher une solution",
-                "content17": "Décrire un vol",
-                "content18": "Décrire un accident",
-                "content19": "Parler de sa santé",
-                "content20": "Téléphoner",
-                "content21": "Prendre, reporter, annuler un rendez-vous",
-                "content22": "Faire des travaux, bricoler",
-                "content23": "Réparer, chez le mécanicien",
-                "content24": "Donner - Suivre des instructions",
-                "content25": "Insister - Refuser",
-                "content26": "Signaler une erreur, un problème",
-                "content27": "S'excuser",
-                "content28": "Organiser, proposer une activité",
-                "content29": "Être invité - Complimenter",
-                "content30": "Présenter une personne",
-                "content31": "Prendre, recevoir des nouvelles",
-                "content32": "Féliciter",
-                "content33": "Exprimer la déception et le regret - Consoler",
-                "content34": "Vérifier - Assurer",
-                "content35": "Nier - Accuser",
-                "content36": "Parler d'un changement positif",
-                "content37": "Se plaindre - être négatif",
-                "content38": "Faire une critique positive ou négative (Film - Spectacle)",
-                "content39": "Faire une critique positive ou négative (Exposition - l'Art)",
-                "content40": "Dire du bien / Dire du mal de quelqu'un",
-                "content41": "Demander & Donner des conseils",
-                "content42": "Remerciements et Suite !"
+                "header3": "Contenu du <hs5>cours</hs5>"
             },
             "Infos": {
                 "header": "Ce cours comprend :",
@@ -1525,7 +1500,8 @@
                 "accessMobileTV": "Accès sur mobiles et TV",
                 "unlimitedAccess": "Accès illimité",
                 "certificate": "Certificat de complétion",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours",
                 "guarantee": "* Garantie de satisfaction ou remboursement de 30 jours"
             },
             "IsForYou": {
@@ -1535,7 +1511,8 @@
                 "prerequisitesTitle": "Prérequis",
                 "prerequisite1": "Vous devriez avoir un niveau A2 en français ou un A1 solide.",
                 "prerequisite2": "Au moins mon premier cours : Le cours complet de français : Apprendre le français - Débutants",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours",
                 "levelTitle": "Quel niveau atteindrai-je ?",
                 "levelDescription": "À la fin de ce cours allant du niveau A2 au B1, vous atteindrez un niveau de conversation B1."
             },
@@ -1543,7 +1520,8 @@
             "LastComments": {
                 "title": "<hs5>Commentaires</hs5> & Expériences",
                 "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
-                "buyNow": "ACHETEZ-LE MAINTENANT !"
+                "buyNow": "Accéder au cours — 29 €",
+                "continue": "Continuer ce cours"
             }
         },
         "PastTenses": {
@@ -1585,7 +1563,7 @@
                 "accessMobileTV": "Accès sur mobiles et TV",
                 "unlimitedAccess": "Accès illimité",
                 "certificate": "Certificat de fin de cours",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "buyNow": "ACHETEZ-LE MAINTENANT",
                 "guarantee": "* Garantie de satisfaction ou remboursement de 30 jours"
             },
             "IsForYou": {
@@ -1595,7 +1573,8 @@
                 "prerequisitesTitle": "Prérequis",
                 "prerequisite1": "Vous avez déjà des connaissances en langue française (niveau A1+/A2).",
                 "prerequisite2": "Un stylo et une feuille de papier.",
-                "buyNow": "ACHETEZ-LE MAINTENANT !",
+                "buyNow": "ACHETEZ-LE MAINTENANT",
+                "continue": "Continuer ce cours",
                 "levelTitle": "Quel niveau vais-je atteindre ?",
                 "levelDescription": "Ce cours sur les temps du passé en français est conçu pour <noWrap>vous aider :</noWrap>",
                 "level1": "Les comprendre et savoir quand les utiliser",
@@ -1607,7 +1586,8 @@
             "LastComments": {
                 "title": "<hs3>Commentaires</hs3> & Expériences",
                 "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
-                "buyNow": "ACHETEZ-LE MAINTENANT !"
+                "buyNow": "ACHETEZ-LE MAINTENANT",
+                "continue": "Continuer ce cours"
             }
         }
     }

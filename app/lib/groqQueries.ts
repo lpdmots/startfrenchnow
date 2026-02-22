@@ -106,3 +106,11 @@ export const groqQueries: any = {
         ...,
     }`,
 };
+
+export const FRENCH_USER_PROGRESS_QUERY = groq`
+  *[_type == "user" && _id == $userId][0].learningProgress[type == $courseKey][0]{
+    _key,
+    type,
+    videoLogs
+  }
+`;

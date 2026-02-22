@@ -33,17 +33,24 @@ async function DashboardPage({ params: { locale, slug: specifiedId } }: { params
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const dataId = specifiedId?.[0] || userId || "";
 
-    // Fetch de PrivatLesson
-    const response: CalendlyData = await getCalendlyData(dataId, "Fide Preparation Class");
-    const privateLesson: PrivateLesson = getFormattedData(response);
+    const examsPromise = client.fetch<Exam[]>(queryExams);
 
-    // Fetch des Exams
-    const exams: Exam[] = await client.fetch(queryExams);
+    const sommairePromise = getFidePackSommaire(locale);
 
-    const [fidePackSommaire, fideUserProgress] = await Promise.all([
-        getFidePackSommaire(locale),
-        dataId ? client.fetch<Progress>(FIDE_USER_PROGRESS_QUERY, { userId: dataId }) : Promise.resolve(null),
-    ]);
+    const progressPromise = dataId ? client.fetch<Progress>(FIDE_USER_PROGRESS_QUERY, { userId: dataId }) : Promise.resolve(null);
+
+    const privateLessonPromise: Promise<PrivateLesson | null> = dataId
+        ? (async () => {
+              try {
+                  const response: CalendlyData = await getCalendlyData(dataId, "Fide Preparation Class");
+                  return getFormattedData(response);
+              } catch {
+                  return null;
+              }
+          })()
+        : Promise.resolve(null);
+
+    const [exams, fidePackSommaire, fideUserProgress, privateLesson] = await Promise.all([examsPromise, sommairePromise, progressPromise, privateLessonPromise]);
 
     const hero = buildHeroData(fideUserProgress, fidePackSommaire, exams, privateLesson);
 

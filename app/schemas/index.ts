@@ -9,6 +9,7 @@ import theme from "./sfn/blogTools/theme";
 import fideExam from "./sfn/fideExam";
 import productPackage from "./sfn/package";
 import comment from "./sfn/comment";
+import pendingPurchase from "./sfn/pendingPurchase";
 
 // Blog Tools
 import flashcards from "./sfn/blogTools/flashcards";
@@ -39,6 +40,7 @@ export const schemaTypes = [
     comment,
     product,
     productPackage,
+    pendingPurchase,
     blockContent,
     video,
     fideExam,

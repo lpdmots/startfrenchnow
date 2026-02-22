@@ -20,6 +20,14 @@ import { PdfDropdown } from "./PdfDropdown";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
+const LOCKEDTARGET: Record<string, string> = {
+    "/courses/beginners/": "/courses/beginners/",
+    "/fide/scenarios/": "/fide#plans",
+    "/fide/videos/": "/fide#plans",
+    "/courses/intermediates/": "/courses/intermediates/",
+    "/courses/dialogues/": "/courses/dialogues/",
+};
+
 export function CoursesAccordionClient({
     hasPack = false,
     fidePackSommaire,
@@ -43,7 +51,18 @@ export function CoursesAccordionClient({
     const isFideSection = pathname?.includes("/fide") || false;
     const t = useTranslations(isFideSection ? "FidePack.CoursesAccordionClient" : "Fide.FidePack.CoursesAccordionClient");
     const params = useParams();
-    const activeSlug = (params?.slug || null) as string | null;
+    console.log({ hasPack, fidePackSommaire, expandAll, defaultModuleKeyIndex, currentPostSlug, linkPrefix, noPadding, withPackageName });
+    const activeSlug = useMemo<string | null>(() => {
+        // Sur le dashboard : pas de slug de leçon
+        if (pathname?.includes("/fide/dashboard")) return null;
+
+        const raw = (params as any)?.slug;
+        if (!raw) return null;
+
+        // Next peut donner string[] sur catch-all
+        if (Array.isArray(raw)) return raw[0] ?? null; // ou raw.at(-1) selon ton routing
+        return raw as string;
+    }, [pathname, (params as any)?.slug]);
 
     useInitializePackFideWatched();
     const { watchedVideos } = useSfnStore((s) => ({
@@ -121,7 +140,7 @@ export function CoursesAccordionClient({
                                         <div className="flex flex-col sm:flex-row w-full sm:items-center justify-between pr-4 sm:flex-wrap">
                                             <div className="flex gap-2 mr-2">
                                                 <div className="font-medium text-neutral-800 text-base">
-                                                    {mod.title} {!!mod?.level && `(${LEVELDATA[mod.level[0]]?.label})`}
+                                                    {mod.title} {!!mod?.level && mod.level.length > 0 && `(${LEVELDATA[mod.level[0]]?.label})`}
                                                 </div>
                                             </div>
                                             <div className="text-xs text-neutral-600 flex" suppressHydrationWarning>
@@ -186,8 +205,10 @@ function LessonRow({
     const isWatched = watchedVideos.includes(lesson._id);
     const isCurrentPostSlug = currentPostSlug === lesson.slug.current;
 
+    const lockedTarget = LOCKEDTARGET[linkPrefix];
+
     return (
-        <Link href={locked ? "/fide#plans" : linkPrefix + lesson.slug.current} prefetch className={clsx("!text-neutral-800 !no-underline", isActive && "pointer-events-none cursor-default")}>
+        <Link href={locked ? lockedTarget : linkPrefix + lesson.slug.current} prefetch className={clsx("!text-neutral-800 !no-underline", isActive && "pointer-events-none cursor-default")}>
             <div className={clsx("flex items-center gap-4 py-3 hover:bg-neutral-200 rounded-lg px-2", (isActive || isCurrentPostSlug) && "bg-neutral-300", locked && "opacity-60")}>
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700 border border-solid border-neutral-700">
                     {isWatched ? <FaRegCheckCircle className="text-xl" /> : isActive || isCurrentPostSlug ? <FaRegArrowAltCircleRight className="text-xl" /> : <MdOndemandVideo className="text-xl" />}
@@ -195,7 +216,7 @@ function LessonRow({
                 <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                         <span className="truncate font-medium text-neutral-900 shrink">{lesson.title}</span>
-                        {!!level && <span className={clsx("text-sm")}>({LEVELDATA[level]?.label})</span>}
+                        {!!level && level.length > 0 && <span className={clsx("text-sm")}>({LEVELDATA[level]?.label})</span>}
                     </div>
                     <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs text-neutral-600 w-full justify-between relative">
                         <span className="inline-flex items-center gap-1">

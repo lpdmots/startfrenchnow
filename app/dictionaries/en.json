@@ -53,6 +53,10 @@
             "description": "Practice your French with interactive online exercises: grammar, vocabulary, listening, and more. Improve your skills with Start French Now!"
         },
         "Courses": {
+            "FrenchDashboard": {
+                "title": "French Learning Student Dashboard | Start French Now",
+                "description": "French learning dashboard: video progress, completed lessons & scenarios, 1:1 coaching hours, and coach chat — Start French Now."
+            },
             "Beginners": {
                 "title": "The Complete French Course : Learn French - Beginners | StartFrenchNow",
                 "description": "French Language for Beginners (A0 > A2). French speaking, listening, grammar, reading, vocabulary with a native teacher."
@@ -77,9 +81,12 @@
         "about": "About",
         "contact": "Contact",
         "profil": "Profile",
+        "exercises": "Exercises",
         "fideLessons": "My FIDE lessons",
         "my_account": "My Account",
         "logout": "Log out",
+        "legal_mentions": "Legal / Terms",
+        "reseaux_sociaux": "Social media",
         "contact_us": "Contact us",
         "videos": "Videos",
         "stories": "Play",
@@ -96,6 +103,7 @@
             "stories": "Stories"
         },
         "courses": {
+            "dashboard": "French Dashboard",
             "coursesTitle": "Our courses",
             "button": "Courses",
             "beginners": "Beginner",
@@ -120,7 +128,7 @@
             "buttonLabel": "FIDE",
             "fide": "FIDE Test",
             "packFide": "Pack FIDE",
-            "dashboard": "Dashboard",
+            "dashboard": "FIDE Dashboard",
             "videos": "FIDE Lessons",
             "exams": "Mock Exams"
         }
@@ -323,7 +331,7 @@
         "yourPurchase": {
             "courseImageAlt": "course image",
             "quantity": "Quantity",
-            "unitPrice": "{currency} {price}.- /hour"
+            "unitPrice": "{currency} {price}.-"
         },
         "priceLayout": {
             "amountToPay": "Amount to Pay",
@@ -340,7 +348,10 @@
             "successMessage": "You have successfully sent",
             "goHome": "Go home",
             "bookLesson": "Start now!",
-            "successImageAlt": "Success"
+            "successImageAlt": "Success",
+            "guestCopy": "To access your purchase and start immediately, please sign in. If you don't have an account, create one using <b>the email address used for the payment</b>, and your purchase will be added automatically.",
+            "guestCta": "Sign in",
+            "noAccount": "Don't have an account? Sign up here."
         }
     },
     "ExercisesPage": {
@@ -363,6 +374,13 @@
         "moreReplies": "+ {count, plural, one {# more reply} other {# more replies}}",
 
         "empty": "No notifications yet."
+    },
+
+    "RdvSuccess": {
+        "thankYou": "Thank you!",
+        "successMessage": "Your appointment has been successfully booked.",
+        "backToPage": "Continue",
+        "successImageAlt": "Success"
     },
     "Fide": {
         "FidePack": {
@@ -464,7 +482,8 @@
                         "watched": "Watched",
                         "unwatched": "Unwatched",
                         "in-progress": "In progress"
-                    }
+                    },
+                    "noAccess": "You do not have access to this course."
                 },
                 "ExamCard": {
                     "resume": "Resume",
@@ -611,7 +630,7 @@
             "li3": "Benefit from continuous coaching by a genuine <under2><b>FIDE expert</b></under2>.",
             "proof": "A <hs2>proven</hs2> method",
             "buttonPrimary": "Get my free plan",
-            "buttonSecondary": "Buy now",
+            "buttonSecondary": "Start learning now",
             "videoSubtitle": "Discover our FIDE prep"
         },
         "Formateur": {
@@ -659,7 +678,7 @@
                     "OurOffer": "OUR OFFER"
                 }
             },
-            "cta": "Choose your plan"
+            "cta": "Start learning"
         },
         "VideosSection": {
             "titlePart1": "A",
@@ -680,7 +699,7 @@
             "access": "Access on mobile and TV",
             "lifetime": "Lifetime access, updates included",
             "buttonHasPack": "Resume your courses",
-            "buttonNoPack": "Buy now"
+            "buttonNoPack": "Start learning"
         },
         "MarqueePackFideContent": {
             "lifetime": "Lifetime access",
@@ -709,7 +728,7 @@
                 "desc": "A large number of everyday situations covering all possible FIDE themes."
             },
             "ctaHasPack": "Buy private lessons",
-            "ctaNoPack": "Buy now",
+            "ctaNoPack": "Start learning",
             "linkAllExams": "See all available exams",
             "imageAlt": "Infographic about the exams"
         },
@@ -803,7 +822,8 @@
                     "e1": "Booking possible within 12h",
                     "e2": "Flexible cancellation"
                 },
-                "labelCTA": "BOOK A CONSULTATION"
+                "labelCTA": "BOOK A FREE CONSULTATION",
+                "labelByMore": "BUY MORE HOURS"
             }
         },
         "PreviewsSection": {
@@ -1158,7 +1178,8 @@
             "infoMessages": {
                 "privateLessons": "Log in to access your progress tracking.",
                 "checkout": "Log in to access the payment.",
-                "storyAccount": "You need to log in to keep track of your stories."
+                "storyAccount": "You need to log in to keep track of your stories.",
+                "frenchCourses": "Log in to access your French courses."
             }
         },
         "CredentialsForm": {
@@ -1275,6 +1296,41 @@
         }
     },
     "Courses": {
+        "Dashboard": {
+            "DashboardHero": {
+                "title": "<b2>Resume</b2> your French learning with one click."
+            },
+            "Beginner": {
+                "title": "<b2>Beginner</b2> Course",
+                "selectedForYou": "Selected for you",
+                "summary": "Summary",
+                "globalProgress": "OVERALL PROGRESS",
+                "lastActivityRich": "Last activity: <b>{time}</b>",
+                "ctaBuyPack": "Buy the Beginner Course",
+                "ctaBuyPackStrong": "Buy the <b>Beginner Course</b>",
+                "lockedOverlayHeadline": "Exclusive to the Beginner Course"
+            },
+            "Intermediate": {
+                "title": "<b4>Intermediate</b4> Course",
+                "selectedForYou": "Selected for you",
+                "summary": "Summary",
+                "globalProgress": "OVERALL PROGRESS",
+                "lastActivityRich": "Last activity: <b>{time}</b>",
+                "ctaBuyPack": "Buy the Intermediate Course",
+                "ctaBuyPackStrong": "Buy the <b>Intermediate Course</b>",
+                "lockedOverlayHeadline": "Exclusive to the Intermediate Course"
+            },
+            "Dialogs": {
+                "title": "<b5>Dialogs</b5> Course",
+                "selectedForYou": "Selected for you",
+                "summary": "Summary",
+                "globalProgress": "OVERALL PROGRESS",
+                "lastActivityRich": "Last activity: <b>{time}</b>",
+                "ctaBuyPack": "Buy the Dialogs Course",
+                "ctaBuyPackStrong": "Buy the <b>Dialogs Course</b>",
+                "lockedOverlayHeadline": "Exclusive to the Dialogs Course"
+            }
+        },
         "Beginners": {
             "PrimaryPage": {
                 "title": "The Complete French Course : Learn French - <hs2>Beginners</hs2>",
@@ -1300,31 +1356,7 @@
                 "para2": "The course is divided in 28 lessons (16 hours of videos) all following a very logical progression which is based on many years of teaching and dozens of French methods. I also use the exact same material with my private students in one to one lessons and I can assure you that they improve !",
                 "para3": "Each lesson has a specific objective or theme and comes with vocabulary and grammar. All this new knowledge is tested through many exercises. For that part (exercises) you will need a pen and a piece of paper to do the exercises with me. It's easy, just follow the instructions on the video !",
                 "para4": "<b>After each lesson you will have access to the summary of the lesson, extra exercises (with corrections) and a vocabulary list. So please, do your homework :)</b>",
-                "header3": "Course <hs2>Content</hs2>",
-                "content1": "Introducing Yourself - The Alphabet",
-                "content2": "Making Acquaintances - Nationalities",
-                "content3": "Greeting & Saying Goodbye",
-                "content4": "Numbers",
-                "content5": "Talking About Yourself",
-                "content6": "Articles",
-                "content7": "Talking About Your Family",
-                "content8": "Asking Questions",
-                "content9": "Describing Your City",
-                "content10": "Understanding Directions",
-                "content11": "Talking About Your Tastes and Activities",
-                "content12": "Booking Accommodation",
-                "content13": "Suggesting an Outing",
-                "content14": "Describing Personality and Appearance",
-                "content15": "Shopping",
-                "content16": "Talking About Your Daily Routine",
-                "content17": "Talking About Your Holidays",
-                "content18": "At the Doctor's",
-                "content19": "Talking About Your Diet",
-                "content20": "Giving Advice",
-                "content21": "Questioning (the 3 forms of questioning)",
-                "content22": "Talking About Your Plans (the future)",
-                "content23": "Review of Tenses",
-                "content24": "Sentence Construction"
+                "header3": "Course <hs2>Content</hs2>"
             },
             "Infos": {
                 "header": "This course includes:",
@@ -1335,7 +1367,7 @@
                 "unlimitedAccess": "Unlimited access",
                 "certificate": "Certificate of completion",
                 "buyNow": "BUY IT NOW !",
-                "guarantee": "* 30-day satisfaction or refund guarantee"
+                "continue": "Continue this course"
             },
             "IsForYou": {
                 "title": "Is This Course <hs2>Right for You</hs2>?",
@@ -1347,6 +1379,7 @@
                 "prerequisite3": "It's in French, don't worry: Immersion is the best method of learning a language.",
                 "prerequisite4": "Native French speaking teacher with perfect accent.",
                 "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course",
                 "levelTitle": "Which level will I reach?",
                 "levelDescription": "At the end of this course you will have completed the A1.2 level and reach a low intermediate level of French (A2) allowing <noWrap>you to:</noWrap>",
                 "level1": "understand sentences and frequently used expressions related to areas of most immediate relevance (e.g., basic personal and family information, shopping, local geography, employment).",
@@ -1357,7 +1390,8 @@
             "LastComments": {
                 "title": "<hs2>Feedback</hs2> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
-                "buyNow": "BUY IT NOW !"
+                "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course"
             }
         },
         "Intermediates": {
@@ -1385,25 +1419,7 @@
                 "para2": "The course is divided in <b>18 lessons (~12 hours of videos)</b> all following a very logical progression which is based on many years of teaching and dozens of French methods. I also use the exact same material with my private students in one to one lessons and I can assure you that they improve !",
                 "para3": "Each lesson has a specific objective or theme using real-life situations to learn new vocabulary and grammar. All this new knowledge is tested through many exercises. For that part, you will need a pen and a piece of paper to do the exercises with me. It's easy, just follow the instructions on the video !",
                 "para4": "After each lesson you will have access to the <b>summary of the lesson, extra exercises (with corrections) and a vocabulary list</b>. So please, do your homework 😊",
-                "header3": "Course <hs4>Content</hs4>",
-                "content1": "Talking about the Weather",
-                "content2": "France and Its Regions",
-                "content3": "Describing a Place",
-                "content4": "Understanding & Writing a Program",
-                "content5": "Choosing a Gift",
-                "content6": "Shopping in a Store",
-                "content7": "Describing an Object and Its Function",
-                "content8": "Making a Shopping List",
-                "content9": "At the Merchant's",
-                "content10": "Characterizing a Restaurant",
-                "content11": "Ordering at a Restaurant",
-                "content12": "Talking about the Past",
-                "content13": "Making Comparisons",
-                "content14": "Describing a Housing",
-                "content15": "Transformations / Home Renovations",
-                "content16": "Searching for a Housing",
-                "content17": "Flat Sharing",
-                "content18": "Conjugation (Review)"
+                "header3": "Course <hs4>Content</hs4>"
             },
             "Infos": {
                 "header": "This course includes:",
@@ -1413,7 +1429,7 @@
                 "unlimitedAccess": "Unlimited access",
                 "certificate": "Certificate of completion",
                 "buyNow": "BUY IT NOW !",
-                "guarantee": "* 30-day satisfaction or refund guarantee"
+                "continue": "Continue this course"
             },
             "IsForYou": {
                 "title": "Is This Course <hs4>Right for You</hs4>?",
@@ -1423,6 +1439,7 @@
                 "prerequisite1": "You should have a good knowledge of the French A1 vocabulary and grammar.",
                 "prerequisite2": "Ideally my first course : The Complete French Course : Learn French - Beginners.",
                 "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course",
                 "levelTitle": "Which level will I reach?",
                 "levelDescription": "At the end of this course you will have completed the A2.1 level. You will need to finish the second part of this course (which I'm already working on) in order to finish the A2.2 level and reach the beginning of B1."
             },
@@ -1430,7 +1447,8 @@
             "LastComments": {
                 "title": "<hs4>Feedback</hs4> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
-                "buyNow": "BUY IT NOW !"
+                "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course"
             }
         },
         "Dialogues": {
@@ -1460,49 +1478,7 @@
                 "para4": "For the exercise part, don’t forget that you will need a pen and a piece of paper to complete them with me. It's easy, just follow the instructions on the video!",
                 "para5": "And very important ! After each lesson you will have access to <b>the summary of the lesson and a vocabulary list</b> with all the good expressions to use for each communication situation along with the translation and an audio document to ensure a perfect pronunciation !",
                 "para6": "You will also find bilans or assessments with many exercises through the course. So please, do your homework 😉",
-                "header3": "Course <hs5>Content</hs5>",
-                "content1": "Doing the Shopping",
-                "content2": "Specifying Quantities",
-                "content3": "Placing an Order",
-                "content4": "Booking",
-                "content5": "Modifying a Reservation",
-                "content6": "Talking about Money",
-                "content7": "Asking for an Exchange, Refund",
-                "content8": "Hesitating - Being Unsure",
-                "content9": "Asking for, Giving Information",
-                "content10": "Enrolling in an Activity",
-                "content11": "Searching, Locating",
-                "content12": "Describing a Place - Holidays",
-                "content13": "Describing Your Living Place - Settling In",
-                "content14": "Subscribing - Internet and Telephony",
-                "content15": "Asking for Explanations",
-                "content16": "Searching for a Solution",
-                "content17": "Describing a Flight",
-                "content18": "Describing an Accident",
-                "content19": "Talking about Health",
-                "content20": "Telephoning",
-                "content21": "Taking, Rescheduling, Cancelling an Appointment",
-                "content22": "Doing Renovations, DIY",
-                "content23": "Repairing, at the Mechanic",
-                "content24": "Giving - Following Instructions",
-                "content25": "Insisting - Refusing",
-                "content26": "Reporting an Error, a Problem",
-                "content27": "Apologizing",
-                "content28": "Organizing, Proposing an Activity",
-                "content29": "Being Invited - Complimenting",
-                "content30": "Introducing a Person",
-                "content31": "Taking, Receiving News",
-                "content32": "Congratulating",
-                "content33": "Expressing Disappointment and Regret - Consoling",
-                "content34": "Checking - Assuring",
-                "content35": "Denying - Accusing",
-                "content36": "Talking about a Positive Change",
-                "content37": "Complaining - Being Negative",
-                "content38": "Making a Positive or Negative Critique (Film - Show)",
-                "content39": "Making a Positive or Negative Critique (Exhibition - Art)",
-                "content40": "Speaking Well / Badly of Someone",
-                "content41": "Asking & Giving Advice",
-                "content42": "Thanks and Follow-Up!"
+                "header3": "Course <hs5>Content</hs5>"
             },
             "Infos": {
                 "header": "This course includes:",
@@ -1522,6 +1498,7 @@
                 "prerequisite1": "You should have an A2 level of French or strong A1.",
                 "prerequisite2": "At least my first course : The Complete French Course : Learn French - Beginners",
                 "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course",
                 "levelTitle": "Which level will I reach?",
                 "levelDescription": "At the end of this course ranging from a A2 to B1 level, you will reach a conversational B1 level."
             },
@@ -1529,7 +1506,8 @@
             "LastComments": {
                 "title": "<hs5>Feedback</hs5> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
-                "buyNow": "BUY IT NOW !"
+                "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course"
             }
         },
         "PastTenses": {
@@ -1582,6 +1560,7 @@
                 "prerequisite1": "You already have some knowledge of the French language (A1+/A2 level).",
                 "prerequisite2": "A pen and a piece of paper.",
                 "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course",
                 "levelTitle": "Which level will I reach?",
                 "levelDescription": "This class about the past tenses in French is designed to <noWrap>help you :</noWrap>",
                 "level1": "Understand them and know when to use them",
@@ -1593,7 +1572,8 @@
             "LastComments": {
                 "title": "<hs3>Feedback</hs3> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
-                "buyNow": "BUY IT NOW !"
+                "buyNow": "BUY IT NOW !",
+                "continue": "Continue this course"
             }
         }
     }

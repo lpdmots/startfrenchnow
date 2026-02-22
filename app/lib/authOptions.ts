@@ -4,6 +4,7 @@ import { compare } from "bcrypt";
 import { DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 
 declare module "next-auth" {
     interface Session {
@@ -82,22 +83,54 @@ export const authOptions: NextAuthOptions = {
         signIn: "/auth/signIn",
     },
     callbacks: {
-        async signIn({ account, profile }) {
+        async signIn({ user, account, profile }) {
+            // --- OAuth (Google/Facebook)
             if (["google", "facebook"].includes(account?.provider || "")) {
                 const email = profile?.email;
 
-                let user = await client.fetch('*[_type == "user" && email == $email][0]', { email });
-                if (!user) {
-                    const newUser = { _type: "user", email: email, name: profile?.name, isActive: true, oAuth: account?.provider };
-                    user = await client.create(newUser);
+                let dbUser = await client.fetch('*[_type == "user" && email == $email][0]', { email });
+                if (!dbUser) {
+                    const newUser = {
+                        _type: "user",
+                        email: email,
+                        name: profile?.name,
+                        isActive: true,
+                        oAuth: account?.provider,
+                    };
+                    dbUser = await client.create(newUser);
+                }
+
+                // Claim achats pending (safe: ta fonction refuse si isActive !== true)
+                if (dbUser?.email && dbUser?._id) {
+                    try {
+                        await claimPendingPurchases({ email: dbUser.email, userId: dbUser._id });
+                    } catch (e) {
+                        console.error("claimPendingPurchases (oauth) failed:", e);
+                    }
+                }
+
+                return true;
+            }
+
+            // --- Credentials
+            if (account?.provider === "credentials") {
+                const u = user as any; // vient de authorize()
+                if (u?.email && u?._id) {
+                    try {
+                        await claimPendingPurchases({ email: u.email, userId: u._id });
+                    } catch (e) {
+                        console.error("claimPendingPurchases (credentials) failed:", e);
+                    }
                 }
             }
 
             return true;
         },
         async jwt({ token, user }) {
-            const u: Partial<UserProps> | null = (user as any) || ((await client.fetch('*[_type == "user" && email == $email][0]', { email: token.email })) as UserProps | null);
+            const email = (user as any)?.email || token.email;
+            if (!email) return token;
 
+            const u = (await client.fetch('*[_type == "user" && email == $email][0]', { email })) as UserProps | null;
             if (!u) return token;
 
             const now = Date.now();
@@ -109,11 +142,10 @@ export const authOptions: NextAuthOptions = {
                 name: u.name,
                 email: u.email,
                 alias: u.alias ?? [],
-                // /ajout
                 permissions: perms,
                 lessons: Array.isArray(u.lessons) ? u.lessons : [],
                 isAdmin: (u as any).isAdmin === true,
-                notificationsLength: Array.isArray(u.notifications) ? u.notifications.length : 0,
+                notificationsLength: Array.isArray((u as any).notifications) ? (u as any).notifications.length : 0,
             };
         },
         session: ({ session, token }) => {

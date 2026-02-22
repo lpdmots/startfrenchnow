@@ -13,14 +13,13 @@ import Marquee from "@/app/components/ui/marquee";
 import MarqueePackFideContent from "./components/MarqueePackFideContent";
 import ExamsSection from "./components/ExamsSection";
 import { PricingPlans } from "./components/PricingPlans";
-import FideUdemyReviews from "./components/FideUdemyReviews";
-import { PreviewsSection } from "./components/PreviewsSection";
 import { WhatIsFide } from "./components/WhatIsFide";
 import GetPdfBand from "./components/GetPdfBand";
 
 async function ExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
+    const hasReservation = !!session?.user?.lessons?.some((lesson) => lesson.eventType === "Fide Preparation Class" && lesson.totalPurchasedMinutes > 0);
 
     return (
         <div className="w-full mb-24">
@@ -49,7 +48,7 @@ async function ExamsPage({ params: { locale } }: { params: { locale: Locale } })
                     <HowClassLook />
                 </div>
             </div>
-            <PricingPlans hasPack={hasPack} locale={locale} />
+            <PricingPlans hasPack={hasPack} hasReservation={hasReservation} locale={locale} />
             <div id="ContactForFIDECourses" className="py-24 px-4 lg:px-8 bg-neutral-800">
                 <div className="max-w-7xl m-auto">
                     <ContactForFideCourses />

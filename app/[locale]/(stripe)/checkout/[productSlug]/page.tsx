@@ -9,28 +9,25 @@ type Props = {
         productSlug: string;
         locale: "fr" | "en";
     };
-    searchParams: { quantity: string; callbackUrl: string };
+    searchParams: { quantity: string; callbackUrl: string; currency?: "CHF" | "EUR" | "USD" };
 };
 
-export default function CheckoutPage({ params: { productSlug, locale }, searchParams: { quantity, callbackUrl } }: Props) {
+export default function CheckoutPage({ params: { productSlug, locale }, searchParams: { quantity, callbackUrl, currency } }: Props) {
     const t = useTranslations("Checkout");
-    const route = `/checkout/${productSlug}?quantity=${quantity}`;
 
     return (
-        <ProtectedPage callbackUrl={route} messageInfo="checkout">
-            <div className="w-full flex flex-col items-center min-h-screen">
-                <div className="flex flex-col max-w-7xl px-2 sm:px-4 lg:px-8 py-6 md:py-12 w-full min-h-screen">
-                    <div className="flex gap-4 items-center">
-                        <Link href={callbackUrl || "/"}>
-                            <FaArrowLeft className="text-2xl lg:text-4xl cursor-pointer color-neutral-800 translate_on_hover" title={t("backToPrevious")} />
-                        </Link>
-                        <h1 className="heading-3 inline-block">{t("checkout")}</h1>
-                    </div>
-                    <div className="flex grow h-full">
-                        <Checkout productSlug={productSlug} locale={locale} quantity={quantity} />
-                    </div>
+        <div className="w-full flex flex-col items-center min-h-screen">
+            <div className="flex flex-col max-w-7xl px-2 sm:px-4 lg:px-8 py-6 md:py-12 w-full min-h-screen">
+                <div className="flex gap-4 items-center">
+                    <Link href={callbackUrl || "/"}>
+                        <FaArrowLeft className="text-2xl lg:text-4xl cursor-pointer color-neutral-800 translate_on_hover" title={t("backToPrevious")} />
+                    </Link>
+                    <h1 className="heading-3 inline-block">{t("checkout")}</h1>
+                </div>
+                <div className="flex grow h-full">
+                    <Checkout productSlug={productSlug} locale={locale} quantity={quantity} defaultCurrency={currency} />
                 </div>
             </div>
-        </ProtectedPage>
+        </div>
     );
 }

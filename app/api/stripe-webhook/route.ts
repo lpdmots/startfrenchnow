@@ -1,29 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
-import { ProductFetch } from "@/app/types/sfn/stripe";
+import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, { apiVersion: "2024-09-30.acacia" });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+    apiVersion: "2024-09-30.acacia",
+});
 
-// Désactiver `bodyParser` et définir le runtime en edge
 export const runtime = "edge";
 
-const queryUser = `*[_type == "user" && email == $sessionEmail][0] { 
-    stripeCustomerId, 
-    _id, 
-    alias, 
-    "firstName": coalesce(firstName, null),
-    "lastName": coalesce(lastName, null)
+const queryUserByEmail = `*[_type == "user" && lower(email) == $email][0]{
+  _id, email, isActive
 }`;
+
+const queryProduct = `*[_type == "product" && slug.current == $productSlug][0]{
+  _id,
+  referenceKey,
+  benefits[]{
+    benefitType,
+    referenceKey,
+    creditAmount,
+    accessDuration
+  }
+}`;
+
+function uuid() {
+    return globalThis.crypto.randomUUID();
+}
 
 export async function POST(req: NextRequest) {
     const sig = req.headers.get("stripe-signature") as string;
     let event: Stripe.Event;
 
     try {
-        // Utiliser `req.text()` pour obtenir le corps brut de la requête
         const body = await req.text();
-        // Vérifie la signature du webhook
         event = await stripe.webhooks.constructEventAsync(body, sig, process.env.STRIPE_WEBHOOK_SECRET as string);
     } catch (err) {
         const message = `Erreur de vérification de la signature du webhook : ${(err as Error).message}`;
@@ -31,136 +41,104 @@ export async function POST(req: NextRequest) {
         return new NextResponse(message, { status: 400 });
     }
 
-    // Traitez l'événement `payment_intent.succeeded`
-    if (event.type === "payment_intent.succeeded") {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        const sessionEmail = paymentIntent.receipt_email;
-        const productSlug = paymentIntent.metadata.productSlug;
-        const quantity = paymentIntent.metadata.quantity;
-        const email = paymentIntent.metadata.email;
-        const firstName = paymentIntent.metadata.firstName;
-        const lastName = paymentIntent.metadata.lastName;
-
-        try {
-            const user = await client.fetch(queryUser, { sessionEmail });
-            const product = await client.fetch(`*[_type == "product" && slug.current == $productSlug][0]{ _id, benefits }`, { productSlug });
-            if (!user || !product) {
-                return new NextResponse("Utilisateur ou produit non trouvé", { status: 404 });
-            }
-
-            if (user && product) {
-                await applyPurchaseEffect(quantity, user, product);
-                await addAliasToUser(sessionEmail || "", email, user);
-                await updateUserIfFieldsAreEmpty(user, firstName, lastName);
-            }
-
-            return new NextResponse("Webhook traité avec succès", { status: 200 });
-        } catch (error) {
-            console.error("Erreur lors de l'appel de l'API pour appliquer l'effet :", error);
-            return new NextResponse("Erreur lors du traitement du webhook", { status: 500 });
-        }
-    } else {
-        return new NextResponse("Événement non traité", { status: 400 });
+    // On ne traite que le paiement confirmé
+    if (event.type !== "payment_intent.succeeded") {
+        return new NextResponse("Événement non traité", { status: 200 });
     }
-}
 
-async function applyPurchaseEffect(quantity: string, user: { _id: string; alias?: string[] }, product: ProductFetch) {
-    const benefits = product.benefits;
-    for (const benefit of benefits) {
-        if (benefit.benefitType === "lessons") {
-            console.log("Appliquer l'effet de l'achat de leçons");
-            const newMinutes = benefit.creditAmount * parseInt(quantity);
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-            const existingLesson = await client
-                .fetch(`*[_type == "user" && _id == $userId][0] { lessons }`, { userId: user._id })
-                .then((res) => res.lessons?.find((lesson: any) => lesson.eventType === benefit.referenceKey));
+    const productSlug = paymentIntent.metadata?.productSlug;
+    const quantityRaw = paymentIntent.metadata?.quantity;
+    const metadataEmail = paymentIntent.metadata?.email;
 
-            if (existingLesson) {
-                // Si le `eventType` existe déjà, mettre à jour `totalPurchasedMinutes`
-                await client
-                    .patch(user._id)
-                    .set({
-                        [`lessons[_key=="${existingLesson._key}"].totalPurchasedMinutes`]: existingLesson.totalPurchasedMinutes + newMinutes,
-                    })
-                    .commit();
-            } else {
-                // Sinon, ajouter un nouvel objet `lesson`
-                await client
-                    .patch(user._id)
-                    .setIfMissing({ lessons: [] })
-                    .append("lessons", [{ eventType: benefit.referenceKey, totalPurchasedMinutes: newMinutes }])
-                    .commit({ autoGenerateArrayKeys: true });
-            }
-        } else if (benefit.benefitType === "credits") {
-            // Appliquer l'effet de l'achat de crédits
-        } else if (benefit.benefitType === "permission") {
-            const qty = parseInt(quantity, 10) || 1;
-            const addedDays = (benefit.accessDuration || 0) * qty;
+    const receiptEmail = paymentIntent.receipt_email || undefined;
+    const buyerEmail = (metadataEmail || receiptEmail || "").trim().toLowerCase();
 
-            const userPerm = await client
-                .fetch(`*[_type == "user" && _id == $userId][0]{ permissions }`, { userId: user._id })
-                .then((res) => res?.permissions?.find((p: any) => p.referenceKey === benefit.referenceKey));
+    const stripePaymentId = paymentIntent.id;
+    const stripeCustomerId = typeof paymentIntent.customer === "string" ? paymentIntent.customer : undefined;
 
-            const nowIso = new Date().toISOString();
+    const qty = Number.parseInt(String(quantityRaw || "1"), 10) || 1;
 
-            const computeExpiry = (baseIso?: string) => {
-                if (addedDays <= 0) return ""; // accès sans expiration (string requis par l'interface)
-                const base = baseIso && !isNaN(Date.parse(baseIso)) && new Date(baseIso) > new Date() ? new Date(baseIso) : new Date();
-                base.setUTCDate(base.getUTCDate() + addedDays);
-                return base.toISOString();
-            };
+    // ⚠️ Si metadata/email manquent, un retry Stripe ne corrigera pas le problème → on log + 200
+    if (!buyerEmail) {
+        console.error("Webhook: email manquant (metadata.email ou receipt_email).", {
+            stripePaymentId,
+        });
+        return new NextResponse("Ignored", { status: 200 });
+    }
 
-            if (userPerm) {
-                // Prolonge la date d'expiration existante (ou la laisse vide pour accès à vie)
-                const newExpiresAt = computeExpiry(userPerm.expiresAt);
-                await client
-                    .patch(user._id)
-                    .set({
-                        [`permissions[_key=="${userPerm._key}"].grantedAt`]: userPerm.grantedAt || nowIso,
-                        [`permissions[_key=="${userPerm._key}"].expiresAt`]: newExpiresAt,
-                    })
-                    .commit();
-            } else {
-                // Ajoute une nouvelle permission
-                await client
-                    .patch(user._id)
-                    .setIfMissing({ permissions: [] })
-                    .append("permissions", [
-                        {
-                            referenceKey: benefit.referenceKey,
-                            grantedAt: nowIso,
-                            expiresAt: computeExpiry(), // "" si pas d'expiration
-                        },
-                    ])
-                    .commit({ autoGenerateArrayKeys: true });
+    if (!productSlug) {
+        console.error("Webhook: productSlug manquant dans metadata.", { stripePaymentId });
+        return new NextResponse("Ignored", { status: 200 });
+    }
+
+    try {
+        // 1) Récup produit + benefits (snapshot)
+        const product = await client.fetch(queryProduct, { productSlug });
+
+        // Idem : si produit introuvable, retry ne changera rien → log + 200
+        if (!product?._id || !Array.isArray(product?.benefits) || product.benefits.length === 0) {
+            console.error("Webhook: produit introuvable ou benefits vides", {
+                productSlug,
+                stripePaymentId,
+            });
+            return new NextResponse("Ignored", { status: 200 });
+        }
+
+        // 2) Idempotence béton : ID déterministe + createIfNotExists
+        const pendingId = `pendingPurchase_${stripePaymentId}`;
+
+        const pendingDoc = {
+            _id: pendingId,
+            _type: "pendingPurchase",
+            email: buyerEmail,
+            stripePaymentId,
+            stripeCustomerId,
+            purchasedAt: new Date(paymentIntent.created * 1000).toISOString(),
+            status: "paid",
+            items: [
+                {
+                    _key: uuid(),
+                    productRef: { _type: "reference", _ref: product._id },
+                    referenceKey: product.referenceKey,
+                    quantity: qty,
+                    benefitsSnapshot: (product.benefits || []).map((b: any) => ({
+                        _key: uuid(),
+                        benefitType: b.benefitType,
+                        referenceKey: b.referenceKey,
+                        creditAmount: b.creditAmount,
+                        accessDuration: b.accessDuration ?? null,
+                    })),
+                },
+            ],
+        };
+
+        // Si Stripe envoie 2 fois en parallèle, un seul doc sera créé
+        await client.createIfNotExists(pendingDoc);
+
+        // 3) Optionnel : si user existe déjà et actif → claim immédiatement
+        console.log("[webhook] buyerEmail:", buyerEmail);
+        const dbUser = await client.fetch(queryUserByEmail, { email: buyerEmail });
+        console.log("[webhook] dbUser:", dbUser);
+
+        if (dbUser?._id) {
+            console.log("[webhook] isActive:", dbUser.isActive);
+        }
+
+        if (dbUser?._id && dbUser?.isActive === true) {
+            try {
+                const res = await claimPendingPurchases({ email: buyerEmail, userId: dbUser._id });
+                console.log("[webhook] claim result:", res);
+            } catch (e) {
+                console.error("claimPendingPurchases (webhook) failed:", e);
             }
         }
+
+        return new NextResponse("Webhook traité avec succès", { status: 200 });
+    } catch (error) {
+        console.error("Erreur webhook:", error);
+        // Ici, on garde 500 : un retry Stripe peut aider si c'est une panne temporaire
+        return new NextResponse("Erreur lors du traitement du webhook", { status: 500 });
     }
-}
-
-async function addAliasToUser(sessionEmail: string, email: string, user: { _id: string; alias?: string[] }) {
-    if (sessionEmail !== email && !(user.alias || []).includes(email)) {
-        await client.patch(user._id).setIfMissing({ alias: [] }).append("alias", [email]).commit();
-    }
-}
-
-async function updateUserIfFieldsAreEmpty(user: { firstName: string | null; lastName: string | null; _id: string }, newFirstName: string, newLastName: string) {
-    const { firstName, lastName, _id } = user || {};
-
-    if (firstName || lastName) {
-        console.log("Les champs firstName ou lastName sont déjà définis, mise à jour ignorée.");
-        return;
-    }
-
-    const patch = client.patch(_id);
-
-    if (!firstName) {
-        patch.set({ firstName: newFirstName });
-    }
-    if (!lastName) {
-        patch.set({ lastName: newLastName });
-    }
-
-    const result = await patch.commit();
-    console.log("Utilisateur mis à jour :", result);
 }

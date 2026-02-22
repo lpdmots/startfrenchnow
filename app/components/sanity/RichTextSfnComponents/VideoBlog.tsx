@@ -5,7 +5,7 @@ import LiteYouTubeEmbed from "react-lite-youtube-embed";
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
 const VideoBlog = (props: any) => {
-    const { url, title, className } = props.values;
+    const { url, title, className, poster } = props.values;
 
     if (!url) {
         return <div>Missing YouTube URL</div>;
@@ -15,7 +15,7 @@ const VideoBlog = (props: any) => {
         return (
             <div className={className ?? "my-12"}>
                 <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto" style={{ width: "100%", lineHeight: 0 }}>
-                    <video className="image-wrapper border-radius-30px" src={cloudFrontDomain + url} height="auto" width="100%" controls></video>
+                    <video className="image-wrapper border-radius-30px" src={cloudFrontDomain + url} height="auto" width="100%" controls poster={poster ? poster : undefined}></video>
                 </div>
                 {title && <p className="display-4 w-full text-center pt-6 mb-0">{title}</p>}
             </div>

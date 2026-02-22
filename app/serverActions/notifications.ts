@@ -39,6 +39,8 @@ function buildResourceUrl(resourceType?: string, slug?: string): string {
             return slug ? `/fide/videos/${slug}` : `/fide/videos`;
         case "fide_dashboard":
             return `/fide/dashboard`;
+        case "french_dashboard":
+            return `/courses/dashboard`;
         default:
             return `/`; // fallback minimal
     }
@@ -98,7 +100,7 @@ export async function listNotificationsComment(locale: Locale = "fr"): Promise<{
         }
       }
     }`,
-        { uid: uidRef?._ref || "" }
+        { uid: uidRef?._ref || "" },
     );
 
     const groups = new Map<

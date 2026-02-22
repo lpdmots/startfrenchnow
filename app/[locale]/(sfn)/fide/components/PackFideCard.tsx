@@ -4,9 +4,10 @@ import { cn } from "@/app/lib/schadcn-utils";
 import clsx from "clsx";
 import Link from "next-intl/link";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 import { BookFirstMeeting, BookReservation } from "./BookFirstMeeting";
+import { useSession } from "next-auth/react";
 
 interface CardProps {
     card: {
@@ -21,12 +22,22 @@ interface CardProps {
     };
     hasPack?: boolean;
     bookReservation?: boolean;
+    setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const PriceCard = ({ card, hasPack, bookReservation = false }: CardProps) => {
+export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }: CardProps) => {
     const { title, description, price, features, extras, color, labelCTA, checkoutUrl } = card;
     const bgColor = `bg-${color}`;
     const textColor = `text-${color}`;
+    const { data: session } = useSession();
+    const [hasReservation, setHasReservation] = useState(false);
+
+    useEffect(() => {
+        if (session?.user?.lessons) {
+            const reservation = session.user.lessons.some((lesson) => lesson.eventType === "Fide Preparation Class" && lesson.totalPurchasedMinutes > 0);
+            setHasReservation(reservation);
+        }
+    }, [session]);
 
     return (
         <ParentToChildrens>
@@ -62,12 +73,9 @@ export const PriceCard = ({ card, hasPack, bookReservation = false }: CardProps)
                         </div>
                         <div className="flex w-full justify-center p-4 pt-0">
                             {bookReservation ? (
-                                <BookReservation label={labelCTA} hasPack={hasPack} />
+                                <BookReservation label={labelCTA} hasPack={false} openFreeHours={setIsOpen} />
                             ) : (
-                                <button className="btn btn-secondary w-full pointer-events-none small" disabled>
-                                    Bientôt disponible
-                                </button>
-                                /* <Link
+                                <Link
                                     href={hasPack ? "#" : checkoutUrl}
                                     style={{ ["--hover-color" as any]: `var(--${color})` }}
                                     className={clsx(
@@ -78,7 +86,7 @@ export const PriceCard = ({ card, hasPack, bookReservation = false }: CardProps)
                                     aria-disabled={hasPack}
                                 >
                                     {hasPack ? "VOUS DISPOSEZ DÉJÀ DU PACK" : labelCTA}
-                                </Link> */
+                                </Link>
                             )}
                         </div>
                         <div className={cn("p-4 flex flex-col gap-2", "bg-neutral-300")}>

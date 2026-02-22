@@ -1,12 +1,7 @@
-//import { previewData } from "next/headers";
-//import PreviewSuspense from "../../../components/sanity/PreviewSuspense";
-//import PreviewBlogListe from "../../../components/sanity/PreviewBlogList";
-
 import { SlideFromBottom, SlideFromLeft, SlideFromRight, SlideInOneByOneChild, SlideInOneByOneParent } from "@/app/components/animations/Slides";
 import { LastComments } from "@/app/components/sfn/courses/LastComments";
 import Image from "next/image";
 import { MdOndemandVideo } from "react-icons/md";
-import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiFolderDownloadLine } from "react-icons/ri";
 import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 import { BsInfinity, BsTrophy } from "react-icons/bs";
@@ -16,14 +11,49 @@ import LinkArrow from "@/app/components/common/LinkArrow";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoices";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
+import { getPackSommaire } from "@/app/serverActions/productActions";
+import { client } from "@/app/lib/sanity.client";
+import { Locale } from "@/i18n";
+import { Progress } from "@/app/types/sfn/auth";
+import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
+import { buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
+import { CoursesAccordionClient } from "../../fide/components/CoursesAccordionClient";
+import VideoBlog from "@/app/components/sanity/RichTextSfnComponents/VideoBlog";
 
 export const revalidate = 60;
 
 const COURSE_ID = "5651144";
 const COURSE_URL = "https://www.udemy.com/course/the-complete-french-course-daily-life-conversations/";
+const CHECKOUT_URL = `/checkout/udemy_course_dialogs?quantity=1&callbackUrl=${encodeURIComponent("/courses/dialogues")}&currency=EUR`;
 
-export default function DialoguesPage() {
-    const locale = useLocale();
+export default async function DialogsPage({ params: { locale } }: { params: { locale: Locale } }) {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?._id ?? null;
+    const hasDialogsCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_dialogs");
+
+    const [dialogsCourseSommaire, dialogsCourseUserProgress] = await Promise.all([
+        getPackSommaire(locale, "udemy_course_dialogs"),
+        userId ? client.fetch<Progress>(FRENCH_USER_PROGRESS_QUERY, { userId, courseKey: "udemy_course_dialogs" }) : Promise.resolve(null),
+    ]);
+
+    const hero = buildHeroData(dialogsCourseUserProgress, dialogsCourseSommaire, []);
+
+    return <DialogsPageNoAsync hero={hero} locale={locale} hasDialogsCourse={hasDialogsCourse} dialogsCourseSommaire={dialogsCourseSommaire} />;
+}
+
+function DialogsPageNoAsync({
+    hero,
+    locale,
+    hasDialogsCourse,
+    dialogsCourseSommaire,
+}: {
+    hero: ReturnType<typeof buildHeroData>;
+    locale: Locale;
+    hasDialogsCourse: boolean;
+    dialogsCourseSommaire: Awaited<ReturnType<typeof getPackSommaire>>;
+}) {
     const t = useTranslations("Courses.Dialogues.PrimaryPage");
     const tLastCom = useTranslations("Courses.Dialogues.LastComments");
     const baseNumbers = {
@@ -51,12 +81,11 @@ export default function DialoguesPage() {
                             </div>
                         </div>
                     </div>
-                    <div data-w-id="57239c1c-abea-04c2-40ac-578156c65de2" className="cms-featured-image-wrapper mb-8 md:mb-12">
-                        <div className="image-wrapper border-radius-30px">
-                            <Image width={1186} height={667.67} src="/images/cours3.jpg" loading="eager" alt="the first course" className="image" />
-                        </div>
+                    <div className="mt-12">
+                        <VideoBlog values={{ url: "cours-udemy-dialogues/presentation-bien-avec-image-au-deubut.mp4", poster: "/images/cours3.jpg" }} />
+                        {/* <Image width={1186} height={667.67} src="/images/cours3.jpg" loading="eager" alt="the first course" className="image" /> */}
                     </div>
-                    <CourseRatings courseIds={[COURSE_ID]} baseNumbers={baseNumbers} />
+                    <CourseRatings courseIds={[COURSE_ID]} baseNumbers={baseNumbers} isUdemy={false} />
                 </div>
             </section>
             <div className="flex flex-col items-center justify-center w-full my-24 md:my-36">
@@ -68,11 +97,11 @@ export default function DialoguesPage() {
                         <div className="inner-container _600px---mbl center">
                             <div className="grid-2-columns post-rigth-sidebar gap-48px items-start">
                                 <div id="w-node-_37753ff7-31f0-69be-55cd-ec34f268f026-7a543d63" className="col-span-2 lg:col-span-1 order-2 lg:order-1 mt-24 lg:mt-0">
-                                    <Description />
+                                    <Description hasDialogsCourse={hasDialogsCourse} dialogsCourseSommaire={dialogsCourseSommaire} hero={hero} />
                                 </div>
                                 <div id="w-node-_5477c579-dd4f-3f5a-c700-1cd0a30d540b-7a543d63" className="lg:sticky lg:top-11 col-span-2 lg:col-span-1 order-1 lg:order-2 overflow-hidden">
                                     <SlideFromRight>
-                                        <Infos />
+                                        <Infos hasDialogsCourse={hasDialogsCourse} />
                                     </SlideFromRight>
                                 </div>
                             </div>
@@ -83,8 +112,8 @@ export default function DialoguesPage() {
             {/* <div className="section pd-top-5---bottom-5 wf-section">
                 <Marquee />
             </div> */}
-            <IsForYou />
-            <LastComments courseId={COURSE_ID} locale={locale} t={tLastComments} courseUrl={COURSE_URL} />
+            <IsForYou hasDialogsCourse={hasDialogsCourse} />
+            <LastComments courseId={COURSE_ID} locale={locale} t={tLastComments} courseUrl={CHECKOUT_URL} udemyCourseUrl={COURSE_URL} />
             <CoursesOtherChoices courseUrl={"/courses/dialogues"} courseRef="Dialogues" />
         </div>
     );
@@ -165,13 +194,22 @@ const YouLearn = () => {
     );
 };
 
-const Description = () => {
+const Description = ({
+    hasDialogsCourse,
+    dialogsCourseSommaire,
+    hero,
+}: {
+    hasDialogsCourse: boolean;
+    dialogsCourseSommaire: Awaited<ReturnType<typeof getPackSommaire>>;
+    hero: ReturnType<typeof buildHeroData>;
+}) => {
     const t = useTranslations("Courses.Dialogues.Description");
+    const defaultModuleKeyIndex = dialogsCourseSommaire?.packages[0]?.modules.findIndex((mod) => mod.posts.some((p) => p._id === hero.video?.main?.postId)) ?? 0;
     return (
         <div data-w-id="373dab4e-675b-8306-ad45-ad12f418b14c" className="rich-text-v2 w-richtext">
             <SlideFromBottom>
                 <p>
-                    {t.rich("para1", intelRich())} <LinkArrow url="https://www.startfrenchnow.com/courses/beginners/">ici</LinkArrow>
+                    {t.rich("para1", intelRich())} <LinkArrow url="https://www.startfrenchnow.com/courses/dialogues/">ici</LinkArrow>
                 </p>
             </SlideFromBottom>
             <SlideFromBottom>
@@ -198,20 +236,19 @@ const Description = () => {
             <SlideFromBottom>
                 <h2 className="mt-4 sm:mt-8">{t.rich("header3", intelRich())}</h2>
             </SlideFromBottom>
-            <SlideInOneByOneParent>
-                <ul>
-                    {Array.from({ length: 42 }, (_, index) => (
-                        <SlideInOneByOneChild key={index}>
-                            <li>{t(`content${index + 1}`)}</li>
-                        </SlideInOneByOneChild>
-                    ))}
-                </ul>
-            </SlideInOneByOneParent>
+            <CoursesAccordionClient
+                fidePackSommaire={dialogsCourseSommaire}
+                hasPack={hasDialogsCourse}
+                expandAll={false}
+                defaultModuleKeyIndex={defaultModuleKeyIndex}
+                currentPostSlug={hero.video?.main?.slug}
+                linkPrefix="/courses/dialogues/"
+            />
         </div>
     );
 };
 
-const Infos = () => {
+const Infos = ({ hasDialogsCourse }: { hasDialogsCourse: boolean }) => {
     const t = useTranslations("Courses.Dialogues.Infos");
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
@@ -232,19 +269,14 @@ const Infos = () => {
                 <BsInfinity className="text-2xl mr-2 sm:mr-4" />
                 <span>{t("unlimitedAccess")}</span>
             </p>
-            <p>
-                <BsTrophy className="text-2xl mr-2 sm:mr-4" />
-                <span>{t("certificate")}</span>
-            </p>
-            <Link href={COURSE_URL} className="btn-primary full-width project-btn w-inline-block">
-                <span className="line-rounded-icon link-icon-right"> {t("buyNow")}</span>
+            <Link href={hasDialogsCourse ? "/courses/dashboard" : CHECKOUT_URL} className="btn-primary full-width project-btn w-inline-block">
+                <span className="line-rounded-icon link-icon-right"> {hasDialogsCourse ? t("continue") : t("buyNow")}</span>
             </Link>
-            <p className="bs pt-2">{t("guarantee")}</p>
         </div>
     );
 };
 
-const IsForYou = () => {
+const IsForYou = ({ hasDialogsCourse }: { hasDialogsCourse: boolean }) => {
     const t = useTranslations("Courses.Dialogues.IsForYou");
     return (
         <div className="section pd-top-150px---bottom-150px wf-section pt-0">
@@ -258,7 +290,7 @@ const IsForYou = () => {
                                         <h2 className="display-2 mg-bottom-12px">{t.rich("title", intelRich())}</h2>
                                         <p>
                                             {t("description")}
-                                            <LinkArrow url={COURSE_URL}>{t("help")}</LinkArrow>
+                                            <LinkArrow url={"/contact"}>{t("help")}</LinkArrow>
                                         </p>
                                     </div>
                                 </SlideFromBottom>
@@ -297,8 +329,11 @@ const IsForYou = () => {
                                                 </div>
                                             </div>
                                             <SlideFromBottom>
-                                                <Link href={COURSE_URL} className="btn-secondary full-width project-btn w-inline-block hover:bg-secondary-5">
-                                                    <span className="line-rounded-icon link-icon-right">{t("buyNow")}</span>
+                                                <Link
+                                                    href={hasDialogsCourse ? "/courses/dashboard" : CHECKOUT_URL}
+                                                    className="btn-secondary full-width project-btn w-inline-block hover:bg-secondary-2"
+                                                >
+                                                    <span className="line-rounded-icon link-icon-right">{hasDialogsCourse ? t("continue") : t("buyNow")}</span>
                                                 </Link>
                                             </SlideFromBottom>
                                         </div>

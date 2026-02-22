@@ -30,6 +30,7 @@ function NavBar() {
     };
 
     const coursesDict = {
+        dashboard: t("courses.dashboard"),
         coursesTitle: t("courses.coursesTitle"),
         button: t("courses.button"),
         beginners: t("courses.beginners"),

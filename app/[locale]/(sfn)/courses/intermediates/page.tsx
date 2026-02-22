@@ -16,12 +16,45 @@ import LinkArrow from "@/app/components/common/LinkArrow";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoices";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
+import { FidePackSommaire, getPackSommaire } from "@/app/serverActions/productActions";
+import { Locale } from "@/i18n";
+import { HeroData, buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
+import { client } from "@/app/lib/sanity.client";
+import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
+import { Progress } from "@/app/types/sfn/auth";
+import { CoursesAccordionClient } from "../../fide/components/CoursesAccordionClient";
 
 const COURSE_ID = "4931486";
-const COURSE_URL = "https://www.udemy.com/course/the-complete-french-course-learn-french-low-intermediate/";
+const CHECKOUT_URL = `/checkout/udemy_course_intermediate?quantity=1&callbackUrl=${encodeURIComponent("/courses/intermediates")}&currency=EUR`;
 
-export default function IntermediatesPage() {
-    const locale = useLocale();
+export default async function IntermediatesPage({ params: { locale } }: { params: { locale: Locale } }) {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?._id ?? null;
+    const hasIntermediateCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_intermediate");
+
+    const [frenchIntermediateSommaire, frenchIntermediateUserProgress] = await Promise.all([
+        getPackSommaire(locale, "udemy_course_intermediate"),
+        userId ? client.fetch<Progress>(FRENCH_USER_PROGRESS_QUERY, { userId, courseKey: "udemy_course_intermediate" }) : Promise.resolve(null),
+    ]);
+
+    const hero = buildHeroData(frenchIntermediateUserProgress, frenchIntermediateSommaire, []);
+
+    return <IntermediatesPageNoAsync hero={hero} locale={locale} hasIntermediateCourse={hasIntermediateCourse} frenchIntermediateSommaire={frenchIntermediateSommaire} />;
+}
+
+function IntermediatesPageNoAsync({
+    hero,
+    locale,
+    hasIntermediateCourse,
+    frenchIntermediateSommaire,
+}: {
+    hero: HeroData;
+    locale: Locale;
+    hasIntermediateCourse: boolean;
+    frenchIntermediateSommaire: FidePackSommaire;
+}) {
     const t = useTranslations("Courses.Intermediates.PrimaryPage");
     const tLastCom = useTranslations("Courses.Intermediates.LastComments");
     const baseNumbers = {
@@ -33,6 +66,7 @@ export default function IntermediatesPage() {
         title: tLastCom.rich("title", intelRich()),
         description: tLastCom("description"),
         buyNow: tLastCom("buyNow"),
+        continue: tLastCom("continue"),
     };
 
     return (
@@ -54,7 +88,7 @@ export default function IntermediatesPage() {
                             <Image width={1186} height={667.67} src="/images/cours2.jpg" loading="eager" alt="the first course" className="image" />
                         </div>
                     </div>
-                    <CourseRatings courseIds={[COURSE_ID]} baseNumbers={baseNumbers} />
+                    <CourseRatings courseIds={[COURSE_ID]} baseNumbers={baseNumbers} isUdemy={false} />
                 </div>
             </section>
             <div className="flex flex-col items-center justify-center w-full my-24 md:my-36">
@@ -66,11 +100,11 @@ export default function IntermediatesPage() {
                         <div className="inner-container _600px---mbl center">
                             <div className="grid-2-columns post-rigth-sidebar gap-48px items-start">
                                 <div id="w-node-_37753ff7-31f0-69be-55cd-ec34f268f026-7a543d63" className="col-span-2 lg:col-span-1 order-2 lg:order-1 mt-24 lg:mt-0">
-                                    <Description />
+                                    <Description hasIntermediateCourse={hasIntermediateCourse} frenchIntermediateSommaire={frenchIntermediateSommaire} hero={hero} />
                                 </div>
                                 <div id="w-node-_5477c579-dd4f-3f5a-c700-1cd0a30d540b-7a543d63" className="lg:sticky lg:top-11 col-span-2 lg:col-span-1 order-1 lg:order-2 overflow-hidden">
                                     <SlideFromRight>
-                                        <Infos />
+                                        <Infos hasIntermediateCourse={hasIntermediateCourse} />
                                     </SlideFromRight>
                                 </div>
                             </div>
@@ -78,8 +112,15 @@ export default function IntermediatesPage() {
                     </div>
                 </div>
             </div>
-            <IsForYou />
-            <LastComments courseId={COURSE_ID} locale={locale} t={tLastComments} courseUrl={COURSE_URL} />
+            <IsForYou hasIntermediateCourse={hasIntermediateCourse} />
+            <LastComments
+                courseId={COURSE_ID}
+                locale={locale}
+                t={tLastComments}
+                courseUrl={CHECKOUT_URL}
+                hasCourse={hasIntermediateCourse}
+                udemyCourseUrl="https://www.udemy.com/course/the-complete-french-course-learn-french-low-intermediate/"
+            />
             <CoursesOtherChoices courseUrl={"/courses/intermediates"} courseRef="Intermediates" />
         </div>
     );
@@ -160,13 +201,14 @@ const YouLearn = () => {
     );
 };
 
-const Description = () => {
+const Description = ({ hasIntermediateCourse, frenchIntermediateSommaire, hero }: { hasIntermediateCourse: boolean; frenchIntermediateSommaire: FidePackSommaire; hero: HeroData }) => {
     const t = useTranslations("Courses.Intermediates.Description");
+    const defaultModuleKeyIndex = frenchIntermediateSommaire?.packages[0]?.modules.findIndex((mod) => mod.posts.some((p) => p._id === hero.video?.main?.postId)) ?? 0;
     return (
         <div data-w-id="373dab4e-675b-8306-ad45-ad12f418b14c" className="rich-text-v2 w-richtext">
             <SlideFromBottom>
                 <p>
-                    {t.rich("para1", intelRich())} <LinkArrow url="https://www.startfrenchnow.com/courses/beginners/">ici</LinkArrow>
+                    {t.rich("para1", intelRich())} <LinkArrow url="https://www.startfrenchnow.com/courses/intermediates/">ici</LinkArrow>
                 </p>
             </SlideFromBottom>
             <SlideFromBottom>
@@ -191,69 +233,20 @@ const Description = () => {
             <SlideFromBottom>
                 <h2 className="mt-4 sm:mt-8">{t.rich("header3", intelRich())}</h2>
             </SlideFromBottom>
-            <SlideInOneByOneParent>
-                <ul>
-                    <SlideInOneByOneChild>
-                        <li>{t("content1")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content2")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content3")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content4")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content5")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content6")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content7")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content8")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content9")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content10")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content11")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content12")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content13")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content14")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content15")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content16")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content17")}</li>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <li>{t("content18")}</li>
-                    </SlideInOneByOneChild>
-                </ul>
-            </SlideInOneByOneParent>
+
+            <CoursesAccordionClient
+                fidePackSommaire={frenchIntermediateSommaire}
+                hasPack={hasIntermediateCourse}
+                expandAll={false}
+                defaultModuleKeyIndex={defaultModuleKeyIndex}
+                currentPostSlug={hero.video?.main?.slug}
+                linkPrefix="/courses/intermediates/"
+            />
         </div>
     );
 };
 
-const Infos = () => {
+const Infos = ({ hasIntermediateCourse }: { hasIntermediateCourse: boolean }) => {
     const t = useTranslations("Courses.Intermediates.Infos");
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
@@ -274,19 +267,14 @@ const Infos = () => {
                 <BsInfinity className="text-2xl mr-2 sm:mr-4" />
                 <span>{t("unlimitedAccess")}</span>
             </p>
-            <p>
-                <BsTrophy className="text-2xl mr-2 sm:mr-4" />
-                <span>{t("certificate")}</span>
-            </p>
-            <Link href={COURSE_URL} className="btn-primary full-width project-btn w-inline-block">
-                <span className="line-rounded-icon link-icon-right"> {t("buyNow")}</span>
+            <Link href={hasIntermediateCourse ? "/courses/dashboard" : CHECKOUT_URL} className="btn-primary full-width project-btn w-inline-block">
+                <span className="line-rounded-icon link-icon-right"> {hasIntermediateCourse ? t("continue") : t("buyNow")}</span>
             </Link>
-            <p className="bs pt-2">{t("guarantee")}</p>
         </div>
     );
 };
 
-const IsForYou = () => {
+const IsForYou = ({ hasIntermediateCourse }: { hasIntermediateCourse: boolean }) => {
     const t = useTranslations("Courses.Intermediates.IsForYou");
     return (
         <div className="section pd-top-150px---bottom-150px wf-section pt-0">
@@ -299,7 +287,7 @@ const IsForYou = () => {
                                     <div>
                                         <h2 className="display-2 mg-bottom-12px">{t.rich("title", intelRich())}</h2>
                                         <p>
-                                            {t("description")} <LinkArrow url={COURSE_URL}>{t("help")}</LinkArrow>
+                                            {t("description")} <LinkArrow url={"/contact"}>{t("help")}</LinkArrow>
                                         </p>
                                     </div>
                                 </SlideFromBottom>
@@ -338,8 +326,11 @@ const IsForYou = () => {
                                                 </div>
                                             </div>
                                             <SlideFromBottom>
-                                                <Link href={COURSE_URL} className="btn-secondary full-width project-btn w-inline-block hover:bg-secondary-4">
-                                                    <span className="line-rounded-icon link-icon-right">{t("buyNow")}</span>
+                                                <Link
+                                                    href={hasIntermediateCourse ? "/courses/dashboard" : CHECKOUT_URL}
+                                                    className="btn-secondary full-width project-btn w-inline-block hover:bg-secondary-4"
+                                                >
+                                                    <span className="line-rounded-icon link-icon-right">{hasIntermediateCourse ? t("continue") : t("buyNow")}</span>
                                                 </Link>
                                             </SlideFromBottom>
                                         </div>

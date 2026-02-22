@@ -20,6 +20,7 @@ interface CheckoutProps {
     locale: "fr" | "en";
     productSlug: string;
     quantity: string;
+    defaultCurrency?: "CHF" | "EUR" | "USD";
 }
 
 export type AreReadyState = {
@@ -32,7 +33,7 @@ const queryProduct = groq`
         *[_type=='product' && slug.current == $slug][0] 
     `;
 
-export default function Checkout({ locale, productSlug, quantity: originalQuantity }: CheckoutProps) {
+export default function Checkout({ locale, productSlug, quantity: originalQuantity, defaultCurrency = "CHF" }: CheckoutProps) {
     const { data: session } = useSession();
     const [pricingDetails, setPricingDetails] = useState<PricingDetails | null>(null);
     const [productInfos, setProductInfos] = useState<null | ProductInfos>(null);
@@ -45,7 +46,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     const t = useTranslations();
 
     const [quantity, setQuantity] = useState(originalQuantity);
-    const [currency, setCurrency] = useState<"CHF" | "EUR" | "USD">("CHF");
+    const [currency, setCurrency] = useState<"CHF" | "EUR" | "USD">(defaultCurrency);
     const sessionEmail = session?.user?.email;
     const [areReady, setAreReady] = useState<AreReadyState>({ yourPurchase: true, contactInformations: false, payment: false });
     const [payment, setPayment] = useState(false);
@@ -54,10 +55,11 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     const initialAmount = pricingDetails?.initialAmount;
 
     useEffect(() => {
-        if (session) {
-            setFormData((state) => ({ ...state, email: session.user?.email || "" }));
+        const sessEmail = session?.user?.email;
+        if (sessEmail && !formData.email) {
+            setFormData((state) => ({ ...state, email: sessEmail }));
         }
-    }, [session]);
+    }, [session, formData.email]);
 
     useEffect(() => {
         setAreReady((state) => ({ ...state, contactInformations: isValidEmail(email) && !!firstName.trim() && !!lastName.trim() }));
@@ -68,18 +70,28 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     }, [email, quantity, currency]);
 
     useEffect(() => {
-        if (!session) return;
+        let cancelled = false;
+
         (async () => {
             const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch;
-            const userPurchasedLesson = await getUserPurchases(session?.user?._id, product.referenceKey);
-            const data = await getAmount(product, quantity, currency, userPurchasedLesson);
+
+            const sessionUserId = session?.user?._id;
+            const userPurchasedLesson = sessionUserId ? await getUserPurchases(sessionUserId, product.referenceKey) : undefined;
+
+            const data = await getAmount(product, quantity, currency, userPurchasedLesson ?? undefined);
+
+            if (cancelled) return;
             setPricingDetails(data.pricingDetails);
             setProductInfos(data.productInfos);
         })();
-    }, [quantity, currency]);
+
+        return () => {
+            cancelled = true;
+        };
+    }, [productSlug, quantity, currency, session?.user?._id]);
 
     const getSpinner = (name: string) => {
-        return !pricingDetails || !productInfos || !sessionEmail;
+        return !pricingDetails || !productInfos;
     };
     const getIsReady = (name: string) => {
         return areReady[name as keyof AreReadyState];
@@ -88,7 +100,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     return (
         <div className="grid grid-cols-6 gap-4 lg:gap-8 w-full min-h-[65vh]">
             <div className="col-span-6 lg:col-span-4">
-                <div className="w-full flex flex-col gap-8 lg:gap-12">
+                <div className="w-full flex flex-col gap-4 lg:gap-8">
                     <div className="w-full">
                         <div className="flex w-full justify-between items-center color-neutral-700 gap-6 !p-0">
                             <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center mb-6">
@@ -152,7 +164,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                 formData={formData}
                                 sessionEmail={sessionEmail}
                                 setAreReady={setAreReady}
-                                userId={session?.user?._id || ""}
+                                userId={session?.user?._id}
                             />
                         </div>
                     )}

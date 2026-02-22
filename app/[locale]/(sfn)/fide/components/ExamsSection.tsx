@@ -9,6 +9,7 @@ import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { LinkArrowToFideExams } from "@/app/components/common/LinkToFideExams";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
+import { SlideFromLeft, SlideFromRight } from "@/app/components/animations/Slides";
 
 export default function ExamsSection({
     stats = { totalExams: 100, avgDurationMin: 12, completionRate: 0.82 },
@@ -22,12 +23,14 @@ export default function ExamsSection({
 
     return (
         <section id="exams" className="w-full bg-white py-24">
-            <div className="mx-auto w-full max-w-7xl px-4 lg:px-8">
+            <div className="mx-auto w-full max-w-7xl px-4 lg:px-8 overflow-hidden">
                 {/* Header */}
-                <header className="mb-12">
-                    <h2 className="display-2">{t.rich("title", { ...intelRich(), exams: totalExams })}</h2>
-                    <p>{t("subtitle")}</p>
-                </header>
+                <SlideFromLeft>
+                    <header className="mb-12">
+                        <h2 className="display-2">{t.rich("title", { ...intelRich(), exams: totalExams })}</h2>
+                        <p>{t("subtitle")}</p>
+                    </header>
+                </SlideFromLeft>
 
                 {/* Benefits */}
                 <div className="mb-4 lg:mb-12 grid grid-cols-1 lg:grid-cols-7 gap-12">
@@ -37,8 +40,11 @@ export default function ExamsSection({
                         <BenefitCard icon={<LuFileCheck2 className="text-xl" />} title={t("benefit3.title")} desc={t("benefit3.desc")} color="bg-secondary-1" />
                         <BenefitCard icon={<LuBarChart3 className="text-xl" />} title={t("benefit4.title")} desc={t("benefit4.desc")} color="bg-secondary-5" />
                     </div>
+
                     <div className="col-span-1 lg:col-span-4 flex justify-center items-center">
-                        <Image src="/images/examsMobile.png" alt={t("imageAlt")} layout="responsive" width={800} height={500} className="w-full h-auto object-contain max-w-2xl" />
+                        <SlideFromRight>
+                            <Image src="/images/examsMobile.png" alt={t("imageAlt")} layout="responsive" width={800} height={500} className="w-full h-auto object-contain max-w-2xl" />
+                        </SlideFromRight>
                     </div>
                 </div>
 

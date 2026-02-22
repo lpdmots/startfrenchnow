@@ -11,8 +11,9 @@ import { Locale } from "@/i18n";
 import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
+import { SlideFromBottom, SlideInOneByOneChild, SlideInOneByOneParent } from "@/app/components/animations/Slides";
 
-export function PricingPlans({ hasPack, locale }: { hasPack?: boolean; locale: string }) {
+export function PricingPlans({ hasPack, locale, hasReservation }: { hasPack?: boolean; locale: string; hasReservation?: boolean }) {
     const [isOpen, setIsOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
     const t = useTranslations("PricingPlans");
@@ -69,7 +70,7 @@ export function PricingPlans({ hasPack, locale }: { hasPack?: boolean; locale: s
             features: [t("card3.features.f1"), t("card3.features.f2"), t("card3.features.f3")],
             extras: [t("card3.extras.e1"), t("card3.extras.e2")],
             color: "secondary-2",
-            labelCTA: t("card3.labelCTA"),
+            labelCTA: hasReservation ? t("card3.labelByMore") : t("card3.labelCTA"),
             checkoutUrl: `/checkout/fide-preparation-class?quantity=12&callbackUrl=${encodeURIComponent("/fide#plans")}`,
         },
     ];
@@ -79,10 +80,14 @@ export function PricingPlans({ hasPack, locale }: { hasPack?: boolean; locale: s
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 {/* Intro courte */}
                 <div id="plans" className="mb-10 text-center">
-                    <h2 className="display-2">
-                        <span className="heading-span-secondary-1">{t("titleHighlight")}</span> {t("titleRest")}
-                    </h2>
-                    <p className="text-lg">{t("subtitle")}</p>
+                    <SlideFromBottom>
+                        <>
+                            <h2 className="display-2">
+                                <span className="heading-span-secondary-1">{t("titleHighlight")}</span> {t("titleRest")}
+                            </h2>
+                            <p className="text-lg">{t("subtitle")}</p>
+                        </>
+                    </SlideFromBottom>
                 </div>
                 <div className="w-full text-center mb-10">
                     <p className="text-neutral-700 mb-0 flex justify-center w-full font-bold text-lg">
@@ -93,17 +98,25 @@ export function PricingPlans({ hasPack, locale }: { hasPack?: boolean; locale: s
                     </p>
                 </div>
                 {/* Layout 3 colonnes (Free allégé + 2 vraies cards) */}
-                <div className="flex flex-col lg:flex-row flex-nowrap gap-6 lg:gap-2 xl:gap-8">
-                    <div className="flex justify-center order-2 lg:order-1">
-                        <PriceCard card={CARDS[0]} hasPack={hasPack} />
+                <SlideInOneByOneParent delayChildren={0.5} delay={0.1}>
+                    <div className="flex flex-col lg:flex-row flex-nowrap gap-6 lg:gap-2 xl:gap-8">
+                        <SlideInOneByOneChild>
+                            <div className="flex justify-center order-2 lg:order-1">
+                                <PriceCard card={CARDS[0]} hasPack={hasPack} />
+                            </div>
+                        </SlideInOneByOneChild>
+                        <SlideInOneByOneChild>
+                            <div className="flex justify-center order-1 lg:order-2">
+                                <PriceCard card={CARDS[1]} hasPack={hasPack} />
+                            </div>
+                        </SlideInOneByOneChild>
+                        <SlideInOneByOneChild>
+                            <div className="flex justify-center order-3 lg:order-3">
+                                <PriceCard card={CARDS[2]} hasPack={hasPack} bookReservation={true} setIsOpen={hasReservation ? setIsOpen : undefined} />
+                            </div>
+                        </SlideInOneByOneChild>
                     </div>
-                    <div className="flex justify-center order-1 lg:order-2">
-                        <PriceCard card={CARDS[1]} hasPack={hasPack} />
-                    </div>
-                    <div className="flex justify-center order-3 lg:order-3">
-                        <PriceCard card={CARDS[2]} hasPack={hasPack} bookReservation={true} />
-                    </div>
-                </div>
+                </SlideInOneByOneParent>
                 {/* Mentions sous la zone plans */}
                 <div className="mt-12 text-center text-sm text-neutral-600">
                     <p className="mb-0">

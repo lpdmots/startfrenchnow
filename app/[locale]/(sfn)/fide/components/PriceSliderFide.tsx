@@ -171,11 +171,11 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
     const [previousPurchasedLessons, setPreviousPurchasedLessons] = useState<number | null>(null);
     const [product, setProduct] = useState<ProductFetch | null>(null);
     const [productData, setProductData] = useState<null | ProductData>(null);
-    const max = product?.maxQuantity || 15;
+    const max = product?.maxQuantity || 25;
     const min = product?.minQuantity || 1;
     const userId = session?.user._id;
     const t = useTranslations("PriceSliderFide");
-
+    //console.log({ max });
     useEffect(() => {
         (async () => {
             if (userId) {
@@ -190,7 +190,7 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
     useEffect(() => {
         (async () => {
             const product: ProductFetch = await client.fetch(groq`*[_type == "product" && referenceKey == $referenceKey][0]`, { referenceKey: "Fide Preparation Class" });
-            console.log("Fetched product:", product);
+            //console.log("Fetched product:", product);
             setProduct(product);
         })();
     }, []);
@@ -198,7 +198,7 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
     useEffect(() => {
         if (!product || previousPurchasedLessons === null) return;
         const pricingDetails = getProductData(product, quantity, previousPurchasedLessons, "CHF");
-        const planName = (pricingDetails?.planName || "fide-booster") as PlanName;
+        const planName = (pricingDetails?.planName || "fide-mastery") as PlanName;
         const categoryData = PRICECATEGORIES[locale as keyof typeof PRICECATEGORIES][planName];
         setProductData({ ...categoryData, ...pricingDetails });
     }, [product, quantity, previousPurchasedLessons]);

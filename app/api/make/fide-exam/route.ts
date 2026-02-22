@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
         const { title, description, level } = data;
-        console.log("Received data:", data);
+        //console.log("Received data:", data);
 
         const examId = uuidv4();
 

@@ -154,20 +154,22 @@ export function localizePosts(posts: Post[], locale: Locale): Post[] {
     }));
 }
 
-export const getDataInRightLang = <T extends object>(item: T, lang: "en" | "fr", attribute: keyof T) => {
-    const attrString = String(attribute); // Explicitly convert to string
+type Lang = "en" | "fr";
 
-    if (lang === "fr" && item[attribute]) {
-        return item[attribute] as string | undefined;
-    }
-    if (lang === "fr" && !item[attribute]) {
-        return item[`${attrString}_en` as keyof T] as string | undefined;
-    }
-    if (lang === "en" && item[`${attrString}_en` as keyof T]) {
-        return item[`${attrString}_en` as keyof T] as string | undefined;
-    }
-    return item[attribute] as string | undefined;
-};
+export function getDataInRightLang<T extends object, K extends keyof T & string>(item: T | null | undefined, lang: Lang, attribute: K): string | undefined {
+    if (!item) return undefined;
+
+    const obj = item as Record<string, unknown>;
+    const baseKey = attribute as string;
+    const enKey = `${baseKey}_en`;
+
+    const toStr = (v: unknown): string | undefined => (typeof v === "string" && v.trim() !== "" ? v : undefined);
+
+    const frVal = toStr(obj[baseKey]);
+    const enVal = toStr(obj[enKey]);
+
+    return lang === "fr" ? frVal ?? enVal : enVal ?? frVal;
+}
 
 export function formatStringToNoWrap(input: string): JSX.Element {
     if (!input) return <span></span>;
