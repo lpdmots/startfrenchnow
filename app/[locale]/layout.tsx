@@ -14,7 +14,7 @@ const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
 
 const poppins = Poppins({
     subsets: ["latin"],
-    weight: ["400", "500", "700"],
+    weight: ["400", "500", "600", "700"],
     variable: "--font-poppins",
 });
 
