@@ -65,39 +65,45 @@ export default async function RootLayout({ children, params }: { children: React
                 {/* 1) Consent Mode v2: default = denied (Advanced mode) */}
                 <Script id="consent-default" strategy="beforeInteractive">
                     {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){ dataLayer.push(arguments); }
 
-    // EEE = UE + Islande + Liechtenstein + Norvège
-    // (si tu veux traiter aussi UK/CH comme zones à consentement strict, ajoute 'GB' et 'CH')
-    var EEA_REGIONS = [
-      'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT',
-      'LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE',
-      'IS','LI','NO'
-    ];
+                  var EEA_REGIONS = [
+                    'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT',
+                    'LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE',
+                    'IS','LI','NO'
+                  ];
 
-    // 1) Consent par défaut = denied uniquement dans l’EEE
-    gtag('consent', 'default', {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'denied',
-      wait_for_update: 800,
-      region: EEA_REGIONS
-    });
+                  // ✅ Pays à exclure de GA
+                  var GA_EXCLUDED_REGIONS = ['CN', 'SG'];
 
-    // 2) Consent par défaut = granted pour le reste du monde
-    gtag('consent', 'default', {
-      ad_storage: 'granted',
-      ad_user_data: 'granted',
-      ad_personalization: 'granted',
-      analytics_storage: 'granted'
-    });
+                  // 1) Consent par défaut = denied dans l’EEE
+                  gtag('consent', 'default', {
+                    ad_storage: 'denied',
+                    ad_user_data: 'denied',
+                    ad_personalization: 'denied',
+                    analytics_storage: 'denied',
+                    wait_for_update: 800,
+                    region: EEA_REGIONS
+                  });
 
-    // Options utiles (on les garde)
-    gtag('set', 'ads_data_redaction', true);
-    gtag('set', 'url_passthrough', true);
-  `}
+                  // 1bis) Consent par défaut = analytics denied en Chine + Singapour
+                  gtag('consent', 'default', {
+                    analytics_storage: 'denied',
+                    region: GA_EXCLUDED_REGIONS
+                  });
+
+                  // 2) Consent par défaut = granted pour le reste du monde
+                  gtag('consent', 'default', {
+                    ad_storage: 'granted',
+                    ad_user_data: 'granted',
+                    ad_personalization: 'granted',
+                    analytics_storage: 'granted'
+                  });
+
+                  gtag('set', 'ads_data_redaction', true);
+                  gtag('set', 'url_passthrough', true);
+                `}
                 </Script>
 
                 {/* 2) Boot: load tarteaucitron early, then load GTM */}
