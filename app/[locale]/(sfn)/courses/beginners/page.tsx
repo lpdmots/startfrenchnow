@@ -21,28 +21,65 @@ import { Progress } from "@/app/types/sfn/auth";
 import { client } from "@/app/lib/sanity.client";
 import { HeroData, buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
 import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
+import { getAmount } from "@/app/serverActions/stripeActions";
+import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
+import { groq } from "next-sanity";
 
 export const revalidate = 60;
 
 const COURSE_ID = "3693426";
+const PRODUCT_REFERENCE_KEY = "udemy_course_beginner";
 const CHECKOUT_URL = `/checkout/udemy_course_beginner?quantity=1&callbackUrl=${encodeURIComponent("/courses/beginners")}&currency=EUR`;
+const queryProduct = groq`
+    *[_type=='product' && referenceKey == $referenceKey][0]
+`;
 
 export default async function BeginnersPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id ?? null;
     const hasBeginnerCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_beginner");
 
-    const [frenchBeginnerSommaire, frenchBeginnerUserProgress] = await Promise.all([
+    const [frenchBeginnerSommaire, frenchBeginnerUserProgress, product] = await Promise.all([
         getPackSommaire(locale, "udemy_course_beginner"),
         userId ? client.fetch<Progress>(FRENCH_USER_PROGRESS_QUERY, { userId, courseKey: "udemy_course_beginner" }) : Promise.resolve(null),
+        client.fetch<ProductFetch>(queryProduct, { referenceKey: PRODUCT_REFERENCE_KEY }),
     ]);
 
     const hero = buildHeroData(frenchBeginnerUserProgress, frenchBeginnerSommaire, []);
+    let pricingDetails: PricingDetails | null = null;
+    if (product) {
+        try {
+            const { pricingDetails: pricing } = await getAmount(product, "1", "EUR", undefined);
+            pricingDetails = pricing;
+        } catch (error) {
+            console.error("Failed to load pricing details:", error);
+        }
+    }
 
-    return <BeginnerPageNoAsync hero={hero} locale={locale} hasBeginnerCourse={hasBeginnerCourse} frenchBeginnerSommaire={frenchBeginnerSommaire} />;
+    return (
+        <BeginnerPageNoAsync
+            hero={hero}
+            locale={locale}
+            hasBeginnerCourse={hasBeginnerCourse}
+            frenchBeginnerSommaire={frenchBeginnerSommaire}
+            pricingDetails={pricingDetails}
+        />
+    );
 }
 
-const BeginnerPageNoAsync = ({ hero, locale, hasBeginnerCourse, frenchBeginnerSommaire }: { hero: HeroData; locale: Locale; hasBeginnerCourse: boolean; frenchBeginnerSommaire: FidePackSommaire }) => {
+const BeginnerPageNoAsync = ({
+    hero,
+    locale,
+    hasBeginnerCourse,
+    frenchBeginnerSommaire,
+    pricingDetails,
+}: {
+    hero: HeroData;
+    locale: Locale;
+    hasBeginnerCourse: boolean;
+    frenchBeginnerSommaire: FidePackSommaire;
+    pricingDetails: PricingDetails | null;
+}) => {
     const t = useTranslations("Courses.Beginners.PrimaryPage");
     const tLastCom = useTranslations("Courses.Beginners.LastComments");
     const baseNumbers = {
@@ -55,6 +92,11 @@ const BeginnerPageNoAsync = ({ hero, locale, hasBeginnerCourse, frenchBeginnerSo
         description: tLastCom("description"),
         buyNow: tLastCom("buyNow"),
         continue: tLastCom("continue"),
+    };
+
+    const renderPricingCallout = (align: "left" | "center", className?: string) => {
+        if (hasBeginnerCourse || !pricingDetails) return null;
+        return <PricingCallout pricingDetails={pricingDetails} locale={locale} align={align} className={className} />;
     };
 
     return (
@@ -92,7 +134,7 @@ const BeginnerPageNoAsync = ({ hero, locale, hasBeginnerCourse, frenchBeginnerSo
                                 </div>
                                 <div id="w-node-_5477c579-dd4f-3f5a-c700-1cd0a30d540b-7a543d63" className="lg:sticky lg:top-11 col-span-2 lg:col-span-1 order-1 lg:order-2 overflow-hidden">
                                     <SlideFromRight>
-                                        <Infos hasBeginnerCourse={hasBeginnerCourse} />
+                                        <Infos hasBeginnerCourse={hasBeginnerCourse} pricingSlot={renderPricingCallout("left", "mb-3")} />
                                     </SlideFromRight>
                                 </div>
                             </div>
@@ -100,7 +142,7 @@ const BeginnerPageNoAsync = ({ hero, locale, hasBeginnerCourse, frenchBeginnerSo
                     </div>
                 </div>
             </div>
-            <IsForYou hasBeginnerCourse={hasBeginnerCourse} />
+            <IsForYou hasBeginnerCourse={hasBeginnerCourse} pricingSlot={renderPricingCallout("left", "mt-4 mb-3")} />
             <LastComments
                 courseId={COURSE_ID}
                 locale={locale}
@@ -108,6 +150,7 @@ const BeginnerPageNoAsync = ({ hero, locale, hasBeginnerCourse, frenchBeginnerSo
                 courseUrl={CHECKOUT_URL}
                 hasCourse={hasBeginnerCourse}
                 udemyCourseUrl="https://www.udemy.com/course/french-for-beginners-a1/"
+                ctaExtra={renderPricingCallout("center", "mb-4")}
             />
             <CoursesOtherChoices courseUrl={"/courses/beginners"} courseRef="Beginners" />
         </div>
@@ -189,6 +232,57 @@ const YouLearn = () => {
     );
 };
 
+const PricingCallout = ({
+    pricingDetails,
+    locale,
+    align,
+    className,
+}: {
+    pricingDetails: PricingDetails;
+    locale: Locale;
+    align: "left" | "center";
+    className?: string;
+}) => {
+    const t = useTranslations("Courses.Beginners.Pricing");
+    const formatAmount = (value: number) => {
+        const normalized = Math.round(value * 100) / 100;
+        const hasCents = Math.abs(normalized % 1) > 0;
+        return new Intl.NumberFormat(locale === "fr" ? "fr-CH" : "en-US", {
+            minimumFractionDigits: hasCents ? 2 : 0,
+            maximumFractionDigits: hasCents ? 2 : 0,
+        }).format(normalized);
+    };
+    const formatPrice = (value: number) => {
+        const symbol = pricingDetails.currency === "EUR" ? "€" : pricingDetails.currency === "USD" ? "$" : "CHF";
+        return `${formatAmount(value)} ${symbol}`;
+    };
+
+    const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
+    const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
+    const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
+    const discountBadge = hasDiscount
+        ? isPercentage
+            ? t("savePercent", { percent: pricingDetails.discountValue })
+            : t("saveAmount", { amount: formatPrice(discountAmount) })
+        : null;
+
+    const alignText = align === "center" ? "text-center" : "text-left";
+    const alignRow = align === "center" ? "justify-center" : "justify-start";
+
+    return (
+        <div className={`rounded-2xl border border-secondaryShades-5 ${alignText} ${className || ""}`.trim()}>
+            {hasDiscount && <div className="text-xs uppercase tracking-[0.12em] text-secondary-2 font-extrabold">{t("offerLabel")}</div>}
+            <div className={`${hasDiscount ? "mt-2" : "mt-0"} flex flex-wrap items-baseline gap-x-3 ${alignRow}`}>
+                <span className="text-4xl sm:text-5xl font-extrabold">{formatPrice(pricingDetails.amount)}</span>
+                {hasDiscount && <span className="text-base sm:text-lg text-neutral-500 line-through">{formatPrice(pricingDetails.initialAmount)}</span>}
+                {discountBadge && (
+                    <span className="inline-flex rounded-full bg-secondary-2/10 text-sm font-semibold text-secondary-2">{discountBadge}</span>
+                )}
+            </div>
+        </div>
+    );
+};
+
 const Description = ({ hasBeginnerCourse, frenchBeginnerSommaire, hero }: { hasBeginnerCourse: boolean; frenchBeginnerSommaire: FidePackSommaire; hero: HeroData }) => {
     const t = useTranslations("Courses.Beginners.Description");
     const defaultModuleKeyIndex = frenchBeginnerSommaire?.packages[0]?.modules.findIndex((mod) => mod.posts.some((p) => p._id === hero.video?.main?.postId)) ?? 0;
@@ -232,7 +326,7 @@ const Description = ({ hasBeginnerCourse, frenchBeginnerSommaire, hero }: { hasB
     );
 };
 
-const Infos = ({ hasBeginnerCourse }: { hasBeginnerCourse: boolean }) => {
+const Infos = ({ hasBeginnerCourse, pricingSlot }: { hasBeginnerCourse: boolean; pricingSlot?: React.ReactNode }) => {
     const t = useTranslations("Courses.Beginners.Infos");
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
@@ -257,6 +351,7 @@ const Infos = ({ hasBeginnerCourse }: { hasBeginnerCourse: boolean }) => {
                 <BsInfinity className="text-2xl mr-2 sm:mr-4" />
                 <span>{t("unlimitedAccess")}</span>
             </p>
+            {pricingSlot}
             <Link href={hasBeginnerCourse ? "/courses/dashboard" : CHECKOUT_URL} className="btn-primary full-width project-btn w-inline-block">
                 <span className="line-rounded-icon link-icon-right"> {hasBeginnerCourse ? t("continue") : t("buyNow")}</span>
             </Link>
@@ -264,7 +359,7 @@ const Infos = ({ hasBeginnerCourse }: { hasBeginnerCourse: boolean }) => {
     );
 };
 
-const IsForYou = ({ hasBeginnerCourse }: { hasBeginnerCourse: boolean }) => {
+const IsForYou = ({ hasBeginnerCourse, pricingSlot }: { hasBeginnerCourse: boolean; pricingSlot?: React.ReactNode }) => {
     const t = useTranslations("Courses.Beginners.IsForYou");
     return (
         <div className="section pd-top-150px---bottom-150px wf-section pt-0">
@@ -331,6 +426,7 @@ const IsForYou = ({ hasBeginnerCourse }: { hasBeginnerCourse: boolean }) => {
                                                     </SlideInOneByOneParent>
                                                 </div>
                                             </div>
+                                            {pricingSlot}
                                             <SlideFromBottom>
                                                 <Link
                                                     href={hasBeginnerCourse ? "/courses/dashboard" : CHECKOUT_URL}

@@ -7,6 +7,7 @@ export interface PricingDetails {
     amount: number;
     initialAmount: number;
     discountType?: "percentage" | "flatDiscount" | "newPrice";
+    discountValue?: number;
     currency: "EUR" | "USD" | "CHF";
     currencies: ("EUR" | "USD" | "CHF")[];
     planName?: string;

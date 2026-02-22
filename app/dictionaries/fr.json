@@ -324,8 +324,9 @@
         "paymentTitle": "Paiement",
         "loading": "Chargement...",
         "contactInformations": {
-            "email": "Email :",
+            "email": "Email* :",
             "emailError": "Adresse e-mail invalide.",
+            "emailRequired": "Renseignez un email valide pour continuer.",
             "emailAliasInfo": "L'adresse diffère de celle enregistrée sur votre compte. Elle sera ajoutée comme adresse secondaire.",
             "firstName": "Prénom :",
             "firstNameError": "Le prénom est requis.",
@@ -335,7 +336,7 @@
         "yourPurchase": {
             "courseImageAlt": "image du cours",
             "quantity": "Quantité",
-            "unitPrice": "{currency} {price}.-"
+            "unitPrice": "{currency} {price}"
         },
         "priceLayout": {
             "amountToPay": "Montant à Payer",
@@ -1379,7 +1380,7 @@
                 "accessMobileTV": "Accès sur mobiles et TV",
                 "unlimitedAccess": "Accès illimité",
                 "certificate": "Certificat de fin de formation",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             },
             "IsForYou": {
@@ -1391,7 +1392,7 @@
                 "prerequisite2": "Le cours est recommandé à toute personne souhaitant apprendre le français de manière rapide et efficace.",
                 "prerequisite3": "Il est en français, ne vous inquiétez pas : l'immersion est la meilleure méthode pour apprendre une langue.",
                 "prerequisite4": "Enseignant de langue maternelle française avec un accent parfait.",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours",
                 "levelTitle": "Quel niveau atteindrez-vous ?",
                 "levelDescription": "À la fin de ce cours, vous aurez complété le niveau A1.2 et atteint un niveau intermédiaire bas en français (A2) vous <noWrap>permettant de :</noWrap>",
@@ -1399,11 +1400,16 @@
                 "level2": "communiquer dans des tâches simples et habituelles nécessitant un échange d'informations simple et direct sur des sujets familiers et routiniers.",
                 "level3": "décrire en termes simples des aspects de votre environnement proche et répondre à des questions dans des domaines de besoin immédiat."
             },
+            "Pricing": {
+                "offerLabel": "Offre spéciale",
+                "savePercent": "Économisez {percent}%",
+                "saveAmount": "Économisez {amount}"
+            },
             "OtherCourses": { "title": "Voir les <hs2>autres cours</hs2>" },
             "LastComments": {
                 "title": "<hs2>Retours</hs2> & Expériences",
                 "description": "Voici ce que nos étudiants disent de ce cours. Faites-vous votre propre avis sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous trouverez des milliers d'autres avis sur ",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             }
         },
@@ -1441,7 +1447,7 @@
                 "accessMobileTV": "Accès sur mobiles et TV",
                 "unlimitedAccess": "Accès illimité",
                 "certificate": "Certificat de complétion",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             },
             "IsForYou": {
@@ -1451,16 +1457,21 @@
                 "prerequisitesTitle": "Prérequis",
                 "prerequisite1": "Vous devriez avoir une bonne connaissance du vocabulaire et de la grammaire français A1.",
                 "prerequisite2": "Idéalement mon premier cours : Cours Complet de Français : Apprendre le Français - Débutants.",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours",
                 "levelTitle": "Quel niveau vais-je atteindre ?",
                 "levelDescription": "À la fin de ce cours, vous aurez complété le niveau A2.1. Vous devrez terminer la deuxième partie de ce cours (sur laquelle je travaille déjà) pour finir le niveau A2.2 et atteindre le début de B1."
+            },
+            "Pricing": {
+                "offerLabel": "Offre spéciale",
+                "savePercent": "Économisez {percent}%",
+                "saveAmount": "Économisez {amount}"
             },
             "OtherCourses": { "title": "Voir <hs4>d'autres cours</hs4>" },
             "LastComments": {
                 "title": "<hs4>Avis</hs4> & Expériences",
                 "description": "Voici ce que nos étudiants disent de ce cours. Formez votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             }
         },
@@ -1500,7 +1511,7 @@
                 "accessMobileTV": "Accès sur mobiles et TV",
                 "unlimitedAccess": "Accès illimité",
                 "certificate": "Certificat de complétion",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours",
                 "guarantee": "* Garantie de satisfaction ou remboursement de 30 jours"
             },
@@ -1511,16 +1522,21 @@
                 "prerequisitesTitle": "Prérequis",
                 "prerequisite1": "Vous devriez avoir un niveau A2 en français ou un A1 solide.",
                 "prerequisite2": "Au moins mon premier cours : Le cours complet de français : Apprendre le français - Débutants",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours",
                 "levelTitle": "Quel niveau atteindrai-je ?",
                 "levelDescription": "À la fin de ce cours allant du niveau A2 au B1, vous atteindrez un niveau de conversation B1."
+            },
+            "Pricing": {
+                "offerLabel": "Offre spéciale",
+                "savePercent": "Économisez {percent}%",
+                "saveAmount": "Économisez {amount}"
             },
             "OtherCourses": { "title": "Voir <hs5>d'autres cours</hs5>" },
             "LastComments": {
                 "title": "<hs5>Commentaires</hs5> & Expériences",
                 "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
-                "buyNow": "Accéder au cours — 29 €",
+                "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             }
         },

@@ -49,13 +49,10 @@ async function getOrCreateCustomer(sessionEmail: string): Promise<string> {
 
 export async function POST(request: NextRequest) {
     try {
-        const { productSlug, quantity, currency, email, sessionEmail, userId, firstName, lastName } = await request.json();
+        const { productSlug, quantity, currency, email, sessionEmail, userId } = await request.json();
 
         // Email “effectif” : si pas de session (guest), on utilise l’email du form
         const effectiveEmail = (sessionEmail || email || "").trim().toLowerCase();
-        if (!effectiveEmail) {
-            return NextResponse.json({ error: "Missing email" }, { status: 400 });
-        }
 
         const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch;
 
@@ -64,16 +61,19 @@ export async function POST(request: NextRequest) {
 
         const { pricingDetails, productInfos } = await getAmount(product, quantity, currency, userPurchasedLesson);
 
-        const stripeCustomerId = await getOrCreateCustomer(effectiveEmail);
+        const stripeCustomerId = effectiveEmail ? await getOrCreateCustomer(effectiveEmail) : undefined;
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: convertToSubcurrency(pricingDetails.amount),
             currency: pricingDetails.currency,
-            receipt_email: effectiveEmail,
-            customer: stripeCustomerId,
+            ...(effectiveEmail ? { receipt_email: effectiveEmail } : {}),
+            ...(stripeCustomerId ? { customer: stripeCustomerId } : {}),
             automatic_payment_methods: { enabled: true },
-            // ✅ On force l’email dans metadata à être le même que celui du paiement
-            metadata: { productSlug, quantity, email: effectiveEmail, firstName, lastName },
+            metadata: {
+                productSlug,
+                quantity,
+                ...(effectiveEmail ? { email: effectiveEmail } : {}),
+            },
         });
 
         return NextResponse.json({ clientSecret: paymentIntent.client_secret, pricingDetails, productInfos, paymentIntentId: paymentIntent.id });

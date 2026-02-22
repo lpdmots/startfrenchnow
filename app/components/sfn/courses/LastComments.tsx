@@ -23,6 +23,7 @@ export const LastComments = ({
     courseUrl,
     hasCourse = false,
     udemyCourseUrl,
+    ctaExtra,
 }: {
     courseId: string;
     locale: string;
@@ -30,6 +31,7 @@ export const LastComments = ({
     courseUrl: string;
     hasCourse?: boolean;
     udemyCourseUrl: string;
+    ctaExtra?: React.ReactNode;
 }) => {
     const [comments, setComments] = useState<CommentProps[]>([]);
 
@@ -84,6 +86,7 @@ export const LastComments = ({
                                 <p className="mg-bottom-48px">
                                     {t["description"]} <LinkArrow url={udemyCourseUrl}>Udemy</LinkArrow>.
                                 </p>
+                                {ctaExtra}
                                 <Link href={hasCourse ? "/courses/dashboard" : courseUrl} className="btn-primary project-btn w-inline-block">
                                     <span className="line-rounded-icon link-icon-right">{hasCourse ? t["continue"] : t["buyNow"]}</span>
                                 </Link>

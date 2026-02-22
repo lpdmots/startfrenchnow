@@ -1,6 +1,5 @@
-import { FaCheckCircle, FaCreditCard, FaEdit, FaSpinner, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaSpinner, FaTimesCircle } from "react-icons/fa";
 import { Separator } from "../ui/separator";
-import { AreReadyState } from "./Checkout";
 import { useTranslations } from "next-intl";
 
 interface PriceLayoutProps {
@@ -8,16 +7,25 @@ interface PriceLayoutProps {
     initialAmount: number;
     currency: string;
     amount: number;
-    payment: boolean;
-    setPayment: React.Dispatch<React.SetStateAction<boolean>>;
-    areReady: AreReadyState;
+    discountType?: "percentage" | "flatDiscount" | "newPrice";
+    discountValue?: number;
 }
 
-export const PriceLayout = ({ quantity, initialAmount, currency, amount, payment, setPayment, areReady }: PriceLayoutProps) => {
+export const PriceLayout = ({ quantity, initialAmount, currency, amount, discountType, discountValue }: PriceLayoutProps) => {
     const reduction = initialAmount - amount;
     const isDiscount = reduction > 0;
-    const isContactInfosReady = areReady.contactInformations;
     const t = useTranslations("priceLayout");
+
+    const formatAmount = (value: number) => {
+        if (!Number.isFinite(value)) return `${value}`;
+        const normalized = Math.round(value * 100) / 100;
+        const hasCents = Math.abs(normalized % 1) > 0;
+        return hasCents ? normalized.toFixed(2) : `${normalized}`;
+    };
+
+    const isPercentageDiscount = discountType === "percentage" && typeof discountValue === "number";
+    const discountLabel = isPercentageDiscount ? `${t("discount")} (${discountValue}%)` : t("discount");
+    const displayReduction = reduction;
 
     return (
         <div className="flex flex-col w-full items-end text-base gap-4">
@@ -33,10 +41,10 @@ export const PriceLayout = ({ quantity, initialAmount, currency, amount, payment
                 <p className={isDiscount ? "text-neutral-800 line-through decoration-secondary-4 decoration-3 mb-0" : "mb-0"}>{initialAmount + " " + currency.toUpperCase()}</p>
             </div>
             <div className="flex justify-between w-full gap-4">
-                <p className="mb-0 italic text-neutral-600">{t("discount")}</p>
+                <p className="mb-0 italic text-neutral-600">{discountLabel}</p>
                 {isDiscount ? (
                     <p className="mb-0 bg-secondaryShades-5 font-bold rounded-lg" style={{ color: "teal" }}>
-                        - {reduction + " " + currency.toUpperCase()}
+                        - {formatAmount(displayReduction) + " " + currency.toUpperCase()}
                     </p>
                 ) : (
                     <p className="mb-0">-</p>
@@ -46,30 +54,9 @@ export const PriceLayout = ({ quantity, initialAmount, currency, amount, payment
             <div className="flex justify-between w-full gap-4">
                 <p className="mb-0 font-bold text-2xl">{t("total")}</p>
                 <p className="mb-0 font-bold text-2xl">
-                    {amount} <span className="text-xl">{currency.toUpperCase()}</span>
+                    {formatAmount(amount)} <span className="text-xl">{currency.toUpperCase()}</span>
                 </p>
             </div>
-
-            {payment ? (
-                <div className="flex justify-center w-full">
-                    <button onClick={() => setPayment(false)} className="btn btn-secondary small w-full flex items-center justify-center">
-                        <FaEdit className="mr-2" /> {t("editChoices")}
-                    </button>
-                </div>
-            ) : (
-                <div className="flex flex-col justify-center w-full">
-                    <button disabled={!isContactInfosReady} onClick={() => setPayment(true)} className="btn btn-primary small w-full flex items-center justify-center">
-                        <FaCreditCard className="mr-2" />
-                        {t("proceedToPayment")}
-                    </button>
-                    {/* <p className="mb-0 text-neutral-600 text-sm mt-2">
-                        {t("termsConditions")}{" "}
-                        <a href="/" className="!text-neutral-600">
-                            {t("termsLink")}
-                        </a>
-                    </p> */}
-                </div>
-            )}
         </div>
     );
 };

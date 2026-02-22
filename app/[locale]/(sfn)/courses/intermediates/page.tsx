@@ -25,23 +25,48 @@ import { client } from "@/app/lib/sanity.client";
 import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
 import { Progress } from "@/app/types/sfn/auth";
 import { CoursesAccordionClient } from "../../fide/components/CoursesAccordionClient";
+import { getAmount } from "@/app/serverActions/stripeActions";
+import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
+import { groq } from "next-sanity";
 
 const COURSE_ID = "4931486";
+const PRODUCT_REFERENCE_KEY = "udemy_course_intermediate";
 const CHECKOUT_URL = `/checkout/udemy_course_intermediate?quantity=1&callbackUrl=${encodeURIComponent("/courses/intermediates")}&currency=EUR`;
+const queryProduct = groq`
+    *[_type=='product' && referenceKey == $referenceKey][0]
+`;
 
 export default async function IntermediatesPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id ?? null;
     const hasIntermediateCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_intermediate");
 
-    const [frenchIntermediateSommaire, frenchIntermediateUserProgress] = await Promise.all([
+    const [frenchIntermediateSommaire, frenchIntermediateUserProgress, product] = await Promise.all([
         getPackSommaire(locale, "udemy_course_intermediate"),
         userId ? client.fetch<Progress>(FRENCH_USER_PROGRESS_QUERY, { userId, courseKey: "udemy_course_intermediate" }) : Promise.resolve(null),
+        client.fetch<ProductFetch>(queryProduct, { referenceKey: PRODUCT_REFERENCE_KEY }),
     ]);
 
     const hero = buildHeroData(frenchIntermediateUserProgress, frenchIntermediateSommaire, []);
+    let pricingDetails: PricingDetails | null = null;
+    if (product) {
+        try {
+            const { pricingDetails: pricing } = await getAmount(product, "1", "EUR", undefined);
+            pricingDetails = pricing;
+        } catch (error) {
+            console.error("Failed to load pricing details:", error);
+        }
+    }
 
-    return <IntermediatesPageNoAsync hero={hero} locale={locale} hasIntermediateCourse={hasIntermediateCourse} frenchIntermediateSommaire={frenchIntermediateSommaire} />;
+    return (
+        <IntermediatesPageNoAsync
+            hero={hero}
+            locale={locale}
+            hasIntermediateCourse={hasIntermediateCourse}
+            frenchIntermediateSommaire={frenchIntermediateSommaire}
+            pricingDetails={pricingDetails}
+        />
+    );
 }
 
 function IntermediatesPageNoAsync({
@@ -49,11 +74,13 @@ function IntermediatesPageNoAsync({
     locale,
     hasIntermediateCourse,
     frenchIntermediateSommaire,
+    pricingDetails,
 }: {
     hero: HeroData;
     locale: Locale;
     hasIntermediateCourse: boolean;
     frenchIntermediateSommaire: FidePackSommaire;
+    pricingDetails: PricingDetails | null;
 }) {
     const t = useTranslations("Courses.Intermediates.PrimaryPage");
     const tLastCom = useTranslations("Courses.Intermediates.LastComments");
@@ -67,6 +94,11 @@ function IntermediatesPageNoAsync({
         description: tLastCom("description"),
         buyNow: tLastCom("buyNow"),
         continue: tLastCom("continue"),
+    };
+
+    const renderPricingCallout = (align: "left" | "center", className?: string) => {
+        if (hasIntermediateCourse || !pricingDetails) return null;
+        return <PricingCallout pricingDetails={pricingDetails} locale={locale} align={align} className={className} />;
     };
 
     return (
@@ -104,7 +136,7 @@ function IntermediatesPageNoAsync({
                                 </div>
                                 <div id="w-node-_5477c579-dd4f-3f5a-c700-1cd0a30d540b-7a543d63" className="lg:sticky lg:top-11 col-span-2 lg:col-span-1 order-1 lg:order-2 overflow-hidden">
                                     <SlideFromRight>
-                                        <Infos hasIntermediateCourse={hasIntermediateCourse} />
+                                        <Infos hasIntermediateCourse={hasIntermediateCourse} pricingSlot={renderPricingCallout("left", "mb-3")} />
                                     </SlideFromRight>
                                 </div>
                             </div>
@@ -112,7 +144,7 @@ function IntermediatesPageNoAsync({
                     </div>
                 </div>
             </div>
-            <IsForYou hasIntermediateCourse={hasIntermediateCourse} />
+            <IsForYou hasIntermediateCourse={hasIntermediateCourse} pricingSlot={renderPricingCallout("left", "mt-4 mb-3")} />
             <LastComments
                 courseId={COURSE_ID}
                 locale={locale}
@@ -120,6 +152,7 @@ function IntermediatesPageNoAsync({
                 courseUrl={CHECKOUT_URL}
                 hasCourse={hasIntermediateCourse}
                 udemyCourseUrl="https://www.udemy.com/course/the-complete-french-course-learn-french-low-intermediate/"
+                ctaExtra={renderPricingCallout("center", "mb-4")}
             />
             <CoursesOtherChoices courseUrl={"/courses/intermediates"} courseRef="Intermediates" />
         </div>
@@ -201,6 +234,57 @@ const YouLearn = () => {
     );
 };
 
+const PricingCallout = ({
+    pricingDetails,
+    locale,
+    align,
+    className,
+}: {
+    pricingDetails: PricingDetails;
+    locale: Locale;
+    align: "left" | "center";
+    className?: string;
+}) => {
+    const t = useTranslations("Courses.Intermediates.Pricing");
+    const formatAmount = (value: number) => {
+        const normalized = Math.round(value * 100) / 100;
+        const hasCents = Math.abs(normalized % 1) > 0;
+        return new Intl.NumberFormat(locale === "fr" ? "fr-CH" : "en-US", {
+            minimumFractionDigits: hasCents ? 2 : 0,
+            maximumFractionDigits: hasCents ? 2 : 0,
+        }).format(normalized);
+    };
+    const formatPrice = (value: number) => {
+        const symbol = pricingDetails.currency === "EUR" ? "€" : pricingDetails.currency === "USD" ? "$" : "CHF";
+        return `${formatAmount(value)} ${symbol}`;
+    };
+
+    const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
+    const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
+    const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
+    const discountBadge = hasDiscount
+        ? isPercentage
+            ? t("savePercent", { percent: pricingDetails.discountValue })
+            : t("saveAmount", { amount: formatPrice(discountAmount) })
+        : null;
+
+    const alignText = align === "center" ? "text-center" : "text-left";
+    const alignRow = align === "center" ? "justify-center" : "justify-start";
+
+    return (
+        <div className={`rounded-2xl border border-secondaryShades-4 ${alignText} ${className || ""}`.trim()}>
+            {hasDiscount && <div className="text-xs uppercase tracking-[0.12em] text-secondary-4 font-extrabold">{t("offerLabel")}</div>}
+            <div className={`${hasDiscount ? "mt-2" : "mt-0"} flex flex-wrap items-baseline gap-x-3 ${alignRow}`}>
+                <span className="text-4xl sm:text-5xl font-extrabold">{formatPrice(pricingDetails.amount)}</span>
+                {hasDiscount && <span className="text-base sm:text-lg text-neutral-500 line-through">{formatPrice(pricingDetails.initialAmount)}</span>}
+                {discountBadge && (
+                    <span className="inline-flex rounded-full bg-secondary-4/10 text-sm font-semibold text-secondary-4">{discountBadge}</span>
+                )}
+            </div>
+        </div>
+    );
+};
+
 const Description = ({ hasIntermediateCourse, frenchIntermediateSommaire, hero }: { hasIntermediateCourse: boolean; frenchIntermediateSommaire: FidePackSommaire; hero: HeroData }) => {
     const t = useTranslations("Courses.Intermediates.Description");
     const defaultModuleKeyIndex = frenchIntermediateSommaire?.packages[0]?.modules.findIndex((mod) => mod.posts.some((p) => p._id === hero.video?.main?.postId)) ?? 0;
@@ -246,7 +330,7 @@ const Description = ({ hasIntermediateCourse, frenchIntermediateSommaire, hero }
     );
 };
 
-const Infos = ({ hasIntermediateCourse }: { hasIntermediateCourse: boolean }) => {
+const Infos = ({ hasIntermediateCourse, pricingSlot }: { hasIntermediateCourse: boolean; pricingSlot?: React.ReactNode }) => {
     const t = useTranslations("Courses.Intermediates.Infos");
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
@@ -267,6 +351,7 @@ const Infos = ({ hasIntermediateCourse }: { hasIntermediateCourse: boolean }) =>
                 <BsInfinity className="text-2xl mr-2 sm:mr-4" />
                 <span>{t("unlimitedAccess")}</span>
             </p>
+            {pricingSlot}
             <Link href={hasIntermediateCourse ? "/courses/dashboard" : CHECKOUT_URL} className="btn-primary full-width project-btn w-inline-block">
                 <span className="line-rounded-icon link-icon-right"> {hasIntermediateCourse ? t("continue") : t("buyNow")}</span>
             </Link>
@@ -274,7 +359,7 @@ const Infos = ({ hasIntermediateCourse }: { hasIntermediateCourse: boolean }) =>
     );
 };
 
-const IsForYou = ({ hasIntermediateCourse }: { hasIntermediateCourse: boolean }) => {
+const IsForYou = ({ hasIntermediateCourse, pricingSlot }: { hasIntermediateCourse: boolean; pricingSlot?: React.ReactNode }) => {
     const t = useTranslations("Courses.Intermediates.IsForYou");
     return (
         <div className="section pd-top-150px---bottom-150px wf-section pt-0">
@@ -325,6 +410,7 @@ const IsForYou = ({ hasIntermediateCourse }: { hasIntermediateCourse: boolean })
                                                     </SlideInOneByOneParent>
                                                 </div>
                                             </div>
+                                            {pricingSlot}
                                             <SlideFromBottom>
                                                 <Link
                                                     href={hasIntermediateCourse ? "/courses/dashboard" : CHECKOUT_URL}

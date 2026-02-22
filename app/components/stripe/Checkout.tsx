@@ -1,6 +1,6 @@
 "use client";
 import { YourPurchase } from "@/app/components/stripe/YourPurchase";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PricingDetails, ProductFetch, ProductInfos } from "@/app/types/sfn/stripe";
 import { ContactInformations } from "./ContactInformations";
 import { getAmount } from "@/app/serverActions/stripeActions";
@@ -39,17 +39,16 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     const [productInfos, setProductInfos] = useState<null | ProductInfos>(null);
     const [formData, setFormData] = useState({
         email: "",
-        firstName: "",
-        lastName: "",
     });
-    const { email, firstName, lastName } = formData;
+    const { email } = formData;
     const t = useTranslations();
 
     const [quantity, setQuantity] = useState(originalQuantity);
     const [currency, setCurrency] = useState<"CHF" | "EUR" | "USD">(defaultCurrency);
     const sessionEmail = session?.user?.email;
     const [areReady, setAreReady] = useState<AreReadyState>({ yourPurchase: true, contactInformations: false, payment: false });
-    const [payment, setPayment] = useState(false);
+    const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
+    const [lastSyncedEmail, setLastSyncedEmail] = useState<string | null>(null);
 
     const amount = pricingDetails?.amount;
     const initialAmount = pricingDetails?.initialAmount;
@@ -62,12 +61,16 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     }, [session, formData.email]);
 
     useEffect(() => {
-        setAreReady((state) => ({ ...state, contactInformations: isValidEmail(email) && !!firstName.trim() && !!lastName.trim() }));
-    }, [email, firstName, lastName]);
+        setAreReady((state) => ({ ...state, contactInformations: isValidEmail(email) }));
+    }, [email]);
 
     useEffect(() => {
-        setPayment(false);
-    }, [email, quantity, currency]);
+        setLastSyncedEmail(null);
+    }, [paymentIntentId]);
+
+    useEffect(() => {
+        setAreReady((state) => ({ ...state, payment: false }));
+    }, [productSlug, quantity, currency]);
 
     useEffect(() => {
         let cancelled = false;
@@ -90,34 +93,47 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
         };
     }, [productSlug, quantity, currency, session?.user?._id]);
 
-    const getSpinner = (name: string) => {
-        return !pricingDetails || !productInfos;
-    };
+    const isLoading = !pricingDetails || !productInfos;
     const getIsReady = (name: string) => {
         return areReady[name as keyof AreReadyState];
     };
 
+    const syncEmailToStripe = useCallback(
+        async (nextEmail: string) => {
+            const normalized = nextEmail.trim().toLowerCase();
+            if (!paymentIntentId || !isValidEmail(normalized)) return;
+            if (normalized === lastSyncedEmail) return;
+
+            try {
+                const res = await fetch("/api/update-payment-intent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        paymentIntentId,
+                        email: normalized,
+                    }),
+                });
+
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    throw new Error(data?.error || "Failed to update payment intent");
+                }
+
+                setLastSyncedEmail(normalized);
+            } catch (error) {
+                console.error("Failed to sync email to Stripe:", error);
+            }
+        },
+        [paymentIntentId, lastSyncedEmail],
+    );
+
     return (
         <div className="grid grid-cols-6 gap-4 lg:gap-8 w-full min-h-[65vh]">
             <div className="col-span-6 lg:col-span-4">
-                <div className="w-full flex flex-col gap-4 lg:gap-8">
-                    <div className="w-full">
-                        <div className="flex w-full justify-between items-center color-neutral-700 gap-6 !p-0">
-                            <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center mb-6">
-                                {getIsReady("contactInformations") ? (
-                                    <FaCheckCircle className="text-2xp text-secondary-2 mr-2 lg:mr-4" />
-                                ) : (
-                                    <FaTimesCircle className="text-2xp text-neutral-400 mr-2 lg:mr-4" />
-                                )}
-                                {t("contactInformationsTitle")}
-                            </h3>
-                            {getSpinner("contactInformations") && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
-                        </div>
-                        <ContactInformations sessionEmail={sessionEmail} payment={payment} formData={formData} setFormData={setFormData} />
-                    </div>
+                <div className="w-full flex flex-col gap-4">                    
                     <div className="w-full">
                         <div className="flex w-full justify-between items-center color-neutral-700 gap-6">
-                            <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center mb-6">
+                            <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center mb-4">
                                 {getIsReady("yourPurchase") ? (
                                     <FaCheckCircle className="text-2xp text-secondary-2 mr-2 lg:mr-4" />
                                 ) : (
@@ -125,9 +141,10 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                 )}
                                 {t("yourPurchaseTitle")}
                             </h3>
-                            {getSpinner("yourPurchase") && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
+                            {isLoading && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
                         </div>
-                        {!getSpinner("yourPurchase") && (
+                        <div className="w-full mb-4">
+                            {!isLoading && (
                             <YourPurchase
                                 productInfos={productInfos as ProductInfos}
                                 pricingDetails={pricingDetails as PricingDetails}
@@ -135,45 +152,67 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                 setQuantity={setQuantity}
                                 setCurrency={setCurrency}
                                 quantity={quantity}
-                                payment={payment}
                                 currency={currency}
                             />
                         )}
-                    </div>
-                    <div className="lg:hidden">
-                        <PriceLayout initialAmount={initialAmount || 0} amount={amount || 0} quantity={quantity} currency={currency} payment={payment} setPayment={setPayment} areReady={areReady} />
-                    </div>
-                    {payment && (
-                        <div className="w-full">
-                            <div className="flex w-full justify-between items-center color-neutral-700 gap-6 !p-0">
-                                <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center">
-                                    {getIsReady("payment") ? (
-                                        <FaCheckCircle className="text-2xp text-secondary-2 mr-2 lg:mr-4" />
-                                    ) : (
-                                        <FaTimesCircle className="text-2xp text-neutral-400 mr-2 lg:mr-4" />
-                                    )}
-                                    {t("paymentTitle")}
-                                </h3>
-                                {getSpinner("payment") && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
-                            </div>
-                            <Payment
-                                productSlug={productSlug}
-                                quantity={quantity}
-                                currency={currency}
-                                locale={locale}
-                                formData={formData}
-                                sessionEmail={sessionEmail}
-                                setAreReady={setAreReady}
-                                userId={session?.user?._id}
-                            />
                         </div>
-                    )}
+                        <div className="flex w-full justify-between items-center color-neutral-700 gap-6 !p-0">
+                            <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center mb-4">
+                                {getIsReady("contactInformations") ? (
+                                    <FaCheckCircle className="text-2xp text-secondary-2 mr-2 lg:mr-4" />
+                                ) : (
+                                    <FaTimesCircle className="text-2xp text-neutral-400 mr-2 lg:mr-4" />
+                                )}
+                                {t("contactInformationsTitle")}
+                            </h3>
+                            {isLoading && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
+                        </div>
+                        <ContactInformations sessionEmail={sessionEmail} formData={formData} setFormData={setFormData} onEmailBlur={syncEmailToStripe} />
+                    </div>                        
+                    <div className="lg:hidden">
+                        <PriceLayout
+                            initialAmount={initialAmount || 0}
+                            amount={amount || 0}
+                            quantity={quantity}
+                            currency={currency}
+                            discountType={pricingDetails?.discountType}
+                            discountValue={pricingDetails?.discountValue}
+                        />
+                    </div>
+                    <div className="w-full">
+                        <div className="flex w-full justify-between items-center color-neutral-700 gap-6 !p-0">
+                            <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center">
+                                {getIsReady("payment") ? <FaCheckCircle className="text-2xp text-secondary-2 mr-2 lg:mr-4" /> : <FaTimesCircle className="text-2xp text-neutral-400 mr-2 lg:mr-4" />}
+                                {t("paymentTitle")}
+                            </h3>
+                            {isLoading && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
+                        </div>
+                        <Payment
+                            productSlug={productSlug}
+                            quantity={quantity}
+                            currency={currency}
+                            locale={locale}
+                            email={formData.email}
+                            sessionEmail={sessionEmail}
+                            setAreReady={setAreReady}
+                            userId={session?.user?._id}
+                            onPaymentIntentReady={setPaymentIntentId}
+                            onEmailSync={syncEmailToStripe}
+                        />
+                    </div>
                 </div>
             </div>
             <div className="hidden col-span-6 lg:col-span-2 order-1 lg:order-2 lg:flex w-full gap-4">
                 <Separator orientation="vertical" />
                 <div className="grow">
-                    <PriceLayout initialAmount={initialAmount || 0} amount={amount || 0} quantity={quantity} currency={currency} payment={payment} setPayment={setPayment} areReady={areReady} />
+                    <PriceLayout
+                        initialAmount={initialAmount || 0}
+                        amount={amount || 0}
+                        quantity={quantity}
+                        currency={currency}
+                        discountType={pricingDetails?.discountType}
+                        discountValue={pricingDetails?.discountValue}
+                    />
                 </div>
             </div>
         </div>

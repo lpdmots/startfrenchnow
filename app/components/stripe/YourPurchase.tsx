@@ -13,10 +13,9 @@ interface YourPourchaseProps {
     setCurrency: React.Dispatch<React.SetStateAction<"CHF" | "EUR" | "USD">>;
     quantity: string;
     currency: "CHF" | "EUR" | "USD";
-    payment: boolean;
 }
 
-export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity, setCurrency, quantity, currency, payment }: YourPourchaseProps) => {
+export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity, setCurrency, quantity, currency }: YourPourchaseProps) => {
     const t = useTranslations("yourPurchase");
     const title = productInfos?.title?.[locale] || productInfos?.title?.[productInfos.defaultLangage];
     const description = productInfos?.description?.[locale] || productInfos?.description?.[productInfos.defaultLangage];
@@ -31,6 +30,17 @@ export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity
         .slice(splitTitel.length / 2)
         .join(" ")
         .toUpperCase();
+    const formatAmount = (value: number) => {
+        if (!Number.isFinite(value)) return `${value}`;
+        const normalized = Math.round(value * 100) / 100;
+        const hasCents = Math.abs(normalized % 1) > 0;
+        const formatted = new Intl.NumberFormat(locale === "fr" ? "fr-CH" : "en-US", {
+            minimumFractionDigits: hasCents ? 2 : 0,
+            maximumFractionDigits: hasCents ? 2 : 0,
+        }).format(normalized);
+        const suffix = hasCents ? "" : locale === "fr" ? ",-" : ".-";
+        return `${formatted}${suffix}`;
+    };
 
     return (
         <div className="flex flex-col gap-4">
@@ -46,12 +56,9 @@ export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity
                 <div className="grid grid-cols-1 sm:flex w-full justify-between items-center flex-wrap gap-2">
                     <div className="flex gap-2 items-center justify-between">
                         {currencies.length > 1 && (
-                            <Select name="currency" onValueChange={(value) => setCurrency(value as "CHF" | "EUR" | "USD")} defaultValue={currency} disabled={payment}>
+                            <Select name="currency" onValueChange={(value) => setCurrency(value as "CHF" | "EUR" | "USD")} defaultValue={currency}>
                                 <SelectTrigger
-                                    className={cn(
-                                        "col-span-3 md:col-span-1 rounded-md p-2 transition-shadow duration-300 color-neutral-800 bg-neutral-100 w-20 order-2 sm:order-1",
-                                        payment && "bg-neutral-200 pointer-events-none",
-                                    )}
+                                    className={cn("col-span-3 md:col-span-1 rounded-md p-2 transition-shadow duration-300 color-neutral-800 bg-neutral-100 w-20 order-2 sm:order-1")}
                                     style={{ border: "1px solid var(--neutral-600)" }}
                                 >
                                     <SelectValue className="color-neutral-800" placeholder={"CHF"} />
@@ -67,18 +74,15 @@ export const YourPurchase = ({ productInfos, pricingDetails, locale, setQuantity
                                 </SelectContent>
                             </Select>
                         )}
-                        <p className="mb-0 font-bold order-1 sm:order-2">{t("unitPrice", { currency, price: pricingDetails.unitPrice })}</p>
+                        <p className="mb-0 font-bold order-1 sm:order-2">{t("unitPrice", { currency, price: formatAmount(pricingDetails.unitPrice) })}</p>
                     </div>
                     <div className="flex gap-4 lg:gap-8 flex-wrap items-center">
                         {maxQuantity > 1 && (
                             <div className="flex gap-2 items-center justify-between sm:justify-start w-full sm:w-auto">
                                 <p className="mb-0 text-neutral-600 font-thin">{t("quantity")}</p>
-                                <Select name="quantity" onValueChange={(value) => setQuantity(value)} defaultValue={quantity} disabled={payment}>
+                                <Select name="quantity" onValueChange={(value) => setQuantity(value)} defaultValue={quantity}>
                                     <SelectTrigger
-                                        className={cn(
-                                            "col-span-3 md:col-span-1 rounded-md p-2 transition-shadow duration-300 color-neutral-800 bg-neutral-100 w-20",
-                                            payment && "bg-neutral-200 pointer-events-none",
-                                        )}
+                                        className={cn("col-span-3 md:col-span-1 rounded-md p-2 transition-shadow duration-300 color-neutral-800 bg-neutral-100 w-20")}
                                         style={{ border: "1px solid var(--neutral-600)" }}
                                     >
                                         <SelectValue className="color-neutral-800" placeholder={"1"} />

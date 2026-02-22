@@ -1,12 +1,23 @@
 import { isValidEmail } from "@/app/lib/utils";
-import { useStripe, useElements, PaymentElement, ExpressCheckoutElement } from "@stripe/react-stripe-js";
-import type { StripeExpressCheckoutElementOptions, StripePaymentElementOptions } from "@stripe/stripe-js";
+import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
+import type { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { FormEvent, useMemo, useState } from "react";
 import { FaSpinner, FaLock } from "react-icons/fa";
 import { AreReadyState } from "./Checkout";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
+import { PricingDetails } from "@/app/types/sfn/stripe";
 
-export default function CheckoutForm({ pricingDetails, formData, setAreReady, onSuccessUrl, productSlug, locale }: any) {
+interface CheckoutFormProps {
+    pricingDetails: PricingDetails;
+    email: string;
+    setAreReady: React.Dispatch<React.SetStateAction<AreReadyState>>;
+    onSuccessUrl: string;
+    productSlug: string;
+    locale: string;
+    onEmailSync?: (email: string) => Promise<void> | void;
+}
+
+export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuccessUrl, productSlug, locale, onEmailSync }: CheckoutFormProps) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -15,24 +26,22 @@ export default function CheckoutForm({ pricingDetails, formData, setAreReady, on
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isComplete, setIsComplete] = useState(false);
+    const [isPaymentElementReady, setIsPaymentElementReady] = useState(false);
 
-    // Masquer le bloc Express si aucun wallet dispo
-    const [showExpress, setShowExpress] = useState(true);
-
-    const isEmailValid = isValidEmail(formData.email);
+    const isEmailValid = isValidEmail(email);
+    const formatAmount = (value?: number) => {
+        if (typeof value !== "number" || !Number.isFinite(value)) return "";
+        const normalized = Math.round(value * 100) / 100;
+        const hasCents = Math.abs(normalized % 1) > 0;
+        return new Intl.NumberFormat(locale === "fr" ? "fr-CH" : "en-US", {
+            minimumFractionDigits: hasCents ? 2 : 0,
+            maximumFractionDigits: hasCents ? 2 : 0,
+        }).format(normalized);
+    };
 
     const return_url = useMemo(() => {
         return `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success?productSlug=${productSlug}` + `&amount=${pricingDetails?.amount}&currency=${pricingDetails?.currency}&slug=${onSuccessUrl}`;
     }, [productSlug, pricingDetails?.amount, pricingDetails?.currency, onSuccessUrl]);
-
-    // Wallet buttons (Apple Pay / Google Pay) : layout responsive
-    const expressOptions: StripeExpressCheckoutElementOptions = useMemo(
-        () => ({
-            layout: isDesktop ? { maxColumns: 2, maxRows: 1, overflow: "never" } : { maxColumns: 1, maxRows: 2, overflow: "auto" },
-            paymentMethods: { applePay: "always", googlePay: "always" },
-        }),
-        [isDesktop],
-    );
 
     // PaymentElement : tabs desktop, accordion mobile (ouverture par défaut)
     const paymentElementOptions: StripePaymentElementOptions = useMemo(
@@ -52,18 +61,16 @@ export default function CheckoutForm({ pricingDetails, formData, setAreReady, on
         [isDesktop],
     );
 
-    const confirmPayment = async (submitElementsFirst: boolean) => {
+    const confirmPayment = async () => {
         if (!stripe || !elements) return;
 
         setErrorMessage(null);
 
         // Pour le flow “formulaire” (PaymentElement), Stripe recommande souvent submit() avant confirmPayment
-        if (submitElementsFirst) {
-            const { error: submitError } = await elements.submit();
-            if (submitError) {
-                setErrorMessage(submitError.message || "Oops! Something went wrong.");
-                return;
-            }
+        const { error: submitError } = await elements.submit();
+        if (submitError) {
+            setErrorMessage(submitError.message || "Oops! Something went wrong.");
+            return;
         }
 
         const { error } = await stripe.confirmPayment({
@@ -81,41 +88,19 @@ export default function CheckoutForm({ pricingDetails, formData, setAreReady, on
         if (!stripe || !elements) return;
 
         setLoading(true);
-        await confirmPayment(true);
+        await onEmailSync?.(email);
+        await confirmPayment();
         setLoading(false);
     };
 
     return (
         <form onSubmit={handleSubmit} className="bg-white w-full">
-            {/* ✅ Boutons Apple/Google Pay (si dispo) */}
-            {showExpress && (
-                <>
-                    <ExpressCheckoutElement
-                        options={expressOptions}
-                        onReady={(e: any) => {
-                            // Cache le bloc si aucun moyen express dispo
-                            const hasExpress = !!e?.availablePaymentMethods && (e.availablePaymentMethods.applePay || e.availablePaymentMethods.googlePay || e.availablePaymentMethods.link);
-
-                            setShowExpress(!!hasExpress);
-
-                            // Si l’express est dispo, on peut considérer “payment” prêt côté UX
-                            if (hasExpress) {
-                                setAreReady((s: AreReadyState) => ({ ...s, payment: true }));
-                            }
-                        }}
-                        onConfirm={async () => {
-                            if (!stripe || !elements) return;
-                            setLoading(true);
-                            await confirmPayment(false);
-                            setLoading(false);
-                        }}
-                    />
-                </>
-            )}
-
             {/* ✅ Formulaire classique */}
             <PaymentElement
                 options={paymentElementOptions}
+                onReady={() => {
+                    setIsPaymentElementReady(true);
+                }}
                 onChange={(event) => {
                     if (event.complete) {
                         setAreReady((state: AreReadyState) => ({ ...state, payment: true }));
@@ -130,14 +115,14 @@ export default function CheckoutForm({ pricingDetails, formData, setAreReady, on
             {/* Message d’erreur plus clean */}
             {errorMessage && <div className="mt-3 text-sm text-red-600">{errorMessage}</div>}
 
-            <button disabled={!stripe || loading || !isEmailValid || !isComplete} className="btn btn-primary small w-full mt-8">
+            <button disabled={!stripe || loading || !isEmailValid || !isComplete || !isPaymentElementReady} className="btn btn-primary small w-full mt-4">
                 {loading ? (
                     <span className="flex items-center justify-center">
                         <FaSpinner className="animate-spin text-neutral-600 h-6 w-6 mr-2" style={{ animationDuration: "2s" }} />
                         <span>{locale === "fr" ? "Traitement en cours..." : "Processing..."}</span>
                     </span>
                 ) : (
-                    `PAY ${pricingDetails?.amount + " " + pricingDetails?.currency}`
+                    `${locale === "fr" ? "Payer" : "Pay"} ${formatAmount(pricingDetails?.amount)} ${pricingDetails?.currency}`
                 )}
             </button>
 

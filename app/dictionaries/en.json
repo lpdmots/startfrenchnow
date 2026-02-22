@@ -320,8 +320,9 @@
         "paymentTitle": "Payment",
         "loading": "Loading...",
         "contactInformations": {
-            "email": "Email:",
+            "email": "Email*:",
             "emailError": "Invalid email address.",
+            "emailRequired": "Enter a valid email to continue.",
             "emailAliasInfo": "This email differs from the one registered to your account. It will be added as a secondary address.",
             "firstName": "First Name:",
             "firstNameError": "First name is required.",
@@ -331,7 +332,7 @@
         "yourPurchase": {
             "courseImageAlt": "course image",
             "quantity": "Quantity",
-            "unitPrice": "{currency} {price}.-"
+            "unitPrice": "{currency} {price}"
         },
         "priceLayout": {
             "amountToPay": "Amount to Pay",
@@ -1386,6 +1387,11 @@
                 "level2": "communicate in simple and routine tasks requiring a simple and direct exchange of information on familiar and routine matters.",
                 "level3": "describe in simple terms aspects of your background, immediate environment, and matters in areas of immediate need."
             },
+            "Pricing": {
+                "offerLabel": "Special offer",
+                "savePercent": "Save {percent}%",
+                "saveAmount": "Save {amount}"
+            },
             "OtherCourses": { "title": "See <hs2>other courses</hs2>" },
             "LastComments": {
                 "title": "<hs2>Feedback</hs2> & Experiences",
@@ -1442,6 +1448,11 @@
                 "continue": "Continue this course",
                 "levelTitle": "Which level will I reach?",
                 "levelDescription": "At the end of this course you will have completed the A2.1 level. You will need to finish the second part of this course (which I'm already working on) in order to finish the A2.2 level and reach the beginning of B1."
+            },
+            "Pricing": {
+                "offerLabel": "Special offer",
+                "savePercent": "Save {percent}%",
+                "saveAmount": "Save {amount}"
             },
             "OtherCourses": { "title": "See <hs4>other courses</hs4>" },
             "LastComments": {
@@ -1501,6 +1512,11 @@
                 "continue": "Continue this course",
                 "levelTitle": "Which level will I reach?",
                 "levelDescription": "At the end of this course ranging from a A2 to B1 level, you will reach a conversational B1 level."
+            },
+            "Pricing": {
+                "offerLabel": "Special offer",
+                "savePercent": "Save {percent}%",
+                "saveAmount": "Save {amount}"
             },
             "OtherCourses": { "title": "See <hs5>other courses</hs5>" },
             "LastComments": {
