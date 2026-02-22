@@ -1,3 +1,6 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+NE PAS FAIRE npm i MAIS FAIRE npm ci POUR INSTALLER LES DEPENDANCES DE package-lock.json ET BIEN GARDER LES BONNES VERSIONS
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
