@@ -780,6 +780,11 @@
             "tailoredPrefix": "Tailor it to your needs:",
             "chooseHours": "choose your hours",
             "modalCloseLabel": "Close",
+            "pricing": {
+                "offerLabel": "Special offer",
+                "savePercent": "Save {percent}%",
+                "saveAmount": "Save {amount}"
+            },
 
             "card1": {
                 "title": "Self-Study Pack",

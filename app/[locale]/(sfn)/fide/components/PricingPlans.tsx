@@ -12,8 +12,21 @@ import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 import { SlideFromBottom, SlideInOneByOneChild, SlideInOneByOneParent } from "@/app/components/animations/Slides";
+import { PricingDetails } from "@/app/types/sfn/stripe";
 
-export function PricingPlans({ hasPack, locale, hasReservation }: { hasPack?: boolean; locale: string; hasReservation?: boolean }) {
+export function PricingPlans({
+    hasPack,
+    locale,
+    hasReservation,
+    pricingAutonomie,
+    pricingAccompagne,
+}: {
+    hasPack?: boolean;
+    locale: string;
+    hasReservation?: boolean;
+    pricingAutonomie?: PricingDetails | null;
+    pricingAccompagne?: PricingDetails | null;
+}) {
     const [isOpen, setIsOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
     const t = useTranslations("PricingPlans");
@@ -23,6 +36,41 @@ export function PricingPlans({ hasPack, locale, hasReservation }: { hasPack?: bo
     useOutsideClick(panelRef, () => {
         setIsOpen(false);
     });
+
+    const formatAmount = (value: number) => {
+        const normalized = Math.round(value * 100) / 100;
+        const hasCents = Math.abs(normalized % 1) > 0;
+        return new Intl.NumberFormat(locale === "fr" ? "fr-CH" : "en-US", {
+            minimumFractionDigits: hasCents ? 2 : 0,
+            maximumFractionDigits: hasCents ? 2 : 0,
+        }).format(normalized);
+    };
+
+    const formatPrice = (value: number, currency: PricingDetails["currency"]) => {
+        const symbol = currency === "EUR" ? "€" : currency === "USD" ? "$" : "CHF";
+        return currency === "CHF" ? `${formatAmount(value)} ${symbol}` : `${formatAmount(value)} ${symbol}`;
+    };
+
+    const buildPriceContent = (pricingDetails?: PricingDetails | null) => {
+        if (!pricingDetails) return { priceContent: null };
+        const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
+        const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
+        const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
+
+        return {
+            priceContent: (
+                <div className="flex flex-col items-center text-neutral-100 leading-none">
+                    <div className="flex flex-wrap items-baseline justify-center gap-2">
+                        <span className="text-4xl sm:text-5xl font-extrabold">{formatPrice(pricingDetails.amount, pricingDetails.currency)}</span>
+                        {hasDiscount && <span className="text-sm sm:text-lg line-through text-neutral-100/70">{formatPrice(pricingDetails.initialAmount, pricingDetails.currency)}</span>}
+                    </div>
+                </div>
+            ),
+        };
+    };
+
+    const { priceContent: priceContentAutonomie } = buildPriceContent(pricingAutonomie);
+    const { priceContent: priceContentAccompagne } = buildPriceContent(pricingAccompagne);
 
     const CARDS = [
         {
@@ -34,7 +82,8 @@ export function PricingPlans({ hasPack, locale, hasReservation }: { hasPack?: bo
                     </p>
                 </>
             ),
-            price: "499 CHF",
+            price: pricingAutonomie ? formatPrice(pricingAutonomie.amount, pricingAutonomie.currency) : "499 CHF",
+            priceContent: priceContentAutonomie,
             features: [t("card1.features.f1"), t("card1.features.f2"), t("card1.features.f3")],
             extras: [t("card1.extras.e1"), t("card1.extras.e2")],
             color: "secondary-4",
@@ -50,7 +99,8 @@ export function PricingPlans({ hasPack, locale, hasReservation }: { hasPack?: bo
                     </p>
                 </>
             ),
-            price: "875 CHF",
+            price: pricingAccompagne ? formatPrice(pricingAccompagne.amount, pricingAccompagne.currency) : "875 CHF",
+            priceContent: priceContentAccompagne,
             features: [t("card2.features.f1"), t("card2.features.f2"), t("card2.features.f3")],
             extras: [t("card2.extras.e1"), t("card2.extras.e2")],
             color: "secondary-1",

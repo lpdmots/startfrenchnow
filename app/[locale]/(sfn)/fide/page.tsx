@@ -15,11 +15,44 @@ import ExamsSection from "./components/ExamsSection";
 import { PricingPlans } from "./components/PricingPlans";
 import { WhatIsFide } from "./components/WhatIsFide";
 import GetPdfBand from "./components/GetPdfBand";
+import { client } from "@/app/lib/sanity.client";
+import { getAmount } from "@/app/serverActions/stripeActions";
+import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
+import { groq } from "next-sanity";
 
 async function ExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const hasReservation = !!session?.user?.lessons?.some((lesson) => lesson.eventType === "Fide Preparation Class" && lesson.totalPurchasedMinutes > 0);
+    const queryProduct = groq`
+        *[_type=='product' && slug.current == $slug][0]
+    `;
+
+    const [autonomieProduct, accompagneProduct] = await Promise.all([
+        client.fetch<ProductFetch>(queryProduct, { slug: "pack-fide" }),
+        client.fetch<ProductFetch>(queryProduct, { slug: "pack-fide-accompagne" }),
+    ]);
+
+    let pricingAutonomie: PricingDetails | null = null;
+    let pricingAccompagne: PricingDetails | null = null;
+
+    if (autonomieProduct) {
+        try {
+            const { pricingDetails } = await getAmount(autonomieProduct, "1", "CHF", undefined);
+            pricingAutonomie = pricingDetails;
+        } catch (error) {
+            console.error("Failed to load pricing for pack-fide:", error);
+        }
+    }
+
+    if (accompagneProduct) {
+        try {
+            const { pricingDetails } = await getAmount(accompagneProduct, "1", "CHF", undefined);
+            pricingAccompagne = pricingDetails;
+        } catch (error) {
+            console.error("Failed to load pricing for pack-fide-accompagne:", error);
+        }
+    }
 
     return (
         <div className="w-full mb-24">
@@ -48,7 +81,13 @@ async function ExamsPage({ params: { locale } }: { params: { locale: Locale } })
                     <HowClassLook />
                 </div>
             </div>
-            <PricingPlans hasPack={hasPack} hasReservation={hasReservation} locale={locale} />
+            <PricingPlans
+                hasPack={hasPack}
+                hasReservation={hasReservation}
+                locale={locale}
+                pricingAutonomie={pricingAutonomie}
+                pricingAccompagne={pricingAccompagne}
+            />
             <div id="ContactForFIDECourses" className="py-24 px-4 lg:px-8 bg-neutral-800">
                 <div className="max-w-7xl m-auto">
                     <ContactForFideCourses />

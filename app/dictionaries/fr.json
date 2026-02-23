@@ -783,6 +783,11 @@
             "tailoredPrefix": "Faites à votre mesure :",
             "chooseHours": "choisissez vos heures",
             "modalCloseLabel": "Fermer",
+            "pricing": {
+                "offerLabel": "Offre spéciale",
+                "savePercent": "Économisez {percent}%",
+                "saveAmount": "Économisez {amount}"
+            },
 
             "card1": {
                 "title": "Pack Autonomie",

@@ -14,6 +14,7 @@ interface CardProps {
         title: string;
         description: JSX.Element;
         price: string;
+        priceContent?: React.ReactNode;
         features: string[];
         extras: string[];
         color: string;
@@ -26,7 +27,7 @@ interface CardProps {
 }
 
 export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }: CardProps) => {
-    const { title, description, price, features, extras, color, labelCTA, checkoutUrl } = card;
+    const { title, description, price, priceContent, features, extras, color, labelCTA, checkoutUrl } = card;
     const bgColor = `bg-${color}`;
     const textColor = `text-${color}`;
     const { data: session } = useSession();
@@ -53,7 +54,7 @@ export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }:
                     <div className="bs p-4 flex flex-col space-between">{description}</div>
                     <RotateChildren rotation={4}>
                         <div className={cn("p-4 flex justify-center items-center -mx-12", bgColor)} style={{ transform: "rotate(-4deg)" }}>
-                            <p className="text-4xl text-neutral-100 font-bold mb-0">{price}</p>
+                            {priceContent ? <div className="w-full text-center text-neutral-100">{priceContent}</div> : <p className="text-4xl text-neutral-100 font-bold mb-0">{price}</p>}
                         </div>
                     </RotateChildren>
                     <div className="flex flex-col grow min-h-72">
