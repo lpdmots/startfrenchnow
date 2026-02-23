@@ -32,7 +32,7 @@ export const FideButton = ({ locale }: { locale: Locale }) => {
                         {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
                         {t("dashboard")}
                     </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
+                    <LinkCurrentBlog href="/fide" matchPrefix={false} className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {t("fide")}
                     </LinkCurrentBlog>

@@ -46,13 +46,18 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                 <div className="nav burgerCollapse w-full sm:w-none mb-0 flex flex-col items-start">
                     <ul className="flex-col !items-start list-none pl-0 sm:pl-2 w-full">
                         <li onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0">
-                            <LinkCurrentBlog href="/fide" className={`nav-link header-nav-link !p-2 ${pathname === "/fide" && "current"}`} locale={locale}>
+                            <LinkCurrentBlog href="/fide" className="nav-link header-nav-link !p-2" locale={locale}>
                                 {t("buttonLabel")}
                             </LinkCurrentBlog>
                         </li>
                         <div className="grid grid-cols-2 w-full">
                             <div onClick={() => setOpen(false)}>
-                                <LinkCurrentBlog href="/fide" className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0" locale={locale as Locale}>
+                                <LinkCurrentBlog
+                                    href="/fide"
+                                    matchPrefix={false}
+                                    className="nav-link header-nav-link p-1 m-0 font-medium sm:pl-8 bs flex items-center pl-0"
+                                    locale={locale as Locale}
+                                >
                                     <FaCaretRight />
                                     {t("fide")}
                                 </LinkCurrentBlog>
@@ -134,7 +139,7 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                             </div>
                         </div>
                         <li onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0">
-                            <LinkCurrentBlog href="/blog" className={`nav-link header-nav-link !p-2 ${pathname === "/blog" && "current"}`} locale={locale}>
+                            <LinkCurrentBlog href="/blog" className="nav-link header-nav-link !p-2" locale={locale}>
                                 {messages.resourcesDict.resourcesTitle}
                             </LinkCurrentBlog>
                         </li>

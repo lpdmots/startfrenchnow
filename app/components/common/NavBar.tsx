@@ -11,6 +11,7 @@ import { CoursesButton } from "./CoursesButton";
 import { ResourcesButton } from "./ResourcesButton";
 import { FideButton } from "./FideButton";
 import NotificationsMenuServer from "../notifications/NotificationsMenuServer";
+import { NavMenuLink } from "./NavMenuLink";
 
 function NavBar() {
     const t = useTranslations("Navigation");
@@ -52,19 +53,23 @@ function NavBar() {
     const links = (
         <>
             <li className="header-nav-list-item middle !px-0">
-                <Link href="/fide" className="text-neutral-700 no-underline">
+                <NavMenuLink href="/fide" activeMatch={["/fide"]} locale={locale as Locale}>
                     <FideButton locale={locale as Locale} />
-                </Link>
+                </NavMenuLink>
             </li>
             <li className="header-nav-list-item middle !px-0">
-                <Link href="/courses/beginners" className="text-neutral-700 no-underline">
+                <NavMenuLink href="/courses/beginners" activeMatch={["/courses"]} locale={locale as Locale}>
                     <CoursesButton locale={locale as Locale} dictionnary={coursesDict} />
-                </Link>
+                </NavMenuLink>
             </li>
             <li className="header-nav-list-item middle !px-0">
-                <Link href="/blog" className="text-neutral-700 no-underline">
+                <NavMenuLink
+                    href="/blog"
+                    activeMatch={["/blog", "/videos", "/exercises", "/stories", "/test-your-level"]}
+                    locale={locale as Locale}
+                >
                     <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
-                </Link>
+                </NavMenuLink>
             </li>
         </>
     );
