@@ -271,6 +271,30 @@
         "placeholder": "Enter your email address",
         "button": "Subscribe"
     },
+    "BlogHelpCta": {
+        "buttonLabel": "Help",
+        "teaseLabel": "Need help?",
+        "title": "Free consultation",
+        "description": "We help you define a learning plan tailored to your level and goals.",
+        "primaryCta": "Book a call",
+        "secondaryCta": "Get contacted",
+        "reassurance": "No commitment • Fast reply",
+        "buttonAria": "Open help for a free consultation",
+        "primaryCtaAria": "Book a free call on Calendly",
+        "secondaryCtaAria": "Go to the contact page",
+        "closeAria": "Close help"
+    },
+    "BlogContactCta": {
+        "buttonLabel": "Help",
+        "teaseLabel": "Need help?",
+        "title": "Contact us",
+        "description": "Questions about learning French? Send us a message.",
+        "primaryCta": "Contact us",
+        "reassurance": "Fast reply • No commitment",
+        "buttonAria": "Open contact",
+        "primaryCtaAria": "Go to the contact page",
+        "closeAria": "Close help"
+    },
     "CourseRecommendationCard": {
         "title": "Move up a level",
         "description": "Follow a structured path to progress faster in French.",
@@ -863,12 +887,12 @@
             "seeFullComment": "See the full comment"
         },
         "ContactForFide": {
-            "title": "Get Your Free Study Plan",
-            "description": "Book a consultation to create your custom study plan and best prepare for your FIDE exam.",
+            "title": "Contact FIDE Preparation",
+            "description": "Provide your email address and we will guide you based on your level and FIDE goal.",
             "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
             "errorMessage": "Oops! Something went wrong.",
             "placeholder": "Your email address",
-            "button": "Send"
+            "button": "Contact us"
         },
         "AdditionalCourses": {
             "title": "Add <hs4>some self-learning</hs4> to <noWrap>your study</noWrap>",

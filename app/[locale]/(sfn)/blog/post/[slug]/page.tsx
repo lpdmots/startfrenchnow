@@ -8,6 +8,8 @@ import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { Locale } from "@/i18n";
+import BlogFideFloatingHelp from "@/app/components/sfn/post/BlogFideFloatingHelp";
+import BlogContactFloatingHelp from "@/app/components/sfn/post/BlogContactFloatingHelp";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
 import Link from "next-intl/link";
@@ -57,6 +59,8 @@ interface PropsNoAsync {
 const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {
     const locale = useLocale();
     const t = useTranslations(`Blog.Post`);
+    const firstCategory = post.categories?.[0] || "tips";
+    const isBlogCategory = BLOGCATEGORIES.includes(firstCategory);
 
     return (
         <>
@@ -95,7 +99,13 @@ const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {
                     </div>
                 </div>
             </div>
-            <BlogLangFixedButton />
+            {firstCategory === "fide" ? (
+                <BlogFideFloatingHelp firstCategory={firstCategory} hasMainVideo={!!post.mainVideo} />
+            ) : isBlogCategory ? (
+                <BlogContactFloatingHelp firstCategory={firstCategory} hasMainVideo={!!post.mainVideo} />
+            ) : (
+                <BlogLangFixedButton />
+            )}
         </>
     );
 };

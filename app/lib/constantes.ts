@@ -119,6 +119,27 @@ export const BLOG_COURSE_RECOMMENDATIONS = {
     b2: { levelLabel: "B2", courseSlug: "dialogues", image: "/images/cours3.jpg" },
 } as const;
 export const BLOG_COURSE_FALLBACK_LEVEL = "a1" as const;
+export const BLOG_CTA_DEFAULTS = {
+    contactUrl: "/contact",
+    minTimeMs: 45000,
+    minScrollRatio: 0.4,
+    dismissDays: 7,
+    teaseDurationMs: 2000,
+    shakeIntervalMs: 20000,
+} as const;
+
+export const BLOG_HELP_CTA = {
+    ...BLOG_CTA_DEFAULTS,
+    calendlyUrl: "https://calendly.com/yohann-startfrenchnow/15min",
+    sessionStorageKey: "sfn_blog_help_cta_shown",
+    dismissStorageKey: "sfn_blog_help_cta_dismissed_at",
+} as const;
+
+export const BLOG_CONTACT_CTA = {
+    ...BLOG_CTA_DEFAULTS,
+    sessionStorageKey: "sfn_blog_contact_cta_shown",
+    dismissStorageKey: "sfn_blog_contact_cta_dismissed_at",
+} as const;
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];

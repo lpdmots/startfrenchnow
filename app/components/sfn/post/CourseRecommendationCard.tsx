@@ -26,23 +26,23 @@ function CourseRecommendationCard({ post }: { post: Post }) {
     const imageAlt = recommendedLevel ? t("imageAltWithLevel", { level: course.levelLabel }) : t("imageAltFallback");
 
     return (
-        <div data-w-id="32f4274f-5340-1bd4-838f-6737839a901b" className="newsletter-card p-8">
-            <div className="mg-bottom-24px w-full flex justify-center">
-                <Image src={course.image} height={150} width={200} loading="eager" alt={imageAlt} className="w-auto h-[150px] rounded-2xl border-2 border-solid border-neutral-800" />
+        <div data-w-id="32f4274f-5340-1bd4-838f-6737839a901b" className="newsletter-card p-4 sm:p-8">
+            <div className="mb-4 w-full flex justify-center">
+                <Image src={course.image} height={150} width={200} loading="eager" alt={imageAlt} className="w-full h-auto rounded-2xl border-2 border-solid border-neutral-800" />
             </div>
-            <div className="text-center mg-bottom-24px">
+            <div className="text-centermb-8">
                 <div className="inner-container _400px---tablet center">
                     <div className="inner-container _350px---mbl center">
-                        <h2 className="display-4 mg-bottom-8px">{title}</h2>
+                        <h2 className="display-4 mb-2">{title}</h2>
                         <p className="mb-0 text-lg">{description}</p>
                     </div>
                 </div>
             </div>
-            <div className="nesletter-sidebar-form-block w-form">
+            <div className="mt-4">
                 <Link href={`/courses/${course.courseSlug}`} className="btn-primary full-width project-btn w-inline-block">
                     {ctaLabel}
                 </Link>
-                <p className="text-sm color-neutral-700 mt-3 text-center">{t("reassurance")}</p>
+                <p className="text-sm color-neutral-700 mt-2 text-center mb-0">{t("reassurance")}</p>
             </div>
         </div>
     );

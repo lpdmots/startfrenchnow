@@ -275,6 +275,30 @@
         "placeholder": "Entrez votre adresse e-mail",
         "button": "S'abonner"
     },
+    "BlogHelpCta": {
+        "buttonLabel": "Aide",
+        "teaseLabel": "Besoin d’aide ?",
+        "title": "Consultation gratuite",
+        "description": "On vous aide à définir un plan d’apprentissage adapté à votre niveau et à vos objectifs.",
+        "primaryCta": "Réserver un RDV",
+        "secondaryCta": "Être recontacté(e)",
+        "reassurance": "Sans engagement • Réponse rapide",
+        "buttonAria": "Ouvrir l’aide à la consultation gratuite",
+        "primaryCtaAria": "Réserver un rendez-vous gratuit sur Calendly",
+        "secondaryCtaAria": "Accéder à la page de contact",
+        "closeAria": "Fermer l’aide"
+    },
+    "BlogContactCta": {
+        "buttonLabel": "Aide",
+        "teaseLabel": "Une question ?",
+        "title": "Nous contacter",
+        "description": "Une question sur votre apprentissage ? Écrivez-nous.",
+        "primaryCta": "Nous contacter",
+        "reassurance": "Réponse rapide • Sans engagement",
+        "buttonAria": "Ouvrir le contact",
+        "primaryCtaAria": "Accéder à la page de contact",
+        "closeAria": "Fermer l’aide"
+    },
     "CourseRecommendationCard": {
         "title": "Passez au niveau supérieur",
         "description": "Suivez un parcours structuré pour progresser plus vite en français.",
@@ -866,12 +890,12 @@
             "seeFullComment": "Voir le commentaire complet"
         },
         "ContactForFide": {
-            "title": "Obtenez votre plan d'étude gratuit",
-            "description": "Réservez un entretien pour définir votre plan de travail sur mesure et préparer au mieux votre examen FIDE.",
+            "title": "Contact préparation FIDE",
+            "description": "Indiquez votre adresse e-mail et nous vous orienterons selon votre niveau et votre objectif FIDE.",
             "successMessage": "Votre demande a été envoyée. Nous vous contacterons dès que possible, veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
             "errorMessage": "Oups ! Quelque chose a mal tourné.",
             "placeholder": "Votre adresse e-mail",
-            "button": "Envoyer"
+            "button": "Recevoir un e-mail"
         },
         "Hero": {
             "title": "Apprenez <hs4>le français</hs4> à votre rythme avec des cours de <hs2>qualité</hs2>",
