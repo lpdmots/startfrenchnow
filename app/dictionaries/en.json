@@ -6,7 +6,7 @@
         },
         "StoriesApp": {
             "title": "Learn French with Start French Now: Interactive Stories & Online Courses",
-            "description": "Discover a unique way to master the French language with Start French Now. Dive into interactive stories, structured courses on Udemy, and a plethora of educational content tailored for global learners."
+            "description": "Discover a unique way to master the French language with Start French Now. Dive into interactive stories, structured courses, and a plethora of educational content tailored for global learners."
         },
         "Stories": {
             "title": "Learn French the Fun Way with Interactive Stories | Start French Now",
@@ -196,7 +196,7 @@
         "heroTitle": "What is your <hs2>level</hs2> of <hs4>French</hs4>?",
         "whyTestTitle": "<hs1>Why</hs1> should you test your level?",
         "whyTestDescription": "Knowing your level is essential to create <hs2>a learning plan</hs2> and define <hs4>goals</hs4>.",
-        "whyTestAdditional": "If you are considering taking one of <hs2>our Udemy courses</hs2>, we recommend completing this test to better target your skills.",
+        "whyTestAdditional": "If you are considering taking one of <hs2>our courses</hs2>, we recommend completing this test to better target your skills.",
         "globalDistribution": "Global level distribution",
         "cecrImageAlt": "CEFR levels",
         "cefrLevelsTitle": "The <hs2>6 CEFR levels</hs2>",
@@ -248,7 +248,7 @@
     },
     "CommentsCarousel": {
         "title": "Thousands of <hs4>satisfied</hs4> learners",
-        "description": "See what our latest students have to say about our courses. You can find even more reviews ",
+        "description": "See what our latest students have to say about our courses.",
         "description2": "on"
     },
     "StoriesHome": {
@@ -270,6 +270,15 @@
         "errorMessage": "Oops! Something went wrong.",
         "placeholder": "Enter your email address",
         "button": "Subscribe"
+    },
+    "CourseRecommendationCard": {
+        "title": "Move up a level",
+        "description": "Follow a structured path to progress faster in French.",
+        "ctaWithLevel": "See the {level} course",
+        "ctaFallback": "See the A1 course",
+        "reassurance": "Structured lessons • Exercises • Instant access",
+        "imageAltWithLevel": "Recommended French course for level {level}",
+        "imageAltFallback": "Recommended French course"
     },
     "About": {
         "introDescription": "I'm a teacher of French as a foreign language and a specialist in <noWrap>teaching beginners.</noWrap>",
@@ -630,7 +639,7 @@
             "li2": "Practice directly on <under5><b>current exam scenarios</b></under5>, <noWrap>always up-to-date.</noWrap>",
             "li3": "Benefit from continuous coaching by a genuine <under2><b>FIDE expert</b></under2>.",
             "proof": "A <hs2>proven</hs2> method",
-            "buttonPrimary": "Get my free plan",
+            "buttonPrimary": "Get a free call",
             "buttonSecondary": "Start learning now",
             "videoSubtitle": "Discover our FIDE prep"
         },
@@ -863,7 +872,7 @@
         },
         "AdditionalCourses": {
             "title": "Add <hs4>some self-learning</hs4> to <noWrap>your study</noWrap>",
-            "description": "Got some extra time? Want to boost your French between lessons and maximize your chances of acing the FIDE exam? With every booking of <under><b>at least 5 lessons</b></under>, you’ll receive <under><b>full access to all my Udemy courses</b></under>.",
+            "description": "Got some extra time? Want to boost your French between lessons and maximize your chances of acing the FIDE exam? With every booking of <under><b>at least 5 lessons</b></under>, you’ll receive <under><b>full access to all my courses</b></under>.",
             "lowIntermediateLevel3": {
                 "title": "Everyday Dialogues - Level 3 <noWrap>(A2-B1)</noWrap>",
                 "description": "The perfect complement to pass your FIDE B1 test.",
@@ -1400,7 +1409,7 @@
             "OtherCourses": { "title": "See <hs2>other courses</hs2>" },
             "LastComments": {
                 "title": "<hs2>Feedback</hs2> & Experiences",
-                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
+                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",
                 "buyNow": "BUY IT NOW !",
                 "continue": "Continue this course"
             }
@@ -1462,7 +1471,7 @@
             "OtherCourses": { "title": "See <hs4>other courses</hs4>" },
             "LastComments": {
                 "title": "<hs4>Feedback</hs4> & Experiences",
-                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
+                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",
                 "buyNow": "BUY IT NOW !",
                 "continue": "Continue this course"
             }
@@ -1526,7 +1535,7 @@
             "OtherCourses": { "title": "See <hs5>other courses</hs5>" },
             "LastComments": {
                 "title": "<hs5>Feedback</hs5> & Experiences",
-                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
+                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",
                 "buyNow": "BUY IT NOW !",
                 "continue": "Continue this course"
             }
@@ -1592,7 +1601,7 @@
             "OtherCourses": { "title": "See <hs3>other courses</hs3>" },
             "LastComments": {
                 "title": "<hs3>Feedback</hs3> & Experiences",
-                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method. You can find thousands of other reviews on ",
+                "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",
                 "buyNow": "BUY IT NOW !",
                 "continue": "Continue this course"
             }

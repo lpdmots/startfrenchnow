@@ -10,8 +10,9 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next-intl/link";
 import { Locale } from "@/i18n";
 import { CategoryBadge } from "../blog/CategoryBadge";
-import { CATEGORIESCOLORS } from "@/app/lib/constantes";
+import { BLOGCATEGORIES, CATEGORIESCOLORS } from "@/app/lib/constantes";
 import { ContactFideCard } from "./ContactFideCard";
+import CourseRecommendationCard from "./CourseRecommendationCard";
 
 function PostContent({ post }: { post: Post }) {
     const locale = useLocale() as Locale;
@@ -19,6 +20,7 @@ function PostContent({ post }: { post: Post }) {
     const tCat = useTranslations(`Categories.${categories?.[0] || "tips"}`);
 
     const firstCategory = categories?.[0] || "tips";
+    const shouldUseCourseRecommendation = firstCategory !== "fide" && BLOGCATEGORIES.includes(firstCategory);
 
     return (
         <>
@@ -75,7 +77,7 @@ function PostContent({ post }: { post: Post }) {
                                 )}
                             </div>
                             <div id="w-node-_2efa5bda-72aa-9528-9385-590a86804244-6f543d60" className="sticky-top _48px-top">
-                                {firstCategory === "fide" ? <ContactFideCard /> : <NewsletterCard />}
+                                {firstCategory === "fide" ? <ContactFideCard /> : shouldUseCourseRecommendation ? <CourseRecommendationCard post={post} /> : <NewsletterCard />}
                             </div>
                         </div>
                     </div>

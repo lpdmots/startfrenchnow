@@ -6,7 +6,7 @@
         },
         "StoriesApp": {
             "title": "Apprenez le Français avec Start French Now : Histoires Interactives et Cours en Ligne",
-            "description": "Découvrez une manière unique de maîtriser la langue française avec Start French Now. Plongez dans des histoires interactives, des cours structurés sur Udemy et une myriade de contenus éducatifs adaptés pour un public international."
+            "description": "Découvrez une manière unique de maîtriser la langue française avec Start French Now. Plongez dans des histoires interactives, des cours structurés et une myriade de contenus éducatifs adaptés pour un public international."
         },
         "Stories": {
             "title": "Apprenez le Français avec des Histoires Interactives | Start French Now",
@@ -200,7 +200,7 @@
         "heroTitle": "Quel est votre <hs2>niveau</hs2> de <hs4>français</hs4> ?",
         "whyTestTitle": "<hs1>Pourquoi</hs1> tester votre niveau ?",
         "whyTestDescription": "Connaître son niveau est très important pour pouvoir créer <hs2>un plan d'apprentissage</hs2> et déterminer <hs4>des objectifs</hs4>.",
-        "whyTestAdditional": "Si vous envisagez de suivre l’un de <hs2>nos cours Udemy</hs2>, nous vous invitons à passer ce test qui vous aidera à affiner le ciblage de vos compétences.",
+        "whyTestAdditional": "Si vous envisagez de suivre l’un de <hs2>nos cours</hs2>, nous vous invitons à passer ce test qui vous aidera à affiner le ciblage de vos compétences.",
         "globalDistribution": "Répartition globale des niveaux",
         "cecrImageAlt": "Niveaux du CECR",
         "cefrLevelsTitle": "Les <hs2>6 niveaux</hs2> du CECR",
@@ -252,7 +252,7 @@
     },
     "CommentsCarousel": {
         "title": "Des milliers d'apprenants <hs4>satisfaits</hs4>",
-        "description": "Découvrez ce que nos derniers apprenants disent de nos cours. Pour lire davantage d'avis, rendez-vous ",
+        "description": "Découvrez ce que nos derniers apprenants disent de nos cours.",
         "description2": "sur"
     },
     "StoriesHome": {
@@ -274,6 +274,15 @@
         "errorMessage": "Oups ! Quelque chose a mal tourné.",
         "placeholder": "Entrez votre adresse e-mail",
         "button": "S'abonner"
+    },
+    "CourseRecommendationCard": {
+        "title": "Passez au niveau supérieur",
+        "description": "Suivez un parcours structuré pour progresser plus vite en français.",
+        "ctaWithLevel": "Voir le cours {level}",
+        "ctaFallback": "Voir le cours A1",
+        "reassurance": "Leçons structurées • Exercices • Accès immédiat",
+        "imageAltWithLevel": "Cours de français recommandé niveau {level}",
+        "imageAltFallback": "Cours de français recommandé"
     },
     "About": {
         "introDescription": "Je suis professeur de français langue étrangère et spécialiste de l'enseignement aux <noWrap>débutants.</noWrap>",
@@ -633,7 +642,7 @@
             "li2": "Pratiquez directement sur <under5><b>les scénarios actuels</b></under5> de l’examen, <noWrap>toujours à jour.</noWrap>",
             "li3": "Bénéficiez de l'accompagnement continu d'un véritable <under2><b>expert Fide</b></under2>.",
             "proof": "Une méthode <hs2>validée</hs2>",
-            "buttonPrimary": "Obtenir mon plan gratuit",
+            "buttonPrimary": "Consultation gratuite",
             "buttonSecondary": "Choisir ma formule",
             "videoSubtitle": "Découvrez notre préparation FIDE"
         },
@@ -872,7 +881,7 @@
         },
         "AdditionalCourses": {
             "title": "Boostez votre préparation avec <noWrap><hs4>l’auto-apprentissage</hs4></noWrap>",
-            "description": "Vous avez un peu de temps libre ? Vous voulez améliorer votre français entre les leçons et maximiser vos chances de réussir le test FIDE ? Pour toute réservation <under><b>d'au moins 5 leçons</b></under>, vous bénéficierez d'un <under><b>accès complet à l'ensemble de mes cours sur Udemy</b></under>.",
+            "description": "Vous avez un peu de temps libre ? Vous voulez améliorer votre français entre les leçons et maximiser vos chances de réussir le test FIDE ? Pour toute réservation <under><b>d'au moins 5 leçons</b></under>, vous bénéficierez d'un <under><b>accès complet à l'ensemble de mes cours</b></under>.",
             "lowIntermediateLevel3": {
                 "title": "Les dialogues du quotidien - Niveau 3 <noWrap>(A2-B1)</noWrap>",
                 "description": "Le complément idéal pour réussir votre test FIDE B1.",
@@ -1413,7 +1422,7 @@
             "OtherCourses": { "title": "Voir les <hs2>autres cours</hs2>" },
             "LastComments": {
                 "title": "<hs2>Retours</hs2> & Expériences",
-                "description": "Voici ce que nos étudiants disent de ce cours. Faites-vous votre propre avis sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous trouverez des milliers d'autres avis sur ",
+                "description": "Voici ce que nos étudiants disent de ce cours. Faites-vous votre propre avis sur la qualité de notre enseignement et l'efficacité de notre méthode.",
                 "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             }
@@ -1475,7 +1484,7 @@
             "OtherCourses": { "title": "Voir <hs4>d'autres cours</hs4>" },
             "LastComments": {
                 "title": "<hs4>Avis</hs4> & Expériences",
-                "description": "Voici ce que nos étudiants disent de ce cours. Formez votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
+                "description": "Voici ce que nos étudiants disent de ce cours. Formez votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode.",
                 "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             }
@@ -1540,7 +1549,7 @@
             "OtherCourses": { "title": "Voir <hs5>d'autres cours</hs5>" },
             "LastComments": {
                 "title": "<hs5>Commentaires</hs5> & Expériences",
-                "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
+                "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode.",
                 "buyNow": "Accéder au cours",
                 "continue": "Continuer ce cours"
             }
@@ -1606,7 +1615,7 @@
             "OtherCourses": { "title": "Voir <hs3>d'autres cours</hs3>" },
             "LastComments": {
                 "title": "<hs3>Commentaires</hs3> & Expériences",
-                "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode. Vous pouvez trouver des milliers d'autres avis sur ",
+                "description": "Voici ce que nos étudiants disent de ce cours. Formez-vous votre propre opinion sur la qualité de notre enseignement et l'efficacité de notre méthode.",
                 "buyNow": "ACHETEZ-LE MAINTENANT",
                 "continue": "Continuer ce cours"
             }

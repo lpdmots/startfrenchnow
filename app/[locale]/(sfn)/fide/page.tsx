@@ -19,6 +19,7 @@ import { client } from "@/app/lib/sanity.client";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
 import { groq } from "next-sanity";
+import ButtonsDock from "./components/ButtonsDock";
 
 async function ExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);

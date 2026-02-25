@@ -84,7 +84,7 @@ export const LastComments = ({
                                     </div>
                                 </div>
                                 <p className="mg-bottom-48px">
-                                    {t["description"]} <LinkArrow url={udemyCourseUrl}>Udemy</LinkArrow>.
+                                    {t["description"]}
                                 </p>
                                 {ctaExtra}
                                 <Link href={hasCourse ? "/courses/dashboard" : courseUrl} className="btn-primary project-btn w-inline-block">

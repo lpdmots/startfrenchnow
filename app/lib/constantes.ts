@@ -112,6 +112,13 @@ export const langData = {
 
 export const BLOGCATEGORIES = ["tips", "vocabulary", "grammar", "culture", "expressions", "fide"];
 export const CATEGORIES = [...BLOGCATEGORIES, "pack_fide", "udemy_course_beginner", "udemy_course_dialogs", "udemy_course_intermediate"];
+export const BLOG_COURSE_RECOMMENDATIONS = {
+    a1: { levelLabel: "A1", courseSlug: "beginners", image: "/images/cours1.jpg" },
+    a2: { levelLabel: "A2", courseSlug: "intermediates", image: "/images/cours2.jpg" },
+    b1: { levelLabel: "B1", courseSlug: "dialogues", image: "/images/cours3.jpg" },
+    b2: { levelLabel: "B2", courseSlug: "dialogues", image: "/images/cours3.jpg" },
+} as const;
+export const BLOG_COURSE_FALLBACK_LEVEL = "a1" as const;
 
 export const RESPONSESLAYOUTS = ["true-false", "buttons", "checkbox", "select", "input", "imgMap", "link", "order"];
 export const EXERCISETYPES = ["true-false", "buttons", "checkbox", "select", "input", "image", "sound", "imgMap", "link", "order"];
