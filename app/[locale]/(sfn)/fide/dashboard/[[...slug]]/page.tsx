@@ -13,6 +13,8 @@ import DashboardVideos from "../components/DashboardVideos";
 import { DashboardCoaching } from "../components/DashboardCoaching";
 import { DashboardExams } from "../components/DashboardExams";
 import { DashboardComments } from "../components/DashboardComments";
+import { DashboardMockExams } from "../components/DashboardMockExams";
+import { getUserCompilations, getUserMockExamCredits } from "@/app/serverActions/mockExamActions";
 
 const FIDE_USER_PROGRESS_QUERY = groq`
   *[_type == "user" && _id == $userId][0].learningProgress[type == "pack_fide"][0]{
@@ -32,6 +34,7 @@ async function DashboardPage({ params: { locale, slug: specifiedId } }: { params
     const userId = session?.user?._id ?? null;
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const dataId = specifiedId?.[0] || userId || "";
+    const canCreateMockExam = dataId === userId;
 
     const examsPromise = client.fetch<Exam[]>(queryExams);
 
@@ -50,7 +53,14 @@ async function DashboardPage({ params: { locale, slug: specifiedId } }: { params
           })()
         : Promise.resolve(null);
 
-    const [exams, fidePackSommaire, fideUserProgress, privateLesson] = await Promise.all([examsPromise, sommairePromise, progressPromise, privateLessonPromise]);
+    const [exams, fidePackSommaire, fideUserProgress, privateLesson, compilations, mockExamCredits] = await Promise.all([
+        examsPromise,
+        sommairePromise,
+        progressPromise,
+        privateLessonPromise,
+        dataId ? getUserCompilations(dataId) : Promise.resolve([]),
+        canCreateMockExam && userId ? getUserMockExamCredits(userId) : Promise.resolve(null),
+    ]);
 
     const hero = buildHeroData(fideUserProgress, fidePackSommaire, exams, privateLesson);
 
@@ -58,6 +68,7 @@ async function DashboardPage({ params: { locale, slug: specifiedId } }: { params
         <>
             <div className="w-full flex flex-col items-center gap-24 mt-8 md:mt-12 p-2 mb-12 lg:mb-24">
                 <DashboardHero hero={hero} locale={locale} hasPack={hasPack} />
+                <DashboardMockExams compilations={compilations} remainingCredits={mockExamCredits?.remainingCredits ?? null} canCreate={canCreateMockExam} />
                 <DashboardVideos hero={hero} locale={locale} hasPack={hasPack} fidePackSommaire={fidePackSommaire} userId={userId} />
                 <DashboardExams hero={hero} locale={locale} hasPack={hasPack} />
                 <DashboardCoaching hero={hero} locale={locale} />

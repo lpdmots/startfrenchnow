@@ -94,6 +94,15 @@ export default defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
+            name: "image",
+            title: "Image",
+            type: "image",
+            options: {
+                hotspot: true,
+            },
+            description: "Image de couverture auto-générée depuis la première activité du parler A2.",
+        }),
+        defineField({
             name: "examConfig",
             title: "Exam Config",
             type: "object",
@@ -379,10 +388,12 @@ export default defineType({
     preview: {
         select: {
             userId: "userId",
+            media: "image",
         },
-        prepare({ userId }) {
+        prepare({ userId, media }) {
             return {
                 title: userId ? `Exam Compilation - ${userId}` : "Exam Compilation",
+                media,
             };
         },
     },

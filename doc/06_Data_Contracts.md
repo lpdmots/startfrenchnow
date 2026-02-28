@@ -13,7 +13,8 @@ export type TaskType =
     | "IMAGE_DESCRIPTION_A2"
     | "PHONE_CONVERSATION_A2"
     | "DISCUSSION_A2"
-    | "IMAGE_DESCRIPTION_A1"
+    | "IMAGE_DESCRIPTION_A1_T1"
+    | "IMAGE_DESCRIPTION_A1_T2"
     | "DISCUSSION_B1"
     | "READ_WRITE_M1"
     | "READ_WRITE_M2"
@@ -34,7 +35,7 @@ export type TaskMediaBlock = {
 /**
  * Une activity = un "prompt" successif à enregistrer.
  * - Pour IMAGE_DESCRIPTION_A2: en général 1 activity (image + audio question).
- * - Pour IMAGE_DESCRIPTION_A1: plusieurs activities (chaque activity peut avoir image+audio).
+ * - Pour IMAGE_DESCRIPTION_A1_T1 / IMAGE_DESCRIPTION_A1_T2: plusieurs activities (chaque activity peut avoir image+audio).
  * - Pour PHONE_CONVERSATION / DISCUSSION: plusieurs activities avec audio + (optionnel) texte.
  */
 export type Activity = {
@@ -142,6 +143,7 @@ export type ExamCompilation = {
     // <-- un champs examCompilations à ajouter au schema User.
     _id: string; // identifiant de session (généré à la création, utilisé pour fetch/update)
     userId: string;
+    image?: Image; // image de cover (auto-remplie depuis la première activity du parler A2)
 
     createdAt: string; // ne pas créer dans le schéma car intégré dans les docs Sanity
     updatedAt: string; // ne pas créer dans le schéma car intégré dans les docs Sanity

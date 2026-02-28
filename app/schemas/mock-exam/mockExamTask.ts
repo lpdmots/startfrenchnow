@@ -72,6 +72,12 @@ export default defineType({
     type: "document",
     fields: [
         defineField({
+            name: "title",
+            title: "Titre",
+            type: "string",
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
             name: "taskType",
             title: "Task Type",
             type: "string",
@@ -80,7 +86,8 @@ export default defineType({
                     { title: "IMAGE_DESCRIPTION_A2", value: "IMAGE_DESCRIPTION_A2" },
                     { title: "PHONE_CONVERSATION_A2", value: "PHONE_CONVERSATION_A2" },
                     { title: "DISCUSSION_A2", value: "DISCUSSION_A2" },
-                    { title: "IMAGE_DESCRIPTION_A1", value: "IMAGE_DESCRIPTION_A1" },
+                    { title: "IMAGE_DESCRIPTION_A1_T1", value: "IMAGE_DESCRIPTION_A1_T1" },
+                    { title: "IMAGE_DESCRIPTION_A1_T2", value: "IMAGE_DESCRIPTION_A1_T2" },
                     { title: "DISCUSSION_B1", value: "DISCUSSION_B1" },
                     { title: "READ_WRITE_M1", value: "READ_WRITE_M1" },
                     { title: "READ_WRITE_M2", value: "READ_WRITE_M2" },
@@ -143,10 +150,12 @@ export default defineType({
     preview: {
         select: {
             taskType: "taskType",
+            title: "title",
         },
-        prepare({ taskType }) {
+        prepare({ taskType, title }) {
             return {
-                title: taskType || "Mock Exam Task",
+                title: title,
+                subtitle: taskType,
             };
         },
     },

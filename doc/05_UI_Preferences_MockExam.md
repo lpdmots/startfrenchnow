@@ -137,7 +137,7 @@ Pas d’écran intermédiaire.
 
 ---
 
-### 4.4 IMAGE_DESCRIPTION_A1 (multi images / activities)
+### 4.4 IMAGE_DESCRIPTION_A1_T1 / IMAGE_DESCRIPTION_A1_T2 (multi images / activities)
 **Desktop**
 - Gauche : image courante + audio question + “Image i/n”
 - Droite : Recorder + TranscriptEditor + CTA
