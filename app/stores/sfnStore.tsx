@@ -95,7 +95,7 @@ export const useSfnStore = create<SfnStore>()(
                             privateLessons: [...state.privateLessons.filter((lesson) => lesson.eventType !== newPrivateLessons.eventType), newPrivateLessons],
                         }),
                         false,
-                        "setNewPrivateLesson"
+                        "setNewPrivateLesson",
                     ),
                 setVideoTimestamp: (videoId, timestamp, duration) =>
                     set(
@@ -114,7 +114,7 @@ export const useSfnStore = create<SfnStore>()(
                             };
                         },
                         false,
-                        "setVideoTimestamp"
+                        "setVideoTimestamp",
                     ),
 
                 clearVideoTimestamp: (videoId) =>
@@ -124,7 +124,7 @@ export const useSfnStore = create<SfnStore>()(
                             return { videoProgress: rest };
                         },
                         false,
-                        "clearVideoTimestamp"
+                        "clearVideoTimestamp",
                     ),
 
                 getVideoTimestamp: (videoId) => get().videoProgress[videoId]?.timestamp,
@@ -145,7 +145,7 @@ export const useSfnStore = create<SfnStore>()(
                             };
                         },
                         false,
-                        "setVideoDuration"
+                        "setVideoDuration",
                     ),
 
                 markBucketSeen: (videoId, bucketIndex, opts) => {
@@ -183,7 +183,7 @@ export const useSfnStore = create<SfnStore>()(
                             };
                         },
                         false,
-                        "markBucketSeen"
+                        "markBucketSeen",
                     );
                     return newlyMarked;
                 },
@@ -205,7 +205,7 @@ export const useSfnStore = create<SfnStore>()(
                             };
                         },
                         false,
-                        "resetVideoBuckets"
+                        "resetVideoBuckets",
                     ),
 
                 getUniqueWatchedSeconds: (videoId) => {
@@ -254,7 +254,7 @@ export const useSfnStore = create<SfnStore>()(
             }),
             {
                 name: "sfn-storage",
-            }
-        )
-    )
+            },
+        ),
+    ),
 );

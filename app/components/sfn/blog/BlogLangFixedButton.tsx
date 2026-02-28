@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next-intl/client";
 import { useLocale } from "next-intl";
+import { useConsentBannerOffset } from "@/app/hooks/useConsentBannerOffset";
 
 interface Props {
     suppressed?: boolean;
@@ -14,6 +15,8 @@ const BlogLangFixedButton: React.FC<Props> = ({ suppressed = false }) => {
     const [isVisible, setIsVisible] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
+    const consentOffset = useConsentBannerOffset();
+    const stickyBottom = consentOffset + 16;
 
     useEffect(() => {
         const onScroll = () => setIsVisible(window.scrollY > 300);
@@ -41,6 +44,7 @@ const BlogLangFixedButton: React.FC<Props> = ({ suppressed = false }) => {
                 transform: suppressed ? "translateY(8px)" : "translateY(0)",
                 pointerEvents: suppressed ? "none" : "auto",
                 transition: "opacity 200ms ease, transform 200ms ease",
+                bottom: stickyBottom,
             }}
             onClick={handleToggleLanguage}
             aria-label="Changer la langue"

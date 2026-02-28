@@ -235,7 +235,7 @@ export const EVENT_TYPES = {
 export const HOURS_BEFOR_CANCEL = 24;
 
 export const LESSONS = [...Object.keys(EVENT_TYPES)];
-export const CREDITS = [];
+export const CREDITS = ["mock_exam"];
 export const PERMISSIONS = ["pack_fide", "udemy_course_beginner", "udemy_course_dialogs", "udemy_course_intermediate"] as const;
 const FIDE_PACKAGES_KEYS = ["pack_fide"] as const;
 export const COURSES_PACKAGES_KEYS = ["udemy_course_beginner", "udemy_course_dialogs", "udemy_course_intermediate"] as const;

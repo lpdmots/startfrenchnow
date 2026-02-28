@@ -215,6 +215,12 @@ export default defineType({
             ],
         }),
         defineField({
+            name: "examCompilations",
+            title: "Mock Exam Compilations",
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "examCompilation" }] }],
+        }),
+        defineField({
             name: "permissions",
             title: "Permissions",
             type: "array",

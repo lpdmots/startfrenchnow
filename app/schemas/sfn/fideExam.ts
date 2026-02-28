@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 
 export default defineType({
     name: "fideExam",
-    title: "FIDE Exam",
+    title: "Examen Comprendre",
     type: "document",
     fields: [
         defineField({

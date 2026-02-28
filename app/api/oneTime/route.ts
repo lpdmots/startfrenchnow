@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
                 transactionId: res.transactionId,
                 note: "Migration effectuée : level -> levels: [level], puis suppression de 'level'.",
             },
-            { status: 200 }
+            { status: 200 },
         );
     } catch (err: any) {
         return NextResponse.json({ ok: false, error: err?.message ?? "Unknown error" }, { status: 500 });

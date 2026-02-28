@@ -569,7 +569,7 @@ const ResponseRecorder = ({
                                 className={clsx(
                                     `h-full rounded-full aspect-square flex justify-center items-center transition transform ${
                                         !transcript || isTranscribing ? "opacity-50 cursor-not-allowed" : "translate_on_hover hover:opacity-80"
-                                    }`
+                                    }`,
                                 )}
                                 style={{ backgroundColor: "var(--secondary-2)" }}
                                 disabled={!transcript || isTranscribing}

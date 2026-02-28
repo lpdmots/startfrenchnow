@@ -10,6 +10,9 @@ import fideExam from "./sfn/fideExam";
 import productPackage from "./sfn/package";
 import comment from "./sfn/comment";
 import pendingPurchase from "./sfn/pendingPurchase";
+import mockExamTask from "./mock-exam/mockExamTask";
+import examCompilation from "./mock-exam/examCompilation";
+import examReview from "./mock-exam/examReview";
 
 // Blog Tools
 import flashcards from "./sfn/blogTools/flashcards";
@@ -41,6 +44,9 @@ export const schemaTypes = [
     product,
     productPackage,
     pendingPurchase,
+    mockExamTask,
+    examCompilation,
+    examReview,
     blockContent,
     video,
     fideExam,

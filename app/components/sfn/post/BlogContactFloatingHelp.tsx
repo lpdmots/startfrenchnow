@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineMail, HiOutlineQuestionMarkCircle } from "react-icons/hi";
 import BlogLangFixedButton from "../blog/BlogLangFixedButton";
 import { BLOG_CONTACT_CTA } from "@/app/lib/constantes";
+import { useConsentBannerOffset } from "@/app/hooks/useConsentBannerOffset";
 
 const CONTACT_CTA_TEST_CONFIG = {
     contactUrl: BLOG_CONTACT_CTA.contactUrl,
@@ -66,6 +67,8 @@ export default function BlogContactFloatingHelp({ firstCategory, hasMainVideo = 
     const [hasTeased, setHasTeased] = useState(false);
     const [animateShake, setAnimateShake] = useState(false);
     const attentionModeRef = useRef<"shake" | "tease">("shake");
+    const consentOffset = useConsentBannerOffset();
+    const stickyBottom = consentOffset + 16;
 
     const cardRef = useRef<HTMLDivElement | null>(null);
     const closeButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -229,7 +232,7 @@ export default function BlogContactFloatingHelp({ firstCategory, hasMainVideo = 
                         exit={{ opacity: 0, y: 24 }}
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                         className={`fixed right-4 z-50 flex h-12 items-center gap-3 overflow-hidden rounded-full border-2 border-solid border-neutral-800 bg-neutral-100 px-4 text-base font-semibold text-neutral-800 ${CONTACT_CTA_TEST_CONFIG.buttonBottomClass}`}
-                        style={{ boxShadow: CONTACT_CTA_TEST_CONFIG.buttonShadow }}
+                        style={{ boxShadow: CONTACT_CTA_TEST_CONFIG.buttonShadow, bottom: stickyBottom }}
                         onClick={handleOpen}
                         aria-label={t("buttonAria")}
                         aria-expanded={isExpanded}
@@ -250,6 +253,7 @@ export default function BlogContactFloatingHelp({ firstCategory, hasMainVideo = 
                         exit={{ opacity: 0, y: 24, scale: 0.98 }}
                         transition={{ type: "spring", stiffness: 360, damping: 28 }}
                         className={`fixed right-4 z-50 ${CONTACT_CTA_TEST_CONFIG.cardBottomClass}`}
+                        style={{ bottom: stickyBottom }}
                         role="dialog"
                         aria-modal={false}
                         aria-labelledby={titleId}

@@ -154,7 +154,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     // 4) Prépare patch user (set / append)
     const setObj: Record<string, any> = {};
     const appendCredits: any[] = [];
-    const appendLessons: any[] = [];
+    let mergedLessons: Array<{ eventType: string; totalPurchasedMinutes: number }> | null = null;
     const appendPerms: any[] = [];
 
     // credits
@@ -171,16 +171,21 @@ export async function claimPendingPurchases(params: { email: string; userId: str
         }
     }
 
-    // lessons
-    for (const [eventType, addMin] of lessonsToAdd.entries()) {
-        const existing = lessonByType.get(eventType);
-        if (existing) {
-            const k = existing._key;
-            const total = Number(existing.totalPurchasedMinutes || 0) + addMin;
-            setObj[`lessons[_key=="${k}"].totalPurchasedMinutes`] = total;
-        } else {
-            appendLessons.push({ eventType, totalPurchasedMinutes: addMin });
+    // lessons (reconstruit l'array pour éviter les _key manquants ou doublons par eventType)
+    if (lessonsToAdd.size > 0) {
+        const lessonMinutes = new Map<string, number>();
+        for (const l of existingLessons) {
+            if (!l?.eventType) continue;
+            const current = Number(l.totalPurchasedMinutes || 0);
+            lessonMinutes.set(l.eventType, (lessonMinutes.get(l.eventType) || 0) + current);
         }
+        for (const [eventType, addMin] of lessonsToAdd.entries()) {
+            lessonMinutes.set(eventType, (lessonMinutes.get(eventType) || 0) + addMin);
+        }
+        mergedLessons = Array.from(lessonMinutes.entries()).map(([eventType, totalPurchasedMinutes]) => ({
+            eventType,
+            totalPurchasedMinutes,
+        }));
     }
 
     // permissions
@@ -231,7 +236,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
 
         if (Object.keys(setObj).length) patch = patch.set(setObj);
         if (appendCredits.length) patch = patch.append("credits", appendCredits);
-        if (appendLessons.length) patch = patch.append("lessons", appendLessons);
+        if (mergedLessons) patch = patch.set({ lessons: mergedLessons });
         if (appendPerms.length) patch = patch.append("permissions", appendPerms);
 
         return patch;
