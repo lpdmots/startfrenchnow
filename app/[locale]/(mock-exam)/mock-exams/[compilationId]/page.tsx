@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next-intl/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import urlFor from "@/app/lib/urlFor";
 import { requireSessionAndFide } from "@/app/components/auth/requireSession";
 import { getCompilation } from "@/app/serverActions/mockExamActions";
@@ -58,6 +59,13 @@ export default async function MockExamCompilationPage({ params: { compilationId 
 
     return (
         <div className="w-full flex flex-col items-center gap-10 mt-8 md:mt-12 p-4 mb-12 lg:mb-24">
+            <section className="max-w-6xl w-full py-0">
+                <Link href="/fide/dashboard" className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-700 hover:text-neutral-800">
+                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                    Retour au dashboard
+                </Link>
+            </section>
+
             <section className="max-w-6xl w-full flex flex-col gap-6 py-0">
                 <div className="flex flex-col gap-2">
                     <p className="text-sm uppercase tracking-wide text-neutral-500">EXAMEN BLANC</p>
@@ -107,7 +115,7 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                                <Link href={`/exam/${compilation._id}`} className="btn-primary text-center">
+                                <Link href={`/mock-exams/${compilation._id}/runner`} className="btn-primary text-center">
                                     {startLabel}
                                 </Link>
                                 {inProgress && <RestartSessionDialog compilationId={compilation._id} />}

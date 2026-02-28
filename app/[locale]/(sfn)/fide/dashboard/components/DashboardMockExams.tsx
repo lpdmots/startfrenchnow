@@ -82,7 +82,7 @@ export const DashboardMockExams = ({ compilations, remainingCredits, canCreate }
                         return (
                             <Link
                                 key={compilation._id}
-                                href={`/fide/dashboard/exams/${compilation._id}`}
+                                href={`/mock-exams/${compilation._id}`}
                                 className="group card border-2 border-solid border-neutral-700 shadow-on-hover p-0 overflow-hidden no-underline text-neutral-800"
                             >
                                 <div className="relative w-full aspect-[16/10] bg-neutral-200">

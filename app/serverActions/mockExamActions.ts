@@ -315,5 +315,5 @@ export async function restartMockExamCompilation(formData: FormData) {
         await removeSession(compilationId, inProgress._key);
     }
 
-    redirect(`/exam/${compilationId}`);
+    redirect(`/mock-exams/${compilationId}/runner`);
 }

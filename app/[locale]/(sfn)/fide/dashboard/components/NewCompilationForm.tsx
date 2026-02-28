@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createMockExamCompilation } from "@/app/serverActions/mockExamActions";
 import { useToast } from "@/app/hooks/use-toast";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/app/components/ui/dialog";
+import { ModalFromBottomWithPortal } from "@/app/components/animations/ModalFromBottomWithPortal";
 
 export default function NewCompilationForm({ disabled }: { disabled: boolean }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,7 +24,7 @@ export default function NewCompilationForm({ disabled }: { disabled: boolean }) 
             const result = await createMockExamCompilation({ allowTaskReuse });
 
             if (result?.ok && result.compilationId) {
-                router.push(`/exam/${result.compilationId}`);
+                router.push(`/mock-exams/${result.compilationId}`);
                 return;
             }
 
@@ -75,44 +75,26 @@ export default function NewCompilationForm({ disabled }: { disabled: boolean }) 
                 </button>
             </form>
 
-            <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
-                <DialogContent className="max-w-xl">
-                    <DialogHeader>
-                        <DialogTitle>Créer une compilation avec quelques tâches déjà vues ?</DialogTitle>
-                        <DialogDescription>
-                            {confirmMessage}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <button
-                            type="button"
-                            className="btn-secondary"
-                            onClick={() => setShowConfirmModal(false)}
-                            disabled={isSubmitting}
-                        >
-                            Annuler
-                        </button>
-                        <button
-                            type="button"
-                            className="btn-primary min-w-[200px] inline-flex items-center justify-center gap-2"
-                            onClick={async () => {
-                                setShowConfirmModal(false);
-                                await handleCreate(true);
-                            }}
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <span className="h-4 w-4 rounded-full border-2 border-solid border-neutral-600 border-t-neutral-200 animate-spin" aria-hidden="true" />
-                                    <span>Création en cours...</span>
-                                </>
-                            ) : (
-                                "Continuer quand même"
-                            )}
-                        </button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <ModalFromBottomWithPortal
+                open={showConfirmModal}
+                data={{
+                    setOpen: setShowConfirmModal,
+                    title: "Créer une compilation avec quelques tâches déjà vues ?",
+                    message: confirmMessage,
+                    buttonAnnulerStr: "Annuler",
+                    buttonOkStr: isSubmitting ? "Création en cours..." : "Continuer quand même",
+                    clickOutside: !isSubmitting,
+                    className: "max-w-xl",
+                    functionOk: async () => {
+                        if (isSubmitting) return;
+                        await handleCreate(true);
+                    },
+                    functionCancel: () => {
+                        if (isSubmitting) return;
+                        setShowConfirmModal(false);
+                    },
+                }}
+            />
         </>
     );
 }

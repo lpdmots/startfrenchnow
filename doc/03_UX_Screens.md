@@ -43,11 +43,11 @@ Chaque écran doit gérer :
 
 **Comportement**
 
-- Cliquer une compilation → `/dashboard/mock-exams/[compilationId]`
+- Cliquer une compilation → `/mock-exams/[compilationId]`
 
 ---
 
-## 2) Détail compilation — `/dashboard/mock-exams/[compilationId]`
+## 2) Détail compilation — `/mock-exams/[compilationId]`
 
 **But** : lancer/relancer l’examen compilé.
 
@@ -58,11 +58,11 @@ Chaque écran doit gérer :
 
 **Comportement**
 
-- `Démarrer/Relancer` → route `/exam/[compilationId]` (Exam Runner)
+- `Démarrer/Relancer` → route `/mock-exams/[compilationId]/runner` (Exam Runner)
 
 ---
 
-## 3) Exam Runner — `/exam/[compilationId]` (page unique)
+## 3) Exam Runner — `/mock-exams/[compilationId]/runner` (page unique)
 
 ### 3.1 Écran : EXAM_INTRO
 

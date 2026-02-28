@@ -1,7 +1,7 @@
 # UI Preferences — Mock Exam (MVP)
 
 Ce document fixe des **préférences UI/UX** (composants + transitions + layouts) adaptées à :
-- page unique “Exam Runner” (`/exam/[compilationId]`)
+- page unique “Exam Runner” (`/mock-exams/[compilationId]/runner`)
 - parcours strict (pas de retour arrière entre épreuves)
 - speaking avec record → STT → édition transcript → validation
 - read/write avec parfois plusieurs sous-tâches
