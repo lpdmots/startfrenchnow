@@ -167,6 +167,34 @@ export const MOCK_EXAM_TASKS_BY_TYPE_QUERY = groq`
     }
 `;
 
+export const MOCK_EXAM_TASKS_BY_IDS_QUERY = groq`
+  *[_type == "mockExamTask" && _id in $taskIds]{
+    _id,
+    taskType,
+    introBlocks[]{
+      text,
+      videoUrl,
+      image,
+      layout
+    },
+    aiTaskContext,
+    activities[]{
+      _key,
+      image,
+      audioUrl,
+      promptText,
+      aiContext,
+      maxPoints
+    },
+    correctionBlocks[]{
+      text,
+      videoUrl,
+      image,
+      layout
+    }
+  }
+`;
+
 export const MOCK_EXAM_LISTENING_PACKS_BY_LEVEL_QUERY = groq`
   *[_type == "fideExam" && competence == "Comprendre" && $level in levels]
     | order(order asc, _createdAt desc) {

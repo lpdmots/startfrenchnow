@@ -4,6 +4,7 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import {
     MOCK_EXAM_COMPILATION_QUERY,
     MOCK_EXAM_LISTENING_PACKS_BY_LEVEL_QUERY,
+    MOCK_EXAM_TASKS_BY_IDS_QUERY,
     MOCK_EXAM_TASKS_BY_TYPE_QUERY,
     MOCK_EXAM_USER_COMPILATIONS_QUERY,
     USER_MOCK_EXAM_CREDITS_QUERY,
@@ -24,6 +25,7 @@ import type {
     WrittenCombo,
     TaskType,
 } from "@/app/types/fide/mock-exam";
+import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 
 export type MockExamSessionLite = {
     _key: string;
@@ -186,6 +188,15 @@ export async function getCompilation(compilationId: string) {
     return data || null;
 }
 
+export async function getMockExamTasksByIds(taskIds: string[]) {
+    if (!taskIds?.length) return [] as RunnerTask[];
+
+    const data = await client.fetch<RunnerTask[]>(MOCK_EXAM_TASKS_BY_IDS_QUERY, { taskIds });
+    const tasksById = new Map((data || []).map((task) => [task._id, task]));
+
+    return taskIds.map((id) => tasksById.get(id)).filter((task): task is RunnerTask => Boolean(task));
+}
+
 export async function getUserMockExamCredits(userId: string) {
     if (!userId) return null;
     const credit = await client.fetch<UserMockExamCredit>(USER_MOCK_EXAM_CREDITS_QUERY, { userId });
@@ -316,4 +327,39 @@ export async function restartMockExamCompilation(formData: FormData) {
     }
 
     redirect(`/mock-exams/${compilationId}/runner`);
+}
+
+export async function advanceMockExamResume(params: {
+    compilationId: string;
+    sessionKey: string;
+    nextState: string;
+    taskId?: string;
+    activityKey?: string;
+}) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = session?.user?._id;
+    if (!userId || !params.compilationId || !params.sessionKey || !params.nextState) {
+        return { ok: false as const, error: "Paramètres invalides." };
+    }
+
+    const compilation = await getCompilation(params.compilationId);
+    if (!compilation || compilation.userId !== userId) {
+        return { ok: false as const, error: "Compilation introuvable." };
+    }
+
+    const activeSession = (compilation.session || []).find((entry) => entry._key === params.sessionKey);
+    if (!activeSession) {
+        return { ok: false as const, error: "Session introuvable." };
+    }
+
+    const resume = {
+        state: params.nextState,
+        taskId: params.taskId,
+        activityKey: params.activityKey,
+        updatedAt: new Date().toISOString(),
+    };
+
+    await patchSession(params.compilationId, params.sessionKey, { set: { resume } });
+
+    return { ok: true as const, resume };
 }

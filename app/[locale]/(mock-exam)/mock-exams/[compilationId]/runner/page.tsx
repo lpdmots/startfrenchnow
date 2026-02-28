@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { requireSessionAndFide } from "@/app/components/auth/requireSession";
-import { appendSession, getCompilation, patchSession } from "@/app/serverActions/mockExamActions";
+import { appendSession, getCompilation, getMockExamTasksByIds, patchSession } from "@/app/serverActions/mockExamActions";
 import type { MockExamSession, ResumePointer } from "@/app/types/fide/mock-exam";
 import type { MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
+import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import RunnerClient from "./RunnerClient";
 
 export const dynamic = "force-dynamic";
@@ -53,6 +54,9 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
         notFound();
     }
 
+    const speakA2TaskIds = (compilation.examConfig.speakA2TaskIds || []).map((ref) => ref?._ref).filter(Boolean) as string[];
+    const speakA2Tasks: RunnerTask[] = await getMockExamTasksByIds(speakA2TaskIds);
+
     let resume: ResumePointer = {
         state: inProgressSession.resume?.state || "EXAM_INTRO",
         taskId: inProgressSession.resume?.taskId,
@@ -73,5 +77,5 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
         writtenCombo: compilation.writtenCombo,
     };
 
-    return <RunnerClient hydrationData={hydrationData} />;
+    return <RunnerClient hydrationData={hydrationData} speakA2Tasks={speakA2Tasks} />;
 }
