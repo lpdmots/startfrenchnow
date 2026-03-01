@@ -226,10 +226,7 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
                                 <button
                                     onClick={() => togglePlay()}
                                     aria-label={playing ? "Pause" : "Lecture"}
-                                    disabled={ended || isNextButtonForced}
-                                    className={`bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid ${
-                                        ended || isNextButtonForced ? "opacity-50 cursor-not-allowed" : ""
-                                    }`}
+                                    className="bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid"
                                 >
                                     {playing ? <FaPause size={32} className="text-neutral-800" /> : <FaPlay size={32} className="text-neutral-800" />}
                                 </button>
@@ -599,7 +596,7 @@ const ResponseRecorder = ({
     );
 };
 
-const RecordingIndicator = () => (
+export const RecordingIndicator = () => (
     <div className="flex items-center gap-2 text-secondary-4 font-semibold animate-pulse">
         <span className="w-3 h-3 bg-secondary-4 rounded-full animate-ping mr-2" />
         <span className="text-sm">Enregistrement en cours...</span>

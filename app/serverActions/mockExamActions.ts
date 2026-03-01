@@ -32,6 +32,7 @@ export type MockExamSessionLite = {
     status: SessionStatus;
     startedAt: string;
     resume?: { state: string; taskId?: string; activityKey?: string; updatedAt?: string };
+    speakA2Answers?: SpeakingAnswer[];
     scores?: {
         speakA2?: ScoreSummary;
         speakBranch?: ScoreSummary;
@@ -256,6 +257,62 @@ export async function appendSessionAnswer(
         .commit({ autoGenerateArrayKeys: true });
 }
 
+export async function saveMockExamSpeakingAnswer(params: {
+    compilationId: string;
+    sessionKey: string;
+    taskId: string;
+    activityKey: string;
+    audioUrl: string;
+    transcriptFinal: string;
+}) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = session?.user?._id;
+    const { compilationId, sessionKey, taskId, activityKey, audioUrl } = params;
+    const transcriptFinal = String(params.transcriptFinal || "").trim();
+
+    if (!userId || !compilationId || !sessionKey || !taskId || !activityKey || !audioUrl) {
+        return { ok: false as const, error: "Paramètres invalides." };
+    }
+
+    if (!transcriptFinal) {
+        return { ok: false as const, error: "Le transcript est vide." };
+    }
+
+    const compilation = await getCompilation(compilationId);
+    if (!compilation || compilation.userId !== userId) {
+        return { ok: false as const, error: "Compilation introuvable." };
+    }
+
+    const activeSession = (compilation.session || []).find((entry) => entry._key === sessionKey);
+    if (!activeSession) {
+        return { ok: false as const, error: "Session introuvable." };
+    }
+
+    const answer: SpeakingAnswer = {
+        taskId,
+        activityKey,
+        audioUrl,
+        transcriptFinal,
+    };
+
+    const currentAnswers = Array.isArray(activeSession.speakA2Answers) ? activeSession.speakA2Answers : [];
+    const existingIndex = currentAnswers.findIndex((item) => item.taskId === taskId && item.activityKey === activityKey);
+    const nextAnswers = [...currentAnswers];
+
+    if (existingIndex >= 0) {
+        nextAnswers[existingIndex] = {
+            ...currentAnswers[existingIndex],
+            ...answer,
+        };
+    } else {
+        nextAnswers.push(answer);
+    }
+
+    await patchSession(compilationId, sessionKey, { set: { speakA2Answers: nextAnswers } });
+
+    return { ok: true as const, answer };
+}
+
 async function consumeMockExamCredit(userId: string) {
     const credit = await getUserMockExamCredits(userId);
     const remaining = Number(credit?.remainingCredits || 0);
@@ -321,9 +378,9 @@ export async function restartMockExamCompilation(formData: FormData) {
     const compilation = await getCompilation(compilationId);
     if (!compilation || compilation.userId !== userId) return null;
 
-    const inProgress = (compilation.session || []).find((s) => s.status === "in_progress");
-    if (inProgress?._key) {
-        await removeSession(compilationId, inProgress._key);
+    const inProgressSessions = (compilation.session || []).filter((s) => s.status === "in_progress" && Boolean(s._key));
+    for (const activeSession of inProgressSessions) {
+        await removeSession(compilationId, activeSession._key);
     }
 
     redirect(`/mock-exams/${compilationId}/runner`);

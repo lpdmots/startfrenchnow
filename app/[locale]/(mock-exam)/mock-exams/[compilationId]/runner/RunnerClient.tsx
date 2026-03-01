@@ -6,31 +6,20 @@ import { ModalFromBottomWithPortal } from "@/app/components/animations/ModalFrom
 import { useToast } from "@/app/hooks/use-toast";
 import { useMockExamRunnerStore, type MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
 import { advanceMockExamResume } from "@/app/serverActions/mockExamActions";
+import type { SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import RunnerScreenRouter from "./RunnerScreenRouter";
-import Link from "next-intl/link";
+import { getSpeakingTaskHeader } from "./runnerTaskHeader";
 import { FaArrowLeft } from "react-icons/fa";
 
 type RunnerClientProps = {
     hydrationData: MockExamRunnerHydration;
     speakA2Tasks: RunnerTask[];
+    initialSpeakA2Answers: SpeakingAnswer[];
 };
 
 const RUNNER_PHASES = ["Parler", "Comprendre", "Lire/Écrire"] as const;
 const INTRO_KEY_PREFIX = "intro:";
-const TASK_TITLE_BY_TYPE: Record<string, string> = {
-    IMAGE_DESCRIPTION_A2: "Décrire une image - A2",
-    PHONE_CONVERSATION_A2: "Conversation",
-    DISCUSSION_A2: "Discussion A2",
-    IMAGE_DESCRIPTION_A1_T1: "Décrire une image (1)",
-    IMAGE_DESCRIPTION_A1_T2: "Décrire une image (2)",
-    DISCUSSION_B1: "Discussion B1",
-    READ_WRITE_M1: "Lire/Écrire - A1",
-    READ_WRITE_M2: "Lire/Écrire - A1+",
-    READ_WRITE_M3_M4: "Lire/Écrire - A2",
-    READ_WRITE_M5: "Lire/Écrire - A2+",
-    READ_WRITE_M6: "Lire/Écrire - B1",
-};
 
 const getRunnerPhaseIndex = (state?: string) => {
     if (!state) return 0;
@@ -39,7 +28,7 @@ const getRunnerPhaseIndex = (state?: string) => {
     return 0;
 };
 
-const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerTask[], taskId?: string, activityKey?: string) => {
+const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerTask[], taskId?: string) => {
     if (!state) {
         return { title: "Exam Runner", subtitle: "-" };
     }
@@ -66,25 +55,14 @@ const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerT
         return { title: "Parler A2", subtitle: "-" };
     }
 
-    const isIntro = Boolean(activityKey && activityKey.startsWith(INTRO_KEY_PREFIX));
-
-    if (isIntro) {
-        return {
-            title: TASK_TITLE_BY_TYPE[task.taskType] || "Tâche orale",
-            subtitle: `Tâche ${taskIndex + 1}/${totalTasks}`,
-        };
-    }
-
-    return {
-        title: TASK_TITLE_BY_TYPE[task.taskType] || "Tâche orale",
-        subtitle: `Tâche ${taskIndex + 1}/${totalTasks}`,
-    };
+    return getSpeakingTaskHeader(task, taskIndex, totalTasks);
 };
 
-export default function RunnerClient({ hydrationData, speakA2Tasks }: RunnerClientProps) {
+export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeakA2Answers }: RunnerClientProps) {
     const [showQuitModal, setShowQuitModal] = useState(false);
     const [isLeaving, setIsLeaving] = useState(false);
     const [isAdvancing, setIsAdvancing] = useState(false);
+    const [speakA2Answers, setSpeakA2Answers] = useState<SpeakingAnswer[]>(initialSpeakA2Answers || []);
     const router = useRouter();
     const { toast } = useToast();
     const hydrate = useMockExamRunnerStore((state) => state.hydrate);
@@ -92,7 +70,8 @@ export default function RunnerClient({ hydrationData, speakA2Tasks }: RunnerClie
     const setResume = useMockExamRunnerStore((state) => state.setResume);
     const hasHydratedRef = useRef(false);
     const currentPhaseIndex = getRunnerPhaseIndex(resume?.state);
-    const headerDetails = getRunnerHeaderDetails(resume?.state, speakA2Tasks, resume?.taskId, resume?.activityKey);
+    const headerDetails = getRunnerHeaderDetails(resume?.state, speakA2Tasks, resume?.taskId);
+    const isIntroBlockLayout = resume?.state === "SPEAK_A2_RUN" && Boolean(resume?.activityKey?.startsWith(INTRO_KEY_PREFIX));
 
     useEffect(() => {
         if (hasHydratedRef.current) return;
@@ -159,10 +138,27 @@ export default function RunnerClient({ hydrationData, speakA2Tasks }: RunnerClie
         }
     };
 
+    const handleAnswerSaved = (answer: SpeakingAnswer) => {
+        setSpeakA2Answers((previous) => {
+            const next = [...previous];
+            const existingIndex = next.findIndex((item) => item.taskId === answer.taskId && item.activityKey === answer.activityKey);
+            if (existingIndex >= 0) {
+                next[existingIndex] = answer;
+            } else {
+                next.push(answer);
+            }
+            return next;
+        });
+    };
+
     return (
         <>
-            <div className="w-full h-[100dvh] flex flex-col items-center gap-6 p-4 md:p-6">
-                <section className="w-full max-w-[1600px] grid grid-cols-1 lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)_auto] items-center gap-2 md:gap-4 py-0">
+            <div className="w-full min-h-[100dvh] flex flex-col items-center gap-6 p-4 md:h-[100dvh] md:p-6">
+                <section
+                    className={`w-full max-w-[1600px] grid grid-cols-1 items-center gap-2 md:gap-4 py-0 ${
+                        isIntroBlockLayout ? "lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)]" : "lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)_auto]"
+                    }`}
+                >
                     <div className="flex w-full lg:max-w-[800px] justify-between flex-wrap gap-2 sm:gap-4">
                         <button
                             type="button"
@@ -198,14 +194,27 @@ export default function RunnerClient({ hydrationData, speakA2Tasks }: RunnerClie
                             </div>
                         </div>
                     </div>
-                    <div className="min-w-0 w-full flex lg:flex-col justify-between items-end lg:justify-end shrink-0">
-                        <p className="mb-0 text-sm font-semibold uppercase tracking-wide text-neutral-700 truncate">{headerDetails.title}</p>
-                        <p className="mb-0 text-xs text-neutral-600 truncate">{headerDetails.subtitle}</p>
-                    </div>
+                    {!isIntroBlockLayout && (
+                        <div className="min-w-0 w-full flex lg:flex-col justify-between items-end lg:justify-end shrink-0">
+                            <p className="mb-0 text-lg font-semibold uppercase tracking-wide text-neutral-700 truncate">{headerDetails.title}</p>
+                            <p className="mb-0 text-sm text-neutral-600 truncate">{headerDetails.subtitle}</p>
+                        </div>
+                    )}
                 </section>
 
-                <section className="w-full max-w-[1600px] flex-1 min-h-0 py-0">
-                    {resume && <RunnerScreenRouter resume={resume} speakA2Tasks={speakA2Tasks} isAdvancing={isAdvancing} onAdvance={handleAdvance} />}
+                <section className="w-full max-w-[1600px] py-0 md:flex-1 md:min-h-0 flex justify-center">
+                    {resume && (
+                        <RunnerScreenRouter
+                            compilationId={hydrationData.compilationId}
+                            sessionKey={hydrationData.sessionKey}
+                            resume={resume}
+                            speakA2Tasks={speakA2Tasks}
+                            speakA2Answers={speakA2Answers}
+                            isAdvancing={isAdvancing}
+                            onAdvance={handleAdvance}
+                            onSpeakA2AnswerSaved={handleAnswerSaved}
+                        />
+                    )}
                 </section>
             </div>
 

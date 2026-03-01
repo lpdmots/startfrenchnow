@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
+import { AnimatePresence, motion } from "framer-motion";
 import urlFor from "@/app/lib/urlFor";
-import type { ResumePointer } from "@/app/types/fide/mock-exam";
+import type { ResumePointer, SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { RunnerTask, RunnerTaskMediaBlock } from "@/app/types/fide/mock-exam-runner";
+import SpeakingResponsePanel from "./SpeakingResponsePanel";
+import { getSpeakingTaskHeader } from "./runnerTaskHeader";
 
 type AdvancePayload = {
     nextState: string;
@@ -13,10 +16,14 @@ type AdvancePayload = {
 };
 
 type RunnerScreenRouterProps = {
+    compilationId: string;
+    sessionKey: string;
     resume: ResumePointer;
     speakA2Tasks: RunnerTask[];
+    speakA2Answers: SpeakingAnswer[];
     isAdvancing: boolean;
     onAdvance: (payload: AdvancePayload) => Promise<void>;
+    onSpeakA2AnswerSaved: (answer: SpeakingAnswer) => void;
 };
 
 type RunnerPointer = {
@@ -30,6 +37,7 @@ type RunnerPointer = {
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 const INTRO_KEY_PREFIX = "intro:";
+const TRANSITION = { duration: 0.28, ease: "easeOut" as const };
 
 const hasAnyMediaInBlock = (block?: RunnerTaskMediaBlock) => Boolean(block?.text || block?.videoUrl || block?.image);
 
@@ -180,33 +188,49 @@ function IntroBlockStage({ block }: { block: RunnerTaskMediaBlock }) {
     const videoUrl = withCloudFrontPrefix(block.videoUrl);
 
     const hasText = Boolean(block.text);
-    const hasVisual = Boolean(videoUrl || imageUrl);
+    const hasVideo = Boolean(videoUrl);
+    const hasImage = Boolean(imageUrl);
+    const hasVisual = hasVideo || hasImage;
     const useHorizontal = block.layout === "horizontal" && hasText && hasVisual;
+    const hasMixedVisuals = hasVideo && hasImage;
 
     return (
-        <article className="rounded-xl border border-neutral-300 bg-neutral-100 p-4 md:p-5 h-full overflow-auto">
-            <div className={useHorizontal ? "grid gap-4 lg:grid-cols-2 items-start" : "flex flex-col gap-4"}>
-                <div className="flex flex-col gap-3 order-2 lg:order-1">
-                    {hasText ? (
-                        <div className="text-sm text-neutral-800 leading-relaxed">
-                            <PortableText value={block.text as any} />
+        <article className="h-full w-full overflow-hidden">
+            <div className="relative h-full w-full">
+                <div className="pointer-events-none absolute -top-24 left-1/3 h-56 w-56 rounded-full bg-secondary-2/15 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-20 right-8 h-44 w-44 rounded-full bg-secondary-5/20 blur-3xl" />
+
+                <div
+                    className={`relative mx-auto grid h-full w-full max-w-[1240px] gap-6 px-2 sm:px-4 ${useHorizontal ? "items-center lg:grid-cols-12 lg:gap-8" : "items-center justify-items-center"}`}
+                >
+                    {hasText && (
+                        <div className={useHorizontal ? "order-2 w-full lg:order-1 lg:col-span-5 lg:justify-self-start" : "order-2 w-full max-w-[72ch] text-center"}>
+                            <div className={`text-neutral-800 leading-relaxed ${useHorizontal ? "text-[1.03rem]" : "text-[1.05rem] sm:text-[1.1rem]"}`}>
+                                <PortableText value={block.text as any} />
+                            </div>
                         </div>
-                    ) : (
-                        <p className="mb-0 text-sm text-neutral-600">Aucun texte pour ce bloc.</p>
-                    )}
-                </div>
-
-                <div className="flex flex-col gap-3 order-1 lg:order-2">
-                    {videoUrl && (
-                        <video controls preload="metadata" className="w-full rounded-lg border border-neutral-300 bg-neutral-200">
-                            <source src={videoUrl} />
-                            Votre navigateur ne supporte pas la vidéo HTML5.
-                        </video>
                     )}
 
-                    {imageUrl && (
-                        <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-neutral-300 bg-neutral-200">
-                            <Image src={imageUrl} alt="Illustration du bloc" fill className="object-cover" />
+                    {hasVisual && (
+                        <div className={useHorizontal ? "order-1 w-full lg:order-2 lg:col-span-7 lg:justify-self-end lg:max-w-[760px]" : "order-1 w-full max-w-[980px]"}>
+                            <div className={`grid items-start gap-4 ${hasMixedVisuals ? "grid-cols-1 md:grid-cols-10" : "grid-cols-1"}`}>
+                                {hasVideo && (
+                                    <div className={hasMixedVisuals ? "md:col-span-7" : "mx-auto w-full max-w-[900px]"}>
+                                        <video controls preload="metadata" className="mx-auto block w-full h-auto rounded-2xl border-2 border-solid border-neutral-700">
+                                            <source src={videoUrl} />
+                                            Votre navigateur ne supporte pas la vidéo HTML5.
+                                        </video>
+                                    </div>
+                                )}
+
+                                {hasImage && (
+                                    <div className={hasMixedVisuals ? "md:col-span-3 md:self-end" : "mx-auto w-full max-w-[760px]"}>
+                                        <div className="relative mx-auto h-[min(34dvh,310px)] w-full overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+                                            <Image src={imageUrl as string} alt="Illustration du bloc" fill className="object-cover" />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
@@ -215,61 +239,43 @@ function IntroBlockStage({ block }: { block: RunnerTaskMediaBlock }) {
     );
 }
 
-function ActivityStimulusStage({ task, activityIndex }: { task: RunnerTask; activityIndex: number }) {
+function ActivityImageStage({ task, activityIndex }: { task: RunnerTask; activityIndex: number }) {
     const activity = task.activities[activityIndex];
     if (!activity) {
         return (
-            <article className="rounded-xl border border-neutral-300 bg-neutral-100 p-4 md:p-5 h-full">
+            <article className="h-full w-full px-2 py-3 md:px-4 md:py-5">
                 <p className="mb-0 text-sm text-neutral-700">Activité introuvable.</p>
             </article>
         );
     }
 
-    const imageUrl = activity.image ? urlFor(activity.image).width(1600).height(1000).fit("crop").url() : null;
-    const audioUrl = withCloudFrontPrefix(activity.audioUrl);
-    const hasPrompt = Boolean(activity.promptText);
+    const imageUrl = activity.image ? urlFor(activity.image).width(1800).fit("max").url() : null;
     const hasImage = Boolean(imageUrl);
-    const hasAudio = Boolean(audioUrl);
-    const useSplitLayout = hasImage && (hasPrompt || hasAudio);
 
     return (
-        <article className="rounded-xl border border-neutral-300 bg-neutral-100 p-4 md:p-5 h-full overflow-auto">
-            <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between gap-3">
-                    <h3 className="mb-0 text-lg font-semibold text-neutral-800">Stimulus activité</h3>
-                    <span className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{task.taskType}</span>
-                </div>
-
-                <div className={useSplitLayout ? "grid gap-4 lg:grid-cols-2 items-start" : "flex flex-col gap-4"}>
-                    {hasImage && (
-                        <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-neutral-300 bg-neutral-200">
-                            <Image src={imageUrl as string} alt="Image de l'activité" fill className="object-cover" />
-                        </div>
-                    )}
-
-                    <div className="flex flex-col gap-4">
-                        {hasAudio && (
-                            <audio controls preload="metadata" className="w-full">
-                                <source src={audioUrl} />
-                                Votre navigateur ne supporte pas l'audio HTML5.
-                            </audio>
-                        )}
-
-                        {hasPrompt ? (
-                            <div className="text-sm text-neutral-800 leading-relaxed">
-                                <PortableText value={activity.promptText as any} />
-                            </div>
-                        ) : (
-                            <p className="mb-0 text-sm text-neutral-600">Aucun prompt texte pour cette activité.</p>
-                        )}
+        <article className="h-full w-full overflow-hidden px-2 py-2 md:px-4 md:py-5">
+            <div className="flex h-full w-full items-center justify-center rounded-[1.4rem] bg-neutral-200/70 px-2">
+                {hasImage ? (
+                    <div className="flex h-full min-h-[240px] w-full max-w-[600px] items-start justify-center overflow-hidden rounded-[1.2rem] bg-neutral-300/30">
+                        <Image
+                            src={imageUrl as string}
+                            alt="Image de l'activité"
+                            width={1800}
+                            height={1200}
+                            className="h-auto max-h-full w-auto max-w-full object-contain rounded-2xl border-2 border-solid border-neutral-700"
+                        />
                     </div>
-                </div>
+                ) : (
+                    <div className="flex h-full min-h-[240px] w-full items-center justify-center rounded-[1.2rem] bg-neutral-300/70 px-6 text-center text-neutral-700">
+                        Aucun visuel pour cette activité.
+                    </div>
+                )}
             </div>
         </article>
     );
 }
 
-export default function RunnerScreenRouter({ resume, speakA2Tasks, isAdvancing, onAdvance }: RunnerScreenRouterProps) {
+export default function RunnerScreenRouter({ compilationId, sessionKey, resume, speakA2Tasks, speakA2Answers, isAdvancing, onAdvance, onSpeakA2AnswerSaved }: RunnerScreenRouterProps) {
     const firstPointer = resolveFirstTaskPointer(speakA2Tasks);
 
     if (resume.state === "EXAM_INTRO") {
@@ -325,6 +331,8 @@ export default function RunnerScreenRouter({ resume, speakA2Tasks, isAdvancing, 
         const currentTask = speakA2Tasks[currentPointer.taskIndex];
         const introBlocks = getRenderableIntroBlocks(currentTask);
         const nextPointer = resolveNextPointer(speakA2Tasks, currentPointer);
+        const currentTaskHeader = getSpeakingTaskHeader(currentTask, currentPointer.taskIndex, speakA2Tasks.length);
+        const introTaskTitle = `${currentTaskHeader.title} - ${currentTaskHeader.subtitle}`;
 
         const continueLabel = !nextPointer
             ? "Terminer la section A2"
@@ -334,47 +342,117 @@ export default function RunnerScreenRouter({ resume, speakA2Tasks, isAdvancing, 
                 ? "Commencer l'activité"
                 : "Activité suivante (placeholder)";
 
-        return (
-            <section className="w-full h-full grid grid-cols-1 lg:grid-cols-12 gap-4 py-0 min-h-0">
-                <div className="lg:col-span-7 min-h-0 flex flex-col overflow-hidden">
-                    <div className="card border-2 border-solid border-neutral-700 p-5 flex-1 min-h-0 overflow-hidden">
-                        {currentPointer.mode === "intro" ? (
-                            <IntroBlockStage block={introBlocks[currentPointer.introIndex || 0]} />
-                        ) : (
-                            <ActivityStimulusStage task={currentTask} activityIndex={currentPointer.activityIndex || 0} />
-                        )}
+        if (currentPointer.mode === "intro") {
+            return (
+                <section className="w-full h-full flex flex-col gap-4 py-0 pb-24 md:pb-0 min-h-0">
+                    <div className="shrink-0 px-2 md:px-4">
+                        <h1 className="display-2 font-medium mb-0 text-center leading-tight">{introTaskTitle}</h1>
                     </div>
+
+                    <div className="flex-1 min-h-0 overflow-hidden">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={`intro-${currentPointer.activityKey}`}
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -12 }}
+                                transition={TRANSITION}
+                                className="h-full w-full"
+                            >
+                                <IntroBlockStage block={introBlocks[currentPointer.introIndex || 0]} />
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    <div className="hidden justify-end md:flex">
+                        <button
+                            type="button"
+                            className="btn btn-primary small min-w-[240px]"
+                            onClick={() =>
+                                nextPointer
+                                    ? onAdvance({
+                                          nextState: "SPEAK_A2_RUN",
+                                          taskId: nextPointer.taskId,
+                                          activityKey: nextPointer.activityKey,
+                                      })
+                                    : onAdvance({ nextState: "SPEAK_A2_RESULT" })
+                            }
+                            disabled={isAdvancing}
+                        >
+                            {isAdvancing ? "Mise à jour..." : continueLabel}
+                        </button>
+                    </div>
+
+                    <div
+                        className="fixed bottom-0 left-0 right-0 z-40 p-3 md:hidden bg-neutral-200"
+                        style={{
+                            borderTop: "1px solid var(--neutral-300)",
+                            boxShadow: "0 -6px 16px rgba(15, 23, 42, 0.14)",
+                        }}
+                    >
+                        <button
+                            type="button"
+                            className="btn btn-primary small w-full"
+                            onClick={() =>
+                                nextPointer
+                                    ? onAdvance({
+                                          nextState: "SPEAK_A2_RUN",
+                                          taskId: nextPointer.taskId,
+                                          activityKey: nextPointer.activityKey,
+                                      })
+                                    : onAdvance({ nextState: "SPEAK_A2_RESULT" })
+                            }
+                            disabled={isAdvancing}
+                        >
+                            {isAdvancing ? "Mise à jour..." : continueLabel}
+                        </button>
+                    </div>
+                </section>
+            );
+        }
+
+        const currentAnswer =
+            currentPointer.mode === "activity" ? speakA2Answers.find((answer) => answer.taskId === currentPointer.taskId && answer.activityKey === currentPointer.activityKey) : undefined;
+
+        return (
+            <section className="grid w-full max-w-6xl grid-cols-1 gap-2 py-0 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.7fr)] lg:grid-rows-1 lg:gap-6">
+                <div className="min-h-0">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={`activity-${currentPointer.activityKey}`}
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -12 }}
+                            transition={TRANSITION}
+                            className="h-full"
+                        >
+                            <ActivityImageStage task={currentTask} activityIndex={currentPointer.activityIndex || 0} />
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
 
-                <div className="lg:col-span-5 min-h-0">
-                    <article className="card border-2 border-solid border-neutral-700 p-5 h-full flex flex-col justify-between gap-4">
-                        <div className="flex flex-col gap-3">
-                            <p className="mb-0 text-sm uppercase tracking-wide text-neutral-500">Réponse</p>
-                            <h3 className="mb-0 text-2xl font-semibold text-neutral-800">Bloc enregistrement à venir</h3>
-                            <p className="mb-0 text-neutral-700">
-                                Placeholder uniquement pour l'instant. Le module d'enregistrement, de correction et de validation sera branché à l'étape suivante.
-                            </p>
-                        </div>
-
-                        <div className="flex justify-end">
-                            <button
-                                type="button"
-                                className="btn btn-primary small min-w-[240px]"
-                                onClick={() =>
-                                    nextPointer
-                                        ? onAdvance({
-                                              nextState: "SPEAK_A2_RUN",
-                                              taskId: nextPointer.taskId,
-                                              activityKey: nextPointer.activityKey,
-                                          })
-                                        : onAdvance({ nextState: "SPEAK_A2_RESULT" })
-                                }
-                                disabled={isAdvancing}
-                            >
-                                {isAdvancing ? "Mise à jour..." : continueLabel}
-                            </button>
-                        </div>
-                    </article>
+                <div className="min-h-0">
+                    <SpeakingResponsePanel
+                        key={`${currentPointer.taskId}-${currentPointer.activityKey}`}
+                        compilationId={compilationId}
+                        sessionKey={sessionKey}
+                        taskId={currentPointer.taskId}
+                        activityKey={currentPointer.activityKey}
+                        questionAudioUrl={currentTask.activities[currentPointer.activityIndex || 0]?.audioUrl}
+                        promptText={currentTask.activities[currentPointer.activityIndex || 0]?.promptText}
+                        existingAnswer={currentAnswer}
+                        isAdvancing={isAdvancing}
+                        onAnswerSaved={onSpeakA2AnswerSaved}
+                        onValidated={() =>
+                            nextPointer
+                                ? onAdvance({
+                                      nextState: "SPEAK_A2_RUN",
+                                      taskId: nextPointer.taskId,
+                                      activityKey: nextPointer.activityKey,
+                                  })
+                                : onAdvance({ nextState: "SPEAK_A2_RESULT" })
+                        }
+                    />
                 </div>
             </section>
         );
@@ -390,12 +468,7 @@ export default function RunnerScreenRouter({ resume, speakA2Tasks, isAdvancing, 
                 </div>
 
                 <div className="flex justify-end">
-                    <button
-                        type="button"
-                        className="btn btn-primary small min-w-[220px]"
-                        onClick={() => onAdvance({ nextState: "SPEAK_BRANCH_INTRO" })}
-                        disabled={isAdvancing}
-                    >
+                    <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: "SPEAK_BRANCH_INTRO" })} disabled={isAdvancing}>
                         {isAdvancing ? "Mise à jour..." : "Aller à la section suivante"}
                     </button>
                 </div>

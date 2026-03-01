@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { requireSessionAndFide } from "@/app/components/auth/requireSession";
 import { appendSession, getCompilation, getMockExamTasksByIds, patchSession } from "@/app/serverActions/mockExamActions";
-import type { MockExamSession, ResumePointer } from "@/app/types/fide/mock-exam";
+import type { MockExamSession, ResumePointer, SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import RunnerClient from "./RunnerClient";
@@ -77,5 +77,7 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
         writtenCombo: compilation.writtenCombo,
     };
 
-    return <RunnerClient hydrationData={hydrationData} speakA2Tasks={speakA2Tasks} />;
+    const initialSpeakA2Answers = (inProgressSession.speakA2Answers || []) as SpeakingAnswer[];
+
+    return <RunnerClient hydrationData={hydrationData} speakA2Tasks={speakA2Tasks} initialSpeakA2Answers={initialSpeakA2Answers} />;
 }

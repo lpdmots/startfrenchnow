@@ -121,6 +121,14 @@ const MOCK_EXAM_SESSION_FIELDS = `
     status,
     startedAt,
     resume{ state, taskId, activityKey, updatedAt },
+    speakA2Answers[]{
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
     scores{
       speakA2{ score, max },
       speakBranch{ score, max },
