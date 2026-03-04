@@ -1,4 +1,4 @@
-import type { PortableText, TaskType } from "./mock-exam";
+import type { AIVoiceGender, PortableText, TaskType } from "./mock-exam";
 import type { Image } from "../sfn/blog";
 
 export type RunnerTaskMediaBlock = {
@@ -14,6 +14,7 @@ export type RunnerActivity = {
     audioUrl?: string;
     promptText?: PortableText;
     aiContext?: string;
+    aiVoiceGender?: AIVoiceGender;
     maxPoints: number;
 };
 
@@ -25,4 +26,3 @@ export type RunnerTask = {
     activities: RunnerActivity[];
     correctionBlocks: RunnerTaskMediaBlock[];
 };
-

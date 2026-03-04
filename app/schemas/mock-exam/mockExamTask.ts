@@ -59,6 +59,20 @@ const activityFields = [
         type: "string",
     }),
     defineField({
+        name: "aiVoiceGender",
+        title: "Voix IA",
+        type: "string",
+        options: {
+            list: [
+                { title: "Homme", value: "male" },
+                { title: "Femme", value: "female" },
+            ],
+            layout: "radio",
+            direction: "horizontal",
+        },
+        initialValue: "male",
+    }),
+    defineField({
         name: "maxPoints",
         title: "Points max",
         type: "number",

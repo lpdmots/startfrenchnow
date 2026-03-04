@@ -19,7 +19,6 @@ import { client } from "@/app/lib/sanity.client";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
 import { groq } from "next-sanity";
-import ButtonsDock from "./components/ButtonsDock";
 
 async function ExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);
@@ -82,13 +81,7 @@ async function ExamsPage({ params: { locale } }: { params: { locale: Locale } })
                     <HowClassLook />
                 </div>
             </div>
-            <PricingPlans
-                hasPack={hasPack}
-                hasReservation={hasReservation}
-                locale={locale}
-                pricingAutonomie={pricingAutonomie}
-                pricingAccompagne={pricingAccompagne}
-            />
+            <PricingPlans hasPack={hasPack} hasReservation={hasReservation} locale={locale} pricingAutonomie={pricingAutonomie} pricingAccompagne={pricingAccompagne} />
             <div id="ContactForFIDECourses" className="py-24 px-4 lg:px-8 bg-neutral-800">
                 <div className="max-w-7xl m-auto">
                     <ContactForFideCourses />

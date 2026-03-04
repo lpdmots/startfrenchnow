@@ -77,7 +77,7 @@ export function PricingPlans({
             title: t("card1.title"),
             description: (
                 <>
-                    <p className="bs mb-0" style={{ minHeight: 64 }}>
+                    <p className="bs mb-0" style={{ minHeight: 72 }}>
                         {t.rich("card1.description", intelRich())}
                     </p>
                 </>
@@ -94,7 +94,7 @@ export function PricingPlans({
             title: t("card2.title"),
             description: (
                 <>
-                    <p className="bs mb-0" style={{ minHeight: 64 }}>
+                    <p className="bs mb-0" style={{ minHeight: 72 }}>
                         {t.rich("card2.description", intelRich())}
                     </p>
                 </>
@@ -111,12 +111,12 @@ export function PricingPlans({
             title: t("card3.title"),
             description: (
                 <>
-                    <p className="bs mb-0" style={{ minHeight: 64 }}>
+                    <p className="bs mb-0" style={{ minHeight: 72 }}>
                         {t.rich("card3.description", intelRich())}
                     </p>
                 </>
             ),
-            price: "70 CHF*",
+            price: "65 CHF*",
             features: [t("card3.features.f1"), t("card3.features.f2"), t("card3.features.f3")],
             extras: [t("card3.extras.e1"), t("card3.extras.e2")],
             color: "secondary-2",

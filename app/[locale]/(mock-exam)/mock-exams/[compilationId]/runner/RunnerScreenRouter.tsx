@@ -38,6 +38,8 @@ type RunnerPointer = {
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 const INTRO_KEY_PREFIX = "intro:";
 const TRANSITION = { duration: 0.28, ease: "easeOut" as const };
+const RUNNER_LAYOUT_MAX_WIDTH = "max-w-[1240px]";
+const RUNNER_LAYOUT_BOTTOM_PADDING = "pb-24 md:pb-5";
 
 const hasAnyMediaInBlock = (block?: RunnerTaskMediaBlock) => Boolean(block?.text || block?.videoUrl || block?.image);
 
@@ -201,7 +203,7 @@ function IntroBlockStage({ block }: { block: RunnerTaskMediaBlock }) {
                 <div className="pointer-events-none absolute -bottom-20 right-8 h-44 w-44 rounded-full bg-secondary-5/20 blur-3xl" />
 
                 <div
-                    className={`relative mx-auto grid h-full w-full max-w-[1240px] gap-6 px-2 sm:px-4 ${useHorizontal ? "items-center lg:grid-cols-12 lg:gap-8" : "items-center justify-items-center"}`}
+                    className={`relative mx-auto grid h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} gap-6 px-2 sm:px-4 ${useHorizontal ? "items-center lg:grid-cols-12 lg:gap-8" : "items-center justify-items-center"}`}
                 >
                     {hasText && (
                         <div className={useHorizontal ? "order-2 w-full lg:order-1 lg:col-span-5 lg:justify-self-start" : "order-2 w-full max-w-[72ch] text-center"}>
@@ -277,32 +279,60 @@ function ActivityImageStage({ task, activityIndex }: { task: RunnerTask; activit
 
 export default function RunnerScreenRouter({ compilationId, sessionKey, resume, speakA2Tasks, speakA2Answers, isAdvancing, onAdvance, onSpeakA2AnswerSaved }: RunnerScreenRouterProps) {
     const firstPointer = resolveFirstTaskPointer(speakA2Tasks);
+    const examIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
 
     if (resume.state === "EXAM_INTRO") {
         return (
-            <section className="w-full h-full card border-2 border-solid border-neutral-700 p-6 md:p-8 flex flex-col justify-between gap-6 py-0">
-                <div className="flex flex-col gap-3">
-                    <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">EXAMEN BLANC</p>
-                    <h1 className="display-2 font-medium mb-0">Introduction</h1>
-                    <p className="mb-0 text-neutral-700">Parcours séquentiel, sans retour arrière. Ta progression est sauvegardée automatiquement.</p>
-                    <p className="mb-0 text-sm text-neutral-600">Tâches Parler A2 chargées : {speakA2Tasks.length}</p>
-                </div>
+            <section className={`relative w-full h-full overflow-hidden px-2 py-2 md:px-4 md:py-5 ${RUNNER_LAYOUT_BOTTOM_PADDING}`}>
+                <div className="pointer-events-none absolute -top-20 left-1/4 h-64 w-64 rounded-full bg-secondary-2/20 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-20 right-8 h-72 w-72 rounded-full bg-secondary-5/20 blur-3xl" />
 
-                <div className="flex justify-end">
-                    <button
-                        type="button"
-                        className="btn btn-primary small min-w-[220px]"
-                        onClick={() =>
-                            onAdvance({
-                                nextState: "SPEAK_A2_RUN",
-                                taskId: firstPointer?.taskId,
-                                activityKey: firstPointer?.activityKey,
-                            })
-                        }
-                        disabled={isAdvancing || !firstPointer}
-                    >
-                        {isAdvancing ? "Mise à jour..." : "Commencer"}
-                    </button>
+                <div className={`relative mx-auto flex h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} flex-col justify-between items-center gap-6`}>
+                    <div className="grow grid gap-8 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] xl:grid-cols-[minmax(0,600px)_minmax(0,1fr)] lg:items-center">
+                        <div className="space-y-4">
+                            <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">L'Examen Blanc</p>
+                            <h1 className="display-2 font-medium mb-0 text-neutral-900">Déroulement de l'examen</h1>
+                            <p className="mb-0 text-neutral-700">Regarde cette courte vidéo de préparation. Tu y verras les épreuves et l'ordre de passage pour te lancer sereinement.</p>
+                            <div className="grid gap-2 text-sm text-neutral-700">
+                                <p className="mb-0">
+                                    <span className="font-semibold text-neutral-900">1.</span> Parler
+                                </p>
+                                <p className="mb-0">
+                                    <span className="font-semibold text-neutral-900">2.</span> Comprendre
+                                </p>
+                                <p className="mb-0">
+                                    <span className="font-semibold text-neutral-900">3.</span> Lire/Écrire
+                                </p>
+                            </div>
+                            <p className="mb-0 text-xs text-neutral-600">Votre progression est sauvegardée automatiquement.</p>
+                        </div>
+
+                        <div className="card relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                            {examIntroVideoUrl && (
+                                <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
+                                    <source src={examIntroVideoUrl} />
+                                    Votre navigateur ne supporte pas la vidéo HTML5.
+                                </video>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex w-full justify-center lg:justify-end">
+                        <button
+                            type="button"
+                            className="btn btn-primary small min-w-[220px]"
+                            onClick={() =>
+                                onAdvance({
+                                    nextState: "SPEAK_A2_RUN",
+                                    taskId: firstPointer?.taskId,
+                                    activityKey: firstPointer?.activityKey,
+                                })
+                            }
+                            disabled={isAdvancing || !firstPointer}
+                        >
+                            {isAdvancing ? "Mise à jour..." : "Commencer"}
+                        </button>
+                    </div>
                 </div>
             </section>
         );
@@ -312,7 +342,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
         const currentPointer = resolvePointerFromResume(speakA2Tasks, resume);
         if (!currentPointer) {
             return (
-                <section className="w-full h-full card border-2 border-solid border-neutral-700 p-6 md:p-8 flex flex-col justify-between gap-6 py-0">
+                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} card border-2 border-solid border-neutral-700 p-6 md:p-8 flex flex-col justify-between gap-6 py-0`}>
                     <div className="flex flex-col gap-3">
                         <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">SECTION</p>
                         <h1 className="display-2 font-medium mb-0">Parler A2</h1>
@@ -344,7 +374,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
 
         if (currentPointer.mode === "intro") {
             return (
-                <section className="w-full h-full flex flex-col gap-4 py-0 pb-24 md:pb-0 min-h-0">
+                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-4 py-0 min-h-0`}>
                     <div className="shrink-0 px-2 md:px-4">
                         <h1 className="display-2 font-medium mb-0 text-center leading-tight">{introTaskTitle}</h1>
                     </div>
@@ -364,7 +394,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
                         </AnimatePresence>
                     </div>
 
-                    <div className="hidden justify-end md:flex">
+                    <div className="hidden w-full justify-end md:flex">
                         <button
                             type="button"
                             className="btn btn-primary small min-w-[240px]"
@@ -415,7 +445,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
             currentPointer.mode === "activity" ? speakA2Answers.find((answer) => answer.taskId === currentPointer.taskId && answer.activityKey === currentPointer.activityKey) : undefined;
 
         return (
-            <section className="grid w-full max-w-6xl grid-cols-1 gap-2 py-0 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.7fr)] lg:grid-rows-1 lg:gap-6">
+            <section className={`grid w-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} grid-cols-1 gap-2 py-0 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.7fr)] lg:grid-rows-1 lg:gap-6`}>
                 <div className="min-h-0">
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -438,6 +468,10 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
                         sessionKey={sessionKey}
                         taskId={currentPointer.taskId}
                         activityKey={currentPointer.activityKey}
+                        taskType={currentTask.taskType}
+                        taskAiContext={currentTask.aiTaskContext}
+                        activityAiContext={currentTask.activities[currentPointer.activityIndex || 0]?.aiContext}
+                        activityAiVoiceGender={currentTask.activities[currentPointer.activityIndex || 0]?.aiVoiceGender}
                         questionAudioUrl={currentTask.activities[currentPointer.activityIndex || 0]?.audioUrl}
                         promptText={currentTask.activities[currentPointer.activityIndex || 0]?.promptText}
                         existingAnswer={currentAnswer}
@@ -460,7 +494,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
 
     if (resume.state === "SPEAK_A2_RESULT") {
         return (
-            <section className="w-full h-full card border-2 border-solid border-neutral-700 p-6 md:p-8 flex flex-col justify-between gap-6 py-0">
+            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} card border-2 border-solid border-neutral-700 p-6 md:p-8 flex flex-col justify-between gap-6 py-0`}>
                 <div className="flex flex-col gap-3">
                     <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
                     <h1 className="display-2 font-medium mb-0">Parler A2 terminé</h1>
@@ -477,7 +511,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
     }
 
     return (
-        <section className="w-full h-full card border-2 border-solid border-neutral-700 p-6 md:p-8 flex flex-col justify-between gap-6 py-0">
+        <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} card border-2 border-solid border-neutral-700 p-6 md:p-8 flex flex-col justify-between gap-6 py-0`}>
             <div className="flex flex-col gap-3">
                 <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">ÉTAT</p>
                 <h1 className="display-2 font-medium mb-0">Écran non branché</h1>

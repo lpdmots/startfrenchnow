@@ -72,6 +72,7 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
     const currentPhaseIndex = getRunnerPhaseIndex(resume?.state);
     const headerDetails = getRunnerHeaderDetails(resume?.state, speakA2Tasks, resume?.taskId);
     const isIntroBlockLayout = resume?.state === "SPEAK_A2_RUN" && Boolean(resume?.activityKey?.startsWith(INTRO_KEY_PREFIX));
+    const isExamIntro = resume?.state === "EXAM_INTRO";
 
     useEffect(() => {
         if (hasHydratedRef.current) return;
@@ -194,7 +195,7 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
                             </div>
                         </div>
                     </div>
-                    {!isIntroBlockLayout && (
+                    {!isIntroBlockLayout && !isExamIntro && (
                         <div className="min-w-0 w-full flex lg:flex-col justify-between items-end lg:justify-end shrink-0">
                             <p className="mb-0 text-lg font-semibold uppercase tracking-wide text-neutral-700 truncate">{headerDetails.title}</p>
                             <p className="mb-0 text-sm text-neutral-600 truncate">{headerDetails.subtitle}</p>

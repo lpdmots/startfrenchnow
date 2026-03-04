@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
         const extension = pickExtension(file.name || "audio.webm", file.type || "");
         const safeTaskId = sanitizeSegment(taskId);
         const safeActivityKey = sanitizeSegment(activityKey);
-        const key = `mock-exams/speaking/${sanitizeSegment(userId)}/${sanitizeSegment(compilationId)}/${sanitizeSegment(sessionKey)}/${safeTaskId}-${safeActivityKey}-${Date.now()}.${extension}`;
+        const key = `mock-exams/in-progress/speaking/${sanitizeSegment(userId)}/${sanitizeSegment(compilationId)}/${sanitizeSegment(sessionKey)}/${safeTaskId}-${safeActivityKey}-${Date.now()}.${extension}`;
 
         await s3Client.send(
             new PutObjectCommand({

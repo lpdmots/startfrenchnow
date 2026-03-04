@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { PortableText } from "@portabletext/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -10,14 +10,20 @@ import { ModalFromBottomWithPortal } from "@/app/components/animations/ModalFrom
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/app/components/ui/accordion";
 import { useToast } from "@/app/hooks/use-toast";
 import { saveMockExamSpeakingAnswer } from "@/app/serverActions/mockExamActions";
-import type { PortableText as PortableTextType, SpeakingAnswer } from "@/app/types/fide/mock-exam";
+import type { PortableText as PortableTextType, SpeakingAnswer, TaskType } from "@/app/types/fide/mock-exam";
 import { RecordingIndicator } from "@/app/components/common/AudioOverlayPlayer";
+import { buildConversationPrompt } from "./prompt-base";
+import { resolveConversationVoice } from "./conversation-voice";
 
 type SpeakingResponsePanelProps = {
     compilationId: string;
     sessionKey: string;
     taskId: string;
     activityKey: string;
+    taskType?: TaskType;
+    taskAiContext?: string;
+    activityAiContext?: string;
+    activityAiVoiceGender?: string;
     questionAudioUrl?: string;
     promptText?: PortableTextType;
     existingAnswer?: SpeakingAnswer;
@@ -27,9 +33,19 @@ type SpeakingResponsePanelProps = {
 };
 
 type AccordionStep = "step-1" | "step-2" | "step-3";
+type SpeakerRole = "student" | "examiner";
+type Segment = { start: number; end: number; text: string };
+type TranscriptionResult = { text: string; segments: Segment[] };
+type SpeakerSegment = { speaker: SpeakerRole; start: number; text: string };
+type DialogueTurn = { speaker: SpeakerRole; text: string; start: number };
+type RealtimeDialogueTurn = { itemId: string; speaker: SpeakerRole; text: string };
 
-const MAX_ATTEMPTS = 3;
+const DEFAULT_MAX_ATTEMPTS = 3;
+const CONVERSATION_MAX_ATTEMPTS = 2;
 const AUTO_STOP_SECONDS = 5 * 60;
+const CONVERSATION_DURATION_SECONDS = 4 * 60;
+const CONVERSATION_WARNING_SECONDS = 30;
+const REALTIME_TRANSCRIPTION_MODEL = "gpt-4o-mini-transcribe";
 const TEXT_WARNING_KEY = "mock_exam_show_text_without_warning";
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 const STEP_RANK: Record<AccordionStep, number> = {
@@ -59,11 +75,24 @@ const buildTranscriptVerification = (value: string) => {
     return { ok: true, message: "Transcript vérifié." };
 };
 
+const formatTimer = (seconds: number) => {
+    const safeSeconds = Math.max(0, seconds);
+    const minutes = Math.floor(safeSeconds / 60)
+        .toString()
+        .padStart(2, "0");
+    const restSeconds = (safeSeconds % 60).toString().padStart(2, "0");
+    return `${minutes}:${restSeconds}`;
+};
+
 export default function SpeakingResponsePanel({
     compilationId,
     sessionKey,
     taskId,
     activityKey,
+    taskType,
+    taskAiContext,
+    activityAiContext,
+    activityAiVoiceGender,
     questionAudioUrl,
     promptText,
     existingAnswer,
@@ -72,6 +101,8 @@ export default function SpeakingResponsePanel({
     onValidated,
 }: SpeakingResponsePanelProps) {
     const { toast } = useToast();
+    const isConversationTask = taskType === "PHONE_CONVERSATION_A2";
+    const maxAttempts = isConversationTask ? CONVERSATION_MAX_ATTEMPTS : DEFAULT_MAX_ATTEMPTS;
 
     const [attemptCount, setAttemptCount] = useState(existingAnswer ? 1 : 0);
     const [isRecording, setIsRecording] = useState(false);
@@ -80,6 +111,11 @@ export default function SpeakingResponsePanel({
     const [audioPreviewUrl, setAudioPreviewUrl] = useState<string | null>(null);
     const [uploadedAudioUrl, setUploadedAudioUrl] = useState<string>(existingAnswer?.audioUrl || "");
     const [transcript, setTranscript] = useState(existingAnswer?.transcriptFinal || "");
+    const [conversationTurns, setConversationTurns] = useState<DialogueTurn[]>([]);
+    const [isConversationConnecting, setIsConversationConnecting] = useState(false);
+    const [isConversationLive, setIsConversationLive] = useState(false);
+    const [conversationRemainingSeconds, setConversationRemainingSeconds] = useState(CONVERSATION_DURATION_SECONDS);
+    const [conversationWarningPulseKey, setConversationWarningPulseKey] = useState(0);
     const [isTranscribing, setIsTranscribing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isVerified, setIsVerified] = useState(Boolean(existingAnswer?.transcriptFinal && existingAnswer?.audioUrl));
@@ -95,9 +131,26 @@ export default function SpeakingResponsePanel({
     const [rememberSkipChoice, setRememberSkipChoice] = useState(false);
 
     const questionAudioRef = useRef<HTMLAudioElement | null>(null);
+    const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
     const chunksRef = useRef<Blob[]>([]);
+    const localConversationRecorderRef = useRef<MediaRecorder | null>(null);
+    const remoteConversationRecorderRef = useRef<MediaRecorder | null>(null);
+    const localConversationChunksRef = useRef<Blob[]>([]);
+    const remoteConversationChunksRef = useRef<Blob[]>([]);
+    const localConversationStartRef = useRef<number | null>(null);
+    const remoteConversationStartRef = useRef<number | null>(null);
+    const conversationPeerRef = useRef<RTCPeerConnection | null>(null);
+    const conversationDataChannelRef = useRef<RTCDataChannel | null>(null);
+    const remoteConversationStreamRef = useRef<MediaStream | null>(null);
+    const conversationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const conversationAutoStopTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const realtimeTurnsByItemRef = useRef<Map<string, RealtimeDialogueTurn>>(new Map());
+    const realtimeItemOrderRef = useRef<Map<string, number>>(new Map());
+    const realtimePreviousItemRef = useRef<Map<string, string | null>>(new Map());
+    const realtimeItemCounterRef = useRef(0);
+    const hasConversationWarningBeenShownRef = useRef(false);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const autoStopTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const answerStepRef = useRef<HTMLDivElement | null>(null);
@@ -105,14 +158,16 @@ export default function SpeakingResponsePanel({
     const autoScrollReadyRef = useRef(false);
     const previousMaxUnlockedRankRef = useRef(1);
 
-    const canRecord = !isRecording && attemptCount < MAX_ATTEMPTS && !isTranscribing && !isSaving && !isAdvancing;
+    const canRecord = !isRecording && !isConversationLive && !isConversationConnecting && attemptCount < maxAttempts && !isTranscribing && !isSaving && !isAdvancing;
     const canValidate = !!uploadedAudioUrl && transcript.trim().length > 0 && !isSaving && !isAdvancing;
 
     const sourceAudio = useMemo(() => audioPreviewUrl || withCloudFrontPrefix(uploadedAudioUrl) || null, [audioPreviewUrl, uploadedAudioUrl]);
     const questionAudio = useMemo(() => withCloudFrontPrefix(questionAudioUrl), [questionAudioUrl]);
+    const conversationPrompt = useMemo(() => buildConversationPrompt(taskAiContext, activityAiContext), [taskAiContext, activityAiContext]);
+    const conversationVoice = useMemo(() => resolveConversationVoice(activityAiVoiceGender), [activityAiVoiceGender]);
     const isPlayDisabled = !questionAudio || (hasFinishedFirstPlay && !isQuestionPlaying && !playUnlockedByReplay);
     const isReplayDisabled = !questionAudio || !hasFinishedFirstPlay || isQuestionPlaying;
-    const hasAnswerDraft = Boolean(sourceAudio) || isRecording || isTranscribing || transcript.trim().length > 0;
+    const hasAnswerDraft = Boolean(sourceAudio) || isRecording || isConversationLive || isTranscribing || transcript.trim().length > 0;
     const hasReachedAnswerStep = !questionAudio || hasFinishedFirstPlay || hasAnswerDraft;
     const hasReachedVerifyStep = isTranscribing || transcript.trim().length > 0;
     const isQuestionStepActive = !hasReachedAnswerStep;
@@ -125,6 +180,7 @@ export default function SpeakingResponsePanel({
     const questionStepClass = hasReachedAnswerStep ? "bg-neutral-300 text-neutral-800" : "bg-secondary-2 text-neutral-100";
     const answerStepClass = hasReachedAnswerStep && !hasReachedVerifyStep ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
     const verifyStepClass = hasReachedVerifyStep ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
+    const isConversationWarning = isConversationLive && conversationRemainingSeconds <= CONVERSATION_WARNING_SECONDS;
 
     const isAccordionStep = (value: string): value is AccordionStep => value === "step-1" || value === "step-2" || value === "step-3";
 
@@ -188,6 +244,20 @@ export default function SpeakingResponsePanel({
         };
     }, [questionAudio]);
 
+    useEffect(() => {
+        if (!isConversationLive) return;
+        if (conversationRemainingSeconds > CONVERSATION_WARNING_SECONDS) return;
+        if (hasConversationWarningBeenShownRef.current) return;
+
+        hasConversationWarningBeenShownRef.current = true;
+        setConversationWarningPulseKey((prev) => prev + 1);
+        toast({
+            variant: "destructive",
+            title: "Plus que 30 secondes",
+            description: "La conversation va se couper automatiquement.",
+        });
+    }, [conversationRemainingSeconds, isConversationLive, toast]);
+
     const stopActiveStream = () => {
         if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => track.stop());
@@ -204,12 +274,192 @@ export default function SpeakingResponsePanel({
             clearTimeout(autoStopTimeoutRef.current);
             autoStopTimeoutRef.current = null;
         }
+        if (conversationIntervalRef.current) {
+            clearInterval(conversationIntervalRef.current);
+            conversationIntervalRef.current = null;
+        }
+        if (conversationAutoStopTimeoutRef.current) {
+            clearTimeout(conversationAutoStopTimeoutRef.current);
+            conversationAutoStopTimeoutRef.current = null;
+        }
+    };
+
+    const normalizeTranscriptChunk = (value: string) => value.replace(/\s+/g, " ").trim();
+
+    const resetRealtimeTranscriptBuffers = () => {
+        realtimeTurnsByItemRef.current.clear();
+        realtimeItemOrderRef.current.clear();
+        realtimePreviousItemRef.current.clear();
+        realtimeItemCounterRef.current = 0;
+    };
+
+    const registerRealtimeItem = (itemId?: string | null, previousItemId?: string | null) => {
+        if (!itemId) return;
+
+        if (!realtimeItemOrderRef.current.has(itemId)) {
+            realtimeItemOrderRef.current.set(itemId, realtimeItemCounterRef.current);
+            realtimeItemCounterRef.current += 1;
+        }
+
+        if (previousItemId !== undefined) {
+            realtimePreviousItemRef.current.set(itemId, previousItemId ?? null);
+        }
+    };
+
+    const extractRealtimeItemText = (item: unknown) => {
+        if (!item || typeof item !== "object") return "";
+        const record = item as { content?: unknown };
+        if (!Array.isArray(record.content)) return "";
+
+        const parts = record.content
+            .map((contentPart) => {
+                if (!contentPart || typeof contentPart !== "object") return "";
+                const part = contentPart as { transcript?: unknown; text?: unknown };
+                if (typeof part.transcript === "string") return part.transcript;
+                if (typeof part.text === "string") return part.text;
+                return "";
+            })
+            .filter(Boolean);
+
+        return normalizeTranscriptChunk(parts.join(" "));
+    };
+
+    const upsertRealtimeTurn = (itemId: string | null | undefined, speaker: SpeakerRole, text: string) => {
+        const normalizedText = normalizeTranscriptChunk(text);
+        if (!itemId || !normalizedText) return;
+
+        registerRealtimeItem(itemId);
+        realtimeTurnsByItemRef.current.set(itemId, {
+            itemId,
+            speaker,
+            text: normalizedText,
+        });
+    };
+
+    const buildRealtimeDialogueTurns = (): DialogueTurn[] => {
+        const realtimeTurns = Array.from(realtimeTurnsByItemRef.current.values()).filter((turn) => turn.text.length > 0);
+        if (!realtimeTurns.length) return [];
+
+        const depthMemo = new Map<string, number>();
+        const getDepth = (itemId: string, stack = new Set<string>()): number => {
+            if (depthMemo.has(itemId)) return depthMemo.get(itemId) as number;
+            if (stack.has(itemId)) return realtimeItemOrderRef.current.get(itemId) ?? 0;
+
+            stack.add(itemId);
+            const previousItemId = realtimePreviousItemRef.current.get(itemId);
+            const depth = previousItemId ? getDepth(previousItemId, stack) + 1 : 0;
+            stack.delete(itemId);
+            depthMemo.set(itemId, depth);
+            return depth;
+        };
+
+        realtimeTurns.sort((left, right) => {
+            const leftDepth = getDepth(left.itemId);
+            const rightDepth = getDepth(right.itemId);
+            if (leftDepth !== rightDepth) return leftDepth - rightDepth;
+            return (realtimeItemOrderRef.current.get(left.itemId) ?? 0) - (realtimeItemOrderRef.current.get(right.itemId) ?? 0);
+        });
+
+        const collapsed: DialogueTurn[] = [];
+        for (const turn of realtimeTurns) {
+            const lastTurn = collapsed[collapsed.length - 1];
+            if (lastTurn && lastTurn.speaker === turn.speaker) {
+                lastTurn.text = normalizeTranscriptChunk(`${lastTurn.text} ${turn.text}`);
+                continue;
+            }
+
+            collapsed.push({
+                speaker: turn.speaker,
+                text: turn.text,
+                start: realtimeItemOrderRef.current.get(turn.itemId) ?? collapsed.length,
+            });
+        }
+
+        return collapsed;
+    };
+
+    const handleRealtimeDataChannelMessage = (rawMessage: string) => {
+        const payload = JSON.parse(rawMessage) as Record<string, unknown>;
+        const type = typeof payload.type === "string" ? payload.type : "";
+        if (!type) return;
+
+        if (type === "input_audio_buffer.committed") {
+            const itemId = typeof payload.item_id === "string" ? payload.item_id : null;
+            const previousItemId = typeof payload.previous_item_id === "string" ? payload.previous_item_id : null;
+            registerRealtimeItem(itemId, previousItemId);
+            return;
+        }
+
+        if (type === "conversation.item.created") {
+            const item = payload.item && typeof payload.item === "object" ? (payload.item as Record<string, unknown>) : null;
+            const itemId = item && typeof item.id === "string" ? item.id : typeof payload.item_id === "string" ? payload.item_id : null;
+            const previousItemId = typeof payload.previous_item_id === "string" ? payload.previous_item_id : null;
+            registerRealtimeItem(itemId, previousItemId);
+
+            const role = item && typeof item.role === "string" ? item.role : "";
+            if (role === "assistant") {
+                upsertRealtimeTurn(itemId, "examiner", extractRealtimeItemText(item));
+            }
+            if (role === "user") {
+                upsertRealtimeTurn(itemId, "student", extractRealtimeItemText(item));
+            }
+            return;
+        }
+
+        if (type === "conversation.item.input_audio_transcription.completed") {
+            const itemId = typeof payload.item_id === "string" ? payload.item_id : null;
+            const transcriptText = typeof payload.transcript === "string" ? payload.transcript : "";
+            upsertRealtimeTurn(itemId, "student", transcriptText);
+            return;
+        }
+
+        if (type === "response.output_item.done") {
+            const item = payload.item && typeof payload.item === "object" ? (payload.item as Record<string, unknown>) : null;
+            const itemId = item && typeof item.id === "string" ? item.id : null;
+            registerRealtimeItem(itemId);
+            const role = item && typeof item.role === "string" ? item.role : "";
+            if (role === "assistant") {
+                upsertRealtimeTurn(itemId, "examiner", extractRealtimeItemText(item));
+            }
+            return;
+        }
+
+        if (type === "response.audio_transcript.done") {
+            const itemId = typeof payload.item_id === "string" ? payload.item_id : null;
+            const transcriptText = typeof payload.transcript === "string" ? payload.transcript : "";
+            upsertRealtimeTurn(itemId, "examiner", transcriptText);
+            return;
+        }
+
+        if (type === "error") {
+            console.warn("Realtime datachannel error event:", payload);
+        }
+    };
+
+    const closeConversationTransport = () => {
+        if (conversationDataChannelRef.current) {
+            conversationDataChannelRef.current.close();
+            conversationDataChannelRef.current = null;
+        }
+        if (conversationPeerRef.current) {
+            conversationPeerRef.current.close();
+            conversationPeerRef.current = null;
+        }
+        if (remoteConversationStreamRef.current) {
+            remoteConversationStreamRef.current.getTracks().forEach((track) => track.stop());
+            remoteConversationStreamRef.current = null;
+        }
+        if (remoteAudioRef.current) {
+            remoteAudioRef.current.srcObject = null;
+        }
     };
 
     useEffect(() => {
         return () => {
             stopTimers();
             stopActiveStream();
+            closeConversationTransport();
+            resetRealtimeTranscriptBuffers();
         };
     }, []);
 
@@ -220,12 +470,21 @@ export default function SpeakingResponsePanel({
     }, [audioPreviewUrl]);
 
     useEffect(() => {
+        stopTimers();
         setAttemptCount(existingAnswer ? 1 : 0);
         setUploadedAudioUrl(existingAnswer?.audioUrl || "");
         setTranscript(existingAnswer?.transcriptFinal || "");
+        setConversationTurns([]);
+        setIsConversationConnecting(false);
         setIsVerified(Boolean(existingAnswer?.transcriptFinal && existingAnswer?.audioUrl));
         setVerificationMessage(existingAnswer ? "Réponse déjà validée." : "");
         setShowPromptText(false);
+        setIsConversationLive(false);
+        setIsRecording(false);
+        setRecordingDuration(0);
+        setConversationRemainingSeconds(CONVERSATION_DURATION_SECONDS);
+        setConversationWarningPulseKey(0);
+        hasConversationWarningBeenShownRef.current = false;
         setIsQuestionPlaying(false);
         setHasFinishedFirstPlay(false);
         setPlayUnlockedByReplay(false);
@@ -244,6 +503,12 @@ export default function SpeakingResponsePanel({
             if (previous) URL.revokeObjectURL(previous);
             return null;
         });
+        localConversationChunksRef.current = [];
+        remoteConversationChunksRef.current = [];
+        localConversationStartRef.current = null;
+        remoteConversationStartRef.current = null;
+        resetRealtimeTranscriptBuffers();
+        closeConversationTransport();
     }, [existingAnswer, taskId, activityKey]);
 
     const toggleQuestionPlay = async () => {
@@ -314,32 +579,149 @@ export default function SpeakingResponsePanel({
         setShowPromptWarning(false);
     };
 
+    const stopRecorderAndBuildBlob = async (recorderRef: MutableRefObject<MediaRecorder | null>, chunksRef: MutableRefObject<Blob[]>) => {
+        const recorder = recorderRef.current;
+        if (!recorder) return null;
+
+        return await new Promise<Blob | null>((resolve) => {
+            const finalize = () => {
+                const hasAudio = chunksRef.current.length > 0;
+                const blob = hasAudio ? new Blob(chunksRef.current, { type: recorder.mimeType || "audio/webm" }) : null;
+                chunksRef.current = [];
+                recorderRef.current = null;
+                resolve(blob);
+            };
+
+            recorder.onstop = finalize;
+            recorder.onerror = finalize;
+
+            if (recorder.state === "inactive") {
+                finalize();
+                return;
+            }
+
+            recorder.stop();
+        });
+    };
+
+    const uploadStudentAudio = async (blob: Blob) => {
+        const formData = new FormData();
+        formData.append("audio", new File([blob], "mock-exam-answer.webm", { type: blob.type || "audio/webm" }));
+        formData.append("compilationId", compilationId);
+        formData.append("sessionKey", sessionKey);
+        formData.append("taskId", taskId);
+        formData.append("activityKey", activityKey);
+
+        const response = await fetch("/api/mock-exams/speaking/process", {
+            method: "POST",
+            body: formData,
+        });
+        const data = (await response.json().catch(() => null)) as { error?: string; audioUrl?: string; transcription?: string } | null;
+        if (!response.ok) {
+            throw new Error(data?.error || "Transcription impossible.");
+        }
+
+        return {
+            audioUrl: String(data?.audioUrl || ""),
+            transcription: String(data?.transcription || ""),
+        };
+    };
+
+    const transcribeConversationBlob = async (blob: Blob | null, speaker: SpeakerRole): Promise<TranscriptionResult> => {
+        if (!blob || blob.size === 0) return { text: "", segments: [] };
+
+        const formData = new FormData();
+        formData.append("audio", new File([blob], `${speaker}.webm`, { type: blob.type || "audio/webm" }));
+        formData.append("speaker", speaker);
+        formData.append("compilationId", compilationId);
+        formData.append("sessionKey", sessionKey);
+
+        const response = await fetch("/api/mock-exams/speaking/conversation/transcribe", {
+            method: "POST",
+            body: formData,
+        });
+        const data = (await response.json().catch(() => null)) as { error?: string; text?: string; segments?: Segment[] } | null;
+        if (!response.ok) {
+            throw new Error(data?.error || "Transcription de conversation impossible.");
+        }
+
+        return {
+            text: String(data?.text || "").trim(),
+            segments: Array.isArray(data?.segments) ? data.segments : [],
+        };
+    };
+
+    const formatDialogueTranscript = (turns: DialogueTurn[]) => turns.map((turn) => `${turn.speaker === "student" ? "Etudiant" : "Examinateur"}: ${turn.text}`).join("\n");
+
+    const extractStudentTail = (studentFullText: string, studentFromRealtime: string) => {
+        const full = normalizeTranscriptChunk(studentFullText);
+        const partial = normalizeTranscriptChunk(studentFromRealtime);
+        if (!full || !partial || full === partial) return "";
+
+        if (full.startsWith(partial)) {
+            return normalizeTranscriptChunk(full.slice(partial.length));
+        }
+
+        const fullWords = full.split(" ").filter(Boolean);
+        const partialWords = partial.split(" ").filter(Boolean);
+        const maxOverlap = Math.min(10, fullWords.length, partialWords.length);
+
+        for (let overlap = maxOverlap; overlap >= 3; overlap -= 1) {
+            const suffixWords = partialWords.slice(-overlap);
+            const suffix = suffixWords.join(" ");
+
+            for (let index = fullWords.length - overlap; index >= 0; index -= 1) {
+                const candidate = fullWords.slice(index, index + overlap).join(" ");
+                if (candidate !== suffix) continue;
+
+                const tailWords = fullWords.slice(index + overlap);
+                return normalizeTranscriptChunk(tailWords.join(" "));
+            }
+        }
+
+        return "";
+    };
+
+    const mergeRealtimeWithStudentSafetyTranscript = (realtimeTurns: DialogueTurn[], studentFullText: string) => {
+        if (!realtimeTurns.length) return realtimeTurns;
+
+        const mergedTurns = realtimeTurns.map((turn) => ({ ...turn }));
+        const studentCombined = normalizeTranscriptChunk(mergedTurns.filter((turn) => turn.speaker === "student").map((turn) => turn.text).join(" "));
+        const tail = extractStudentTail(studentFullText, studentCombined);
+
+        if (!tail) return mergedTurns;
+
+        const lastStudentIndex = [...mergedTurns].map((turn, index) => ({ turn, index })).reverse().find((entry) => entry.turn.speaker === "student")?.index;
+        if (typeof lastStudentIndex === "number") {
+            mergedTurns[lastStudentIndex] = {
+                ...mergedTurns[lastStudentIndex],
+                text: normalizeTranscriptChunk(`${mergedTurns[lastStudentIndex].text} ${tail}`),
+            };
+            return mergedTurns;
+        }
+
+        mergedTurns.push({
+            speaker: "student",
+            text: tail,
+            start: mergedTurns.length + 1,
+        });
+        return mergedTurns;
+    };
+
     const transcribeAudioBlob = async (blob: Blob) => {
         setIsTranscribing(true);
         setIsVerified(false);
         setVerificationMessage("");
 
         try {
-            const formData = new FormData();
-            formData.append("audio", new File([blob], "mock-exam-answer.webm", { type: blob.type || "audio/webm" }));
-            formData.append("compilationId", compilationId);
-            formData.append("sessionKey", sessionKey);
-            formData.append("taskId", taskId);
-            formData.append("activityKey", activityKey);
-
-            const response = await fetch("/api/mock-exams/speaking/process", {
-                method: "POST",
-                body: formData,
-            });
-            const data = await response.json();
-
-            if (!response.ok) throw new Error(data?.error || "Transcription impossible.");
-
-            setTranscript(String(data?.transcription || ""));
-            setUploadedAudioUrl(String(data?.audioUrl || ""));
+            const data = await uploadStudentAudio(blob);
+            setTranscript(data.transcription);
+            setConversationTurns([]);
+            setUploadedAudioUrl(data.audioUrl);
             setVerificationMessage("Transcript prêt. Tu peux corriger puis valider.");
         } catch (error) {
             setTranscript("");
+            setConversationTurns([]);
             setUploadedAudioUrl("");
             toast({
                 variant: "destructive",
@@ -347,6 +729,297 @@ export default function SpeakingResponsePanel({
                 description: error instanceof Error ? error.message : "Impossible de transcrire cet enregistrement.",
             });
         } finally {
+            setIsTranscribing(false);
+        }
+    };
+
+    const startConversationRecorder = (stream: MediaStream, recorderRef: MutableRefObject<MediaRecorder | null>, chunksRef: MutableRefObject<Blob[]>, startRef: MutableRefObject<number | null>) => {
+        if (typeof MediaRecorder === "undefined" || recorderRef.current) return;
+        try {
+            const preferredMimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : "audio/webm";
+            const recorder = new MediaRecorder(stream, preferredMimeType ? { mimeType: preferredMimeType } : undefined);
+            chunksRef.current = [];
+            startRef.current = performance.now();
+            recorder.ondataavailable = (event) => {
+                if (event.data.size > 0) chunksRef.current.push(event.data);
+            };
+            recorder.start(250);
+            recorderRef.current = recorder;
+        } catch (error) {
+            console.error("Impossible de demarrer le recorder conversation:", error);
+        }
+    };
+
+    const handleStartConversation = async () => {
+        if (!canRecord) return;
+
+        setIsConversationConnecting(true);
+        setIsVerified(false);
+        setVerificationMessage("");
+        setTranscript("");
+        setConversationTurns([]);
+        setUploadedAudioUrl("");
+        setConversationRemainingSeconds(CONVERSATION_DURATION_SECONDS);
+        setConversationWarningPulseKey(0);
+        hasConversationWarningBeenShownRef.current = false;
+        resetRealtimeTranscriptBuffers();
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            streamRef.current = stream;
+            startConversationRecorder(stream, localConversationRecorderRef, localConversationChunksRef, localConversationStartRef);
+
+            const peerConnection = new RTCPeerConnection();
+            conversationPeerRef.current = peerConnection;
+
+            stream.getTracks().forEach((track) => {
+                peerConnection.addTrack(track, stream);
+            });
+
+            peerConnection.ontrack = (event) => {
+                const [remoteStream] = event.streams;
+                if (!remoteStream) return;
+
+                remoteConversationStreamRef.current = remoteStream;
+                startConversationRecorder(remoteStream, remoteConversationRecorderRef, remoteConversationChunksRef, remoteConversationStartRef);
+
+                if (remoteAudioRef.current) {
+                    remoteAudioRef.current.srcObject = remoteStream;
+                    remoteAudioRef.current.play().catch(() => undefined);
+                }
+            };
+
+            peerConnection.onconnectionstatechange = () => {
+                const state = peerConnection.connectionState;
+                if (state === "failed" || state === "disconnected" || state === "closed") {
+                    stopTimers();
+                    setIsConversationConnecting(false);
+                    setIsConversationLive(false);
+                    setIsRecording(false);
+                }
+            };
+
+            const dataChannel = peerConnection.createDataChannel("oai-events");
+            conversationDataChannelRef.current = dataChannel;
+            dataChannel.onmessage = (event) => {
+                if (typeof event.data !== "string") return;
+                try {
+                    handleRealtimeDataChannelMessage(event.data);
+                } catch (error) {
+                    console.error("Impossible de parser un event realtime:", error);
+                }
+            };
+            dataChannel.onopen = () => {
+                dataChannel.send(
+                    JSON.stringify({
+                        type: "session.update",
+                        session: {
+                            turn_detection: {
+                                type: "server_vad",
+                                silence_duration_ms: 5000,
+                                create_response: true,
+                                interrupt_response: false,
+                            },
+                            input_audio_transcription: {
+                                model: REALTIME_TRANSCRIPTION_MODEL,
+                            },
+                        },
+                    }),
+                );
+                dataChannel.send(
+                    JSON.stringify({
+                        type: "response.create",
+                        response: {
+                            modalities: ["audio", "text"],
+                            voice: conversationVoice,
+                            instructions: conversationPrompt,
+                        },
+                    }),
+                );
+            };
+
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            if (!offer.sdp || !/^v=0/m.test(offer.sdp)) {
+                throw new Error("Offre SDP invalide.");
+            }
+
+            const response = await fetch("/api/mock-exams/speaking/conversation/realtime", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/sdp",
+                    "x-compilation-id": compilationId,
+                    "x-session-key": sessionKey,
+                    "x-task-id": taskId,
+                    "x-activity-key": activityKey,
+                },
+                body: offer.sdp,
+            });
+
+            if (!response.ok) {
+                const payload = (await response.json().catch(() => null)) as { error?: string; details?: string } | null;
+                throw new Error(payload?.error || payload?.details || "Connexion conversation impossible.");
+            }
+
+            const answerSdp = await response.text();
+            await peerConnection.setRemoteDescription({
+                type: "answer",
+                sdp: answerSdp,
+            });
+
+            conversationIntervalRef.current = setInterval(() => {
+                setConversationRemainingSeconds((prev) => Math.max(0, prev - 1));
+            }, 1000);
+            conversationAutoStopTimeoutRef.current = setTimeout(() => {
+                void handleStopConversation(true);
+            }, CONVERSATION_DURATION_SECONDS * 1000);
+
+            setIsConversationLive(true);
+            setIsRecording(true);
+            setIsConversationConnecting(false);
+        } catch (error) {
+            stopTimers();
+            closeConversationTransport();
+            stopActiveStream();
+            setIsConversationConnecting(false);
+            setIsConversationLive(false);
+            setIsRecording(false);
+            toast({
+                variant: "destructive",
+                title: "Conversation impossible",
+                description: error instanceof Error ? error.message : "Impossible de demarrer la conversation.",
+            });
+        }
+    };
+
+    const handleStopConversation = async (forceStop = false) => {
+        if (!forceStop && !isConversationLive) return;
+
+        const dataChannel = conversationDataChannelRef.current;
+        if (dataChannel && dataChannel.readyState === "open") {
+            try {
+                dataChannel.send(JSON.stringify({ type: "input_audio_buffer.commit" }));
+                dataChannel.send(JSON.stringify({ type: "response.cancel" }));
+            } catch {
+                // Ignore transport issues during shutdown.
+            }
+            await new Promise((resolve) => setTimeout(resolve, 400));
+        }
+
+        stopTimers();
+        setIsConversationConnecting(false);
+        setIsConversationLive(false);
+        setIsRecording(false);
+        setRecordingDuration(0);
+        setConversationRemainingSeconds((prev) => (forceStop ? 0 : prev));
+        setIsTranscribing(true);
+        setIsVerified(false);
+        setVerificationMessage("");
+
+        if (forceStop) {
+            toast({
+                variant: "destructive",
+                title: "Temps écoulé",
+                description: "La conversation a été arrêtée automatiquement.",
+            });
+        }
+
+        const studentStart = localConversationStartRef.current;
+        const examinerStart = remoteConversationStartRef.current;
+
+        try {
+            const [studentBlob, examinerBlob] = await Promise.all([
+                stopRecorderAndBuildBlob(localConversationRecorderRef, localConversationChunksRef),
+                stopRecorderAndBuildBlob(remoteConversationRecorderRef, remoteConversationChunksRef),
+            ]);
+
+            closeConversationTransport();
+            stopActiveStream();
+
+            if (!studentBlob) {
+                throw new Error("Aucun audio étudiant enregistré.");
+            }
+
+            if (audioPreviewUrl) URL.revokeObjectURL(audioPreviewUrl);
+            const nextPreviewUrl = URL.createObjectURL(studentBlob);
+            setAudioBlob(studentBlob);
+            setAudioPreviewUrl(nextPreviewUrl);
+            setAttemptCount((prev) => Math.min(maxAttempts, prev + 1));
+
+            const uploaded = await uploadStudentAudio(studentBlob);
+            setUploadedAudioUrl(uploaded.audioUrl);
+            const studentSafetyResult = await transcribeConversationBlob(studentBlob, "student");
+
+            const realtimeTurns = buildRealtimeDialogueTurns();
+            if (realtimeTurns.length > 0) {
+                const safeTurns = mergeRealtimeWithStudentSafetyTranscript(realtimeTurns, studentSafetyResult.text);
+                setConversationTurns(safeTurns);
+                setTranscript(formatDialogueTranscript(safeTurns));
+            } else {
+                const examinerResult = await transcribeConversationBlob(examinerBlob, "examiner");
+                const studentResult = studentSafetyResult;
+
+                const knownStarts = [studentStart, examinerStart].filter((value): value is number => typeof value === "number");
+                const baseStart = knownStarts.length ? Math.min(...knownStarts) : 0;
+
+                const withSpeaker = (role: SpeakerRole, result: TranscriptionResult, recorderStart: number | null): SpeakerSegment[] => {
+                    const offset = typeof recorderStart === "number" ? Math.max(0, (recorderStart - baseStart) / 1000) : 0;
+
+                    if (result.segments.length > 0) {
+                        return result.segments.map((segment) => ({
+                            speaker: role,
+                            start: Math.max(0, segment.start + offset),
+                            text: String(segment.text || "").trim(),
+                        }));
+                    }
+
+                    if (result.text) {
+                        return [{ speaker: role, start: offset, text: result.text }];
+                    }
+
+                    return [];
+                };
+
+                const merged = [...withSpeaker("student", studentResult, studentStart), ...withSpeaker("examiner", examinerResult, examinerStart)]
+                    .filter((segment) => segment.text.length > 0)
+                    .sort((a, b) => {
+                        if (a.start !== b.start) return a.start - b.start;
+                        if (a.speaker === b.speaker) return 0;
+                        return a.speaker === "examiner" ? -1 : 1;
+                    });
+
+                const collapsed: DialogueTurn[] = [];
+                for (const segment of merged) {
+                    const last = collapsed[collapsed.length - 1];
+                    if (last && last.speaker === segment.speaker) {
+                        last.text = `${last.text} ${segment.text}`.replace(/\s+/g, " ").trim();
+                        continue;
+                    }
+                    collapsed.push({ speaker: segment.speaker, text: segment.text, start: segment.start });
+                }
+
+                if (collapsed.length > 0) {
+                    setConversationTurns(collapsed);
+                    setTranscript(formatDialogueTranscript(collapsed));
+                } else {
+                    setConversationTurns([]);
+                    setTranscript(uploaded.transcription);
+                }
+            }
+
+            setVerificationMessage("Transcript prêt. Tu peux corriger puis valider.");
+        } catch (error) {
+            setTranscript("");
+            setConversationTurns([]);
+            setUploadedAudioUrl("");
+            toast({
+                variant: "destructive",
+                title: "Erreur conversation",
+                description: error instanceof Error ? error.message : "Impossible de traiter la conversation.",
+            });
+        } finally {
+            localConversationStartRef.current = null;
+            remoteConversationStartRef.current = null;
             setIsTranscribing(false);
         }
     };
@@ -374,10 +1047,11 @@ export default function SpeakingResponsePanel({
                 const nextPreviewUrl = URL.createObjectURL(blob);
                 setAudioBlob(blob);
                 setAudioPreviewUrl(nextPreviewUrl);
-                setAttemptCount((prev) => Math.min(MAX_ATTEMPTS, prev + 1));
+                setAttemptCount((prev) => Math.min(maxAttempts, prev + 1));
                 setIsRecording(false);
                 setRecordingDuration(0);
                 setTranscript("");
+                setConversationTurns([]);
                 setUploadedAudioUrl("");
                 setIsVerified(false);
                 setVerificationMessage("");
@@ -414,13 +1088,19 @@ export default function SpeakingResponsePanel({
     };
 
     const handleRetake = () => {
-        if (attemptCount >= MAX_ATTEMPTS || isRecording) return;
+        if (attemptCount >= maxAttempts || isRecording || isConversationLive || isTranscribing) return;
+        stopTimers();
         if (audioPreviewUrl) URL.revokeObjectURL(audioPreviewUrl);
         setAudioBlob(null);
         setAudioPreviewUrl(null);
         setTranscript("");
+        setConversationTurns([]);
         setUploadedAudioUrl("");
-        setIsTranscribing(false);
+        setIsConversationConnecting(false);
+        setConversationRemainingSeconds(CONVERSATION_DURATION_SECONDS);
+        setConversationWarningPulseKey(0);
+        hasConversationWarningBeenShownRef.current = false;
+        resetRealtimeTranscriptBuffers();
         setIsVerified(false);
         setVerificationMessage("");
         setAccordionValue("step-2");
@@ -592,14 +1272,47 @@ export default function SpeakingResponsePanel({
                             </AccordionTrigger>
                             <AccordionContent className="pb-3 min-h-[160px]">
                                 <div className="flex min-h-0 flex-col items-center justify-center gap-4 text-center">
-                                    {!isVerifyStepActive && <p className="italic bs mt-4 mb-0 font-bold text-neutral-800 animate-pulse">À toi de répondre</p>}
-                                    {(!sourceAudio || isRecording) && (
-                                        <button type="button" className={clsx("roundButton", "bg-secondary-4")} onClick={isRecording ? handleStopRecording : handleStartRecording}>
-                                            {isRecording ? <FaStop /> : <FaMicrophone />}
-                                        </button>
+                                    {!isVerifyStepActive && (
+                                        <p className="italic bs mt-4 mb-0 font-bold text-neutral-800 animate-pulse">{isConversationTask ? "Lance la conversation" : "À toi de répondre"}</p>
                                     )}
 
-                                    {isRecording && <RecordingIndicator />}
+                                    {!sourceAudio &&
+                                        (isConversationTask ? (
+                                            <button
+                                                type="button"
+                                                className={clsx("roundButton", "bg-secondary-4", isConversationConnecting ? "opacity-50 cursor-not-allowed" : "")}
+                                                onClick={isConversationLive ? () => void handleStopConversation() : () => void handleStartConversation()}
+                                                disabled={isConversationConnecting || (!canRecord && !isConversationLive)}
+                                                aria-label={isConversationLive ? "Terminer la conversation" : "Commencer la conversation"}
+                                            >
+                                                {isConversationConnecting ? <FaSpinner className="animate-spin" /> : isConversationLive ? <FaStop /> : <FaMicrophone />}
+                                            </button>
+                                        ) : (
+                                            <button type="button" className={clsx("roundButton", "bg-secondary-4")} onClick={isRecording ? handleStopRecording : handleStartRecording}>
+                                                {isRecording ? <FaStop /> : <FaMicrophone />}
+                                            </button>
+                                        ))}
+
+                                    {isConversationTask && (isConversationLive || isConversationConnecting) && (
+                                        <motion.div
+                                            key={conversationWarningPulseKey}
+                                            initial={isConversationWarning ? { x: 0, scale: 1 } : false}
+                                            animate={isConversationWarning ? { x: [0, -4, 4, -3, 3, 0], scale: [1, 1.04, 1] } : { x: 0, scale: 1 }}
+                                            transition={{ duration: 0.45 }}
+                                            className={clsx("rounded-lg px-3 py-1 text-sm font-semibold", isConversationWarning ? "bg-red-50 text-red-600" : "bg-neutral-200 text-neutral-700")}
+                                        >
+                                            Temps restant: {formatTimer(conversationRemainingSeconds)}
+                                        </motion.div>
+                                    )}
+
+                                    {isConversationConnecting && (
+                                        <div className="flex flex-col items-center justify-center gap-2 pt-1">
+                                            <FaSpinner className="animate-spin text-neutral-500 text-xl" />
+                                            <p className="mb-0 text-sm text-neutral-600">Connexion à l'examinateur…</p>
+                                        </div>
+                                    )}
+
+                                    {(isRecording || isConversationLive) && <RecordingIndicator />}
 
                                     {sourceAudio && (
                                         <div className="w-full max-w-md flex gap-2">
@@ -651,7 +1364,7 @@ export default function SpeakingResponsePanel({
                                     )}
 
                                     {!!transcript && (
-                                        <div className="w-full max-w-md space-y-2">
+                                        <div className="w-full max-w-2xl min-w-0 space-y-2">
                                             <textarea
                                                 value={transcript}
                                                 onChange={(event) => {
@@ -659,8 +1372,8 @@ export default function SpeakingResponsePanel({
                                                     setIsVerified(false);
                                                     setVerificationMessage("");
                                                 }}
-                                                rows={4}
-                                                className="w-full rounded-xl border border-neutral-300 bg-white p-3 text-neutral-900 outline-none transition focus:border-secondary-2"
+                                                rows={8}
+                                                className="w-full max-w-full min-h-[220px] resize-y overflow-x-hidden rounded-xl border border-neutral-300 bg-white p-3 text-neutral-900 break-words whitespace-pre-wrap outline-none transition focus:border-secondary-2"
                                             />
                                             {verificationMessage && <p className="mb-0 text-sm italic">{verificationMessage}</p>}
                                         </div>
@@ -739,6 +1452,7 @@ export default function SpeakingResponsePanel({
                     functionOk: confirmShowPrompt,
                 }}
             />
+            <audio ref={remoteAudioRef} autoPlay playsInline className="absolute h-0 w-0 opacity-0 pointer-events-none" />
         </>
     );
 }

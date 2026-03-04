@@ -3,7 +3,6 @@ import { Separator } from "@/app/components/ui/separator";
 import { cn } from "@/app/lib/schadcn-utils";
 import clsx from "clsx";
 import Link from "next-intl/link";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 import { BookFirstMeeting, BookReservation } from "./BookFirstMeeting";
@@ -54,7 +53,7 @@ export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }:
                     <div className="bs p-4 flex flex-col space-between">{description}</div>
                     <RotateChildren rotation={4}>
                         <div className={cn("p-4 flex justify-center items-center -mx-12", bgColor)} style={{ transform: "rotate(-4deg)" }}>
-                            {priceContent ? <div className="w-full text-center text-neutral-100">{priceContent}</div> : <p className="text-4xl text-neutral-100 font-bold mb-0">{price}</p>}
+                            {priceContent ? <div className="w-full text-center text-neutral-100">{priceContent}</div> : <p className="text-4xl sm:text-5xl text-neutral-100 font-bold mb-0">{price}</p>}
                         </div>
                     </RotateChildren>
                     <div className="flex flex-col grow min-h-72">
@@ -82,7 +81,7 @@ export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }:
                                     className={clsx(
                                         "btn btn-primary small w-full text-center",
                                         hasPack && "pointer-events-none opacity-60 cursor-not-allowed",
-                                        `hover:bg-[var(--hover-color)] border-${color} hover:!border-[var(--hover-color)]`
+                                        `hover:bg-[var(--hover-color)] border-${color} hover:!border-[var(--hover-color)]`,
                                     )}
                                     aria-disabled={hasPack}
                                 >

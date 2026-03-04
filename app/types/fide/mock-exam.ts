@@ -26,6 +26,8 @@ export type TaskType =
     | "READ_WRITE_M5"
     | "READ_WRITE_M6";
 
+export type AIVoiceGender = "male" | "female";
+
 export type TaskMediaBlock = {
     /** Tips / instructions courtes affichées avant de démarrer, ou correction écrite en fin */
     text?: PortableText;
@@ -60,6 +62,9 @@ export type Activity = {
      * Exemple : "L'élève doit utiliser le passé composé" / "focus sur les prépositions de lieu" etc.
      */
     aiContext?: string;
+
+    /** Sélection de voix IA pour l'activité (homme/femme) */
+    aiVoiceGender?: AIVoiceGender;
 
     /** Points max attribuables à cette activity (barème détaillé géré par l'IA / programme) */
     maxPoints: number;

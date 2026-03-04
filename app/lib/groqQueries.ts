@@ -192,6 +192,7 @@ export const MOCK_EXAM_TASKS_BY_IDS_QUERY = groq`
       audioUrl,
       promptText,
       aiContext,
+      aiVoiceGender,
       maxPoints
     },
     correctionBlocks[]{
