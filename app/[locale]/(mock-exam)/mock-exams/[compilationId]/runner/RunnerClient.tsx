@@ -6,6 +6,7 @@ import { ModalFromBottomWithPortal } from "@/app/components/animations/ModalFrom
 import { useToast } from "@/app/hooks/use-toast";
 import { useMockExamRunnerStore, type MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
 import { advanceMockExamResume } from "@/app/serverActions/mockExamActions";
+import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
 import type { SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import RunnerScreenRouter from "./RunnerScreenRouter";
@@ -147,7 +148,8 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
     const handleAnswerSaved = (answer: SpeakingAnswer) => {
         setSpeakA2Answers((previous) => {
             const next = [...previous];
-            const existingIndex = next.findIndex((item) => item.taskId === answer.taskId && item.activityKey === answer.activityKey);
+            const answerTaskId = getAnswerTaskId(answer);
+            const existingIndex = next.findIndex((item) => getAnswerTaskId(item) === answerTaskId && item.activityKey === answer.activityKey);
             if (existingIndex >= 0) {
                 next[existingIndex] = answer;
             } else {

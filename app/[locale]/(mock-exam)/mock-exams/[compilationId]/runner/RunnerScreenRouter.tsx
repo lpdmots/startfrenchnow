@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { PortableText } from "@portabletext/react";
 import { AnimatePresence, motion } from "framer-motion";
 import urlFor from "@/app/lib/urlFor";
+import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
 import type { ResumePointer, SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { RunnerTask, RunnerTaskMediaBlock } from "@/app/types/fide/mock-exam-runner";
 import SpeakingResponsePanel from "./SpeakingResponsePanel";
@@ -584,7 +585,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
                 );
             }
 
-            const answersForTask = speakA2Answers.filter((answer) => answer.taskId === currentPointer.taskId);
+            const answersForTask = speakA2Answers.filter((answer) => getAnswerTaskId(answer) === currentPointer.taskId);
             const answersByActivityKey = new Map(answersForTask.map((answer) => [answer.activityKey, answer] as const));
             const isActivityValidated = (activityKey: string) => {
                 const answer = answersByActivityKey.get(activityKey);
@@ -704,7 +705,9 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
         }
 
         const currentAnswer =
-            currentPointer.mode === "activity" ? speakA2Answers.find((answer) => answer.taskId === currentPointer.taskId && answer.activityKey === currentPointer.activityKey) : undefined;
+            currentPointer.mode === "activity"
+                ? speakA2Answers.find((answer) => getAnswerTaskId(answer) === currentPointer.taskId && answer.activityKey === currentPointer.activityKey)
+                : undefined;
 
         return (
             <section

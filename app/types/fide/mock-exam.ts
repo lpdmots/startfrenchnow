@@ -1,4 +1,4 @@
-import { Block, Image } from "../sfn/blog";
+import type { Block, Image } from "../sfn/blog";
 
 export type PortableText = Block[];
 
@@ -125,7 +125,8 @@ export type MockExamConfigRef = {
 };
 
 export type SpeakingAnswer = {
-    taskId: string; // Sanity _id
+    taskRef: Reference;
+    taskId?: string; // legacy
     activityKey: string; // _key de l’activity dans la task Sanity
     audioUrl: string;
     transcriptFinal: string;
@@ -134,12 +135,15 @@ export type SpeakingAnswer = {
 };
 
 export type ReadWriteAnswer = {
-    taskId: string; // Sanity _id
+    taskRef: Reference;
+    taskId?: string; // legacy
     activityKey: string; // _key de l’activity dans la task Sanity
     textAnswer: string;
     AiFeedback?: string;
     AiScore?: ScoreSummary;
 };
+
+export const getAnswerTaskId = (answer?: { taskRef?: Reference; taskId?: string } | null) => answer?.taskRef?._ref || answer?.taskId || "";
 
 export type ResumePointer = {
     state: string; // ex: "SPEAK_A2_REVIEW"

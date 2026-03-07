@@ -6,7 +6,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "migrate:mock-exam-task-ref": "node scripts/sanity/migrateMockExamAnswersTaskRef.mjs"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.438.0",

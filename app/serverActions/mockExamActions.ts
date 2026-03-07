@@ -13,6 +13,7 @@ import { requireSessionAndFide } from "@/app/components/auth/requireSession";
 import { redirect } from "next/navigation";
 import { groq } from "next-sanity";
 import { v4 as uuidv4 } from "uuid";
+import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
 import type { Image } from "@/app/types/sfn/blog";
 import type {
     MockExamConfigRef,
@@ -289,14 +290,14 @@ export async function saveMockExamSpeakingAnswer(params: {
     }
 
     const answer: SpeakingAnswer = {
-        taskId,
+        taskRef: toRef(taskId),
         activityKey,
         audioUrl,
         transcriptFinal,
     };
 
     const currentAnswers = Array.isArray(activeSession.speakA2Answers) ? activeSession.speakA2Answers : [];
-    const existingIndex = currentAnswers.findIndex((item) => item.taskId === taskId && item.activityKey === activityKey);
+    const existingIndex = currentAnswers.findIndex((item) => getAnswerTaskId(item) === taskId && item.activityKey === activityKey);
     const nextAnswers = [...currentAnswers];
 
     if (existingIndex >= 0) {

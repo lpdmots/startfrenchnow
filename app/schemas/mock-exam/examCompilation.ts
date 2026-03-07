@@ -17,9 +17,10 @@ const scoreSummaryFields = [
 
 const speakingAnswerFields = [
     defineField({
-        name: "taskId",
-        title: "Task ID",
-        type: "string",
+        name: "taskRef",
+        title: "Task",
+        type: "reference",
+        to: [{ type: "mockExamTask" }],
         validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -53,9 +54,10 @@ const speakingAnswerFields = [
 
 const readWriteAnswerFields = [
     defineField({
-        name: "taskId",
-        title: "Task ID",
-        type: "string",
+        name: "taskRef",
+        title: "Task",
+        type: "reference",
+        to: [{ type: "mockExamTask" }],
         validation: (Rule) => Rule.required(),
     }),
     defineField({
