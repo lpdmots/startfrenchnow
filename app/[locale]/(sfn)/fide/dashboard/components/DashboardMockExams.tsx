@@ -3,7 +3,7 @@ import Link from "next-intl/link";
 import urlFor from "@/app/lib/urlFor";
 import type { ExamCompilationLite } from "@/app/serverActions/mockExamActions";
 import type { ScoreSummary } from "@/app/types/fide/mock-exam";
-import NewCompilationForm from "./NewCompilationForm";
+import PurchaseMockExamForm from "./PurchaseMockExamForm";
 
 const STATUS_LABEL: Record<string, string> = {
     in_progress: "En cours",
@@ -42,9 +42,21 @@ const getLastSession = (sessions?: ExamCompilationLite["session"]) => {
     return list.at(-1) || null;
 };
 
-export const DashboardMockExams = ({ compilations, remainingCredits, canCreate }: { compilations: ExamCompilationLite[]; remainingCredits: number | null; canCreate: boolean }) => {
+export const DashboardMockExams = ({
+    compilations,
+    remainingCredits,
+    canPurchase,
+    availableToPurchase,
+}: {
+    compilations: ExamCompilationLite[];
+    remainingCredits: number | null;
+    canPurchase: boolean;
+    availableToPurchase: number;
+}) => {
     const credits = typeof remainingCredits === "number" ? remainingCredits : 0;
-    const canCreateCompilation = canCreate && credits > 0;
+    const boughtExams = compilations.length;
+    const totalExams = boughtExams + availableToPurchase;
+    const canBuy = canPurchase && credits > 0 && availableToPurchase > 0;
 
     return (
         <section id="exams" className="page-wrapper flex flex-col max-w-7xl m-auto gap-6 lg:gap-10 w-full py-0">
@@ -53,21 +65,23 @@ export const DashboardMockExams = ({ compilations, remainingCredits, canCreate }
                     <h2 className="mb-0 w-full display-2 font-medium">
                         Mes <span className="font-bold text-secondary-1">Examens</span> blancs
                     </h2>
-                    <p className="mb-0 text-base text-neutral-700">Entraînez-vous en conditions réelles avec vos compilations personnalisées.</p>
+                    <p className="mb-0 text-base text-neutral-700">Choisis un examen blanc et lance une nouvelle session quand tu veux.</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                     <div className="text-sm text-neutral-700">
-                        <span className="font-bold">Compilations restantes :</span> {credits}
+                        <p className="font-bold mb-0">
+                            {boughtExams}/{totalExams} examens
+                        </p>
                     </div>
-                    <NewCompilationForm disabled={!canCreateCompilation} />
+                    <PurchaseMockExamForm disabled={!canBuy} credits={credits} />
                 </div>
             </div>
 
             {compilations.length === 0 ? (
                 <div className="card border-2 border-solid border-neutral-700 p-6 text-center">
-                    <p className="mb-2 font-semibold text-lg">Aucune compilation pour le moment</p>
-                    <p className="mb-0 text-neutral-600">Créez-en une pour commencer votre examen blanc.</p>
+                    <p className="mb-2 font-semibold text-lg">Aucune compilation disponible pour le moment</p>
+                    <p className="mb-0 text-neutral-600">Reviens un peu plus tard pour démarrer un examen blanc.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -99,7 +113,7 @@ export const DashboardMockExams = ({ compilations, remainingCredits, canCreate }
 
                                 <div className="p-5 flex flex-col gap-3">
                                     <div className="flex items-start justify-between gap-2">
-                                        <h4 className="mb-0 text-lg font-semibold">Compilation {index + 1}</h4>
+                                        <h4 className="mb-0 text-lg font-semibold">{compilation.name || `Compilation ${index + 1}`}</h4>
                                         <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${statusClasses}`}>{statusLabel}</span>
                                     </div>
 

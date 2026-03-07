@@ -7,8 +7,14 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 export const runtime = "nodejs";
 
 const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`
-  *[_type == "examCompilation" && _id == $compilationId && userId == $userId][0]{
-    "hasSession": count(session[_key == $sessionKey]) > 0
+  *[
+    _type == "mockExamSession" &&
+    _id == $sessionKey &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId &&
+    status == "in_progress"
+  ][0]{
+    _id
   }
 `;
 
@@ -29,8 +35,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Parametres manquants." }, { status: 400 });
         }
 
-        const access = await client.fetch<{ hasSession?: boolean } | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { compilationId, sessionKey, userId });
-        if (!access?.hasSession) {
+        const access = await client.fetch<{ _id?: string } | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { compilationId, sessionKey, userId });
+        if (!access?._id) {
             return NextResponse.json({ error: "Session non autorisee." }, { status: 403 });
         }
 

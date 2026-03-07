@@ -18,15 +18,11 @@ Tu dois maintenant exécuter le SCÉNARIO SPÉCIFIQUE ci-dessous et suivre ses c
 
 const cleanPromptPart = (value?: string) => value?.replace(/\r\n/g, "\n").trim() || "";
 
-export const buildConversationPrompt = (taskAiContext?: string, activityAiContext?: string) => {
+export const buildConversationPrompt = (activityAiContext?: string) => {
     const base = cleanPromptPart(PROMPT_BASE);
-    const taskContext = cleanPromptPart(taskAiContext);
     const activityContext = cleanPromptPart(activityAiContext);
 
     const parts = [base];
-    if (taskContext) {
-        parts.push(`Contexte IA de la tâche:\n${taskContext}`);
-    }
     if (activityContext) {
         parts.push(`Contexte IA de l'activité:\n${activityContext}`);
     }

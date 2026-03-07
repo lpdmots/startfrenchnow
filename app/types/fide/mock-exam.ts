@@ -28,16 +28,6 @@ export type TaskType =
 
 export type AIVoiceGender = "male" | "female";
 
-export type TaskMediaBlock = {
-    /** Tips / instructions courtes affichées avant de démarrer, ou correction écrite en fin */
-    text?: PortableText;
-    /** Vidéo d’intro skippable (S3/CloudFront) ou de correction */
-    videoUrl?: string;
-    /** Image d’intro optionnelle (Sanity) ou de correction*/
-    image?: Image;
-    layout?: "vertical" | "horizontal"; // optionnel, pour gérer le layout de l’intro (ex: vidéo à côté du texte vs au-dessus)
-};
-
 /**
  * Une activity = un "prompt" successif à enregistrer.
  * - Pour IMAGE_DESCRIPTION_A2: en général 1 activity (image + audio question).
@@ -76,31 +66,18 @@ export type MockExamTask = {
     // _id: string; // fourni par Sanity
 
     taskType: TaskType;
-    introBlocks: TaskMediaBlock[]; // defaut array pouvant être vide []
-
-    /**
-     * Contexte commun ajouté au prompt IA global (défini dans le programme).
-     * Les aiContext des activities viennent en complément par activité.
-     */
-    aiTaskContext?: string;
 
     /**
      * Liste ordonnée d’activities (= prompts successifs).
      * L’identifiant stable de chaque activity est son `_key` fourni par Sanity.
      */
     activities: Activity[];
-
-    /**
-     * Correction type associée à la tâche (affichée dans le feedback de fin de section,
-     * ou à l’endroit que le programme décide).
-     */
-    correctionBlocks: TaskMediaBlock[]; // defaut array pouvant être vide []
 };
 
 /**
  * ExamCompilation
- * - On refetch toujours les tasks (Sanity) au moment d’exécuter/afficher, si elles ne sont pas déjà renseignées dans MockExamConfigRef (dans ce cas c'est un replay)
- * - On stocke seulement : config (IDs), choix, progression, réponses, scores
+ * - Template éditorial (statique) géré dans Sanity
+ * - Le runtime utilisateur est stocké dans des documents MockExamSession séparés
  */
 
 export type SessionStatus = "in_progress" | "completed" | "abandoned";
@@ -153,32 +130,28 @@ export type ResumePointer = {
 };
 
 export type ExamCompilation = {
-    // <-- un champs examCompilations à ajouter au schema User.
-    _id: string; // identifiant de session (généré à la création, utilisé pour fetch/update)
-    userId: string;
+    _id: string;
+    name: string;
+    isActive?: boolean;
+    order?: number;
     image?: Image;
 
-    createdAt: string; // ne pas créer dans le schéma car intégré dans les docs Sanity
-    updatedAt: string; // ne pas créer dans le schéma car intégré dans les docs Sanity
+    createdAt: string;
+    updatedAt: string;
 
-    /** Configuration compilée sous forme de références */
+    /** Configuration template sous forme de références */
     examConfig: MockExamConfigRef;
-
-    /** IA propose, user choisit */
-    oralBranch: { recommended: OralBranch; chosen?: OralBranch };
-    writtenCombo: { recommended: WrittenCombo; chosen?: WrittenCombo };
-
-    session: MockExamSession[];
 };
 
 export type MockExamSession = {
-    // Si une ancienne session est noté non terminée, elle est écrasée par la nouvelle session (même userId) créée au début de l’exam. Donc il n’y a jamais que 0 ou 1 session "in_progress" par userId. On garde les 5 dernières sessions uniquement. À la fin d'une session, l'utilisateur a la possibilité de demander un retour du professeur sur son travail, auquel cas les réponses fournies speakA2Answers, speakBranchAnswers, readWriteAnswers sont sotckées dans un document ExamReview. Dans tous les cas, les réponses sont supprimées de la session à la fin.
-    _key: string; // identifiant de l’activité en cours
+    _id: string;
+    userRef: Reference;
+    compilationRef: Reference;
     status: SessionStatus;
     startedAt: string;
-    /** Progression (reprise au dernier écran) */
     resume: ResumePointer;
-    /** Réponses */
+    oralBranch: { recommended: OralBranch; chosen?: OralBranch };
+    writtenCombo: { recommended: WrittenCombo; chosen?: WrittenCombo };
     speakA2Answers: SpeakingAnswer[];
     speakBranchAnswers: SpeakingAnswer[];
     readWriteAnswers: ReadWriteAnswer[];
@@ -193,6 +166,13 @@ export type MockExamSession = {
         readWrite?: ScoreSummary;
         total?: ScoreSummary;
     };
+};
+
+export type UserExamCompilationEntry = {
+    _key?: string;
+    compilationRef: Reference;
+    sessions?: Reference[];
+    updatedAt?: string;
 };
 
 /**

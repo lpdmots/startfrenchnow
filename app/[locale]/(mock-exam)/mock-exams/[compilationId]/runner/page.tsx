@@ -1,67 +1,42 @@
-import { notFound } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
+import { notFound, redirect } from "next/navigation";
 import { requireSessionAndFide } from "@/app/components/auth/requireSession";
-import { appendSession, getCompilation, getMockExamTasksByIds, patchSession } from "@/app/serverActions/mockExamActions";
-import type { MockExamSession, ResumePointer, SpeakingAnswer } from "@/app/types/fide/mock-exam";
+import { getCompilation, getCompilationSessions, getMockExamTasksByIds, getOrCreateInProgressMockExamSession, isMockExamCompilationUnlockedForUser, patchSession } from "@/app/serverActions/mockExamActions";
+import type { ResumePointer, SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import RunnerClient from "./RunnerClient";
 
 export const dynamic = "force-dynamic";
 
-const buildInitialSession = (): MockExamSession => {
-    const now = new Date().toISOString();
-
-    return {
-        _key: uuidv4(),
-        status: "in_progress",
-        startedAt: now,
-        resume: {
-            state: "EXAM_INTRO",
-            updatedAt: now,
-        },
-        speakA2Answers: [],
-        speakBranchAnswers: [],
-        readWriteAnswers: [],
-    };
-};
-
 export default async function MockExamRunnerPage({ params: { compilationId } }: { params: { compilationId: string } }) {
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
-
-    let compilation = await getCompilation(compilationId);
-    if (!compilation || !userId || compilation.userId !== userId) {
+    if (!userId) {
         notFound();
     }
 
-    const inProgressSessions = (compilation.session || [])
-        .filter((entry) => entry.status === "in_progress")
-        .sort((a, b) => (b.resume?.updatedAt || b.startedAt || "").localeCompare(a.resume?.updatedAt || a.startedAt || ""));
+    const [compilation, isUnlocked] = await Promise.all([getCompilation(compilationId), isMockExamCompilationUnlockedForUser(userId, compilationId)]);
+    if (!compilation || !compilation.examConfig || compilation.isActive === false || !isUnlocked) {
+        notFound();
+    }
+    const sessions = await getCompilationSessions(userId, compilationId);
 
-    let inProgressSession = inProgressSessions[0];
+    let inProgressSession = (sessions || [])
+        .filter((entry) => entry.status === "in_progress")
+        .sort((a, b) => (b.resume?.updatedAt || b.startedAt || "").localeCompare(a.resume?.updatedAt || a.startedAt || ""))[0];
 
     if (!inProgressSession) {
-        const newSession = buildInitialSession();
-        await appendSession(compilationId, newSession);
-
-        const refreshedCompilation = await getCompilation(compilationId);
-        if (!refreshedCompilation) {
-            notFound();
+        const createResult = await getOrCreateInProgressMockExamSession(compilationId);
+        if (!createResult.ok || !createResult.session) {
+            redirect(`/mock-exams/${compilationId}`);
         }
-
-        compilation = refreshedCompilation;
-        inProgressSession = (refreshedCompilation.session || []).find((entry) => entry._key === newSession._key) || newSession;
-    }
-
-    if (!compilation.examConfig || !compilation.oralBranch || !compilation.writtenCombo || !inProgressSession?._key) {
-        notFound();
+        inProgressSession = createResult.session;
     }
 
     const speakA2TaskIds = (compilation.examConfig.speakA2TaskIds || []).map((ref) => ref?._ref).filter(Boolean) as string[];
     const speakA2Tasks: RunnerTask[] = await getMockExamTasksByIds(speakA2TaskIds);
 
-    let resume: ResumePointer = {
+    const resume: ResumePointer = {
         state: inProgressSession.resume?.state || "EXAM_INTRO",
         taskId: inProgressSession.resume?.taskId,
         activityKey: inProgressSession.resume?.activityKey,
@@ -69,16 +44,16 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
     };
 
     if (!inProgressSession.resume?.updatedAt || !inProgressSession.resume?.state) {
-        await patchSession(compilationId, inProgressSession._key, { set: { resume } });
+        await patchSession(inProgressSession._id, { set: { resume } });
     }
 
     const hydrationData: MockExamRunnerHydration = {
         compilationId: compilation._id,
-        sessionKey: inProgressSession._key,
+        sessionKey: inProgressSession._id,
         resume,
         examConfig: compilation.examConfig,
-        oralBranch: compilation.oralBranch,
-        writtenCombo: compilation.writtenCombo,
+        oralBranch: inProgressSession.oralBranch || { recommended: "A1" },
+        writtenCombo: inProgressSession.writtenCombo || { recommended: "A1_A2" },
     };
 
     const initialSpeakA2Answers = (inProgressSession.speakA2Answers || []) as SpeakingAnswer[];

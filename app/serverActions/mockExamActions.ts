@@ -1,38 +1,28 @@
 "use server";
 
+import { v4 as uuidv4 } from "uuid";
+import { groq } from "next-sanity";
+import { redirect } from "next/navigation";
+import { requireSessionAndFide } from "@/app/components/auth/requireSession";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import {
     MOCK_EXAM_COMPILATION_QUERY,
-    MOCK_EXAM_LISTENING_PACKS_BY_LEVEL_QUERY,
     MOCK_EXAM_TASKS_BY_IDS_QUERY,
-    MOCK_EXAM_TASKS_BY_TYPE_QUERY,
     MOCK_EXAM_USER_COMPILATIONS_QUERY,
     USER_MOCK_EXAM_CREDITS_QUERY,
 } from "@/app/lib/groqQueries";
-import { requireSessionAndFide } from "@/app/components/auth/requireSession";
-import { redirect } from "next/navigation";
-import { groq } from "next-sanity";
-import { v4 as uuidv4 } from "uuid";
 import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
 import type { Image } from "@/app/types/sfn/blog";
-import type {
-    MockExamConfigRef,
-    MockExamSession,
-    OralBranch,
-    ReadWriteAnswer,
-    ScoreSummary,
-    SessionStatus,
-    SpeakingAnswer,
-    WrittenCombo,
-    TaskType,
-} from "@/app/types/fide/mock-exam";
+import type { MockExamConfigRef, OralBranch, ReadWriteAnswer, ResumePointer, ScoreSummary, SessionStatus, SpeakingAnswer, WrittenCombo } from "@/app/types/fide/mock-exam";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 
 export type MockExamSessionLite = {
-    _key: string;
+    _id: string;
     status: SessionStatus;
     startedAt: string;
-    resume?: { state: string; taskId?: string; activityKey?: string; updatedAt?: string };
+    resume?: ResumePointer;
+    oralBranch?: { recommended: OralBranch; chosen?: OralBranch };
+    writtenCombo?: { recommended: WrittenCombo; chosen?: WrittenCombo };
     speakA2Answers?: SpeakingAnswer[];
     scores?: {
         speakA2?: ScoreSummary;
@@ -45,13 +35,13 @@ export type MockExamSessionLite = {
 
 export type ExamCompilationLite = {
     _id: string;
+    name?: string;
+    isActive?: boolean;
+    order?: number;
     image?: Image;
     _createdAt?: string;
     _updatedAt?: string;
-    userId?: string;
     examConfig?: MockExamConfigRef;
-    oralBranch?: { recommended: OralBranch; chosen?: OralBranch };
-    writtenCombo?: { recommended: WrittenCombo; chosen?: WrittenCombo };
     session?: MockExamSessionLite[];
 };
 
@@ -62,126 +52,420 @@ export type UserMockExamCredit = {
     remainingCredits?: number;
 } | null;
 
-const SPEAK_A2_TYPES: TaskType[] = ["IMAGE_DESCRIPTION_A2", "PHONE_CONVERSATION_A2", "DISCUSSION_A2"];
-const SPEAK_BRANCH_A1_TYPES: TaskType[] = ["IMAGE_DESCRIPTION_A1_T1", "IMAGE_DESCRIPTION_A1_T2"];
-const SPEAK_BRANCH_B1_TYPES: TaskType[] = ["DISCUSSION_B1"];
-const READ_WRITE_A1_A2_TYPES: TaskType[] = ["READ_WRITE_M1", "READ_WRITE_M2", "READ_WRITE_M3_M4"];
-const READ_WRITE_A2_B1_TYPES: TaskType[] = ["READ_WRITE_M3_M4", "READ_WRITE_M5", "READ_WRITE_M6"];
+type SessionWithCompilationId = MockExamSessionLite & { compilationId?: string };
 
-const toRef = (id: string) => ({ _type: "reference" as const, _ref: id });
-
-type MockExamTaskLite = {
+type SessionDocument = {
     _id: string;
-    taskType: TaskType;
-    firstActivityImage?: Image;
-};
-
-const pickFirstTaskByType = (tasks: MockExamTaskLite[], type: TaskType) => tasks.find((t) => t.taskType === type);
-
-const pickFirstRefByType = (tasks: MockExamTaskLite[], type: TaskType, usedTaskIds?: Set<string>) => {
-    const byType = tasks.filter((t) => t.taskType === type);
-    const foundUnused = usedTaskIds ? byType.find((t) => !usedTaskIds.has(t._id)) : undefined;
-    const found = foundUnused || byType[0];
-
-    return {
-        refs: found?._id ? [toRef(found._id)] : [],
-        reused: !!found && !!usedTaskIds && !foundUnused && usedTaskIds.has(found._id),
+    userRef?: { _ref?: string };
+    compilationRef?: { _ref?: string };
+    status: SessionStatus;
+    startedAt: string;
+    resume?: ResumePointer;
+    oralBranch?: { recommended: OralBranch; chosen?: OralBranch };
+    writtenCombo?: { recommended: WrittenCombo; chosen?: WrittenCombo };
+    speakA2Answers?: SpeakingAnswer[];
+    speakBranchAnswers?: SpeakingAnswer[];
+    readWriteAnswers?: ReadWriteAnswer[];
+    overtimeTaskRefs?: Array<{ _ref?: string; _type?: "reference" }>;
+    scores?: {
+        speakA2?: ScoreSummary;
+        speakBranch?: ScoreSummary;
+        listening?: ScoreSummary;
+        readWrite?: ScoreSummary;
+        total?: ScoreSummary;
     };
 };
 
-const MOCK_EXAM_PREVIOUS_CONFIGS_QUERY = groq`
-  *[_type == "examCompilation" && userId == $userId]{
-    examConfig{
-      speakA2TaskIds[]{_ref},
-      speakBranchTaskIds{
-        A1[]{_ref},
-        B1[]{_ref}
-      },
-      readWriteTaskIds{
-        A1_A2[]{_ref},
-        A2_B1[]{_ref}
-      }
+type UserCompilationEntry = {
+    _key?: string;
+    compilationId?: string;
+    sessionIds?: string[];
+};
+
+const DEFAULT_ORAL_BRANCH: { recommended: OralBranch; chosen?: OralBranch } = {
+    recommended: "A1",
+};
+
+const DEFAULT_WRITTEN_COMBO: { recommended: WrittenCombo; chosen?: WrittenCombo } = {
+    recommended: "A1_A2",
+};
+
+const toRef = (id: string) => ({ _type: "reference" as const, _ref: id });
+
+const USER_COMPILATION_ENTRIES_QUERY = groq`
+  *[_type == "user" && _id == $userId][0]{
+    examCompilations[]{
+      _key,
+      "compilationId": compilationRef._ref,
+      "sessionIds": sessions[]._ref
     }
   }
 `;
 
-function collectUsedTaskIds(previousConfigs: Array<{ examConfig?: MockExamConfigRef }>): Set<string> {
-    const used = new Set<string>();
-    for (const compilation of previousConfigs) {
-        const config = compilation.examConfig;
-        if (!config) continue;
+const ACTIVE_COMPILATION_IDS_QUERY = groq`
+  *[_type == "examCompilation" && isActive == true]{
+    _id
+  }
+`;
 
-        const buckets = [
-            ...(config.speakA2TaskIds || []),
-            ...(config.speakBranchTaskIds?.A1 || []),
-            ...(config.speakBranchTaskIds?.B1 || []),
-            ...(config.readWriteTaskIds?.A1_A2 || []),
-            ...(config.readWriteTaskIds?.A2_B1 || []),
-        ];
+const MOCK_EXAM_SESSIONS_BY_COMPILATION_IDS_QUERY = groq`
+  *[
+    _type == "mockExamSession" &&
+    userRef._ref == $userId &&
+    compilationRef._ref in $compilationIds
+  ] | order(startedAt desc){
+    _id,
+    status,
+    startedAt,
+    "compilationId": compilationRef._ref,
+    resume{ state, taskId, activityKey, updatedAt },
+    oralBranch,
+    writtenCombo,
+    speakA2Answers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    scores{
+      speakA2{ score, max },
+      speakBranch{ score, max },
+      listening{ score, max },
+      readWrite{ score, max },
+      total{ score, max }
+    }
+  }
+`;
 
-        for (const ref of buckets) {
-            if (ref?._ref) used.add(ref._ref);
+const MOCK_EXAM_SESSIONS_BY_COMPILATION_QUERY = groq`
+  *[
+    _type == "mockExamSession" &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId
+  ] | order(startedAt desc){
+    _id,
+    status,
+    startedAt,
+    resume{ state, taskId, activityKey, updatedAt },
+    oralBranch,
+    writtenCombo,
+    speakA2Answers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    speakBranchAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    readWriteAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      textAnswer,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    overtimeTaskRefs[]{ _ref, _type },
+    scores{
+      speakA2{ score, max },
+      speakBranch{ score, max },
+      listening{ score, max },
+      readWrite{ score, max },
+      total{ score, max }
+    }
+  }
+`;
+
+const MOCK_EXAM_IN_PROGRESS_SESSIONS_QUERY = groq`
+  *[
+    _type == "mockExamSession" &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId &&
+    status == "in_progress"
+  ] | order(coalesce(resume.updatedAt, startedAt) desc){
+    _id,
+    status,
+    startedAt,
+    resume{ state, taskId, activityKey, updatedAt },
+    oralBranch,
+    writtenCombo,
+    speakA2Answers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    speakBranchAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    readWriteAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      textAnswer,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    overtimeTaskRefs[]{ _ref, _type },
+    scores{
+      speakA2{ score, max },
+      speakBranch{ score, max },
+      listening{ score, max },
+      readWrite{ score, max },
+      total{ score, max }
+    }
+  }
+`;
+
+const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`
+  *[
+    _type == "mockExamSession" &&
+    _id == $sessionKey &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId &&
+    status == "in_progress"
+  ][0]{
+    _id,
+    status,
+    startedAt,
+    resume{ state, taskId, activityKey, updatedAt },
+    oralBranch,
+    writtenCombo,
+    speakA2Answers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    speakBranchAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    readWriteAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      textAnswer,
+      AiFeedback,
+      AiScore{ score, max }
+    },
+    overtimeTaskRefs[]{ _ref, _type },
+    scores{
+      speakA2{ score, max },
+      speakBranch{ score, max },
+      listening{ score, max },
+      readWrite{ score, max },
+      total{ score, max }
+    }
+  }
+`;
+
+const mapSessionDocumentToLite = (session: SessionDocument): MockExamSessionLite => ({
+    _id: session._id,
+    status: session.status,
+    startedAt: session.startedAt,
+    resume: session.resume,
+    oralBranch: session.oralBranch,
+    writtenCombo: session.writtenCombo,
+    speakA2Answers: Array.isArray(session.speakA2Answers) ? session.speakA2Answers : [],
+    scores: session.scores,
+});
+
+async function getUserCompilationEntries(userId: string) {
+    const user = await client.fetch<{ examCompilations?: UserCompilationEntry[] } | null>(USER_COMPILATION_ENTRIES_QUERY, { userId });
+    if (!user) return null;
+    return Array.isArray(user.examCompilations) ? user.examCompilations : [];
+}
+
+async function isCompilationUnlockedForUser(userId: string, compilationId: string) {
+    const entries = await getUserCompilationEntries(userId);
+    if (!entries) return false;
+    return entries.some((entry) => entry.compilationId === compilationId);
+}
+
+export async function isMockExamCompilationUnlockedForUser(userId: string, compilationId: string) {
+    if (!userId || !compilationId) return false;
+    return isCompilationUnlockedForUser(userId, compilationId);
+}
+
+async function appendSessionRefToUserCompilation(userId: string, compilationId: string, sessionId: string) {
+    const entries = await getUserCompilationEntries(userId);
+    const entry = (entries || []).find((item) => item.compilationId === compilationId && item._key);
+    if (!entry?._key) return;
+
+    const existingSessionIds = new Set(entry.sessionIds || []);
+    const setPath = `examCompilations[_key=="${entry._key}"].updatedAt`;
+    if (existingSessionIds.has(sessionId)) {
+        await client.patch(userId).set({ [setPath]: new Date().toISOString() }).commit({ autoGenerateArrayKeys: true });
+        return;
+    }
+
+    const sessionsPath = `examCompilations[_key=="${entry._key}"].sessions`;
+    await client
+        .patch(userId)
+        .set({ [setPath]: new Date().toISOString() })
+        .setIfMissing({ [sessionsPath]: [] })
+        .append(sessionsPath, [toRef(sessionId)])
+        .commit({ autoGenerateArrayKeys: true });
+}
+
+async function removeSessionRefsFromUser(userId: string, sessionIds: string[]) {
+    if (!sessionIds.length) return;
+    const sessionIdSet = new Set(sessionIds.filter(Boolean));
+    if (!sessionIdSet.size) return;
+
+    const user = await client.fetch<{ examCompilations?: Array<{ _key?: string; sessions?: Array<{ _ref?: string }> }> } | null>(
+        groq`
+          *[_type == "user" && _id == $userId][0]{
+            examCompilations[]{
+              _key,
+              "sessions": sessions[]{ _ref }
+            }
+          }
+        `,
+        { userId },
+    );
+
+    const entries = Array.isArray(user?.examCompilations) ? user.examCompilations : [];
+    if (!entries.length) return;
+
+    const unsetPaths: string[] = [];
+    const touchedEntryKeys = new Set<string>();
+
+    for (const entry of entries) {
+        const entryKey = String(entry?._key || "");
+        if (!entryKey) continue;
+
+        const refs = Array.isArray(entry.sessions) ? entry.sessions : [];
+        for (const ref of refs) {
+            const refId = String(ref?._ref || "");
+            if (!refId || !sessionIdSet.has(refId)) continue;
+
+            unsetPaths.push(`examCompilations[_key=="${entryKey}"].sessions[_ref=="${refId}"]`);
+            touchedEntryKeys.add(entryKey);
         }
     }
 
-    return used;
+    if (!unsetPaths.length) return;
+
+    const setPayload: Record<string, string> = {};
+    const now = new Date().toISOString();
+    for (const entryKey of touchedEntryKeys) {
+        setPayload[`examCompilations[_key=="${entryKey}"].updatedAt`] = now;
+    }
+
+    await client.patch(userId).unset(unsetPaths).set(setPayload).commit({ autoGenerateArrayKeys: true });
 }
 
-async function buildMockExamConfig(userId: string): Promise<{ examConfig: MockExamConfigRef; compilationImage?: Image; hasReusedTasks: boolean }> {
-    const allTypes = Array.from(new Set<TaskType>([
-        ...SPEAK_A2_TYPES,
-        ...SPEAK_BRANCH_A1_TYPES,
-        ...SPEAK_BRANCH_B1_TYPES,
-        ...READ_WRITE_A1_A2_TYPES,
-        ...READ_WRITE_A2_B1_TYPES,
-    ]));
+async function consumeMockExamCredit(userId: string) {
+    const credit = await getUserMockExamCredits(userId);
+    const remaining = Number(credit?.remainingCredits || 0);
+    if (!credit || remaining <= 0) return { ok: false as const, remaining };
 
-    const [tasks, listeningA1, listeningA2, listeningB1, previousConfigs] = await Promise.all([
-        client.fetch<MockExamTaskLite[]>(MOCK_EXAM_TASKS_BY_TYPE_QUERY, { types: allTypes }),
-        client.fetch<Array<{ _id: string }>>(MOCK_EXAM_LISTENING_PACKS_BY_LEVEL_QUERY, { level: "A1" }),
-        client.fetch<Array<{ _id: string }>>(MOCK_EXAM_LISTENING_PACKS_BY_LEVEL_QUERY, { level: "A2" }),
-        client.fetch<Array<{ _id: string }>>(MOCK_EXAM_LISTENING_PACKS_BY_LEVEL_QUERY, { level: "B1" }),
-        client.fetch<Array<{ examConfig?: MockExamConfigRef }>>(MOCK_EXAM_PREVIOUS_CONFIGS_QUERY, { userId }),
-    ]);
+    const creditPath = credit?._key ? `credits[_key=="${credit._key}"].remainingCredits` : `credits[referenceKey=="mock_exam"][0].remainingCredits`;
+    return { ok: true as const, remaining, creditPath };
+}
 
-    const usedTaskIds = collectUsedTaskIds(previousConfigs || []);
+async function getInProgressSessionsForCompilation(userId: string, compilationId: string) {
+    const data = await client.fetch<SessionDocument[]>(MOCK_EXAM_IN_PROGRESS_SESSIONS_QUERY, { userId, compilationId });
+    return (data || []).map(mapSessionDocumentToLite);
+}
 
-    const speakA2 = SPEAK_A2_TYPES.map((type) => pickFirstRefByType(tasks, type, usedTaskIds));
-    const speakBranchA1 = SPEAK_BRANCH_A1_TYPES.map((type) => pickFirstRefByType(tasks, type, usedTaskIds));
-    const speakBranchB1 = SPEAK_BRANCH_B1_TYPES.map((type) => pickFirstRefByType(tasks, type, usedTaskIds));
-    const readWriteA1A2 = READ_WRITE_A1_A2_TYPES.map((type) => pickFirstRefByType(tasks, type, usedTaskIds));
-    const readWriteA2B1 = READ_WRITE_A2_B1_TYPES.map((type) => pickFirstRefByType(tasks, type, usedTaskIds));
+async function clearInProgressSessionsForCompilation(userId: string, compilationId: string) {
+    const inProgressSessions = await getInProgressSessionsForCompilation(userId, compilationId);
+    if (!inProgressSessions.length) return [] as MockExamSessionLite[];
 
-    const hasReusedTasks = [...speakA2, ...speakBranchA1, ...speakBranchB1, ...readWriteA1A2, ...readWriteA2B1].some((item) => item.reused);
+    const sessionIds = inProgressSessions.map((session) => session._id);
+    await removeSessionRefsFromUser(userId, sessionIds);
 
-    const examConfig: MockExamConfigRef = {
-        speakA2TaskIds: speakA2.flatMap((item) => item.refs),
-        speakBranchTaskIds: {
-            A1: speakBranchA1.flatMap((item) => item.refs),
-            B1: speakBranchB1.flatMap((item) => item.refs),
-        },
-        listeningPackIds: {
-            A1: listeningA1?.[0]?._id ? [toRef(listeningA1[0]._id)] : [],
-            A2: listeningA2?.[0]?._id ? [toRef(listeningA2[0]._id)] : [],
-            B1: listeningB1?.[0]?._id ? [toRef(listeningB1[0]._id)] : [],
-        },
-        readWriteTaskIds: {
-            A1_A2: readWriteA1A2.flatMap((item) => item.refs),
-            A2_B1: readWriteA2B1.flatMap((item) => item.refs),
-        },
-    };
+    let tx = client.transaction();
+    for (const session of inProgressSessions) {
+        tx = tx.delete(session._id);
+    }
+    await tx.commit({ autoGenerateArrayKeys: true });
 
-    const firstA2TaskId = examConfig.speakA2TaskIds?.[0]?._ref;
-    const firstA2Task = firstA2TaskId ? tasks.find((task) => task._id === firstA2TaskId) : pickFirstTaskByType(tasks, SPEAK_A2_TYPES[0]);
-    const compilationImage = firstA2Task?.firstActivityImage;
-
-    return { examConfig, compilationImage, hasReusedTasks };
+    return inProgressSessions;
 }
 
 export async function getUserCompilations(userId: string) {
     if (!userId) return [] as ExamCompilationLite[];
-    const data = await client.fetch<ExamCompilationLite[]>(MOCK_EXAM_USER_COMPILATIONS_QUERY, { userId });
-    return data || [];
+    const entries = await getUserCompilationEntries(userId);
+    if (!entries) return [] as ExamCompilationLite[];
+    const compilationIds = entries.map((entry) => entry.compilationId).filter(Boolean) as string[];
+    if (!compilationIds.length) return [];
+
+    const compilations = await client.fetch<ExamCompilationLite[]>(MOCK_EXAM_USER_COMPILATIONS_QUERY, { compilationIds });
+    const list = compilations || [];
+    if (!list.length) return [];
+
+    const sessions = await client.fetch<SessionWithCompilationId[]>(MOCK_EXAM_SESSIONS_BY_COMPILATION_IDS_QUERY, { userId, compilationIds });
+    const sessionsByCompilation = new Map<string, MockExamSessionLite[]>();
+    for (const session of sessions || []) {
+        if (!session.compilationId) continue;
+        const bucket = sessionsByCompilation.get(session.compilationId) || [];
+        bucket.push({
+            _id: session._id,
+            status: session.status,
+            startedAt: session.startedAt,
+            resume: session.resume,
+            oralBranch: session.oralBranch,
+            writtenCombo: session.writtenCombo,
+            speakA2Answers: session.speakA2Answers,
+            scores: session.scores,
+        });
+        sessionsByCompilation.set(session.compilationId, bucket);
+    }
+
+    return list.map((compilation) => ({
+        ...compilation,
+        session: sessionsByCompilation.get(compilation._id) || [],
+    }));
+}
+
+export async function getUserAvailableMockExamCompilationCount(userId: string) {
+    if (!userId) return 0;
+
+    const [entries, activeCompilations] = await Promise.all([getUserCompilationEntries(userId), client.fetch<Array<{ _id: string }>>(ACTIVE_COMPILATION_IDS_QUERY)]);
+    if (!entries) return 0;
+
+    const ownedIds = new Set(entries.map((entry) => entry.compilationId).filter(Boolean) as string[]);
+    return (activeCompilations || []).reduce((count, compilation) => {
+        const compilationId = String(compilation?._id || "");
+        if (!compilationId || ownedIds.has(compilationId)) {
+            return count;
+        }
+        return count + 1;
+    }, 0);
 }
 
 export async function getCompilation(compilationId: string) {
@@ -190,12 +474,146 @@ export async function getCompilation(compilationId: string) {
     return data || null;
 }
 
+export async function getCompilationSessions(userId: string, compilationId: string) {
+    if (!userId || !compilationId) return [] as MockExamSessionLite[];
+    const data = await client.fetch<SessionDocument[]>(MOCK_EXAM_SESSIONS_BY_COMPILATION_QUERY, { userId, compilationId });
+    return (data || []).map(mapSessionDocumentToLite);
+}
+
+export async function getOrCreateInProgressMockExamSession(compilationId: string, params?: { forceNew?: boolean }) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = session?.user?._id;
+    if (!userId || !compilationId) {
+        return { ok: false as const, error: "Paramètres invalides." };
+    }
+
+    const compilation = await getCompilation(compilationId);
+    if (!compilation || !compilation.examConfig || compilation.isActive === false) {
+        return { ok: false as const, error: "Compilation introuvable." };
+    }
+    const isUnlocked = await isCompilationUnlockedForUser(userId, compilationId);
+    if (!isUnlocked) {
+        return { ok: false as const, error: "Compilation non disponible pour cet utilisateur." };
+    }
+
+    if (params?.forceNew) {
+        await clearInProgressSessionsForCompilation(userId, compilationId);
+    } else {
+        const existing = await getInProgressSessionsForCompilation(userId, compilationId);
+        if (existing[0]) {
+            if (existing.length > 1) {
+                const staleSessions = existing.slice(1);
+                const staleSessionIds = staleSessions.map((stale) => stale._id);
+                await removeSessionRefsFromUser(userId, staleSessionIds);
+                let tx = client.transaction();
+                for (const stale of staleSessions) {
+                    tx = tx.delete(stale._id);
+                }
+                await tx.commit({ autoGenerateArrayKeys: true });
+            }
+            return { ok: true as const, session: existing[0], created: false as const };
+        }
+    }
+
+    const now = new Date().toISOString();
+    const newSessionId = uuidv4();
+    const newSession: SessionDocument = {
+        _id: newSessionId,
+        userRef: toRef(userId),
+        compilationRef: toRef(compilationId),
+        status: "in_progress",
+        startedAt: now,
+        resume: {
+            state: "EXAM_INTRO",
+            updatedAt: now,
+        },
+        oralBranch: DEFAULT_ORAL_BRANCH,
+        writtenCombo: DEFAULT_WRITTEN_COMBO,
+        speakA2Answers: [],
+        speakBranchAnswers: [],
+        readWriteAnswers: [],
+    };
+
+    let tx = client.transaction();
+    tx = tx.create({
+        _id: newSession._id,
+        _type: "mockExamSession",
+        userRef: newSession.userRef,
+        compilationRef: newSession.compilationRef,
+        status: newSession.status,
+        startedAt: newSession.startedAt,
+        resume: newSession.resume,
+        oralBranch: newSession.oralBranch,
+        writtenCombo: newSession.writtenCombo,
+        speakA2Answers: [],
+        speakBranchAnswers: [],
+        readWriteAnswers: [],
+    });
+    await tx.commit({ autoGenerateArrayKeys: true });
+
+    await appendSessionRefToUserCompilation(userId, compilationId, newSession._id);
+
+    return {
+        ok: true as const,
+        created: true as const,
+        session: mapSessionDocumentToLite(newSession),
+    };
+}
+
+export async function purchaseMockExamCompilation() {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = session?.user?._id;
+    if (!userId) {
+        return { ok: false as const, error: "Utilisateur introuvable." };
+    }
+
+    const entries = await getUserCompilationEntries(userId);
+    if (!entries) {
+        return { ok: false as const, error: "Utilisateur introuvable." };
+    }
+    const ownedIds = new Set(entries.map((entry) => entry.compilationId).filter(Boolean) as string[]);
+
+    const activeCompilations = await client.fetch<Array<{ _id: string }>>(ACTIVE_COMPILATION_IDS_QUERY);
+    const available = (activeCompilations || []).map((item) => item._id).filter((id) => id && !ownedIds.has(id));
+    if (!available.length) {
+        return { ok: false as const, error: "Aucune nouvelle compilation disponible pour le moment." };
+    }
+
+    const creditCheck = await consumeMockExamCredit(userId);
+    if (!creditCheck.ok) {
+        return { ok: false as const, error: "Vous n'avez plus de crédits disponibles." };
+    }
+
+    const randomIndex = Math.floor(Math.random() * available.length);
+    const compilationId = available[randomIndex];
+    const now = new Date().toISOString();
+
+    await client
+        .transaction()
+        .patch(userId, (patch) =>
+            patch
+                .setIfMissing({ credits: [], examCompilations: [] })
+                .set({
+                    [creditCheck.creditPath]: creditCheck.remaining - 1,
+                })
+                .append("examCompilations", [
+                    {
+                        _type: "examCompilationEntry",
+                        compilationRef: toRef(compilationId),
+                        sessions: [],
+                        updatedAt: now,
+                    },
+                ]),
+        )
+        .commit({ autoGenerateArrayKeys: true });
+
+    return { ok: true as const, compilationId };
+}
+
 export async function getMockExamTasksByIds(taskIds: string[]) {
     if (!taskIds?.length) return [] as RunnerTask[];
-
     const data = await client.fetch<RunnerTask[]>(MOCK_EXAM_TASKS_BY_IDS_QUERY, { taskIds });
     const tasksById = new Map((data || []).map((task) => [task._id, task]));
-
     return taskIds.map((id) => tasksById.get(id)).filter((task): task is RunnerTask => Boolean(task));
 }
 
@@ -205,57 +623,16 @@ export async function getUserMockExamCredits(userId: string) {
     return credit || null;
 }
 
-export async function patchCompilation(compilationId: string, params: { set?: Record<string, any>; unset?: string[] }) {
-    if (!compilationId) return null;
-    let patch = client.patch(compilationId);
-    if (params.set && Object.keys(params.set).length) patch = patch.set(params.set);
-    if (params.unset && params.unset.length) patch = patch.unset(params.unset);
-    return patch.commit({ autoGenerateArrayKeys: true });
-}
-
-export async function patchSession(compilationId: string, sessionKey: string, params: { set?: Record<string, any>; unset?: string[] }) {
-    if (!compilationId || !sessionKey) return null;
-    const set: Record<string, any> = {};
-    if (params.set) {
-        for (const [key, value] of Object.entries(params.set)) {
-            set[`session[_key=="${sessionKey}"].${key}`] = value;
-        }
+export async function patchSession(sessionKey: string, params: { set?: Record<string, any>; unset?: string[] }) {
+    if (!sessionKey) return null;
+    let patch = client.patch(sessionKey);
+    if (params.set && Object.keys(params.set).length) {
+        patch = patch.set(params.set);
     }
-    const unset = params.unset?.map((path) => `session[_key=="${sessionKey}"].${path}`);
-
-    let patch = client.patch(compilationId);
-    if (Object.keys(set).length) patch = patch.set(set);
-    if (unset && unset.length) patch = patch.unset(unset);
+    if (params.unset && params.unset.length) {
+        patch = patch.unset(params.unset);
+    }
     return patch.commit({ autoGenerateArrayKeys: true });
-}
-
-export async function appendSession(compilationId: string, session: MockExamSession) {
-    if (!compilationId) return null;
-    return client
-        .patch(compilationId)
-        .setIfMissing({ session: [] })
-        .append("session", [session])
-        .commit({ autoGenerateArrayKeys: true });
-}
-
-export async function removeSession(compilationId: string, sessionKey: string) {
-    if (!compilationId || !sessionKey) return null;
-    return client.patch(compilationId).unset([`session[_key=="${sessionKey}"]`]).commit({ autoGenerateArrayKeys: true });
-}
-
-export async function appendSessionAnswer(
-    compilationId: string,
-    sessionKey: string,
-    field: "speakA2Answers" | "speakBranchAnswers" | "readWriteAnswers",
-    answer: SpeakingAnswer | ReadWriteAnswer,
-) {
-    if (!compilationId || !sessionKey) return null;
-    const path = `session[_key=="${sessionKey}"].${field}`;
-    return client
-        .patch(compilationId)
-        .setIfMissing({ [path]: [] })
-        .append(path, [answer])
-        .commit({ autoGenerateArrayKeys: true });
 }
 
 export async function saveMockExamSpeakingAnswer(params: {
@@ -274,17 +651,11 @@ export async function saveMockExamSpeakingAnswer(params: {
     if (!userId || !compilationId || !sessionKey || !taskId || !activityKey || !audioUrl) {
         return { ok: false as const, error: "Paramètres invalides." };
     }
-
     if (!transcriptFinal) {
         return { ok: false as const, error: "Le transcript est vide." };
     }
 
-    const compilation = await getCompilation(compilationId);
-    if (!compilation || compilation.userId !== userId) {
-        return { ok: false as const, error: "Compilation introuvable." };
-    }
-
-    const activeSession = (compilation.session || []).find((entry) => entry._key === sessionKey);
+    const activeSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { userId, compilationId, sessionKey });
     if (!activeSession) {
         return { ok: false as const, error: "Session introuvable." };
     }
@@ -299,7 +670,6 @@ export async function saveMockExamSpeakingAnswer(params: {
     const currentAnswers = Array.isArray(activeSession.speakA2Answers) ? activeSession.speakA2Answers : [];
     const existingIndex = currentAnswers.findIndex((item) => getAnswerTaskId(item) === taskId && item.activityKey === activityKey);
     const nextAnswers = [...currentAnswers];
-
     if (existingIndex >= 0) {
         nextAnswers[existingIndex] = {
             ...currentAnswers[existingIndex],
@@ -309,84 +679,19 @@ export async function saveMockExamSpeakingAnswer(params: {
         nextAnswers.push(answer);
     }
 
-    await patchSession(compilationId, sessionKey, { set: { speakA2Answers: nextAnswers } });
-
+    await patchSession(sessionKey, { set: { speakA2Answers: nextAnswers } });
     return { ok: true as const, answer };
-}
-
-async function consumeMockExamCredit(userId: string) {
-    const credit = await getUserMockExamCredits(userId);
-    const remaining = Number(credit?.remainingCredits || 0);
-    if (!credit || remaining <= 0) return { ok: false as const, remaining };
-
-    const creditPath = credit?._key ? `credits[_key=="${credit._key}"].remainingCredits` : `credits[referenceKey=="mock_exam"][0].remainingCredits`;
-
-    return { ok: true as const, remaining, creditPath };
-}
-
-export async function createMockExamCompilation(params?: { allowTaskReuse?: boolean }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
-    const userId = session?.user?._id;
-    if (!userId) return { ok: false as const, error: "Utilisateur introuvable." };
-
-    const creditCheck = await consumeMockExamCredit(userId);
-    if (!creditCheck.ok) return { ok: false as const, error: "Vous n'avez plus de compilations disponibles." };
-
-    const { examConfig, compilationImage, hasReusedTasks } = await buildMockExamConfig(userId);
-    if (hasReusedTasks && !params?.allowTaskReuse) {
-        return {
-            ok: false as const,
-            requiresConfirmation: true as const,
-            error: "Certaines tâches de votre prochaine compilation ont déjà été utilisées. Vous pouvez continuer et créer une nouvelle compilation avec quelques tâches déjà vues, ou annuler.",
-        };
-    }
-
-    const compilationId = uuidv4();
-
-    const newCompilation = {
-        _id: compilationId,
-        _type: "examCompilation",
-        userId,
-        image: compilationImage,
-        examConfig,
-        oralBranch: { recommended: "A1" as OralBranch },
-        writtenCombo: { recommended: "A1_A2" as WrittenCombo },
-        session: [] as MockExamSession[],
-    };
-
-    let tx = client.transaction();
-
-    tx = tx.patch(userId, (p) =>
-        p
-            .setIfMissing({ credits: [], examCompilations: [] })
-            .set({ [creditCheck.creditPath]: creditCheck.remaining - 1 })
-            .append("examCompilations", [{ _type: "reference", _ref: compilationId }]),
-    );
-
-    tx = tx.create(newCompilation as any);
-
-    await tx.commit({ autoGenerateArrayKeys: true });
-
-    return { ok: true as const, compilationId };
 }
 
 export async function restartMockExamCompilation(formData: FormData) {
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(formData.get("compilationId") || "");
-    if (!compilationId || !userId) return null;
+    if (!userId || !compilationId) return null;
 
-    const compilation = await getCompilation(compilationId);
-    if (!compilation || compilation.userId !== userId) return null;
-
-    const inProgressSessionKeys = (compilation.session || [])
-        .filter((entry) => entry.status === "in_progress" && Boolean(entry._key))
-        .map((entry) => entry._key);
-
-    if (inProgressSessionKeys.length > 0) {
-        await patchCompilation(compilationId, {
-            unset: inProgressSessionKeys.map((sessionKey) => `session[_key=="${sessionKey}"]`),
-        });
+    const createResult = await getOrCreateInProgressMockExamSession(compilationId, { forceNew: true });
+    if (!createResult.ok || !createResult.session?._id) {
+        redirect(`/mock-exams/${compilationId}`);
     }
 
     redirect(`/mock-exams/${compilationId}/runner`);
@@ -405,24 +710,31 @@ export async function advanceMockExamResume(params: {
         return { ok: false as const, error: "Paramètres invalides." };
     }
 
-    const compilation = await getCompilation(params.compilationId);
-    if (!compilation || compilation.userId !== userId) {
-        return { ok: false as const, error: "Compilation introuvable." };
-    }
+    const activeSession = await client.fetch<{ _id?: string } | null>(groq`
+      *[
+        _type == "mockExamSession" &&
+        _id == $sessionKey &&
+        userRef._ref == $userId &&
+        compilationRef._ref == $compilationId &&
+        status == "in_progress"
+      ][0]{ _id }
+    `, {
+        sessionKey: params.sessionKey,
+        userId,
+        compilationId: params.compilationId,
+    });
 
-    const activeSession = (compilation.session || []).find((entry) => entry._key === params.sessionKey);
-    if (!activeSession) {
+    if (!activeSession?._id) {
         return { ok: false as const, error: "Session introuvable." };
     }
 
-    const resume = {
+    const resume: ResumePointer = {
         state: params.nextState,
         taskId: params.taskId,
         activityKey: params.activityKey,
         updatedAt: new Date().toISOString(),
     };
 
-    await patchSession(params.compilationId, params.sessionKey, { set: { resume } });
-
+    await patchSession(params.sessionKey, { set: { resume } });
     return { ok: true as const, resume };
 }

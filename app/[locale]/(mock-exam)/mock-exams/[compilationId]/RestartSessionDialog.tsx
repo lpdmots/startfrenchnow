@@ -23,7 +23,7 @@ export default function RestartSessionDialog({ compilationId }: { compilationId:
                 data={{
                     setOpen,
                     title: "Recommencer l'examen ?",
-                    message: "La session en cours sera supprimée et votre progression actuelle sera perdue. Vous pourrez repartir de zéro.",
+                    message: "La session en cours sera supprimée. Une nouvelle session sera créée et vous repartirez de zéro.",
                     buttonAnnulerStr: "Annuler",
                     buttonOkStr: "Oui, recommencer",
                     clickOutside: true,

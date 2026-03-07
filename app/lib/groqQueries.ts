@@ -115,12 +115,42 @@ export const FRENCH_USER_PROGRESS_QUERY = groq`
   }
 `;
 
-const MOCK_EXAM_SESSION_FIELDS = `
-  session[]{
-    _key,
+const MOCK_EXAM_COMPILATION_FIELDS = `
+  _id,
+  name,
+  isActive,
+  order,
+  image,
+  _createdAt,
+  _updatedAt,
+  examConfig
+`;
+
+export const MOCK_EXAM_USER_COMPILATIONS_QUERY = groq`
+  *[_type == "examCompilation" && isActive == true && _id in $compilationIds]
+    | order(coalesce(order, 0) asc, _updatedAt desc) {
+      ${MOCK_EXAM_COMPILATION_FIELDS}
+    }
+`;
+
+export const MOCK_EXAM_COMPILATION_QUERY = groq`
+  *[_type == "examCompilation" && _id == $compilationId][0]{
+    ${MOCK_EXAM_COMPILATION_FIELDS}
+  }
+`;
+
+export const MOCK_EXAM_SESSIONS_BY_COMPILATION_QUERY = groq`
+  *[
+    _type == "mockExamSession" &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId
+  ] | order(startedAt desc){
+    _id,
     status,
     startedAt,
     resume{ state, taskId, activityKey, updatedAt },
+    oralBranch,
+    writtenCombo,
     speakA2Answers[]{
       taskRef,
       taskId,
@@ -140,53 +170,10 @@ const MOCK_EXAM_SESSION_FIELDS = `
   }
 `;
 
-export const MOCK_EXAM_USER_COMPILATIONS_QUERY = groq`
-  *[_type == "examCompilation" && userId == $userId]
-    | order(_updatedAt desc) {
-      _id,
-      image,
-      _createdAt,
-      _updatedAt,
-      oralBranch,
-      writtenCombo,
-      ${MOCK_EXAM_SESSION_FIELDS}
-    }
-`;
-
-export const MOCK_EXAM_COMPILATION_QUERY = groq`
-  *[_type == "examCompilation" && _id == $compilationId][0]{
-    _id,
-    image,
-    _createdAt,
-    _updatedAt,
-    userId,
-    examConfig,
-    oralBranch,
-    writtenCombo,
-    ${MOCK_EXAM_SESSION_FIELDS}
-  }
-`;
-
-export const MOCK_EXAM_TASKS_BY_TYPE_QUERY = groq`
-  *[_type == "mockExamTask" && taskType in $types]
-    | order(_updatedAt desc, _createdAt desc) {
-      _id,
-      taskType,
-      "firstActivityImage": activities[0].image
-    }
-`;
-
 export const MOCK_EXAM_TASKS_BY_IDS_QUERY = groq`
   *[_type == "mockExamTask" && _id in $taskIds]{
     _id,
     taskType,
-    introBlocks[]{
-      text,
-      videoUrl,
-      image,
-      layout
-    },
-    aiTaskContext,
     activities[]{
       _key,
       image,
@@ -195,21 +182,8 @@ export const MOCK_EXAM_TASKS_BY_IDS_QUERY = groq`
       aiContext,
       aiVoiceGender,
       maxPoints
-    },
-    correctionBlocks[]{
-      text,
-      videoUrl,
-      image,
-      layout
     }
   }
-`;
-
-export const MOCK_EXAM_LISTENING_PACKS_BY_LEVEL_QUERY = groq`
-  *[_type == "fideExam" && competence == "Comprendre" && $level in levels]
-    | order(order asc, _createdAt desc) {
-      _id
-    }
 `;
 
 export const USER_MOCK_EXAM_CREDITS_QUERY = groq`

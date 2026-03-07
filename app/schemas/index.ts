@@ -13,6 +13,7 @@ import pendingPurchase from "./sfn/pendingPurchase";
 import mockExamTask from "./mock-exam/mockExamTask";
 import examCompilation from "./mock-exam/examCompilation";
 import examReview from "./mock-exam/examReview";
+import mockExamSession from "./mock-exam/mockExamSession";
 
 // Blog Tools
 import flashcards from "./sfn/blogTools/flashcards";
@@ -46,6 +47,7 @@ export const schemaTypes = [
     pendingPurchase,
     mockExamTask,
     examCompilation,
+    mockExamSession,
     examReview,
     blockContent,
     video,

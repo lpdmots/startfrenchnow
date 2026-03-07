@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import urlFor from "@/app/lib/urlFor";
 import { requireSessionAndFide } from "@/app/components/auth/requireSession";
-import { getCompilation } from "@/app/serverActions/mockExamActions";
+import { getCompilation, getCompilationSessions, getUserMockExamCredits, isMockExamCompilationUnlockedForUser } from "@/app/serverActions/mockExamActions";
 import type { ScoreSummary, SessionStatus } from "@/app/types/fide/mock-exam";
 import RestartSessionDialog from "./RestartSessionDialog";
 
@@ -44,16 +44,22 @@ export default async function MockExamCompilationPage({ params: { compilationId 
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
 
-    const compilation = await getCompilation(compilationId);
-    if (!compilation || !userId || compilation.userId !== userId) {
+    if (!userId) {
         notFound();
     }
 
-    const sessions = (compilation.session || []).slice().sort((a, b) => (b.startedAt || "").localeCompare(a.startedAt || ""));
-    const inProgress = sessions.find((s) => s.status === "in_progress");
+    const [compilation, isUnlocked] = await Promise.all([getCompilation(compilationId), isMockExamCompilationUnlockedForUser(userId, compilationId)]);
+    if (!compilation || compilation.isActive === false || !isUnlocked) {
+        notFound();
+    }
+    const [userSessions, credit] = await Promise.all([getCompilationSessions(userId, compilationId), getUserMockExamCredits(userId)]);
+
+    const sessions = (userSessions || []).slice().sort((a, b) => (b.startedAt || "").localeCompare(a.startedAt || ""));
+    const inProgress = sessions.find((entry) => entry.status === "in_progress");
     const lastSession = sessions[0];
     const hasSessions = sessions.length > 0;
     const startLabel = inProgress ? "Reprendre" : hasSessions ? "Recommencer" : "Commencer";
+    const remainingCredits = Number(credit?.remainingCredits || 0);
 
     const coverUrl = compilation.image ? urlFor(compilation.image).width(1200).height(700).fit("crop").url() : null;
 
@@ -69,7 +75,7 @@ export default async function MockExamCompilationPage({ params: { compilationId 
             <section className="max-w-6xl w-full flex flex-col gap-6 py-0">
                 <div className="flex flex-col gap-2">
                     <p className="text-sm uppercase tracking-wide text-neutral-500">EXAMEN BLANC</p>
-                    <h1 className="display-2 font-medium">Ma compilation</h1>
+                    <h1 className="display-2 font-medium">{compilation.name || "Compilation"}</h1>
                 </div>
 
                 <div className="card border-2 border-solid border-neutral-700 overflow-hidden p-0">
@@ -106,11 +112,11 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                                 </div>
                                 <div className="rounded-xl border border-neutral-300 p-3">
                                     <p className="mb-1 text-neutral-500">Branche orale</p>
-                                    <p className="mb-0 font-semibold">{compilation.oralBranch?.chosen || "À choisir"}</p>
+                                    <p className="mb-0 font-semibold">{lastSession?.oralBranch?.chosen || lastSession?.oralBranch?.recommended || "À choisir"}</p>
                                 </div>
                                 <div className="rounded-xl border border-neutral-300 p-3">
                                     <p className="mb-1 text-neutral-500">Combo écrit</p>
-                                    <p className="mb-0 font-semibold">{compilation.writtenCombo?.chosen || "À choisir"}</p>
+                                    <p className="mb-0 font-semibold">{lastSession?.writtenCombo?.chosen || lastSession?.writtenCombo?.recommended || "À choisir"}</p>
                                 </div>
                             </div>
 
@@ -120,6 +126,7 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                                 </Link>
                                 {inProgress && <RestartSessionDialog compilationId={compilation._id} />}
                             </div>
+                            <p className="mb-0 text-sm text-neutral-600">Crédits restants: {remainingCredits}</p>
                         </div>
                     </div>
                 </div>
@@ -137,37 +144,37 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {sessions.map((s, index) => (
-                            <div key={s._key} className="card border-2 border-solid border-neutral-700 p-5 flex flex-col gap-4">
+                        {sessions.map((entry, index) => (
+                            <div key={entry._id} className="card border-2 border-solid border-neutral-700 p-5 flex flex-col gap-4">
                                 <div className="flex items-center justify-between gap-2">
                                     <p className="mb-0 font-semibold">Session {sessions.length - index}</p>
-                                    <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${STATUS_CLASSES[s.status]}`}>{STATUS_LABEL[s.status]}</span>
+                                    <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${STATUS_CLASSES[entry.status]}`}>{STATUS_LABEL[entry.status]}</span>
                                 </div>
 
-                                <p className="mb-0 text-sm text-neutral-600">Démarrée le {formatDate(s.startedAt)}</p>
+                                <p className="mb-0 text-sm text-neutral-600">Démarrée le {formatDate(entry.startedAt)}</p>
 
                                 <div className="grid grid-cols-2 gap-2 text-sm">
                                     <div className="rounded-lg border border-neutral-300 p-2">
                                         <p className="mb-1 text-neutral-500">Parler A2</p>
-                                        <p className="mb-0 font-semibold">{formatScore(s.scores?.speakA2)}</p>
+                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.speakA2)}</p>
                                     </div>
                                     <div className="rounded-lg border border-neutral-300 p-2">
                                         <p className="mb-1 text-neutral-500">Parler branche</p>
-                                        <p className="mb-0 font-semibold">{formatScore(s.scores?.speakBranch)}</p>
+                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.speakBranch)}</p>
                                     </div>
                                     <div className="rounded-lg border border-neutral-300 p-2">
                                         <p className="mb-1 text-neutral-500">Comprendre</p>
-                                        <p className="mb-0 font-semibold">{formatScore(s.scores?.listening)}</p>
+                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.listening)}</p>
                                     </div>
                                     <div className="rounded-lg border border-neutral-300 p-2">
                                         <p className="mb-1 text-neutral-500">Lire / Écrire</p>
-                                        <p className="mb-0 font-semibold">{formatScore(s.scores?.readWrite)}</p>
+                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.readWrite)}</p>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-neutral-500">Total</span>
-                                    <span className="text-lg font-bold text-neutral-800">{formatScore(s.scores?.total)}</span>
+                                    <span className="text-lg font-bold text-neutral-800">{formatScore(entry.scores?.total)}</span>
                                 </div>
                             </div>
                         ))}

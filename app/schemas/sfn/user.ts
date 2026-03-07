@@ -218,7 +218,33 @@ export default defineType({
             name: "examCompilations",
             title: "Mock Exam Compilations",
             type: "array",
-            of: [{ type: "reference", to: [{ type: "examCompilation" }] }],
+            of: [
+                {
+                    name: "examCompilationEntry",
+                    title: "Compilation Entry",
+                    type: "object",
+                    fields: [
+                        defineField({
+                            name: "compilationRef",
+                            title: "Compilation",
+                            type: "reference",
+                            to: [{ type: "examCompilation" }],
+                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "sessions",
+                            title: "Sessions",
+                            type: "array",
+                            of: [{ type: "reference", to: [{ type: "mockExamSession" }] }],
+                        }),
+                        defineField({
+                            name: "updatedAt",
+                            title: "Updated at",
+                            type: "datetime",
+                        }),
+                    ],
+                },
+            ],
         }),
         defineField({
             name: "permissions",

@@ -2,14 +2,12 @@
 
 import Image from "next/image";
 import clsx from "clsx";
-import { PortableText } from "@portabletext/react";
 import { AnimatePresence, motion } from "framer-motion";
 import urlFor from "@/app/lib/urlFor";
 import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
 import type { ResumePointer, SpeakingAnswer } from "@/app/types/fide/mock-exam";
-import type { RunnerTask, RunnerTaskMediaBlock } from "@/app/types/fide/mock-exam-runner";
+import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import SpeakingResponsePanel from "./SpeakingResponsePanel";
-import { getSpeakingTaskHeader } from "./runnerTaskHeader";
 
 type AdvancePayload = {
     nextState: string;
@@ -32,20 +30,15 @@ type RunnerPointer = {
     taskIndex: number;
     taskId: string;
     activityKey: string;
-    mode: "intro" | "activity";
-    introIndex?: number;
-    activityIndex?: number;
+    activityIndex: number;
 };
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
-const INTRO_KEY_PREFIX = "intro:";
 const SPEAK_A2_TASK2_CONVERSATION_INTRO = "SPEAK_A2_TASK2_CONVERSATION_INTRO";
 const SPEAK_A2_TASK3_DISCUSSION_INTRO = "SPEAK_A2_TASK3_DISCUSSION_INTRO";
 const TRANSITION = { duration: 0.28, ease: "easeOut" as const };
 const RUNNER_LAYOUT_MAX_WIDTH = "max-w-[1240px]";
 const RUNNER_LAYOUT_BOTTOM_PADDING = "pb-5";
-
-const hasAnyMediaInBlock = (block?: RunnerTaskMediaBlock) => Boolean(block?.text || block?.videoUrl || block?.image);
 
 const withCloudFrontPrefix = (resource?: string) => {
     if (!resource) return undefined;
@@ -58,28 +51,7 @@ const withCloudFrontPrefix = (resource?: string) => {
     return `${normalizedDomain}${normalizedResource}`;
 };
 
-const makeIntroKey = (index: number) => `${INTRO_KEY_PREFIX}${index}`;
-
-const parseIntroIndex = (activityKey?: string) => {
-    if (!activityKey || !activityKey.startsWith(INTRO_KEY_PREFIX)) return null;
-    const parsed = Number(activityKey.replace(INTRO_KEY_PREFIX, ""));
-    return Number.isFinite(parsed) ? parsed : null;
-};
-
-const getRenderableIntroBlocks = (task: RunnerTask) => (task.introBlocks || []).filter(hasAnyMediaInBlock);
-
 const resolveTaskStartPointer = (task: RunnerTask, taskIndex: number): RunnerPointer | null => {
-    const introBlocks = getRenderableIntroBlocks(task);
-    if (introBlocks.length > 0) {
-        return {
-            taskIndex,
-            taskId: task._id,
-            activityKey: makeIntroKey(0),
-            mode: "intro",
-            introIndex: 0,
-        };
-    }
-
     const firstActivity = (task.activities || [])[0];
     if (!firstActivity) return null;
 
@@ -87,7 +59,6 @@ const resolveTaskStartPointer = (task: RunnerTask, taskIndex: number): RunnerPoi
         taskIndex,
         taskId: task._id,
         activityKey: firstActivity._key,
-        mode: "activity",
         activityIndex: 0,
     };
 };
@@ -108,26 +79,12 @@ const resolvePointerFromResume = (tasks: RunnerTask[], resume: ResumePointer): R
     const safeTaskIndex = taskIndex >= 0 ? taskIndex : firstPointer.taskIndex;
     const task = tasks[safeTaskIndex];
 
-    const introBlocks = getRenderableIntroBlocks(task);
-    const introIndex = parseIntroIndex(resume.activityKey);
-    if (introIndex !== null && introBlocks.length > 0) {
-        const safeIntroIndex = Math.max(0, Math.min(introIndex, introBlocks.length - 1));
-        return {
-            taskIndex: safeTaskIndex,
-            taskId: task._id,
-            activityKey: makeIntroKey(safeIntroIndex),
-            mode: "intro",
-            introIndex: safeIntroIndex,
-        };
-    }
-
     const activityIndex = resume.activityKey ? (task.activities || []).findIndex((activity) => activity._key === resume.activityKey) : -1;
     if (activityIndex >= 0) {
         return {
             taskIndex: safeTaskIndex,
             taskId: task._id,
             activityKey: task.activities[activityIndex]._key,
-            mode: "activity",
             activityIndex,
         };
     }
@@ -146,33 +103,6 @@ const resolveNextTaskPointer = (tasks: RunnerTask[], currentTaskIndex: number) =
 const resolveNextPointer = (tasks: RunnerTask[], currentPointer: RunnerPointer): RunnerPointer | null => {
     const currentTask = tasks[currentPointer.taskIndex];
     if (!currentTask) return null;
-
-    if (currentPointer.mode === "intro") {
-        const introBlocks = getRenderableIntroBlocks(currentTask);
-        const currentIntroIndex = currentPointer.introIndex || 0;
-
-        if (currentIntroIndex + 1 < introBlocks.length) {
-            return {
-                ...currentPointer,
-                activityKey: makeIntroKey(currentIntroIndex + 1),
-                introIndex: currentIntroIndex + 1,
-            };
-        }
-
-        const firstActivity = (currentTask.activities || [])[0];
-        if (firstActivity) {
-            return {
-                taskIndex: currentPointer.taskIndex,
-                taskId: currentTask._id,
-                activityKey: firstActivity._key,
-                mode: "activity",
-                activityIndex: 0,
-            };
-        }
-
-        return resolveNextTaskPointer(tasks, currentPointer.taskIndex);
-    }
-
     const currentActivityIndex = currentPointer.activityIndex || 0;
     const activities = currentTask.activities || [];
     if (currentActivityIndex + 1 < activities.length) {
@@ -181,66 +111,12 @@ const resolveNextPointer = (tasks: RunnerTask[], currentPointer: RunnerPointer):
             taskIndex: currentPointer.taskIndex,
             taskId: currentTask._id,
             activityKey: nextActivity._key,
-            mode: "activity",
             activityIndex: currentActivityIndex + 1,
         };
     }
 
     return resolveNextTaskPointer(tasks, currentPointer.taskIndex);
 };
-
-function IntroBlockStage({ block }: { block: RunnerTaskMediaBlock }) {
-    const imageUrl = block.image ? urlFor(block.image).width(1600).height(1000).fit("crop").url() : null;
-    const videoUrl = withCloudFrontPrefix(block.videoUrl);
-
-    const hasText = Boolean(block.text);
-    const hasVideo = Boolean(videoUrl);
-    const hasImage = Boolean(imageUrl);
-    const hasVisual = hasVideo || hasImage;
-    const useHorizontal = block.layout === "horizontal" && hasText && hasVisual;
-    const hasMixedVisuals = hasVideo && hasImage;
-
-    return (
-        <article className="h-full w-full overflow-hidden">
-            <div className="relative h-full w-full">
-                <div
-                    className={`relative mx-auto grid h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} gap-6 px-2 sm:px-4 ${useHorizontal ? "items-center lg:grid-cols-12 lg:gap-8" : "items-center justify-items-center"}`}
-                >
-                    {hasText && (
-                        <div className={useHorizontal ? "order-2 w-full lg:order-1 lg:col-span-5 lg:justify-self-start" : "order-2 w-full max-w-[72ch] text-center"}>
-                            <div className={`text-neutral-800 leading-relaxed ${useHorizontal ? "text-[1.03rem]" : "text-[1.05rem] sm:text-[1.1rem]"}`}>
-                                <PortableText value={block.text as any} />
-                            </div>
-                        </div>
-                    )}
-
-                    {hasVisual && (
-                        <div className={useHorizontal ? "order-1 w-full lg:order-2 lg:col-span-7 lg:justify-self-end lg:max-w-[760px]" : "order-1 w-full max-w-[980px]"}>
-                            <div className={`grid items-start gap-4 ${hasMixedVisuals ? "grid-cols-1 md:grid-cols-10" : "grid-cols-1"}`}>
-                                {hasVideo && (
-                                    <div className={hasMixedVisuals ? "md:col-span-7" : "mx-auto w-full max-w-[900px]"}>
-                                        <video controls preload="metadata" className="mx-auto block w-full h-auto rounded-2xl border-2 border-solid border-neutral-700">
-                                            <source src={videoUrl} />
-                                            Votre navigateur ne supporte pas la vidéo HTML5.
-                                        </video>
-                                    </div>
-                                )}
-
-                                {hasImage && (
-                                    <div className={hasMixedVisuals ? "md:col-span-3 md:self-end" : "mx-auto w-full max-w-[760px]"}>
-                                        <div className="relative mx-auto h-[min(34dvh,310px)] w-full overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
-                                            <Image src={imageUrl as string} alt="Illustration du bloc" fill className="object-cover" />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </article>
-    );
-}
 
 function ActivityImageStage({ task, activityIndex }: { task: RunnerTask; activityIndex: number }) {
     const activity = task.activities[activityIndex];
@@ -484,10 +360,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
         }
 
         const currentTask = speakA2Tasks[currentPointer.taskIndex];
-        const introBlocks = getRenderableIntroBlocks(currentTask);
         const nextPointer = resolveNextPointer(speakA2Tasks, currentPointer);
-        const currentTaskHeader = getSpeakingTaskHeader(currentTask, currentPointer.taskIndex, speakA2Tasks.length);
-        const introTaskTitle = `${currentTaskHeader.title} - ${currentTaskHeader.subtitle}`;
         const buildAdvancePayload = (pointer: RunnerPointer | null): AdvancePayload => {
             if (!pointer) return { nextState: "SPEAK_A2_RESULT" };
 
@@ -519,58 +392,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
         const nextTaskIntroState =
             nextAdvancePayload.nextState === SPEAK_A2_TASK2_CONVERSATION_INTRO || nextAdvancePayload.nextState === SPEAK_A2_TASK3_DISCUSSION_INTRO ? nextAdvancePayload.nextState : null;
 
-        const continueLabel = !nextPointer
-            ? "Terminer la section A2"
-            : nextTaskIntroState
-              ? "Tâche suivante"
-              : nextPointer.mode === "intro"
-                ? "Bloc suivant"
-                : currentPointer.mode === "intro"
-                  ? "Commencer l'activité"
-                  : "Activité suivante (placeholder)";
-
-        if (currentPointer.mode === "intro") {
-            return (
-                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-4 py-0 min-h-0`}>
-                    <div className="shrink-0 px-2 md:px-4">
-                        <h1 className="display-2 font-medium mb-0 text-center leading-tight">{introTaskTitle}</h1>
-                    </div>
-
-                    <div className="flex-1 min-h-0 overflow-hidden">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={`intro-${currentPointer.activityKey}`}
-                                initial={{ opacity: 0, y: 12 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -12 }}
-                                transition={TRANSITION}
-                                className="h-full w-full"
-                            >
-                                <IntroBlockStage block={introBlocks[currentPointer.introIndex || 0]} />
-                            </motion.div>
-                        </AnimatePresence>
-                    </div>
-
-                    <div className="hidden w-full justify-end md:flex">
-                        <button type="button" className="btn btn-primary small min-w-[240px]" onClick={() => onAdvance(nextAdvancePayload)} disabled={isAdvancing}>
-                            {isAdvancing ? "Mise à jour..." : continueLabel}
-                        </button>
-                    </div>
-
-                    <div
-                        className="fixed bottom-0 left-0 right-0 z-40 p-3 md:hidden bg-neutral-200"
-                        style={{
-                            borderTop: "1px solid var(--neutral-300)",
-                            boxShadow: "0 -6px 16px rgba(15, 23, 42, 0.14)",
-                        }}
-                    >
-                        <button type="button" className="btn btn-primary small w-full" onClick={() => onAdvance(nextAdvancePayload)} disabled={isAdvancing}>
-                            {isAdvancing ? "Mise à jour..." : continueLabel}
-                        </button>
-                    </div>
-                </section>
-            );
-        }
+        const continueLabel = !nextPointer ? "Terminer la section A2" : nextTaskIntroState ? "Tâche suivante" : "Activité suivante";
 
         if (currentTask.taskType === "DISCUSSION_A2") {
             const activities = currentTask.activities || [];
@@ -601,7 +423,6 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
                 ? resolveNextPointer(speakA2Tasks, {
                       taskIndex: currentPointer.taskIndex,
                       taskId: currentPointer.taskId,
-                      mode: "activity",
                       activityIndex: activities.length - 1,
                       activityKey: lastActivity._key,
                   })
@@ -679,7 +500,6 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
                             taskId={currentPointer.taskId}
                             activityKey={activeActivity._key}
                             taskType={currentTask.taskType}
-                            taskAiContext={currentTask.aiTaskContext}
                             activityAiContext={activeActivity.aiContext}
                             activityAiVoiceGender={activeActivity.aiVoiceGender}
                             questionAudioUrl={activeActivity.audioUrl}
@@ -704,10 +524,7 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
             );
         }
 
-        const currentAnswer =
-            currentPointer.mode === "activity"
-                ? speakA2Answers.find((answer) => getAnswerTaskId(answer) === currentPointer.taskId && answer.activityKey === currentPointer.activityKey)
-                : undefined;
+        const currentAnswer = speakA2Answers.find((answer) => getAnswerTaskId(answer) === currentPointer.taskId && answer.activityKey === currentPointer.activityKey);
 
         return (
             <section
@@ -736,7 +553,6 @@ export default function RunnerScreenRouter({ compilationId, sessionKey, resume, 
                         taskId={currentPointer.taskId}
                         activityKey={currentPointer.activityKey}
                         taskType={currentTask.taskType}
-                        taskAiContext={currentTask.aiTaskContext}
                         activityAiContext={currentTask.activities[currentPointer.activityIndex || 0]?.aiContext}
                         activityAiVoiceGender={currentTask.activities[currentPointer.activityIndex || 0]?.aiVoiceGender}
                         questionAudioUrl={currentTask.activities[currentPointer.activityIndex || 0]?.audioUrl}

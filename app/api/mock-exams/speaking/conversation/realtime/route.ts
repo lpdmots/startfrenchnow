@@ -11,15 +11,20 @@ export const runtime = "nodejs";
 const model = process.env.OPENAI_REALTIME_MODEL_PHONE_A2 || process.env.OPENAI_REALTIME_MODEL || "gpt-realtime";
 
 const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`
-  *[_type == "examCompilation" && _id == $compilationId && userId == $userId][0]{
-    "hasSession": count(session[_key == $sessionKey]) > 0,
-    "speakA2TaskIds": examConfig.speakA2TaskIds[]._ref
+  *[
+    _type == "mockExamSession" &&
+    _id == $sessionKey &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId &&
+    status == "in_progress"
+  ][0]{
+    _id,
+    "speakA2TaskIds": compilationRef->examConfig.speakA2TaskIds[]._ref
   }
 `;
 
 const MOCK_EXAM_TASK_CONTEXT_QUERY = groq`
   *[_type == "mockExamTask" && _id == $taskId][0]{
-    aiTaskContext,
     "activityAiContext": activities[_key == $activityKey][0].aiContext,
     "activityAiVoiceGender": activities[_key == $activityKey][0].aiVoiceGender
   }
@@ -41,25 +46,23 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Parametres manquants." }, { status: 400 });
         }
 
-        const access = await client.fetch<{ hasSession?: boolean; speakA2TaskIds?: string[] } | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { compilationId, sessionKey, userId });
-        if (!access?.hasSession) {
+        const access = await client.fetch<{ _id?: string; speakA2TaskIds?: string[] } | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { compilationId, sessionKey, userId });
+        if (!access?._id) {
             return NextResponse.json({ error: "Session non autorisee." }, { status: 403 });
         }
 
-        let aiTaskContext = "";
         let activityAiContext = "";
         let activityAiVoiceGender = "";
         const canReadTaskContext = taskId && Array.isArray(access?.speakA2TaskIds) && access.speakA2TaskIds.includes(taskId);
         if (canReadTaskContext) {
-            const taskContext = await client.fetch<{ aiTaskContext?: string; activityAiContext?: string; activityAiVoiceGender?: string } | null>(MOCK_EXAM_TASK_CONTEXT_QUERY, {
+            const taskContext = await client.fetch<{ activityAiContext?: string; activityAiVoiceGender?: string } | null>(MOCK_EXAM_TASK_CONTEXT_QUERY, {
                 taskId,
                 activityKey,
             });
-            aiTaskContext = String(taskContext?.aiTaskContext || "");
             activityAiContext = String(taskContext?.activityAiContext || "");
             activityAiVoiceGender = String(taskContext?.activityAiVoiceGender || "");
         }
-        const instructions = buildConversationPrompt(aiTaskContext, activityAiContext);
+        const instructions = buildConversationPrompt(activityAiContext);
         const voice = resolveConversationVoice(activityAiVoiceGender);
 
         const contentType = request.headers.get("content-type") || "";

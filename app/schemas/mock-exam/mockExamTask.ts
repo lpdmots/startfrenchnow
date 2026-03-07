@@ -1,39 +1,5 @@
 import { defineField, defineType } from "sanity";
 
-const taskMediaBlockFields = [
-    defineField({
-        name: "text",
-        title: "Texte",
-        type: "blockContent",
-    }),
-    defineField({
-        name: "videoUrl",
-        title: "Video URL",
-        type: "string",
-    }),
-    defineField({
-        name: "image",
-        title: "Image",
-        type: "image",
-        options: {
-            hotspot: true,
-        },
-    }),
-    defineField({
-        name: "layout",
-        title: "Layout",
-        type: "string",
-        options: {
-            list: [
-                { title: "Vertical", value: "vertical" },
-                { title: "Horizontal", value: "horizontal" },
-            ],
-            layout: "radio",
-            direction: "horizontal",
-        },
-    }),
-];
-
 const activityFields = [
     defineField({
         name: "image",
@@ -59,6 +25,12 @@ const activityFields = [
         type: "string",
     }),
     defineField({
+        name: "aiCorrectionContext",
+        title: "Contexte correction IA",
+        type: "text",
+        rows: 4,
+    }),
+    defineField({
         name: "aiVoiceGender",
         title: "Voix IA",
         type: "string",
@@ -71,12 +43,6 @@ const activityFields = [
             direction: "horizontal",
         },
         initialValue: "male",
-    }),
-    defineField({
-        name: "maxPoints",
-        title: "Points max",
-        type: "number",
-        validation: (Rule) => Rule.required(),
     }),
 ];
 
@@ -114,25 +80,6 @@ export default defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
-            name: "introBlocks",
-            title: "Intro Blocks",
-            type: "array",
-            of: [
-                {
-                    name: "taskMediaBlock",
-                    title: "Task Media Block",
-                    type: "object",
-                    fields: taskMediaBlockFields,
-                },
-            ],
-            initialValue: [],
-        }),
-        defineField({
-            name: "aiTaskContext",
-            title: "Contexte IA (tâche)",
-            type: "string",
-        }),
-        defineField({
             name: "activities",
             title: "Activities",
             type: "array",
@@ -145,20 +92,6 @@ export default defineType({
                 },
             ],
             validation: (Rule) => Rule.required().min(1),
-        }),
-        defineField({
-            name: "correctionBlocks",
-            title: "Correction Blocks",
-            type: "array",
-            of: [
-                {
-                    name: "taskMediaBlock",
-                    title: "Task Media Block",
-                    type: "object",
-                    fields: taskMediaBlockFields,
-                },
-            ],
-            initialValue: [],
         }),
     ],
     preview: {

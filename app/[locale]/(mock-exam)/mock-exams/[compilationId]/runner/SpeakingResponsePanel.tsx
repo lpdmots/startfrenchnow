@@ -21,7 +21,6 @@ type SpeakingResponsePanelProps = {
     taskId: string;
     activityKey: string;
     taskType?: TaskType;
-    taskAiContext?: string;
     activityAiContext?: string;
     activityAiVoiceGender?: string;
     questionAudioUrl?: string;
@@ -91,7 +90,6 @@ export default function SpeakingResponsePanel({
     taskId,
     activityKey,
     taskType,
-    taskAiContext,
     activityAiContext,
     activityAiVoiceGender,
     questionAudioUrl,
@@ -165,7 +163,7 @@ export default function SpeakingResponsePanel({
 
     const sourceAudio = useMemo(() => audioPreviewUrl || withCloudFrontPrefix(uploadedAudioUrl) || null, [audioPreviewUrl, uploadedAudioUrl]);
     const questionAudio = useMemo(() => withCloudFrontPrefix(questionAudioUrl), [questionAudioUrl]);
-    const conversationPrompt = useMemo(() => buildConversationPrompt(taskAiContext, activityAiContext), [taskAiContext, activityAiContext]);
+    const conversationPrompt = useMemo(() => buildConversationPrompt(activityAiContext), [activityAiContext]);
     const conversationVoice = useMemo(() => resolveConversationVoice(activityAiVoiceGender), [activityAiVoiceGender]);
     const hasObservationStep = Boolean(taskType?.startsWith("IMAGE_DESCRIPTION"));
     const isPlayDisabled = !questionAudio || (hasFinishedFirstPlay && !isQuestionPlaying && !playUnlockedByReplay);

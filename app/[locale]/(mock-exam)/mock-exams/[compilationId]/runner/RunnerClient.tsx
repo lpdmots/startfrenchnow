@@ -20,7 +20,6 @@ type RunnerClientProps = {
 };
 
 const RUNNER_PHASES = ["Parler", "Comprendre", "Lire/Écrire"] as const;
-const INTRO_KEY_PREFIX = "intro:";
 
 const getRunnerPhaseIndex = (state?: string) => {
     if (!state) return 0;
@@ -74,7 +73,6 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
     const setResume = useMockExamRunnerStore((state) => state.setResume);
     const currentPhaseIndex = getRunnerPhaseIndex(resume?.state);
     const headerDetails = getRunnerHeaderDetails(resume?.state, speakA2Tasks, resume?.taskId);
-    const isIntroBlockLayout = resume?.state === "SPEAK_A2_RUN" && Boolean(resume?.activityKey?.startsWith(INTRO_KEY_PREFIX));
     const isExamIntro =
         resume?.state === "EXAM_INTRO" ||
         resume?.state === "SPEAK_A2_TASK1_DESCRIPTION_INTRO" ||
@@ -163,9 +161,7 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
         <>
             <div className="w-full min-h-[100dvh] flex flex-col items-center gap-6 p-4 md:h-[100dvh] md:p-6">
                 <section
-                    className={`w-full max-w-[1600px] grid grid-cols-1 items-center gap-2 md:gap-4 py-0 ${
-                        isIntroBlockLayout ? "lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)]" : "lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)_auto]"
-                    }`}
+                    className="w-full max-w-[1600px] grid grid-cols-1 items-center gap-2 md:gap-4 py-0 lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)_auto]"
                 >
                     <div className="flex w-full lg:max-w-[800px] justify-between flex-wrap gap-2 sm:gap-4">
                         <button
@@ -202,7 +198,7 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
                             </div>
                         </div>
                     </div>
-                    {!isIntroBlockLayout && !isExamIntro && (
+                    {!isExamIntro && (
                         <div className="min-w-0 w-full flex lg:flex-col justify-between items-end lg:justify-end shrink-0">
                             <p className="mb-0 text-lg font-semibold uppercase tracking-wide text-neutral-700 truncate">{headerDetails.title}</p>
                             <p className="mb-0 text-sm text-neutral-600 truncate">{headerDetails.subtitle}</p>
