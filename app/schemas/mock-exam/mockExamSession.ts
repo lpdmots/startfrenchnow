@@ -8,9 +8,9 @@ const scoreSummaryFields = [
         validation: (Rule) => Rule.required(),
     }),
     defineField({
-        name: "max",
-        title: "Max",
-        type: "number",
+        name: "feedback",
+        title: "Feedback",
+        type: "text",
         validation: (Rule) => Rule.required(),
     }),
 ];
