@@ -35,7 +35,11 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
         notFound();
     }
 
-    let inProgressSession = (compilation.session || []).find((entry) => entry.status === "in_progress");
+    const inProgressSessions = (compilation.session || [])
+        .filter((entry) => entry.status === "in_progress")
+        .sort((a, b) => (b.resume?.updatedAt || b.startedAt || "").localeCompare(a.resume?.updatedAt || a.startedAt || ""));
+
+    let inProgressSession = inProgressSessions[0];
 
     if (!inProgressSession) {
         const newSession = buildInitialSession();

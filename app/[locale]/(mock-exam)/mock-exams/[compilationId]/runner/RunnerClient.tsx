@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ModalFromBottomWithPortal } from "@/app/components/animations/ModalFromBottomWithPortal";
 import { useToast } from "@/app/hooks/use-toast";
@@ -36,6 +36,9 @@ const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerT
     if (state !== "SPEAK_A2_RUN") {
         const byState: Record<string, { title: string; subtitle: string }> = {
             EXAM_INTRO: { title: "Introduction", subtitle: "Prêt pour démarrer" },
+            SPEAK_A2_TASK1_DESCRIPTION_INTRO: { title: "Tâche 1", subtitle: "Description d'image" },
+            SPEAK_A2_TASK2_CONVERSATION_INTRO: { title: "Tâche 2", subtitle: "Conversation téléphonique" },
+            SPEAK_A2_TASK3_DISCUSSION_INTRO: { title: "Tâche 3", subtitle: "Discussion guidée" },
             SPEAK_A2_RESULT: { title: "Parler A2", subtitle: "Section terminée" },
         };
         return byState[state] || { title: state, subtitle: "-" };
@@ -68,30 +71,32 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
     const hydrate = useMockExamRunnerStore((state) => state.hydrate);
     const resume = useMockExamRunnerStore((state) => state.resume);
     const setResume = useMockExamRunnerStore((state) => state.setResume);
-    const hasHydratedRef = useRef(false);
     const currentPhaseIndex = getRunnerPhaseIndex(resume?.state);
     const headerDetails = getRunnerHeaderDetails(resume?.state, speakA2Tasks, resume?.taskId);
     const isIntroBlockLayout = resume?.state === "SPEAK_A2_RUN" && Boolean(resume?.activityKey?.startsWith(INTRO_KEY_PREFIX));
-    const isExamIntro = resume?.state === "EXAM_INTRO";
+    const isExamIntro =
+        resume?.state === "EXAM_INTRO" ||
+        resume?.state === "SPEAK_A2_TASK1_DESCRIPTION_INTRO" ||
+        resume?.state === "SPEAK_A2_TASK2_CONVERSATION_INTRO" ||
+        resume?.state === "SPEAK_A2_TASK3_DISCUSSION_INTRO";
 
     useEffect(() => {
-        if (hasHydratedRef.current) return;
         hydrate(hydrationData);
-        hasHydratedRef.current = true;
-    }, [hydrate, hydrationData]);
+        setSpeakA2Answers(initialSpeakA2Answers || []);
+    }, [hydrate, hydrationData, initialSpeakA2Answers]);
 
     useEffect(() => {
         const guardState = { mockExamGuard: true, compilationId: hydrationData.compilationId };
         window.history.pushState(guardState, "", window.location.href);
 
         const onPopState = () => {
-            if (isLeaving) return;
+            if (isLeaving || isAdvancing) return;
             setShowQuitModal(true);
             window.history.pushState(guardState, "", window.location.href);
         };
 
         const onBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (isLeaving) return;
+            if (isLeaving || isAdvancing) return;
             event.preventDefault();
             event.returnValue = "";
         };
@@ -103,7 +108,7 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
             window.removeEventListener("popstate", onPopState);
             window.removeEventListener("beforeunload", onBeforeUnload);
         };
-    }, [hydrationData.compilationId, isLeaving]);
+    }, [hydrationData.compilationId, isAdvancing, isLeaving]);
 
     const handleAdvance = async ({ nextState, taskId, activityKey }: { nextState: string; taskId?: string; activityKey?: string }) => {
         if (isAdvancing) return;
@@ -203,7 +208,7 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
                     )}
                 </section>
 
-                <section className="w-full max-w-[1600px] py-0 md:flex-1 md:min-h-0 flex justify-center">
+                <section className="w-full grow max-w-[1600px] py-0 md:flex-1 md:min-h-0 flex justify-center">
                     {resume && (
                         <RunnerScreenRouter
                             compilationId={hydrationData.compilationId}

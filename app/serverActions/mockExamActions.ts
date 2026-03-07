@@ -378,9 +378,14 @@ export async function restartMockExamCompilation(formData: FormData) {
     const compilation = await getCompilation(compilationId);
     if (!compilation || compilation.userId !== userId) return null;
 
-    const inProgressSessions = (compilation.session || []).filter((s) => s.status === "in_progress" && Boolean(s._key));
-    for (const activeSession of inProgressSessions) {
-        await removeSession(compilationId, activeSession._key);
+    const inProgressSessionKeys = (compilation.session || [])
+        .filter((entry) => entry.status === "in_progress" && Boolean(entry._key))
+        .map((entry) => entry._key);
+
+    if (inProgressSessionKeys.length > 0) {
+        await patchCompilation(compilationId, {
+            unset: inProgressSessionKeys.map((sessionKey) => `session[_key=="${sessionKey}"]`),
+        });
     }
 
     redirect(`/mock-exams/${compilationId}/runner`);

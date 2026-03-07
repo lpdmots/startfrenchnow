@@ -32,7 +32,7 @@ type SpeakingResponsePanelProps = {
     onValidated: () => Promise<void>;
 };
 
-type AccordionStep = "step-1" | "step-2" | "step-3";
+type AccordionStep = "step-1" | "step-2" | "step-3" | "step-4";
 type SpeakerRole = "student" | "examiner";
 type Segment = { start: number; end: number; text: string };
 type TranscriptionResult = { text: string; segments: Segment[] };
@@ -52,6 +52,7 @@ const STEP_RANK: Record<AccordionStep, number> = {
     "step-1": 1,
     "step-2": 2,
     "step-3": 3,
+    "step-4": 4,
 };
 
 const withCloudFrontPrefix = (resource?: string) => {
@@ -125,6 +126,7 @@ export default function SpeakingResponsePanel({
     const [hasFinishedFirstPlay, setHasFinishedFirstPlay] = useState(false);
     const [playUnlockedByReplay, setPlayUnlockedByReplay] = useState(false);
     const [accordionValue, setAccordionValue] = useState<AccordionStep>("step-1");
+    const [hasAcknowledgedObservation, setHasAcknowledgedObservation] = useState(Boolean(existingAnswer));
     const [showPromptText, setShowPromptText] = useState(false);
     const [showPromptWarning, setShowPromptWarning] = useState(false);
     const [skipPromptWarning, setSkipPromptWarning] = useState(false);
@@ -165,32 +167,66 @@ export default function SpeakingResponsePanel({
     const questionAudio = useMemo(() => withCloudFrontPrefix(questionAudioUrl), [questionAudioUrl]);
     const conversationPrompt = useMemo(() => buildConversationPrompt(taskAiContext, activityAiContext), [taskAiContext, activityAiContext]);
     const conversationVoice = useMemo(() => resolveConversationVoice(activityAiVoiceGender), [activityAiVoiceGender]);
+    const hasObservationStep = Boolean(taskType?.startsWith("IMAGE_DESCRIPTION"));
     const isPlayDisabled = !questionAudio || (hasFinishedFirstPlay && !isQuestionPlaying && !playUnlockedByReplay);
     const isReplayDisabled = !questionAudio || !hasFinishedFirstPlay || isQuestionPlaying;
     const hasAnswerDraft = Boolean(sourceAudio) || isRecording || isConversationLive || isTranscribing || transcript.trim().length > 0;
-    const hasReachedAnswerStep = !questionAudio || hasFinishedFirstPlay || hasAnswerDraft;
-    const hasReachedVerifyStep = isTranscribing || transcript.trim().length > 0;
-    const isQuestionStepActive = !hasReachedAnswerStep;
-    const isAnswerStepActive = hasReachedAnswerStep && !hasReachedVerifyStep;
-    const isVerifyStepActive = hasReachedVerifyStep;
-    const isStep1Done = hasReachedAnswerStep;
-    const isStep2Done = hasReachedVerifyStep;
-    const isStep3Done = canValidate;
+    const hasCompletedQuestionStep = !questionAudio || hasFinishedFirstPlay || hasAnswerDraft;
+    const hasCompletedAnswerStep = isTranscribing || transcript.trim().length > 0;
+    const hasCompletedObservationStep = !hasObservationStep || hasAcknowledgedObservation || hasCompletedQuestionStep || hasCompletedAnswerStep;
+
+    const observationStepValue: AccordionStep = "step-1";
+    const questionStepValue: AccordionStep = hasObservationStep ? "step-2" : "step-1";
+    const answerStepValue: AccordionStep = hasObservationStep ? "step-3" : "step-2";
+    const verifyStepValue: AccordionStep = hasObservationStep ? "step-4" : "step-3";
+
+    const isObservationStepActive = hasObservationStep && !hasCompletedObservationStep;
+    const isQuestionStepActive = hasObservationStep ? hasCompletedObservationStep && !hasCompletedQuestionStep : !hasCompletedQuestionStep;
+    const isAnswerStepActive = hasCompletedQuestionStep && !hasCompletedAnswerStep;
+    const isVerifyStepActive = hasCompletedAnswerStep;
+
+    const isStep1Done = hasObservationStep ? hasCompletedObservationStep : hasCompletedQuestionStep;
+    const isStep2Done = hasObservationStep ? hasCompletedQuestionStep : hasCompletedAnswerStep;
+    const isStep3Done = hasObservationStep ? hasCompletedAnswerStep : canValidate;
+    const isStep4Done = hasObservationStep ? canValidate : false;
+    const questionStepNumber = hasObservationStep ? 2 : 1;
+    const answerStepNumber = hasObservationStep ? 3 : 2;
+    const verifyStepNumber = hasObservationStep ? 4 : 3;
+    const questionDone = hasObservationStep ? isStep2Done : isStep1Done;
+    const answerDone = hasObservationStep ? isStep3Done : isStep2Done;
+    const verifyDone = hasObservationStep ? isStep4Done : isStep3Done;
+    const canRetakeNow = Boolean(sourceAudio) && attemptCount < maxAttempts && !isRecording && !isConversationLive && !isConversationConnecting && !isTranscribing && !isSaving && !isAdvancing;
+
     const submitLabel = isVerifyStepActive ? "Valider" : "Continuer";
-    const questionStepClass = hasReachedAnswerStep ? "bg-neutral-300 text-neutral-800" : "bg-secondary-2 text-neutral-100";
-    const answerStepClass = hasReachedAnswerStep && !hasReachedVerifyStep ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
-    const verifyStepClass = hasReachedVerifyStep ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
+    const observationStepClass = isObservationStepActive ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
+    const questionStepClass = isQuestionStepActive ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
+    const answerStepClass = isAnswerStepActive ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
+    const verifyStepClass = isVerifyStepActive ? "bg-secondary-2 text-neutral-100" : "bg-neutral-300 text-neutral-800";
     const isConversationWarning = isConversationLive && conversationRemainingSeconds <= CONVERSATION_WARNING_SECONDS;
 
-    const isAccordionStep = (value: string): value is AccordionStep => value === "step-1" || value === "step-2" || value === "step-3";
+    const isAccordionStep = (value: string): value is AccordionStep => value === "step-1" || value === "step-2" || value === "step-3" || value === "step-4";
 
     const isStepUnlocked = (value: AccordionStep) => {
-        if (value === "step-1") return true;
-        if (value === "step-2") return hasReachedAnswerStep;
-        return hasReachedVerifyStep;
+        if (value === observationStepValue) return true;
+        if (value === questionStepValue) return hasObservationStep ? true : hasCompletedQuestionStep;
+        if (value === answerStepValue) return hasCompletedQuestionStep;
+        if (value === verifyStepValue) return hasCompletedAnswerStep;
+        return false;
     };
 
-    const maxUnlockedStep: AccordionStep = hasReachedVerifyStep ? "step-3" : hasReachedAnswerStep ? "step-2" : "step-1";
+    const maxUnlockedStep: AccordionStep = hasObservationStep
+        ? hasCompletedAnswerStep
+            ? "step-4"
+            : hasCompletedQuestionStep
+              ? "step-3"
+              : hasCompletedObservationStep
+                ? "step-2"
+                : "step-1"
+        : hasCompletedAnswerStep
+          ? "step-3"
+          : hasCompletedQuestionStep
+            ? "step-2"
+            : "step-1";
 
     useEffect(() => {
         const nextRank = STEP_RANK[maxUnlockedStep];
@@ -205,44 +241,37 @@ export default function SpeakingResponsePanel({
         if (nextRank > previousMaxUnlockedRankRef.current) {
             setAccordionValue(maxUnlockedStep);
             requestAnimationFrame(() => {
-                if (maxUnlockedStep === "step-2") {
+                if (maxUnlockedStep === answerStepValue) {
                     answerStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
-                if (maxUnlockedStep === "step-3") {
+                if (maxUnlockedStep === verifyStepValue) {
                     verifyStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
             });
         }
 
         previousMaxUnlockedRankRef.current = nextRank;
-    }, [maxUnlockedStep]);
+    }, [answerStepValue, maxUnlockedStep, verifyStepValue]);
 
     useEffect(() => {
         if (typeof window === "undefined") return;
         setSkipPromptWarning(window.localStorage.getItem(TEXT_WARNING_KEY) === "1");
     }, []);
 
-    useEffect(() => {
-        const audio = questionAudioRef.current;
-        if (!audio) return;
+    const handleQuestionAudioPlay = () => {
+        setIsQuestionPlaying(true);
+    };
 
-        const onPlay = () => setIsQuestionPlaying(true);
-        const onPause = () => setIsQuestionPlaying(false);
-        const onEnded = () => {
-            setIsQuestionPlaying(false);
-            setHasFinishedFirstPlay(true);
-            setPlayUnlockedByReplay(false);
-        };
-        audio.addEventListener("play", onPlay);
-        audio.addEventListener("pause", onPause);
-        audio.addEventListener("ended", onEnded);
+    const handleQuestionAudioPause = () => {
+        setIsQuestionPlaying(false);
+    };
 
-        return () => {
-            audio.removeEventListener("play", onPlay);
-            audio.removeEventListener("pause", onPause);
-            audio.removeEventListener("ended", onEnded);
-        };
-    }, [questionAudio]);
+    const handleQuestionAudioEnded = () => {
+        setIsQuestionPlaying(false);
+        setHasFinishedFirstPlay(true);
+        setPlayUnlockedByReplay(false);
+        setAccordionValue((current) => (STEP_RANK[current] < STEP_RANK[answerStepValue] ? answerStepValue : current));
+    };
 
     useEffect(() => {
         if (!isConversationLive) return;
@@ -488,9 +517,22 @@ export default function SpeakingResponsePanel({
         setIsQuestionPlaying(false);
         setHasFinishedFirstPlay(false);
         setPlayUnlockedByReplay(false);
+        setHasAcknowledgedObservation(Boolean(existingAnswer));
         autoScrollReadyRef.current = false;
         previousMaxUnlockedRankRef.current = 1;
-        setAccordionValue(existingAnswer?.transcriptFinal ? "step-3" : existingAnswer?.audioUrl ? "step-2" : "step-1");
+        setAccordionValue(
+            hasObservationStep
+                ? existingAnswer?.transcriptFinal
+                    ? "step-4"
+                    : existingAnswer?.audioUrl
+                      ? "step-3"
+                      : "step-1"
+                : existingAnswer?.transcriptFinal
+                  ? "step-3"
+                  : existingAnswer?.audioUrl
+                    ? "step-2"
+                    : "step-1",
+        );
 
         const questionAudioElement = questionAudioRef.current;
         if (questionAudioElement) {
@@ -509,7 +551,7 @@ export default function SpeakingResponsePanel({
         remoteConversationStartRef.current = null;
         resetRealtimeTranscriptBuffers();
         closeConversationTransport();
-    }, [existingAnswer, taskId, activityKey]);
+    }, [activityKey, existingAnswer, hasObservationStep, taskId]);
 
     const toggleQuestionPlay = async () => {
         const audio = questionAudioRef.current;
@@ -686,12 +728,20 @@ export default function SpeakingResponsePanel({
         if (!realtimeTurns.length) return realtimeTurns;
 
         const mergedTurns = realtimeTurns.map((turn) => ({ ...turn }));
-        const studentCombined = normalizeTranscriptChunk(mergedTurns.filter((turn) => turn.speaker === "student").map((turn) => turn.text).join(" "));
+        const studentCombined = normalizeTranscriptChunk(
+            mergedTurns
+                .filter((turn) => turn.speaker === "student")
+                .map((turn) => turn.text)
+                .join(" "),
+        );
         const tail = extractStudentTail(studentFullText, studentCombined);
 
         if (!tail) return mergedTurns;
 
-        const lastStudentIndex = [...mergedTurns].map((turn, index) => ({ turn, index })).reverse().find((entry) => entry.turn.speaker === "student")?.index;
+        const lastStudentIndex = [...mergedTurns]
+            .map((turn, index) => ({ turn, index }))
+            .reverse()
+            .find((entry) => entry.turn.speaker === "student")?.index;
         if (typeof lastStudentIndex === "number") {
             mergedTurns[lastStudentIndex] = {
                 ...mergedTurns[lastStudentIndex],
@@ -816,7 +866,7 @@ export default function SpeakingResponsePanel({
                         session: {
                             turn_detection: {
                                 type: "server_vad",
-                                silence_duration_ms: 5000,
+                                silence_duration_ms: 2000,
                                 create_response: true,
                                 interrupt_response: false,
                             },
@@ -1103,12 +1153,21 @@ export default function SpeakingResponsePanel({
         resetRealtimeTranscriptBuffers();
         setIsVerified(false);
         setVerificationMessage("");
-        setAccordionValue("step-2");
+        setAccordionValue(answerStepValue);
+    };
+
+    const goToQuestionStep = () => {
+        if (!hasObservationStep) return;
+        setHasAcknowledgedObservation(true);
+        setAccordionValue(questionStepValue);
     };
 
     const handleAccordionChange = (value: string) => {
         if (!isAccordionStep(value)) return;
         if (!isStepUnlocked(value)) return;
+        if (hasObservationStep && STEP_RANK[value] >= STEP_RANK[questionStepValue]) {
+            setHasAcknowledgedObservation(true);
+        }
         setAccordionValue(value);
     };
 
@@ -1159,8 +1218,49 @@ export default function SpeakingResponsePanel({
             <article className="flex h-full min-h-0 flex-col justify-between gap-3 px-2 py-2 pb-24 md:pb-5 md:px-4 md:py-5">
                 <div className="flex flex-col gap-4">
                     <Accordion type="single" collapsible={false} value={accordionValue} onValueChange={handleAccordionChange} className="w-full space-y-4">
+                        {hasObservationStep && (
+                            <AccordionItem
+                                value={observationStepValue}
+                                className={clsx(
+                                    "overflow-hidden rounded-2xl border-0 px-3 border border-solid border-neutral-400 rounded-xl bg-neutral-100",
+                                    isObservationStepActive ? "border-2 border-solid border-neutral-400 shadow-1" : "",
+                                )}
+                            >
+                                <AccordionTrigger className="py-3 hover:no-underline [&>svg]:hidden">
+                                    <div className="flex w-full items-center justify-between gap-3">
+                                        <div className="flex items-center gap-2">
+                                            <span className={clsx("inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors", observationStepClass)}>1</span>
+                                            <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Observe l'image</span>
+                                        </div>
+                                        <span
+                                            className={clsx(
+                                                "inline-flex h-6 w-6 items-center justify-center rounded-full border text-[10px] transition-colors",
+                                                isStep1Done ? "border-secondary-2 bg-secondary-2 text-neutral-100" : "border-neutral-300 text-transparent",
+                                            )}
+                                        >
+                                            <FaCheck />
+                                        </span>
+                                    </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="pb-3">
+                                    <div className="flex flex-col items-center justify-center gap-3 text-center">
+                                        <p className="mb-0 text-sm text-neutral-700">Observe l'image quelques secondes puis passe à la consigne audio.</p>
+                                        {!isStep1Done && (
+                                            <button
+                                                type="button"
+                                                className="rounded-full border border-solid border-secondary-2 bg-secondary-2 px-4 py-2 text-sm font-semibold text-neutral-100 hover:opacity-90"
+                                                onClick={goToQuestionStep}
+                                            >
+                                                OK
+                                            </button>
+                                        )}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        )}
+
                         <AccordionItem
-                            value="step-1"
+                            value={questionStepValue}
                             className={clsx(
                                 "overflow-hidden rounded-2xl border-0 px-3 border border-solid border-neutral-400 rounded-xl bg-neutral-100",
                                 isQuestionStepActive ? "border-2 border-solid border-neutral-400 shadow-1" : "",
@@ -1168,31 +1268,47 @@ export default function SpeakingResponsePanel({
                         >
                             <AccordionTrigger className="py-3 hover:no-underline [&>svg]:hidden">
                                 <div className="flex w-full items-center justify-between gap-3">
-                                    <div className="flex items-center gap-2">
-                                        <span className={clsx("inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors", questionStepClass)}>1</span>
-                                        <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Consigne</span>
+                                    <div className="flex items-center gap-2 grow">
+                                        <span className={clsx("shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors", questionStepClass)}>
+                                            {questionStepNumber}
+                                        </span>
+                                        <div className="flex flex-wrap gap-y-0 gap-x-2 justify-between items-center w-full grow">
+                                            <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Écoute la consigne</span>
+                                            {questionAudio && hasFinishedFirstPlay && !isReplayDisabled && <span className="text-xs font-semibold text-neutral-600">Écouter à nouveau ?</span>}
+                                        </div>
                                     </div>
-                                    <span
-                                        className={clsx(
-                                            "inline-flex h-6 w-6 items-center justify-center rounded-full border text-[10px] transition-colors",
-                                            isStep1Done ? "border-secondary-2 bg-secondary-2 text-neutral-100" : "border-neutral-300 text-transparent",
-                                        )}
-                                    >
-                                        <FaCheck />
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className={clsx(
+                                                "inline-flex h-6 w-6 items-center justify-center rounded-full border text-[10px] transition-colors",
+                                                questionDone ? "border-secondary-2 bg-secondary-2 text-neutral-100" : "border-neutral-300 text-transparent",
+                                            )}
+                                        >
+                                            <FaCheck />
+                                        </span>
+                                    </div>
                                 </div>
                             </AccordionTrigger>
                             <AccordionContent className="pb-3">
                                 {questionAudio ? (
                                     <>
-                                        <audio ref={questionAudioRef} src={questionAudio} preload="auto" crossOrigin="anonymous" className="absolute h-0 w-0 opacity-0 pointer-events-none" />
+                                        <audio
+                                            ref={questionAudioRef}
+                                            src={questionAudio}
+                                            preload="auto"
+                                            crossOrigin="anonymous"
+                                            onPlay={handleQuestionAudioPlay}
+                                            onPause={handleQuestionAudioPause}
+                                            onEnded={handleQuestionAudioEnded}
+                                            className="absolute h-0 w-0 opacity-0 pointer-events-none"
+                                        />
                                         <div className="mt-2 flex w-full flex-col items-center justify-center gap-6">
                                             <VisualizerBars audioRef={questionAudioRef} isPlaying={isQuestionPlaying} barCount={16} minBarHeight={2} maxBarHeight={120} className="h-20" />
                                             <div className="mb-2 flex w-full items-end justify-center gap-4">
                                                 <button
                                                     onClick={replayQuestion}
                                                     disabled={isReplayDisabled}
-                                                    aria-label="Répéter cette piste"
+                                                    aria-label="Réécouter la consigne"
                                                     className={`bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid ${
                                                         isReplayDisabled ? "opacity-40 cursor-not-allowed" : ""
                                                     }`}
@@ -1247,7 +1363,7 @@ export default function SpeakingResponsePanel({
                         </AccordionItem>
 
                         <AccordionItem
-                            value="step-2"
+                            value={answerStepValue}
                             ref={answerStepRef}
                             className={clsx(
                                 "overflow-hidden rounded-2xl border-0 px-3 border border-solid border-neutral-400 rounded-xl bg-neutral-100",
@@ -1256,18 +1372,25 @@ export default function SpeakingResponsePanel({
                         >
                             <AccordionTrigger className="py-3 hover:no-underline [&>svg]:hidden">
                                 <div className="flex w-full items-center justify-between gap-3">
-                                    <div className="flex items-center gap-2">
-                                        <span className={clsx("inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors", answerStepClass)}>2</span>
-                                        <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Réponse</span>
+                                    <div className="flex items-center gap-2 grow">
+                                        <span className={clsx("shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors", answerStepClass)}>
+                                            {answerStepNumber}
+                                        </span>
+                                        <div className="flex flex-wrap gap-y-0 gap-x-2 justify-between items-center w-full grow">
+                                            <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Réponds à l'oral</span>
+                                            {canRetakeNow && <span className="text-xs font-semibold text-neutral-600">S'enregistrer à nouveau ?</span>}
+                                        </div>
                                     </div>
-                                    <span
-                                        className={clsx(
-                                            "inline-flex h-6 w-6 items-center justify-center rounded-full border text-[10px] transition-colors",
-                                            isStep2Done ? "border-secondary-2 bg-secondary-2 text-neutral-100" : "border-neutral-300 text-transparent",
-                                        )}
-                                    >
-                                        <FaCheck />
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className={clsx(
+                                                "shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-full border text-[10px] transition-colors",
+                                                answerDone ? "border-secondary-2 bg-secondary-2 text-neutral-100" : "border-neutral-300 text-transparent",
+                                            )}
+                                        >
+                                            <FaCheck />
+                                        </span>
+                                    </div>
                                 </div>
                             </AccordionTrigger>
                             <AccordionContent className="pb-3 min-h-[160px]">
@@ -1331,7 +1454,7 @@ export default function SpeakingResponsePanel({
                         </AccordionItem>
 
                         <AccordionItem
-                            value="step-3"
+                            value={verifyStepValue}
                             ref={verifyStepRef}
                             className={clsx(
                                 "overflow-hidden rounded-2xl border-0 px-3 border border-solid border-neutral-400 rounded-xl bg-neutral-100",
@@ -1341,13 +1464,15 @@ export default function SpeakingResponsePanel({
                             <AccordionTrigger className="py-3 hover:no-underline [&>svg]:hidden">
                                 <div className="flex w-full items-center justify-between gap-3">
                                     <div className="flex items-center gap-2">
-                                        <span className={clsx("inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors", verifyStepClass)}>3</span>
-                                        <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">VÉRIFIE</span>
+                                        <span className={clsx("inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors", verifyStepClass)}>
+                                            {verifyStepNumber}
+                                        </span>
+                                        <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Vérifie la transcription</span>
                                     </div>
                                     <span
                                         className={clsx(
                                             "inline-flex h-6 w-6 items-center justify-center rounded-full border text-[10px] transition-colors",
-                                            isStep3Done ? "border-secondary-2 bg-secondary-2 text-neutral-100" : "border-neutral-300 text-transparent",
+                                            verifyDone ? "border-secondary-2 bg-secondary-2 text-neutral-100" : "border-neutral-300 text-transparent",
                                         )}
                                     >
                                         <FaCheck />
