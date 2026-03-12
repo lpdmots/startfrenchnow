@@ -37,7 +37,9 @@ const formatDate = (iso?: string) => {
 
 const formatScore = (score?: ScoreSummary) => {
     if (!score) return "-";
-    return `${score.score}/${score.max}`;
+    const percentage = Number(score.percentage);
+    if (!Number.isFinite(percentage)) return "-";
+    return `${Math.round(percentage)}%`;
 };
 
 export default async function MockExamCompilationPage({ params: { compilationId } }: { params: { compilationId: string } }) {

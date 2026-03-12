@@ -121,6 +121,13 @@ const MOCK_EXAM_COMPILATION_FIELDS = `
   isActive,
   order,
   image,
+  corrections[]{
+    _key,
+    correctionType,
+    video,
+    image,
+    body
+  },
   _createdAt,
   _updatedAt,
   examConfig
@@ -158,14 +165,14 @@ export const MOCK_EXAM_SESSIONS_BY_COMPILATION_QUERY = groq`
       audioUrl,
       transcriptFinal,
       AiFeedback,
-      AiScore{ score, max }
+      AiScore
     },
     scores{
-      speakA2{ score, max },
-      speakBranch{ score, max },
-      listening{ score, max },
-      readWrite{ score, max },
-      total{ score, max }
+      speakA2{ percentage, feedback },
+      speakBranch{ percentage, feedback },
+      listening{ percentage, feedback },
+      readWrite{ percentage, feedback },
+      total{ percentage, feedback }
     }
   }
 `;
@@ -173,6 +180,7 @@ export const MOCK_EXAM_SESSIONS_BY_COMPILATION_QUERY = groq`
 export const MOCK_EXAM_TASKS_BY_IDS_QUERY = groq`
   *[_type == "mockExamTask" && _id in $taskIds]{
     _id,
+    title,
     taskType,
     activities[]{
       _key,
@@ -180,6 +188,7 @@ export const MOCK_EXAM_TASKS_BY_IDS_QUERY = groq`
       audioUrl,
       promptText,
       aiContext,
+      aiCorrectionContext,
       aiVoiceGender,
       maxPoints
     }

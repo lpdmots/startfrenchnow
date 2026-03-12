@@ -148,7 +148,7 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
             );
         },
         highlight: ({ children }: any) => (
-            <span className={HEADINGSPANCOLORS[category || "tips"]} style={{ whiteSpace: "normal" }}>
+            <span className={HEADINGSPANCOLORS[category || "vocabulary"]} style={{ whiteSpace: "normal" }}>
                 {children}
             </span>
         ),
@@ -167,12 +167,12 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
         right: ({ children }: any) => <p style={{ textAlign: "right" }}>{children}</p>,
 
         strong: ({ children }: any) => (
-            <strong className="font-bold" style={{ color: CATEGORIESCOLORS[category || "tips"] }}>
+            <strong className="font-bold" style={{ color: CATEGORIESCOLORS[category || "vocabulary"] }}>
                 {children}
             </strong>
         ),
         underline: ({ children }: any) => (
-            <span className="underline decoration-2 underline-offset-4" style={{ textDecorationColor: CATEGORIESCOLORS[category || "tips"] }}>
+            <span className="underline decoration-2 underline-offset-4" style={{ textDecorationColor: CATEGORIESCOLORS[category || "vocabulary"] }}>
                 {children}
             </span>
         ),

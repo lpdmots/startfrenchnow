@@ -1496,7 +1496,7 @@ export default function SpeakingResponsePanel({
                                                     setVerificationMessage("");
                                                 }}
                                                 rows={8}
-                                                className="w-full max-w-full min-h-[220px] resize-y overflow-x-hidden rounded-xl border border-neutral-300 bg-white p-3 text-neutral-900 break-words whitespace-pre-wrap outline-none transition focus:border-secondary-2"
+                                                className="w-full max-w-full min-h-[220px] resize-y overflow-x-hidden rounded-xl border border-neutral-300 bg-neutral-100 p-3 text-neutral-900 break-words whitespace-pre-wrap outline-none transition focus:border-secondary-2"
                                             />
                                             {verificationMessage && <p className="mb-0 text-sm italic">{verificationMessage}</p>}
                                         </div>
@@ -1563,7 +1563,7 @@ export default function SpeakingResponsePanel({
                         <div className="space-y-3">
                             <p className="mb-0">Pendant l'examen officiel, le texte n'est pas accessible. Voulez-vous continuer ici malgré tout ?</p>
                             <label className="mb-0 inline-flex items-center gap-2 text-sm">
-                                <input type="checkbox" checked={rememberSkipChoice} onChange={(event) => setRememberSkipChoice(event.target.checked)} className="h-4 w-4" />
+                                <input type="checkbox" checked={rememberSkipChoice} onChange={(event) => setRememberSkipChoice(event.target.checked)} className="h-4 w-4 bg-neutral-100" />
                                 Ne plus demander
                             </label>
                         </div>

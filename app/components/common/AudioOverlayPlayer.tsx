@@ -31,7 +31,17 @@ import clsx from "clsx";
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 const SITUATION_INTRO_SRC = "/audio/situation-intro.mp3";
 
-export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Exam; setLogs: any; userId?: string }) {
+export default function AudioOverlayPlayer({
+    exam,
+    setLogs,
+    userId,
+    onExamCompleted,
+}: {
+    exam: Exam;
+    setLogs: any;
+    userId?: string;
+    onExamCompleted?: (payload: { examId: string; score: number; max: number }) => void;
+}) {
     const tracks = exam.tracks as Track[];
     const responses = useMemo(() => (exam.levels[0] !== "B1" ? getResponses(exam.responses) : []), [exam.responses]);
 
@@ -57,6 +67,7 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
     const [evaluationResult, setEvaluationResult] = useState<null | EvaluationResult>(null);
     const showNextButton = !isClickableResponse || isNextButtonForced;
     const isRecordingRef = useRef(false);
+    const completionNotifiedRef = useRef(false);
 
     const togglePlay = (stop = false) => {
         const audio = audioRef.current;
@@ -184,6 +195,16 @@ export default function AudioOverlayPlayer({ exam, setLogs, userId }: { exam: Ex
             }
         })();
     }, [totalAnswers]);
+
+    useEffect(() => {
+        if (totalAnswers !== 3) {
+            completionNotifiedRef.current = false;
+            return;
+        }
+        if (completionNotifiedRef.current) return;
+        completionNotifiedRef.current = true;
+        onExamCompleted?.({ examId: exam._id, score: correctAnswers, max: 3 });
+    }, [correctAnswers, exam._id, onExamCompleted, totalAnswers]);
 
     const isRepeatDisabled = playing || !ended || repeatedOnce;
 
@@ -602,6 +623,79 @@ export const RecordingIndicator = () => (
         <span className="text-sm">Enregistrement en cours...</span>
     </div>
 );
+
+export const AudioOverlayPlayerControls = ({ src, className = "" }: { src?: string; className?: string }) => {
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const handleAudioPlay = () => setIsPlaying(true);
+    const handleAudioPause = () => setIsPlaying(false);
+    const handleAudioEnded = () => setIsPlaying(false);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+        audio.pause();
+        audio.currentTime = 0;
+        setIsPlaying(false);
+    }, [src]);
+
+    const togglePlay = async () => {
+        const audio = audioRef.current;
+        if (!audio || !src) return;
+        if (isPlaying) {
+            audio.pause();
+            return;
+        }
+        await audio.play().catch(() => undefined);
+    };
+
+    const replay = async () => {
+        const audio = audioRef.current;
+        if (!audio || !src) return;
+        audio.currentTime = 0;
+        await audio.play().catch(() => undefined);
+    };
+
+    const isPlayDisabled = !src;
+    const isReplayDisabled = !src;
+
+    return (
+        <div className={clsx("w-full rounded-2xl border border-solid border-neutral-300 bg-neutral-100 p-3", className)}>
+            <audio ref={audioRef} src={src} preload="metadata" onPlay={handleAudioPlay} onPause={handleAudioPause} onEnded={handleAudioEnded} className="hidden" />
+
+            <div className="mb-3 rounded-xl bg-neutral-200 p-2">
+                <VisualizerBars audioRef={audioRef} isPlaying={isPlaying} barCount={16} minBarHeight={2} maxBarHeight={120} className="h-16" />
+            </div>
+
+            <div className="flex items-center justify-center gap-4">
+                <button
+                    type="button"
+                    onClick={replay}
+                    aria-label="Réécouter la situation"
+                    disabled={isReplayDisabled}
+                    className={clsx(
+                        "bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid",
+                        isReplayDisabled ? "opacity-50 cursor-not-allowed" : "",
+                    )}
+                >
+                    <FaRedoAlt size={20} className="text-neutral-800" />
+                </button>
+                <button
+                    type="button"
+                    onClick={togglePlay}
+                    aria-label={isPlaying ? "Pause" : "Lecture"}
+                    disabled={isPlayDisabled}
+                    className={clsx(
+                        "bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid",
+                        isPlayDisabled ? "opacity-50 cursor-not-allowed" : "",
+                    )}
+                >
+                    {isPlaying ? <FaPause size={32} className="text-neutral-800" /> : <FaPlay size={32} className="text-neutral-800" />}
+                </button>
+            </div>
+        </div>
+    );
+};
 
 type ResponseFeedbackProps = {
     isLoading: boolean;

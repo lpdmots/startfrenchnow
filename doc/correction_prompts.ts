@@ -37,6 +37,7 @@ B) Qualité de la langue (0 à 3) – via le texte
 Consignes :
 - appuie-toi uniquement sur la transcription écrite ;
 - ne commente pas la prononciation, l’accent, l’intonation ou le débit ;
+- ne commente pas les fautes d'orthographe dûes à la transcription ;
 - dis ce qui est réussi ;
 - indique seulement les points à améliorer vraiment pertinents ;
 - reste concret, direct et sans blabla ;
@@ -88,6 +89,7 @@ B) Qualité de la langue (0 à 3) – via le texte
 Consignes :
 - appuie-toi uniquement sur la transcription écrite ;
 - ne commente pas la prononciation, l’accent, l’intonation ou le débit ;
+- ne commente pas les fautes d'orthographe dûes à la transcription ;
 - dis ce qui est réussi ;
 - indique seulement les points à améliorer vraiment pertinents ;
 - reste concret, direct et sans blabla ;
@@ -136,6 +138,7 @@ B) Qualité de la langue (0 à 3) – via le texte
 Consignes :
 - appuie-toi uniquement sur la transcription écrite ;
 - ne commente pas la prononciation, l’accent, l’intonation ou le débit ;
+- ne commente pas les fautes d'orthographe dûes à la transcription ;
 - dis ce qui est réussi ;
 - indique seulement les points à améliorer vraiment pertinents ;
 - reste concret, direct et sans blabla ;

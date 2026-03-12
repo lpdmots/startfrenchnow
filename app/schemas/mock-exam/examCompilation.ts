@@ -32,6 +32,64 @@ export default defineType({
             },
         }),
         defineField({
+            name: "corrections",
+            title: "Corrections",
+            type: "array",
+            of: [
+                {
+                    name: "correctionContent",
+                    title: "Correction Content",
+                    type: "object",
+                    fields: [
+                        defineField({
+                            name: "correctionType",
+                            title: "Correction Type",
+                            type: "string",
+                            options: {
+                                list: [
+                                    { title: "Parler A2 (SPEAK_A2_RESULT)", value: "SPEAK_A2_RESULT" },
+                                    { title: "Parler Branche (SPEAK_BRANCH_RESULT)", value: "SPEAK_BRANCH_RESULT" },
+                                    { title: "Parler Branche A1 (SPEAK_BRANCH_RESULT_A1)", value: "SPEAK_BRANCH_RESULT_A1" },
+                                    { title: "Parler Branche - Choix 1 (SPEAK_BRANCH_RESULT_CHOICE_1)", value: "SPEAK_BRANCH_RESULT_CHOICE_1" },
+                                    { title: "Parler Branche - Choix 2 (SPEAK_BRANCH_RESULT_CHOICE_2)", value: "SPEAK_BRANCH_RESULT_CHOICE_2" },
+                                    { title: "Comprendre (LISTENING_RESULT)", value: "LISTENING_RESULT" },
+                                    { title: "Lire/Écrire (READ_WRITE_RESULT)", value: "READ_WRITE_RESULT" },
+                                    { title: "Résultat global (TOTAL_RESULT)", value: "TOTAL_RESULT" },
+                                ],
+                            },
+                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "video",
+                            title: "Video Path (AWS)",
+                            type: "string",
+                            description: "Chemin relatif CloudFront/S3 ou URL absolue.",
+                        }),
+                        defineField({
+                            name: "image",
+                            title: "Fallback Image",
+                            type: "image",
+                            options: {
+                                hotspot: true,
+                            },
+                        }),
+                        defineField({
+                            name: "body",
+                            title: "Body",
+                            type: "blockContent",
+                        }),
+                    ],
+                    preview: {
+                        select: {
+                            title: "correctionType",
+                            media: "image",
+                            subtitle: "video",
+                        },
+                    },
+                },
+            ],
+        }),
+        defineField({
             name: "examConfig",
             title: "Exam Config",
             type: "object",

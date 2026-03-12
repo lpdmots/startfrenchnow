@@ -28,12 +28,16 @@ export default function ExpandableCardDemo({
     twoColumns = false,
     hasPack = true,
     isPreviewSection = false,
+    isLargePreviewCard = false,
+    onExamCompleted,
 }: {
     exams: Exam[];
     withStars?: boolean;
     twoColumns?: boolean;
     hasPack?: boolean;
     isPreviewSection?: boolean;
+    isLargePreviewCard?: boolean;
+    onExamCompleted?: (payload: { examId: string; score: number; max: number }) => void;
 }) {
     const { data: session } = useSession();
     const [logs, setLogs] = useState<ExamLog[] | null>(null);
@@ -115,7 +119,7 @@ export default function ExpandableCardDemo({
                                     className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
                                 />
                                 <div className="absolute w-full h-full top-0">
-                                    <AudioOverlayPlayer exam={active} setLogs={setLogs} userId={session?.user?._id} />
+                                    <AudioOverlayPlayer exam={active} setLogs={setLogs} userId={session?.user?._id} onExamCompleted={onExamCompleted} />
                                 </div>
                             </motion.div>
 
@@ -143,7 +147,8 @@ export default function ExpandableCardDemo({
                 {exams.map((exam, index) => {
                     const isLocked = !hasPack && !exam.isPreview;
                     const contentType = exam.pdf?.includes("scenarios") ? "scenarios" : exam.pdf ? "pdf" : "exam";
-                    if (contentType === "exam") return <ExamCard key={exam._id} exam={exam} isLocked={isLocked} setActive={setActive} withStars={withStars} logs={logs} />;
+                    if (contentType === "exam")
+                        return <ExamCard key={exam._id} exam={exam} isLocked={isLocked} setActive={setActive} withStars={withStars} logs={logs} isLargePreviewCard={isLargePreviewCard && isPreviewSection} />;
                     if (contentType === "pdf") return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} />;
                     return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} isScenarios={true} />;
                 })}
@@ -158,12 +163,14 @@ const ExamCard = ({
     setActive,
     withStars,
     logs,
+    isLargePreviewCard,
 }: {
     exam: Exam;
     isLocked: boolean;
     setActive: React.Dispatch<React.SetStateAction<Exam | boolean | null>>;
     withStars: boolean;
     logs: ExamLog[] | null;
+    isLargePreviewCard?: boolean;
 }) => {
     const router = useRouter();
     return (
@@ -171,11 +178,20 @@ const ExamCard = ({
             layoutId={`card-${exam.title}-${exam._id}`}
             key={`card-${exam.title}-${exam._id}`}
             onClick={isLocked ? () => router.push("/fide#plans") : () => setActive(exam)}
-            className="group relative p-4 flex flex-col justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 overflow-hidden h-full w-full max-w-md mx-auto"
+            className={clsx(
+                "group relative p-4 flex flex-col justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 overflow-hidden h-full w-full mx-auto",
+                isLargePreviewCard ? "max-w-[760px]" : "max-w-md",
+            )}
         >
             <div className="flex flex-col items-center h-full w-full gap-2">
                 <motion.div layoutId={`image-${exam.title}-${exam._id}`}>
-                    <Image width={400} height={300} src={urlFor(exam.image).url()} alt={exam.title} className="w-auto h-full max-h-52 mx-auto  rounded-lg object-cover object-top" />
+                    <Image
+                        width={400}
+                        height={300}
+                        src={urlFor(exam.image).url()}
+                        alt={exam.title}
+                        className={clsx("w-auto h-full mx-auto rounded-lg object-cover object-top", isLargePreviewCard ? "max-h-64" : "max-h-52")}
+                    />
                 </motion.div>
                 <div className="w-full">
                     <div className="flex justify-between w-full items-center">

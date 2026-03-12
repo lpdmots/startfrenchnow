@@ -7,7 +7,7 @@ export type MockExamRunnerHydration = {
     sessionKey: string;
     resume: ResumePointer;
     examConfig: MockExamConfigRef;
-    oralBranch: { recommended: OralBranch; chosen?: OralBranch };
+    oralBranch: { recommended?: OralBranch; chosen?: OralBranch };
     writtenCombo: { recommended: WrittenCombo; chosen?: WrittenCombo };
 };
 
@@ -17,7 +17,7 @@ type MockExamRunnerState = {
     sessionKey: string | null;
     resume: ResumePointer | null;
     examConfig: MockExamConfigRef | null;
-    oralBranch: { recommended: OralBranch; chosen?: OralBranch } | null;
+    oralBranch: { recommended?: OralBranch; chosen?: OralBranch } | null;
     writtenCombo: { recommended: WrittenCombo; chosen?: WrittenCombo } | null;
     hydrate: (payload: MockExamRunnerHydration) => void;
     setResume: (resume: ResumePointer) => void;

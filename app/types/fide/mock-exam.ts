@@ -52,6 +52,7 @@ export type Activity = {
      * Exemple : "L'élève doit utiliser le passé composé" / "focus sur les prépositions de lieu" etc.
      */
     aiContext?: string;
+    aiCorrectionContext?: string;
 
     /** Sélection de voix IA pour l'activité (homme/femme) */
     aiVoiceGender?: AIVoiceGender;
@@ -84,7 +85,7 @@ export type SessionStatus = "in_progress" | "completed" | "abandoned";
 export type OralBranch = "A1" | "B1";
 export type WrittenCombo = "A1_A2" | "A2_B1";
 
-export type ScoreSummary = { score: number; max: number };
+export type ScoreSummary = { percentage: number; feedback: string };
 export type Reference = { _type: "reference"; _ref: string }; // Sanity reference
 
 export type MockExamConfigRef = {
@@ -101,6 +102,24 @@ export type MockExamConfigRef = {
     readWriteTaskIds: { A1_A2: Reference[]; A2_B1: Reference[] };
 };
 
+export type CorrectionStateType =
+    | "SPEAK_A2_RESULT"
+    | "SPEAK_BRANCH_RESULT"
+    | "SPEAK_BRANCH_RESULT_A1"
+    | "SPEAK_BRANCH_RESULT_CHOICE_1"
+    | "SPEAK_BRANCH_RESULT_CHOICE_2"
+    | "LISTENING_RESULT"
+    | "READ_WRITE_RESULT"
+    | "TOTAL_RESULT";
+
+export type ExamCorrectionContent = {
+    _key?: string;
+    correctionType: CorrectionStateType | string;
+    video?: string;
+    image?: Image;
+    body?: PortableText;
+};
+
 export type SpeakingAnswer = {
     taskRef: Reference;
     taskId?: string; // legacy
@@ -108,7 +127,7 @@ export type SpeakingAnswer = {
     audioUrl: string;
     transcriptFinal: string;
     AiFeedback?: string;
-    AiScore?: ScoreSummary;
+    AiScore?: number;
 };
 
 export type ReadWriteAnswer = {
@@ -117,10 +136,17 @@ export type ReadWriteAnswer = {
     activityKey: string; // _key de l’activity dans la task Sanity
     textAnswer: string;
     AiFeedback?: string;
-    AiScore?: ScoreSummary;
+    AiScore?: number;
 };
 
 export const getAnswerTaskId = (answer?: { taskRef?: Reference; taskId?: string } | null) => answer?.taskRef?._ref || answer?.taskId || "";
+
+export type ListeningScenarioResult = {
+    examRef: Reference;
+    score: number;
+    max: number;
+    completedAt: string;
+};
 
 export type ResumePointer = {
     state: string; // ex: "SPEAK_A2_REVIEW"
@@ -135,6 +161,7 @@ export type ExamCompilation = {
     isActive?: boolean;
     order?: number;
     image?: Image;
+    corrections?: ExamCorrectionContent[];
 
     createdAt: string;
     updatedAt: string;
@@ -150,10 +177,12 @@ export type MockExamSession = {
     status: SessionStatus;
     startedAt: string;
     resume: ResumePointer;
-    oralBranch: { recommended: OralBranch; chosen?: OralBranch };
+    oralBranch?: { recommended?: OralBranch; chosen?: OralBranch };
     writtenCombo: { recommended: WrittenCombo; chosen?: WrittenCombo };
     speakA2Answers: SpeakingAnswer[];
+    speakA2CorrectionRetryCount?: number;
     speakBranchAnswers: SpeakingAnswer[];
+    listeningScenarioResults?: ListeningScenarioResult[];
     readWriteAnswers: ReadWriteAnswer[];
 
     overtimeTaskRefs?: Reference[]; // références Sanity des tasks pour lesquelles l’utilisateur a dépassé le temps imparti

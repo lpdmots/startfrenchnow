@@ -7,12 +7,14 @@ export type RunnerActivity = {
     audioUrl?: string;
     promptText?: PortableText;
     aiContext?: string;
+    aiCorrectionContext?: string;
     aiVoiceGender?: AIVoiceGender;
     maxPoints: number;
 };
 
 export type RunnerTask = {
     _id: string;
+    title?: string;
     taskType: TaskType;
     activities: RunnerActivity[];
 };

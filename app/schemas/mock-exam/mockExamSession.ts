@@ -2,10 +2,10 @@ import { defineField, defineType } from "sanity";
 
 const scoreSummaryFields = [
     defineField({
-        name: "score",
-        title: "Score",
+        name: "percentage",
+        title: "Score (%)",
         type: "number",
-        validation: (Rule) => Rule.required(),
+        validation: (Rule) => Rule.required().min(0).max(100),
     }),
     defineField({
         name: "feedback",
@@ -47,8 +47,7 @@ const speakingAnswerFields = [
     defineField({
         name: "AiScore",
         title: "AI Score",
-        type: "object",
-        fields: scoreSummaryFields,
+        type: "number",
     }),
 ];
 
@@ -79,8 +78,7 @@ const readWriteAnswerFields = [
     defineField({
         name: "AiScore",
         title: "AI Score",
-        type: "object",
-        fields: scoreSummaryFields,
+        type: "number",
     }),
 ];
 
@@ -156,7 +154,6 @@ export default defineType({
             name: "oralBranch",
             title: "Oral Branch",
             type: "object",
-            validation: (Rule) => Rule.required(),
             fields: [
                 defineField({
                     name: "recommended",
@@ -168,7 +165,6 @@ export default defineType({
                             { title: "B1", value: "B1" },
                         ],
                     },
-                    validation: (Rule) => Rule.required(),
                 }),
                 defineField({
                     name: "chosen",
@@ -228,6 +224,13 @@ export default defineType({
             ],
         }),
         defineField({
+            name: "speakA2CorrectionRetryCount",
+            title: "Speak A2 Correction Retry Count",
+            type: "number",
+            initialValue: 0,
+            validation: (Rule) => Rule.min(0),
+        }),
+        defineField({
             name: "speakBranchAnswers",
             title: "Speak Branch Answers",
             type: "array",
@@ -237,6 +240,46 @@ export default defineType({
                     title: "Speaking Answer",
                     type: "object",
                     fields: speakingAnswerFields,
+                },
+            ],
+        }),
+        defineField({
+            name: "listeningScenarioResults",
+            title: "Listening Scenario Results",
+            type: "array",
+            of: [
+                {
+                    name: "listeningScenarioResult",
+                    title: "Listening Scenario Result",
+                    type: "object",
+                    fields: [
+                        defineField({
+                            name: "examRef",
+                            title: "Exam",
+                            type: "reference",
+                            to: [{ type: "fideExam" }],
+                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "score",
+                            title: "Score",
+                            type: "number",
+                            validation: (Rule) => Rule.required().min(0).max(3),
+                        }),
+                        defineField({
+                            name: "max",
+                            title: "Max",
+                            type: "number",
+                            validation: (Rule) => Rule.required().min(1).max(3),
+                            initialValue: 3,
+                        }),
+                        defineField({
+                            name: "completedAt",
+                            title: "Completed at",
+                            type: "datetime",
+                            validation: (Rule) => Rule.required(),
+                        }),
+                    ],
                 },
             ],
         }),

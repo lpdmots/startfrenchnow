@@ -7,7 +7,8 @@ import { useToast } from "@/app/hooks/use-toast";
 import { useMockExamRunnerStore, type MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
 import { advanceMockExamResume } from "@/app/serverActions/mockExamActions";
 import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
-import type { SpeakingAnswer } from "@/app/types/fide/mock-exam";
+import type { ExamCorrectionContent, ListeningScenarioResult, OralBranch, ScoreSummary, SpeakingAnswer, WrittenCombo } from "@/app/types/fide/mock-exam";
+import type { Exam } from "@/app/types/fide/exam";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import RunnerScreenRouter from "./RunnerScreenRouter";
 import { getSpeakingTaskHeader } from "./runnerTaskHeader";
@@ -15,8 +16,21 @@ import { FaArrowLeft } from "react-icons/fa";
 
 type RunnerClientProps = {
     hydrationData: MockExamRunnerHydration;
+    compilationName: string;
+    compilationCorrections: ExamCorrectionContent[];
     speakA2Tasks: RunnerTask[];
+    speakBranchA1Tasks: RunnerTask[];
+    speakBranchB1Tasks: RunnerTask[];
+    listeningA1Exams: Exam[];
+    listeningA2Exams: Exam[];
+    listeningB1Exams: Exam[];
     initialSpeakA2Answers: SpeakingAnswer[];
+    initialSpeakA2ScoreSummary: ScoreSummary | null;
+    initialSpeakBranchScoreSummary: ScoreSummary | null;
+    initialListeningScenarioResults: ListeningScenarioResult[];
+    initialListeningScoreSummary: ScoreSummary | null;
+    initialSpeakA2CorrectionRetryCount: number;
+    isAdmin: boolean;
 };
 
 const RUNNER_PHASES = ["Parler", "Comprendre", "Lire/Écrire"] as const;
@@ -24,6 +38,7 @@ const RUNNER_PHASES = ["Parler", "Comprendre", "Lire/Écrire"] as const;
 const getRunnerPhaseIndex = (state?: string) => {
     if (!state) return 0;
     if (state.startsWith("READ_WRITE") || state.startsWith("WRITTEN_")) return 2;
+    if (state === "ORAL_SECTION_SUMMARY") return 1;
     if (state.startsWith("LISTENING") || state.includes("COMPRENDRE")) return 1;
     return 0;
 };
@@ -40,6 +55,21 @@ const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerT
             SPEAK_A2_TASK2_CONVERSATION_INTRO: { title: "Tâche 2", subtitle: "Conversation téléphonique" },
             SPEAK_A2_TASK3_DISCUSSION_INTRO: { title: "Tâche 3", subtitle: "Discussion guidée" },
             SPEAK_A2_RESULT: { title: "Parler A2", subtitle: "Section terminée" },
+            SPEAK_A2_CORRECTION: { title: "Correction A2", subtitle: "Vidéo de correction" },
+            SPEAK_BRANCH_INTRO: { title: "Parler Branche", subtitle: "Choix du niveau" },
+            SPEAK_BRANCH_A1_INTRO: { title: "Parler Branche", subtitle: "Branche A1" },
+            SPEAK_BRANCH_B1_INTRO: { title: "Parler Branche", subtitle: "Branche B1" },
+            SPEAK_BRANCH_B1_CHOICE: { title: "Parler Branche", subtitle: "Choix de l'épreuve B1" },
+            SPEAK_BRANCH_A1_RUN: { title: "Parler Branche", subtitle: "A1 - En cours" },
+            SPEAK_BRANCH_B1_RUN: { title: "Parler Branche", subtitle: "B1 - En cours" },
+            SPEAK_BRANCH_RESULT: { title: "Parler Branche", subtitle: "Section terminée" },
+            SPEAK_BRANCH_CORRECTION: { title: "Correction branche", subtitle: "Vidéo de correction" },
+            LISTENING_INTRO: { title: "Comprendre", subtitle: "Introduction" },
+            LISTENING_RUN: { title: "Comprendre", subtitle: "Scénarios en cours" },
+            LISTENING_RESULT: { title: "Comprendre", subtitle: "Section terminée" },
+            ORAL_SECTION_SUMMARY: { title: "Bilan oral", subtitle: "Synthèse finale" },
+            READ_WRITE_CHOICE: { title: "Lire/Écrire", subtitle: "Choix du parcours" },
+            READ_WRITE_INTRO: { title: "Lire/Écrire", subtitle: "Introduction" },
         };
         return byState[state] || { title: state, subtitle: "-" };
     }
@@ -61,7 +91,24 @@ const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerT
     return getSpeakingTaskHeader(task, taskIndex, totalTasks);
 };
 
-export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeakA2Answers }: RunnerClientProps) {
+export default function RunnerClient({
+    hydrationData,
+    compilationName,
+    compilationCorrections,
+    speakA2Tasks,
+    speakBranchA1Tasks,
+    speakBranchB1Tasks,
+    listeningA1Exams,
+    listeningA2Exams,
+    listeningB1Exams,
+    initialSpeakA2Answers,
+    initialSpeakA2ScoreSummary,
+    initialSpeakBranchScoreSummary,
+    initialListeningScenarioResults,
+    initialListeningScoreSummary,
+    initialSpeakA2CorrectionRetryCount,
+    isAdmin,
+}: RunnerClientProps) {
     const [showQuitModal, setShowQuitModal] = useState(false);
     const [isLeaving, setIsLeaving] = useState(false);
     const [isAdvancing, setIsAdvancing] = useState(false);
@@ -77,7 +124,28 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
         resume?.state === "EXAM_INTRO" ||
         resume?.state === "SPEAK_A2_TASK1_DESCRIPTION_INTRO" ||
         resume?.state === "SPEAK_A2_TASK2_CONVERSATION_INTRO" ||
-        resume?.state === "SPEAK_A2_TASK3_DISCUSSION_INTRO";
+        resume?.state === "SPEAK_A2_TASK3_DISCUSSION_INTRO" ||
+        resume?.state === "SPEAK_BRANCH_A1_INTRO" ||
+        resume?.state === "SPEAK_BRANCH_B1_INTRO" ||
+        resume?.state === "LISTENING_INTRO";
+    const isVariableHeightLayout =
+        resume?.state === "SPEAK_A2_CORRECTION" ||
+        resume?.state === "SPEAK_BRANCH_CORRECTION" ||
+        resume?.state === "SPEAK_BRANCH_A1_RUN" ||
+        resume?.state === "LISTENING_RUN" ||
+        resume?.state === "ORAL_SECTION_SUMMARY";
+    const hideTopHeaderOnSmall =
+        resume?.state === "SPEAK_A2_RESULT" ||
+        resume?.state === "SPEAK_A2_CORRECTION" ||
+        resume?.state === "SPEAK_BRANCH_CORRECTION" ||
+        resume?.state === "SPEAK_BRANCH_A1_RUN" ||
+        resume?.state === "SPEAK_BRANCH_INTRO" ||
+        resume?.state === "SPEAK_BRANCH_B1_CHOICE" ||
+        resume?.state === "SPEAK_BRANCH_RESULT" ||
+        resume?.state === "READ_WRITE_CHOICE" ||
+        resume?.state === "LISTENING_RUN" ||
+        resume?.state === "LISTENING_RESULT" ||
+        resume?.state === "ORAL_SECTION_SUMMARY";
 
     useEffect(() => {
         hydrate(hydrationData);
@@ -94,22 +162,30 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
             window.history.pushState(guardState, "", window.location.href);
         };
 
-        const onBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (isLeaving || isAdvancing) return;
-            event.preventDefault();
-            event.returnValue = "";
-        };
-
         window.addEventListener("popstate", onPopState);
-        window.addEventListener("beforeunload", onBeforeUnload);
 
         return () => {
             window.removeEventListener("popstate", onPopState);
-            window.removeEventListener("beforeunload", onBeforeUnload);
         };
     }, [hydrationData.compilationId, isAdvancing, isLeaving]);
 
-    const handleAdvance = async ({ nextState, taskId, activityKey }: { nextState: string; taskId?: string; activityKey?: string }) => {
+    const handleAdvance = async ({
+        nextState,
+        taskId,
+        activityKey,
+        oralBranchChosen,
+        oralBranchRecommended,
+        writtenComboChosen,
+        writtenComboRecommended,
+    }: {
+        nextState: string;
+        taskId?: string;
+        activityKey?: string;
+        oralBranchChosen?: OralBranch;
+        oralBranchRecommended?: OralBranch;
+        writtenComboChosen?: WrittenCombo;
+        writtenComboRecommended?: WrittenCombo;
+    }) => {
         if (isAdvancing) return;
 
         setIsAdvancing(true);
@@ -120,6 +196,10 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
                 nextState,
                 taskId,
                 activityKey,
+                oralBranchChosen,
+                oralBranchRecommended,
+                writtenComboChosen,
+                writtenComboRecommended,
             });
 
             if (!result?.ok || !result.resume) {
@@ -157,12 +237,20 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
         });
     };
 
+    const handleAnswersEvaluated = (answers: SpeakingAnswer[]) => {
+        setSpeakA2Answers((previous) => {
+            const byKey = new Map(previous.map((item) => [`${getAnswerTaskId(item)}::${item.activityKey}`, item] as const));
+            for (const answer of answers || []) {
+                byKey.set(`${getAnswerTaskId(answer)}::${answer.activityKey}`, answer);
+            }
+            return Array.from(byKey.values());
+        });
+    };
+
     return (
         <>
-            <div className="w-full min-h-[100dvh] flex flex-col items-center gap-6 p-4 md:h-[100dvh] md:p-6">
-                <section
-                    className="w-full max-w-[1600px] grid grid-cols-1 items-center gap-2 md:gap-4 py-0 lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)_auto]"
-                >
+            <div className={`w-full min-h-[100dvh] flex flex-col items-center gap-6 p-4 md:p-6 [&_textarea]:bg-neutral-100 [&_input]:bg-neutral-100 ${isVariableHeightLayout ? "" : "md:h-[100dvh]"}`}>
+                <section className="w-full max-w-[1600px] grid grid-cols-1 items-center gap-2 md:gap-4 py-0 lg:grid-cols-[minmax(0,800px)_minmax(0,1fr)_auto]">
                     <div className="flex w-full lg:max-w-[800px] justify-between flex-wrap gap-2 sm:gap-4">
                         <button
                             type="button"
@@ -199,24 +287,38 @@ export default function RunnerClient({ hydrationData, speakA2Tasks, initialSpeak
                         </div>
                     </div>
                     {!isExamIntro && (
-                        <div className="min-w-0 w-full flex lg:flex-col justify-between items-end lg:justify-end shrink-0">
+                        <div className={`min-w-0 w-full ${hideTopHeaderOnSmall ? "hidden lg:flex" : "flex"} lg:flex-col justify-between items-end lg:justify-end shrink-0`}>
                             <p className="mb-0 text-lg font-semibold uppercase tracking-wide text-neutral-700 truncate">{headerDetails.title}</p>
                             <p className="mb-0 text-sm text-neutral-600 truncate">{headerDetails.subtitle}</p>
                         </div>
                     )}
                 </section>
 
-                <section className="w-full grow max-w-[1600px] py-0 md:flex-1 md:min-h-0 flex justify-center">
+                <section className={`w-full grow max-w-[1600px] py-0 flex justify-center ${isVariableHeightLayout ? "" : "md:flex-1 md:min-h-0"}`}>
                     {resume && (
                         <RunnerScreenRouter
                             compilationId={hydrationData.compilationId}
                             sessionKey={hydrationData.sessionKey}
                             resume={resume}
+                            compilationName={compilationName}
+                            compilationCorrections={compilationCorrections}
                             speakA2Tasks={speakA2Tasks}
+                            speakBranchA1Tasks={speakBranchA1Tasks}
+                            speakBranchB1Tasks={speakBranchB1Tasks}
+                            listeningA1Exams={listeningA1Exams}
+                            listeningA2Exams={listeningA2Exams}
+                            listeningB1Exams={listeningB1Exams}
                             speakA2Answers={speakA2Answers}
+                            initialSpeakA2ScoreSummary={initialSpeakA2ScoreSummary}
+                            initialSpeakBranchScoreSummary={initialSpeakBranchScoreSummary}
+                            initialListeningScenarioResults={initialListeningScenarioResults}
+                            initialListeningScoreSummary={initialListeningScoreSummary}
+                            initialSpeakA2CorrectionRetryCount={initialSpeakA2CorrectionRetryCount}
+                            isAdmin={isAdmin}
                             isAdvancing={isAdvancing}
                             onAdvance={handleAdvance}
                             onSpeakA2AnswerSaved={handleAnswerSaved}
+                            onSpeakA2AnswersEvaluated={handleAnswersEvaluated}
                         />
                     )}
                 </section>
