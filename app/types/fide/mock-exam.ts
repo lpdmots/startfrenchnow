@@ -28,6 +28,26 @@ export type TaskType =
 
 export type AIVoiceGender = "male" | "female";
 
+export type ReadWriteItemType = "instruction" | "single_choice" | "numbered_fill" | "text_extract" | "long_text";
+
+export type ReadWriteAnswerOption = {
+    _key?: string;
+    label?: string;
+    isCorrect?: boolean;
+};
+
+export type ReadWriteItem = {
+    _key?: string;
+    itemType?: ReadWriteItemType;
+    contentText?: PortableText;
+    question?: string;
+    image?: Image;
+    imageAlternativeText?: PortableText;
+    answerOptions?: ReadWriteAnswerOption[];
+    aiCorrectionContext?: string;
+    maxPoints?: number;
+};
+
 /**
  * Une activity = un "prompt" successif à enregistrer.
  * - Pour IMAGE_DESCRIPTION_A2: en général 1 activity (image + audio question).
@@ -37,6 +57,9 @@ export type AIVoiceGender = "male" | "female";
 export type Activity = {
     /** _key Sanity (stable) — pas besoin de le stocker ici, mais on le documente */
     // _key: string; // fourni par Sanity au runtime
+
+    /** Titre de la tâche (utile pour Lire/Écrire) */
+    title?: string;
 
     /** Support visuel optionnel (image de Sanity) */
     image?: Image;
@@ -57,8 +80,11 @@ export type Activity = {
     /** Sélection de voix IA pour l'activité (homme/femme) */
     aiVoiceGender?: AIVoiceGender;
 
-    /** Points max attribuables à cette activity (barème détaillé géré par l'IA / programme) */
-    maxPoints: number;
+    /** Points max attribuables à cette activity (optionnel selon le type de tâche) */
+    maxPoints?: number;
+
+    /** Items d'activité (consigne + questions) pour Lire/Écrire */
+    items?: ReadWriteItem[];
 };
 
 export type MockExamTask = {
@@ -67,6 +93,9 @@ export type MockExamTask = {
     // _id: string; // fourni par Sanity
 
     taskType: TaskType;
+
+    /** Support PDF général du module (Lire/Écrire) */
+    supportPdfUrl?: string;
 
     /**
      * Liste ordonnée d’activities (= prompts successifs).
@@ -134,6 +163,7 @@ export type ReadWriteAnswer = {
     taskRef: Reference;
     taskId?: string; // legacy
     activityKey: string; // _key de l’activity dans la task Sanity
+    questionKey: string; // _key de la question dans l’activity
     textAnswer: string;
     AiFeedback?: string;
     AiScore?: number;

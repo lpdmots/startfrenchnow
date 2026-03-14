@@ -5,23 +5,26 @@ import Image from "next/image";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { PortableText } from "@portabletext/react";
+import { FaArrowLeft, FaArrowRight, FaImage, FaRegEye, FaRegFileAlt } from "react-icons/fa";
 import urlFor from "@/app/lib/urlFor";
 import {
     evaluateMockExamSpeakA2Section,
     evaluateMockExamSpeakBranchSection,
     saveMockExamListeningScenarioResult,
+    saveMockExamReadWriteAnswer,
     type SpeakA2CorrectionSummary,
     type SpeakBranchCorrectionSummary,
 } from "@/app/serverActions/mockExamActions";
 import CircularProgressMagic from "@/app/components/common/CircularProgressMagic";
 import { RichTextComponents } from "@/app/components/sanity/RichTextComponents";
 import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
-import type { ExamCorrectionContent, ListeningScenarioResult, OralBranch, ResumePointer, ScoreSummary, WrittenCombo } from "@/app/types/fide/mock-exam";
+import type { ExamCorrectionContent, ListeningScenarioResult, OralBranch, ReadWriteAnswer, ResumePointer, ScoreSummary, WrittenCombo } from "@/app/types/fide/mock-exam";
 import type { SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { Exam } from "@/app/types/fide/exam";
-import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
+import type { RunnerReadWriteItem, RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import ExpandableCardDemo from "@/app/components/ui/expandable-card-demo-standard";
 import SpeakingResponsePanel from "./SpeakingResponsePanel";
+import Link from "next/link";
 
 type AdvancePayload = {
     nextState: string;
@@ -45,11 +48,15 @@ type RunnerScreenRouterProps = {
     listeningA1Exams: Exam[];
     listeningA2Exams: Exam[];
     listeningB1Exams: Exam[];
+    readWriteA1A2Tasks: RunnerTask[];
+    readWriteA2B1Tasks: RunnerTask[];
     speakA2Answers: SpeakingAnswer[];
     initialListeningScenarioResults: ListeningScenarioResult[];
+    initialReadWriteAnswers: ReadWriteAnswer[];
     initialSpeakA2ScoreSummary?: ScoreSummary | null;
     initialSpeakBranchScoreSummary?: ScoreSummary | null;
     initialListeningScoreSummary?: ScoreSummary | null;
+    writtenCombo?: { recommended?: WrittenCombo; chosen?: WrittenCombo };
     initialSpeakA2CorrectionRetryCount?: number;
     isAdmin?: boolean;
     isAdvancing: boolean;
@@ -77,6 +84,7 @@ const RUNNER_LAYOUT_BOTTOM_PADDING = "pb-5";
 const SPEAK_A2_MAX_MANUAL_RETRIES = 3;
 const SPEAK_BRANCH_B1_RECOMMENDATION_THRESHOLD = 65;
 const LISTENING_RECOMMENDED_SCENARIO_COUNT = 4;
+const READ_WRITE_AUTO_NEXT_DELAY_MS = 220;
 const TASK_TYPE_LABELS: Record<string, string> = {
     IMAGE_DESCRIPTION_A2: "Tâche 1 - Description d'image",
     PHONE_CONVERSATION_A2: "Tâche 2 - Conversation téléphonique",
@@ -202,6 +210,156 @@ const resolveNextPointer = (tasks: RunnerTask[], currentPointer: RunnerPointer):
     return resolveNextTaskPointer(tasks, currentPointer.taskIndex);
 };
 
+const getReadWriteAnswerKey = (taskId: string, activityKey: string, questionKey: string) => `${taskId}::${activityKey}::${questionKey}`;
+
+const isReadWriteInstructionItem = (item?: RunnerReadWriteItem | null) => String(item?.itemType || "") === "instruction";
+
+const isReadWriteQuestionItem = (item?: RunnerReadWriteItem | null): item is RunnerReadWriteItem => Boolean(item?._key) && !isReadWriteInstructionItem(item);
+
+const getReadWriteAutoInstruction = (itemType: string) => {
+    if (itemType === "single_choice") return "Coche la bonne réponse.";
+    if (itemType === "numbered_fill") return "Complète selon le numéro.";
+    if (itemType === "text_extract") return "Copie ou colle la partie de texte correspondante.";
+    return "";
+};
+
+const getReadWriteModuleNumber = (taskType: string, selectedCombo: WrittenCombo): number | null => {
+    if (taskType === "READ_WRITE_M1") return 1;
+    if (taskType === "READ_WRITE_M2") return 2;
+    if (taskType === "READ_WRITE_M3_M4") return selectedCombo === "A2_B1" ? 4 : 3;
+    if (taskType === "READ_WRITE_M5") return 5;
+    if (taskType === "READ_WRITE_M6") return 6;
+    return null;
+};
+
+const hasUsableImageAsset = (image?: { asset?: { _ref?: string; _id?: string } } | null) => {
+    return Boolean(image?.asset?._ref || image?.asset?._id);
+};
+
+const getReadWriteItemTabLabel = (item: RunnerReadWriteItem, index: number) => {
+    const itemType = String(item?.itemType || "");
+    if (itemType === "instruction") return "Consigne";
+    if (itemType === "numbered_fill") {
+        const numericLabel = String(item?.question || "").trim();
+        return `N°${numericLabel || index}`;
+    }
+    if (itemType === "text_extract") return `Extrait ${index}`;
+    if (itemType === "single_choice") return `Choix ${index}`;
+    if (itemType === "long_text") return `Texte ${index}`;
+    return `Q${index}`;
+};
+
+const parseReadWriteNumberList = (raw: string) => {
+    const seen = new Set<string>();
+    const list = String(raw || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => /^\d+$/.test(item))
+        .filter((item) => {
+            if (seen.has(item)) return false;
+            seen.add(item);
+            return true;
+        });
+    return list;
+};
+
+const NUMBERED_DRAFT_PREFIX = "__RW_NUM__";
+
+const parseReadWriteNumberedAnswerDraft = (rawDraft: string, numbers: string[]) => {
+    const draft = String(rawDraft || "");
+    const base: Record<string, string> = Object.fromEntries(numbers.map((number) => [number, ""]));
+
+    if (draft.startsWith(NUMBERED_DRAFT_PREFIX)) {
+        try {
+            const payload = JSON.parse(draft.slice(NUMBERED_DRAFT_PREFIX.length)) as Record<string, unknown>;
+            for (const number of numbers) {
+                base[number] = String(payload?.[number] ?? "");
+            }
+            return base;
+        } catch {
+            // fallback legacy format below
+        }
+    }
+
+    const lines = draft
+        .split("\n")
+        .map((line) => line.replace(/\r$/, ""))
+        .filter(Boolean);
+
+    for (const line of lines) {
+        const match = line.match(/^(\d+)\s*[:\-]\s*(.*)$/);
+        if (!match) continue;
+        const number = match[1];
+        if (!numbers.includes(number)) continue;
+        base[number] = String(match[2] || "");
+    }
+
+    if (numbers.length === 1 && !base[numbers[0]].trim() && draft.trim()) {
+        base[numbers[0]] = draft;
+    }
+
+    return base;
+};
+
+const buildReadWriteNumberedDraft = (numbers: string[], valuesByNumber: Record<string, string>) => {
+    const safePayload: Record<string, string> = {};
+    for (const number of numbers) {
+        safePayload[number] = String(valuesByNumber[number] || "");
+    }
+    return `${NUMBERED_DRAFT_PREFIX}${JSON.stringify(safePayload)}`;
+};
+
+const buildReadWriteNumberedAnswerDraft = (numbers: string[], valuesByNumber: Record<string, string>) => {
+    if (!numbers.length) return "";
+    if (numbers.length === 1) {
+        return String(valuesByNumber[numbers[0]] || "");
+    }
+    return numbers.map((number) => `${number}: ${String(valuesByNumber[number] || "")}`).join("\n");
+};
+
+const normalizeReadWriteItemAnswer = (item: RunnerReadWriteItem, rawDraft: string) => {
+    const itemType = String(item?.itemType || "");
+    const draft = String(rawDraft || "");
+
+    if (itemType === "numbered_fill") {
+        const numbers = parseReadWriteNumberList(String(item?.question || ""));
+        if (!numbers.length) {
+            const value = draft.trim();
+            return { value, complete: Boolean(value) };
+        }
+        const valuesByNumber = parseReadWriteNumberedAnswerDraft(draft, numbers);
+        const complete = numbers.every((number) => String(valuesByNumber[number] || "").trim().length > 0);
+        const value = buildReadWriteNumberedAnswerDraft(numbers, valuesByNumber).trim();
+        return { value, complete };
+    }
+
+    const value = draft.trim();
+    return { value, complete: Boolean(value) };
+};
+
+const getReadWriteItemQuestionCount = (item: RunnerReadWriteItem) => {
+    const itemType = String(item?.itemType || "");
+    if (itemType === "numbered_fill") {
+        const numbers = parseReadWriteNumberList(String(item?.question || ""));
+        return numbers.length || 1;
+    }
+    return 1;
+};
+
+const getReadWriteItemAnsweredCount = (item: RunnerReadWriteItem, rawDraft: string) => {
+    const itemType = String(item?.itemType || "");
+    const draft = String(rawDraft || "");
+    if (itemType === "numbered_fill") {
+        const numbers = parseReadWriteNumberList(String(item?.question || ""));
+        if (!numbers.length) {
+            return draft.trim().length > 0 ? 1 : 0;
+        }
+        const valuesByNumber = parseReadWriteNumberedAnswerDraft(draft, numbers);
+        return numbers.reduce((count, number) => (String(valuesByNumber[number] || "").trim().length > 0 ? count + 1 : count), 0);
+    }
+    return draft.trim().length > 0 ? 1 : 0;
+};
+
 function ActivityImageStage({ task, activityIndex }: { task: RunnerTask; activityIndex: number }) {
     const activity = task.activities[activityIndex];
     if (!activity) {
@@ -252,11 +410,15 @@ export default function RunnerScreenRouter({
     listeningA1Exams,
     listeningA2Exams,
     listeningB1Exams,
+    readWriteA1A2Tasks,
+    readWriteA2B1Tasks,
     speakA2Answers,
     initialListeningScenarioResults,
+    initialReadWriteAnswers,
     initialSpeakA2ScoreSummary,
     initialSpeakBranchScoreSummary,
     initialListeningScoreSummary,
+    writtenCombo,
     initialSpeakA2CorrectionRetryCount,
     isAdmin,
     isAdvancing,
@@ -276,6 +438,7 @@ export default function RunnerScreenRouter({
     const speakBranchA1TaskOneIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
     const speakBranchB1IntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
     const listeningIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
+    const readWriteIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
     const speakA2CorrectionContent = useMemo(() => (compilationCorrections || []).find((item) => String(item?.correctionType || "") === "SPEAK_A2_RESULT"), [compilationCorrections]);
     const speakA2CorrectionVideoUrl = withCloudFrontPrefix(String(speakA2CorrectionContent?.video || ""));
     const speakA2CorrectionImageUrl = speakA2CorrectionContent?.image ? urlFor(speakA2CorrectionContent.image).width(1800).fit("max").url() : null;
@@ -883,8 +1046,249 @@ export default function RunnerScreenRouter({
         return String(validatedLevelLabel || "").split(" ")[0] || "-";
     }, [validatedLevelLabel]);
     const recommendedWrittenCombo: WrittenCombo = useMemo(() => {
-        return validatedLevelCode === "A2" || validatedLevelCode === "B1" ? "A2_B1" : "A1_A2";
-    }, [validatedLevelCode]);
+        if (inferredBranch !== "B1") {
+            return "A1_A2";
+        }
+        return finalOralPercentage > 80 ? "A2_B1" : "A1_A2";
+    }, [finalOralPercentage, inferredBranch]);
+    const selectedWrittenCombo: WrittenCombo = useMemo(() => {
+        return writtenCombo?.chosen || writtenCombo?.recommended || recommendedWrittenCombo;
+    }, [recommendedWrittenCombo, writtenCombo?.chosen, writtenCombo?.recommended]);
+    const readWriteTasks = useMemo(() => {
+        return selectedWrittenCombo === "A2_B1" ? readWriteA2B1Tasks || [] : readWriteA1A2Tasks || [];
+    }, [readWriteA1A2Tasks, readWriteA2B1Tasks, selectedWrittenCombo]);
+    const readWriteFirstPointer = useMemo(() => resolveFirstTaskPointer(readWriteTasks), [readWriteTasks]);
+    const readWriteCurrentPointer = useMemo(() => {
+        if (resume.state !== "READ_WRITE_RUN") return null;
+        return resolvePointerFromResume(readWriteTasks, resume);
+    }, [readWriteTasks, resume]);
+    const readWriteCurrentTask = readWriteCurrentPointer ? readWriteTasks[readWriteCurrentPointer.taskIndex] : null;
+    const readWriteCurrentActivity = readWriteCurrentPointer ? readWriteCurrentTask?.activities?.[readWriteCurrentPointer.activityIndex] : null;
+    const readWriteItems = useMemo(() => (Array.isArray(readWriteCurrentActivity?.items) ? readWriteCurrentActivity.items : []), [readWriteCurrentActivity?.items]);
+    const readWriteInstructionItem = useMemo(() => readWriteItems.find((item) => isReadWriteInstructionItem(item)), [readWriteItems]);
+    const readWriteQuestionItems = useMemo(() => readWriteItems.filter((item) => isReadWriteQuestionItem(item)), [readWriteItems]);
+
+    const [readWriteAnswers, setReadWriteAnswers] = useState<ReadWriteAnswer[]>(Array.isArray(initialReadWriteAnswers) ? initialReadWriteAnswers : []);
+    const [isSavingReadWriteAnswer, setIsSavingReadWriteAnswer] = useState(false);
+    const [readWriteSaveError, setReadWriteSaveError] = useState("");
+    const [readWriteStep, setReadWriteStep] = useState<"SITUATION" | "QUESTION">("SITUATION");
+    const [activeReadWriteItemIndex, setActiveReadWriteItemIndex] = useState(0);
+    const [readWriteDrafts, setReadWriteDrafts] = useState<Record<string, string>>({});
+    const [readWriteVisualMode, setReadWriteVisualMode] = useState<"IMAGE" | "TEXT">("IMAGE");
+    const [isReadWriteImageModalOpen, setIsReadWriteImageModalOpen] = useState(false);
+    const readWriteAutoNextTimerRef = useRef<number | null>(null);
+    const readWriteActivityInitRef = useRef("");
+
+    useEffect(() => {
+        setReadWriteAnswers(Array.isArray(initialReadWriteAnswers) ? initialReadWriteAnswers : []);
+        setReadWriteSaveError("");
+    }, [initialReadWriteAnswers, sessionKey]);
+
+    const readWriteAnswersByKey = useMemo(() => {
+        const map = new Map<string, ReadWriteAnswer>();
+        for (const answer of readWriteAnswers || []) {
+            const taskId = getAnswerTaskId(answer);
+            const activityKey = String(answer?.activityKey || "");
+            const questionKey = String(answer?.questionKey || "");
+            if (!taskId || !activityKey || !questionKey) continue;
+            map.set(getReadWriteAnswerKey(taskId, activityKey, questionKey), answer);
+        }
+        return map;
+    }, [readWriteAnswers]);
+
+    const readWriteActivityIdentity = `${readWriteCurrentPointer?.taskId || ""}::${readWriteCurrentPointer?.activityKey || ""}`;
+
+    useEffect(() => {
+        setIsReadWriteImageModalOpen(false);
+    }, [readWriteActivityIdentity, resume.state]);
+
+    useEffect(() => {
+        return () => {
+            if (readWriteAutoNextTimerRef.current) {
+                window.clearTimeout(readWriteAutoNextTimerRef.current);
+                readWriteAutoNextTimerRef.current = null;
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (readWriteAutoNextTimerRef.current) {
+            window.clearTimeout(readWriteAutoNextTimerRef.current);
+            readWriteAutoNextTimerRef.current = null;
+        }
+    }, [readWriteActivityIdentity]);
+
+    useEffect(() => {
+        if (!isReadWriteImageModalOpen) return;
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setIsReadWriteImageModalOpen(false);
+            }
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [isReadWriteImageModalOpen]);
+
+    useEffect(() => {
+        if (resume.state !== "READ_WRITE_RUN") {
+            readWriteActivityInitRef.current = "";
+            return;
+        }
+        if (readWriteActivityInitRef.current === readWriteActivityIdentity) return;
+        readWriteActivityInitRef.current = readWriteActivityIdentity;
+
+        const instructionIndex = readWriteItems.findIndex((item) => isReadWriteInstructionItem(item));
+        const firstQuestionIndex = readWriteItems.findIndex((item) => isReadWriteQuestionItem(item));
+        const initialItemIndex = instructionIndex >= 0 ? instructionIndex : firstQuestionIndex >= 0 ? firstQuestionIndex : 0;
+        // Always show the activity presentation step (image + situation) for each activity.
+        setReadWriteStep("SITUATION");
+        setActiveReadWriteItemIndex(initialItemIndex);
+        setReadWriteVisualMode("IMAGE");
+        setReadWriteSaveError("");
+
+        if (!readWriteCurrentPointer) {
+            setReadWriteDrafts({});
+            return;
+        }
+
+        const nextDrafts: Record<string, string> = {};
+        for (const item of readWriteQuestionItems) {
+            const questionKey = String(item?._key || "");
+            if (!questionKey) continue;
+            const answerKey = getReadWriteAnswerKey(readWriteCurrentPointer.taskId, readWriteCurrentPointer.activityKey, questionKey);
+            nextDrafts[questionKey] = String(readWriteAnswersByKey.get(answerKey)?.textAnswer || "");
+        }
+        setReadWriteDrafts(nextDrafts);
+    }, [readWriteActivityIdentity, readWriteAnswersByKey, readWriteCurrentPointer, readWriteItems, readWriteQuestionItems, resume.state]);
+
+    const currentReadWriteItem = readWriteItems[activeReadWriteItemIndex];
+    const currentReadWriteItemType = String(currentReadWriteItem?.itemType || "");
+    const currentReadWriteItemKey = String(currentReadWriteItem?._key || "");
+    const isCurrentReadWriteInstructionItem = isReadWriteInstructionItem(currentReadWriteItem);
+    const currentReadWriteDraft = currentReadWriteItemKey ? String(readWriteDrafts[currentReadWriteItemKey] || "") : "";
+    const currentReadWriteAutoInstruction = getReadWriteAutoInstruction(currentReadWriteItemType);
+    const currentReadWriteNumberLabels = useMemo(() => {
+        if (!currentReadWriteItem || currentReadWriteItemType !== "numbered_fill") return [] as string[];
+        return parseReadWriteNumberList(String(currentReadWriteItem.question || ""));
+    }, [currentReadWriteItem, currentReadWriteItemType]);
+    const currentReadWriteNumberValues = useMemo(() => parseReadWriteNumberedAnswerDraft(currentReadWriteDraft, currentReadWriteNumberLabels), [currentReadWriteDraft, currentReadWriteNumberLabels]);
+
+    const readWriteTotalQuestions = useMemo(() => {
+        return readWriteTasks.reduce((sum, task) => {
+            const taskCount = (task.activities || []).reduce((acc, activity) => {
+                const items = Array.isArray(activity.items) ? activity.items : [];
+                return (
+                    acc +
+                    items.reduce((itemCount, item) => {
+                        if (!isReadWriteQuestionItem(item)) return itemCount;
+                        return itemCount + getReadWriteItemQuestionCount(item);
+                    }, 0)
+                );
+            }, 0);
+            return sum + taskCount;
+        }, 0);
+    }, [readWriteTasks]);
+
+    const readWriteAnsweredCount = useMemo(() => {
+        let count = 0;
+        for (const task of readWriteTasks) {
+            for (const activity of task.activities || []) {
+                const items = Array.isArray(activity.items) ? activity.items : [];
+                for (const item of items) {
+                    if (!isReadWriteQuestionItem(item)) continue;
+                    const answerKey = getReadWriteAnswerKey(task._id, activity._key, item._key);
+                    const answer = readWriteAnswersByKey.get(answerKey);
+                    count += Math.min(getReadWriteItemQuestionCount(item), getReadWriteItemAnsweredCount(item, String(answer?.textAnswer || "")));
+                }
+            }
+        }
+        return count;
+    }, [readWriteAnswersByKey, readWriteTasks]);
+
+    const readWriteCurrentActivityQuestionTotal = useMemo(() => {
+        return readWriteQuestionItems.reduce((count, item) => count + getReadWriteItemQuestionCount(item), 0);
+    }, [readWriteQuestionItems]);
+
+    const readWriteCurrentActivityAnsweredCount = useMemo(() => {
+        return readWriteQuestionItems.reduce((count, item) => {
+            const questionKey = String(item?._key || "");
+            const draft = String(readWriteDrafts[questionKey] || "");
+            return count + Math.min(getReadWriteItemQuestionCount(item), getReadWriteItemAnsweredCount(item, draft));
+        }, 0);
+    }, [readWriteDrafts, readWriteQuestionItems]);
+
+    const readWriteRemainingInCurrentActivity = useMemo(() => {
+        return Math.max(0, readWriteCurrentActivityQuestionTotal - readWriteCurrentActivityAnsweredCount);
+    }, [readWriteCurrentActivityAnsweredCount, readWriteCurrentActivityQuestionTotal]);
+
+    const persistCurrentReadWriteActivityAnswers = useCallback(async () => {
+        if (!readWriteCurrentPointer) {
+            return { ok: false as const, error: "Activité introuvable." };
+        }
+        if (!readWriteQuestionItems.length) {
+            return { ok: true as const };
+        }
+
+        setIsSavingReadWriteAnswer(true);
+        setReadWriteSaveError("");
+        try {
+            const updatedAnswers: ReadWriteAnswer[] = [];
+
+            for (const item of readWriteQuestionItems) {
+                const questionKey = String(item?._key || "");
+                if (!questionKey) continue;
+
+                const normalized = normalizeReadWriteItemAnswer(item, String(readWriteDrafts[questionKey] || ""));
+                if (!normalized.complete) {
+                    const error = "Merci de compléter toutes les réponses avant de valider la tâche.";
+                    setReadWriteSaveError(error);
+                    return { ok: false as const, error };
+                }
+                const textAnswer = normalized.value;
+
+                const answerKey = getReadWriteAnswerKey(readWriteCurrentPointer.taskId, readWriteCurrentPointer.activityKey, questionKey);
+                const existingAnswer = readWriteAnswersByKey.get(answerKey);
+                if (String(existingAnswer?.textAnswer || "").trim() === textAnswer) {
+                    continue;
+                }
+
+                const result = await saveMockExamReadWriteAnswer({
+                    compilationId,
+                    sessionKey,
+                    taskId: readWriteCurrentPointer.taskId,
+                    activityKey: readWriteCurrentPointer.activityKey,
+                    questionKey,
+                    textAnswer,
+                });
+                if (!result?.ok || !result.answer) {
+                    const error = result?.error || "Impossible de sauvegarder la réponse.";
+                    setReadWriteSaveError(error);
+                    return { ok: false as const, error };
+                }
+                updatedAnswers.push(result.answer);
+            }
+
+            if (updatedAnswers.length) {
+                setReadWriteAnswers((previous) => {
+                    const byKey = new Map(previous.map((item) => [getReadWriteAnswerKey(getAnswerTaskId(item), item.activityKey, String(item.questionKey || "")), item] as const));
+                    for (const answer of updatedAnswers) {
+                        const answerTaskId = getAnswerTaskId(answer);
+                        if (!answerTaskId) continue;
+                        byKey.set(getReadWriteAnswerKey(answerTaskId, answer.activityKey, String(answer.questionKey || "")), answer);
+                    }
+                    return Array.from(byKey.values());
+                });
+            }
+
+            return { ok: true as const };
+        } catch {
+            const error = "Erreur inattendue pendant la sauvegarde.";
+            setReadWriteSaveError(error);
+            return { ok: false as const, error };
+        } finally {
+            setIsSavingReadWriteAnswer(false);
+        }
+    }, [compilationId, readWriteAnswersByKey, readWriteCurrentPointer, readWriteDrafts, readWriteQuestionItems, sessionKey]);
 
     const finalOralFeedback = useMemo(() => {
         if (finalOralPercentage >= 80) {
@@ -2713,6 +3117,567 @@ export default function RunnerScreenRouter({
                     >
                         <p className="mb-1 text-[11px] uppercase tracking-wide opacity-90">Parcours</p>
                         <p className="mb-0 text-2xl font-semibold leading-none">A2-B1</p>
+                    </button>
+                </div>
+            </section>
+        );
+    }
+
+    if (resume.state === "READ_WRITE_INTRO") {
+        const selectedLabel = selectedWrittenCombo === "A2_B1" ? "A2-B1" : "A1-A2";
+        if (!readWriteTasks.length) {
+            return (
+                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
+                    <div className="flex flex-col gap-3">
+                        <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">Lire/Écrire</p>
+                        <h1 className="display-2 font-medium mb-0">Aucune tâche disponible</h1>
+                        <p className="mb-0 text-neutral-700">Aucun module n’est configuré pour le parcours {selectedLabel}.</p>
+                    </div>
+                    <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
+                        <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: "READ_WRITE_RESULT" })} disabled={isAdvancing}>
+                            {isAdvancing ? "Chargement..." : "Continuer"}
+                        </button>
+                    </div>
+                </section>
+            );
+        }
+
+        return (
+            <section className={`flex justify-center w-full h-full px-2 py-2 md:px-4 md:py-5 ${RUNNER_LAYOUT_BOTTOM_PADDING}`}>
+                <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
+                    <div className="lg:max-w-[700px]">
+                        <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Lire/Écrire</p>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Parcours {selectedLabel}</h1>
+                        <p className="mb-0 text-sm text-neutral-600">
+                            Tu vas réaliser <span className="font-semibold">{readWriteTasks.length}</span> module{readWriteTasks.length > 1 ? "s" : ""}, avec 2 tâches par module.
+                        </p>
+                        <p className="mb-0 mt-2 text-sm text-neutral-600">Commence quand tu es prêt. Tes réponses sont enregistrées question par question.</p>
+                    </div>
+                    <div className="max-w-[700px] w-full">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                            {readWriteIntroVideoUrl && (
+                                <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
+                                    <source src={readWriteIntroVideoUrl} />
+                                    Votre navigateur ne supporte pas la vidéo HTML5.
+                                </video>
+                            )}
+                        </div>
+                    </div>
+                    <div>
+                        <button
+                            type="button"
+                            className="btn btn-primary small min-w-[220px]"
+                            onClick={() => onAdvance({ nextState: "READ_WRITE_RUN", taskId: readWriteFirstPointer?.taskId, activityKey: readWriteFirstPointer?.activityKey })}
+                            disabled={isAdvancing || !readWriteFirstPointer}
+                        >
+                            {isAdvancing ? "Chargement..." : "Commencer"}
+                        </button>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (resume.state === "READ_WRITE_RUN") {
+        if (!readWriteCurrentPointer || !readWriteCurrentTask || !readWriteCurrentActivity) {
+            return (
+                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
+                    <div className="flex flex-col gap-3">
+                        <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">Lire/Écrire</p>
+                        <h1 className="display-2 font-medium mb-0">Activité introuvable</h1>
+                        <p className="mb-0 text-neutral-700">Impossible de retrouver la tâche en cours.</p>
+                    </div>
+                    <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
+                        <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: "READ_WRITE_RESULT" })} disabled={isAdvancing}>
+                            {isAdvancing ? "Chargement..." : "Continuer"}
+                        </button>
+                    </div>
+                </section>
+            );
+        }
+
+        const isSituationStep = readWriteStep === "SITUATION";
+        const moduleLabel = readWriteCurrentTask.title || readWriteCurrentTask.taskType;
+        const readWriteModuleNumber = getReadWriteModuleNumber(String(readWriteCurrentTask.taskType || ""), selectedWrittenCombo);
+        const displayedModuleNumber = readWriteModuleNumber || readWriteCurrentPointer.taskIndex + 1;
+        const readWriteGlobalTaskNumber = (displayedModuleNumber - 1) * 2 + readWriteCurrentPointer.activityIndex + 1;
+        const activityTitle = String(readWriteCurrentActivity.title || "").trim() || `Tâche ${readWriteGlobalTaskNumber}`;
+        const supportPdfUrl = String(readWriteCurrentTask.supportPdfUrl || "").trim();
+        const supportPdfHref = supportPdfUrl ? withCloudFrontPrefix(supportPdfUrl) : "";
+
+        const activeVisualItem = isSituationStep ? undefined : currentReadWriteItem || readWriteInstructionItem || readWriteItems[0];
+        const activeItemHasOwnImage = hasUsableImageAsset(activeVisualItem?.image as { asset?: { _ref?: string; _id?: string } } | null | undefined);
+        const activeItemHasOwnText = Boolean(activeVisualItem?.imageAlternativeText);
+        const instructionHasImage = hasUsableImageAsset(readWriteInstructionItem?.image as { asset?: { _ref?: string; _id?: string } } | null | undefined);
+        const instructionHasText = Boolean(readWriteInstructionItem?.imageAlternativeText);
+        const activityHasImage = hasUsableImageAsset(readWriteCurrentActivity.image as { asset?: { _ref?: string; _id?: string } } | null | undefined);
+        const itemHasOwnSupport = activeItemHasOwnImage || activeItemHasOwnText;
+        const instructionHasSupport = instructionHasImage || instructionHasText;
+        const activeVisualImage = isSituationStep
+            ? activityHasImage
+                ? readWriteCurrentActivity.image
+                : undefined
+            : activeItemHasOwnText && !activeItemHasOwnImage
+              ? undefined
+              : activeItemHasOwnImage
+                ? activeVisualItem?.image
+                : instructionHasImage
+                  ? readWriteInstructionItem?.image
+                  : !itemHasOwnSupport && !instructionHasSupport && activityHasImage
+                    ? readWriteCurrentActivity.image
+                    : undefined;
+        const activeVisualImageUrl = activeVisualImage ? urlFor(activeVisualImage).width(1800).fit("max").url() : null;
+        const activeVisualText = isSituationStep
+            ? undefined
+            : activeItemHasOwnText
+              ? activeVisualItem?.imageAlternativeText
+              : activeItemHasOwnImage
+                ? undefined
+                : instructionHasText
+                  ? readWriteInstructionItem?.imageAlternativeText
+                  : undefined;
+        const hasVisualImage = Boolean(activeVisualImageUrl);
+        const hasVisualText = Boolean(activeVisualText);
+        const effectiveVisualMode = readWriteVisualMode === "TEXT" && hasVisualText ? "TEXT" : hasVisualImage ? "IMAGE" : hasVisualText ? "TEXT" : "IMAGE";
+        const hasQuestionItems = readWriteQuestionItems.length > 0;
+        const questionIndexByKey = new Map(readWriteQuestionItems.map((item, index) => [String(item?._key || ""), index + 1] as const));
+        const hasPreviousItem = activeReadWriteItemIndex > 0;
+        const hasNextItem = activeReadWriteItemIndex < readWriteItems.length - 1;
+
+        const goToNextActivityOrResult = async () => {
+            const nextPointer = resolveNextPointer(readWriteTasks, readWriteCurrentPointer);
+            if (nextPointer) {
+                await onAdvance({ nextState: "READ_WRITE_RUN", taskId: nextPointer.taskId, activityKey: nextPointer.activityKey });
+                return;
+            }
+            await onAdvance({ nextState: "READ_WRITE_RESULT" });
+        };
+
+        const onValidateCurrentActivity = async () => {
+            setReadWriteSaveError("");
+            if (readWriteRemainingInCurrentActivity > 0) {
+                setReadWriteSaveError(`Questions renseignées: ${readWriteCurrentActivityAnsweredCount}/${readWriteCurrentActivityQuestionTotal}. Complète toutes les réponses avant de valider.`);
+                return;
+            }
+            const saveResult = await persistCurrentReadWriteActivityAnswers();
+            if (!saveResult.ok) return;
+            await goToNextActivityOrResult();
+        };
+
+        const onContinueFromSituation = async () => {
+            if (!hasQuestionItems) {
+                await goToNextActivityOrResult();
+                return;
+            }
+            const instructionIndex = readWriteItems.findIndex((item) => isReadWriteInstructionItem(item));
+            const firstQuestionIndex = readWriteItems.findIndex((item) => isReadWriteQuestionItem(item));
+            const initialItemIndex = instructionIndex >= 0 ? instructionIndex : firstQuestionIndex >= 0 ? firstQuestionIndex : 0;
+            setActiveReadWriteItemIndex(initialItemIndex);
+            setReadWriteStep("QUESTION");
+        };
+
+        return (
+            <section
+                className={`w-full h-auto lg:h-full min-h-0 ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.25fr)] px-2 pt-0`}
+            >
+                <aside className="flex h-auto lg:h-full min-h-0 flex-col gap-4">
+                    <div className="flex items-end justify-between gap-3 py-1">
+                        <div className="min-w-0 flex flex-col justify-end">
+                            <p className="mb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-600 shrink-0">Module {displayedModuleNumber}</p>
+                            <h2 className="mb-0 text-lg md:text-xl font-semibold text-neutral-900 truncate">{moduleLabel}</h2>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            {!isSituationStep && hasVisualText ? (
+                                <button
+                                    type="button"
+                                    className="inline-flex h-8 w-8 items-center justify-center p-0 text-neutral-800 transition hover:text-secondary-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                                    onClick={() => setReadWriteVisualMode((previous) => (previous === "IMAGE" ? "TEXT" : "IMAGE"))}
+                                    disabled={!hasVisualImage || !hasVisualText}
+                                    aria-label={effectiveVisualMode === "IMAGE" ? "Afficher le texte" : "Afficher l'image"}
+                                    title={effectiveVisualMode === "IMAGE" ? "Afficher le texte" : "Afficher l'image"}
+                                >
+                                    {effectiveVisualMode === "IMAGE" ? <FaRegFileAlt className="text-lg" /> : <FaImage className="text-lg" />}
+                                </button>
+                            ) : null}
+                            {supportPdfHref ? (
+                                <Link
+                                    href={supportPdfHref}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-2 px-1 py-0 text-sm font-semibold text-neutral-800 transition hover:text-secondary-2"
+                                >
+                                    <FaRegEye className="shrink-0" />
+                                    PDF
+                                </Link>
+                            ) : null}
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-solid border-neutral-600 bg-neutral-100 overflow-hidden">
+                        <div className="flex min-w-0 items-center justify-center overflow-hidden bg-neutral-50">
+                            {effectiveVisualMode === "IMAGE" && hasVisualImage ? (
+                                <button
+                                    type="button"
+                                    className="block w-full cursor-zoom-in p-0"
+                                    onClick={() => setIsReadWriteImageModalOpen(true)}
+                                    aria-label="Agrandir l'image"
+                                    title="Agrandir l'image"
+                                >
+                                    <Image src={activeVisualImageUrl as string} alt="Illustration tâche" width={1800} height={1200} className="h-auto max-h-[58vh] w-full object-contain" />
+                                </button>
+                            ) : hasVisualText ? (
+                                <div className="w-full max-h-[58vh] overflow-y-auto p-3 md:p-4">
+                                    <div className="prose prose-sm max-w-none w-full min-w-0 text-[0.92rem] leading-relaxed text-neutral-800 break-words [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                                        <PortableText value={activeVisualText as any} components={RichTextComponents()} />
+                                    </div>
+                                </div>
+                            ) : hasVisualImage ? (
+                                <button
+                                    type="button"
+                                    className="block w-full cursor-zoom-in p-0"
+                                    onClick={() => setIsReadWriteImageModalOpen(true)}
+                                    aria-label="Agrandir l'image"
+                                    title="Agrandir l'image"
+                                >
+                                    <Image src={activeVisualImageUrl as string} alt="Illustration tâche" width={1800} height={1200} className="h-auto max-h-[58vh] w-full object-contain" />
+                                </button>
+                            ) : (
+                                <div className="min-h-[180px] px-6 py-8 text-center text-sm text-neutral-700">Aucun support visuel pour cet élément.</div>
+                            )}
+                        </div>
+                    </div>
+                </aside>
+
+                <div className="flex min-h-0 lg:h-full flex-col gap-4">
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center justify-start lg:justify-end gap-2 py-1">
+                            <p className="mb-0 text-xs font-semibold uppercase tracking-wide text-neutral-600 shrink-0">Tâche {readWriteGlobalTaskNumber}</p>
+                            <p className="mb-0 text-base md:text-lg font-semibold text-neutral-900 truncate text-left lg:text-right">{activityTitle}</p>
+                        </div>
+                        {!isSituationStep ? (
+                            <div className="flex flex-wrap justify-start lg:justify-end gap-2">
+                                {readWriteItems.map((item, index) => {
+                                    const itemKey = String(item?._key || index);
+                                    const isActive = index === activeReadWriteItemIndex;
+                                    const isInstruction = isReadWriteInstructionItem(item);
+                                    const questionKey = String(item?._key || "");
+                                    const questionNumber = questionIndexByKey.get(questionKey) || index + 1;
+                                    const answered = isInstruction || normalizeReadWriteItemAnswer(item, String(readWriteDrafts[questionKey] || "")).complete;
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={itemKey}
+                                            className={clsx(
+                                                "rounded-full border border-solid px-3 py-1 text-xs font-semibold transition",
+                                                isActive
+                                                    ? "border-secondary-2 bg-secondary-2 text-neutral-100"
+                                                    : answered
+                                                      ? "border-secondary-2 bg-neutral-100 text-secondary-2"
+                                                      : "border-neutral-400 bg-neutral-100 text-neutral-700 hover:border-neutral-600",
+                                            )}
+                                            onClick={() => {
+                                                setActiveReadWriteItemIndex(index);
+                                                setReadWriteSaveError("");
+                                            }}
+                                            disabled={isSavingReadWriteAnswer || isAdvancing}
+                                        >
+                                            {getReadWriteItemTabLabel(item, questionNumber)}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        ) : null}
+                    </div>
+                    {isSituationStep ? (
+                        <div className="rounded-2xl border border-solid border-neutral-600 p-4 md:p-5 flex-1 min-h-0 overflow-hidden flex flex-col gap-5">
+                            {readWriteCurrentActivity.promptText ? (
+                                <div className="max-w-none min-h-0 flex-1 overflow-y-auto pr-1 text-neutral-800">
+                                    <PortableText value={readWriteCurrentActivity.promptText as any} components={RichTextComponents()} />
+                                </div>
+                            ) : (
+                                <p className="mb-0 text-neutral-700">Lis la consigne générale puis continue.</p>
+                            )}
+                            <div className="mt-auto flex justify-end">
+                                <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => void onContinueFromSituation()} disabled={isAdvancing || isSavingReadWriteAnswer}>
+                                    {isAdvancing ? "Chargement..." : hasQuestionItems ? "Continuer vers la tâche" : "Continuer"}
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="rounded-2xl border border-solid border-neutral-600 p-4 md:p-5 flex-1 min-h-0 overflow-hidden flex flex-col">
+                                {!currentReadWriteItem ? (
+                                    <div className="h-full min-h-0 flex-1 flex items-center">
+                                        <p className="mb-0 text-neutral-700">Aucun élément configuré pour cette tâche.</p>
+                                    </div>
+                                ) : isCurrentReadWriteInstructionItem ? (
+                                    <div className="flex h-full min-h-0 flex-1 flex-col gap-4 overflow-y-auto pr-1">
+                                        <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Consigne</p>
+                                        {currentReadWriteItem.contentText ? (
+                                            <div className="max-w-none text-neutral-800">
+                                                <PortableText value={currentReadWriteItem.contentText as any} components={RichTextComponents()} />
+                                            </div>
+                                        ) : (
+                                            <p className="mb-0 text-neutral-700">Ajoute la consigne de cette tâche dans le studio Sanity.</p>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="flex h-full min-h-0 flex-1 flex-col gap-4">
+                                        <div className="min-h-0 flex-1 overflow-y-auto pr-1 flex flex-col gap-4">
+                                            {currentReadWriteAutoInstruction ? <p className="mb-0 text-sm font-semibold text-neutral-700">{currentReadWriteAutoInstruction}</p> : null}
+
+                                            {currentReadWriteItem.contentText ? (
+                                                <div className={clsx("max-w-none text-sm", ["single_choice", "text_extract"].includes(currentReadWriteItemType) && "font-bold text-secondary-2")}>
+                                                    <PortableText value={currentReadWriteItem.contentText as any} components={RichTextComponents()} />
+                                                </div>
+                                            ) : null}
+
+                                            {currentReadWriteItemType === "single_choice" && String(currentReadWriteItem.question || "").trim() ? (
+                                                <p className="mb-0 text-base font-bold text-secondary-2">{String(currentReadWriteItem.question || "").trim()}</p>
+                                            ) : null}
+
+                                            {currentReadWriteItemType !== "single_choice" &&
+                                            String(currentReadWriteItem.question || "").trim() &&
+                                            currentReadWriteItemType !== "numbered_fill" &&
+                                            currentReadWriteItemType !== "long_text" ? (
+                                                <p className="mb-0 text-base font-bold text-secondary-2">{String(currentReadWriteItem.question || "").trim()}</p>
+                                            ) : null}
+
+                                            {currentReadWriteItemType === "single_choice" ? (
+                                                <div className="flex flex-col gap-2 -mt-2">
+                                                    {(currentReadWriteItem.answerOptions || []).map((optionRaw, optionIndex) => {
+                                                        const option = optionRaw as { _key?: string; label?: string } | string;
+                                                        const normalized = (typeof option === "string" ? option : String(option?.label || "")).trim();
+                                                        if (!normalized) return null;
+                                                        const checked = currentReadWriteDraft === normalized;
+                                                        return (
+                                                            <label
+                                                                key={String(option?._key || normalized || optionIndex)}
+                                                                className="flex items-center gap-2 px-1 py-1 text-sm text-neutral-800 cursor-pointer select-none"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checked}
+                                                                    onChange={(event) => {
+                                                                        const isChecked = event.target.checked;
+                                                                        setReadWriteDrafts((previous) => ({
+                                                                            ...previous,
+                                                                            [currentReadWriteItemKey]: isChecked ? normalized : "",
+                                                                        }));
+                                                                        if (isChecked && hasNextItem) {
+                                                                            setReadWriteSaveError("");
+                                                                            if (readWriteAutoNextTimerRef.current) {
+                                                                                window.clearTimeout(readWriteAutoNextTimerRef.current);
+                                                                            }
+                                                                            readWriteAutoNextTimerRef.current = window.setTimeout(() => {
+                                                                                setActiveReadWriteItemIndex((previous) => Math.min(previous + 1, readWriteItems.length - 1));
+                                                                                readWriteAutoNextTimerRef.current = null;
+                                                                            }, READ_WRITE_AUTO_NEXT_DELAY_MS);
+                                                                        }
+                                                                    }}
+                                                                    className="h-4 w-4 cursor-pointer"
+                                                                />
+                                                                <span>{normalized}</span>
+                                                            </label>
+                                                        );
+                                                    })}
+                                                </div>
+                                            ) : null}
+
+                                            {currentReadWriteItemType === "numbered_fill" &&
+                                                (currentReadWriteNumberLabels.length > 1 ? (
+                                                    <div className="flex flex-col gap-3">
+                                                        {currentReadWriteNumberLabels.map((number) => (
+                                                            <div key={number} className="flex items-start gap-3">
+                                                                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-700 text-xs font-semibold text-neutral-100">
+                                                                    {number}
+                                                                </div>
+                                                                <textarea
+                                                                    value={String(currentReadWriteNumberValues[number] || "")}
+                                                                    onChange={(event) =>
+                                                                        setReadWriteDrafts((previous) => {
+                                                                            const prevDraft = String(previous[currentReadWriteItemKey] || "");
+                                                                            const nextValues = parseReadWriteNumberedAnswerDraft(prevDraft, currentReadWriteNumberLabels);
+                                                                            nextValues[number] = event.target.value;
+                                                                            return {
+                                                                                ...previous,
+                                                                                [currentReadWriteItemKey]: buildReadWriteNumberedDraft(currentReadWriteNumberLabels, nextValues),
+                                                                            };
+                                                                        })
+                                                                    }
+                                                                    rows={2}
+                                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none resize-none focus:border-secondary-2"
+                                                                    placeholder={`Réponse pour le numéro ${number}...`}
+                                                                />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-start gap-3">
+                                                        <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-700 text-xs font-semibold text-neutral-100">
+                                                            {currentReadWriteNumberLabels[0] || String(currentReadWriteItem.question || "").trim() || "?"}
+                                                        </div>
+                                                        <textarea
+                                                            value={currentReadWriteDraft}
+                                                            onChange={(event) =>
+                                                                setReadWriteDrafts((previous) => ({
+                                                                    ...previous,
+                                                                    [currentReadWriteItemKey]: event.target.value,
+                                                                }))
+                                                            }
+                                                            rows={2}
+                                                            className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none resize-none focus:border-secondary-2"
+                                                            placeholder="Écrivez votre réponse..."
+                                                        />
+                                                    </div>
+                                                ))}
+
+                                            {currentReadWriteItemType === "text_extract" ? (
+                                                <textarea
+                                                    value={currentReadWriteDraft}
+                                                    onChange={(event) =>
+                                                        setReadWriteDrafts((previous) => ({
+                                                            ...previous,
+                                                            [currentReadWriteItemKey]: event.target.value,
+                                                        }))
+                                                    }
+                                                    rows={4}
+                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none resize-none focus:border-secondary-2"
+                                                    placeholder="Copie ou colle ici le passage du texte correspondant..."
+                                                />
+                                            ) : null}
+
+                                            {currentReadWriteItemType === "long_text" ? (
+                                                <textarea
+                                                    value={currentReadWriteDraft}
+                                                    onChange={(event) =>
+                                                        setReadWriteDrafts((previous) => ({
+                                                            ...previous,
+                                                            [currentReadWriteItemKey]: event.target.value,
+                                                        }))
+                                                    }
+                                                    rows={10}
+                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none focus:border-secondary-2"
+                                                    placeholder="Écrivez votre réponse..."
+                                                />
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                )}
+                                {readWriteItems.length > 1 ? (
+                                    <div className="mt-3 flex items-center justify-center gap-3">
+                                        <button
+                                            type="button"
+                                            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-solid border-neutral-400 bg-neutral-100 text-neutral-800 transition hover:border-neutral-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                                            onClick={() => {
+                                                setReadWriteSaveError("");
+                                                setActiveReadWriteItemIndex((previous) => Math.max(previous - 1, 0));
+                                            }}
+                                            disabled={isSavingReadWriteAnswer || isAdvancing || !hasPreviousItem}
+                                            aria-label="Tab précédent"
+                                            title="Tab précédent"
+                                        >
+                                            <FaArrowLeft className="text-sm" />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-solid border-neutral-400 bg-neutral-100 text-neutral-800 transition hover:border-neutral-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                                            onClick={() => {
+                                                setReadWriteSaveError("");
+                                                setActiveReadWriteItemIndex((previous) => Math.min(previous + 1, readWriteItems.length - 1));
+                                            }}
+                                            disabled={isSavingReadWriteAnswer || isAdvancing || !hasNextItem}
+                                            aria-label="Tab suivant"
+                                            title="Tab suivant"
+                                        >
+                                            <FaArrowRight className="text-sm" />
+                                        </button>
+                                    </div>
+                                ) : null}
+                            </div>
+
+                            {readWriteSaveError ? <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{readWriteSaveError}</div> : null}
+
+                            <div className="mt-auto pb-3 md:pb-5 flex flex-wrap items-center justify-between gap-3">
+                                <p className="mb-0 text-sm text-neutral-700">
+                                    Questions renseignées:{" "}
+                                    <span className="font-semibold text-neutral-900">
+                                        {readWriteCurrentActivityAnsweredCount}/{readWriteCurrentActivityQuestionTotal}
+                                    </span>
+                                </p>
+                                <button
+                                    type="button"
+                                    className="btn btn-primary small min-w-[220px]"
+                                    onClick={() => void onValidateCurrentActivity()}
+                                    disabled={isAdvancing || isSavingReadWriteAnswer || readWriteRemainingInCurrentActivity > 0}
+                                >
+                                    {isSavingReadWriteAnswer ? "Sauvegarde..." : "Valider la tâche"}
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
+                <AnimatePresence>
+                    {isReadWriteImageModalOpen && hasVisualImage ? (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-[120] flex items-center justify-center p-3 md:p-6"
+                            style={{ backgroundColor: "rgba(23, 23, 23, 0.9)" }}
+                            onClick={() => setIsReadWriteImageModalOpen(false)}
+                        >
+                            <motion.div
+                                initial={{ scale: 0.97, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.97, opacity: 0 }}
+                                transition={TRANSITION}
+                                className="w-full max-w-[1600px] rounded-2xl bg-neutral-100 p-3 md:p-4"
+                                onClick={(event) => event.stopPropagation()}
+                            >
+                                <div className="mb-2 flex justify-end">
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center rounded-lg border border-solid border-neutral-400 bg-neutral-100 px-3 py-1.5 text-sm font-semibold text-neutral-800 transition hover:border-neutral-600"
+                                        onClick={() => setIsReadWriteImageModalOpen(false)}
+                                    >
+                                        Fermer
+                                    </button>
+                                </div>
+                                <div className="flex max-h-[calc(100vh-120px)] items-center justify-center overflow-hidden rounded-xl bg-neutral-50">
+                                    <Image
+                                        src={activeVisualImageUrl as string}
+                                        alt="Agrandissement illustration tâche"
+                                        width={2200}
+                                        height={1600}
+                                        className="h-auto max-h-[calc(100vh-160px)] w-auto max-w-full object-contain"
+                                    />
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    ) : null}
+                </AnimatePresence>
+            </section>
+        );
+    }
+
+    if (resume.state === "READ_WRITE_RESULT") {
+        const comboLabel = selectedWrittenCombo === "A2_B1" ? "A2-B1" : "A1-A2";
+        return (
+            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
+                <div className="flex flex-col gap-3">
+                    <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
+                    <h1 className="display-2 font-medium mb-0">Lire/Écrire terminé</h1>
+                    <p className="mb-0 text-neutral-700">Parcours {comboLabel} terminé. Correction IA non lancée pour l’instant.</p>
+                </div>
+                <div className="rounded-2xl border border-solid border-neutral-600 p-4 md:p-5">
+                    <p className="mb-0 text-sm text-neutral-700">
+                        Questions répondues: <span className="font-semibold text-neutral-900">{readWriteAnsweredCount}</span> / {readWriteTotalQuestions}
+                    </p>
+                </div>
+                <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
+                    <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: "EXAM_INTRO" })} disabled={isAdvancing}>
+                        {isAdvancing ? "Chargement..." : "Terminer"}
                     </button>
                 </div>
             </section>

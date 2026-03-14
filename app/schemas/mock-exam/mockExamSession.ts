@@ -66,6 +66,12 @@ const readWriteAnswerFields = [
         validation: (Rule) => Rule.required(),
     }),
     defineField({
+        name: "questionKey",
+        title: "Question Key",
+        type: "string",
+        validation: (Rule) => Rule.required(),
+    }),
+    defineField({
         name: "textAnswer",
         title: "Text Answer",
         type: "text",

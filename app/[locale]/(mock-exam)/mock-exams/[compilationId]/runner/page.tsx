@@ -9,7 +9,7 @@ import {
     isMockExamCompilationUnlockedForUser,
     patchSession,
 } from "@/app/serverActions/mockExamActions";
-import type { ExamCorrectionContent, ListeningScenarioResult, ResumePointer, ScoreSummary, SpeakingAnswer } from "@/app/types/fide/mock-exam";
+import type { ExamCorrectionContent, ListeningScenarioResult, ReadWriteAnswer, ResumePointer, ScoreSummary, SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
 import type { Exam } from "@/app/types/fide/exam";
 import RunnerClient from "./RunnerClient";
@@ -48,13 +48,17 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
     const listeningA1Ids = (compilation.examConfig.listeningPackIds?.A1 || []).map((ref) => ref?._ref).filter(Boolean) as string[];
     const listeningA2Ids = (compilation.examConfig.listeningPackIds?.A2 || []).map((ref) => ref?._ref).filter(Boolean) as string[];
     const listeningB1Ids = (compilation.examConfig.listeningPackIds?.B1 || []).map((ref) => ref?._ref).filter(Boolean) as string[];
-    const [speakA2Tasks, speakBranchA1Tasks, speakBranchB1Tasks, listeningA1Exams, listeningA2Exams, listeningB1Exams] = await Promise.all([
+    const readWriteA1A2TaskIds = (compilation.examConfig.readWriteTaskIds?.A1_A2 || []).map((ref) => ref?._ref).filter(Boolean) as string[];
+    const readWriteA2B1TaskIds = (compilation.examConfig.readWriteTaskIds?.A2_B1 || []).map((ref) => ref?._ref).filter(Boolean) as string[];
+    const [speakA2Tasks, speakBranchA1Tasks, speakBranchB1Tasks, listeningA1Exams, listeningA2Exams, listeningB1Exams, readWriteA1A2Tasks, readWriteA2B1Tasks] = await Promise.all([
         getMockExamTasksByIds(speakA2TaskIds),
         getMockExamTasksByIds(speakBranchA1TaskIds),
         getMockExamTasksByIds(speakBranchB1TaskIds),
         getFideExamsByIds(listeningA1Ids),
         getFideExamsByIds(listeningA2Ids),
         getFideExamsByIds(listeningB1Ids),
+        getMockExamTasksByIds(readWriteA1A2TaskIds),
+        getMockExamTasksByIds(readWriteA2B1TaskIds),
     ]);
 
     const resume: ResumePointer = {
@@ -82,6 +86,7 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
     const initialSpeakBranchScoreSummary = (inProgressSession.scores?.speakBranch || null) as ScoreSummary | null;
     const initialListeningScenarioResults = ((inProgressSession.listeningScenarioResults || []) as ListeningScenarioResult[]).filter(Boolean);
     const initialListeningScoreSummary = (inProgressSession.scores?.listening || null) as ScoreSummary | null;
+    const initialReadWriteAnswers = ((inProgressSession.readWriteAnswers || []) as ReadWriteAnswer[]).filter(Boolean);
     const initialSpeakA2CorrectionRetryCount = Number(inProgressSession.speakA2CorrectionRetryCount || 0);
     const compilationCorrections = (compilation.corrections || []) as ExamCorrectionContent[];
 
@@ -96,11 +101,14 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
             listeningA1Exams={listeningA1Exams as Exam[]}
             listeningA2Exams={listeningA2Exams as Exam[]}
             listeningB1Exams={listeningB1Exams as Exam[]}
+            readWriteA1A2Tasks={readWriteA1A2Tasks}
+            readWriteA2B1Tasks={readWriteA2B1Tasks}
             initialSpeakA2Answers={initialSpeakA2Answers}
             initialSpeakA2ScoreSummary={initialSpeakA2ScoreSummary}
             initialSpeakBranchScoreSummary={initialSpeakBranchScoreSummary}
             initialListeningScenarioResults={initialListeningScenarioResults}
             initialListeningScoreSummary={initialListeningScoreSummary}
+            initialReadWriteAnswers={initialReadWriteAnswers}
             initialSpeakA2CorrectionRetryCount={initialSpeakA2CorrectionRetryCount}
             isAdmin={isAdmin}
         />

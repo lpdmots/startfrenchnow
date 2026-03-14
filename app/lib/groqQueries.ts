@@ -182,15 +182,27 @@ export const MOCK_EXAM_TASKS_BY_IDS_QUERY = groq`
     _id,
     title,
     taskType,
+    supportPdfUrl,
     activities[]{
       _key,
+      title,
       image,
       audioUrl,
       promptText,
       aiContext,
       aiCorrectionContext,
       aiVoiceGender,
-      maxPoints
+      items[]{
+        _key,
+        itemType,
+        contentText,
+        question,
+        image,
+        imageAlternativeText,
+        answerOptions,
+        aiCorrectionContext,
+        maxPoints
+      }
     }
   }
 `;

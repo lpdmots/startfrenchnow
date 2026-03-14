@@ -7,7 +7,7 @@ import { useToast } from "@/app/hooks/use-toast";
 import { useMockExamRunnerStore, type MockExamRunnerHydration } from "@/app/stores/mockExamRunnerStore";
 import { advanceMockExamResume } from "@/app/serverActions/mockExamActions";
 import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
-import type { ExamCorrectionContent, ListeningScenarioResult, OralBranch, ScoreSummary, SpeakingAnswer, WrittenCombo } from "@/app/types/fide/mock-exam";
+import type { ExamCorrectionContent, ListeningScenarioResult, OralBranch, ReadWriteAnswer, ScoreSummary, SpeakingAnswer, WrittenCombo } from "@/app/types/fide/mock-exam";
 import type { Exam } from "@/app/types/fide/exam";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import RunnerScreenRouter from "./RunnerScreenRouter";
@@ -24,11 +24,14 @@ type RunnerClientProps = {
     listeningA1Exams: Exam[];
     listeningA2Exams: Exam[];
     listeningB1Exams: Exam[];
+    readWriteA1A2Tasks: RunnerTask[];
+    readWriteA2B1Tasks: RunnerTask[];
     initialSpeakA2Answers: SpeakingAnswer[];
     initialSpeakA2ScoreSummary: ScoreSummary | null;
     initialSpeakBranchScoreSummary: ScoreSummary | null;
     initialListeningScenarioResults: ListeningScenarioResult[];
     initialListeningScoreSummary: ScoreSummary | null;
+    initialReadWriteAnswers: ReadWriteAnswer[];
     initialSpeakA2CorrectionRetryCount: number;
     isAdmin: boolean;
 };
@@ -70,6 +73,8 @@ const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerT
             ORAL_SECTION_SUMMARY: { title: "Bilan oral", subtitle: "Synthèse finale" },
             READ_WRITE_CHOICE: { title: "Lire/Écrire", subtitle: "Choix du parcours" },
             READ_WRITE_INTRO: { title: "Lire/Écrire", subtitle: "Introduction" },
+            READ_WRITE_RUN: { title: "Lire/Écrire", subtitle: "Exercices en cours" },
+            READ_WRITE_RESULT: { title: "Lire/Écrire", subtitle: "Section terminée" },
         };
         return byState[state] || { title: state, subtitle: "-" };
     }
@@ -101,11 +106,14 @@ export default function RunnerClient({
     listeningA1Exams,
     listeningA2Exams,
     listeningB1Exams,
+    readWriteA1A2Tasks,
+    readWriteA2B1Tasks,
     initialSpeakA2Answers,
     initialSpeakA2ScoreSummary,
     initialSpeakBranchScoreSummary,
     initialListeningScenarioResults,
     initialListeningScoreSummary,
+    initialReadWriteAnswers,
     initialSpeakA2CorrectionRetryCount,
     isAdmin,
 }: RunnerClientProps) {
@@ -113,6 +121,7 @@ export default function RunnerClient({
     const [isLeaving, setIsLeaving] = useState(false);
     const [isAdvancing, setIsAdvancing] = useState(false);
     const [speakA2Answers, setSpeakA2Answers] = useState<SpeakingAnswer[]>(initialSpeakA2Answers || []);
+    const [writtenCombo, setWrittenCombo] = useState<{ recommended?: WrittenCombo; chosen?: WrittenCombo }>(hydrationData.writtenCombo || { recommended: "A1_A2" });
     const router = useRouter();
     const { toast } = useToast();
     const hydrate = useMockExamRunnerStore((state) => state.hydrate);
@@ -143,6 +152,7 @@ export default function RunnerClient({
         resume?.state === "SPEAK_BRANCH_B1_CHOICE" ||
         resume?.state === "SPEAK_BRANCH_RESULT" ||
         resume?.state === "READ_WRITE_CHOICE" ||
+        resume?.state === "READ_WRITE_RUN" ||
         resume?.state === "LISTENING_RUN" ||
         resume?.state === "LISTENING_RESULT" ||
         resume?.state === "ORAL_SECTION_SUMMARY";
@@ -150,6 +160,7 @@ export default function RunnerClient({
     useEffect(() => {
         hydrate(hydrationData);
         setSpeakA2Answers(initialSpeakA2Answers || []);
+        setWrittenCombo(hydrationData.writtenCombo || { recommended: "A1_A2" });
     }, [hydrate, hydrationData, initialSpeakA2Answers]);
 
     useEffect(() => {
@@ -212,6 +223,12 @@ export default function RunnerClient({
             }
 
             setResume(result.resume);
+            if (writtenComboRecommended || writtenComboChosen) {
+                setWrittenCombo((previous) => ({
+                    recommended: writtenComboRecommended || previous.recommended || "A1_A2",
+                    chosen: writtenComboChosen || previous.chosen,
+                }));
+            }
         } catch {
             toast({
                 variant: "destructive",
@@ -308,12 +325,16 @@ export default function RunnerClient({
                             listeningA1Exams={listeningA1Exams}
                             listeningA2Exams={listeningA2Exams}
                             listeningB1Exams={listeningB1Exams}
+                            readWriteA1A2Tasks={readWriteA1A2Tasks}
+                            readWriteA2B1Tasks={readWriteA2B1Tasks}
                             speakA2Answers={speakA2Answers}
                             initialSpeakA2ScoreSummary={initialSpeakA2ScoreSummary}
                             initialSpeakBranchScoreSummary={initialSpeakBranchScoreSummary}
                             initialListeningScenarioResults={initialListeningScenarioResults}
                             initialListeningScoreSummary={initialListeningScoreSummary}
+                            initialReadWriteAnswers={initialReadWriteAnswers}
                             initialSpeakA2CorrectionRetryCount={initialSpeakA2CorrectionRetryCount}
+                            writtenCombo={writtenCombo}
                             isAdmin={isAdmin}
                             isAdvancing={isAdvancing}
                             onAdvance={handleAdvance}

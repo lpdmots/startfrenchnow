@@ -1,37 +1,59 @@
 import { defineField, defineType } from "sanity";
 
 const READ_WRITE_TASK_TYPES = new Set(["READ_WRITE_M1", "READ_WRITE_M2", "READ_WRITE_M3_M4", "READ_WRITE_M5", "READ_WRITE_M6"]);
-const CHOICE_QUESTION_TYPES = new Set(["single_choice", "multiple_choice"]);
 
 const isReadWriteTaskType = (taskType: unknown) => typeof taskType === "string" && READ_WRITE_TASK_TYPES.has(taskType);
 
-const questionFields = [
+const itemFields = [
     defineField({
-        name: "questionType",
-        title: "Type de question",
+        name: "itemType",
+        title: "Type d'élément",
         type: "string",
         options: {
             list: [
-                { title: "Choix unique", value: "single_choice" },
-                { title: "Choix multiple", value: "multiple_choice" },
-                { title: "Texte court", value: "short_text" },
+                { title: "Consigne", value: "instruction" },
+                { title: "Choix (réponse unique)", value: "single_choice" },
+                { title: "Compléter selon numéro (image)", value: "numbered_fill" },
+                { title: "Retrouver passage dans le texte", value: "text_extract" },
                 { title: "Texte long", value: "long_text" },
-                { title: "Compléter", value: "fill_blank" },
             ],
             layout: "dropdown",
         },
         validation: (Rule) => Rule.required(),
     }),
     defineField({
-        name: "instructionText",
-        title: "Consigne",
+        name: "contentText",
+        title: "Texte (consigne / contenu)",
         type: "blockContent",
+        validation: (Rule) =>
+            Rule.custom((value, context) => {
+                const itemType = String((context.parent as { itemType?: string } | undefined)?.itemType || "");
+                if (itemType !== "instruction") return true;
+                if (!Array.isArray(value) || value.length < 1) {
+                    return "Ajoute le texte de consigne pour l'élément de type consigne.";
+                }
+                return true;
+            }),
     }),
     defineField({
-        name: "questionText",
+        name: "question",
         title: "Question",
-        type: "blockContent",
-        validation: (Rule) => Rule.required(),
+        type: "string",
+        description: "Pour le type numbered_fill: indiquer un ou plusieurs numéros séparés par des virgules (ex: 1 ou 1,2,3,4).",
+        validation: (Rule) =>
+            Rule.custom((value, context) => {
+                const itemType = String((context.parent as { itemType?: string } | undefined)?.itemType || "");
+                const question = String(value || "").trim();
+                if (itemType === "instruction") return true;
+                if (itemType === "single_choice") return true; // question facultative pour ce type
+                if (itemType === "text_extract") return true; // question facultative pour ce type
+                if (itemType === "long_text") return true; // question facultative pour ce type
+                if (!question) return "Ce type nécessite une question.";
+                if (itemType === "numbered_fill" && !/^\d+(\s*,\s*\d+)*$/.test(question)) {
+                    return "Pour ce type, renseigne un ou plusieurs numéros séparés par des virgules (ex: 1 ou 1,2,3).";
+                }
+                return true;
+            }),
     }),
     defineField({
         name: "image",
@@ -50,13 +72,54 @@ const questionFields = [
         name: "answerOptions",
         title: "Propositions de réponse",
         type: "array",
-        of: [{ type: "string" }],
+        of: [
+            {
+                name: "answerOption",
+                title: "Option",
+                type: "object",
+                fields: [
+                    defineField({
+                        name: "label",
+                        title: "Texte",
+                        type: "string",
+                        validation: (Rule) => Rule.required().min(1),
+                    }),
+                    defineField({
+                        name: "isCorrect",
+                        title: "Bonne réponse",
+                        type: "boolean",
+                        initialValue: false,
+                    }),
+                ],
+                preview: {
+                    select: {
+                        title: "label",
+                        isCorrect: "isCorrect",
+                    },
+                    prepare({ title, isCorrect }) {
+                        return {
+                            title: title || "(Sans texte)",
+                            subtitle: isCorrect ? "Bonne réponse" : "Mauvaise réponse",
+                        };
+                    },
+                },
+            },
+        ],
         validation: (Rule) =>
             Rule.custom((value, context) => {
-                const questionType = String((context.parent as { questionType?: string } | undefined)?.questionType || "");
-                if (!CHOICE_QUESTION_TYPES.has(questionType)) return true;
+                const itemType = String((context.parent as { itemType?: string } | undefined)?.itemType || "");
+                if (itemType !== "single_choice") return true;
                 if (!Array.isArray(value) || value.length < 2) {
                     return "Ajoute au moins 2 propositions pour une question à choix.";
+                }
+                const options = value as Array<{ label?: string; isCorrect?: boolean }>;
+                const validLabels = options.filter((option) => String(option?.label || "").trim().length > 0);
+                if (validLabels.length < 2) {
+                    return "Ajoute au moins 2 propositions avec un texte.";
+                }
+                const correctCount = options.filter((option) => Boolean(option?.isCorrect)).length;
+                if (correctCount !== 1) {
+                    return "Sélectionne exactement 1 bonne réponse.";
                 }
                 return true;
             }),
@@ -72,11 +135,25 @@ const questionFields = [
         title: "Points max",
         type: "number",
         initialValue: 1,
-        validation: (Rule) => Rule.required().min(0).max(20),
+        validation: (Rule) =>
+            Rule.custom((value, context) => {
+                const itemType = String((context.parent as { itemType?: string } | undefined)?.itemType || "");
+                if (itemType === "instruction") return true;
+                const parsed = Number(value);
+                if (!Number.isFinite(parsed)) return "Renseigne les points max.";
+                if (parsed < 0 || parsed > 20) return "Les points max doivent être entre 0 et 20.";
+                return true;
+            }),
     }),
 ];
 
 const activityFields = [
+    defineField({
+        name: "title",
+        title: "Titre de la tâche",
+        type: "string",
+        hidden: ({ document }) => !isReadWriteTaskType(document?.taskType),
+    }),
     defineField({
         name: "image",
         title: "Image",
@@ -94,12 +171,6 @@ const activityFields = [
         name: "promptText",
         title: "Texte (prompt / situation)",
         type: "blockContent",
-    }),
-    defineField({
-        name: "imageAlternativeText",
-        title: "Texte alternatif image (mobile)",
-        type: "blockContent",
-        hidden: ({ document }) => !isReadWriteTaskType(document?.taskType),
     }),
     defineField({
         name: "aiContext",
@@ -127,24 +198,29 @@ const activityFields = [
         initialValue: "male",
     }),
     defineField({
-        name: "questions",
-        title: "Questions",
+        name: "items",
+        title: "Éléments (consigne + questions)",
         type: "array",
         hidden: ({ document }) => !isReadWriteTaskType(document?.taskType),
         of: [
             {
-                name: "question",
-                title: "Question",
+                name: "item",
+                title: "Élément",
                 type: "object",
-                fields: questionFields,
+                fields: itemFields,
             },
         ],
         validation: (Rule) =>
             Rule.custom((value, context) => {
                 if (!isReadWriteTaskType(context.document?.taskType)) return true;
                 if (!Array.isArray(value) || value.length < 1) {
-                    return "Ajoute au moins une question pour cette activité de Lire/Écrire.";
+                    return "Ajoute au moins une question.";
                 }
+                const items = value as Array<{ itemType?: string; _key?: string }>;
+                const instructionCount = items.filter((item) => String(item?.itemType || "") === "instruction").length;
+                if (instructionCount > 1) return "Chaque activité peut contenir au maximum 1 élément de type consigne.";
+                const questionCount = items.filter((item) => String(item?.itemType || "") !== "instruction").length;
+                if (questionCount < 1) return "Ajoute au moins une question.";
                 return true;
             }),
     }),
@@ -182,6 +258,12 @@ export default defineType({
                 layout: "dropdown",
             },
             validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: "supportPdfUrl",
+            title: "Lien PDF support (module)",
+            type: "string",
+            hidden: ({ document }) => !isReadWriteTaskType(document?.taskType),
         }),
         defineField({
             name: "activities",

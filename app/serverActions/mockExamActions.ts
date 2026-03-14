@@ -40,6 +40,7 @@ export type MockExamSessionLite = {
     speakA2Answers?: SpeakingAnswer[];
     speakBranchAnswers?: SpeakingAnswer[];
     listeningScenarioResults?: ListeningScenarioResult[];
+    readWriteAnswers?: ReadWriteAnswer[];
     speakA2CorrectionRetryCount?: number;
     scores?: {
         speakA2?: ScoreSummary;
@@ -443,6 +444,7 @@ const MOCK_EXAM_SESSIONS_BY_COMPILATION_QUERY = groq`
       taskRef,
       taskId,
       activityKey,
+      questionKey,
       textAnswer,
       AiFeedback,
       AiScore
@@ -500,6 +502,7 @@ const MOCK_EXAM_IN_PROGRESS_SESSIONS_QUERY = groq`
       taskRef,
       taskId,
       activityKey,
+      questionKey,
       textAnswer,
       AiFeedback,
       AiScore
@@ -558,6 +561,7 @@ const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`
       taskRef,
       taskId,
       activityKey,
+      questionKey,
       textAnswer,
       AiFeedback,
       AiScore
@@ -583,6 +587,7 @@ const mapSessionDocumentToLite = (session: SessionDocument): MockExamSessionLite
     speakA2Answers: Array.isArray(session.speakA2Answers) ? session.speakA2Answers : [],
     speakBranchAnswers: Array.isArray(session.speakBranchAnswers) ? session.speakBranchAnswers : [],
     listeningScenarioResults: Array.isArray(session.listeningScenarioResults) ? session.listeningScenarioResults : [],
+    readWriteAnswers: Array.isArray(session.readWriteAnswers) ? session.readWriteAnswers : [],
     speakA2CorrectionRetryCount: Number(session.speakA2CorrectionRetryCount || 0),
     scores: sanitizeSessionScores(session.scores),
 });
@@ -985,6 +990,62 @@ export async function saveMockExamSpeakingAnswer(params: { compilationId: string
     }
 
     await patchSession(sessionKey, { set: { [targetField]: nextAnswers } });
+    return { ok: true as const, answer };
+}
+
+export async function saveMockExamReadWriteAnswer(params: {
+    compilationId: string;
+    sessionKey: string;
+    taskId: string;
+    activityKey: string;
+    questionKey: string;
+    textAnswer: string;
+}) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = session?.user?._id;
+    const compilationId = String(params.compilationId || "");
+    const sessionKey = String(params.sessionKey || "");
+    const taskId = String(params.taskId || "");
+    const activityKey = String(params.activityKey || "");
+    const questionKey = String(params.questionKey || "");
+    const textAnswer = String(params.textAnswer || "").trim();
+
+    if (!userId || !compilationId || !sessionKey || !taskId || !activityKey || !questionKey) {
+        return { ok: false as const, error: "Paramètres invalides." };
+    }
+    if (!textAnswer) {
+        return { ok: false as const, error: "La réponse est vide." };
+    }
+
+    const activeSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { userId, compilationId, sessionKey });
+    if (!activeSession) {
+        return { ok: false as const, error: "Session introuvable." };
+    }
+
+    const answer: ReadWriteAnswer = {
+        taskRef: toRef(taskId),
+        activityKey,
+        questionKey,
+        textAnswer,
+        AiFeedback: undefined,
+        AiScore: undefined,
+    };
+
+    const currentAnswers: ReadWriteAnswer[] = Array.isArray(activeSession.readWriteAnswers) ? activeSession.readWriteAnswers : [];
+    const existingIndex = currentAnswers.findIndex(
+        (item) => getAnswerTaskId(item) === taskId && item.activityKey === activityKey && String(item.questionKey || "") === questionKey,
+    );
+    const nextAnswers = [...currentAnswers];
+    if (existingIndex >= 0) {
+        nextAnswers[existingIndex] = {
+            ...currentAnswers[existingIndex],
+            ...answer,
+        };
+    } else {
+        nextAnswers.push(answer);
+    }
+
+    await patchSession(sessionKey, { set: { readWriteAnswers: nextAnswers } });
     return { ok: true as const, answer };
 }
 
