@@ -211,9 +211,11 @@ export type MockExamSession = {
     writtenCombo: { recommended: WrittenCombo; chosen?: WrittenCombo };
     speakA2Answers: SpeakingAnswer[];
     speakA2CorrectionRetryCount?: number;
+    speakBranchCorrectionRetryCount?: number;
     speakBranchAnswers: SpeakingAnswer[];
     listeningScenarioResults?: ListeningScenarioResult[];
     readWriteAnswers: ReadWriteAnswer[];
+    readWriteCorrectionRetryCount?: number;
 
     overtimeTaskRefs?: Reference[]; // références Sanity des tasks pour lesquelles l’utilisateur a dépassé le temps imparti
 

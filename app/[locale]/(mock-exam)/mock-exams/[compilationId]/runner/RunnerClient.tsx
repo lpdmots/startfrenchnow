@@ -32,7 +32,10 @@ type RunnerClientProps = {
     initialListeningScenarioResults: ListeningScenarioResult[];
     initialListeningScoreSummary: ScoreSummary | null;
     initialReadWriteAnswers: ReadWriteAnswer[];
+    initialReadWriteScoreSummary: ScoreSummary | null;
     initialSpeakA2CorrectionRetryCount: number;
+    initialSpeakBranchCorrectionRetryCount: number;
+    initialReadWriteCorrectionRetryCount: number;
     isAdmin: boolean;
 };
 
@@ -40,6 +43,7 @@ const RUNNER_PHASES = ["Parler", "Comprendre", "Lire/Écrire"] as const;
 
 const getRunnerPhaseIndex = (state?: string) => {
     if (!state) return 0;
+    if (state === "EXAM_FINAL_SUMMARY") return 2;
     if (state.startsWith("READ_WRITE") || state.startsWith("WRITTEN_")) return 2;
     if (state === "ORAL_SECTION_SUMMARY") return 1;
     if (state.startsWith("LISTENING") || state.includes("COMPRENDRE")) return 1;
@@ -75,6 +79,7 @@ const getRunnerHeaderDetails = (state: string | undefined, speakA2Tasks: RunnerT
             READ_WRITE_INTRO: { title: "Lire/Écrire", subtitle: "Introduction" },
             READ_WRITE_RUN: { title: "Lire/Écrire", subtitle: "Exercices en cours" },
             READ_WRITE_RESULT: { title: "Lire/Écrire", subtitle: "Section terminée" },
+            EXAM_FINAL_SUMMARY: { title: "Bilan final", subtitle: "Examen terminé" },
         };
         return byState[state] || { title: state, subtitle: "-" };
     }
@@ -114,7 +119,10 @@ export default function RunnerClient({
     initialListeningScenarioResults,
     initialListeningScoreSummary,
     initialReadWriteAnswers,
+    initialReadWriteScoreSummary,
     initialSpeakA2CorrectionRetryCount,
+    initialSpeakBranchCorrectionRetryCount,
+    initialReadWriteCorrectionRetryCount,
     isAdmin,
 }: RunnerClientProps) {
     const [showQuitModal, setShowQuitModal] = useState(false);
@@ -142,7 +150,8 @@ export default function RunnerClient({
         resume?.state === "SPEAK_BRANCH_CORRECTION" ||
         resume?.state === "SPEAK_BRANCH_A1_RUN" ||
         resume?.state === "LISTENING_RUN" ||
-        resume?.state === "ORAL_SECTION_SUMMARY";
+        resume?.state === "ORAL_SECTION_SUMMARY" ||
+        resume?.state === "EXAM_FINAL_SUMMARY";
     const hideTopHeaderOnSmall =
         resume?.state === "SPEAK_A2_RESULT" ||
         resume?.state === "SPEAK_A2_CORRECTION" ||
@@ -153,6 +162,8 @@ export default function RunnerClient({
         resume?.state === "SPEAK_BRANCH_RESULT" ||
         resume?.state === "READ_WRITE_CHOICE" ||
         resume?.state === "READ_WRITE_RUN" ||
+        resume?.state === "READ_WRITE_RESULT" ||
+        resume?.state === "EXAM_FINAL_SUMMARY" ||
         resume?.state === "LISTENING_RUN" ||
         resume?.state === "LISTENING_RESULT" ||
         resume?.state === "ORAL_SECTION_SUMMARY";
@@ -333,7 +344,10 @@ export default function RunnerClient({
                             initialListeningScenarioResults={initialListeningScenarioResults}
                             initialListeningScoreSummary={initialListeningScoreSummary}
                             initialReadWriteAnswers={initialReadWriteAnswers}
+                            initialReadWriteScoreSummary={initialReadWriteScoreSummary}
                             initialSpeakA2CorrectionRetryCount={initialSpeakA2CorrectionRetryCount}
+                            initialSpeakBranchCorrectionRetryCount={initialSpeakBranchCorrectionRetryCount}
+                            initialReadWriteCorrectionRetryCount={initialReadWriteCorrectionRetryCount}
                             writtenCombo={writtenCombo}
                             isAdmin={isAdmin}
                             isAdvancing={isAdvancing}

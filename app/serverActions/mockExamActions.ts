@@ -24,8 +24,12 @@ import type {
 import type { Exam } from "@/app/types/fide/exam";
 import type { RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import {
+    buildReadWriteCorrectionPrompt,
+    buildReadWriteSingleChoiceActivityPrompt,
+    buildReadWriteTextExtractActivityPrompt,
     buildDiscussionB1PerQuestionPrompt,
     buildSpeakingA2CorrectionPrompt,
+    type ReadWriteCorrectionQuestionType,
     type SpeakingA2CorrectionTaskType,
     type SpeakingCorrectionTaskType,
 } from "@/app/[locale]/(mock-exam)/mock-exams/[compilationId]/runner/correction-prompt";
@@ -42,6 +46,8 @@ export type MockExamSessionLite = {
     listeningScenarioResults?: ListeningScenarioResult[];
     readWriteAnswers?: ReadWriteAnswer[];
     speakA2CorrectionRetryCount?: number;
+    speakBranchCorrectionRetryCount?: number;
+    readWriteCorrectionRetryCount?: number;
     scores?: {
         speakA2?: ScoreSummary;
         speakBranch?: ScoreSummary;
@@ -87,6 +93,8 @@ type SessionDocument = {
     listeningScenarioResults?: ListeningScenarioResult[];
     readWriteAnswers?: ReadWriteAnswer[];
     speakA2CorrectionRetryCount?: number;
+    speakBranchCorrectionRetryCount?: number;
+    readWriteCorrectionRetryCount?: number;
     overtimeTaskRefs?: Array<{ _ref?: string; _type?: "reference" }>;
     scores?: {
         speakA2?: ScoreSummary;
@@ -114,6 +122,8 @@ const SPEAK_A2_CORRECTION_MODEL = process.env.OPENAI_CORRECTION_MODEL_MOCK_EXAM 
 const SPEAK_A2_CORRECTION_TIMEOUT_MS = Number(process.env.OPENAI_CORRECTION_TIMEOUT_MS || 12000);
 const SPEAK_A2_CORRECTION_FALLBACK_MODEL = process.env.OPENAI_CORRECTION_FALLBACK_MODEL || "gpt-4o-mini";
 const SPEAK_A2_MAX_MANUAL_RETRIES = 3;
+const SPEAK_BRANCH_MAX_MANUAL_RETRIES = 3;
+const READ_WRITE_MAX_MANUAL_RETRIES = 3;
 const SPEAK_A2_SUPPORTED_TASK_TYPES = new Set<SpeakingA2CorrectionTaskType>(["IMAGE_DESCRIPTION_A2", "PHONE_CONVERSATION_A2", "DISCUSSION_A2"]);
 const SPEAK_BRANCH_SUPPORTED_TASK_TYPES = new Set<Extract<SpeakingCorrectionTaskType, "IMAGE_DESCRIPTION_A1_T1" | "IMAGE_DESCRIPTION_A1_T2" | "DISCUSSION_B1">>([
     "IMAGE_DESCRIPTION_A1_T1",
@@ -143,6 +153,50 @@ export type SpeakA2CorrectionSummary = {
 };
 
 export type SpeakBranchCorrectionSummary = SpeakA2CorrectionSummary;
+
+export type ReadWriteCorrectionQuestionResult = {
+    rowId: string;
+    taskId: string;
+    activityKey: string;
+    questionKey: string;
+    taskType: string;
+    itemType: string;
+    moduleNumber: number;
+    moduleTitle: string;
+    activityNumber: number;
+    questionNumber: number;
+    label: string;
+    questionText?: string;
+    studentAnswer?: string;
+    score: number;
+    max: number;
+    feedback: string;
+    error?: string;
+};
+
+export type ReadWriteCorrectionModuleResult = {
+    moduleKey: string;
+    taskId: string;
+    taskType: string;
+    moduleNumber: number;
+    moduleTitle: string;
+    score: number;
+    max: number;
+    feedback: string;
+};
+
+export type ReadWriteCorrectionSummary = {
+    writtenCombo: WrittenCombo;
+    modules: ReadWriteCorrectionModuleResult[];
+    rows: ReadWriteCorrectionQuestionResult[];
+    total: {
+        score: number;
+        max: number;
+    };
+    globalFeedback: string;
+    globalPercentage: number;
+    validatedLevel: "Aucun" | "A1" | "A2" | "B1";
+};
 
 const toPortableTextPlain = (value: unknown) => {
     if (!value) return "";
@@ -199,6 +253,13 @@ const clampTaskScoreWithMax = (value: unknown, max: number) => {
     const parsed = Number(value);
     if (!Number.isFinite(parsed)) return 0;
     const rounded = Math.round(parsed * 2) / 2;
+    return Math.max(0, Math.min(max, rounded));
+};
+
+const clampIntegerScoreWithMax = (value: unknown, max: number) => {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return 0;
+    const rounded = Math.round(parsed);
     return Math.max(0, Math.min(max, rounded));
 };
 
@@ -264,6 +325,71 @@ const getListeningScenarioCoefficient = (branch: OralBranch, scenarioLevel: "A1"
     return scenarioLevel === "B1" ? 2 : 1;
 };
 
+const isReadWriteQuestionType = (value: unknown): value is ReadWriteCorrectionQuestionType => {
+    return value === "single_choice" || value === "numbered_fill" || value === "text_extract" || value === "long_text";
+};
+
+const parseReadWriteNumberList = (raw: string) => {
+    const seen = new Set<string>();
+    return String(raw || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => /^\d+$/.test(item))
+        .filter((item) => {
+            if (seen.has(item)) return false;
+            seen.add(item);
+            return true;
+        });
+};
+
+const parseNumberedStudentAnswer = (rawAnswer: string, numbers: string[]) => {
+    const answer = String(rawAnswer || "");
+    const byNumber: Record<string, string> = Object.fromEntries(numbers.map((number) => [number, ""]));
+    if (!numbers.length) {
+        return byNumber;
+    }
+
+    const lines = answer
+        .split("\n")
+        .map((line) => line.replace(/\r$/, ""))
+        .filter(Boolean);
+
+    for (const line of lines) {
+        const match = line.match(/^(\d+)\s*[:\-]\s*(.*)$/);
+        if (!match) continue;
+        const number = match[1];
+        if (!numbers.includes(number)) continue;
+        byNumber[number] = String(match[2] || "").trim();
+    }
+
+    if (numbers.length === 1 && !String(byNumber[numbers[0]] || "").trim() && answer.trim()) {
+        byNumber[numbers[0]] = answer.trim();
+    }
+
+    return byNumber;
+};
+
+const buildReadWriteValidatedLevel = (writtenCombo: WrittenCombo, totalScore: number): "Aucun" | "A1" | "A2" | "B1" => {
+    const safeScore = Number.isFinite(totalScore) ? totalScore : 0;
+    if (writtenCombo === "A1_A2") {
+        if (safeScore >= 35) return "A2";
+        if (safeScore >= 15) return "A1";
+        return "Aucun";
+    }
+    if (safeScore >= 44) return "B1";
+    if (safeScore >= 20) return "A2";
+    return "Aucun";
+};
+
+const getReadWriteModuleNumber = (taskType: string, combo: WrittenCombo): number => {
+    if (taskType === "READ_WRITE_M1") return 1;
+    if (taskType === "READ_WRITE_M2") return 2;
+    if (taskType === "READ_WRITE_M3_M4") return combo === "A2_B1" ? 4 : 3;
+    if (taskType === "READ_WRITE_M5") return 5;
+    if (taskType === "READ_WRITE_M6") return 6;
+    return 0;
+};
+
 const buildSectionMiniFeedbackPrompt = (sectionLabel: string, transcriptions: string[]) => `
 Tu es examinateur FIDE.
 Rédige un mini feedback global (2-3 phrases, maximum 60 mots) pour la section "${sectionLabel}".
@@ -301,6 +427,72 @@ const requestMiniSectionFeedback = async (sectionLabel: string, transcriptions: 
     return `Feedback global indisponible pour ${sectionLabel}.`;
 };
 
+const buildReadWriteModuleFeedbackPrompt = (params: { moduleLabel: string; score: number; max: number; rows: ReadWriteCorrectionQuestionResult[] }) => {
+    const truncate = (value: string, maxLength: number) => {
+        const text = String(value || "").trim();
+        if (text.length <= maxLength) return text;
+        return `${text.slice(0, maxLength).trim()}…`;
+    };
+    const detailBlock = params.rows
+        .map((row) => {
+            const question = truncate(String(row.questionText || "").trim(), 220) || "(question non renseignée)";
+            const answer = truncate(String(row.studentAnswer || "").trim(), 280) || "(réponse vide)";
+            return [
+                `- Sujet de question: ${question}`,
+                `- Score: ${row.score}/${row.max}`,
+                `- Réponse élève: ${answer}`,
+            ].join("\n");
+        })
+        .join("\n\n");
+
+    return `
+Tu es examinateur FIDE, section Lire/Écrire.
+Rédige un feedback global de module en français (40 mots max), utile et actionnable.
+
+Module: ${params.moduleLabel}
+Score module: ${params.score}/${params.max}
+
+Contraintes:
+- Ton clair, bienveillant, et synthétique.
+- Feedback vraiment GLOBAL: qualité générale des réponses, précision, compréhension de consigne, formulation.
+- Interdit: enchaîner des micro-jugements du type "Bonne réponse ... / Réponse incorrecte ...".
+- Interdit: lister les questions, écrire "question 1/2/3", ou faire un corrigé question par question.
+- Si tu cites un exemple, formule-le de manière sémantique ("sur la question sur ..."), sans numéro.
+- Priorités d'entraînement concrètes, max 1 à 2 idées.
+- Si le module est globalement réussi, un message bref de validation est suffisant.
+- Ne pas inventer.
+
+Données:
+${detailBlock || "(Aucune donnée exploitable.)"}
+`.trim();
+};
+
+const requestReadWriteModuleFeedback = async (params: { moduleLabel: string; score: number; max: number; rows: ReadWriteCorrectionQuestionResult[] }) => {
+    if (!params.rows.length) {
+        return "Aucune réponse exploitable pour ce module.";
+    }
+
+    const prompt = buildReadWriteModuleFeedbackPrompt(params);
+    const models = Array.from(new Set([SPEAK_A2_CORRECTION_MODEL, SPEAK_A2_CORRECTION_FALLBACK_MODEL].filter(Boolean)));
+    for (const model of models) {
+        try {
+            const completion = await clientOpenai.chat.completions.create(
+                {
+                    model,
+                    messages: [{ role: "user", content: prompt }],
+                },
+                { timeout: SPEAK_A2_CORRECTION_TIMEOUT_MS },
+            );
+            const content = String(completion.choices?.[0]?.message?.content || "").trim();
+            if (content) return content;
+        } catch (error) {
+            console.error("Feedback module Lire/Écrire échoué", { moduleLabel: params.moduleLabel, model, error });
+        }
+    }
+
+    return "Feedback de module indisponible pour le moment.";
+};
+
 const requestModelCorrection = async (prompt: string, logContext: { taskId: string; activityKey?: string }) => {
     const models = Array.from(new Set([SPEAK_A2_CORRECTION_MODEL, SPEAK_A2_CORRECTION_FALLBACK_MODEL].filter(Boolean)));
     let content = "";
@@ -328,6 +520,31 @@ const requestModelCorrection = async (prompt: string, logContext: { taskId: stri
     const parsed = parseJsonFromModelOutput(content);
     const feedback = String(parsed?.feedback || "").trim() || "Correction reçue, mais feedback vide.";
     return { parsed, feedback };
+};
+
+const normalizeChoiceLabel = (value: string) => String(value || "").trim().toLowerCase();
+
+const extractSingleChoiceActivityResults = (parsed: unknown) => {
+    if (!parsed || typeof parsed !== "object") return [];
+    const raw = (parsed as { results?: unknown }).results;
+    if (!Array.isArray(raw)) return [];
+    return raw
+        .map((entry) => {
+            if (!entry || typeof entry !== "object") return null;
+            const item = entry as {
+                questionKey?: unknown;
+                questionNumber?: unknown;
+                score?: unknown;
+                feedback?: unknown;
+            };
+            return {
+                questionKey: String(item.questionKey || "").trim(),
+                questionNumber: String(item.questionNumber || "").trim(),
+                score: item.score,
+                feedback: String(item.feedback || "").trim(),
+            };
+        })
+        .filter(Boolean) as Array<{ questionKey: string; questionNumber: string; score: unknown; feedback: string }>;
 };
 
 const USER_COMPILATION_ENTRIES_QUERY = groq`
@@ -376,6 +593,8 @@ const MOCK_EXAM_SESSIONS_BY_COMPILATION_IDS_QUERY = groq`
     "compilationId": compilationRef._ref,
     resume{ state, taskId, activityKey, updatedAt },
     speakA2CorrectionRetryCount,
+    speakBranchCorrectionRetryCount,
+    readWriteCorrectionRetryCount,
     oralBranch,
     writtenCombo,
     speakA2Answers[]{
@@ -414,6 +633,8 @@ const MOCK_EXAM_SESSIONS_BY_COMPILATION_QUERY = groq`
     startedAt,
     resume{ state, taskId, activityKey, updatedAt },
     speakA2CorrectionRetryCount,
+    speakBranchCorrectionRetryCount,
+    readWriteCorrectionRetryCount,
     oralBranch,
     writtenCombo,
     speakA2Answers[]{
@@ -472,6 +693,8 @@ const MOCK_EXAM_IN_PROGRESS_SESSIONS_QUERY = groq`
     startedAt,
     resume{ state, taskId, activityKey, updatedAt },
     speakA2CorrectionRetryCount,
+    speakBranchCorrectionRetryCount,
+    readWriteCorrectionRetryCount,
     oralBranch,
     writtenCombo,
     speakA2Answers[]{
@@ -531,6 +754,8 @@ const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`
     startedAt,
     resume{ state, taskId, activityKey, updatedAt },
     speakA2CorrectionRetryCount,
+    speakBranchCorrectionRetryCount,
+    readWriteCorrectionRetryCount,
     oralBranch,
     writtenCombo,
     speakA2Answers[]{
@@ -589,6 +814,8 @@ const mapSessionDocumentToLite = (session: SessionDocument): MockExamSessionLite
     listeningScenarioResults: Array.isArray(session.listeningScenarioResults) ? session.listeningScenarioResults : [],
     readWriteAnswers: Array.isArray(session.readWriteAnswers) ? session.readWriteAnswers : [],
     speakA2CorrectionRetryCount: Number(session.speakA2CorrectionRetryCount || 0),
+    speakBranchCorrectionRetryCount: Number(session.speakBranchCorrectionRetryCount || 0),
+    readWriteCorrectionRetryCount: Number(session.readWriteCorrectionRetryCount || 0),
     scores: sanitizeSessionScores(session.scores),
 });
 
@@ -737,6 +964,8 @@ export async function getUserCompilations(userId: string) {
             speakA2Answers: session.speakA2Answers,
             listeningScenarioResults: session.listeningScenarioResults,
             speakA2CorrectionRetryCount: Number(session.speakA2CorrectionRetryCount || 0),
+            speakBranchCorrectionRetryCount: Number(session.speakBranchCorrectionRetryCount || 0),
+            readWriteCorrectionRetryCount: Number(session.readWriteCorrectionRetryCount || 0),
             scores: session.scores,
         });
         sessionsByCompilation.set(session.compilationId, bucket);
@@ -830,6 +1059,8 @@ export async function getOrCreateInProgressMockExamSession(compilationId: string
         listeningScenarioResults: [],
         readWriteAnswers: [],
         speakA2CorrectionRetryCount: 0,
+        speakBranchCorrectionRetryCount: 0,
+        readWriteCorrectionRetryCount: 0,
     };
 
     let tx = client.transaction();
@@ -848,6 +1079,8 @@ export async function getOrCreateInProgressMockExamSession(compilationId: string
         listeningScenarioResults: [],
         readWriteAnswers: [],
         speakA2CorrectionRetryCount: 0,
+        speakBranchCorrectionRetryCount: 0,
+        readWriteCorrectionRetryCount: 0,
     });
     await tx.commit({ autoGenerateArrayKeys: true });
 
@@ -1284,11 +1517,13 @@ export async function evaluateMockExamSpeakA2Section(params: { compilationId: st
     };
 }
 
-export async function evaluateMockExamSpeakBranchSection(params: { compilationId: string; sessionKey: string }) {
+export async function evaluateMockExamSpeakBranchSection(params: { compilationId: string; sessionKey: string; isRetry?: boolean }) {
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
+    const isAdmin = session?.user?.isAdmin === true;
     const compilationId = String(params.compilationId || "");
     const sessionKey = String(params.sessionKey || "");
+    const isRetry = params.isRetry === true;
 
     if (!userId || !compilationId || !sessionKey) {
         return { ok: false as const, error: "Paramètres invalides." };
@@ -1297,6 +1532,24 @@ export async function evaluateMockExamSpeakBranchSection(params: { compilationId
     const activeSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { userId, compilationId, sessionKey });
     if (!activeSession) {
         return { ok: false as const, error: "Session introuvable." };
+    }
+
+    const currentRetryCount = Number(activeSession.speakBranchCorrectionRetryCount || 0);
+    let nextRetryCount = currentRetryCount;
+    if (isRetry && !isAdmin) {
+        if (currentRetryCount >= SPEAK_BRANCH_MAX_MANUAL_RETRIES) {
+            return {
+                ok: false as const,
+                error: `Vous avez atteint le maximum de ${SPEAK_BRANCH_MAX_MANUAL_RETRIES} relances de correction IA.`,
+                retryCount: currentRetryCount,
+            };
+        }
+        nextRetryCount = currentRetryCount + 1;
+        await patchSession(sessionKey, {
+            set: {
+                speakBranchCorrectionRetryCount: nextRetryCount,
+            },
+        });
     }
 
     const compilation = await getCompilation(compilationId);
@@ -1458,6 +1711,7 @@ export async function evaluateMockExamSpeakBranchSection(params: { compilationId
         set: {
             speakBranchAnswers: nextAnswers,
             scores: nextScores,
+            speakBranchCorrectionRetryCount: nextRetryCount,
         },
     });
 
@@ -1474,6 +1728,726 @@ export async function evaluateMockExamSpeakBranchSection(params: { compilationId
             globalFeedback,
             globalPercentage,
         } satisfies SpeakBranchCorrectionSummary,
+        retryCount: nextRetryCount,
+    };
+}
+
+export async function evaluateMockExamReadWriteSection(params: { compilationId: string; sessionKey: string; isRetry?: boolean }) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = session?.user?._id;
+    const isAdmin = session?.user?.isAdmin === true;
+    const compilationId = String(params.compilationId || "");
+    const sessionKey = String(params.sessionKey || "");
+    const isRetry = params.isRetry === true;
+
+    if (!userId || !compilationId || !sessionKey) {
+        return { ok: false as const, error: "Paramètres invalides." };
+    }
+
+    const activeSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_ACCESS_QUERY, { userId, compilationId, sessionKey });
+    if (!activeSession) {
+        return { ok: false as const, error: "Session introuvable." };
+    }
+
+    const currentRetryCount = Number(activeSession.readWriteCorrectionRetryCount || 0);
+    let nextRetryCount = currentRetryCount;
+    if (isRetry && !isAdmin) {
+        if (currentRetryCount >= READ_WRITE_MAX_MANUAL_RETRIES) {
+            return {
+                ok: false as const,
+                error: `Vous avez atteint le maximum de ${READ_WRITE_MAX_MANUAL_RETRIES} relances de correction IA.`,
+                retryCount: currentRetryCount,
+            };
+        }
+        nextRetryCount = currentRetryCount + 1;
+        await patchSession(sessionKey, {
+            set: {
+                readWriteCorrectionRetryCount: nextRetryCount,
+            },
+        });
+    }
+
+    const writtenCombo: WrittenCombo = activeSession.writtenCombo?.chosen || activeSession.writtenCombo?.recommended || "A1_A2";
+    const compilation = await getCompilation(compilationId);
+    const scopedTaskIds =
+        writtenCombo === "A2_B1"
+            ? ((compilation?.examConfig?.readWriteTaskIds?.A2_B1 || []).map((ref) => ref?._ref).filter(Boolean) as string[])
+            : ((compilation?.examConfig?.readWriteTaskIds?.A1_A2 || []).map((ref) => ref?._ref).filter(Boolean) as string[]);
+
+    if (!scopedTaskIds.length) {
+        return { ok: false as const, error: "Aucune tâche Lire/Écrire disponible pour ce parcours." };
+    }
+
+    const readWriteTasks = await getMockExamTasksByIds(scopedTaskIds);
+    const taskById = new Map(readWriteTasks.map((task) => [task._id, task]));
+    const currentAnswers = Array.isArray(activeSession.readWriteAnswers) ? activeSession.readWriteAnswers : [];
+    if (!currentAnswers.length) {
+        return { ok: false as const, error: "Aucune réponse Lire/Écrire à corriger." };
+    }
+
+    const toAnswerKey = (taskId: string, activityKey: string, questionKey: string) => `${taskId}::${activityKey}::${questionKey}`;
+    const currentAnswerByKey = new Map<string, ReadWriteAnswer>();
+    const nextAnswers = [...currentAnswers];
+    const nextAnswerIndexByKey = new Map<string, number>();
+    for (let index = 0; index < nextAnswers.length; index += 1) {
+        const answer = nextAnswers[index];
+        const taskId = getAnswerTaskId(answer);
+        const activityKey = String(answer?.activityKey || "");
+        const questionKey = String(answer?.questionKey || "");
+        if (!taskId || !activityKey || !questionKey) continue;
+        const key = toAnswerKey(taskId, activityKey, questionKey);
+        currentAnswerByKey.set(key, answer);
+        nextAnswerIndexByKey.set(key, index);
+    }
+
+    const rows: ReadWriteCorrectionQuestionResult[] = [];
+    type ReadWriteCorrectionJob = {
+        answerKey: string;
+        rowBase: Omit<ReadWriteCorrectionQuestionResult, "score" | "feedback" | "error"> & { max: number };
+        prompt?: string;
+        taskId: string;
+        activityKey: string;
+        itemType: string;
+        missingAnswer?: boolean;
+    };
+    type ReadWriteSingleChoiceQuestionJob = {
+        answerKey: string;
+        rowBase: Omit<ReadWriteCorrectionQuestionResult, "score" | "feedback" | "error"> & { max: number };
+        questionKey: string;
+        questionNumber: number;
+        questionText: string;
+        studentAnswer: string;
+        studentSelectedOption: string;
+        expectedCorrectOption: string;
+        answerOptionsWithCorrectness: string;
+        aiCorrectionContextQuestion: string;
+        missingAnswer: boolean;
+        isCorrectSelection: boolean;
+    };
+    type ReadWriteSingleChoiceActivityJob = {
+        taskId: string;
+        activityKey: string;
+        moduleNumber: number;
+        moduleTitle: string;
+        activityNumber: number;
+        activityTitle: string;
+        activityPromptText: string;
+        instructionText: string;
+        instructionImageAlternativeText: string;
+        aiCorrectionContextActivity: string;
+        questions: ReadWriteSingleChoiceQuestionJob[];
+    };
+    type ReadWriteTextExtractQuestionJob = {
+        answerKey: string;
+        rowBase: Omit<ReadWriteCorrectionQuestionResult, "score" | "feedback" | "error"> & { max: number };
+        questionKey: string;
+        questionNumber: number;
+        questionText: string;
+        studentAnswer: string;
+        sourceTextReference: string;
+        aiCorrectionContextQuestion: string;
+        missingAnswer: boolean;
+    };
+    type ReadWriteTextExtractActivityJob = {
+        taskId: string;
+        activityKey: string;
+        moduleNumber: number;
+        moduleTitle: string;
+        activityNumber: number;
+        activityTitle: string;
+        activityPromptText: string;
+        instructionText: string;
+        instructionImageAlternativeText: string;
+        aiCorrectionContextActivity: string;
+        questions: ReadWriteTextExtractQuestionJob[];
+    };
+
+    const jobs: ReadWriteCorrectionJob[] = [];
+    const singleChoiceActivityJobs: ReadWriteSingleChoiceActivityJob[] = [];
+    const textExtractActivityJobs: ReadWriteTextExtractActivityJob[] = [];
+
+    for (let taskIndex = 0; taskIndex < scopedTaskIds.length; taskIndex += 1) {
+        const taskId = scopedTaskIds[taskIndex];
+        const task = taskById.get(taskId);
+        if (!task) continue;
+
+        const moduleNumber = getReadWriteModuleNumber(String(task.taskType || ""), writtenCombo) || taskIndex + 1;
+        const moduleTitle = String(task?.title || "").trim() || String(task.taskType || "");
+
+        for (let activityIndex = 0; activityIndex < (task.activities || []).length; activityIndex += 1) {
+            const activity = task.activities[activityIndex];
+            const activityKey = String(activity?._key || "");
+            if (!activityKey) continue;
+
+            const items = Array.isArray(activity?.items) ? activity.items : [];
+            const instructionItem = items.find((item) => String(item?.itemType || "") === "instruction");
+            const questionItems = items.filter((item) => isReadWriteQuestionType(item?.itemType));
+            const isSingleChoiceOnlyActivity = questionItems.length > 0 && questionItems.every((item) => String(item?.itemType || "") === "single_choice");
+            const isTextExtractOnlyActivity = questionItems.length > 0 && questionItems.every((item) => String(item?.itemType || "") === "text_extract");
+            const activityNumber = (moduleNumber - 1) * 2 + activityIndex + 1;
+            const activityTitle = String(activity?.title || "").trim() || `Tâche ${activityNumber}`;
+            const instructionText = toPortableTextPlain(instructionItem?.contentText);
+            const instructionImageAlternativeText = toPortableTextPlain(instructionItem?.imageAlternativeText);
+            const activityPromptText = toPortableTextPlain(activity?.promptText);
+            const aiCorrectionContextActivity = String(activity?.aiCorrectionContext || "").trim();
+
+            const singleChoiceActivityJob: ReadWriteSingleChoiceActivityJob | null = isSingleChoiceOnlyActivity
+                ? {
+                      taskId,
+                      activityKey,
+                      moduleNumber,
+                      moduleTitle,
+                      activityNumber,
+                      activityTitle,
+                      activityPromptText,
+                      instructionText,
+                      instructionImageAlternativeText,
+                      aiCorrectionContextActivity,
+                      questions: [],
+                  }
+                : null;
+            const textExtractActivityJob: ReadWriteTextExtractActivityJob | null = isTextExtractOnlyActivity
+                ? {
+                      taskId,
+                      activityKey,
+                      moduleNumber,
+                      moduleTitle,
+                      activityNumber,
+                      activityTitle,
+                      activityPromptText,
+                      instructionText,
+                      instructionImageAlternativeText,
+                      aiCorrectionContextActivity,
+                      questions: [],
+                  }
+                : null;
+
+            for (let questionIndex = 0; questionIndex < questionItems.length; questionIndex += 1) {
+                const item = questionItems[questionIndex];
+                const itemType = String(item?.itemType || "");
+                if (!isReadWriteQuestionType(itemType)) continue;
+
+                const questionKey = String(item?._key || "");
+                if (!questionKey) continue;
+
+                const rowId = `${taskId}:${activityKey}:${questionKey}`;
+                const answerKey = toAnswerKey(taskId, activityKey, questionKey);
+                const answer = currentAnswerByKey.get(answerKey);
+                const studentAnswer = String(answer?.textAnswer || "").trim();
+                const maxPoints = Math.max(1, Math.round(Number(item?.maxPoints || 1)));
+                const questionNumber = questionIndex + 1;
+                const questionText = String(item?.question || "").trim();
+                const questionContentText = toPortableTextPlain(item?.contentText);
+                const imageAlternativeText = toPortableTextPlain(item?.imageAlternativeText);
+                const aiCorrectionContextQuestion = String(item?.aiCorrectionContext || "").trim();
+                const numberList = parseReadWriteNumberList(questionText);
+                const studentAnswerByNumberMap = parseNumberedStudentAnswer(studentAnswer, numberList);
+                const studentAnswerByNumber = numberList.length
+                    ? numberList.map((number) => `${number}: ${String(studentAnswerByNumberMap[number] || "")}`).join("\n")
+                    : studentAnswer || "Aucune donnée.";
+                const answerOptions = Array.isArray(item?.answerOptions) ? item.answerOptions : [];
+                const answerOptionsWithCorrectness = answerOptions.length
+                    ? answerOptions
+                          .map((optionRaw, optionIndex) => {
+                              if (typeof optionRaw === "string") {
+                                  return `- Option ${optionIndex + 1}: ${optionRaw} (isCorrect: inconnu)`;
+                              }
+                              const option = optionRaw as { label?: unknown; isCorrect?: unknown };
+                              const label = String(option?.label || "").trim();
+                              if (!label) return "";
+                              return `- ${label} (isCorrect: ${Boolean(option?.isCorrect)})`;
+                          })
+                          .filter(Boolean)
+                          .join("\n")
+                    : "Aucune donnée.";
+                const expectedCorrectOptions = answerOptions
+                    .map((optionRaw) => {
+                        if (typeof optionRaw === "string") return "";
+                        const option = optionRaw as { label?: unknown; isCorrect?: unknown };
+                        const label = String(option?.label || "").trim();
+                        if (!label || !Boolean(option?.isCorrect)) return "";
+                        return label;
+                    })
+                    .filter(Boolean);
+                const expectedCorrectOption = expectedCorrectOptions.length ? expectedCorrectOptions.join(" | ") : "Non renseigné.";
+                const studentSelectedOption = studentAnswer || "Aucune donnée.";
+                const sourceTextReference =
+                    questionContentText || imageAlternativeText || instructionImageAlternativeText || instructionText || activityPromptText || "Aucune donnée.";
+
+                const expectedNormalized = expectedCorrectOptions.map((option) => normalizeChoiceLabel(option)).filter(Boolean);
+                const isCorrectSelection = expectedNormalized.includes(normalizeChoiceLabel(studentSelectedOption));
+                const rowBase = {
+                    rowId,
+                    taskId,
+                    activityKey,
+                    questionKey,
+                    taskType: String(task.taskType || ""),
+                    itemType,
+                    moduleNumber,
+                    moduleTitle,
+                    activityNumber,
+                    questionNumber,
+                    label: `Module ${moduleNumber} • Tâche ${activityNumber} • Question ${questionNumber}`,
+                    questionText,
+                    studentAnswer,
+                    max: maxPoints,
+                };
+
+                if (singleChoiceActivityJob) {
+                    singleChoiceActivityJob.questions.push({
+                        answerKey,
+                        rowBase,
+                        questionKey,
+                        questionNumber,
+                        questionText,
+                        studentAnswer,
+                        studentSelectedOption,
+                        expectedCorrectOption,
+                        answerOptionsWithCorrectness,
+                        aiCorrectionContextQuestion,
+                        missingAnswer: !studentAnswer,
+                        isCorrectSelection,
+                    });
+                    continue;
+                }
+
+                if (textExtractActivityJob) {
+                    textExtractActivityJob.questions.push({
+                        answerKey,
+                        rowBase,
+                        questionKey,
+                        questionNumber,
+                        questionText,
+                        studentAnswer,
+                        sourceTextReference,
+                        aiCorrectionContextQuestion,
+                        missingAnswer: !studentAnswer,
+                    });
+                    continue;
+                }
+
+                if (!studentAnswer) {
+                    jobs.push({
+                        answerKey,
+                        rowBase,
+                        taskId,
+                        activityKey,
+                        itemType,
+                        missingAnswer: true,
+                    });
+                    continue;
+                }
+
+                const prompt = buildReadWriteCorrectionPrompt({
+                    questionType: itemType,
+                    examLabel: writtenCombo === "A2_B1" ? "A2-B1" : "A1-A2",
+                    moduleNumber: String(moduleNumber),
+                    moduleTitle,
+                    activityNumber: String(activityNumber),
+                    activityTitle,
+                    questionNumber: String(questionNumber),
+                    activityPromptText,
+                    instructionText,
+                    instructionImageAlternativeText,
+                    questionText,
+                    questionContentText,
+                    imageAlternativeText,
+                    aiCorrectionContextActivity,
+                    aiCorrectionContextQuestion,
+                    studentAnswer,
+                    maxPoints: String(maxPoints),
+                    answerOptionsWithCorrectness,
+                    studentSelectedOption,
+                    expectedCorrectOption,
+                    numberingExpected: numberList.join(", "),
+                    studentAnswerByNumber,
+                    sourceTextReference,
+                });
+
+                console.log("[MockExam][ReadWrite] Prompt envoyé à l'IA", {
+                    sessionKey,
+                    taskId,
+                    activityKey,
+                    questionKey,
+                    itemType,
+                    prompt,
+                });
+
+                jobs.push({
+                    answerKey,
+                    rowBase,
+                    prompt,
+                    taskId,
+                    activityKey,
+                    itemType,
+                });
+            }
+
+            if (singleChoiceActivityJob?.questions.length) {
+                singleChoiceActivityJobs.push(singleChoiceActivityJob);
+            }
+            if (textExtractActivityJob?.questions.length) {
+                textExtractActivityJobs.push(textExtractActivityJob);
+            }
+        }
+    }
+
+    const applyAnswerPatch = (answerKey: string, nextFeedback: string, nextScore: number) => {
+        if (!nextAnswerIndexByKey.has(answerKey)) return;
+        const answerIndex = Number(nextAnswerIndexByKey.get(answerKey));
+        nextAnswers[answerIndex] = {
+            ...nextAnswers[answerIndex],
+            AiFeedback: nextFeedback,
+            AiScore: nextScore,
+        };
+    };
+
+    const BATCH_SIZE = 4;
+    for (let cursor = 0; cursor < jobs.length; cursor += BATCH_SIZE) {
+        const batch = jobs.slice(cursor, cursor + BATCH_SIZE);
+        const batchRows = await Promise.all(
+            batch.map(async (job): Promise<ReadWriteCorrectionQuestionResult> => {
+                if (job.missingAnswer || !job.prompt) {
+                    const feedback = "Aucune réponse enregistrée pour cette question.";
+                    applyAnswerPatch(job.answerKey, feedback, 0);
+                    return {
+                        ...job.rowBase,
+                        score: 0,
+                        feedback,
+                        error: "missing_answer",
+                    };
+                }
+
+                try {
+                    const { parsed, feedback } = await requestModelCorrection(job.prompt, {
+                        taskId: job.taskId,
+                        activityKey: job.activityKey,
+                    });
+                    const score = clampIntegerScoreWithMax(parsed?.scores ?? parsed?.score, job.rowBase.max);
+                    applyAnswerPatch(job.answerKey, feedback, score);
+                    return {
+                        ...job.rowBase,
+                        score,
+                        feedback,
+                    };
+                } catch (error) {
+                    const feedback = "La correction IA a échoué pour cette question. Vous pouvez réessayer.";
+                    applyAnswerPatch(job.answerKey, feedback, 0);
+                    return {
+                        ...job.rowBase,
+                        score: 0,
+                        feedback,
+                        error: error instanceof Error ? error.message : "unknown_error",
+                    };
+                }
+            }),
+        );
+        rows.push(...batchRows);
+    }
+
+    const SINGLE_CHOICE_ACTIVITY_BATCH_SIZE = 2;
+    for (let cursor = 0; cursor < singleChoiceActivityJobs.length; cursor += SINGLE_CHOICE_ACTIVITY_BATCH_SIZE) {
+        const batch = singleChoiceActivityJobs.slice(cursor, cursor + SINGLE_CHOICE_ACTIVITY_BATCH_SIZE);
+        const batchRows = await Promise.all(
+            batch.map(async (activityJob): Promise<ReadWriteCorrectionQuestionResult[]> => {
+                const prompt = buildReadWriteSingleChoiceActivityPrompt({
+                    examLabel: writtenCombo === "A2_B1" ? "A2-B1" : "A1-A2",
+                    moduleNumber: String(activityJob.moduleNumber),
+                    moduleTitle: activityJob.moduleTitle,
+                    activityNumber: String(activityJob.activityNumber),
+                    activityTitle: activityJob.activityTitle,
+                    activityPromptText: activityJob.activityPromptText,
+                    instructionText: activityJob.instructionText,
+                    instructionImageAlternativeText: activityJob.instructionImageAlternativeText,
+                    aiCorrectionContextActivity: activityJob.aiCorrectionContextActivity,
+                    questions: activityJob.questions.map((question) => ({
+                        questionKey: question.questionKey,
+                        questionNumber: String(question.questionNumber),
+                        questionText: question.questionText,
+                        studentSelectedOption: question.studentSelectedOption,
+                        expectedCorrectOption: question.expectedCorrectOption,
+                        answerOptionsWithCorrectness: question.answerOptionsWithCorrectness,
+                        aiCorrectionContextQuestion: question.aiCorrectionContextQuestion,
+                        maxPoints: String(question.rowBase.max),
+                    })),
+                });
+
+                console.log("[MockExam][ReadWrite] Prompt activité single_choice envoyé à l'IA", {
+                    sessionKey,
+                    taskId: activityJob.taskId,
+                    activityKey: activityJob.activityKey,
+                    questionCount: activityJob.questions.length,
+                    prompt,
+                });
+
+                try {
+                    const { parsed } = await requestModelCorrection(prompt, {
+                        taskId: activityJob.taskId,
+                        activityKey: activityJob.activityKey,
+                    });
+                    const parsedResults = extractSingleChoiceActivityResults(parsed);
+                    const byQuestionKey = new Map(parsedResults.map((item) => [item.questionKey, item] as const));
+                    const byQuestionNumber = new Map(parsedResults.map((item) => [item.questionNumber, item] as const));
+
+                    return activityJob.questions.map((question) => {
+                        if (question.missingAnswer) {
+                            const feedback = "Aucune réponse enregistrée pour cette question.";
+                            applyAnswerPatch(question.answerKey, feedback, 0);
+                            return {
+                                ...question.rowBase,
+                                score: 0,
+                                feedback,
+                                error: "missing_answer",
+                            };
+                        }
+
+                        const parsedItem = byQuestionKey.get(question.questionKey) || byQuestionNumber.get(String(question.questionNumber));
+                        const fallbackScore = question.isCorrectSelection ? question.rowBase.max : 0;
+                        const fallbackFeedback = question.isCorrectSelection
+                            ? "Bonne réponse."
+                            : `Réponse incorrecte. Réponse attendue: ${question.expectedCorrectOption || "non renseignée"}.`;
+                        const score = parsedItem
+                            ? clampIntegerScoreWithMax(
+                                  (parsedItem as { score?: unknown }).score,
+                                  question.rowBase.max,
+                              )
+                            : fallbackScore;
+                        const feedback = String(parsedItem?.feedback || "").trim() || fallbackFeedback;
+                        applyAnswerPatch(question.answerKey, feedback, score);
+                        return {
+                            ...question.rowBase,
+                            score,
+                            feedback,
+                        };
+                    });
+                } catch (error) {
+                    return activityJob.questions.map((question) => {
+                        if (question.missingAnswer) {
+                            const feedback = "Aucune réponse enregistrée pour cette question.";
+                            applyAnswerPatch(question.answerKey, feedback, 0);
+                            return {
+                                ...question.rowBase,
+                                score: 0,
+                                feedback,
+                                error: "missing_answer",
+                            };
+                        }
+                        const feedback = "La correction IA a échoué pour cette question. Vous pouvez réessayer.";
+                        applyAnswerPatch(question.answerKey, feedback, 0);
+                        return {
+                            ...question.rowBase,
+                            score: 0,
+                            feedback,
+                            error: error instanceof Error ? error.message : "unknown_error",
+                        };
+                    });
+                }
+            }),
+        );
+        rows.push(...batchRows.flat());
+    }
+
+    const TEXT_EXTRACT_ACTIVITY_BATCH_SIZE = 2;
+    for (let cursor = 0; cursor < textExtractActivityJobs.length; cursor += TEXT_EXTRACT_ACTIVITY_BATCH_SIZE) {
+        const batch = textExtractActivityJobs.slice(cursor, cursor + TEXT_EXTRACT_ACTIVITY_BATCH_SIZE);
+        const batchRows = await Promise.all(
+            batch.map(async (activityJob): Promise<ReadWriteCorrectionQuestionResult[]> => {
+                const prompt = buildReadWriteTextExtractActivityPrompt({
+                    examLabel: writtenCombo === "A2_B1" ? "A2-B1" : "A1-A2",
+                    moduleNumber: String(activityJob.moduleNumber),
+                    moduleTitle: activityJob.moduleTitle,
+                    activityNumber: String(activityJob.activityNumber),
+                    activityTitle: activityJob.activityTitle,
+                    activityPromptText: activityJob.activityPromptText,
+                    instructionText: activityJob.instructionText,
+                    instructionImageAlternativeText: activityJob.instructionImageAlternativeText,
+                    aiCorrectionContextActivity: activityJob.aiCorrectionContextActivity,
+                    questions: activityJob.questions.map((question) => ({
+                        questionKey: question.questionKey,
+                        questionNumber: String(question.questionNumber),
+                        questionText: question.questionText,
+                        studentAnswer: question.studentAnswer,
+                        sourceTextReference: question.sourceTextReference,
+                        aiCorrectionContextQuestion: question.aiCorrectionContextQuestion,
+                        maxPoints: String(question.rowBase.max),
+                    })),
+                });
+
+                console.log("[MockExam][ReadWrite] Prompt activité text_extract envoyé à l'IA", {
+                    sessionKey,
+                    taskId: activityJob.taskId,
+                    activityKey: activityJob.activityKey,
+                    questionCount: activityJob.questions.length,
+                    prompt,
+                });
+
+                try {
+                    const { parsed } = await requestModelCorrection(prompt, {
+                        taskId: activityJob.taskId,
+                        activityKey: activityJob.activityKey,
+                    });
+                    const parsedResults = extractSingleChoiceActivityResults(parsed);
+                    const byQuestionKey = new Map(parsedResults.map((item) => [item.questionKey, item] as const));
+                    const byQuestionNumber = new Map(parsedResults.map((item) => [item.questionNumber, item] as const));
+
+                    return activityJob.questions.map((question) => {
+                        if (question.missingAnswer) {
+                            const feedback = "Aucune réponse enregistrée pour cette question.";
+                            applyAnswerPatch(question.answerKey, feedback, 0);
+                            return {
+                                ...question.rowBase,
+                                score: 0,
+                                feedback,
+                                error: "missing_answer",
+                            };
+                        }
+
+                        const parsedItem = byQuestionKey.get(question.questionKey) || byQuestionNumber.get(String(question.questionNumber));
+                        const fallbackScore = 0;
+                        const fallbackFeedback = "Correction disponible, mais résultat question indisponible.";
+                        const score = parsedItem
+                            ? clampIntegerScoreWithMax(
+                                  (parsedItem as { score?: unknown }).score,
+                                  question.rowBase.max,
+                              )
+                            : fallbackScore;
+                        const feedback = String(parsedItem?.feedback || "").trim() || fallbackFeedback;
+                        applyAnswerPatch(question.answerKey, feedback, score);
+                        return {
+                            ...question.rowBase,
+                            score,
+                            feedback,
+                        };
+                    });
+                } catch (error) {
+                    return activityJob.questions.map((question) => {
+                        if (question.missingAnswer) {
+                            const feedback = "Aucune réponse enregistrée pour cette question.";
+                            applyAnswerPatch(question.answerKey, feedback, 0);
+                            return {
+                                ...question.rowBase,
+                                score: 0,
+                                feedback,
+                                error: "missing_answer",
+                            };
+                        }
+                        const feedback = "La correction IA a échoué pour cette question. Vous pouvez réessayer.";
+                        applyAnswerPatch(question.answerKey, feedback, 0);
+                        return {
+                            ...question.rowBase,
+                            score: 0,
+                            feedback,
+                            error: error instanceof Error ? error.message : "unknown_error",
+                        };
+                    });
+                }
+            }),
+        );
+        rows.push(...batchRows.flat());
+    }
+
+    if (!rows.length) {
+        return { ok: false as const, error: "Aucune question Lire/Écrire exploitable à corriger." };
+    }
+
+    const moduleBuckets = new Map<
+        string,
+        {
+            moduleKey: string;
+            taskId: string;
+            taskType: string;
+            moduleNumber: number;
+            moduleTitle: string;
+            score: number;
+            max: number;
+            rows: ReadWriteCorrectionQuestionResult[];
+        }
+    >();
+
+    for (const row of rows) {
+        const moduleKey = `${row.taskId}:${row.moduleNumber}`;
+        if (!moduleBuckets.has(moduleKey)) {
+            moduleBuckets.set(moduleKey, {
+                moduleKey,
+                taskId: row.taskId,
+                taskType: row.taskType,
+                moduleNumber: row.moduleNumber,
+                moduleTitle: row.moduleTitle,
+                score: 0,
+                max: 0,
+                rows: [],
+            });
+        }
+        const bucket = moduleBuckets.get(moduleKey)!;
+        bucket.score += Number(row.score || 0);
+        bucket.max += Number(row.max || 0);
+        bucket.rows.push(row);
+    }
+
+    const modulesWithFeedback = await Promise.all(
+        Array.from(moduleBuckets.values())
+            .sort((a, b) => a.moduleNumber - b.moduleNumber)
+            .map(async (bucket) => {
+                const moduleLabel = `Module ${bucket.moduleNumber} - ${bucket.moduleTitle || bucket.taskType}`;
+                const feedback = await requestReadWriteModuleFeedback({
+                    moduleLabel,
+                    score: bucket.score,
+                    max: bucket.max,
+                    rows: bucket.rows,
+                });
+                return {
+                    moduleKey: bucket.moduleKey,
+                    taskId: bucket.taskId,
+                    taskType: bucket.taskType,
+                    moduleNumber: bucket.moduleNumber,
+                    moduleTitle: bucket.moduleTitle,
+                    score: bucket.score,
+                    max: bucket.max,
+                    feedback,
+                };
+            }),
+    );
+
+    const totalScore = rows.reduce((sum, row) => sum + Number(row.score || 0), 0);
+    const totalMax = rows.reduce((sum, row) => sum + Number(row.max || 0), 0);
+    const globalPercentage = totalMax > 0 ? clampPercentage((totalScore / totalMax) * 100) : 0;
+    const sectionLabel = writtenCombo === "A2_B1" ? "Lire/Écrire A2-B1" : "Lire/Écrire A1-A2";
+    const globalFeedback = await requestMiniSectionFeedback(sectionLabel, nextAnswers.map((answer) => String(answer?.textAnswer || "").trim()).filter(Boolean));
+    const validatedLevel = buildReadWriteValidatedLevel(writtenCombo, totalScore);
+
+    const nextScores = {
+        ...sanitizeSessionScores(activeSession.scores),
+        readWrite: {
+            percentage: globalPercentage,
+            feedback: globalFeedback,
+        },
+    };
+
+    await patchSession(sessionKey, {
+        set: {
+            readWriteAnswers: nextAnswers,
+            scores: nextScores,
+            readWriteCorrectionRetryCount: nextRetryCount,
+        },
+    });
+
+    return {
+        ok: true as const,
+        writtenCombo,
+        answers: nextAnswers,
+        summary: {
+            writtenCombo,
+            modules: modulesWithFeedback,
+            rows,
+            total: {
+                score: totalScore,
+                max: totalMax,
+            },
+            globalFeedback,
+            globalPercentage,
+            validatedLevel,
+        } satisfies ReadWriteCorrectionSummary,
+        retryCount: nextRetryCount,
     };
 }
 

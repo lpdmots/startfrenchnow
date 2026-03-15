@@ -237,6 +237,13 @@ export default defineType({
             validation: (Rule) => Rule.min(0),
         }),
         defineField({
+            name: "speakBranchCorrectionRetryCount",
+            title: "Speak Branch Correction Retry Count",
+            type: "number",
+            initialValue: 0,
+            validation: (Rule) => Rule.min(0),
+        }),
+        defineField({
             name: "speakBranchAnswers",
             title: "Speak Branch Answers",
             type: "array",
@@ -301,6 +308,13 @@ export default defineType({
                     fields: readWriteAnswerFields,
                 },
             ],
+        }),
+        defineField({
+            name: "readWriteCorrectionRetryCount",
+            title: "Read/Write Correction Retry Count",
+            type: "number",
+            initialValue: 0,
+            validation: (Rule) => Rule.min(0),
         }),
         defineField({
             name: "overtimeTaskRefs",

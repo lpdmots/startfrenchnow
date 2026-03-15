@@ -87,7 +87,10 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
     const initialListeningScenarioResults = ((inProgressSession.listeningScenarioResults || []) as ListeningScenarioResult[]).filter(Boolean);
     const initialListeningScoreSummary = (inProgressSession.scores?.listening || null) as ScoreSummary | null;
     const initialReadWriteAnswers = ((inProgressSession.readWriteAnswers || []) as ReadWriteAnswer[]).filter(Boolean);
+    const initialReadWriteScoreSummary = (inProgressSession.scores?.readWrite || null) as ScoreSummary | null;
     const initialSpeakA2CorrectionRetryCount = Number(inProgressSession.speakA2CorrectionRetryCount || 0);
+    const initialSpeakBranchCorrectionRetryCount = Number(inProgressSession.speakBranchCorrectionRetryCount || 0);
+    const initialReadWriteCorrectionRetryCount = Number(inProgressSession.readWriteCorrectionRetryCount || 0);
     const compilationCorrections = (compilation.corrections || []) as ExamCorrectionContent[];
 
     return (
@@ -109,7 +112,10 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
             initialListeningScenarioResults={initialListeningScenarioResults}
             initialListeningScoreSummary={initialListeningScoreSummary}
             initialReadWriteAnswers={initialReadWriteAnswers}
+            initialReadWriteScoreSummary={initialReadWriteScoreSummary}
             initialSpeakA2CorrectionRetryCount={initialSpeakA2CorrectionRetryCount}
+            initialSpeakBranchCorrectionRetryCount={initialSpeakBranchCorrectionRetryCount}
+            initialReadWriteCorrectionRetryCount={initialReadWriteCorrectionRetryCount}
             isAdmin={isAdmin}
         />
     );

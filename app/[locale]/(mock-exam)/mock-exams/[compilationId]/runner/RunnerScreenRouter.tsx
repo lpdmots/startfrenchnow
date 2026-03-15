@@ -8,8 +8,10 @@ import { PortableText } from "@portabletext/react";
 import { FaArrowLeft, FaArrowRight, FaImage, FaRegEye, FaRegFileAlt } from "react-icons/fa";
 import urlFor from "@/app/lib/urlFor";
 import {
+    evaluateMockExamReadWriteSection,
     evaluateMockExamSpeakA2Section,
     evaluateMockExamSpeakBranchSection,
+    type ReadWriteCorrectionSummary,
     saveMockExamListeningScenarioResult,
     saveMockExamReadWriteAnswer,
     type SpeakA2CorrectionSummary,
@@ -23,8 +25,12 @@ import type { SpeakingAnswer } from "@/app/types/fide/mock-exam";
 import type { Exam } from "@/app/types/fide/exam";
 import type { RunnerReadWriteItem, RunnerTask } from "@/app/types/fide/mock-exam-runner";
 import ExpandableCardDemo from "@/app/components/ui/expandable-card-demo-standard";
+import useOutsideClick from "@/app/hooks/useOutsideClick";
 import SpeakingResponsePanel from "./SpeakingResponsePanel";
 import Link from "next/link";
+import ShimmerButton from "@/app/components/ui/shimmer-button";
+import { useRouter } from "next/navigation";
+import { PopupModal } from "react-calendly";
 
 type AdvancePayload = {
     nextState: string;
@@ -53,11 +59,14 @@ type RunnerScreenRouterProps = {
     speakA2Answers: SpeakingAnswer[];
     initialListeningScenarioResults: ListeningScenarioResult[];
     initialReadWriteAnswers: ReadWriteAnswer[];
+    initialReadWriteScoreSummary?: ScoreSummary | null;
     initialSpeakA2ScoreSummary?: ScoreSummary | null;
     initialSpeakBranchScoreSummary?: ScoreSummary | null;
     initialListeningScoreSummary?: ScoreSummary | null;
     writtenCombo?: { recommended?: WrittenCombo; chosen?: WrittenCombo };
     initialSpeakA2CorrectionRetryCount?: number;
+    initialSpeakBranchCorrectionRetryCount?: number;
+    initialReadWriteCorrectionRetryCount?: number;
     isAdmin?: boolean;
     isAdvancing: boolean;
     onAdvance: (payload: AdvancePayload) => Promise<void>;
@@ -78,10 +87,13 @@ const SPEAK_A2_TASK3_DISCUSSION_INTRO = "SPEAK_A2_TASK3_DISCUSSION_INTRO";
 const SPEAK_A2_CORRECTION = "SPEAK_A2_CORRECTION";
 const SPEAK_BRANCH_CORRECTION = "SPEAK_BRANCH_CORRECTION";
 const ORAL_SECTION_SUMMARY = "ORAL_SECTION_SUMMARY";
+const EXAM_FINAL_SUMMARY = "EXAM_FINAL_SUMMARY";
 const TRANSITION = { duration: 0.28, ease: "easeOut" as const };
 const RUNNER_LAYOUT_MAX_WIDTH = "max-w-[1240px]";
 const RUNNER_LAYOUT_BOTTOM_PADDING = "pb-5";
 const SPEAK_A2_MAX_MANUAL_RETRIES = 3;
+const SPEAK_BRANCH_MAX_MANUAL_RETRIES = 3;
+const READ_WRITE_MAX_MANUAL_RETRIES = 3;
 const SPEAK_BRANCH_B1_RECOMMENDATION_THRESHOLD = 65;
 const LISTENING_RECOMMENDED_SCENARIO_COUNT = 4;
 const READ_WRITE_AUTO_NEXT_DELAY_MS = 220;
@@ -130,6 +142,20 @@ const getValidatedLevelLabel = (branch: OralBranch, finalPercentage: number) => 
     if (finalPercentage >= 79) return "B1 atteint";
     if (finalPercentage >= 43) return "A2 atteint";
     return "A2 non atteint";
+};
+
+const getReadWriteExpectedTotalMax = (combo: WrittenCombo) => (combo === "A2_B1" ? 59 : 48);
+
+const getReadWriteValidatedLevel = (combo: WrittenCombo, totalScore: number) => {
+    const safeScore = Number.isFinite(totalScore) ? totalScore : 0;
+    if (combo === "A1_A2") {
+        if (safeScore >= 35) return "A2";
+        if (safeScore >= 15) return "A1";
+        return "Aucun";
+    }
+    if (safeScore >= 44) return "B1";
+    if (safeScore >= 20) return "A2";
+    return "Aucun";
 };
 
 const withCloudFrontPrefix = (resource?: string) => {
@@ -415,11 +441,14 @@ export default function RunnerScreenRouter({
     speakA2Answers,
     initialListeningScenarioResults,
     initialReadWriteAnswers,
+    initialReadWriteScoreSummary,
     initialSpeakA2ScoreSummary,
     initialSpeakBranchScoreSummary,
     initialListeningScoreSummary,
     writtenCombo,
     initialSpeakA2CorrectionRetryCount,
+    initialSpeakBranchCorrectionRetryCount,
+    initialReadWriteCorrectionRetryCount,
     isAdmin,
     isAdvancing,
     onAdvance,
@@ -449,8 +478,16 @@ export default function RunnerScreenRouter({
     const [evaluationSummary, setEvaluationSummary] = useState<SpeakA2CorrectionSummary | null>(null);
     const [evaluationWaitSeconds, setEvaluationWaitSeconds] = useState(0);
     const [manualRetryCount, setManualRetryCount] = useState(Math.max(0, Number(initialSpeakA2CorrectionRetryCount || 0)));
+    const [branchManualRetryCount, setBranchManualRetryCount] = useState(Math.max(0, Number(initialSpeakBranchCorrectionRetryCount || 0)));
+    const [readWriteManualRetryCount, setReadWriteManualRetryCount] = useState(Math.max(0, Number(initialReadWriteCorrectionRetryCount || 0)));
     const evaluationRequestedRef = useRef(false);
     const resultAccordionInitRef = useRef(false);
+
+    useEffect(() => {
+        setManualRetryCount(Math.max(0, Number(initialSpeakA2CorrectionRetryCount || 0)));
+        setBranchManualRetryCount(Math.max(0, Number(initialSpeakBranchCorrectionRetryCount || 0)));
+        setReadWriteManualRetryCount(Math.max(0, Number(initialReadWriteCorrectionRetryCount || 0)));
+    }, [initialReadWriteCorrectionRetryCount, initialSpeakA2CorrectionRetryCount, initialSpeakBranchCorrectionRetryCount, sessionKey]);
 
     const taskRows = useMemo(() => {
         return speakA2Tasks.map((task) => {
@@ -841,24 +878,45 @@ export default function RunnerScreenRouter({
         return "Le traitement prend un peu de temps, merci de patienter.";
     }, [branchEvaluationWaitSeconds]);
 
-    const runBranchEvaluation = useCallback(async () => {
-        if (isEvaluatingBranch) return;
-        setIsEvaluatingBranch(true);
-        setBranchEvaluationError("");
-        try {
-            const result = await evaluateMockExamSpeakBranchSection({ compilationId, sessionKey });
-            if (!result?.ok) {
-                setBranchEvaluationError(result?.error || "Correction IA impossible.");
-                return;
+    const canRetryBranchCorrection = useMemo(() => {
+        if (isAdmin) return true;
+        return branchManualRetryCount < SPEAK_BRANCH_MAX_MANUAL_RETRIES;
+    }, [branchManualRetryCount, isAdmin]);
+
+    const remainingBranchManualRetries = useMemo(() => {
+        return Math.max(0, SPEAK_BRANCH_MAX_MANUAL_RETRIES - branchManualRetryCount);
+    }, [branchManualRetryCount]);
+
+    const branchRetryButtonSuffix = useMemo(() => {
+        if (isAdmin) return "(∞)";
+        return `(${remainingBranchManualRetries}/${SPEAK_BRANCH_MAX_MANUAL_RETRIES})`;
+    }, [isAdmin, remainingBranchManualRetries]);
+
+    const runBranchEvaluation = useCallback(
+        async (options?: { isRetry?: boolean }) => {
+            if (isEvaluatingBranch) return;
+            setIsEvaluatingBranch(true);
+            setBranchEvaluationError("");
+            try {
+                const isRetry = options?.isRetry === true;
+                const result = await evaluateMockExamSpeakBranchSection({ compilationId, sessionKey, isRetry });
+                if (typeof result?.retryCount === "number") {
+                    setBranchManualRetryCount(Math.max(0, result.retryCount));
+                }
+                if (!result?.ok) {
+                    setBranchEvaluationError(result?.error || "Correction IA impossible.");
+                    return;
+                }
+                onSpeakA2AnswersEvaluated(result.answers || []);
+                setBranchEvaluationSummary(result.summary || null);
+            } catch {
+                setBranchEvaluationError("Erreur inattendue pendant la correction IA.");
+            } finally {
+                setIsEvaluatingBranch(false);
             }
-            onSpeakA2AnswersEvaluated(result.answers || []);
-            setBranchEvaluationSummary(result.summary || null);
-        } catch {
-            setBranchEvaluationError("Erreur inattendue pendant la correction IA.");
-        } finally {
-            setIsEvaluatingBranch(false);
-        }
-    }, [compilationId, isEvaluatingBranch, onSpeakA2AnswersEvaluated, sessionKey]);
+        },
+        [compilationId, isEvaluatingBranch, onSpeakA2AnswersEvaluated, sessionKey],
+    );
 
     useEffect(() => {
         if (resume.state !== "SPEAK_BRANCH_RESULT") {
@@ -1057,6 +1115,23 @@ export default function RunnerScreenRouter({
     const readWriteTasks = useMemo(() => {
         return selectedWrittenCombo === "A2_B1" ? readWriteA2B1Tasks || [] : readWriteA1A2Tasks || [];
     }, [readWriteA1A2Tasks, readWriteA2B1Tasks, selectedWrittenCombo]);
+    const readWriteModulePdfLinks = useMemo(() => {
+        return readWriteTasks
+            .map((task, index) => {
+                const moduleNumber = getReadWriteModuleNumber(String(task.taskType || ""), selectedWrittenCombo) || index + 1;
+                const label = `Module ${moduleNumber} • ${String(task.title || "").trim() || String(task.taskType || "")}`;
+                const url = withCloudFrontPrefix(String(task.supportPdfUrl || "").trim());
+                if (!url) return null;
+                return { moduleNumber, label, url };
+            })
+            .filter(Boolean)
+            .sort((a, b) => Number(a?.moduleNumber || 0) - Number(b?.moduleNumber || 0)) as Array<{
+            moduleNumber: number;
+            label: string;
+            url: string;
+        }>;
+    }, [readWriteTasks, selectedWrittenCombo]);
+    const readWriteExpectedTotalMax = useMemo(() => getReadWriteExpectedTotalMax(selectedWrittenCombo), [selectedWrittenCombo]);
     const readWriteFirstPointer = useMemo(() => resolveFirstTaskPointer(readWriteTasks), [readWriteTasks]);
     const readWriteCurrentPointer = useMemo(() => {
         if (resume.state !== "READ_WRITE_RUN") return null;
@@ -1075,7 +1150,9 @@ export default function RunnerScreenRouter({
     const [activeReadWriteItemIndex, setActiveReadWriteItemIndex] = useState(0);
     const [readWriteDrafts, setReadWriteDrafts] = useState<Record<string, string>>({});
     const [readWriteVisualMode, setReadWriteVisualMode] = useState<"IMAGE" | "TEXT">("IMAGE");
+    const [isReadWritePdfMenuOpen, setIsReadWritePdfMenuOpen] = useState(false);
     const [isReadWriteImageModalOpen, setIsReadWriteImageModalOpen] = useState(false);
+    const readWritePdfMenuRef = useRef<HTMLDivElement | null>(null);
     const readWriteAutoNextTimerRef = useRef<number | null>(null);
     const readWriteActivityInitRef = useRef("");
 
@@ -1101,6 +1178,16 @@ export default function RunnerScreenRouter({
     useEffect(() => {
         setIsReadWriteImageModalOpen(false);
     }, [readWriteActivityIdentity, resume.state]);
+
+    useEffect(() => {
+        if (resume.state !== "READ_WRITE_RESULT") {
+            setIsReadWritePdfMenuOpen(false);
+        }
+    }, [resume.state]);
+
+    useOutsideClick(readWritePdfMenuRef, () => {
+        setIsReadWritePdfMenuOpen(false);
+    });
 
     useEffect(() => {
         return () => {
@@ -1290,6 +1377,295 @@ export default function RunnerScreenRouter({
         }
     }, [compilationId, readWriteAnswersByKey, readWriteCurrentPointer, readWriteDrafts, readWriteQuestionItems, sessionKey]);
 
+    const [isEvaluatingReadWrite, setIsEvaluatingReadWrite] = useState(false);
+    const [readWriteEvaluationError, setReadWriteEvaluationError] = useState("");
+    const [readWriteEvaluationSummary, setReadWriteEvaluationSummary] = useState<ReadWriteCorrectionSummary | null>(null);
+    const [readWriteEvaluationWaitSeconds, setReadWriteEvaluationWaitSeconds] = useState(0);
+    const readWriteEvaluationRequestedRef = useRef(false);
+    const readWriteResultAccordionInitRef = useRef(false);
+    const [openedReadWriteRowId, setOpenedReadWriteRowId] = useState<string | null>(null);
+
+    const readWriteRows = useMemo(() => {
+        const rows: Array<{
+            rowId: string;
+            taskId: string;
+            activityKey: string;
+            questionKey: string;
+            moduleNumber: number;
+            moduleTitle: string;
+            label: string;
+            itemType: string;
+            score: number | null;
+            max: number;
+            feedback: string;
+            hasAnswer: boolean;
+            isEvaluated: boolean;
+            order: string;
+        }> = [];
+
+        for (let taskIndex = 0; taskIndex < readWriteTasks.length; taskIndex += 1) {
+            const task = readWriteTasks[taskIndex];
+            const moduleNumber = getReadWriteModuleNumber(String(task.taskType || ""), selectedWrittenCombo) || taskIndex + 1;
+
+            for (let activityIndex = 0; activityIndex < (task.activities || []).length; activityIndex += 1) {
+                const activity = task.activities[activityIndex];
+                const activityNumber = (moduleNumber - 1) * 2 + activityIndex + 1;
+                const questionItems = (Array.isArray(activity.items) ? activity.items : []).filter((item) => isReadWriteQuestionItem(item));
+
+                for (let questionIndex = 0; questionIndex < questionItems.length; questionIndex += 1) {
+                    const item = questionItems[questionIndex];
+                    const questionNumber = questionIndex + 1;
+                    const questionKey = String(item?._key || "");
+                    if (!questionKey) continue;
+                    const answerKey = getReadWriteAnswerKey(task._id, activity._key, questionKey);
+                    const answer = readWriteAnswersByKey.get(answerKey);
+                    const hasAnswer = String(answer?.textAnswer || "").trim().length > 0;
+                    const score = typeof answer?.AiScore === "number" ? answer.AiScore : null;
+                    const feedback = String(answer?.AiFeedback || "").trim();
+                    const isEvaluated = hasAnswer && score !== null && feedback.length > 0;
+                    const max = Math.max(1, Math.round(Number(item?.maxPoints || 1)));
+
+                    rows.push({
+                        rowId: `${task._id}:${activity._key}:${questionKey}`,
+                        taskId: task._id,
+                        activityKey: activity._key,
+                        questionKey,
+                        moduleNumber,
+                        moduleTitle: String(task.title || "").trim() || String(task.taskType || ""),
+                        label: `Module ${moduleNumber} • Tâche ${activityNumber} • Question ${questionNumber}`,
+                        itemType: String(item?.itemType || ""),
+                        score,
+                        max,
+                        feedback,
+                        hasAnswer,
+                        isEvaluated,
+                        order: `${String(taskIndex).padStart(4, "0")}-${String(activityIndex).padStart(4, "0")}-${String(questionIndex).padStart(4, "0")}`,
+                    });
+                }
+            }
+        }
+
+        return rows.sort((a, b) => a.order.localeCompare(b.order));
+    }, [readWriteAnswersByKey, readWriteTasks, selectedWrittenCombo]);
+
+    const hasPendingReadWriteEvaluation = useMemo(() => {
+        return readWriteRows.some((row) => row.hasAnswer && !row.isEvaluated);
+    }, [readWriteRows]);
+
+    const readWriteTotalRow = useMemo(() => {
+        const evaluated = readWriteRows.filter((row) => row.isEvaluated && row.score !== null);
+        return {
+            score: evaluated.reduce((sum, row) => sum + Number(row.score || 0), 0),
+            max: evaluated.reduce((sum, row) => sum + Number(row.max || 0), 0),
+        };
+    }, [readWriteRows]);
+
+    const readWriteModuleRows = useMemo(() => {
+        const runtimeModules = Array.isArray(readWriteEvaluationSummary?.modules) ? readWriteEvaluationSummary.modules : [];
+        if (runtimeModules.length) {
+            return runtimeModules
+                .map((module) => ({
+                    moduleKey: module.moduleKey,
+                    moduleNumber: module.moduleNumber,
+                    moduleTitle: module.moduleTitle || `Module ${module.moduleNumber}`,
+                    score: Number(module.score || 0),
+                    max: Math.max(1, Number(module.max || 1)),
+                    feedback: String(module.feedback || "").trim() || "Feedback indisponible pour ce module.",
+                }))
+                .sort((a, b) => a.moduleNumber - b.moduleNumber);
+        }
+
+        const grouped = new Map<
+            string,
+            {
+                moduleKey: string;
+                moduleNumber: number;
+                moduleTitle: string;
+                score: number;
+                max: number;
+                feedbacks: string[];
+            }
+        >();
+
+        for (const row of readWriteRows) {
+            const moduleKey = `${row.taskId}:${row.moduleNumber}`;
+            if (!grouped.has(moduleKey)) {
+                grouped.set(moduleKey, {
+                    moduleKey,
+                    moduleNumber: row.moduleNumber,
+                    moduleTitle: row.moduleTitle || `Module ${row.moduleNumber}`,
+                    score: 0,
+                    max: 0,
+                    feedbacks: [],
+                });
+            }
+            const bucket = grouped.get(moduleKey)!;
+            bucket.score += Number(row.score || 0);
+            bucket.max += Number(row.max || 0);
+            if (row.feedback) bucket.feedbacks.push(row.feedback);
+        }
+
+        return Array.from(grouped.values())
+            .map((bucket) => ({
+                moduleKey: bucket.moduleKey,
+                moduleNumber: bucket.moduleNumber,
+                moduleTitle: bucket.moduleTitle,
+                score: bucket.score,
+                max: Math.max(1, bucket.max),
+                feedback:
+                    bucket.max > 0
+                        ? (() => {
+                              const pct = Math.round((bucket.score / Math.max(1, bucket.max)) * 100);
+                              if (pct >= 80) return "Très bon module: réponses globalement pertinentes et bien structurées. Continue avec ce niveau de précision.";
+                              if (pct >= 60) return "Module solide: bonnes bases. Renforce la précision des informations et la formulation pour gagner encore des points.";
+                              if (pct >= 40) return "Module partiellement réussi: plusieurs réponses sont pertinentes, mais la précision reste inégale.";
+                              return "Module à retravailler: relis bien la consigne et entraîne-toi à répondre plus directement et précisément.";
+                          })()
+                        : "Le feedback de module apparaîtra ici après la correction IA.",
+            }))
+            .sort((a, b) => a.moduleNumber - b.moduleNumber);
+    }, [readWriteEvaluationSummary?.modules, readWriteRows]);
+
+    const weakestReadWriteModuleId = useMemo(() => {
+        if (!readWriteModuleRows.length) return null;
+        const sorted = [...readWriteModuleRows].sort((a, b) => a.score / Math.max(1, a.max) - b.score / Math.max(1, b.max));
+        return sorted[0]?.moduleKey || readWriteModuleRows[0]?.moduleKey || null;
+    }, [readWriteModuleRows]);
+
+    useEffect(() => {
+        if (resume.state !== "READ_WRITE_RESULT") {
+            setOpenedReadWriteRowId(null);
+            readWriteResultAccordionInitRef.current = false;
+            return;
+        }
+        if (readWriteResultAccordionInitRef.current) return;
+        if (weakestReadWriteModuleId) {
+            setOpenedReadWriteRowId(weakestReadWriteModuleId);
+            readWriteResultAccordionInitRef.current = true;
+        }
+    }, [resume.state, weakestReadWriteModuleId]);
+
+    const persistedReadWriteGlobalPercentage = useMemo(() => {
+        if (typeof initialReadWriteScoreSummary?.percentage !== "number") return null;
+        return Math.max(0, Math.min(100, Math.round(initialReadWriteScoreSummary.percentage)));
+    }, [initialReadWriteScoreSummary?.percentage]);
+
+    const persistedReadWriteGlobalFeedback = useMemo(() => {
+        const raw = String(initialReadWriteScoreSummary?.feedback || "").trim();
+        return raw.length > 0 ? raw : null;
+    }, [initialReadWriteScoreSummary?.feedback]);
+
+    const readWriteGlobalPercentage = useMemo(() => {
+        if (typeof readWriteEvaluationSummary?.globalPercentage === "number") {
+            return Math.max(0, Math.min(100, Math.round(readWriteEvaluationSummary.globalPercentage)));
+        }
+        if (persistedReadWriteGlobalPercentage !== null) {
+            return persistedReadWriteGlobalPercentage;
+        }
+        if (readWriteTotalRow.max <= 0) return 0;
+        return Math.max(0, Math.min(100, Math.round((readWriteTotalRow.score / readWriteTotalRow.max) * 100)));
+    }, [persistedReadWriteGlobalPercentage, readWriteEvaluationSummary?.globalPercentage, readWriteTotalRow.max, readWriteTotalRow.score]);
+
+    const readWriteGlobalFeedback = useMemo(() => {
+        const runtimeFeedback = String(readWriteEvaluationSummary?.globalFeedback || "").trim();
+        if (runtimeFeedback) return runtimeFeedback;
+        if (persistedReadWriteGlobalFeedback) return persistedReadWriteGlobalFeedback;
+        return "Le feedback global apparaîtra ici après l'analyse IA.";
+    }, [persistedReadWriteGlobalFeedback, readWriteEvaluationSummary?.globalFeedback]);
+
+    const readWriteValidatedLevel = useMemo(() => {
+        const runtimeLevel = String(readWriteEvaluationSummary?.validatedLevel || "").trim();
+        if (runtimeLevel) return runtimeLevel;
+        return getReadWriteValidatedLevel(selectedWrittenCombo, Number(readWriteTotalRow.score || 0));
+    }, [readWriteEvaluationSummary?.validatedLevel, readWriteTotalRow.score, selectedWrittenCombo]);
+
+    const readWriteGlobalLevelLabel = useMemo(() => {
+        if (readWriteGlobalPercentage >= 80) return "Très bon niveau";
+        if (readWriteGlobalPercentage >= 60) return "Bon niveau";
+        if (readWriteGlobalPercentage >= 40) return "À renforcer";
+        return "À travailler";
+    }, [readWriteGlobalPercentage]);
+
+    const readWriteGlobalGaugePrimaryColor = useMemo(() => {
+        if (readWriteGlobalPercentage < 30) return "var(--secondary-4)";
+        if (readWriteGlobalPercentage <= 70) return "var(--secondary-1)";
+        return "var(--secondary-5)";
+    }, [readWriteGlobalPercentage]);
+
+    const readWriteEvaluationWaitLabel = useMemo(() => {
+        if (readWriteEvaluationWaitSeconds < 10) return "Analyse IA en cours...";
+        if (readWriteEvaluationWaitSeconds < 25) return "L'IA finalise la correction détaillée...";
+        return "Le traitement prend un peu de temps, merci de patienter.";
+    }, [readWriteEvaluationWaitSeconds]);
+
+    const canRetryReadWriteCorrection = useMemo(() => {
+        if (isAdmin) return true;
+        return readWriteManualRetryCount < READ_WRITE_MAX_MANUAL_RETRIES;
+    }, [isAdmin, readWriteManualRetryCount]);
+
+    const remainingReadWriteManualRetries = useMemo(() => {
+        return Math.max(0, READ_WRITE_MAX_MANUAL_RETRIES - readWriteManualRetryCount);
+    }, [readWriteManualRetryCount]);
+
+    const readWriteRetryButtonSuffix = useMemo(() => {
+        if (isAdmin) return "(∞)";
+        return `(${remainingReadWriteManualRetries}/${READ_WRITE_MAX_MANUAL_RETRIES})`;
+    }, [isAdmin, remainingReadWriteManualRetries]);
+
+    const runReadWriteEvaluation = useCallback(
+        async (options?: { isRetry?: boolean }) => {
+            if (isEvaluatingReadWrite) return;
+            setIsEvaluatingReadWrite(true);
+            setReadWriteEvaluationError("");
+            try {
+                const isRetry = options?.isRetry === true;
+                const result = await evaluateMockExamReadWriteSection({ compilationId, sessionKey, isRetry });
+                if (typeof result?.retryCount === "number") {
+                    setReadWriteManualRetryCount(Math.max(0, result.retryCount));
+                }
+                if (!result?.ok) {
+                    setReadWriteEvaluationError(result?.error || "Correction IA impossible.");
+                    return;
+                }
+                setReadWriteAnswers(Array.isArray(result.answers) ? result.answers : []);
+                setReadWriteEvaluationSummary(result.summary || null);
+            } catch {
+                setReadWriteEvaluationError("Erreur inattendue pendant la correction IA.");
+            } finally {
+                setIsEvaluatingReadWrite(false);
+            }
+        },
+        [compilationId, isEvaluatingReadWrite, sessionKey],
+    );
+
+    useEffect(() => {
+        if (resume.state !== "READ_WRITE_RESULT") {
+            readWriteEvaluationRequestedRef.current = false;
+            return;
+        }
+        if (readWriteEvaluationRequestedRef.current || isEvaluatingReadWrite || !hasPendingReadWriteEvaluation) {
+            return;
+        }
+        readWriteEvaluationRequestedRef.current = true;
+        void runReadWriteEvaluation();
+    }, [hasPendingReadWriteEvaluation, isEvaluatingReadWrite, resume.state, runReadWriteEvaluation]);
+
+    useEffect(() => {
+        if (!isEvaluatingReadWrite) {
+            setReadWriteEvaluationWaitSeconds(0);
+            return;
+        }
+        setReadWriteEvaluationWaitSeconds(0);
+        const startedAt = Date.now();
+        const interval = window.setInterval(() => {
+            const elapsed = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
+            setReadWriteEvaluationWaitSeconds(elapsed);
+        }, 1000);
+        return () => {
+            window.clearInterval(interval);
+        };
+    }, [isEvaluatingReadWrite]);
+
     const finalOralFeedback = useMemo(() => {
         if (finalOralPercentage >= 80) {
             return "Très bon niveau oral : les consignes sont bien maîtrisées, les réponses sont claires et l’ensemble est solide en production comme en compréhension.";
@@ -1307,11 +1683,28 @@ export default function RunnerScreenRouter({
     }, [finalOralPercentage]);
 
     const [oralDetailsTab, setOralDetailsTab] = useState<"A2" | "BRANCH" | "LISTENING">("A2");
+    const [finalDetailsOpenKey, setFinalDetailsOpenKey] = useState<"ORAL" | "LISTENING" | "READ_WRITE" | null>("ORAL");
+    const [isHumanFeedbackModalOpen, setIsHumanFeedbackModalOpen] = useState(false);
+    const [isFeedbackCalendlyOpen, setIsFeedbackCalendlyOpen] = useState(false);
+    const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         if (resume.state !== ORAL_SECTION_SUMMARY) return;
         setOralDetailsTab("A2");
     }, [resume.state]);
+
+    useEffect(() => {
+        if (resume.state !== EXAM_FINAL_SUMMARY) {
+            setFinalDetailsOpenKey("ORAL");
+            setIsHumanFeedbackModalOpen(false);
+            setIsFeedbackCalendlyOpen(false);
+        }
+    }, [resume.state]);
+
+    useEffect(() => {
+        setRootElement(document.getElementById("root") || document.body);
+    }, []);
 
     const onListeningScenarioCompleted = useCallback(
         async (payload: { examId: string; score: number; max: number }) => {
@@ -2217,7 +2610,7 @@ export default function RunnerScreenRouter({
 
     if (resume.state === "SPEAK_A2_RESULT") {
         return (
-            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
+            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0 overflow-y-auto`}>
                 <div className="flex flex-col gap-3">
                     <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
                     <h1 className="display-2 font-medium mb-0">Parler A2 terminé</h1>
@@ -2248,7 +2641,7 @@ export default function RunnerScreenRouter({
 
                 {evaluationError && <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{evaluationError}</div>}
 
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
                     <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
                         <CircularProgressMagic
                             max={100}
@@ -2474,7 +2867,7 @@ export default function RunnerScreenRouter({
 
                 {branchEvaluationError && <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{branchEvaluationError}</div>}
 
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
                     <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
                         <CircularProgressMagic
                             max={100}
@@ -2557,13 +2950,17 @@ export default function RunnerScreenRouter({
                     <button
                         type="button"
                         className="btn btn-secondary small min-w-[220px]"
-                        disabled={isEvaluatingBranch}
+                        disabled={isEvaluatingBranch || !canRetryBranchCorrection}
                         onClick={async () => {
                             branchEvaluationRequestedRef.current = true;
-                            await runBranchEvaluation();
+                            await runBranchEvaluation({ isRetry: true });
                         }}
                     >
-                        {isEvaluatingBranch ? "Correction en cours..." : "Relancer la correction IA"}
+                        {isEvaluatingBranch
+                            ? `Correction en cours... ${branchRetryButtonSuffix}`
+                            : !canRetryBranchCorrection
+                              ? `Relances IA épuisées ${branchRetryButtonSuffix}`
+                              : `Relancer la correction IA ${branchRetryButtonSuffix}`}
                     </button>
                     <button
                         type="button"
@@ -3450,11 +3847,9 @@ export default function RunnerScreenRouter({
                                                         const normalized = (typeof option === "string" ? option : String(option?.label || "")).trim();
                                                         if (!normalized) return null;
                                                         const checked = currentReadWriteDraft === normalized;
+                                                        const optionKey = typeof option === "string" ? `${normalized}-${optionIndex}` : String(option?._key || normalized || optionIndex);
                                                         return (
-                                                            <label
-                                                                key={String(option?._key || normalized || optionIndex)}
-                                                                className="flex items-center gap-2 px-1 py-1 text-sm text-neutral-800 cursor-pointer select-none"
-                                                            >
+                                                            <label key={optionKey} className="flex items-center gap-2 px-1 py-1 text-sm text-neutral-800 cursor-pointer select-none">
                                                                 <input
                                                                     type="checkbox"
                                                                     checked={checked}
@@ -3623,7 +4018,7 @@ export default function RunnerScreenRouter({
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 z-[120] flex items-center justify-center p-3 md:p-6"
+                            className="fixed inset-0 z-[120] flex items-start justify-center overflow-y-auto p-3 md:items-center md:p-6"
                             style={{ backgroundColor: "rgba(23, 23, 23, 0.9)" }}
                             onClick={() => setIsReadWriteImageModalOpen(false)}
                         >
@@ -3668,18 +4063,597 @@ export default function RunnerScreenRouter({
                 <div className="flex flex-col gap-3">
                     <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
                     <h1 className="display-2 font-medium mb-0">Lire/Écrire terminé</h1>
-                    <p className="mb-0 text-neutral-700">Parcours {comboLabel} terminé. Correction IA non lancée pour l’instant.</p>
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <p className="mb-0 text-neutral-700">Parcours {comboLabel}. Vérifie les points détaillés et le feedback IA.</p>
+                        {readWriteModulePdfLinks.length ? (
+                            <div className="relative" ref={readWritePdfMenuRef}>
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center gap-2 px-1 py-0 text-sm font-semibold text-neutral-800 transition hover:text-secondary-2"
+                                    onClick={() => setIsReadWritePdfMenuOpen((previous) => !previous)}
+                                    aria-expanded={isReadWritePdfMenuOpen}
+                                    aria-haspopup="menu"
+                                >
+                                    <FaRegEye className="shrink-0" />
+                                    PDF modules
+                                </button>
+                                <AnimatePresence initial={false}>
+                                    {isReadWritePdfMenuOpen ? (
+                                        <motion.div
+                                            key="read-write-pdf-menu"
+                                            initial={{ opacity: 0, y: -6 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -6 }}
+                                            transition={{ duration: 0.16, ease: "easeOut" }}
+                                            className="absolute right-0 z-20 mt-2 min-w-[280px] rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2 shadow-1"
+                                        >
+                                            <ul className="mb-0 flex list-none flex-col gap-1 p-0">
+                                                {readWriteModulePdfLinks.map((item) => (
+                                                    <li key={`${item.moduleNumber}-${item.url}`}>
+                                                        <a
+                                                            href={item.url}
+                                                            target="_blank"
+                                                            rel="noreferrer noopener"
+                                                            className="block rounded-lg px-3 py-2 text-sm text-neutral-800 transition hover:bg-neutral-200 hover:text-secondary-2 !no-underline"
+                                                            onClick={() => setIsReadWritePdfMenuOpen(false)}
+                                                        >
+                                                            {item.label}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </motion.div>
+                                    ) : null}
+                                </AnimatePresence>
+                            </div>
+                        ) : null}
+                    </div>
                 </div>
-                <div className="rounded-2xl border border-solid border-neutral-600 p-4 md:p-5">
-                    <p className="mb-0 text-sm text-neutral-700">
-                        Questions répondues: <span className="font-semibold text-neutral-900">{readWriteAnsweredCount}</span> / {readWriteTotalQuestions}
-                    </p>
+
+                <AnimatePresence initial={false}>
+                    {isEvaluatingReadWrite ? (
+                        <motion.div
+                            key="evaluating-read-write"
+                            initial={{ maxHeight: 0, opacity: 0 }}
+                            animate={{ maxHeight: 220, opacity: 1 }}
+                            exit={{ maxHeight: 0, opacity: 0 }}
+                            transition={{ duration: 0.24, ease: "easeOut" }}
+                            className="overflow-hidden shrink-0"
+                        >
+                            <div className="min-h-[72px] rounded-2xl border border-solid border-neutral-600 px-4 py-4 text-neutral-700">
+                                <div className="flex items-center gap-3">
+                                    <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-neutral-700 border-t-neutral-300" />
+                                    <div className="flex flex-col">
+                                        <p className="mb-0 text-sm font-semibold text-neutral-800">{readWriteEvaluationWaitLabel}</p>
+                                        <p className="mb-0 text-xs text-neutral-600">Temps d'attente: {readWriteEvaluationWaitSeconds}s</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : null}
+                </AnimatePresence>
+
+                {readWriteEvaluationError ? <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{readWriteEvaluationError}</div> : null}
+
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
+                    <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
+                        <CircularProgressMagic
+                            max={100}
+                            min={0}
+                            value={readWriteGlobalPercentage}
+                            gaugePrimaryColor={readWriteGlobalGaugePrimaryColor}
+                            gaugeSecondaryColor="var(--neutral-300)"
+                            className="h-40 w-40"
+                            withSize={false}
+                            fontHeight="text-4xl"
+                        />
+                        <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
+                        <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{readWriteGlobalLevelLabel}</p>
+                        <p className="mb-0 text-sm text-neutral-700 text-center">{readWriteGlobalFeedback}</p>
+                        <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
+                            <div className="grid grid-cols-2 items-end gap-3">
+                                <div>
+                                    <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
+                                    <p className="mb-0 text-2xl font-semibold leading-none text-neutral-900">
+                                        {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
+                                    </p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Niveau atteint</p>
+                                    <p className={clsx("mb-0 text-2xl font-semibold leading-none text-neutral-900", readWriteValidatedLevel === "Aucun" && "text-neutral-400")}>
+                                        {readWriteValidatedLevel}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div className="flex flex-col gap-3">
+                        {readWriteModuleRows.map((moduleRow) => {
+                            const modulePercentage = Math.round((Number(moduleRow.score || 0) / Math.max(1, Number(moduleRow.max || 1))) * 100);
+                            const isOpen = openedReadWriteRowId === moduleRow.moduleKey;
+                            const moduleGaugeColor =
+                                moduleRow.score / Math.max(1, moduleRow.max) < 0.35
+                                    ? "var(--secondary-4)"
+                                    : moduleRow.score / Math.max(1, moduleRow.max) < 0.7
+                                      ? "var(--secondary-1)"
+                                      : "var(--secondary-5)";
+
+                            return (
+                                <article key={moduleRow.moduleKey} className="rounded-2xl border border-solid border-neutral-600 p-4">
+                                    <button
+                                        type="button"
+                                        className="w-full text-left"
+                                        onClick={() => setOpenedReadWriteRowId((previous) => (previous === moduleRow.moduleKey ? null : moduleRow.moduleKey))}
+                                        aria-expanded={isOpen}
+                                    >
+                                        <div className="flex flex-wrap items-center justify-between gap-2">
+                                            <p className="mb-0 font-semibold text-neutral-800">{`Module ${moduleRow.moduleNumber} • ${moduleRow.moduleTitle}`}</p>
+                                            <p className="mb-0 text-sm font-semibold text-neutral-800">{`${moduleRow.score}/${moduleRow.max}`}</p>
+                                        </div>
+                                        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-300">
+                                            <div className="h-full rounded-full transition-all" style={{ width: `${modulePercentage}%`, backgroundColor: moduleGaugeColor }} />
+                                        </div>
+                                        <p className="mt-2 mb-0 text-xs text-neutral-600">{`${modulePercentage}%`}</p>
+                                    </button>
+
+                                    <AnimatePresence initial={false}>
+                                        {isOpen ? (
+                                            <motion.div
+                                                key={`read-write-feedback-${moduleRow.moduleKey}`}
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.22, ease: "easeOut" }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="mt-3 rounded-xl border border-solid border-neutral-300 bg-neutral-200 p-3">
+                                                    <p className="mb-0 text-sm text-neutral-700">{moduleRow.feedback || "Aucun feedback disponible pour l'instant."}</p>
+                                                </div>
+                                            </motion.div>
+                                        ) : null}
+                                    </AnimatePresence>
+                                </article>
+                            );
+                        })}
+                    </div>
                 </div>
+
                 <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
-                    <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: "EXAM_INTRO" })} disabled={isAdvancing}>
+                    <button
+                        type="button"
+                        className="btn btn-secondary small min-w-[220px]"
+                        onClick={() => void runReadWriteEvaluation({ isRetry: true })}
+                        disabled={isEvaluatingReadWrite || !canRetryReadWriteCorrection}
+                    >
+                        {isEvaluatingReadWrite
+                            ? `Correction en cours... ${readWriteRetryButtonSuffix}`
+                            : !canRetryReadWriteCorrection
+                              ? `Relances IA épuisées ${readWriteRetryButtonSuffix}`
+                              : `Relancer la correction IA ${readWriteRetryButtonSuffix}`}
+                    </button>
+                    <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: EXAM_FINAL_SUMMARY })} disabled={isAdvancing || isEvaluatingReadWrite}>
                         {isAdvancing ? "Chargement..." : "Terminer"}
                     </button>
                 </div>
+            </section>
+        );
+    }
+
+    if (resume.state === EXAM_FINAL_SUMMARY) {
+        const oralPathLabel = inferredBranch === "B1" ? "A2/B1" : "A1/A2";
+        const readWritePathLabel = selectedWrittenCombo === "A2_B1" ? "A2-B1" : "A1-A2";
+        const oralGaugeColor = finalOralPercentage < 30 ? "var(--secondary-4)" : finalOralPercentage <= 70 ? "var(--secondary-1)" : "var(--secondary-5)";
+        const readWriteGaugeColor = readWriteGlobalPercentage < 30 ? "var(--secondary-4)" : readWriteGlobalPercentage <= 70 ? "var(--secondary-1)" : "var(--secondary-5)";
+        const levelRank = (level?: string) => {
+            const normalized = String(level || "")
+                .trim()
+                .toUpperCase();
+            if (normalized === "B1") return 3;
+            if (normalized === "A2") return 2;
+            if (normalized === "A1") return 1;
+            return 0;
+        };
+        const oralLevelRank = levelRank(validatedLevelCode);
+        const readWriteLevelRank = levelRank(readWriteValidatedLevel);
+        const weakestDimension = oralLevelRank <= readWriteLevelRank ? "oral" : "lire/écrire";
+        const isFeedbackRecommended = true;
+        const isPackRecommended = false;
+        const isPrivateRecommended = false;
+        const branchPointsMax = inferredBranch === "B1" ? 24 : 8;
+
+        return (
+            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
+                <div className="flex flex-col gap-2">
+                    <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">BILAN FINAL</p>
+                    <h1 className="display-2 font-medium mb-0">Résultats de l'examen blanc</h1>
+                    <p className="mb-0 text-sm text-neutral-600">Tu as maintenant deux niveaux validés: un pour la partie orale et un pour la partie Lire/Écrire.</p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                    <article className="overflow-hidden rounded-2xl border border-solid border-neutral-600 p-4 md:p-5">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-stretch">
+                            <div className="flex flex-col gap-3">
+                                <div>
+                                    <p className="mb-0 text-lg uppercase tracking-wide text-neutral-600">Partie orale</p>
+                                    <p className="mb-0 text-sm text-neutral-700">Parcours {oralPathLabel}</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <CircularProgressMagic
+                                        max={100}
+                                        min={0}
+                                        value={finalOralPercentage}
+                                        gaugePrimaryColor={oralGaugeColor}
+                                        gaugeSecondaryColor="var(--neutral-300)"
+                                        className="h-24 w-24"
+                                        withSize={false}
+                                        fontHeight="text-xl"
+                                    />
+                                    <div className="flex flex-col gap-1 text-sm text-neutral-700">
+                                        <p className="mb-0">
+                                            <span className="font-semibold text-neutral-900">Parler:</span> {speakCompositeRow.score}/{speakCompositeRow.max}
+                                        </p>
+                                        <p className="mb-0">
+                                            <span className="font-semibold text-neutral-900">Comprendre:</span> {listeningTotalRow.score}/{18}
+                                        </p>
+                                        <p className="mb-0">
+                                            <span className="font-semibold text-neutral-900">Pourcentage oral:</span> {finalOralPercentage}%
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex h-full w-full items-center justify-center">
+                                <div className="text-center">
+                                    <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-600">Niveau atteint</p>
+                                    <p
+                                        className={clsx(
+                                            "mb-0 text-[5.1rem] font-semibold leading-none tracking-tight text-neutral-900 md:text-[6.4rem]",
+                                            validatedLevelCode === "Aucun" && "text-neutral-400",
+                                        )}
+                                    >
+                                        {validatedLevelCode}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <p className="mt-3 mb-0 text-sm text-neutral-700">{finalOralFeedback}</p>
+                    </article>
+
+                    <article className="relative overflow-hidden rounded-2xl border border-solid border-neutral-600 p-4 md:p-5">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-stretch">
+                            <div className="flex flex-col gap-3">
+                                <div>
+                                    <p className="mb-0 text-lg uppercase tracking-wide text-neutral-600">Lire/Écrire</p>
+                                    <p className="mb-0 text-sm text-neutral-700">Parcours {readWritePathLabel}</p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <CircularProgressMagic
+                                        max={100}
+                                        min={0}
+                                        value={readWriteGlobalPercentage}
+                                        gaugePrimaryColor={readWriteGaugeColor}
+                                        gaugeSecondaryColor="var(--neutral-300)"
+                                        className="h-24 w-24"
+                                        withSize={false}
+                                        fontHeight="text-xl"
+                                    />
+                                    <div className="flex flex-col gap-1 text-sm text-neutral-700">
+                                        <p className="mb-0">
+                                            <span className="font-semibold text-neutral-900">Points:</span> {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
+                                        </p>
+                                        <p className="mb-0">
+                                            <span className="font-semibold text-neutral-900">Pourcentage:</span> {readWriteGlobalPercentage}%
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex h-full w-full items-center justify-center">
+                                <div className="text-center">
+                                    <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-600">Niveau atteint</p>
+                                    <p
+                                        className={clsx(
+                                            "mb-0 text-[5.1rem] font-semibold leading-none tracking-tight text-neutral-900 md:text-[6.4rem]",
+                                            readWriteValidatedLevel === "Aucun" && "text-neutral-400",
+                                        )}
+                                    >
+                                        {readWriteValidatedLevel}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <p className="mt-3 mb-0 text-sm text-neutral-700">{readWriteGlobalFeedback}</p>
+                    </article>
+                </div>
+
+                <div className="rounded-2xl border border-solid border-neutral-600 p-4 md:p-5">
+                    <p className="mb-3 text-xs uppercase tracking-wide text-neutral-600">Détails consultables</p>
+                    <div className="flex flex-col gap-3">
+                        <article className="rounded-xl border border-solid border-neutral-300 p-3">
+                            <button
+                                type="button"
+                                className="w-full text-left"
+                                onClick={() => setFinalDetailsOpenKey((previous) => (previous === "ORAL" ? null : "ORAL"))}
+                                aria-expanded={finalDetailsOpenKey === "ORAL"}
+                            >
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="mb-0 text-sm font-semibold text-neutral-800">Oral: Parler + branche</p>
+                                    <p className="mb-0 text-sm font-semibold text-neutral-800">
+                                        {Number(totalRow.score || 0) + Number(branchTotalRow.score || 0)}/{18 + branchPointsMax}
+                                    </p>
+                                </div>
+                            </button>
+                            <AnimatePresence initial={false}>
+                                {finalDetailsOpenKey === "ORAL" ? (
+                                    <motion.div
+                                        key="final-details-oral"
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.22, ease: "easeOut" }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="mt-3 grid grid-cols-1 gap-3">
+                                            <div className="rounded-lg border border-solid border-neutral-300 p-3">
+                                                <p className="mb-2 text-xs uppercase tracking-wide text-neutral-600">Parler A2</p>
+                                                <div className="flex flex-col gap-2">
+                                                    {taskRows.map((row) => (
+                                                        <div key={row.taskId} className="flex items-center justify-between gap-2 text-sm text-neutral-700">
+                                                            <span className="truncate">{row.label}</span>
+                                                            <span className="font-semibold text-neutral-900">
+                                                                {row.score ?? 0}/{row.max}
+                                                            </span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className="rounded-lg border border-solid border-neutral-300 p-3">
+                                                <p className="mb-2 text-xs uppercase tracking-wide text-neutral-600">Parler {inferredBranch}</p>
+                                                <div className="flex flex-col gap-2">
+                                                    {branchRows.length ? (
+                                                        branchRows.map((row) => (
+                                                            <div key={row.rowId} className="flex items-center justify-between gap-2 text-sm text-neutral-700">
+                                                                <span className="truncate">{row.label}</span>
+                                                                <span className="font-semibold text-neutral-900">
+                                                                    {row.score ?? 0}/{row.max}
+                                                                </span>
+                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <p className="mb-0 text-sm text-neutral-600">Aucune donnée enregistrée.</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ) : null}
+                            </AnimatePresence>
+                        </article>
+
+                        <article className="rounded-xl border border-solid border-neutral-300 p-3">
+                            <button
+                                type="button"
+                                className="w-full text-left"
+                                onClick={() => setFinalDetailsOpenKey((previous) => (previous === "LISTENING" ? null : "LISTENING"))}
+                                aria-expanded={finalDetailsOpenKey === "LISTENING"}
+                            >
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="mb-0 text-sm font-semibold text-neutral-800">Comprendre</p>
+                                    <p className="mb-0 text-sm font-semibold text-neutral-800">
+                                        {listeningTotalRow.score}/{18}
+                                    </p>
+                                </div>
+                            </button>
+                            <AnimatePresence initial={false}>
+                                {finalDetailsOpenKey === "LISTENING" ? (
+                                    <motion.div
+                                        key="final-details-listening"
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.22, ease: "easeOut" }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="mt-3 flex flex-col gap-2">
+                                            {listeningRowsDetailed.map((row) => (
+                                                <div key={row.scenario._id} className="flex items-center justify-between gap-2 text-sm text-neutral-700">
+                                                    <span className="truncate">
+                                                        Scénario {row.index + 1} {row.level ? `- ${row.level}` : ""}
+                                                    </span>
+                                                    <span className="font-semibold text-neutral-900">
+                                                        {row.weightedScore}/{row.weightedMax}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                ) : null}
+                            </AnimatePresence>
+                        </article>
+
+                        <article className="rounded-xl border border-solid border-neutral-300 p-3">
+                            <button
+                                type="button"
+                                className="w-full text-left"
+                                onClick={() => setFinalDetailsOpenKey((previous) => (previous === "READ_WRITE" ? null : "READ_WRITE"))}
+                                aria-expanded={finalDetailsOpenKey === "READ_WRITE"}
+                            >
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="mb-0 text-sm font-semibold text-neutral-800">Lire/Écrire</p>
+                                    <p className="mb-0 text-sm font-semibold text-neutral-800">
+                                        {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
+                                    </p>
+                                </div>
+                            </button>
+                            <AnimatePresence initial={false}>
+                                {finalDetailsOpenKey === "READ_WRITE" ? (
+                                    <motion.div
+                                        key="final-details-read-write"
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.22, ease: "easeOut" }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="mt-3 flex flex-col gap-2">
+                                            {readWriteModuleRows.map((module) => (
+                                                <div key={module.moduleKey} className="flex items-center justify-between gap-2 text-sm text-neutral-700">
+                                                    <p className="mb-0">{`Module ${module.moduleNumber} • ${module.moduleTitle}`}</p>
+                                                    <p className="mb-0 font-semibold text-neutral-900">
+                                                        {module.score}/{module.max}
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                ) : null}
+                            </AnimatePresence>
+                        </article>
+                    </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-2xl p-4 md:p-6" style={{ background: "linear-gradient(130deg, var(--neutral-200) 0%, var(--neutral-100) 56%, #dceedd 100%)" }}>
+                    <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-6">
+                        <div className="min-w-0">
+                            <div className="mb-2 inline-flex items-center rounded-full bg-secondary-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">
+                                Feedback professeur gratuit
+                            </div>
+                            <h2 className="mb-2 text-2xl font-semibold text-neutral-900">Pour aller plus loin</h2>
+                            <p className="mb-0 text-sm text-neutral-700">
+                                Le feedback d'un professeur FIDE expérimenté vous apportera un regard plus fin, contextualisé et actionnable, adapté à votre profil.
+                            </p>
+                            <p className="mt-2 mb-0 text-sm text-neutral-700">
+                                Axe prioritaire actuel: <span className="font-semibold text-neutral-900">{weakestDimension}</span>.
+                            </p>
+                            <div className="mt-4 flex flex-wrap items-center gap-3">
+                                <ShimmerButton type="button" className="min-w-[260px] small" onClick={() => setIsHumanFeedbackModalOpen(true)}>
+                                    Obtenir mon feedback gratuit
+                                </ShimmerButton>
+                                <Link href="/fide/dashboard" className="btn btn-secondary small min-w-[220px]">
+                                    Retour au dashboard
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className="mx-auto w-full max-w-[170px] md:mx-0 md:max-w-[220px]">
+                            <Image
+                                src="/images/yoh-coussot.png"
+                                alt="Professeur Start French Now"
+                                width={220}
+                                height={220}
+                                className="h-auto w-full object-contain rounded-full border border-solid border-neutral-700"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <AnimatePresence>
+                    {isHumanFeedbackModalOpen ? (
+                        <motion.div
+                            key="human-feedback-modal"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-[120] flex items-center justify-center p-3 md:p-6"
+                            style={{ backgroundColor: "rgba(23, 23, 23, 0.82)" }}
+                            onClick={() => setIsHumanFeedbackModalOpen(false)}
+                        >
+                            <motion.div
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 8, opacity: 0 }}
+                                transition={{ duration: 0.22, ease: "easeOut" }}
+                                className="my-3 h-max max-h-[92vh] w-full max-w-[920px] overflow-y-auto rounded-2xl border border-solid border-neutral-600 bg-neutral-100 p-4 md:my-0 md:max-h-[88vh] md:p-6"
+                                onClick={(event) => event.stopPropagation()}
+                            >
+                                <div className="mb-4 flex items-start justify-between gap-3">
+                                    <div>
+                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Accompagnement recommandé</p>
+                                        <h3 className="mb-0 text-xl font-semibold text-neutral-900">Transforme tes résultats en plan de progression</h3>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center rounded-lg border border-solid border-neutral-400 bg-neutral-100 px-3 py-1.5 text-sm font-semibold text-neutral-800 transition hover:border-neutral-600"
+                                        onClick={() => setIsHumanFeedbackModalOpen(false)}
+                                    >
+                                        Fermer
+                                    </button>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                                    <article
+                                        className={clsx("flex h-full flex-col rounded-xl border border-solid p-3", isFeedbackRecommended ? "border-secondary-2 bg-neutral-200" : "border-neutral-300")}
+                                    >
+                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Feedback Professionnel</p>
+                                        <p className="mb-0 text-sm font-semibold text-neutral-900">Entretien professeur + plan d'évolution</p>
+                                        <p className="mt-2 mb-0 text-sm text-neutral-700">Analyse les audios et écrits de l'examen pour identifier tes points forts et axes d'amélioration.</p>
+                                        {isFeedbackRecommended ? <p className="mt-2 mb-0 text-xs font-semibold uppercase tracking-wide text-secondary-2">Recommandé</p> : null}
+                                        <div className="mt-auto pt-3">
+                                            <button
+                                                type="button"
+                                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-5 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95 no-underline"
+                                                onClick={() => {
+                                                    setIsFeedbackCalendlyOpen(true);
+                                                    setIsHumanFeedbackModalOpen(false);
+                                                }}
+                                            >
+                                                FEEDBACK GRATUIT
+                                            </button>
+                                        </div>
+                                    </article>
+
+                                    <article
+                                        className={clsx("flex h-full flex-col rounded-xl border border-solid p-3", isPackRecommended ? "border-secondary-2 bg-neutral-200" : "border-neutral-300")}
+                                    >
+                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack FIDE</p>
+                                        <p className="mb-0 text-sm font-semibold text-neutral-900">Programme complet d'entraînement</p>
+                                        <p className="mt-2 mb-0 text-sm text-neutral-700">Scénarios, examens blancs et contenus structurés pour un entraînement régulier.</p>
+                                        {isPackRecommended ? <p className="mt-2 mb-0 text-xs font-semibold uppercase tracking-wide text-secondary-2">Recommandé</p> : null}
+                                        <div className="mt-auto pt-3">
+                                            <Link
+                                                href="/fide"
+                                                className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
+                                                onClick={() => setIsHumanFeedbackModalOpen(false)}
+                                            >
+                                                Voir le Pack FIDE
+                                            </Link>
+                                        </div>
+                                    </article>
+
+                                    <article
+                                        className={clsx("flex h-full flex-col rounded-xl border border-solid p-3", isPrivateRecommended ? "border-secondary-2 bg-neutral-200" : "border-neutral-300")}
+                                    >
+                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Cours privés</p>
+                                        <p className="mb-0 text-sm font-semibold text-neutral-900">Coaching 1:1 intensif</p>
+                                        <p className="mt-2 mb-0 text-sm text-neutral-700">Accompagnement premium ciblé pour accélérer la montée en niveau.</p>
+                                        {isPrivateRecommended ? <p className="mt-2 mb-0 text-xs font-semibold uppercase tracking-wide text-secondary-2">Recommandé</p> : null}
+                                        <div className="mt-auto pt-3">
+                                            <Link
+                                                href="/fide/dashboard"
+                                                className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
+                                                onClick={() => setIsHumanFeedbackModalOpen(false)}
+                                            >
+                                                Découvrir le coaching
+                                            </Link>
+                                        </div>
+                                    </article>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    ) : null}
+                </AnimatePresence>
+                {rootElement ? (
+                    <PopupModal
+                        url="https://calendly.com/yohann-startfrenchnow/your-exam-feedback"
+                        onModalClose={() => {
+                            setIsFeedbackCalendlyOpen(false);
+                            router.push("/fide/dashboard");
+                        }}
+                        open={isFeedbackCalendlyOpen}
+                        rootElement={rootElement}
+                    />
+                ) : null}
             </section>
         );
     }

@@ -522,17 +522,449 @@ export const buildDiscussionB1PerQuestionPrompt = ({ question, transcription }: 
         aiCorrectionContext: [],
         transcriptions: [transcription],
     });
-/* 
-A) Maîtrise de la tâche (0 à 3)
-- 0 : hors sujet / ne décrit pas l’image / manque l’essentiel
-- 1 : description très partielle, contexte flou
-- 2 : Peu de détails, parfois flous, mais message global compréhensible
-- 3 : description assez complète et claire + quelques détails + éventuellement liens simples (d’abord/ensuite/parce que…)
 
-B) Qualité de la langue (0 à 3) – via le texte
-Évaluer globalement : vocabulaire de base pertinent, structures simples, erreurs (bloquantes ou non), cohésion minimale.
-- 0 : compréhension difficile / erreurs bloquantes fréquentes / lexique inadéquat
-- 1 : compréhensible mais erreurs très fréquentes + phrases limitées
-- 2 : globalement correct avec erreurs non bloquantes ; lexique A1+ suffisant
-- 3 : assez précis, connecteurs simples, accord/temps majoritairement maîtrisés, vocabulaires de base bien utilisés
-*/
+export type ReadWriteCorrectionQuestionType = "single_choice" | "numbered_fill" | "text_extract" | "long_text";
+
+/**
+ * Tokens attendus (communs) pour Lire/Ecrire:
+ * {examLabel}
+ * {moduleNumber}
+ * {moduleTitle}
+ * {activityNumber}
+ * {activityTitle}
+ * {questionNumber}
+ * {questionType}
+ * {activityPromptText}
+ * {instructionText}
+ * {instructionImageAlternativeText}
+ * {questionText}
+ * {questionContentText}
+ * {imageAlternativeText}
+ * {aiCorrectionContextActivity}
+ * {aiCorrectionContextQuestion}
+ * {studentAnswer}
+ * {maxPoints}
+ */
+export const READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE = `
+Tu es évaluateur/trice d'un examen blanc FIDE - partie "Lire/Ecrire".
+Tu corriges UNIQUEMENT à partir des informations fournies dans les tokens.
+Tu dois rester strictement dans le contexte du module/question et ne rien inventer.
+
+# Contexte examen
+- Epreuve: {examLabel}
+- Module: {moduleNumber} - {moduleTitle}
+- Tâche: {activityNumber} - {activityTitle}
+- Question: {questionNumber}
+- Type: {questionType}
+- Points max pour cette question: {maxPoints}
+
+# Données pédagogiques
+- Situation générale (activité): {activityPromptText}
+- Consigne générale (question): {instructionText}
+- Texte alternatif de la consigne: {instructionImageAlternativeText}
+- Énoncé de la question: {questionText}
+- Contenu additionnel (portable text): {questionContentText}
+- Texte alternatif support: {imageAlternativeText}
+- Contexte IA activité: {aiCorrectionContextActivity}
+- Contexte IA question (peut contenir 1-2 exemples de réponse attendue méritant la note max): {aiCorrectionContextQuestion}
+
+# Réponse candidat
+{studentAnswer}
+
+# Règles de correction
+- Évalue uniquement la pertinence par rapport à la consigne et au type de question.
+- N'invente pas d'informations absentes.
+- Si la donnée est insuffisante pour conclure, indique-le dans le feedback.
+- Le score doit être un entier entre 0 et {maxPoints}.
+- Le feedback doit rester très court (max 35 mots), concret et actionnable.
+- Sois juste et non sévère: si la réponse correspond globalement au niveau attendu, n'hésite pas à attribuer la meilleure note.
+- N'enlève pas de points pour de petites erreurs isolées.
+- L'orthographe compte peu: elle retire des points seulement si les erreurs gênent réellement la compréhension.
+- Ne cherche pas la "petite faute" quand le fond est correct et pertinent.
+- Si la réponse est très bonne, un feedback très bref est suffisant (ex: "Bravo, c'est très bien.").
+
+# Sortie JSON stricte, sans texte additionnel:
+{
+  "score": number,
+  "feedback": string
+}
+`;
+
+/**
+ * Tokens additionnels:
+ * {answerOptionsWithCorrectness} // ex: "- Option A (isCorrect: false) ..."
+ * {studentSelectedOption}
+ * {expectedCorrectOption}
+ */
+export const READ_WRITE_SINGLE_CHOICE_CORRECTION_PROMPT_TEMPLATE = `
+{READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE}
+
+# Spécifique type single_choice
+- Réponse sélectionnée par le candidat:
+{studentSelectedOption}
+- Réponse correcte attendue:
+{expectedCorrectOption}
+- Options proposées (avec indicateur de validité):
+{answerOptionsWithCorrectness}
+
+Règles:
+- Vérifie d'abord la correspondance entre la réponse sélectionnée et la réponse correcte attendue.
+- Score attendu:
+  - réponse correcte: {maxPoints}
+  - réponse incorrecte ou vide: 0
+- Feedback court et précis, sans ambiguïté.
+`;
+
+/**
+ * Tokens additionnels:
+ * {numberingExpected} // ex: "1,2,3,4"
+ * {studentAnswerByNumber} // ex: "1: ...\n2: ..."
+ */
+export const READ_WRITE_NUMBERED_FILL_CORRECTION_PROMPT_TEMPLATE = `
+{READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE}
+
+# Spécifique type numbered_fill
+- Numéros attendus: {numberingExpected}
+- Réponse candidat structurée par numéro:
+{studentAnswerByNumber}
+
+Règles:
+- Corrige numéro par numéro (pertinence + exactitude de l'information attendue).
+- Pondère équitablement chaque numéro.
+- Le score final est la somme, bornée entre 0 et {maxPoints}.
+- Feedback: mentionne clairement les numéros réussis et ceux à retravailler.
+`;
+
+/**
+ * Tokens additionnels:
+ * {sourceTextReference} // passage texte de référence, si disponible
+ */
+export const READ_WRITE_TEXT_EXTRACT_CORRECTION_PROMPT_TEMPLATE = `
+{READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE}
+
+# Spécifique type text_extract
+- Texte source de référence (si fourni):
+{sourceTextReference}
+
+Règles:
+- Évalue si l'extrait copié/collé répond bien à la demande.
+- Accepte de légères variations de ponctuation/casse.
+- Si la réponse est partielle mais pertinente, attribue un score partiel.
+- Si hors sujet: score très faible ou nul.
+`;
+
+/**
+ * Tokens additionnels:
+ * {evaluationAxes} // ex: "respect de la consigne; cohérence; clarté; correction grammaticale"
+ */
+export const READ_WRITE_LONG_TEXT_CORRECTION_PROMPT_TEMPLATE = `
+{READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE}
+
+# Spécifique type long_text
+- Axes d'évaluation:
+{evaluationAxes}
+
+Règles:
+- Évalue le fond (respect de consigne + pertinence) et la forme (cohérence + langue).
+- Favorise une correction utile: points forts + priorités d'amélioration.
+- Évite les critiques superficielles.
+- Score entier entre 0 et {maxPoints}, proportionné à la qualité globale.
+`;
+
+export const READ_WRITE_CORRECTION_PROMPT_TEMPLATES: Record<ReadWriteCorrectionQuestionType, string> = {
+    single_choice: READ_WRITE_SINGLE_CHOICE_CORRECTION_PROMPT_TEMPLATE,
+    numbered_fill: READ_WRITE_NUMBERED_FILL_CORRECTION_PROMPT_TEMPLATE,
+    text_extract: READ_WRITE_TEXT_EXTRACT_CORRECTION_PROMPT_TEMPLATE,
+    long_text: READ_WRITE_LONG_TEXT_CORRECTION_PROMPT_TEMPLATE,
+};
+
+type BuildReadWriteCorrectionPromptParams = {
+    questionType: ReadWriteCorrectionQuestionType;
+    examLabel: string;
+    moduleNumber: string;
+    moduleTitle: string;
+    activityNumber: string;
+    activityTitle: string;
+    questionNumber: string;
+    activityPromptText: string;
+    instructionText: string;
+    instructionImageAlternativeText: string;
+    questionText: string;
+    questionContentText: string;
+    imageAlternativeText: string;
+    aiCorrectionContextActivity: string;
+    aiCorrectionContextQuestion: string;
+    studentAnswer: string;
+    maxPoints: string;
+    answerOptionsWithCorrectness?: string;
+    studentSelectedOption?: string;
+    expectedCorrectOption?: string;
+    numberingExpected?: string;
+    studentAnswerByNumber?: string;
+    sourceTextReference?: string;
+    evaluationAxes?: string;
+};
+
+const sanitizePromptToken = (value: unknown) => {
+    const text = cleanText(String(value ?? ""));
+    return text || "Aucune donnée.";
+};
+
+const applyPromptTokens = (template: string, tokens: Record<string, string>) => {
+    return Object.entries(tokens).reduce((acc, [token, value]) => replacePromptToken(acc, token, sanitizePromptToken(value)), template);
+};
+
+export const buildReadWriteCorrectionPrompt = ({
+    questionType,
+    examLabel,
+    moduleNumber,
+    moduleTitle,
+    activityNumber,
+    activityTitle,
+    questionNumber,
+    activityPromptText,
+    instructionText,
+    instructionImageAlternativeText,
+    questionText,
+    questionContentText,
+    imageAlternativeText,
+    aiCorrectionContextActivity,
+    aiCorrectionContextQuestion,
+    studentAnswer,
+    maxPoints,
+    answerOptionsWithCorrectness,
+    studentSelectedOption,
+    expectedCorrectOption,
+    numberingExpected,
+    studentAnswerByNumber,
+    sourceTextReference,
+    evaluationAxes,
+}: BuildReadWriteCorrectionPromptParams) => {
+    const specificTemplate = READ_WRITE_CORRECTION_PROMPT_TEMPLATES[questionType] || READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE;
+    const templateWithGeneral = replacePromptToken(specificTemplate, "READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE", READ_WRITE_CORRECTION_GENERAL_PROMPT_TEMPLATE.trim());
+
+    const tokens: Record<string, string> = {
+        examLabel,
+        moduleNumber,
+        moduleTitle,
+        activityNumber,
+        activityTitle,
+        questionNumber,
+        questionType,
+        activityPromptText,
+        instructionText,
+        instructionImageAlternativeText,
+        questionText,
+        questionContentText,
+        imageAlternativeText,
+        aiCorrectionContextActivity,
+        aiCorrectionContextQuestion,
+        studentAnswer,
+        maxPoints,
+        answerOptionsWithCorrectness: answerOptionsWithCorrectness || "Aucune donnée.",
+        studentSelectedOption: studentSelectedOption || studentAnswer || "Aucune donnée.",
+        expectedCorrectOption: expectedCorrectOption || "Aucune donnée.",
+        numberingExpected: numberingExpected || "Aucune donnée.",
+        studentAnswerByNumber: studentAnswerByNumber || studentAnswer || "Aucune donnée.",
+        sourceTextReference: sourceTextReference || "Aucune donnée.",
+        evaluationAxes:
+            evaluationAxes ||
+            "respect de la consigne; pertinence du contenu; cohérence et structure; clarté des formulations; correction grammaticale et lexicale.",
+    };
+
+    return applyPromptTokens(templateWithGeneral, tokens).trim();
+};
+
+export type ReadWriteSingleChoiceActivityQuestionPromptInput = {
+    questionKey: string;
+    questionNumber: string;
+    questionText: string;
+    studentSelectedOption: string;
+    expectedCorrectOption: string;
+    answerOptionsWithCorrectness: string;
+    aiCorrectionContextQuestion?: string;
+    maxPoints: string;
+};
+
+type BuildReadWriteSingleChoiceActivityPromptParams = {
+    examLabel: string;
+    moduleNumber: string;
+    moduleTitle: string;
+    activityNumber: string;
+    activityTitle: string;
+    activityPromptText: string;
+    instructionText: string;
+    instructionImageAlternativeText: string;
+    aiCorrectionContextActivity: string;
+    questions: ReadWriteSingleChoiceActivityQuestionPromptInput[];
+};
+
+export const buildReadWriteSingleChoiceActivityPrompt = ({
+    examLabel,
+    moduleNumber,
+    moduleTitle,
+    activityNumber,
+    activityTitle,
+    activityPromptText,
+    instructionText,
+    instructionImageAlternativeText,
+    aiCorrectionContextActivity,
+    questions,
+}: BuildReadWriteSingleChoiceActivityPromptParams) => {
+    const safeQuestions = Array.isArray(questions) ? questions : [];
+    const questionsBlock = safeQuestions.length
+        ? safeQuestions
+              .map((question, index) => {
+                  const rank = index + 1;
+                  const questionLabel = sanitizePromptToken(question.questionText);
+                  const selected = sanitizePromptToken(question.studentSelectedOption);
+                  const expected = sanitizePromptToken(question.expectedCorrectOption);
+                  const options = sanitizePromptToken(question.answerOptionsWithCorrectness);
+                  const context = sanitizePromptToken(question.aiCorrectionContextQuestion || "");
+                  const maxPoints = sanitizePromptToken(question.maxPoints);
+                  return [
+                      `Question ${rank}:`,
+                      `- questionKey: ${sanitizePromptToken(question.questionKey)}`,
+                      `- questionNumber: ${sanitizePromptToken(question.questionNumber)}`,
+                      `- questionText: ${questionLabel}`,
+                      `- maxPoints: ${maxPoints}`,
+                      `- réponse candidat: ${selected}`,
+                      `- réponse correcte attendue: ${expected}`,
+                      `- options (avec isCorrect):`,
+                      options,
+                      `- contexte correction IA question: ${context}`,
+                  ].join("\n");
+              })
+              .join("\n\n")
+        : "Aucune question exploitable.";
+
+    return `
+Tu es évaluateur/trice d'un examen blanc FIDE - partie "Lire/Ecrire".
+Tu corriges UNE ACTIVITÉ complète contenant uniquement des questions de type "single_choice".
+
+# Contexte activité
+- Epreuve: ${sanitizePromptToken(examLabel)}
+- Module: ${sanitizePromptToken(moduleNumber)} - ${sanitizePromptToken(moduleTitle)}
+- Tâche: ${sanitizePromptToken(activityNumber)} - ${sanitizePromptToken(activityTitle)}
+- Situation activité: ${sanitizePromptToken(activityPromptText)}
+- Consigne générale: ${sanitizePromptToken(instructionText)}
+- Texte alternatif consigne: ${sanitizePromptToken(instructionImageAlternativeText)}
+- Contexte correction IA activité: ${sanitizePromptToken(aiCorrectionContextActivity)}
+
+# Questions à corriger
+${questionsBlock}
+
+# Règles de correction
+- Corrige chaque question indépendamment.
+- Pour chaque question:
+  - si la réponse candidat correspond à la réponse correcte attendue: score = maxPoints;
+  - sinon score = 0.
+- Le feedback par question doit être très court (max 20 mots), concret, et sans blabla.
+- Sois bienveillant et clair.
+
+# Sortie JSON stricte, sans texte additionnel:
+{
+  "results": [
+    {
+      "questionKey": string,
+      "questionNumber": string,
+      "score": number,
+      "feedback": string
+    }
+  ]
+}
+`.trim();
+};
+
+export type ReadWriteTextExtractActivityQuestionPromptInput = {
+    questionKey: string;
+    questionNumber: string;
+    questionText: string;
+    studentAnswer: string;
+    sourceTextReference: string;
+    aiCorrectionContextQuestion?: string;
+    maxPoints: string;
+};
+
+type BuildReadWriteTextExtractActivityPromptParams = {
+    examLabel: string;
+    moduleNumber: string;
+    moduleTitle: string;
+    activityNumber: string;
+    activityTitle: string;
+    activityPromptText: string;
+    instructionText: string;
+    instructionImageAlternativeText: string;
+    aiCorrectionContextActivity: string;
+    questions: ReadWriteTextExtractActivityQuestionPromptInput[];
+};
+
+export const buildReadWriteTextExtractActivityPrompt = ({
+    examLabel,
+    moduleNumber,
+    moduleTitle,
+    activityNumber,
+    activityTitle,
+    activityPromptText,
+    instructionText,
+    instructionImageAlternativeText,
+    aiCorrectionContextActivity,
+    questions,
+}: BuildReadWriteTextExtractActivityPromptParams) => {
+    const safeQuestions = Array.isArray(questions) ? questions : [];
+    const questionsBlock = safeQuestions.length
+        ? safeQuestions
+              .map((question, index) => {
+                  const rank = index + 1;
+                  return [
+                      `Question ${rank}:`,
+                      `- questionKey: ${sanitizePromptToken(question.questionKey)}`,
+                      `- questionNumber: ${sanitizePromptToken(question.questionNumber)}`,
+                      `- questionText: ${sanitizePromptToken(question.questionText)}`,
+                      `- maxPoints: ${sanitizePromptToken(question.maxPoints)}`,
+                      `- réponse candidat: ${sanitizePromptToken(question.studentAnswer)}`,
+                      `- texte source de référence: ${sanitizePromptToken(question.sourceTextReference)}`,
+                      `- contexte correction IA question: ${sanitizePromptToken(question.aiCorrectionContextQuestion || "")}`,
+                  ].join("\n");
+              })
+              .join("\n\n")
+        : "Aucune question exploitable.";
+
+    return `
+Tu es évaluateur/trice d'un examen blanc FIDE - partie "Lire/Ecrire".
+Tu corriges UNE ACTIVITÉ complète contenant uniquement des questions de type "text_extract".
+
+# Contexte activité
+- Epreuve: ${sanitizePromptToken(examLabel)}
+- Module: ${sanitizePromptToken(moduleNumber)} - ${sanitizePromptToken(moduleTitle)}
+- Tâche: ${sanitizePromptToken(activityNumber)} - ${sanitizePromptToken(activityTitle)}
+- Situation activité: ${sanitizePromptToken(activityPromptText)}
+- Consigne générale: ${sanitizePromptToken(instructionText)}
+- Texte alternatif consigne: ${sanitizePromptToken(instructionImageAlternativeText)}
+- Contexte correction IA activité: ${sanitizePromptToken(aiCorrectionContextActivity)}
+
+# Questions à corriger
+${questionsBlock}
+
+# Règles de correction
+- Corrige chaque question indépendamment.
+- Évalue la pertinence de l'extrait fourni par rapport à la demande.
+- Accepte de légères variations de ponctuation/casse.
+- Si la réponse est partielle mais pertinente: score partiel possible.
+- Si hors sujet: score faible ou nul.
+- Le score doit être un entier entre 0 et maxPoints de la question.
+- Le feedback par question doit être court (max 20 mots), concret et utile.
+
+# Sortie JSON stricte, sans texte additionnel:
+{
+  "results": [
+    {
+      "questionKey": string,
+      "questionNumber": string,
+      "score": number,
+      "feedback": string
+    }
+  ]
+}
+`.trim();
+};
