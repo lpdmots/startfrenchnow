@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 //import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
-import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
+import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
 import fetch from "node-fetch";
 import { v4 as uuidv4 } from "uuid";

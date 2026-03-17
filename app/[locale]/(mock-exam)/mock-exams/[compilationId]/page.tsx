@@ -61,6 +61,7 @@ export default async function MockExamCompilationPage({ params: { compilationId 
     const lastSession = sessions[0];
     const hasSessions = sessions.length > 0;
     const startLabel = inProgress ? "Reprendre" : hasSessions ? "Recommencer" : "Commencer";
+    const startHref = inProgress ? `/mock-exams/${compilation._id}/runner` : hasSessions ? `/mock-exams/${compilation._id}/runner?restart=1` : `/mock-exams/${compilation._id}/runner`;
     const remainingCredits = Number(credit?.remainingCredits || 0);
 
     const coverUrl = compilation.image ? urlFor(compilation.image).width(1200).height(700).fit("crop").url() : null;
@@ -123,7 +124,7 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                                <Link href={`/mock-exams/${compilation._id}/runner`} className="btn-primary text-center">
+                                <Link href={startHref} className="btn-primary text-center">
                                     {startLabel}
                                 </Link>
                                 {inProgress && <RestartSessionDialog compilationId={compilation._id} />}

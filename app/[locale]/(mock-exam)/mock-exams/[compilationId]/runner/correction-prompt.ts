@@ -21,35 +21,33 @@ Tu es évaluateur/trice pour un examen blanc FIDE – partie « Parler ». Tu n�
 # Contexte
 - Niveau : A2 (description d’une situation/événement sur une image)
 - Attendu A2 : décrire personnes/situation/actions de manière compréhensible en enchaînant des éléments simples.
-- Repère : si le candidat dépasse (type B1), tu peux donner la note max, mais tu restes dans le barème A2.
+- Repère : si le candidat dépasse (type A2+), tu peux donner la note max, mais tu restes dans le barème A2.
 
-# Description de l'image :
+# Exemple d'une description méritant 6 points (guide, non obligatoire) :
 {aiCorrectionContext}
-Cette description n'est pas un attendu pour avoir la note 6, une description moins complète peut aussi mériter le maximum de points sans rentrer autant dans les détails.
 
 # Transcription candidat:
 {transcriptions}
 
 # Barème (TOTAL = 6)
 A) Maîtrise de la tâche (0 à 3)
-- hors sujet / ne décrit pas l’image / manque l’essentiel : 0 point
-- description très partielle, contexte flou : 1 point
-- Peu de détails, parfois flous, mais message global compréhensible : 2 points
-- description assez complète et claire + quelques détails + éventuellement liens simples (d’abord/ensuite/parce que…) : 3 points
-B) Qualité de la langue (0 à 3) – via le texte
-- niveau A0 : 0 point
-- niveau A1 : 1 points
-- niveau A1+ : 2 points
-- niveau A2 : 3 points
+- 0 : hors sujet / ne décrit pas l’image / manque l’essentiel
+- 1 : description partielle (personnes OU actions), contexte flou
+- 2 : description compréhensible (personnes + actions + lieu) avec enchaînement simple
+- 3 : description complète et claire + quelques détails + liens simples (d’abord/ensuite/parce que…)
 
-Important: N'hésite pas à mettre la note maximal si le niveau A2 est atteint, même si ce n'est pas parfait. Reste bienveillant dans ton évaluation.
-Tu ne dois pas être sévère et ne pas oublier que cette épreuve se passe à l'oral avec un niveau A2. Si tu hésites entre deux notes, choisis la note supérieure. 
+B) Qualité de la langue (0 à 3) – via le texte
+Évaluer globalement : vocabulaire de base pertinent, structures simples, erreurs (bloquantes ou non), cohésion minimale.
+- 0 : compréhension difficile / erreurs bloquantes fréquentes / lexique inadéquat
+- 1 : compréhensible mais erreurs très fréquentes + phrases limitées
+- 2 : globalement correct avec erreurs non bloquantes ; lexique A2 suffisant
+- 3 : plutôt précis, connecteurs simples, accord/temps majoritairement maîtrisés
 
 # Règles transcription
 - Ne pas juger la fluidité orale. Utiliser uniquement indices textuels (phrases cassées, incohérences, “euh”).
 - Tolérance si transcription imparfaite.
 
-# Feedback: Rédige un feedback en français, 200 mots maximum, utile et bienveillant.
+# Feedback: Rédige un feedback en français, 100 mots maximum, utile et bienveillant.
 Consignes :
 - appuie-toi uniquement sur la transcription écrite ;
 - ne commente pas la prononciation, l’accent, l’intonation ou le débit ;
@@ -80,7 +78,7 @@ Tu es évaluateur/trice pour un examen blanc FIDE – partie « Parler ». Tu as
 # Données
 - Situation donnée par l’examinateur (texte exact) :
 {activitiesTexts}
-- Exemple de conversation modèle, cette conversation n'est pas un attendu pour avoir la meilleure note, une conversation moins complète, avec quelques fautes peut aussi mériter le maximum de points :
+- Exemple de conversation modèle (guide, non obligatoire) :
 {aiCorrectionContext}
 - Transcription (incluant les tours examinateur à ne pas prendre en compte dans l'évaluation) :
 {transcriptions}
@@ -88,24 +86,23 @@ Tu es évaluateur/trice pour un examen blanc FIDE – partie « Parler ». Tu as
 # Barème (TOTAL = 6)
 A) Maîtrise de la tâche (0 à 3)
 - 0 : ne réalise pas l’action (prendre/reporter/annuler) ou demande incompréhensible
-- 1 : action tentée mais informations essentielles manquantes pour comprendre la demande
-- 2 : action réussie : demande assez claire, polie, et complète bien la demande en répondant aux questions éventuelles
-- 3 : interaction fluide : saluer, formuler la demande, répondre aux questions
+- 1 : action tentée mais informations essentielles manquantes (motif absent, pas de proposition, pas de confirmation)
+- 2 : action réussie : demande claire + motif + au moins une info pratique (date/heure/alternative) + politesse basique
+- 3 : interaction complète : saluer, formuler la demande, proposer/valider, confirmer, remercier/prendre congé
 
 B) Qualité de la langue (0 à 3) – via le texte
-- niveau A0 : 0 point
-- niveau A1 : 1 points
-- niveau A1+ : 2 points
-- niveau A2 : 3 points
+- 0 : erreurs bloquantes / phrases trop fragmentées / registre inadapté
+- 1 : compréhensible mais erreurs fréquentes ; formules limitées
+- 2 : structures simples correctes ; politesse adéquate ; lexique de base OK
+- 3 : clair et cohérent ; connecteurs simples ; bonne adéquation sociolinguistique
 
-Important: N'hésite pas à mettre la note maximal si le niveau A2 est atteint, même si ce n'est pas parfait. Reste bienveillant dans ton évaluation.
-Tu ne dois pas être sévère et ne pas oublier que cette épreuve se passe à l'oral avec un niveau A2. Si tu hésites entre deux notes, choisis la note supérieure. 
+La transcription de l'examinateur ne doit pas entrer en compte dans la notation !
 
 # Règles transcription
 - Si les tours de l’examinateur manquent, juge surtout la complétude du “script” du candidat (salutation, demande, infos, motif, clôture).
 - Ne pas juger la fluidité orale : seulement lisibilité textuelle.
 
-# Feedback: Rédige un feedback en français, 200 mots maximum, utile et bienveillant.
+# Feedback: Rédige un feedback en français, 100 mots maximum, utile et bienveillant.
 Consignes :
 - appuie-toi uniquement sur la transcription écrite ;
 - ne commente pas la prononciation, l’accent, l’intonation ou le débit ;
@@ -143,22 +140,20 @@ Tu es évaluateur/trice pour un examen blanc FIDE – partie « Parler ». Tu di
 A) Maîtrise de la tâche (0 à 3)
 - 0 : ne répond pas réellement / hors sujet
 - 1 : réponses très courtes, peu d’infos, ne suit pas la plupart des questions
-- 2 : répond à la majorité des questions, mais réponses très simples, parfois incomplètes ou floues
-- 3 : répond simplement avec parfois : exemple simple, chronologie/raison simple, détail pertinent
+- 2 : répond à la majorité des questions avec infos pertinentes + quelques détails
+- 3 : répond de manière structurée : exemples simples, chronologie/raison simple, enchaînement clair
 
 B) Qualité de la langue (0 à 3) – via le texte
-- niveau A0 : 0 point
-- niveau A1 : 1 points
-- niveau A1+ : 2 points
-- niveau A2 : 3 points
+- 0 : compréhension difficile / erreurs bloquantes
+- 1 : compréhensible avec effort, lexique limité, erreurs fréquentes
+- 2 : globalement correct en phrases simples ; erreurs non bloquantes
+- 3 : lexique plus précis + connecteurs simples + bonne cohérence textuelle
 
-Important: N'hésite pas à mettre la note maximal si le niveau A2 est atteint, même si ce n'est pas parfait. Reste bienveillant dans ton évaluation.
-Tu ne dois pas être sévère et ne pas oublier que cette épreuve se passe à l'oral avec un niveau A2. Si tu hésites entre deux notes, choisis la note supérieure. 
 
 # Règles transcription
 - Ne pas juger la fluidité orale (débit). Utiliser seulement indices textuels.
 
-# Feedback: Rédige un feedback en français, 200 mots maximum, utile et bienveillant.
+# Feedback: Rédige un feedback en français, 100 mots maximum, utile et bienveillant.
 Consignes :
 - appuie-toi uniquement sur la transcription écrite ;
 - ne commente pas la prononciation, l’accent, l’intonation ou le débit ;
@@ -202,9 +197,6 @@ B) Qualité de la langue (0 à 2) – UNIQUEMENT via le texte
 - 0 : texte très difficile à comprendre / mots isolés sans liens / erreurs bloquantes fréquentes
 - 1 : compréhensible avec effort / phrases très simples avec des erreurs fréquentes
 - 2 : globalement compréhensible / lexique simple adapté / erreurs non bloquantes
-
-Important: N'hésite pas à mettre la note maximal si le niveau A1 est atteint, même si ce n'est pas parfait. Reste bienveillant dans ton évaluation.
-Tu ne dois pas être sévère et ne pas oublier que cette épreuve se passe à l'oral avec un niveau A1. Si tu hésites entre deux notes, choisis la note supérieure. 
 
 # Règles importantes (spécial transcription)
 - Ne pénalise pas des “pauses” invisibles. Ne juge pas la fluidité orale.
@@ -255,9 +247,6 @@ B) Qualité de la langue (0 à 2) – via le texte
 - 1 : compréhensible avec effort, lexique très limité
 - 2 : compréhensible, formules simples appropriées
 
-Important: N'hésite pas à mettre la note maximal si le niveau A1 est atteint, même si ce n'est pas parfait. Reste bienveillant dans ton évaluation.
-Tu ne dois pas être sévère et ne pas oublier que cette épreuve se passe à l'oral avec un niveau A1. Si tu hésites entre deux notes, choisis la note supérieure. 
-
 # Règles transcription
 - Pas d’évaluation de fluidité orale : seulement clarté textuelle.
 
@@ -294,19 +283,21 @@ Tu es évaluateur/trice pour un examen blanc FIDE – partie « Parler ». Tu n�
 {activitiesTexts}
 - Transcription :
 {transcriptions}
+- Exemples de réponse acceptés pour viser la note maximale (guide, non obligatoire) :
+{aiCorrectionContext}
 
 # Barème de la question (TOTAL = 6 = 3 + 3)
 A) Maîtrise de la tâche (0 à 3)
 - 0 : ne répond pas / hors sujet
 - 1 : répond partiellement, peu développé, logique faible
-- 2 : réponse structurée, quelques détails, opinion/explication présente, mais parfois floue ou incomplète
-- 3 : réponse claire et cohérente + détails/exemples + justification + liens simples (éventuellement cause/conséquence, comparaison)
+- 2 : réponse structurée, quelques détails, opinion/explication présente
+- 3 : réponse claire et cohérente + détails/exemples + justification + liens simples (cause/conséquence, comparaison)
 
 B) Qualité de la langue (0 à 3) – via le texte
 - 0 : erreurs bloquantes, difficile à suivre
-- 1 : compréhensible mais erreurs/hésitations textuelles nombreuses, lexique trop limité pour du B1
+- 1 : compréhensible mais erreurs/hésitations textuelles nombreuses, lexique pauvre
 - 2 : globalement correct ; connecteurs simples ; lexique adapté
-- 3 : assez précis ; bonne cohérence textuelle ; erreurs non bloquantes ; niveau B1 observable
+- 3 : assez précis ; reformulations ; bonne cohérence textuelle ; erreurs non bloquantes
 
 # Règles transcription
 - Ne pas juger débit/intonation. Utiliser seulement indices textuels.
@@ -515,11 +506,11 @@ export const buildSpeakingA2CorrectionPrompt = ({ taskType, activitiesTexts, aiC
         .trim();
 };
 
-export const buildDiscussionB1PerQuestionPrompt = ({ question, transcription }: { question: string; transcription: string }) =>
+export const buildDiscussionB1PerQuestionPrompt = ({ question, transcription, aiCorrectionContext }: { question: string; transcription: string; aiCorrectionContext?: string }) =>
     buildSpeakingA2CorrectionPrompt({
         taskType: "DISCUSSION_B1",
         activitiesTexts: [question],
-        aiCorrectionContext: [],
+        aiCorrectionContext: [String(aiCorrectionContext || "").trim()],
         transcriptions: [transcription],
     });
 
@@ -767,9 +758,7 @@ export const buildReadWriteCorrectionPrompt = ({
         numberingExpected: numberingExpected || "Aucune donnée.",
         studentAnswerByNumber: studentAnswerByNumber || studentAnswer || "Aucune donnée.",
         sourceTextReference: sourceTextReference || "Aucune donnée.",
-        evaluationAxes:
-            evaluationAxes ||
-            "respect de la consigne; pertinence du contenu; cohérence et structure; clarté des formulations; correction grammaticale et lexicale.",
+        evaluationAxes: evaluationAxes || "respect de la consigne; pertinence du contenu; cohérence et structure; clarté des formulations; correction grammaticale et lexicale.",
     };
 
     return applyPromptTokens(templateWithGeneral, tokens).trim();
@@ -968,3 +957,9 @@ ${questionsBlock}
 }
 `.trim();
 };
+
+/* 
+
+Important: N'hésite pas à mettre la note maximal si le niveau A2 est atteint, même si ce n'est pas parfait. Reste bienveillant dans ton évaluation.
+Tu ne dois pas être sévère et ne pas oublier que cette épreuve se passe à l'oral avec un niveau A2. Si tu hésites entre deux notes, choisis la note supérieure. 
+*/

@@ -118,9 +118,12 @@ const DEFAULT_WRITTEN_COMBO: { recommended: WrittenCombo; chosen?: WrittenCombo 
 };
 
 const toRef = (id: string) => ({ _type: "reference" as const, _ref: id });
-const SPEAK_A2_CORRECTION_MODEL = process.env.OPENAI_CORRECTION_MODEL_MOCK_EXAM || process.env.OPENAI_CORRECTION_MODEL || "gpt-4o-mini";
-const SPEAK_A2_CORRECTION_TIMEOUT_MS = Number(process.env.OPENAI_CORRECTION_TIMEOUT_MS || 12000);
+const SPEAK_A2_CORRECTION_MODEL = process.env.OPENAI_CORRECTION_MODEL_MOCK_EXAM || process.env.OPENAI_CORRECTION_MODEL || "gpt-5-mini";
+const SPEAK_A2_CORRECTION_TIMEOUT_MS = Number(process.env.OPENAI_CORRECTION_TIMEOUT_MS || 60000);
 const SPEAK_A2_CORRECTION_FALLBACK_MODEL = process.env.OPENAI_CORRECTION_FALLBACK_MODEL || "gpt-4o-mini";
+const READ_WRITE_GENERIC_BATCH_SIZE = Math.max(1, Number(process.env.OPENAI_READ_WRITE_BATCH_SIZE || 8));
+const READ_WRITE_SINGLE_CHOICE_ACTIVITY_BATCH_SIZE = Math.max(1, Number(process.env.OPENAI_READ_WRITE_SINGLE_CHOICE_BATCH_SIZE || 3));
+const READ_WRITE_TEXT_EXTRACT_ACTIVITY_BATCH_SIZE = Math.max(1, Number(process.env.OPENAI_READ_WRITE_TEXT_EXTRACT_BATCH_SIZE || 3));
 const SPEAK_A2_MAX_MANUAL_RETRIES = 3;
 const SPEAK_BRANCH_MAX_MANUAL_RETRIES = 3;
 const READ_WRITE_MAX_MANUAL_RETRIES = 3;
@@ -390,6 +393,38 @@ const getReadWriteModuleNumber = (taskType: string, combo: WrittenCombo): number
     return 0;
 };
 
+const buildMockExamTotalScoreSummary = (params: {
+    scores: NonNullable<SessionDocument["scores"]>;
+    oralBranch: OralBranch;
+    readWritePercentage: number;
+}): ScoreSummary | undefined => {
+    const speakA2Percentage = Number(params.scores.speakA2?.percentage);
+    const speakBranchPercentage = Number(params.scores.speakBranch?.percentage);
+    const listeningPercentage = Number(params.scores.listening?.percentage);
+    const readWritePercentage = Number(params.readWritePercentage);
+    if (![speakA2Percentage, speakBranchPercentage, listeningPercentage, readWritePercentage].every((value) => Number.isFinite(value))) {
+        return undefined;
+    }
+
+    const branchMax = params.oralBranch === "B1" ? 24 : 8;
+    const normalizedSpeakA2 = clampPercentage(speakA2Percentage);
+    const normalizedSpeakBranch = clampPercentage(speakBranchPercentage);
+    const normalizedListening = clampPercentage(listeningPercentage);
+    const normalizedReadWrite = clampPercentage(readWritePercentage);
+
+    const speakA2Score = (normalizedSpeakA2 / 100) * 18;
+    const speakBranchScore = (normalizedSpeakBranch / 100) * branchMax;
+    const oralCompositeMax = 18 + branchMax;
+    const oralCompositePercentage = oralCompositeMax > 0 ? clampPercentage(((speakA2Score + speakBranchScore) / oralCompositeMax) * 100) : 0;
+    const oralFinalPercentage = clampPercentage(oralCompositePercentage * (2 / 3) + normalizedListening * (1 / 3));
+    const totalPercentage = clampPercentage((oralFinalPercentage + normalizedReadWrite) / 2);
+
+    return {
+        percentage: totalPercentage,
+        feedback: `Total calculé automatiquement : oral ${oralFinalPercentage}% et lire/écrire ${normalizedReadWrite}%.`,
+    };
+};
+
 const buildSectionMiniFeedbackPrompt = (sectionLabel: string, transcriptions: string[]) => `
 Tu es examinateur FIDE.
 Rédige un mini feedback global (2-3 phrases, maximum 60 mots) pour la section "${sectionLabel}".
@@ -437,11 +472,7 @@ const buildReadWriteModuleFeedbackPrompt = (params: { moduleLabel: string; score
         .map((row) => {
             const question = truncate(String(row.questionText || "").trim(), 220) || "(question non renseignée)";
             const answer = truncate(String(row.studentAnswer || "").trim(), 280) || "(réponse vide)";
-            return [
-                `- Sujet de question: ${question}`,
-                `- Score: ${row.score}/${row.max}`,
-                `- Réponse élève: ${answer}`,
-            ].join("\n");
+            return [`- Sujet de question: ${question}`, `- Score: ${row.score}/${row.max}`, `- Réponse élève: ${answer}`].join("\n");
         })
         .join("\n\n");
 
@@ -522,7 +553,10 @@ const requestModelCorrection = async (prompt: string, logContext: { taskId: stri
     return { parsed, feedback };
 };
 
-const normalizeChoiceLabel = (value: string) => String(value || "").trim().toLowerCase();
+const normalizeChoiceLabel = (value: string) =>
+    String(value || "")
+        .trim()
+        .toLowerCase();
 
 const extractSingleChoiceActivityResults = (parsed: unknown) => {
     if (!parsed || typeof parsed !== "object") return [];
@@ -799,6 +833,84 @@ const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`
       readWrite{ percentage, feedback },
       total{ percentage, feedback }
     }
+  }
+`;
+
+const MOCK_EXAM_SESSION_FINALIZE_QUERY = groq`
+  *[
+    _type == "mockExamSession" &&
+    _id == $sessionKey &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId
+  ][0]{
+    _id,
+    status,
+    oralBranch,
+    scores{
+      speakA2{ percentage, feedback },
+      speakBranch{ percentage, feedback },
+      listening{ percentage, feedback },
+      readWrite{ percentage, feedback },
+      total{ percentage, feedback }
+    }
+  }
+`;
+
+const MOCK_EXAM_SESSION_REVIEW_SOURCE_QUERY = groq`
+  *[
+    _type == "mockExamSession" &&
+    _id == $sessionKey &&
+    userRef._ref == $userId &&
+    compilationRef._ref == $compilationId
+  ][0]{
+    _id,
+    status,
+    oralBranch,
+    writtenCombo,
+    speakA2Answers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback
+    },
+    speakBranchAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      audioUrl,
+      transcriptFinal,
+      AiFeedback
+    },
+    listeningScenarioResults[]{
+      examRef
+    },
+    readWriteAnswers[]{
+      taskRef,
+      taskId,
+      activityKey,
+      textAnswer,
+      AiFeedback
+    },
+    overtimeTaskRefs[]{ _ref, _type },
+    scores{
+      speakA2{ percentage, feedback },
+      speakBranch{ percentage, feedback },
+      listening{ percentage, feedback },
+      readWrite{ percentage, feedback },
+      total{ percentage, feedback }
+    }
+  }
+`;
+
+const EXAM_REVIEW_BY_SESSION_QUERY = groq`
+  *[
+    _type == "examReview" &&
+    userId == $userId &&
+    sessionKey == $sessionKey
+  ][0]{
+    _id
   }
 `;
 
@@ -1179,6 +1291,188 @@ export async function patchSession(sessionKey: string, params: { set?: Record<st
     return patch.commit({ autoGenerateArrayKeys: true });
 }
 
+export async function finalizeMockExamSession(params: { compilationId: string; sessionKey: string }) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = session?.user?._id;
+    const compilationId = String(params.compilationId || "");
+    const sessionKey = String(params.sessionKey || "");
+
+    if (!userId || !compilationId || !sessionKey) {
+        return { ok: false as const, error: "Paramètres invalides." };
+    }
+
+    const targetSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_FINALIZE_QUERY, { userId, compilationId, sessionKey });
+    if (!targetSession?._id) {
+        return { ok: false as const, error: "Session introuvable." };
+    }
+
+    const resolvedOralBranch: OralBranch = targetSession.oralBranch?.chosen === "B1" || targetSession.oralBranch?.recommended === "B1" ? "B1" : "A1";
+    const baseScores = sanitizeSessionScores(targetSession.scores);
+    const readWritePercentage = Number(baseScores.readWrite?.percentage);
+    const totalSummary = buildMockExamTotalScoreSummary({
+        scores: baseScores,
+        oralBranch: resolvedOralBranch,
+        readWritePercentage,
+    });
+    const nextScores: NonNullable<SessionDocument["scores"]> = {
+        ...baseScores,
+    };
+    if (totalSummary) {
+        nextScores.total = totalSummary;
+    }
+
+    const alreadyCompleted = targetSession.status === "completed";
+    if (alreadyCompleted && !totalSummary) {
+        return { ok: true as const, status: "completed" as const, scores: nextScores };
+    }
+
+    await patchSession(sessionKey, {
+        set: {
+            status: "completed",
+            scores: nextScores,
+        },
+    });
+
+    return { ok: true as const, status: "completed" as const, scores: nextScores };
+}
+
+export async function createExamReviewFromCalendlyBooking(params: {
+    compilationId: string;
+    sessionKey: string;
+    calendlyEventUri?: string;
+    scheduledAt?: string;
+    timezone?: string;
+    joinUrl?: string;
+}) {
+    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = String(session?.user?._id || "");
+    const compilationId = String(params.compilationId || "");
+    const sessionKey = String(params.sessionKey || "");
+    if (!userId || !compilationId || !sessionKey) {
+        return { ok: false as const, error: "Paramètres invalides." };
+    }
+
+    const sourceSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_REVIEW_SOURCE_QUERY, { userId, compilationId, sessionKey });
+    if (!sourceSession?._id) {
+        return { ok: false as const, error: "Session mock exam introuvable pour la review." };
+    }
+
+    const toUniqueReferences = (refs: Array<{ _ref?: string } | undefined | null>) => {
+        const seen = new Set<string>();
+        const output: Array<{ _type: "reference"; _ref: string }> = [];
+        for (const ref of refs) {
+            const refId = String(ref?._ref || "").trim();
+            if (!refId || seen.has(refId)) continue;
+            seen.add(refId);
+            output.push(toRef(refId));
+        }
+        return output;
+    };
+
+    const normalizeTaskRef = (entry?: { taskRef?: { _ref?: string }; taskId?: string } | null) => {
+        const taskId = String(entry?.taskRef?._ref || entry?.taskId || "").trim();
+        return taskId ? toRef(taskId) : undefined;
+    };
+
+    const speakA2AnswersRaw = Array.isArray(sourceSession.speakA2Answers) ? sourceSession.speakA2Answers : [];
+    const speakBranchAnswersRaw = Array.isArray(sourceSession.speakBranchAnswers) ? sourceSession.speakBranchAnswers : [];
+    const readWriteAnswersRaw = Array.isArray(sourceSession.readWriteAnswers) ? sourceSession.readWriteAnswers : [];
+    const listeningResultsRaw = Array.isArray(sourceSession.listeningScenarioResults) ? sourceSession.listeningScenarioResults : [];
+    const overtimeRefsRaw = Array.isArray(sourceSession.overtimeTaskRefs) ? sourceSession.overtimeTaskRefs : [];
+
+    const speakA2Answers = speakA2AnswersRaw
+        .map((answer) => {
+            const taskRef = normalizeTaskRef(answer);
+            if (!taskRef || !answer?.activityKey) return null;
+            return {
+                taskRef,
+                activityKey: String(answer.activityKey),
+                audioUrl: String(answer.audioUrl || ""),
+                transcriptFinal: String(answer.transcriptFinal || ""),
+                AiFeedback: String(answer.AiFeedback || ""),
+            };
+        })
+        .filter(Boolean);
+
+    const speakBranchAnswers = speakBranchAnswersRaw
+        .map((answer) => {
+            const taskRef = normalizeTaskRef(answer);
+            if (!taskRef || !answer?.activityKey) return null;
+            return {
+                taskRef,
+                activityKey: String(answer.activityKey),
+                audioUrl: String(answer.audioUrl || ""),
+                transcriptFinal: String(answer.transcriptFinal || ""),
+                AiFeedback: String(answer.AiFeedback || ""),
+            };
+        })
+        .filter(Boolean);
+
+    const readWriteAnswers = readWriteAnswersRaw
+        .map((answer) => {
+            const taskRef = normalizeTaskRef(answer);
+            if (!taskRef || !answer?.activityKey) return null;
+            return {
+                taskRef,
+                activityKey: String(answer.activityKey),
+                textAnswer: String(answer.textAnswer || ""),
+                AiFeedback: String(answer.AiFeedback || ""),
+            };
+        })
+        .filter(Boolean);
+
+    const scheduledAt = String(params.scheduledAt || "").trim();
+    const joinUrl = String(params.joinUrl || "").trim();
+    const calendlyEventUri = String(params.calendlyEventUri || "").trim();
+
+    const reviewPayload = {
+        userId,
+        compilationRef: toRef(compilationId),
+        sessionKey,
+        status: "scheduled" as const,
+        ...(scheduledAt ? { scheduledAt } : {}),
+        path: {
+            oralBranch: sourceSession.oralBranch?.chosen === "B1" || sourceSession.oralBranch?.recommended === "B1" ? "B1" : "A1",
+            writtenCombo: sourceSession.writtenCombo?.chosen === "A2_B1" || sourceSession.writtenCombo?.recommended === "A2_B1" ? "A2_B1" : "A1_A2",
+        },
+        taskRefs: {
+            speakA2: toUniqueReferences(speakA2AnswersRaw.map((answer) => normalizeTaskRef(answer))),
+            speakBranch: toUniqueReferences(speakBranchAnswersRaw.map((answer) => normalizeTaskRef(answer))),
+            listening: toUniqueReferences(listeningResultsRaw.map((entry) => entry?.examRef)),
+            readWrite: toUniqueReferences(readWriteAnswersRaw.map((answer) => normalizeTaskRef(answer))),
+        },
+        answers: {
+            speakA2: speakA2Answers,
+            speakBranch: speakBranchAnswers,
+            readWrite: readWriteAnswers,
+        },
+        overtimeTaskRefs: toUniqueReferences(overtimeRefsRaw),
+        meeting: {
+            provider: "zoom" as const,
+            ...(joinUrl ? { joinUrl } : {}),
+            ...(scheduledAt ? { startAt: scheduledAt } : {}),
+            timezone: String(params.timezone || "").trim() || "Europe/Berlin",
+        },
+        ...(calendlyEventUri ? { userNote: `Calendly event: ${calendlyEventUri}` } : {}),
+    };
+
+    const existingReview = await client.fetch<{ _id?: string } | null>(EXAM_REVIEW_BY_SESSION_QUERY, { userId, sessionKey });
+    if (existingReview?._id) {
+        await client
+            .patch(existingReview._id)
+            .set(reviewPayload)
+            .commit({ autoGenerateArrayKeys: true });
+        return { ok: true as const, reviewId: existingReview._id, upserted: "updated" as const };
+    }
+
+    const created = await client.create({
+        _type: "examReview",
+        ...reviewPayload,
+    });
+
+    return { ok: true as const, reviewId: created?._id as string, upserted: "created" as const };
+}
+
 export async function saveMockExamSpeakingAnswer(params: { compilationId: string; sessionKey: string; taskId: string; activityKey: string; audioUrl: string; transcriptFinal: string }) {
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
@@ -1226,14 +1520,7 @@ export async function saveMockExamSpeakingAnswer(params: { compilationId: string
     return { ok: true as const, answer };
 }
 
-export async function saveMockExamReadWriteAnswer(params: {
-    compilationId: string;
-    sessionKey: string;
-    taskId: string;
-    activityKey: string;
-    questionKey: string;
-    textAnswer: string;
-}) {
+export async function saveMockExamReadWriteAnswer(params: { compilationId: string; sessionKey: string; taskId: string; activityKey: string; questionKey: string; textAnswer: string }) {
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(params.compilationId || "");
@@ -1265,9 +1552,7 @@ export async function saveMockExamReadWriteAnswer(params: {
     };
 
     const currentAnswers: ReadWriteAnswer[] = Array.isArray(activeSession.readWriteAnswers) ? activeSession.readWriteAnswers : [];
-    const existingIndex = currentAnswers.findIndex(
-        (item) => getAnswerTaskId(item) === taskId && item.activityKey === activityKey && String(item.questionKey || "") === questionKey,
-    );
+    const existingIndex = currentAnswers.findIndex((item) => getAnswerTaskId(item) === taskId && item.activityKey === activityKey && String(item.questionKey || "") === questionKey);
     const nextAnswers = [...currentAnswers];
     if (existingIndex >= 0) {
         nextAnswers[existingIndex] = {
@@ -1607,6 +1892,7 @@ export async function evaluateMockExamSpeakBranchSection(params: { compilationId
                 const prompt = buildDiscussionB1PerQuestionPrompt({
                     question,
                     transcription: transcript,
+                    aiCorrectionContext: String(activity?.aiCorrectionContext || "").trim(),
                 });
 
                 try {
@@ -1971,8 +2257,7 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
                     .filter(Boolean);
                 const expectedCorrectOption = expectedCorrectOptions.length ? expectedCorrectOptions.join(" | ") : "Non renseigné.";
                 const studentSelectedOption = studentAnswer || "Aucune donnée.";
-                const sourceTextReference =
-                    questionContentText || imageAlternativeText || instructionImageAlternativeText || instructionText || activityPromptText || "Aucune donnée.";
+                const sourceTextReference = questionContentText || imageAlternativeText || instructionImageAlternativeText || instructionText || activityPromptText || "Aucune donnée.";
 
                 const expectedNormalized = expectedCorrectOptions.map((option) => normalizeChoiceLabel(option)).filter(Boolean);
                 const isCorrectSelection = expectedNormalized.includes(normalizeChoiceLabel(studentSelectedOption));
@@ -2102,7 +2387,7 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
         };
     };
 
-    const BATCH_SIZE = 4;
+    const BATCH_SIZE = READ_WRITE_GENERIC_BATCH_SIZE;
     for (let cursor = 0; cursor < jobs.length; cursor += BATCH_SIZE) {
         const batch = jobs.slice(cursor, cursor + BATCH_SIZE);
         const batchRows = await Promise.all(
@@ -2145,7 +2430,7 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
         rows.push(...batchRows);
     }
 
-    const SINGLE_CHOICE_ACTIVITY_BATCH_SIZE = 2;
+    const SINGLE_CHOICE_ACTIVITY_BATCH_SIZE = READ_WRITE_SINGLE_CHOICE_ACTIVITY_BATCH_SIZE;
     for (let cursor = 0; cursor < singleChoiceActivityJobs.length; cursor += SINGLE_CHOICE_ACTIVITY_BATCH_SIZE) {
         const batch = singleChoiceActivityJobs.slice(cursor, cursor + SINGLE_CHOICE_ACTIVITY_BATCH_SIZE);
         const batchRows = await Promise.all(
@@ -2203,15 +2488,8 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
 
                         const parsedItem = byQuestionKey.get(question.questionKey) || byQuestionNumber.get(String(question.questionNumber));
                         const fallbackScore = question.isCorrectSelection ? question.rowBase.max : 0;
-                        const fallbackFeedback = question.isCorrectSelection
-                            ? "Bonne réponse."
-                            : `Réponse incorrecte. Réponse attendue: ${question.expectedCorrectOption || "non renseignée"}.`;
-                        const score = parsedItem
-                            ? clampIntegerScoreWithMax(
-                                  (parsedItem as { score?: unknown }).score,
-                                  question.rowBase.max,
-                              )
-                            : fallbackScore;
+                        const fallbackFeedback = question.isCorrectSelection ? "Bonne réponse." : `Réponse incorrecte. Réponse attendue: ${question.expectedCorrectOption || "non renseignée"}.`;
+                        const score = parsedItem ? clampIntegerScoreWithMax((parsedItem as { score?: unknown }).score, question.rowBase.max) : fallbackScore;
                         const feedback = String(parsedItem?.feedback || "").trim() || fallbackFeedback;
                         applyAnswerPatch(question.answerKey, feedback, score);
                         return {
@@ -2247,7 +2525,7 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
         rows.push(...batchRows.flat());
     }
 
-    const TEXT_EXTRACT_ACTIVITY_BATCH_SIZE = 2;
+    const TEXT_EXTRACT_ACTIVITY_BATCH_SIZE = READ_WRITE_TEXT_EXTRACT_ACTIVITY_BATCH_SIZE;
     for (let cursor = 0; cursor < textExtractActivityJobs.length; cursor += TEXT_EXTRACT_ACTIVITY_BATCH_SIZE) {
         const batch = textExtractActivityJobs.slice(cursor, cursor + TEXT_EXTRACT_ACTIVITY_BATCH_SIZE);
         const batchRows = await Promise.all(
@@ -2305,12 +2583,7 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
                         const parsedItem = byQuestionKey.get(question.questionKey) || byQuestionNumber.get(String(question.questionNumber));
                         const fallbackScore = 0;
                         const fallbackFeedback = "Correction disponible, mais résultat question indisponible.";
-                        const score = parsedItem
-                            ? clampIntegerScoreWithMax(
-                                  (parsedItem as { score?: unknown }).score,
-                                  question.rowBase.max,
-                              )
-                            : fallbackScore;
+                        const score = parsedItem ? clampIntegerScoreWithMax((parsedItem as { score?: unknown }).score, question.rowBase.max) : fallbackScore;
                         const feedback = String(parsedItem?.feedback || "").trim() || fallbackFeedback;
                         applyAnswerPatch(question.answerKey, feedback, score);
                         return {
@@ -2384,7 +2657,11 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
         bucket.rows.push(row);
     }
 
-    const modulesWithFeedback = await Promise.all(
+    const totalScore = rows.reduce((sum, row) => sum + Number(row.score || 0), 0);
+    const totalMax = rows.reduce((sum, row) => sum + Number(row.max || 0), 0);
+    const globalPercentage = totalMax > 0 ? clampPercentage((totalScore / totalMax) * 100) : 0;
+    const sectionLabel = writtenCombo === "A2_B1" ? "Lire/Écrire A2-B1" : "Lire/Écrire A1-A2";
+    const modulesWithFeedbackPromise = Promise.all(
         Array.from(moduleBuckets.values())
             .sort((a, b) => a.moduleNumber - b.moduleNumber)
             .map(async (bucket) => {
@@ -2407,21 +2684,27 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
                 };
             }),
     );
-
-    const totalScore = rows.reduce((sum, row) => sum + Number(row.score || 0), 0);
-    const totalMax = rows.reduce((sum, row) => sum + Number(row.max || 0), 0);
-    const globalPercentage = totalMax > 0 ? clampPercentage((totalScore / totalMax) * 100) : 0;
-    const sectionLabel = writtenCombo === "A2_B1" ? "Lire/Écrire A2-B1" : "Lire/Écrire A1-A2";
-    const globalFeedback = await requestMiniSectionFeedback(sectionLabel, nextAnswers.map((answer) => String(answer?.textAnswer || "").trim()).filter(Boolean));
+    const globalFeedbackPromise = requestMiniSectionFeedback(sectionLabel, nextAnswers.map((answer) => String(answer?.textAnswer || "").trim()).filter(Boolean));
+    const [modulesWithFeedback, globalFeedback] = await Promise.all([modulesWithFeedbackPromise, globalFeedbackPromise]);
     const validatedLevel = buildReadWriteValidatedLevel(writtenCombo, totalScore);
 
-    const nextScores = {
-        ...sanitizeSessionScores(activeSession.scores),
+    const baseScores = sanitizeSessionScores(activeSession.scores);
+    const nextScores: NonNullable<SessionDocument["scores"]> = {
+        ...baseScores,
         readWrite: {
             percentage: globalPercentage,
             feedback: globalFeedback,
         },
     };
+    const resolvedOralBranch: OralBranch = activeSession.oralBranch?.chosen === "B1" || activeSession.oralBranch?.recommended === "B1" ? "B1" : "A1";
+    const totalSummary = buildMockExamTotalScoreSummary({
+        scores: nextScores,
+        oralBranch: resolvedOralBranch,
+        readWritePercentage: globalPercentage,
+    });
+    if (totalSummary) {
+        nextScores.total = totalSummary;
+    }
 
     await patchSession(sessionKey, {
         set: {

@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next-intl/link";
 import { useTranslations } from "next-intl";
+import { createExamReviewFromCalendlyBooking } from "@/app/serverActions/mockExamActions";
 
 type PageProps = {
     params: { slug: string };
-    searchParams: { event_uri?: string; test?: string; continue_url?: string };
+    searchParams: { event_uri?: string; test?: string; continue_url?: string; session_key?: string; compilation_id?: string };
 };
 
 type CalendlyScheduledEvent = {
@@ -77,6 +78,22 @@ export default async function RdvSuccess({ params, searchParams }: PageProps) {
 
     const scheduled = await fetchScheduledEvent(eventUri);
     const start = scheduled?.start_time;
+    const sessionKey = String(searchParams.session_key || "").trim();
+    const compilationId = String(searchParams.compilation_id || "").trim();
+
+    if (params.slug === "your-exam-feedback" && sessionKey && compilationId) {
+        try {
+            await createExamReviewFromCalendlyBooking({
+                compilationId,
+                sessionKey,
+                calendlyEventUri: eventUri,
+                scheduledAt: start,
+                timezone: "Europe/Berlin",
+            });
+        } catch (error) {
+            console.error("[RDV Success] création examReview impossible", error);
+        }
+    }
 
     return <RdvSuccessNoAsync slug={params.slug} start={start} continueUrl={continueUrl} />;
 }

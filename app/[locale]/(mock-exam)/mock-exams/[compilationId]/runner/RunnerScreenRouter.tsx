@@ -482,6 +482,7 @@ export default function RunnerScreenRouter({
     const [readWriteManualRetryCount, setReadWriteManualRetryCount] = useState(Math.max(0, Number(initialReadWriteCorrectionRetryCount || 0)));
     const evaluationRequestedRef = useRef(false);
     const resultAccordionInitRef = useRef(false);
+    const finalizationRequestedRef = useRef(false);
 
     useEffect(() => {
         setManualRetryCount(Math.max(0, Number(initialSpeakA2CorrectionRetryCount || 0)));
@@ -1699,12 +1700,65 @@ export default function RunnerScreenRouter({
             setFinalDetailsOpenKey("ORAL");
             setIsHumanFeedbackModalOpen(false);
             setIsFeedbackCalendlyOpen(false);
+            finalizationRequestedRef.current = false;
         }
     }, [resume.state]);
 
     useEffect(() => {
+        if (resume.state !== EXAM_FINAL_SUMMARY) return;
+        if (finalizationRequestedRef.current) return;
+        finalizationRequestedRef.current = true;
+
+        void fetch("/api/mock-exams/session/finalize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ compilationId, sessionKey }),
+        })
+            .then(async (response) => {
+                if (!response.ok) {
+                    const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+                    throw new Error(payload?.error || "Finalisation impossible.");
+                }
+            })
+            .catch((error) => {
+                console.error("[MockExam] Finalisation session en erreur", error);
+                finalizationRequestedRef.current = false;
+            });
+    }, [compilationId, resume.state, sessionKey]);
+
+    useEffect(() => {
         setRootElement(document.getElementById("root") || document.body);
     }, []);
+
+    useEffect(() => {
+        const onMessage = (event: MessageEvent) => {
+            if (!isFeedbackCalendlyOpen) return;
+
+            try {
+                const host = new URL(event.origin).hostname;
+                if (!host.endsWith("calendly.com")) return;
+            } catch {
+                return;
+            }
+
+            const data = event.data as { event?: string; payload?: { event?: { uri?: string } } } | null;
+            if (!data || data.event !== "calendly.event_scheduled") return;
+            const eventUri = String(data.payload?.event?.uri || "").trim();
+            if (!eventUri) return;
+
+            setIsFeedbackCalendlyOpen(false);
+
+            const qs = new URLSearchParams();
+            qs.set("event_uri", eventUri);
+            qs.set("continue_url", "/fide/dashboard");
+            qs.set("session_key", sessionKey);
+            qs.set("compilation_id", compilationId);
+            router.push(`/rdv-success/your-exam-feedback?${qs.toString()}`);
+        };
+
+        window.addEventListener("message", onMessage);
+        return () => window.removeEventListener("message", onMessage);
+    }, [compilationId, isFeedbackCalendlyOpen, router, sessionKey]);
 
     const onListeningScenarioCompleted = useCallback(
         async (payload: { examId: string; score: number; max: number }) => {
@@ -4520,9 +4574,7 @@ export default function RunnerScreenRouter({
                                 Feedback professeur gratuit
                             </div>
                             <h2 className="mb-2 text-2xl font-semibold text-neutral-900">Pour aller plus loin</h2>
-                            <p className="mb-0 text-sm text-neutral-700">
-                                Le feedback d'un professeur FIDE expérimenté vous apportera un regard plus fin, contextualisé et actionnable, adapté à votre profil.
-                            </p>
+                            <p className="mb-0 text-sm text-neutral-700">Demandez un feedback gratuit sur votre examen par un professeur FIDE expérimenté.</p>
                             <p className="mt-2 mb-0 text-sm text-neutral-700">
                                 Axe prioritaire actuel: <span className="font-semibold text-neutral-900">{weakestDimension}</span>.
                             </p>
@@ -4646,10 +4698,7 @@ export default function RunnerScreenRouter({
                 {rootElement ? (
                     <PopupModal
                         url="https://calendly.com/yohann-startfrenchnow/your-exam-feedback"
-                        onModalClose={() => {
-                            setIsFeedbackCalendlyOpen(false);
-                            router.push("/fide/dashboard");
-                        }}
+                        onModalClose={() => setIsFeedbackCalendlyOpen(false)}
                         open={isFeedbackCalendlyOpen}
                         rootElement={rootElement}
                     />

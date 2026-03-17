@@ -16,7 +16,13 @@ import RunnerClient from "./RunnerClient";
 
 export const dynamic = "force-dynamic";
 
-export default async function MockExamRunnerPage({ params: { compilationId } }: { params: { compilationId: string } }) {
+export default async function MockExamRunnerPage({
+    params: { compilationId },
+    searchParams,
+}: {
+    params: { compilationId: string };
+    searchParams?: { restart?: string };
+}) {
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const isAdmin = session?.user?.isAdmin === true;
@@ -30,16 +36,32 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
     }
     const sessions = await getCompilationSessions(userId, compilationId);
 
-    let inProgressSession = (sessions || [])
-        .filter((entry) => entry.status === "in_progress")
-        .sort((a, b) => (b.resume?.updatedAt || b.startedAt || "").localeCompare(a.resume?.updatedAt || a.startedAt || ""))[0];
+    const shouldForceRestart = String(searchParams?.restart || "").trim() === "1";
+    const sortedSessions = [...(sessions || [])].sort((a, b) => (b.resume?.updatedAt || b.startedAt || "").localeCompare(a.resume?.updatedAt || a.startedAt || ""));
+    const inProgressSession = sortedSessions.find((entry) => entry.status === "in_progress");
 
-    if (!inProgressSession) {
-        const createResult = await getOrCreateInProgressMockExamSession(compilationId);
+    let runnerSession = inProgressSession;
+
+    if (shouldForceRestart) {
+        const createResult = await getOrCreateInProgressMockExamSession(compilationId, { forceNew: true });
         if (!createResult.ok || !createResult.session) {
             redirect(`/mock-exams/${compilationId}`);
         }
-        inProgressSession = createResult.session;
+        runnerSession = createResult.session;
+    } else if (!runnerSession) {
+        const latestFinishedSession = sortedSessions.find((entry) => entry.status === "completed" || entry.status === "abandoned");
+        if (latestFinishedSession) {
+            runnerSession = latestFinishedSession;
+        } else {
+            const createResult = await getOrCreateInProgressMockExamSession(compilationId);
+            if (!createResult.ok || !createResult.session) {
+                redirect(`/mock-exams/${compilationId}`);
+            }
+            runnerSession = createResult.session;
+        }
+    }
+    if (!runnerSession) {
+        redirect(`/mock-exams/${compilationId}`);
     }
 
     const speakA2TaskIds = (compilation.examConfig.speakA2TaskIds || []).map((ref) => ref?._ref).filter(Boolean) as string[];
@@ -62,35 +84,35 @@ export default async function MockExamRunnerPage({ params: { compilationId } }: 
     ]);
 
     const resume: ResumePointer = {
-        state: inProgressSession.resume?.state || "EXAM_INTRO",
-        taskId: inProgressSession.resume?.taskId,
-        activityKey: inProgressSession.resume?.activityKey,
-        updatedAt: inProgressSession.resume?.updatedAt || inProgressSession.startedAt || new Date().toISOString(),
+        state: runnerSession.resume?.state || "EXAM_INTRO",
+        taskId: runnerSession.resume?.taskId,
+        activityKey: runnerSession.resume?.activityKey,
+        updatedAt: runnerSession.resume?.updatedAt || runnerSession.startedAt || new Date().toISOString(),
     };
 
-    if (!inProgressSession.resume?.updatedAt || !inProgressSession.resume?.state) {
-        await patchSession(inProgressSession._id, { set: { resume } });
+    if (runnerSession.status === "in_progress" && (!runnerSession.resume?.updatedAt || !runnerSession.resume?.state)) {
+        await patchSession(runnerSession._id, { set: { resume } });
     }
 
     const hydrationData: MockExamRunnerHydration = {
         compilationId: compilation._id,
-        sessionKey: inProgressSession._id,
+        sessionKey: runnerSession._id,
         resume,
         examConfig: compilation.examConfig,
-        oralBranch: inProgressSession.oralBranch || {},
-        writtenCombo: inProgressSession.writtenCombo || { recommended: "A1_A2" },
+        oralBranch: runnerSession.oralBranch || {},
+        writtenCombo: runnerSession.writtenCombo || { recommended: "A1_A2" },
     };
 
-    const initialSpeakA2Answers = ([...(inProgressSession.speakA2Answers || []), ...(inProgressSession.speakBranchAnswers || [])] as SpeakingAnswer[]).filter(Boolean);
-    const initialSpeakA2ScoreSummary = (inProgressSession.scores?.speakA2 || null) as ScoreSummary | null;
-    const initialSpeakBranchScoreSummary = (inProgressSession.scores?.speakBranch || null) as ScoreSummary | null;
-    const initialListeningScenarioResults = ((inProgressSession.listeningScenarioResults || []) as ListeningScenarioResult[]).filter(Boolean);
-    const initialListeningScoreSummary = (inProgressSession.scores?.listening || null) as ScoreSummary | null;
-    const initialReadWriteAnswers = ((inProgressSession.readWriteAnswers || []) as ReadWriteAnswer[]).filter(Boolean);
-    const initialReadWriteScoreSummary = (inProgressSession.scores?.readWrite || null) as ScoreSummary | null;
-    const initialSpeakA2CorrectionRetryCount = Number(inProgressSession.speakA2CorrectionRetryCount || 0);
-    const initialSpeakBranchCorrectionRetryCount = Number(inProgressSession.speakBranchCorrectionRetryCount || 0);
-    const initialReadWriteCorrectionRetryCount = Number(inProgressSession.readWriteCorrectionRetryCount || 0);
+    const initialSpeakA2Answers = ([...(runnerSession.speakA2Answers || []), ...(runnerSession.speakBranchAnswers || [])] as SpeakingAnswer[]).filter(Boolean);
+    const initialSpeakA2ScoreSummary = (runnerSession.scores?.speakA2 || null) as ScoreSummary | null;
+    const initialSpeakBranchScoreSummary = (runnerSession.scores?.speakBranch || null) as ScoreSummary | null;
+    const initialListeningScenarioResults = ((runnerSession.listeningScenarioResults || []) as ListeningScenarioResult[]).filter(Boolean);
+    const initialListeningScoreSummary = (runnerSession.scores?.listening || null) as ScoreSummary | null;
+    const initialReadWriteAnswers = ((runnerSession.readWriteAnswers || []) as ReadWriteAnswer[]).filter(Boolean);
+    const initialReadWriteScoreSummary = (runnerSession.scores?.readWrite || null) as ScoreSummary | null;
+    const initialSpeakA2CorrectionRetryCount = Number(runnerSession.speakA2CorrectionRetryCount || 0);
+    const initialSpeakBranchCorrectionRetryCount = Number(runnerSession.speakBranchCorrectionRetryCount || 0);
+    const initialReadWriteCorrectionRetryCount = Number(runnerSession.readWriteCorrectionRetryCount || 0);
     const compilationCorrections = (compilation.corrections || []) as ExamCorrectionContent[];
 
     return (

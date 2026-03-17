@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ModalFromBottomWithPortal } from "@/app/components/animations/ModalFromBottomWithPortal";
 import { useToast } from "@/app/hooks/use-toast";
@@ -40,6 +40,37 @@ type RunnerClientProps = {
 };
 
 const RUNNER_PHASES = ["Parler", "Comprendre", "Lire/Écrire"] as const;
+const EXAM_FINAL_SUMMARY = "EXAM_FINAL_SUMMARY";
+
+type DebugPointer = {
+    taskId?: string;
+    activityKey?: string;
+};
+
+type DebugJumpOption = {
+    key: string;
+    label: string;
+    payload: {
+        nextState: string;
+        taskId?: string;
+        activityKey?: string;
+        oralBranchChosen?: OralBranch;
+        oralBranchRecommended?: OralBranch;
+        writtenComboChosen?: WrittenCombo;
+        writtenComboRecommended?: WrittenCombo;
+    };
+    disabled?: boolean;
+};
+
+const resolveFirstTaskPointer = (tasks: RunnerTask[]): DebugPointer => {
+    for (const task of tasks || []) {
+        const firstActivity = (task.activities || [])[0];
+        if (task?._id && firstActivity?._key) {
+            return { taskId: task._id, activityKey: firstActivity._key };
+        }
+    }
+    return {};
+};
 
 const getRunnerPhaseIndex = (state?: string) => {
     if (!state) return 0;
@@ -128,8 +159,10 @@ export default function RunnerClient({
     const [showQuitModal, setShowQuitModal] = useState(false);
     const [isLeaving, setIsLeaving] = useState(false);
     const [isAdvancing, setIsAdvancing] = useState(false);
+    const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
     const [speakA2Answers, setSpeakA2Answers] = useState<SpeakingAnswer[]>(initialSpeakA2Answers || []);
     const [writtenCombo, setWrittenCombo] = useState<{ recommended?: WrittenCombo; chosen?: WrittenCombo }>(hydrationData.writtenCombo || { recommended: "A1_A2" });
+    const adminMenuRef = useRef<HTMLDivElement | null>(null);
     const router = useRouter();
     const { toast } = useToast();
     const hydrate = useMockExamRunnerStore((state) => state.hydrate);
@@ -167,12 +200,95 @@ export default function RunnerClient({
         resume?.state === "LISTENING_RUN" ||
         resume?.state === "LISTENING_RESULT" ||
         resume?.state === "ORAL_SECTION_SUMMARY";
+    const selectedWrittenCombo = writtenCombo?.chosen || writtenCombo?.recommended || "A1_A2";
+    const readWriteTasks = selectedWrittenCombo === "A2_B1" ? readWriteA2B1Tasks : readWriteA1A2Tasks;
+    const speakA2Pointer = useMemo(() => resolveFirstTaskPointer(speakA2Tasks), [speakA2Tasks]);
+    const speakBranchA1Pointer = useMemo(() => resolveFirstTaskPointer(speakBranchA1Tasks), [speakBranchA1Tasks]);
+    const speakBranchB1Pointer = useMemo(() => resolveFirstTaskPointer(speakBranchB1Tasks), [speakBranchB1Tasks]);
+    const readWritePointer = useMemo(() => resolveFirstTaskPointer(readWriteTasks), [readWriteTasks]);
+    const adminJumpOptions = useMemo<DebugJumpOption[]>(
+        () => [
+            {
+                key: "speak-a2-run",
+                label: "Parler A2 exercices",
+                payload: { nextState: "SPEAK_A2_RUN", taskId: speakA2Pointer.taskId, activityKey: speakA2Pointer.activityKey },
+                disabled: !speakA2Pointer.taskId || !speakA2Pointer.activityKey,
+            },
+            { key: "speak-a2-result", label: "Parler A2 résultats", payload: { nextState: "SPEAK_A2_RESULT" } },
+            { key: "speak-branch-choice", label: "Parler branche choix", payload: { nextState: "SPEAK_BRANCH_INTRO" } },
+            {
+                key: "speak-branch-a1-run",
+                label: "Parler branche A1 exercices",
+                payload: {
+                    nextState: "SPEAK_BRANCH_A1_RUN",
+                    taskId: speakBranchA1Pointer.taskId,
+                    activityKey: speakBranchA1Pointer.activityKey,
+                    oralBranchChosen: "A1",
+                    oralBranchRecommended: "A1",
+                },
+                disabled: !speakBranchA1Pointer.taskId || !speakBranchA1Pointer.activityKey,
+            },
+            {
+                key: "speak-branch-b1-choice",
+                label: "Parler branche B1 choix",
+                payload: { nextState: "SPEAK_BRANCH_B1_CHOICE", oralBranchChosen: "B1", oralBranchRecommended: "B1" },
+            },
+            {
+                key: "speak-branch-b1-run",
+                label: "Parler branche B1 exercices",
+                payload: {
+                    nextState: "SPEAK_BRANCH_B1_RUN",
+                    taskId: speakBranchB1Pointer.taskId,
+                    activityKey: speakBranchB1Pointer.activityKey,
+                    oralBranchChosen: "B1",
+                    oralBranchRecommended: "B1",
+                },
+                disabled: !speakBranchB1Pointer.taskId || !speakBranchB1Pointer.activityKey,
+            },
+            { key: "speak-branch-result", label: "Parler branche résultats", payload: { nextState: "SPEAK_BRANCH_RESULT" } },
+            { key: "oral-summary", label: "Bilan oral résultats", payload: { nextState: "ORAL_SECTION_SUMMARY" } },
+            { key: "listening-run", label: "Comprendre exercices", payload: { nextState: "LISTENING_RUN" } },
+            { key: "listening-result", label: "Comprendre résultats", payload: { nextState: "LISTENING_RESULT" } },
+            { key: "read-write-choice", label: "Lire/Écrire choix", payload: { nextState: "READ_WRITE_CHOICE" } },
+            {
+                key: "read-write-run",
+                label: "Lire/Écrire exercices",
+                payload: {
+                    nextState: "READ_WRITE_RUN",
+                    taskId: readWritePointer.taskId,
+                    activityKey: readWritePointer.activityKey,
+                    writtenComboChosen: selectedWrittenCombo,
+                    writtenComboRecommended: selectedWrittenCombo,
+                },
+                disabled: !readWritePointer.taskId || !readWritePointer.activityKey,
+            },
+            { key: "read-write-result", label: "Lire/Écrire résultats", payload: { nextState: "READ_WRITE_RESULT" } },
+            { key: "final-summary", label: "Bilan final", payload: { nextState: EXAM_FINAL_SUMMARY } },
+        ],
+        [readWritePointer.activityKey, readWritePointer.taskId, selectedWrittenCombo, speakA2Pointer.activityKey, speakA2Pointer.taskId, speakBranchA1Pointer.activityKey, speakBranchA1Pointer.taskId, speakBranchB1Pointer.activityKey, speakBranchB1Pointer.taskId],
+    );
 
     useEffect(() => {
         hydrate(hydrationData);
         setSpeakA2Answers(initialSpeakA2Answers || []);
         setWrittenCombo(hydrationData.writtenCombo || { recommended: "A1_A2" });
     }, [hydrate, hydrationData, initialSpeakA2Answers]);
+
+    useEffect(() => {
+        if (!isAdminMenuOpen) return;
+        const onClick = (event: MouseEvent) => {
+            const target = event.target as Node | null;
+            if (adminMenuRef.current && target && !adminMenuRef.current.contains(target)) {
+                setIsAdminMenuOpen(false);
+            }
+        };
+        document.addEventListener("click", onClick);
+        return () => document.removeEventListener("click", onClick);
+    }, [isAdminMenuOpen]);
+
+    useEffect(() => {
+        setIsAdminMenuOpen(false);
+    }, [resume?.state]);
 
     useEffect(() => {
         const guardState = { mockExamGuard: true, compilationId: hydrationData.compilationId };
@@ -251,6 +367,44 @@ export default function RunnerClient({
         }
     };
 
+    const handleAdminJump = async (option: DebugJumpOption) => {
+        if (isAdvancing || option.disabled) return;
+        setIsAdminMenuOpen(false);
+        setIsAdvancing(true);
+        try {
+            const result = await advanceMockExamResume({
+                compilationId: hydrationData.compilationId,
+                sessionKey: hydrationData.sessionKey,
+                ...option.payload,
+            });
+
+            if (!result?.ok || !result.resume) {
+                toast({
+                    variant: "destructive",
+                    title: "Transition impossible",
+                    description: result?.error || "Impossible de changer de layout.",
+                });
+                return;
+            }
+
+            setResume(result.resume);
+            if (option.payload.writtenComboRecommended || option.payload.writtenComboChosen) {
+                setWrittenCombo((previous) => ({
+                    recommended: option.payload.writtenComboRecommended || previous.recommended || "A1_A2",
+                    chosen: option.payload.writtenComboChosen || previous.chosen,
+                }));
+            }
+        } catch {
+            toast({
+                variant: "destructive",
+                title: "Erreur inattendue",
+                description: "Le changement de layout a échoué.",
+            });
+        } finally {
+            setIsAdvancing(false);
+        }
+    };
+
     const handleAnswerSaved = (answer: SpeakingAnswer) => {
         setSpeakA2Answers((previous) => {
             const next = [...previous];
@@ -313,6 +467,49 @@ export default function RunnerClient({
                                 })}
                             </div>
                         </div>
+                    </div>
+                    <div className="relative flex items-center justify-start min-h-[40px]" ref={adminMenuRef}>
+                        {isAdmin ? (
+                            <>
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center rounded-lg border border-solid border-neutral-400 bg-neutral-100 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-800 transition hover:border-neutral-600"
+                                    onClick={() => setIsAdminMenuOpen((previous) => !previous)}
+                                    aria-expanded={isAdminMenuOpen}
+                                    aria-haspopup="menu"
+                                    disabled={isAdvancing}
+                                >
+                                    Menu test
+                                </button>
+                                {isAdminMenuOpen ? (
+                                    <div className="absolute left-0 top-full z-30 mt-2 max-h-[60vh] w-[320px] overflow-y-auto rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2 shadow-1">
+                                        <ul className="mb-0 list-none p-0">
+                                            {adminJumpOptions.map((option) => {
+                                                const isCurrent = resume?.state === option.payload.nextState;
+                                                return (
+                                                    <li key={option.key}>
+                                                        <button
+                                                            type="button"
+                                                            className={`w-full rounded-lg px-3 py-2 text-left text-sm transition ${
+                                                                option.disabled || isAdvancing
+                                                                    ? "cursor-not-allowed text-neutral-500"
+                                                                    : isCurrent
+                                                                      ? "bg-neutral-200 text-secondary-2 font-semibold"
+                                                                      : "text-neutral-800 hover:bg-neutral-200 hover:text-secondary-2"
+                                                            }`}
+                                                            disabled={option.disabled || isAdvancing}
+                                                            onClick={() => void handleAdminJump(option)}
+                                                        >
+                                                            {option.label}
+                                                        </button>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </div>
+                                ) : null}
+                            </>
+                        ) : null}
                     </div>
                     {!isExamIntro && (
                         <div className={`min-w-0 w-full ${hideTopHeaderOnSmall ? "hidden lg:flex" : "flex"} lg:flex-col justify-between items-end lg:justify-end shrink-0`}>
