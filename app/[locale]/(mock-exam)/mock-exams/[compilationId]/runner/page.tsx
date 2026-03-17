@@ -117,6 +117,7 @@ export default async function MockExamRunnerPage({
 
     return (
         <RunnerClient
+            key={runnerSession._id}
             hydrationData={hydrationData}
             compilationName={String(compilation.name || "")}
             compilationCorrections={compilationCorrections}

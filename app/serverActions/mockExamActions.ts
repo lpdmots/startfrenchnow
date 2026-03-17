@@ -1050,6 +1050,27 @@ async function clearInProgressSessionsForCompilation(userId: string, compilation
     return inProgressSessions;
 }
 
+async function ensureSingleInProgressSession(userId: string, compilationId: string, preferredSessionId?: string) {
+    const inProgressSessions = await getInProgressSessionsForCompilation(userId, compilationId);
+    if (!inProgressSessions.length) return null as MockExamSessionLite | null;
+    if (inProgressSessions.length === 1) return inProgressSessions[0];
+
+    const preferred = preferredSessionId ? inProgressSessions.find((session) => session._id === preferredSessionId) : null;
+    const keepSession = preferred || inProgressSessions[0];
+    const staleSessions = inProgressSessions.filter((session) => session._id !== keepSession._id);
+    if (staleSessions.length) {
+        const staleSessionIds = staleSessions.map((session) => session._id);
+        await removeSessionRefsFromUser(userId, staleSessionIds);
+        let tx = client.transaction();
+        for (const stale of staleSessions) {
+            tx = tx.delete(stale._id);
+        }
+        await tx.commit({ autoGenerateArrayKeys: true });
+    }
+
+    return keepSession;
+}
+
 export async function getUserCompilations(userId: string) {
     if (!userId) return [] as ExamCompilationLite[];
     const entries = await getUserCompilationEntries(userId);
@@ -1136,19 +1157,9 @@ export async function getOrCreateInProgressMockExamSession(compilationId: string
     if (params?.forceNew) {
         await clearInProgressSessionsForCompilation(userId, compilationId);
     } else {
-        const existing = await getInProgressSessionsForCompilation(userId, compilationId);
-        if (existing[0]) {
-            if (existing.length > 1) {
-                const staleSessions = existing.slice(1);
-                const staleSessionIds = staleSessions.map((stale) => stale._id);
-                await removeSessionRefsFromUser(userId, staleSessionIds);
-                let tx = client.transaction();
-                for (const stale of staleSessions) {
-                    tx = tx.delete(stale._id);
-                }
-                await tx.commit({ autoGenerateArrayKeys: true });
-            }
-            return { ok: true as const, session: existing[0], created: false as const };
+        const existing = await ensureSingleInProgressSession(userId, compilationId);
+        if (existing?._id) {
+            return { ok: true as const, session: existing, created: false as const };
         }
     }
 
@@ -1197,6 +1208,14 @@ export async function getOrCreateInProgressMockExamSession(compilationId: string
     await tx.commit({ autoGenerateArrayKeys: true });
 
     await appendSessionRefToUserCompilation(userId, compilationId, newSession._id);
+    const keptSession = await ensureSingleInProgressSession(userId, compilationId, newSession._id);
+    if (keptSession?._id) {
+        return {
+            ok: true as const,
+            created: keptSession._id === newSession._id,
+            session: keptSession,
+        };
+    }
 
     return {
         ok: true as const,

@@ -129,7 +129,6 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                                 </Link>
                                 {inProgress && <RestartSessionDialog compilationId={compilation._id} />}
                             </div>
-                            <p className="mb-0 text-sm text-neutral-600">Crédits restants: {remainingCredits}</p>
                         </div>
                     </div>
                 </div>
