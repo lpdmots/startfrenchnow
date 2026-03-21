@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { requireSessionAndFide } from "@/app/components/auth/requireSession";
+import { requireSessionAndMockExam } from "@/app/components/auth/requireSession";
 import {
     getCompilation,
     getCompilationSessions,
@@ -23,7 +23,7 @@ export default async function MockExamRunnerPage({
     params: { compilationId: string };
     searchParams?: { restart?: string };
 }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const isAdmin = session?.user?.isAdmin === true;
     if (!userId) {

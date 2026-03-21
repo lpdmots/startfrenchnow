@@ -21,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const staticPaths = [
         "/", // home
         "/fide",
+        "/fide/mock-exams",
         "/fide/exams",
         "/fide/videos",
         "/blog",
@@ -156,10 +157,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // 5) /fide/scenarios/[slug] et /fide/videos/[slug] depuis les productPackage
-    async function getPackagePostSlugs(referenceKey: string): Promise<{ slug: string; updatedAt: string }[]> {
+    async function getPackagePostSlugs(referenceKey: string, options?: { onlyPreview?: boolean }): Promise<{ slug: string; updatedAt: string }[]> {
         const pkg: {
             modules?: {
-                posts?: { slug?: string; updatedAt?: string; _id?: string }[];
+                posts?: { slug?: string; updatedAt?: string; _id?: string; isPreview?: boolean }[];
             }[];
         } | null = await client.fetch(
             `*[_type == "productPackage" && referenceKey == $referenceKey][0]{
@@ -167,7 +168,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             "posts": posts[]->{
               "slug": slug.current,
               "updatedAt": coalesce(_updatedAt, _createdAt),
-              "_id": _id
+              "_id": _id,
+              "isPreview": coalesce(isPreview, false)
             }
           }
         }`,
@@ -181,6 +183,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             for (const p of m.posts ?? []) {
                 if (!p?.slug) continue;
                 if (p._id?.startsWith("drafts.")) continue;
+                if (options?.onlyPreview && !p.isPreview) continue;
                 const updatedAt = p.updatedAt || new Date().toISOString();
 
                 const prev = bestBySlug.get(p.slug);
@@ -194,7 +197,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // /fide/scenarios/[slug]
-    const scenarioPosts = await getPackagePostSlugs("pack_fide_scenarios");
+    const scenarioPosts = await getPackagePostSlugs("pack_fide_scenarios", { onlyPreview: true });
     for (const p of scenarioPosts) {
         const path = `/fide/scenarios/${p.slug}`;
         for (const loc of withLocales(path)) {
@@ -206,7 +209,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // /fide/videos/[slug]
-    const videoPosts = await getPackagePostSlugs("pack_fide");
+    const videoPosts = await getPackagePostSlugs("pack_fide", { onlyPreview: true });
     for (const p of videoPosts) {
         const path = `/fide/videos/${p.slug}`;
         for (const loc of withLocales(path)) {

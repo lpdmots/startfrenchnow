@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { usePathname } from "next-intl/client";
 import Link from "next-intl/link";
@@ -18,17 +18,12 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
     const t = useTranslations("Navigation.fideButton");
 
     const { data: session } = useSession();
-    const [hasDashboardAccess, setHasDashboardAccess] = useState<boolean>(false);
-    const [hasDashboardFrAccess, setHasDashboardFrAccess] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (session) {
-            const hasAccess = session.user?.permissions?.some((p) => p.referenceKey === "pack_fide") || session.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class");
-            setHasDashboardAccess(!!hasAccess);
-            const hasFrAccess = session.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
-            setHasDashboardFrAccess(!!hasFrAccess);
-        }
-    }, [session]);
+    const hasDashboardAccess = !!(
+        session?.user?.hasMockExamAccess === true ||
+        session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide") ||
+        session?.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class")
+    );
+    const hasDashboardFrAccess = !!session?.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
 
     useOutsideClick(ref, () => {
         setOpen(false);

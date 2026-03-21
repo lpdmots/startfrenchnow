@@ -40,7 +40,7 @@ Après le premier choix utilisateur (oralBranch, puis writtenCombo), on prune ex
   - Les réponses (`speakA2Answers`, etc.) sont **présentes pendant la session** puis **supprimées en fin de session** (on conserve uniquement les scores).
   - Option fin de session : si l’utilisateur demande un retour prof → les réponses sont transférées dans un document `ExamReview`.
 
-> Important : un utilisateur peut relancer une compilation autant qu’il veut (retake), ou créer une nouvelle compilation (payant).  
+> Important : un utilisateur peut relancer une compilation autant qu’il veut (retake), ou débloquer une nouvelle compilation (payant).  
 > **Retake = même compilation** (mêmes tâches référencées, mêmes choix oralBranch/writtenCombo verrouillés).
 
 ---
@@ -51,7 +51,13 @@ Après le premier choix utilisateur (oralBranch, puis writtenCombo), on prune ex
 1. L’utilisateur voit la liste de ses `ExamCompilation`.
 2. Il peut :
    - **Relancer** une compilation existante (retake),
-   - **Créer une nouvelle compilation** (payant), qui apparaît ensuite dans la liste et peut être lancée.
+   - **Débloquer la compilation suivante** (payant), qui apparaît ensuite dans la liste et peut être lancée.
+
+Règle d’attribution payante :
+- templates actifs triés par `order` asc puis `_id` asc
+- attribution de la première compilation non possédée
+- jamais de doublon par utilisateur, même en cas de changement d’ordre
+- aucune sélection aléatoire
 
 ### 2.2 Lancement d’une tentative (MockExamSession)
 1. Au lancement, l’app crée une nouvelle entrée dans `ExamCompilation.session[]` (status `in_progress`) et initialise `resume`.
@@ -138,7 +144,7 @@ et agrège ensuite un score `scores.listening`.
 ### 4.1 Dashboard & compilation
 - `EXAM_DASHBOARD`
   - (select compilation) → `COMPILATION_DETAIL`
-  - (create new compilation) → `COMPILATION_CREATE` → `COMPILATION_DETAIL`
+  - (unlock next compilation) → `COMPILATION_CREATE` → `COMPILATION_DETAIL`
 
 - `COMPILATION_DETAIL`
   - (start / retake) → `EXAM_INIT`

@@ -40,6 +40,10 @@
             "title": "Scénarios actuels FIDE : examens blancs A1–B1 | Start French Now",
             "description": "100+ examens blancs FIDE (A1–B1) : lire, écrire, comprendre et parler, scénarios actuels, PDF, vidéos et entraînement interactif. Start French Now."
         },
+        "FideMockExams": {
+            "title": "Examen blanc FIDE en ligne (A1-A2 / A2-B1) | Start French Now",
+            "description": "Passez un examen blanc FIDE complet en ligne: format fidèle, score immédiat, correction détaillée, PDF, vidéos et retours d'expérience clients Start French Now."
+        },
         "FideVideos": {
             "title": "Vidéos FIDE Suisse A1–B1 | Pack FIDE | Start French Now",
             "description": "Accédez à toutes nos vidéos FIDE Suisse (A1–B1) : vocabulaire, grammaire et situations d’examen. Des leçons claires + previews gratuites. Start French Now."
@@ -880,8 +884,8 @@
             "moreExams": "Plus d'examens blancs"
         },
         "ReviewsFide": {
-            "title": "<hs3>Avis d'Étudiants</hs3> FIDE : Leur Réussite, Votre Inspiration",
-            "description": "Découvrez les témoignages de nos étudiants qui ont suivi nos cours FIDE.",
+            "title": "<hs3>Retours d'expérience</hs3> clients FIDE",
+            "description": "Découvrez des témoignages d'apprenants ayant utilisé les contenus FIDE pour progresser.",
             "circularProgress": {
                 "score": "Score Fide :",
                 "lessons": "Leçons",
@@ -891,7 +895,7 @@
         },
         "ContactForFide": {
             "title": "Contact préparation FIDE",
-            "description": "Indiquez votre adresse e-mail et nous vous orienterons selon votre niveau et votre objectif FIDE.",
+            "description": "Réservez un entretien gratuit avec le professeur pour définir votre plan de formation personnalisé.",
             "successMessage": "Votre demande a été envoyée. Nous vous contacterons dès que possible, veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
             "errorMessage": "Oups ! Quelque chose a mal tourné.",
             "placeholder": "Votre adresse e-mail",

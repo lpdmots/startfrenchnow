@@ -19,11 +19,15 @@ import { client } from "@/app/lib/sanity.client";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
 import { groq } from "next-sanity";
+import { getTranslator } from "next-intl/server";
+
+const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
 async function ExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const hasReservation = !!session?.user?.lessons?.some((lesson) => lesson.eventType === "Fide Preparation Class" && lesson.totalPurchasedMinutes > 0);
+    const tFaq = await getTranslator(locale, "Fide.FideFAQ");
     const queryProduct = groq`
         *[_type=='product' && slug.current == $slug][0]
     `;
@@ -54,8 +58,116 @@ async function ExamsPage({ params: { locale } }: { params: { locale: Locale } })
         }
     }
 
+    const stripTags = (value: string) => value.replace(/<[^>]*>/g, "").trim();
+    const faqText = <K extends Parameters<typeof tFaq.raw>[0]>(key: K) => {
+        const value = tFaq.raw(key);
+        return stripTags(typeof value === "string" ? value : String(value ?? ""));
+    };
+    const canonicalPath = locale === "fr" ? "/fr/fide" : "/fide";
+    const homePath = locale === "fr" ? "/fr" : "/";
+    const canonicalUrl = `${SITE}${canonicalPath}`;
+
+    const faqJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+            {
+                "@type": "Question",
+                name: faqText("qu_est_ce_que_fide.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faqText("qu_est_ce_que_fide.content"),
+                },
+            },
+            {
+                "@type": "Question",
+                name: faqText("de_quel_niveau_besoin.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: [
+                        faqText("de_quel_niveau_besoin.content.part1"),
+                        faqText("de_quel_niveau_besoin.content.list.item1"),
+                        faqText("de_quel_niveau_besoin.content.list.item2"),
+                        faqText("de_quel_niveau_besoin.content.list.item3"),
+                        faqText("de_quel_niveau_besoin.content.list.item4"),
+                        faqText("de_quel_niveau_besoin.content.part2"),
+                    ].join(" "),
+                },
+            },
+            {
+                "@type": "Question",
+                name: faqText("ou_et_quand_passer_examen.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faqText("ou_et_quand_passer_examen.content.part1"),
+                },
+            },
+            {
+                "@type": "Question",
+                name: faqText("parties_examen.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: [faqText("parties_examen.content.part1"), faqText("parties_examen.content.list.item1"), faqText("parties_examen.content.list.item2")].join(" "),
+                },
+            },
+            {
+                "@type": "Question",
+                name: faqText("combien_coute_examen.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faqText("combien_coute_examen.content"),
+                },
+            },
+            {
+                "@type": "Question",
+                name: faqText("resultats_examen.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faqText("resultats_examen.content"),
+                },
+            },
+            {
+                "@type": "Question",
+                name: faqText("validite_examen.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faqText("validite_examen.content"),
+                },
+            },
+            {
+                "@type": "Question",
+                name: faqText("difficulte_examen.title"),
+                acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faqText("difficulte_examen.content"),
+                },
+            },
+        ],
+    };
+
+    const breadcrumbJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: locale === "fr" ? "Accueil" : "Home",
+                item: `${SITE}${homePath}`,
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "FIDE",
+                item: canonicalUrl,
+            },
+        ],
+    };
+
     return (
         <div className="w-full mb-24">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
             <div className="page-wrapper flex flex-col max-w-7xl m-auto">
                 <HeroFide />
             </div>

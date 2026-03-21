@@ -6,11 +6,35 @@ import { SlideFromBottom } from "@/app/components/animations/Slides";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
+import { ReactNode } from "react";
 
-export function FideFaq() {
+type FideFaqItem = {
+    title: string;
+    content: ReactNode;
+};
+
+type FideFaqProps = {
+    title?: ReactNode;
+    subtitle?: ReactNode;
+    items?: FideFaqItem[];
+    variant?: "default" | "thin";
+    showHeader?: boolean;
+    className?: string;
+    maxWidthClassName?: string;
+};
+
+export function FideFaq({
+    title,
+    subtitle,
+    items,
+    variant = "default",
+    showHeader = true,
+    className = "",
+    maxWidthClassName = "max-w-5xl",
+}: FideFaqProps = {}) {
     const t = useTranslations("Fide.FideFAQ");
 
-    const data = [
+    const data: FideFaqItem[] = items ?? [
         {
             title: t("qu_est_ce_que_fide.title"),
             content: <p>{t("qu_est_ce_que_fide.content")}</p>,
@@ -158,30 +182,45 @@ export function FideFaq() {
             ),
         },
     ];
+    const isThin = variant === "thin";
+    const resolvedTitle = title ?? t.rich("title", intelRich());
+    const resolvedSubtitle = subtitle ?? t.rich("subtitle", intelRich());
 
     return (
-        <div className="flex flex-col items-center px-2">
-            <SlideFromBottom>
-                <div className="flex w-full justify-center">
-                    <div className="text-center max-w-5xl">
-                        <h2 className="display-2">{t.rich("title", intelRich())}</h2>
-                        <p className="mg-bottom-48px">{t.rich("subtitle", intelRich())}</p>
+        <div className={`flex flex-col items-center px-2 ${className}`.trim()}>
+            {showHeader ? (
+                <SlideFromBottom>
+                    <div className="flex w-full justify-center">
+                        <div className={`text-center ${maxWidthClassName}`.trim()}>
+                            <h2 className="display-2">{resolvedTitle}</h2>
+                            <p className="mg-bottom-48px">{resolvedSubtitle}</p>
+                        </div>
                     </div>
-                </div>
-            </SlideFromBottom>
-            <Accordion type="multiple" className="w-full flex flex-col gap-2 md:gap-4 max-w-5xl">
+                </SlideFromBottom>
+            ) : null}
+            <Accordion type="multiple" className={`w-full flex flex-col ${isThin ? "gap-2 md:gap-3" : "gap-2 md:gap-4"} ${maxWidthClassName}`.trim()}>
                 {data.map((item, index) => (
-                    <div key={index} className="card link-card w-full">
+                    <div key={index} className={isThin ? "w-full rounded-2xl border border-neutral-300 bg-neutral-100 shadow-sm" : "card link-card w-full"}>
                         <AccordionItem key={index} value={`item-${index}`}>
                             <RadixAccordion.Trigger className="w-full flex flex-col p-0" style={{ backgroundColor: "transparent" }}>
                                 <AccordionButton>
                                     <div className="flex w-full justify-between items-center color-neutral-800 gap-6">
-                                        <h3 className="font-bold text-lg md:text-2xl mb-0 color-neutral-800 text-left">{item.title}</h3>
-                                        <div className="btn btn-secondary small border-[3px] !p-2 w-[50px] h-[50px] flex items-center justify-center">
+                                        <h3 className={isThin ? "font-bold text-lg md:text-xl mb-0 color-neutral-800 text-left" : "font-bold text-lg md:text-2xl mb-0 color-neutral-800 text-left"}>
+                                            {item.title}
+                                        </h3>
+                                        <div
+                                            className={
+                                                isThin
+                                                    ? "btn btn-secondary small border !border-neutral-300 !p-2 w-[44px] h-[44px] flex items-center justify-center"
+                                                    : "btn btn-secondary small border-[3px] !p-2 w-[50px] h-[50px] flex items-center justify-center"
+                                            }
+                                        >
                                             <Plus />
                                         </div>
                                     </div>
-                                    <AccordionContent className="text-lg color-neutral-800 text-left pt-4 pb-0">{item.content}</AccordionContent>
+                                    <AccordionContent className={isThin ? "text-base color-neutral-800 text-left pt-3 pb-0" : "text-lg color-neutral-800 text-left pt-4 pb-0"}>
+                                        {item.content}
+                                    </AccordionContent>
                                 </AccordionButton>
                             </RadixAccordion.Trigger>
                         </AccordionItem>

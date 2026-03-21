@@ -15,6 +15,7 @@ declare module "next-auth" {
             email: string;
             permissions?: Permission[];
             lessons?: Lesson[];
+            hasMockExamAccess?: boolean;
             isAdmin?: boolean;
             notificationsLength: number;
         };
@@ -25,6 +26,7 @@ declare module "next-auth/jwt" {
     interface JWT {
         _id?: string;
         permissions?: Permission[];
+        hasMockExamAccess?: boolean;
     }
 }
 
@@ -135,6 +137,13 @@ export const authOptions: NextAuthOptions = {
 
             const now = Date.now();
             const perms = Array.isArray(u.permissions) ? u.permissions.filter((p) => !p.expiresAt || new Date(p.expiresAt).getTime() > now) : [];
+            const hasPackFidePermission = perms.some((permission) => permission.referenceKey === "pack_fide");
+            const credits = Array.isArray((u as any).credits) ? (u as any).credits : [];
+            const mockExamCredit = credits.find((credit: any) => credit?.referenceKey === "mock_exam");
+            const totalCredits = Number(mockExamCredit?.totalCredits || 0);
+            const remainingCredits = Number(mockExamCredit?.remainingCredits || 0);
+            const hasMockExamCompilation = Array.isArray((u as any).examCompilations) && (u as any).examCompilations.length > 0;
+            const hasMockExamAccess = hasPackFidePermission || totalCredits > 0 || remainingCredits > 0 || hasMockExamCompilation;
 
             return {
                 ...token,
@@ -144,6 +153,7 @@ export const authOptions: NextAuthOptions = {
                 alias: u.alias ?? [],
                 permissions: perms,
                 lessons: Array.isArray(u.lessons) ? u.lessons : [],
+                hasMockExamAccess,
                 isAdmin: (u as any).isAdmin === true,
                 notificationsLength: Array.isArray((u as any).notifications) ? (u as any).notifications.length : 0,
             };
@@ -160,6 +170,7 @@ export const authOptions: NextAuthOptions = {
                     alias: (token as any).alias ?? [],
                     permissions: (token.permissions as Permission[]) || [],
                     lessons: (token.lessons as Lesson[]) || [],
+                    hasMockExamAccess: (token as any).hasMockExamAccess === true,
                     isAdmin: (token as any).isAdmin === true,
                     notificationsLength: (token as any).notificationsLength || 0,
                 },

@@ -2,8 +2,6 @@ import { ExamVideo } from "./ExamVideo";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { AskForPdf } from "./AskForPdf";
-import LinkArrow from "@/app/components/common/LinkArrow";
-import Link from "next-intl/link";
 
 export const WhatIsFide = () => {
     const t = useTranslations("Fide.WhatIsFide");
@@ -21,7 +19,7 @@ export const WhatIsFide = () => {
                 <div id="w-node-d6ab327c-c12b-e1a4-6a28-7aaa783883be-b9543dac" data-w-id="d6ab327c-c12b-e1a4-6a28-7aaa783883be" className="inner-container test" style={{ maxWidth: 650 }}>
                     <div className="text-center---tablet flex flex-col gap-6 lg:gap-12 h-full">
                         <div className="inner-container _550px---tablet center">
-                            <h1 className="hero-title text-neutral-800">{t.rich("title", intelRich())}</h1>
+                            <h2 className="hero-title text-neutral-800">{t.rich("title", intelRich())}</h2>
                         </div>
                         <div className="flex grow flex-col justify-center text-left">
                             <div className="flex flex-col gap-4 lg:gap-8">

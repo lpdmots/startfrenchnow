@@ -23,17 +23,23 @@ Notes :
 - `activities[]` est ordonné (Sanity array order)
 - `activities[]` a un `_key` automatique, utilisé comme `activityKey` dans les réponses
 
-### 1.2 ExamCompilation
+### 1.2 ExamCompilation (template)
 
 Champs essentiels :
 
-- `userId`
+- `name`
+- `isActive`
+- `order` (priorité d’attribution)
+- `image`
+- `corrections`
 - `examConfig: MockExamConfigRef` (refs)
-- `oralBranch: { recommended, chosen? }`
-- `writtenCombo: { recommended, chosen? }`
-- `session: MockExamSession[]` (5 dernières)
 
-### 1.3 User credits
+Notes :
+
+- `examCompilation` est un template global (pas un document créé par utilisateur à l’achat).
+- Le lien user -> compilation est stocké dans `user.examCompilations[]`.
+
+### 1.3 User credits & attribution
 
 User possède :
 
@@ -41,11 +47,18 @@ User possède :
 
 Règle :
 
-- création compilation payante : `remainingCredits--`
+- achat d’un mock exam : attribuer une compilation et faire `remainingCredits--`
+- attribution serveur :
+    - lister les `examCompilation` actives
+    - trier par `order` asc puis `_id` asc (fallback stable)
+    - prendre la première non possédée par l’utilisateur
+    - ne jamais attribuer un doublon à un même utilisateur
+    - ne pas consommer de crédit si aucune nouvelle compilation n’est disponible
+- pas de sélection aléatoire
 
 ---
 
-## 2) Runner (page unique) — `/mock-exam/[compilationId]`
+## 2) Runner (page unique) — `/mock-exams/[compilationId]`
 
 Au mount :
 

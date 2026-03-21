@@ -3,7 +3,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { groq } from "next-sanity";
 import { redirect } from "next/navigation";
-import { requireSessionAndFide } from "@/app/components/auth/requireSession";
+import { requireSessionAndMockExam } from "@/app/components/auth/requireSession";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import clientOpenai from "@/app/lib/openAi.client";
 import { MOCK_EXAM_COMPILATION_QUERY, MOCK_EXAM_TASKS_BY_IDS_QUERY, MOCK_EXAM_USER_COMPILATIONS_QUERY, USER_MOCK_EXAM_CREDITS_QUERY } from "@/app/lib/groqQueries";
@@ -76,6 +76,11 @@ export type UserMockExamCredit = {
     totalCredits?: number;
     remainingCredits?: number;
 } | null;
+
+type ActiveCompilationLite = {
+    _id: string;
+    order?: number | null;
+};
 
 type SessionWithCompilationId = MockExamSessionLite & { compilationId?: string };
 
@@ -592,7 +597,8 @@ const USER_COMPILATION_ENTRIES_QUERY = groq`
 `;
 
 const ACTIVE_COMPILATION_IDS_QUERY = groq`
-  *[_type == "examCompilation" && isActive == true]{
+  *[_type == "examCompilation" && isActive == true]
+    | order(coalesce(order, 999999) asc, _id asc){
     _id
   }
 `;
@@ -1113,7 +1119,7 @@ export async function getUserCompilations(userId: string) {
 export async function getUserAvailableMockExamCompilationCount(userId: string) {
     if (!userId) return 0;
 
-    const [entries, activeCompilations] = await Promise.all([getUserCompilationEntries(userId), client.fetch<Array<{ _id: string }>>(ACTIVE_COMPILATION_IDS_QUERY)]);
+    const [entries, activeCompilations] = await Promise.all([getUserCompilationEntries(userId), client.fetch<ActiveCompilationLite[]>(ACTIVE_COMPILATION_IDS_QUERY)]);
     if (!entries) return 0;
 
     const ownedIds = new Set(entries.map((entry) => entry.compilationId).filter(Boolean) as string[]);
@@ -1139,7 +1145,7 @@ export async function getCompilationSessions(userId: string, compilationId: stri
 }
 
 export async function getOrCreateInProgressMockExamSession(compilationId: string, params?: { forceNew?: boolean }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     if (!userId || !compilationId) {
         return { ok: false as const, error: "Paramètres invalides." };
@@ -1225,7 +1231,7 @@ export async function getOrCreateInProgressMockExamSession(compilationId: string
 }
 
 export async function purchaseMockExamCompilation() {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     if (!userId) {
         return { ok: false as const, error: "Utilisateur introuvable." };
@@ -1237,9 +1243,12 @@ export async function purchaseMockExamCompilation() {
     }
     const ownedIds = new Set(entries.map((entry) => entry.compilationId).filter(Boolean) as string[]);
 
-    const activeCompilations = await client.fetch<Array<{ _id: string }>>(ACTIVE_COMPILATION_IDS_QUERY);
-    const available = (activeCompilations || []).map((item) => item._id).filter((id) => id && !ownedIds.has(id));
-    if (!available.length) {
+    const activeCompilations = await client.fetch<ActiveCompilationLite[]>(ACTIVE_COMPILATION_IDS_QUERY);
+    const nextAvailable = (activeCompilations || []).find((item) => {
+        const compilationId = String(item?._id || "");
+        return compilationId && !ownedIds.has(compilationId);
+    });
+    if (!nextAvailable?._id) {
         return { ok: false as const, error: "Aucune nouvelle compilation disponible pour le moment." };
     }
 
@@ -1248,8 +1257,7 @@ export async function purchaseMockExamCompilation() {
         return { ok: false as const, error: "Vous n'avez plus de crédits disponibles." };
     }
 
-    const randomIndex = Math.floor(Math.random() * available.length);
-    const compilationId = available[randomIndex];
+    const compilationId = nextAvailable._id;
     const now = new Date().toISOString();
 
     await client
@@ -1311,7 +1319,7 @@ export async function patchSession(sessionKey: string, params: { set?: Record<st
 }
 
 export async function finalizeMockExamSession(params: { compilationId: string; sessionKey: string }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(params.compilationId || "");
     const sessionKey = String(params.sessionKey || "");
@@ -1363,7 +1371,7 @@ export async function createExamReviewFromCalendlyBooking(params: {
     timezone?: string;
     joinUrl?: string;
 }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = String(session?.user?._id || "");
     const compilationId = String(params.compilationId || "");
     const sessionKey = String(params.sessionKey || "");
@@ -1493,7 +1501,7 @@ export async function createExamReviewFromCalendlyBooking(params: {
 }
 
 export async function saveMockExamSpeakingAnswer(params: { compilationId: string; sessionKey: string; taskId: string; activityKey: string; audioUrl: string; transcriptFinal: string }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const { compilationId, sessionKey, taskId, activityKey, audioUrl } = params;
     const transcriptFinal = String(params.transcriptFinal || "").trim();
@@ -1540,7 +1548,7 @@ export async function saveMockExamSpeakingAnswer(params: { compilationId: string
 }
 
 export async function saveMockExamReadWriteAnswer(params: { compilationId: string; sessionKey: string; taskId: string; activityKey: string; questionKey: string; textAnswer: string }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(params.compilationId || "");
     const sessionKey = String(params.sessionKey || "");
@@ -1587,7 +1595,7 @@ export async function saveMockExamReadWriteAnswer(params: { compilationId: strin
 }
 
 export async function saveMockExamListeningScenarioResult(params: { compilationId: string; sessionKey: string; examId: string; score: number; max?: number }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(params.compilationId || "");
     const sessionKey = String(params.sessionKey || "");
@@ -1664,7 +1672,7 @@ export async function saveMockExamListeningScenarioResult(params: { compilationI
 }
 
 export async function evaluateMockExamSpeakA2Section(params: { compilationId: string; sessionKey: string; isRetry?: boolean }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const isAdmin = session?.user?.isAdmin === true;
     const compilationId = String(params.compilationId || "");
@@ -1822,7 +1830,7 @@ export async function evaluateMockExamSpeakA2Section(params: { compilationId: st
 }
 
 export async function evaluateMockExamSpeakBranchSection(params: { compilationId: string; sessionKey: string; isRetry?: boolean }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const isAdmin = session?.user?.isAdmin === true;
     const compilationId = String(params.compilationId || "");
@@ -2038,7 +2046,7 @@ export async function evaluateMockExamSpeakBranchSection(params: { compilationId
 }
 
 export async function evaluateMockExamReadWriteSection(params: { compilationId: string; sessionKey: string; isRetry?: boolean }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const isAdmin = session?.user?.isAdmin === true;
     const compilationId = String(params.compilationId || "");
@@ -2754,7 +2762,7 @@ export async function evaluateMockExamReadWriteSection(params: { compilationId: 
 }
 
 export async function restartMockExamCompilation(formData: FormData) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(formData.get("compilationId") || "");
     if (!userId || !compilationId) return null;
@@ -2778,7 +2786,7 @@ export async function advanceMockExamResume(params: {
     writtenComboChosen?: WrittenCombo;
     writtenComboRecommended?: WrittenCombo;
 }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     if (!userId || !params.compilationId || !params.sessionKey || !params.nextState) {
         return { ok: false as const, error: "Paramètres invalides." };

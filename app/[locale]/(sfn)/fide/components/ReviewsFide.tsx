@@ -486,6 +486,8 @@ const reviewsComments = [
     },
 ];
 
+export const sharedFideReviews = reviewsComments;
+
 export const ReviewsFide = () => {
     const t = useTranslations("Fide.ReviewsFide");
 
@@ -501,7 +503,7 @@ export const ReviewsFide = () => {
             </SlideFromBottom>
             <Fade delay={0.6}>
                 <div className="relative min-h-[470px]">
-                    <CarouselReviews comments={reviewsComments.sort((a, b) => (b.date ?? 0) - (a.date ?? 0))} />
+                    <CarouselReviews comments={[...sharedFideReviews].sort((a, b) => (b.date ?? 0) - (a.date ?? 0))} />
                     <div className="h-20 lg:hidden"></div>
                 </div>
             </Fade>

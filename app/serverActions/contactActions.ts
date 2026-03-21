@@ -110,7 +110,14 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     try {
         await transporter.sendMail({
             ...getMailOptions("yohann"),
-            subject: "Nouveau contact FIDE",
+            subject:
+                type === "input"
+                    ? "Demande de contact FIDE envoyée depuis le bandeau."
+                    : type === "pdf"
+                      ? "Demande de PDF envoyée."
+                      : type === "blog"
+                        ? "Demande d'entretien depuis un article du blog"
+                        : "Nouvelle demande de contact FIDE",
             text: yohannEmailContent.text,
             html: yohannEmailContent.html,
         });

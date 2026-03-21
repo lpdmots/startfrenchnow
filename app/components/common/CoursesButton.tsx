@@ -5,19 +5,11 @@ import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { Locale } from "@/i18n";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { FaCaretDown, FaCaretRight, FaLock } from "react-icons/fa";
 
 export const CoursesButton = ({ locale, dictionnary }: { locale: Locale; dictionnary: any }) => {
     const { data: session } = useSession();
-    const [hasDashboardFrAccess, setHasDashboardFrAccess] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (session) {
-            const hasAccess = session.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
-            setHasDashboardFrAccess(!!hasAccess);
-        }
-    }, [session]);
+    const hasDashboardFrAccess = !!session?.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
 
     const dropdownLearn = {
         content: (

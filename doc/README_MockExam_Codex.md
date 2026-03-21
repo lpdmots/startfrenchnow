@@ -4,7 +4,7 @@
 
 Mettre en place dans Start French Now une fonctionnalité **d’examen blanc FIDE** (expérience “mode examen”, séquentielle, sans retour arrière) avec :
 
-- **Compilation** d’un mock exam à partir d’éléments (tasks/packs Sanity)
+- **Templates de compilation** mock exam (tasks/packs Sanity) attribués à l’utilisateur
 - **Runner** sur une page unique `/mock-exams/[compilationId]/runner`
 - **Corrections IA** (speaking + read/write), et **comprendre** via composant existant
 - **Retake** (relancer une compilation) avec chemin verrouillé
@@ -77,11 +77,17 @@ S’inspirer des serverActions existantes :
 
 ### Compilation & crédits
 
-- L’utilisateur a une liste de `ExamCompilation` dans le dashboard.
-- Il peut **relancer** une compilation (retake) ou **créer une nouvelle compilation** (payant).
+- `examCompilation` est un **template Sanity global** (pas créé à l’achat utilisateur).
+- L’utilisateur a une liste de `ExamCompilation` **débloquées** dans le dashboard.
+- Il peut **relancer** une compilation (retake) ou **acheter/débloquer** la suivante (payant).
 - Les crédits sont dans `user.credits[]` (Sanity), avec `referenceKey="mock_exam"`.
-    - création compilation : consomme **1 crédit** (`remainingCredits--`)
-    - la compilation est créée puis ajoutée dans le tableau, ensuite sur la ligne on peut cliquer "Commencer".
+    - achat compilation : consomme **1 crédit** (`remainingCredits--`) uniquement si une nouvelle compilation est disponible.
+    - la compilation débloquée est ajoutée dans `user.examCompilations[]`, ensuite on peut cliquer "Commencer".
+- Règle d’attribution (serveur) :
+    - prendre les templates actifs triés par `order` (asc), puis `_id` (asc) en fallback stable
+    - attribuer la première compilation non encore possédée par l’utilisateur
+    - ne jamais attribuer deux fois la même compilation au même compte, même si l’ordre est modifié
+    - aucune sélection aléatoire
 
 ### Chemin verrouillé (retake)
 

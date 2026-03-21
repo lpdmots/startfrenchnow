@@ -3,7 +3,7 @@ import Link from "next-intl/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import urlFor from "@/app/lib/urlFor";
-import { requireSessionAndFide } from "@/app/components/auth/requireSession";
+import { requireSessionAndMockExam } from "@/app/components/auth/requireSession";
 import { getCompilation, getCompilationSessions, getUserMockExamCredits, isMockExamCompilationUnlockedForUser } from "@/app/serverActions/mockExamActions";
 import type { ScoreSummary, SessionStatus } from "@/app/types/fide/mock-exam";
 import RestartSessionDialog from "./RestartSessionDialog";
@@ -43,7 +43,7 @@ const formatScore = (score?: ScoreSummary) => {
 };
 
 export default async function MockExamCompilationPage({ params: { compilationId } }: { params: { compilationId: string } }) {
-    const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
 
     if (!userId) {

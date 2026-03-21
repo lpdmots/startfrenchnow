@@ -61,7 +61,7 @@ export const DashboardMockExams = ({
     const canBuy = canPurchase && credits > 0 && availableToPurchase > 0;
 
     return (
-        <section id="exams" className="page-wrapper flex flex-col max-w-7xl m-auto gap-6 lg:gap-10 w-full py-0">
+        <section id="mock-exams" className="page-wrapper flex flex-col max-w-7xl m-auto gap-6 lg:gap-10 w-full py-0">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div className="flex flex-col gap-2">
                     <h2 className="mb-0 w-full display-2 font-medium">

@@ -10,9 +10,20 @@ interface Props {
     className?: string;
     fontHeight?: string;
     withSize?: boolean;
+    centerText?: string;
 }
 
-export default function CircularProgressMagic({ max = 100, min = 0, value = 0, gaugePrimaryColor, gaugeSecondaryColor, className, fontHeight = "text-base", withSize = true }: Props) {
+export default function CircularProgressMagic({
+    max = 100,
+    min = 0,
+    value = 0,
+    gaugePrimaryColor,
+    gaugeSecondaryColor,
+    className,
+    fontHeight = "text-base",
+    withSize = true,
+    centerText,
+}: Props) {
     const circumference = 2 * Math.PI * 45;
     const percentPx = circumference / 104;
     const currentPercent = Math.round(((value - min) / (max - min)) * 100);
@@ -85,7 +96,7 @@ export default function CircularProgressMagic({ max = 100, min = 0, value = 0, g
                 data-current-value={currentPercent}
                 className={clsx("duration-[var(--transition-length)] delay-[var(--delay)] absolute inset-0 m-auto size-fit ease-linear animate-in fade-in", fontHeight)}
             >
-                {currentPercent ? `${currentPercent}%` : "?"}
+                {typeof centerText === "string" ? centerText : currentPercent ? `${currentPercent}%` : "?"}
             </span>
         </div>
     );

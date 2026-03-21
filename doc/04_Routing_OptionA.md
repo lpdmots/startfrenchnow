@@ -7,7 +7,7 @@ Ce document définit le routing minimal et les règles de navigation pour une UX
 ### Dashboard
 
 - `/fide/dashboard#exams`
-    - Pas de page dédiée : c’est une **section** “Mock exams” dans le dashboard (liste des `ExamCompilation`, CTA “nouvelle compilation” payant).
+    - Pas de page dédiée : c’est une **section** “Mock exams” dans le dashboard (liste des `ExamCompilation`, CTA “débloquer une compilation” payant).
 
 ### Détail compilation
 

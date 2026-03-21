@@ -5,20 +5,16 @@ import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { Locale } from "@/i18n";
 import { FaCaretDown, FaCaretRight, FaLock } from "react-icons/fa";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 export const FideButton = ({ locale }: { locale: Locale }) => {
     const t = useTranslations("Navigation.fideButton");
     const { data: session } = useSession();
-    const [hasDashboardAccess, setHasDashboardAccess] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (session) {
-            const hasAccess = session.user?.permissions?.some((p) => p.referenceKey === "pack_fide") || session.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class");
-            setHasDashboardAccess(!!hasAccess);
-        }
-    }, [session]);
+    const hasDashboardAccess = !!(
+        session?.user?.hasMockExamAccess === true ||
+        session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide") ||
+        session?.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class")
+    );
 
     const dropdownLearn = {
         content: (

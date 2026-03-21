@@ -40,6 +40,10 @@
             "title": "Current FIDE Scenarios & Mock Exams (A1–B1) | Start French Now",
             "description": "100+ FIDE mock exams (A1–B1): reading, writing, comprehension, and speaking, current scenarios, PDFs, videos, and interactive training. Start French Now."
         },
+        "FideMockExams": {
+            "title": "Online FIDE Mock Exam (A1-A2 / A2-B1) | Start French Now",
+            "description": "Take a full FIDE mock exam online: faithful format, instant score, detailed correction, PDFs, videos, and client experience feedback from Start French Now."
+        },
         "FideVideos": {
             "title": "Swiss FIDE Videos A1–B1 | Pack FIDE | Start French Now",
             "description": "Prepare for the Swiss FIDE exam with 50+ structured videos from A1 to B1: daily-life topics, key phrases, plus exam-style practice. Start French Now."
@@ -877,8 +881,8 @@
             "moreExams": "More mock exams"
         },
         "ReviewsFide": {
-            "title": "FIDE <hs3>Student Reviews</hs3>: Their Success, Your Inspiration",
-            "description": "Discover testimonials from our students.",
+            "title": "FIDE <hs3>Client Reviews</hs3>",
+            "description": "Discover testimonials from learners who used FIDE content to improve.",
             "circularProgress": {
                 "score": "Fide Score:",
                 "lessons": "Lessons",
@@ -888,7 +892,7 @@
         },
         "ContactForFide": {
             "title": "Contact FIDE Preparation",
-            "description": "Provide your email address and we will guide you based on your level and FIDE goal.",
+            "description": "Book a free consultation with the teacher to define your personalized training plan.",
             "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
             "errorMessage": "Oops! Something went wrong.",
             "placeholder": "Your email address",
