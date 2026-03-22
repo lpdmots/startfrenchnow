@@ -20,17 +20,13 @@ export const FideButton = ({ locale }: { locale: Locale }) => {
         content: (
             <div className="card p-4 pr-12 mt-4">
                 <div className="flex flex-col" style={{ minWidth: 125 }}>
-                    <LinkCurrentBlog
-                        href={hasDashboardAccess ? "/fide/dashboard" : "#"}
-                        className={clsx("nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center", !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600")}
-                        locale={locale as Locale}
-                    >
-                        {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
-                        {t("dashboard")}
-                    </LinkCurrentBlog>
                     <LinkCurrentBlog href="/fide" matchPrefix={false} className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {t("fide")}
+                    </LinkCurrentBlog>
+                    <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
+                        <FaCaretRight />
+                        {t("mockExams")}
                     </LinkCurrentBlog>
                     <LinkCurrentBlog href="/fide/videos" withParams="fide-videos" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
                         <FaCaretRight />
@@ -39,6 +35,14 @@ export const FideButton = ({ locale }: { locale: Locale }) => {
                     <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" withParams="fide-exams" locale={locale as Locale}>
                         <FaCaretRight />
                         {t("exams")}
+                    </LinkCurrentBlog>
+                    <LinkCurrentBlog
+                        href={hasDashboardAccess ? "/fide/dashboard" : "#"}
+                        className={clsx("nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center", !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600")}
+                        locale={locale as Locale}
+                    >
+                        {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
+                        {t("dashboard")}
                     </LinkCurrentBlog>
                 </div>
             </div>

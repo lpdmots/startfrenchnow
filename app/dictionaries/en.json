@@ -134,7 +134,8 @@
             "packFide": "Pack FIDE",
             "dashboard": "FIDE Dashboard",
             "videos": "FIDE Lessons",
-            "exams": "Mock Exams"
+            "mockExams": "FIDE Mock Exam",
+            "exams": "FIDE Scenarios"
         }
     },
     "HeroSfn": {

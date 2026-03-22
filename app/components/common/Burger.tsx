@@ -50,19 +50,6 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                 <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
                                     <div onClick={() => setOpen(false)}>
                                         <LinkCurrentBlog
-                                            href={hasDashboardAccess ? "/fide/dashboard" : "#"}
-                                            className={clsx(
-                                                "nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0",
-                                                !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
-                                            )}
-                                            locale={locale as Locale}
-                                        >
-                                            {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
-                                            {t("dashboard")}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
                                             href="/fide"
                                             matchPrefix={false}
                                             className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
@@ -70,6 +57,16 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                         >
                                             <FaCaretRight />
                                             {t("fide")}
+                                        </LinkCurrentBlog>
+                                    </div>
+                                    <div onClick={() => setOpen(false)}>
+                                        <LinkCurrentBlog
+                                            href="/fide/mock-exams"
+                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
+                                            locale={locale as Locale}
+                                        >
+                                            <FaCaretRight />
+                                            {t("mockExams")}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
@@ -94,6 +91,19 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                             {t("exams")}
                                         </LinkCurrentBlog>
                                     </div>
+                                    <div onClick={() => setOpen(false)}>
+                                        <LinkCurrentBlog
+                                            href={hasDashboardAccess ? "/fide/dashboard" : "#"}
+                                            className={clsx(
+                                                "nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0",
+                                                !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
+                                            )}
+                                            locale={locale as Locale}
+                                        >
+                                            {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
+                                            {t("dashboard")}
+                                        </LinkCurrentBlog>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -101,19 +111,6 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                             <div className="w-full">
                                 <div className="p-2 font-bold">{messages.coursesDict.coursesTitle}</div>
                                 <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href={hasDashboardFrAccess ? "/courses/dashboard" : "#"}
-                                            className={clsx(
-                                                "nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0",
-                                                !hasDashboardFrAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
-                                            )}
-                                            locale={locale as Locale}
-                                        >
-                                            {hasDashboardFrAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
-                                            {messages.coursesDict.dashboard}
-                                        </LinkCurrentBlog>
-                                    </div>
                                     <div onClick={() => setOpen(false)}>
                                         <LinkCurrentBlog
                                             href="/courses/beginners"
@@ -152,6 +149,19 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                         >
                                             <FaCaretRight />
                                             {messages.coursesDict.pastTenses}
+                                        </LinkCurrentBlog>
+                                    </div>
+                                    <div onClick={() => setOpen(false)}>
+                                        <LinkCurrentBlog
+                                            href={hasDashboardFrAccess ? "/courses/dashboard" : "#"}
+                                            className={clsx(
+                                                "nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0",
+                                                !hasDashboardFrAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
+                                            )}
+                                            locale={locale as Locale}
+                                        >
+                                            {hasDashboardFrAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
+                                            {messages.coursesDict.dashboard}
                                         </LinkCurrentBlog>
                                     </div>
                                 </div>

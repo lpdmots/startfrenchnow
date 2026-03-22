@@ -15,14 +15,6 @@ export const CoursesButton = ({ locale, dictionnary }: { locale: Locale; diction
         content: (
             <div className="card p-4 pr-12 mt-4">
                 <div className="flex flex-col" style={{ minWidth: 125 }}>
-                    <LinkCurrentBlog
-                        href={hasDashboardFrAccess ? "/courses/dashboard" : "#"}
-                        className={clsx("nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center", !hasDashboardFrAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600")}
-                        locale={locale as Locale}
-                    >
-                        {hasDashboardFrAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
-                        {dictionnary.dashboard}
-                    </LinkCurrentBlog>
                     <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {dictionnary.beginners}
@@ -38,6 +30,14 @@ export const CoursesButton = ({ locale, dictionnary }: { locale: Locale; diction
                     <LinkCurrentBlog href="/courses/past-tenses" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
                         <FaCaretRight />
                         {dictionnary.pastTenses}
+                    </LinkCurrentBlog>
+                    <LinkCurrentBlog
+                        href={hasDashboardFrAccess ? "/courses/dashboard" : "#"}
+                        className={clsx("nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center", !hasDashboardFrAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600")}
+                        locale={locale as Locale}
+                    >
+                        {hasDashboardFrAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
+                        {dictionnary.dashboard}
                     </LinkCurrentBlog>
                 </div>
             </div>

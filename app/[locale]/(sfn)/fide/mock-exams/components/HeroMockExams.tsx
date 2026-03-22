@@ -1,8 +1,8 @@
 "use client";
 
-import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { ArrowRight, Bot, CheckCircle2, Clock3, Target } from "lucide-react";
 import Image from "next/image";
+import ShimmerButton from "@/app/components/ui/shimmer-button";
 
 export const HeroMockExams = () => {
     const callbackUrl = "/fide/mock-exams";
@@ -13,6 +13,7 @@ export const HeroMockExams = () => {
     const handleCheckout = () => {
         window.location.assign(checkoutUrl);
     };
+
     return (
         <section id="hero-mock-exams" className="section hero v1 wf-section relative overflow-x-clip !pt-6 !pb-10 lg:!pb-14">
             <div className="w-full px-4 lg:px-8">
