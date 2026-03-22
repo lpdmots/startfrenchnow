@@ -70,14 +70,14 @@ export const DashboardMockExams = ({
                     <p className="mb-0 text-base text-neutral-700">Choisis un examen blanc et lance une nouvelle session quand tu veux.</p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                {/* <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                     <div className="text-sm text-neutral-700">
                         <p className="font-bold mb-0">
                             {boughtExams}/{totalExams} examens
                         </p>
                     </div>
                     <PurchaseMockExamForm disabled={!canBuy} credits={credits} />
-                </div>
+                </div> */}
             </div>
 
             {compilations.length === 0 ? (

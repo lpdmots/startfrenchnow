@@ -22,7 +22,7 @@ export const HeroMockExams = () => {
                             Examen blanc <span className="heading-span-secondary-6">FIDE</span>
                         </h1>
                         <p className="mb-0 text-center md:text-left text-base text-neutral-700 sm:text-lg">
-                            Passez l'examen blanc, recevez un score immédiat et repartez avec un plan d'action concret.
+                            Passez un examen blanc fidèle au test FIDE, recevez un score immédiat et repartez avec un plan d’action concret.
                         </p>
                     </div>
 
@@ -80,7 +80,7 @@ export const HeroMockExams = () => {
                                         </span>
                                         <p className="mb-0 text-base font-bold text-neutral-800">Format réel</p>
                                     </div>
-                                    <p className="mb-0 text-sm text-neutral-700">Entraînez-vous dans des conditions similaires à l&apos;examen FIDE.</p>
+                                    <p className="mb-0 text-sm text-neutral-700">Entraînez-vous dans des conditions similaires au test FIDE.</p>
                                 </div>
                                 <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">
                                     <div className="absolute inset-y-0 left-0 w-1 bg-secondary-5" />
@@ -98,7 +98,7 @@ export const HeroMockExams = () => {
                                         <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-4">
                                             <Target className="h-4 w-4 text-secondary-4" />
                                         </span>
-                                        <p className="mb-0 text-base font-bold text-neutral-800">Niveau FIDE clair</p>
+                                        <p className="mb-0 text-base font-bold text-neutral-800">Niveau test FIDE clair</p>
                                     </div>
                                     <p className="mb-0 text-sm text-neutral-700">Identifiez votre niveau actuel de français : A1, A2 ou B1.</p>
                                 </div>

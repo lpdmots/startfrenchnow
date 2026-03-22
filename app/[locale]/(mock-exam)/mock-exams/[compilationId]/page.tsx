@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import urlFor from "@/app/lib/urlFor";
 import { requireSessionAndMockExam } from "@/app/components/auth/requireSession";
-import { getCompilation, getCompilationSessions, getUserMockExamCredits, isMockExamCompilationUnlockedForUser } from "@/app/serverActions/mockExamActions";
-import type { ScoreSummary, SessionStatus } from "@/app/types/fide/mock-exam";
+import { getCompilation, getCompilationSessions, getMockExamTasksByIds, isMockExamCompilationUnlockedForUser } from "@/app/serverActions/mockExamActions";
+import type { SessionStatus } from "@/app/types/fide/mock-exam";
 import RestartSessionDialog from "./RestartSessionDialog";
+import MockExamSessionsHistory from "./MockExamSessionsHistory";
+import MockExamCorrectionResources from "./MockExamCorrectionResources";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,35 @@ const STATUS_CLASSES: Record<SessionStatus, string> = {
     abandoned: "bg-neutral-300 text-neutral-700",
 };
 
+const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
+
+const withCloudFrontPrefix = (resource?: string) => {
+    if (!resource) return undefined;
+    if (/^https?:\/\//i.test(resource)) return resource;
+    if (!cloudFrontDomain) return resource;
+
+    const normalizedDomain = cloudFrontDomain.endsWith("/") ? cloudFrontDomain : `${cloudFrontDomain}/`;
+    const normalizedResource = resource.startsWith("/") ? resource.slice(1) : resource;
+
+    return `${normalizedDomain}${normalizedResource}`;
+};
+
+const SPEAKING_CORRECTION_TITLES: Record<string, string> = {
+    SPEAK_A2_RESULT: "Correction orale A2",
+    SPEAK_BRANCH_RESULT: "Correction orale - branche",
+    SPEAK_BRANCH_RESULT_A1: "Correction orale A1",
+    SPEAK_BRANCH_RESULT_CHOICE_1: "Correction orale - option 1",
+    SPEAK_BRANCH_RESULT_CHOICE_2: "Correction orale - option 2",
+};
+
+const READ_WRITE_TITLES: Record<string, string> = {
+    READ_WRITE_M1: "Module 1",
+    READ_WRITE_M2: "Module 2",
+    READ_WRITE_M3_M4: "Module 3/4",
+    READ_WRITE_M5: "Module 5",
+    READ_WRITE_M6: "Module 6",
+};
+
 const formatDate = (iso?: string) => {
     if (!iso) return "-";
     try {
@@ -33,13 +64,6 @@ const formatDate = (iso?: string) => {
     } catch {
         return "-";
     }
-};
-
-const formatScore = (score?: ScoreSummary) => {
-    if (!score) return "-";
-    const percentage = Number(score.percentage);
-    if (!Number.isFinite(percentage)) return "-";
-    return `${Math.round(percentage)}%`;
 };
 
 export default async function MockExamCompilationPage({ params: { compilationId } }: { params: { compilationId: string } }) {
@@ -54,7 +78,17 @@ export default async function MockExamCompilationPage({ params: { compilationId 
     if (!compilation || compilation.isActive === false || !isUnlocked) {
         notFound();
     }
-    const [userSessions, credit] = await Promise.all([getCompilationSessions(userId, compilationId), getUserMockExamCredits(userId)]);
+    const readWriteTaskIds = [
+        ...(compilation.examConfig?.readWriteTaskIds?.A1_A2 || []),
+        ...(compilation.examConfig?.readWriteTaskIds?.A2_B1 || []),
+    ]
+        .map((ref) => ref?._ref)
+        .filter(Boolean) as string[];
+
+    const [userSessions, readWriteTasks] = await Promise.all([
+        getCompilationSessions(userId, compilationId),
+        readWriteTaskIds.length ? getMockExamTasksByIds(readWriteTaskIds) : Promise.resolve([]),
+    ]);
 
     const sessions = (userSessions || []).slice().sort((a, b) => (b.startedAt || "").localeCompare(a.startedAt || ""));
     const inProgress = sessions.find((entry) => entry.status === "in_progress");
@@ -62,7 +96,32 @@ export default async function MockExamCompilationPage({ params: { compilationId 
     const hasSessions = sessions.length > 0;
     const startLabel = inProgress ? "Reprendre" : hasSessions ? "Recommencer" : "Commencer";
     const startHref = inProgress ? `/mock-exams/${compilation._id}/runner` : hasSessions ? `/mock-exams/${compilation._id}/runner?restart=1` : `/mock-exams/${compilation._id}/runner`;
-    const remainingCredits = Number(credit?.remainingCredits || 0);
+    const speakingVideoResources = Array.from(
+        new Map(
+            (compilation.corrections || [])
+                .filter((correction) => Boolean(correction?.video) && String(correction?.correctionType || "").startsWith("SPEAK"))
+                .map((correction) => {
+                    const href = withCloudFrontPrefix(correction.video);
+                    if (!href) return null;
+                    const title = SPEAKING_CORRECTION_TITLES[String(correction.correctionType || "")] || "Correction orale";
+                    return [href, { title, href }] as const;
+                })
+                .filter(Boolean) as Array<readonly [string, { title: string; href: string }]>,
+        ).values(),
+    );
+
+    const readWritePdfResources = Array.from(
+        new Map(
+            (readWriteTasks || [])
+                .map((task) => {
+                    const href = withCloudFrontPrefix(task.supportPdfUrl);
+                    if (!href) return null;
+                    const taskTitle = task.title?.trim() || READ_WRITE_TITLES[String(task.taskType || "")] || "Support PDF";
+                    return [href, { title: taskTitle, href, subtitle: "Support Lire / Écrire" }] as const;
+                })
+                .filter(Boolean) as Array<readonly [string, { title: string; href: string; subtitle: string }]>,
+        ).values(),
+    );
 
     const coverUrl = compilation.image ? urlFor(compilation.image).width(1200).height(700).fit("crop").url() : null;
 
@@ -134,55 +193,8 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                 </div>
             </section>
 
-            <section className="max-w-6xl w-full flex flex-col gap-4 py-0">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold mb-0">Historique des sessions</h2>
-                    {lastSession?.scores?.total && <p className="mb-0 text-sm text-neutral-600">Dernier total : {formatScore(lastSession.scores.total)}</p>}
-                </div>
-
-                {sessions.length === 0 ? (
-                    <div className="card border-2 border-solid border-neutral-700 p-6 text-center">
-                        <p className="mb-0">Aucune session enregistrée pour l'instant.</p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {sessions.map((entry, index) => (
-                            <div key={entry._id} className="card border-2 border-solid border-neutral-700 p-5 flex flex-col gap-4">
-                                <div className="flex items-center justify-between gap-2">
-                                    <p className="mb-0 font-semibold">Session {sessions.length - index}</p>
-                                    <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${STATUS_CLASSES[entry.status]}`}>{STATUS_LABEL[entry.status]}</span>
-                                </div>
-
-                                <p className="mb-0 text-sm text-neutral-600">Démarrée le {formatDate(entry.startedAt)}</p>
-
-                                <div className="grid grid-cols-2 gap-2 text-sm">
-                                    <div className="rounded-lg border border-neutral-300 p-2">
-                                        <p className="mb-1 text-neutral-500">Parler A2</p>
-                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.speakA2)}</p>
-                                    </div>
-                                    <div className="rounded-lg border border-neutral-300 p-2">
-                                        <p className="mb-1 text-neutral-500">Parler branche</p>
-                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.speakBranch)}</p>
-                                    </div>
-                                    <div className="rounded-lg border border-neutral-300 p-2">
-                                        <p className="mb-1 text-neutral-500">Comprendre</p>
-                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.listening)}</p>
-                                    </div>
-                                    <div className="rounded-lg border border-neutral-300 p-2">
-                                        <p className="mb-1 text-neutral-500">Lire / Écrire</p>
-                                        <p className="mb-0 font-semibold">{formatScore(entry.scores?.readWrite)}</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm text-neutral-500">Total</span>
-                                    <span className="text-lg font-bold text-neutral-800">{formatScore(entry.scores?.total)}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </section>
+            <MockExamSessionsHistory sessions={sessions} />
+            <MockExamCorrectionResources speakingVideoResources={speakingVideoResources} readWritePdfResources={readWritePdfResources} />
         </div>
     );
 }

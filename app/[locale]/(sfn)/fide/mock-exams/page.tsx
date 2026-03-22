@@ -7,8 +7,8 @@ const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.co
 const FAQ_BY_LOCALE = {
     fr: [
         {
-            question: "L'examen blanc suit-il vraiment le format FIDE ?",
-            answer: "Oui, l'examen blanc est très fidèle au format FIDE, avec des consignes et un déroulé comparables.",
+            question: "L'examen blanc suit-il vraiment le format du test FIDE ?",
+            answer: "Oui, l'examen blanc est très fidèle au format du test FIDE, avec des consignes et un déroulé comparables.",
         },
         {
             question: "Quelles épreuves sont proposées ?",
@@ -41,8 +41,8 @@ const FAQ_BY_LOCALE = {
     ],
     en: [
         {
-            question: "Does the mock exam follow the official FIDE format?",
-            answer: "Yes. The mock exam is very close to the official FIDE format, with comparable instructions and flow.",
+            question: "Does the mock exam follow the official FIDE test format?",
+            answer: "Yes. The mock exam is very close to the official FIDE test format, with comparable instructions and flow.",
         },
         {
             question: "Which parts are included?",
@@ -58,7 +58,7 @@ const FAQ_BY_LOCALE = {
         },
         {
             question: "Is the full exam process online?",
-            answer: "Yes. The full process is online from start to finish.",
+            answer: "Yes. The full FIDE test simulation is online from start to finish.",
         },
         {
             question: "What do I get at the end?",
@@ -113,7 +113,7 @@ export default function FideMockExamsPage({ params: { locale } }: { params: { lo
             {
                 "@type": "ListItem",
                 position: 3,
-                name: isFr ? "Examens blancs FIDE" : "FIDE Mock Exams",
+                name: isFr ? "Examens blancs du test FIDE" : "FIDE Test Mock Exams",
                 item: `${SITE}${mockExamsPath}`,
             },
         ],
