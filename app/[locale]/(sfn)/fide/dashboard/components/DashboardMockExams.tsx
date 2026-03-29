@@ -4,6 +4,7 @@ import urlFor from "@/app/lib/urlFor";
 import type { ExamCompilationLite } from "@/app/serverActions/mockExamActions";
 import type { ScoreSummary } from "@/app/types/fide/mock-exam";
 import PurchaseMockExamForm from "./PurchaseMockExamForm";
+import FreshMockExamCardLink from "./FreshMockExamCardLink";
 
 const STATUS_LABEL: Record<string, string> = {
     in_progress: "En cours",
@@ -56,9 +57,9 @@ export const DashboardMockExams = ({
     availableToPurchase: number;
 }) => {
     const credits = typeof remainingCredits === "number" ? remainingCredits : 0;
-    const boughtExams = compilations.length;
-    const totalExams = boughtExams + availableToPurchase;
-    const canBuy = canPurchase && credits > 0 && availableToPurchase > 0;
+    const hasCredit = credits > 0;
+    const canUseCredit = canPurchase && hasCredit && availableToPurchase > 0;
+    const canBuyFromShop = canPurchase && !hasCredit && availableToPurchase > 0;
 
     return (
         <section id="mock-exams" className="page-wrapper flex flex-col max-w-7xl m-auto gap-6 lg:gap-10 w-full py-0">
@@ -69,21 +70,37 @@ export const DashboardMockExams = ({
                     </h2>
                     <p className="mb-0 text-base text-neutral-700">Choisis un examen blanc et lance une nouvelle session quand tu veux.</p>
                 </div>
-
-                {/* <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                    <div className="text-sm text-neutral-700">
-                        <p className="font-bold mb-0">
-                            {boughtExams}/{totalExams} examens
-                        </p>
-                    </div>
-                    <PurchaseMockExamForm disabled={!canBuy} credits={credits} />
-                </div> */}
             </div>
 
             {compilations.length === 0 ? (
                 <div className="card border-2 border-solid border-neutral-700 p-6 text-center">
-                    <p className="mb-2 font-semibold text-lg">Aucune compilation disponible pour le moment</p>
-                    <p className="mb-0 text-neutral-600">Reviens un peu plus tard pour démarrer un examen blanc.</p>
+                    {canUseCredit ? (
+                        <>
+                            <p className="mb-2 font-semibold text-lg">Tu as {credits} crédit{credits > 1 ? "s" : ""} disponible{credits > 1 ? "s" : ""}.</p>
+                            <p className="mb-4 text-neutral-600">Active ton examen blanc maintenant pour commencer la passation.</p>
+                            <div className="flex justify-center">
+                                <PurchaseMockExamForm disabled={!canUseCredit} credits={credits} ctaLabel="Utiliser mon crédit" />
+                            </div>
+                        </>
+                    ) : hasCredit && availableToPurchase <= 0 ? (
+                        <>
+                            <p className="mb-2 font-semibold text-lg">Tu as {credits} crédit{credits > 1 ? "s" : ""}, mais aucun template n&apos;est disponible pour le moment.</p>
+                            <p className="mb-0 text-neutral-600">Reviens un peu plus tard, de nouveaux examens seront ajoutés.</p>
+                        </>
+                    ) : canBuyFromShop ? (
+                        <>
+                            <p className="mb-2 font-semibold text-lg">Tu n&apos;as pas encore d&apos;examen blanc.</p>
+                            <p className="mb-4 text-neutral-600">Achète ton premier examen blanc pour démarrer ta préparation.</p>
+                            <Link href="/fide/mock-exams#mock-exams-offer" className="btn btn-primary small inline-flex items-center justify-center no-underline">
+                                Acheter un examen blanc
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <p className="mb-2 font-semibold text-lg">Aucun examen blanc disponible pour le moment.</p>
+                            <p className="mb-0 text-neutral-600">Reviens un peu plus tard pour démarrer un examen blanc.</p>
+                        </>
+                    )}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -96,7 +113,7 @@ export const DashboardMockExams = ({
                         const imgUrl = compilation.image ? urlFor(compilation.image).width(800).height(500).fit("crop").url() : null;
 
                         return (
-                            <Link
+                            <FreshMockExamCardLink
                                 key={compilation._id}
                                 href={`/mock-exams/${compilation._id}`}
                                 className="group card border-2 border-solid border-neutral-700 shadow-on-hover p-0 overflow-hidden no-underline text-neutral-800"
@@ -135,7 +152,7 @@ export const DashboardMockExams = ({
                                         <span className="font-semibold text-secondary-6 group-hover:underline">Voir le détail</span>
                                     </div>
                                 </div>
-                            </Link>
+                            </FreshMockExamCardLink>
                         );
                     })}
                 </div>

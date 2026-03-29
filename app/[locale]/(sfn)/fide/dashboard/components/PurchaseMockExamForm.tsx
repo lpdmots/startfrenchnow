@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/app/hooks/use-toast";
 import { purchaseMockExamCompilation } from "@/app/serverActions/mockExamActions";
 
-export default function PurchaseMockExamForm({ disabled, credits }: { disabled: boolean; credits: number }) {
+export default function PurchaseMockExamForm({ disabled, credits, ctaLabel }: { disabled: boolean; credits: number; ctaLabel?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -19,7 +19,7 @@ export default function PurchaseMockExamForm({ disabled, credits }: { disabled: 
             if (!result?.ok || !result.compilationId) {
                 toast({
                     variant: "destructive",
-                    title: "Achat impossible",
+                    title: "Activation impossible",
                     description: result?.error || "La compilation n'a pas pu être débloquée.",
                 });
                 return;
@@ -31,7 +31,7 @@ export default function PurchaseMockExamForm({ disabled, credits }: { disabled: 
             toast({
                 variant: "destructive",
                 title: "Erreur inattendue",
-                description: "Impossible de débloquer une compilation pour le moment.",
+                description: "Impossible d'activer un examen pour le moment.",
             });
         } finally {
             setIsSubmitting(false);
@@ -49,10 +49,10 @@ export default function PurchaseMockExamForm({ disabled, credits }: { disabled: 
             {isSubmitting ? (
                 <>
                     <span className="h-4 w-4 rounded-full border-2 border-solid border-neutral-600 border-t-neutral-200 animate-spin" aria-hidden="true" />
-                    <span>Achat en cours...</span>
+                    <span>Activation en cours...</span>
                 </>
             ) : (
-                `Acheter (${credits} crédit${credits > 1 ? "s" : ""} restant${credits > 1 ? "s" : ""})`
+                ctaLabel || `Utiliser mon crédit (${credits} crédit${credits > 1 ? "s" : ""} restant${credits > 1 ? "s" : ""})`
             )}
         </button>
     );

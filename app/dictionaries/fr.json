@@ -1065,6 +1065,241 @@
                 }
             }
         },
+        "MockExamsPage": {
+            "Page": {
+                "home": "Accueil",
+                "fide": "FIDE",
+                "breadcrumbCurrent": "Examens blancs du test FIDE",
+                "productName": "Examen blanc du test FIDE (A1-A2 / A2-B1)",
+                "productDescription": "Examen blanc en ligne très fidèle au test FIDE : passation guidée, score immédiat, correction détaillée, PDF et vidéos.",
+                "discoveryOfferPriceName": "Prix offre découverte",
+                "regularPriceName": "Prix normal"
+            },
+            "Hero": {
+                "titlePrefix": "Examen blanc",
+                "titleHighlight": "FIDE",
+                "subtitle": "Passez le test, recevez un score immédiat et repartez avec un vrai plan d’action.",
+                "imageAlt": "Illustration d'un examen blanc FIDE",
+                "logoAlt": "Logo FIDE",
+                "discoveryBadge": "Offre découverte",
+                "discountBadge": "-80%",
+                "oldPricePrefix": "au lieu de",
+                "cta": "Acheter l'examen blanc",
+                "ctaUseCredit": "Utiliser mon crédit",
+                "ctaDisabled": "Examens épuisés",
+                "disabled": {
+                    "hasCredit": "Vous avez déjà un crédit disponible. Utilisez-le avant un nouvel achat.",
+                    "noTemplates": "Tous les templates disponibles sont déjà attribués."
+                },
+                "cards": {
+                    "format": {
+                        "title": "Format réel",
+                        "text": "Entraînez-vous dans des conditions similaires au test FIDE."
+                    },
+                    "score": {
+                        "title": "Score + correction",
+                        "text": "Obtenez des résultats immédiats et des retours concrets."
+                    },
+                    "level": {
+                        "title": "Niveau FIDE clair",
+                        "text": "Identifiez votre niveau actuel de français : A1, A2 ou B1."
+                    },
+                    "expert": {
+                        "title": "Conseil d'expert",
+                        "text": "Demandez un retour personnalisé avec votre professeur."
+                    }
+                }
+            },
+            "Marquee": {
+                "completeTest": "Test FIDE complet",
+                "fideFormat": "Format test FIDE",
+                "pdfVideos": "PDF + vidéos",
+                "teacherFeedback": "Retour professeur"
+            },
+            "Tests": {
+                "badge": "Épreuves test FIDE",
+                "titlePrefix": "Les mêmes",
+                "titleHighlight": "épreuves",
+                "titleSuffix": "que dans le test FIDE ?",
+                "subtitle": "Oui. Vous retrouvez la même logique de passation avec les 4 grandes parties du test FIDE et les mêmes tâches.",
+                "checks": {
+                    "structure": "Même structure globale et progression",
+                    "guided": "Interface guidée pour passer chaque partie clairement",
+                    "detailed": "Évaluation détaillée"
+                },
+                "cards": {
+                    "inFideTest": "Dans le test FIDE",
+                    "inApp": "Dans l'app",
+                    "speaking": {
+                        "title": "Parler",
+                        "testText": "Vous êtes face à l'examinateur. Vous décrivez une image, jouez la scène et répondez à ses questions.",
+                        "appText": "Vous enregistrez votre audio ou vous conversez en situation réelle avec l'IA selon le type d'exercice.",
+                        "imageAlt": "Capture de l'épreuve de production orale"
+                    },
+                    "listening": {
+                        "title": "Comprendre",
+                        "testText": "Vous écoutez une situation de trois enregistrements puis vous répondez en respectant les consignes.",
+                        "appText": "Vous faites exactement la même chose. Laissez-vous guider.",
+                        "imageAlt": "Capture de l'épreuve de compréhension orale"
+                    },
+                    "readWrite": {
+                        "title": "Lire / Écrire",
+                        "testText": "Vous alternez les exercices de compréhension écrite et de production écrite.",
+                        "appText": "Vous faites les mêmes exercices dans une interface claire et intuitive.",
+                        "imageAlt": "Capture de l'épreuve de lecture / écriture"
+                    }
+                }
+            },
+            "Online": {
+                "badge": "Aperçu en ligne",
+                "titlePrefix": "Passation du test FIDE",
+                "titleHighlight": "en ligne",
+                "titleSuffix": "?",
+                "subtitle": "Oui, tout se fait en ligne pour vous guider clairement du début à la fin de l'examen blanc.",
+                "cta": "Acheter l'examen blanc - 10 CHF",
+                "ctaUseCredit": "Utiliser mon crédit",
+                "ctaDisabled": "Examens épuisés",
+                "disabled": {
+                    "hasCredit": "Vous avez déjà un crédit disponible. Utilisez-le avant un nouvel achat.",
+                    "noTemplates": "Tous les templates disponibles sont déjà attribués."
+                },
+                "steps": {
+                    "step1": {
+                        "title": "Achat & accès immédiat",
+                        "text": "Dès l'achat, vous accédez à l'application web, aux PDF et aux ressources vidéos."
+                    },
+                    "step2": {
+                        "title": "Passation 100% en ligne",
+                        "text": "Vous suivez un parcours guidé étape par étape, avec des consignes claires du début à la fin."
+                    },
+                    "step3": {
+                        "title": "Feedback sans engagement",
+                        "text": "Recevez une évaluation automatique immédiate, puis un retour professeur sur demande."
+                    }
+                }
+            },
+            "Reviews": {
+                "badge": "Retours clients",
+                "titleHighlight": "Retours d'expérience",
+                "titleSuffix": "clients FIDE",
+                "subtitle": "Découvrez des témoignages d'apprenants ayant utilisé les contenus FIDE pour progresser."
+            },
+            "Offer": {
+                "badge": "Tarifs",
+                "titlePrefix": "Offre",
+                "titleHighlight": "découverte",
+                "subtitle": "Un seul achat disponible pour le moment : votre premier examen blanc complet à prix réduit.",
+                "main": {
+                    "offerBadge": "Offre active -80%",
+                    "title": "Premier achat",
+                    "oldPricePrefix": "au lieu de",
+                    "bullets": {
+                        "exam": "1 examen blanc complet en application web",
+                        "resources": "Accès immédiat aux PDF et ressources vidéos liées",
+                        "feedback": "Feedback automatique sans engagement"
+                    },
+                    "cta": "Acheter maintenant - 10 CHF",
+                    "ctaUseCredit": "Utiliser mon crédit",
+                    "ctaDisabled": "Examens épuisés"
+                },
+                "disabled": {
+                    "hasCredit": "Vous avez déjà un crédit disponible. Utilisez-le avant un nouvel achat.",
+                    "noTemplates": "Tous les templates disponibles sont déjà attribués."
+                },
+                "standard": {
+                    "badge": "Prix normal",
+                    "title": "Tarif standard",
+                    "description": "Tarif standard d'un examen blanc (hors offre découverte).",
+                    "comingSoon": "Prochainement"
+                },
+                "reassurance": {
+                    "payment": "Paiement unique et sécurisé via Stripe",
+                    "support": "Support réactif via la messagerie du dashboard"
+                }
+            },
+            "Faq": {
+                "badge": "FAQ mock-exams",
+                "titlePrefix": "Vos",
+                "titleHighlight": "questions",
+                "titleSuffix": "nos réponses",
+                "subtitle": "Les points essentiels avant de démarrer votre premier examen blanc.",
+                "items": {
+                    "format": {
+                        "title": "L'examen blanc reprend-il réellement le format du test FIDE ?",
+                        "content": "Oui. L'examen blanc est très fidèle au format du test FIDE, avec des consignes et un déroulé comparables. L'objectif est de vous placer dans des conditions au plus proche du réel, afin de réduire le stress lié à l'inconnu et de vous aider à comprendre précisément ce qui vous attend le jour du test FIDE."
+                    },
+                    "parts": {
+                        "title": "Quelles épreuves sont incluses ?",
+                        "content": "Les quatre épreuves sont proposées : Parler, Comprendre et Lire/Écrire. L'ordre de passation est également respecté, afin de rester au plus proche des conditions réelles du test FIDE."
+                    },
+                    "tracks": {
+                        "title": "Quels parcours sont disponibles ?",
+                        "content": "Vous pouvez passer les parcours A1-A2 ou A2-B1, selon votre objectif. Ce test blanc vous permet de vous situer clairement et de fixer un objectif réaliste pour votre progression."
+                    },
+                    "duration": {
+                        "title": "Combien de temps faut-il prévoir ?",
+                        "content": "Comptez environ 1 heure pour une passation complète. Prévoyez un moment calme, sans interruption, afin de maximiser votre concentration."
+                    },
+                    "online": {
+                        "title": "La passation se fait-elle entièrement en ligne ?",
+                        "content": "Oui. Toute la passation se fait en ligne, du début à la fin, afin de favoriser un guidage pas à pas et de garantir une expérience fluide avec un feedback immédiat à l'issue de l'examen blanc."
+                    },
+                    "microphone": {
+                        "title": "Ai-je besoin d'un micro spécifique ?",
+                        "content": "Non. Le micro intégré de votre ordinateur est suffisant, à condition que le son soit clair. Assurez-vous simplement d'être dans un environnement calme pour une meilleure qualité audio. Par ailleurs, une transcription écrite vous est toujours proposée afin de vérifier le bon fonctionnement."
+                    },
+                    "mobile": {
+                        "title": "Puis-je passer le test sur mobile ?",
+                        "content": "Oui, mobile et ordinateur sont possibles. Tout le contenu Start French Now est multi-format. Pour la passation du test, nous recommandons toutefois l'ordinateur, qui reste plus confortable."
+                    },
+                    "pauseResume": {
+                        "title": "Que se passe-t-il si je dois arrêter avant la fin ?",
+                        "content": "Vos réponses sont enregistrées au fur et à mesure, étape par étape, ce qui limite fortement la perte de données. Vous pouvez donc interrompre la passation puis la reprendre à tout moment, en toute sérénité."
+                    },
+                    "finalResult": {
+                        "title": "Que contient le résultat final ?",
+                        "content": "Comme dans le test FIDE, vous recevez un pourcentage de réussite, un score et un niveau estimé (A1/A2/B1) pour chaque épreuve du test. Vous obtenez également des axes d'amélioration concrets pour orienter votre travail."
+                    },
+                    "pdfVideos": {
+                        "title": "Les PDF et vidéos sont-ils inclus ?",
+                        "content": "Oui. La partie orale est accompagnée en vidéo, la partie Lire/Écrire en PDF, le tout étant disponible immédiatement et en permanence."
+                    },
+                    "retake": {
+                        "title": "Puis-je repasser le même examen blanc ?",
+                        "content": "Oui, autant de fois que vous le souhaitez."
+                    },
+                    "packDifference": {
+                        "title": "Quelle différence avec le Pack FIDE ?",
+                        "content": "La passation de l'examen blanc s'achète à l'unité. Le Pack FIDE inclut automatiquement tout le contenu Start French Now FIDE, c'est-à-dire : les scénarios actuels du test FIDE, régulièrement mis à jour, ainsi que des dizaines d'entraînements, des cours de français et des cours spécifiques FIDE."
+                    },
+                    "paymentMethods": {
+                        "title": "Quels moyens de paiement sont acceptés ?",
+                        "content": "Paiement sécurisé via Stripe : carte bancaire, Apple Pay, Google Pay, PayPal et Revolut."
+                    },
+                    "contactAfterPurchase": {
+                        "title": "Comment poser une question après achat ?",
+                        "content": "Vous pouvez nous écrire via la messagerie du dashboard ou par email à yohann@startfrenchnow.com."
+                    }
+                }
+            },
+            "NextSteps": {
+                "badge": "Aller plus loin",
+                "titlePrefix": "Vous souhaitez un",
+                "titleHighlight": "accompagnement",
+                "titleSuffix": "plus complet ?",
+                "subtitle": "Le Pack FIDE et les cours privés vous offrent une prise en charge plus structurée, plus complète et plus personnalisée.",
+                "pack": {
+                    "title": "Pack FIDE complet",
+                    "description": "Scénarios actuels, cours de français, PDF et vidéos pour avancer avec une méthode complète.",
+                    "cta": "Voir le pack"
+                },
+                "private": {
+                    "title": "Cours privés FIDE",
+                    "description": "Un accompagnement ciblé avec un professeur expérimenté pour corriger vos points faibles et vous préparer avec les scénarios actuels.",
+                    "cta": "Réserver un entretien"
+                }
+            }
+        },
         "PriceSliderFide": {
             "title": "<hs4>Choisissez votre forfait</hs4> adapté à vos besoins",
             "purchasedLessons1": "Vous avez déjà acheté ",

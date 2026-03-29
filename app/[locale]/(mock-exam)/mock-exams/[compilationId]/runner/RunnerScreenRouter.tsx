@@ -460,14 +460,15 @@ export default function RunnerScreenRouter({
     const branchB1FirstPointer = resolveFirstTaskPointer(speakBranchB1Tasks);
     const taskTwoPointer = speakA2Tasks[1] ? resolveTaskStartPointer(speakA2Tasks[1], 1) : null;
     const taskThreePointer = speakA2Tasks[2] ? resolveTaskStartPointer(speakA2Tasks[2], 2) : null;
-    const examIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
-    const taskOneDescriptionIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
-    const taskTwoConversationIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
-    const taskThreeDiscussionIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
-    const speakBranchA1TaskOneIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
-    const speakBranchB1IntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
-    const listeningIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
-    const readWriteIntroVideoUrl = withCloudFrontPrefix("fide/video-presentation-fide.mp4");
+    const examIntroVideoUrl = withCloudFrontPrefix("mock-exams/videos-presentation/presentation-generale.mp4");
+    const taskOneDescriptionIntroVideoUrl = withCloudFrontPrefix("mock-exams/videos-presentation/parler-tache1-description.mp4");
+    const taskTwoConversationIntroVideoUrl = withCloudFrontPrefix("mock-exams/videos-presentation/parler-a2-tache2-roleplay.mp4");
+    const taskThreeDiscussionIntroVideoUrl = withCloudFrontPrefix("mock-exams/videos-presentation/parler-a2-tache3.mp4");
+    const speakBranchA1TaskOneIntroVideoUrl = withCloudFrontPrefix("mock-exams/videos-presentation/parler-a1.mp4");
+    const speakBranchB1IntroVideoUrl = withCloudFrontPrefix("mock-exams/videos-presentation/presentation-oral-b1.mp4");
+    const listeningIntroVideoUrlA1A2 = withCloudFrontPrefix("mock-exams/videos-presentation/comprehension-a1-a2.mp4");
+    const listeningIntroVideoUrlA2B1 = withCloudFrontPrefix("mock-exams/videos-presentation/comprehension-a2-b1.mp4");
+    const readWriteIntroVideoUrl = withCloudFrontPrefix("mock-exams/videos-presentation/presentation-lire-ecrire.mp4");
     const speakA2CorrectionContent = useMemo(() => (compilationCorrections || []).find((item) => String(item?.correctionType || "") === "SPEAK_A2_RESULT"), [compilationCorrections]);
     const speakA2CorrectionVideoUrl = withCloudFrontPrefix(String(speakA2CorrectionContent?.video || ""));
     const speakA2CorrectionImageUrl = speakA2CorrectionContent?.image ? urlFor(speakA2CorrectionContent.image).width(1800).fit("max").url() : null;
@@ -686,6 +687,22 @@ export default function RunnerScreenRouter({
         }
         return "A1";
     }, [branchA1TaskIds, branchB1TaskIds, speakA2Answers]);
+
+    const [listeningIntroUseFallback, setListeningIntroUseFallback] = useState(false);
+
+    useEffect(() => {
+        setListeningIntroUseFallback(false);
+    }, [inferredBranch, resume.state, sessionKey]);
+
+    const listeningIntroVideoUrl = useMemo(() => {
+        if (listeningIntroUseFallback) {
+            return listeningIntroVideoUrlA1A2;
+        }
+        if (inferredBranch === "B1") {
+            return listeningIntroVideoUrlA2B1 || listeningIntroVideoUrlA1A2;
+        }
+        return listeningIntroVideoUrlA1A2;
+    }, [inferredBranch, listeningIntroUseFallback, listeningIntroVideoUrlA1A2, listeningIntroVideoUrlA2B1]);
 
     const answeredBranchTaskIds = useMemo(() => {
         return new Set(speakA2Answers.map((answer) => getAnswerTaskId(answer)).filter((taskId) => branchA1TaskIds.has(taskId) || branchB1TaskIds.has(taskId)));
@@ -3101,7 +3118,16 @@ export default function RunnerScreenRouter({
                     <div className="max-w-[700px] w-full">
                         <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
                             {listeningIntroVideoUrl && (
-                                <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
+                                <video
+                                    controls
+                                    preload="metadata"
+                                    className="block h-auto w-full rounded-[0.85rem]"
+                                    onError={() => {
+                                        if (!listeningIntroUseFallback) {
+                                            setListeningIntroUseFallback(true);
+                                        }
+                                    }}
+                                >
                                     <source src={listeningIntroVideoUrl} />
                                     Votre navigateur ne supporte pas la vidéo HTML5.
                                 </video>

@@ -49,22 +49,13 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                 </div>
                                 <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/fide"
-                                            matchPrefix={false}
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/fide" matchPrefix={false} className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {t("fide")}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/fide/mock-exams"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {t("mockExams")}
                                         </LinkCurrentBlog>
@@ -112,41 +103,25 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                 <div className="p-2 font-bold">{messages.coursesDict.coursesTitle}</div>
                                 <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/courses/beginners"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.beginners}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/courses/intermediates"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/courses/intermediates" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.intermediates}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/courses/dialogues"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/courses/dialogues" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.dialogues}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/courses/past-tenses"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/courses/past-tenses" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.pastTenses}
                                         </LinkCurrentBlog>
@@ -188,11 +163,7 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/exercises"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/exercises" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.resourcesDict.exercises}
                                         </LinkCurrentBlog>
@@ -204,11 +175,7 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/test-your-level"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/test-your-level" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.resourcesDict.testYourLevel}
                                         </LinkCurrentBlog>

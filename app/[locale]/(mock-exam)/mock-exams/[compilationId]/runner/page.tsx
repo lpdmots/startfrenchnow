@@ -15,6 +15,8 @@ import type { Exam } from "@/app/types/fide/exam";
 import RunnerClient from "./RunnerClient";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export default async function MockExamRunnerPage({
     params: { compilationId },
@@ -49,16 +51,11 @@ export default async function MockExamRunnerPage({
         }
         runnerSession = createResult.session;
     } else if (!runnerSession) {
-        const latestFinishedSession = sortedSessions.find((entry) => entry.status === "completed" || entry.status === "abandoned");
-        if (latestFinishedSession) {
-            runnerSession = latestFinishedSession;
-        } else {
-            const createResult = await getOrCreateInProgressMockExamSession(compilationId);
-            if (!createResult.ok || !createResult.session) {
-                redirect(`/mock-exams/${compilationId}`);
-            }
-            runnerSession = createResult.session;
+        const createResult = await getOrCreateInProgressMockExamSession(compilationId);
+        if (!createResult.ok || !createResult.session) {
+            redirect(`/mock-exams/${compilationId}`);
         }
+        runnerSession = createResult.session;
     }
     if (!runnerSession) {
         redirect(`/mock-exams/${compilationId}`);

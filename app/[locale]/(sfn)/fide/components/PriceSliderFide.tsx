@@ -165,7 +165,12 @@ interface PriceCategory {
 type ProductData = PriceCategory & PricingDetails;
 type PlanName = "fide-boost" | "fide-mastery";
 
-export default function PriceSliderFide({ locale }: { locale: Locale }) {
+interface PriceSliderFideProps {
+    locale: Locale;
+    callbackPath?: string;
+}
+
+export default function PriceSliderFide({ locale, callbackPath = "/fide#plans" }: PriceSliderFideProps) {
     const { data: session } = useSession();
     const [quantity, setQuantity] = useState<number>(7);
     const [previousPurchasedLessons, setPreviousPurchasedLessons] = useState<number | null>(null);
@@ -229,7 +234,7 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
                 ) : (
                     <p className="mb-0 bs text-center">
                         {t("notConnected")}
-                        <LinkArrow url="/auth/signIn?callbackUrl=/fide#plans" className="inline-block">
+                        <LinkArrow url={`/auth/signIn?callbackUrl=${encodeURIComponent(callbackPath)}`} className="inline-block">
                             {t("connectLink")}
                         </LinkArrow>
                     </p>
@@ -251,7 +256,7 @@ export default function PriceSliderFide({ locale }: { locale: Locale }) {
                 </div>
                 <div className="w-full max-w-3xl mt-6 mb-6">
                     {productData ? (
-                        <PriceCategory productData={productData} quantity={quantity} slug={product?.slug.current} />
+                        <PriceCategory productData={productData} quantity={quantity} slug={product?.slug.current} callbackPath={callbackPath} />
                     ) : (
                         <div className="flex flex-col justify-center items-center w-full gap-4">
                             <FaSpinner className="animate-spin text-neutral-400 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />
@@ -268,9 +273,10 @@ interface PriceCategoryProps {
     productData: ProductData;
     quantity: number;
     slug?: string;
+    callbackPath: string;
 }
 
-const PriceCategory = ({ productData, quantity, slug }: PriceCategoryProps) => {
+const PriceCategory = ({ productData, quantity, slug, callbackPath }: PriceCategoryProps) => {
     const { image, title, subtitle, description, features, extras, color, amount, unitPrice, whatYouGet, extrasTitle, buttonLabelPlural, buttonLabelSingular, initialUnitPrice, initialAmount } =
         productData;
     const bgColor = `bg-secondary-${color}`;
@@ -299,7 +305,7 @@ const PriceCategory = ({ productData, quantity, slug }: PriceCategoryProps) => {
                 <p className="mb-0 text-5xl font-bold">
                     CHF {unitPrice}.-<span className="text-2xl font-thin">/{t("purchasedLessonsHour")}</span>
                 </p>
-                <Link href={`/checkout/${slug}?quantity=${quantity}&callbackUrl=/fide#plans`} className="btn btn-primary p-4 min-h-[76px] flex items-center">
+                <Link href={`/checkout/${slug}?quantity=${quantity}&callbackUrl=${encodeURIComponent(callbackPath)}`} className="btn btn-primary p-4 min-h-[76px] flex items-center">
                     <div>
                         {quantity > 1 ? buttonLabelPlural.replace("{quantity}", quantity.toString()) : buttonLabelSingular.replace("{quantity}", quantity.toString())}
                         <span className={cn("underline underline-offset-4", `decoration-secondary-${color}`)} style={{ whiteSpace: "nowrap" }}>

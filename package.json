@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "migrate:mock-exam-task-ref": "node scripts/sanity/migrateMockExamAnswersTaskRef.mjs"
+        "migrate:mock-exam-task-ref": "node scripts/sanity/migrateMockExamAnswersTaskRef.mjs",
+        "sync:mock-exam-tasks-dev-to-prod": "node scripts/sanity/syncMockExamTasksDevToProd.mjs"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.438.0",

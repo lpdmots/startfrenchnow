@@ -77,6 +77,13 @@ export type UserMockExamCredit = {
     remainingCredits?: number;
 } | null;
 
+export type MockExamCheckoutEligibility = {
+    canCheckout: boolean;
+    reason: "hasCredit" | "noTemplates" | null;
+    remainingCredits: number;
+    availableToPurchase: number;
+};
+
 type ActiveCompilationLite = {
     _id: string;
     order?: number | null;
@@ -1130,6 +1137,30 @@ export async function getUserAvailableMockExamCompilationCount(userId: string) {
         }
         return count + 1;
     }, 0);
+}
+
+export async function getMockExamCheckoutEligibility(userId: string): Promise<MockExamCheckoutEligibility> {
+    if (!userId) {
+        return {
+            canCheckout: true,
+            reason: null,
+            remainingCredits: 0,
+            availableToPurchase: 0,
+        };
+    }
+
+    const [credit, availableToPurchase] = await Promise.all([getUserMockExamCredits(userId), getUserAvailableMockExamCompilationCount(userId)]);
+    const remainingCredits = Number(credit?.remainingCredits || 0);
+    const hasCredit = remainingCredits > 0;
+    const hasNoTemplateLeft = availableToPurchase <= 0;
+    const reason = hasCredit ? "hasCredit" : hasNoTemplateLeft ? "noTemplates" : null;
+
+    return {
+        canCheckout: !reason,
+        reason,
+        remainingCredits,
+        availableToPurchase,
+    };
 }
 
 export async function getCompilation(compilationId: string) {

@@ -9,8 +9,11 @@ import type { SessionStatus } from "@/app/types/fide/mock-exam";
 import RestartSessionDialog from "./RestartSessionDialog";
 import MockExamSessionsHistory from "./MockExamSessionsHistory";
 import MockExamCorrectionResources from "./MockExamCorrectionResources";
+import RefreshOnPageShow from "./RefreshOnPageShow";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 const STATUS_LABEL: Record<SessionStatus, string> = {
     in_progress: "En cours",
@@ -93,9 +96,8 @@ export default async function MockExamCompilationPage({ params: { compilationId 
     const sessions = (userSessions || []).slice().sort((a, b) => (b.startedAt || "").localeCompare(a.startedAt || ""));
     const inProgress = sessions.find((entry) => entry.status === "in_progress");
     const lastSession = sessions[0];
-    const hasSessions = sessions.length > 0;
-    const startLabel = inProgress ? "Reprendre" : hasSessions ? "Recommencer" : "Commencer";
-    const startHref = inProgress ? `/mock-exams/${compilation._id}/runner` : hasSessions ? `/mock-exams/${compilation._id}/runner?restart=1` : `/mock-exams/${compilation._id}/runner`;
+    const startLabel = inProgress ? "Reprendre" : "Commencer";
+    const startHref = `/mock-exams/${compilation._id}/runner`;
     const speakingVideoResources = Array.from(
         new Map(
             (compilation.corrections || [])
@@ -127,6 +129,7 @@ export default async function MockExamCompilationPage({ params: { compilationId 
 
     return (
         <div className="w-full flex flex-col items-center gap-10 mt-8 md:mt-12 p-4 mb-12 lg:mb-24">
+            <RefreshOnPageShow />
             <section className="max-w-6xl w-full py-0">
                 <Link href="/fide/dashboard" className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-700 hover:text-neutral-800">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />

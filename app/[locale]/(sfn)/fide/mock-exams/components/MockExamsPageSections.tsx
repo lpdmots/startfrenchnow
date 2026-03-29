@@ -9,11 +9,16 @@ import { MockExamsReviewsSection } from "./sections/MockExamsReviewsSection";
 import { MockExamsTestsSection } from "./sections/MockExamsTestsSection";
 import MarqueeMockExamsContent from "./MarqueeMockExamsContent";
 
-export function MockExamsPageSections() {
+type MockExamsPageSectionsProps = {
+    checkoutDisabled?: boolean;
+    checkoutDisabledReason?: "hasCredit" | "noTemplates" | null;
+};
+
+export function MockExamsPageSections({ checkoutDisabled = false, checkoutDisabledReason = null }: MockExamsPageSectionsProps) {
     return (
         <>
             <MockExamsTestsSection />
-            <MockExamsOnlineSection />
+            <MockExamsOnlineSection checkoutDisabled={checkoutDisabled} checkoutDisabledReason={checkoutDisabledReason} />
             <MockExamsReviewsSection />
             <Fade delay={0.1} duration={0.35}>
                 <div className="max-w-screen h-48 overflow-hidden lg:h-64">
@@ -24,7 +29,7 @@ export function MockExamsPageSections() {
                     </div>
                 </div>
             </Fade>
-            <MockExamsOfferSection />
+            <MockExamsOfferSection checkoutDisabled={checkoutDisabled} checkoutDisabledReason={checkoutDisabledReason} />
             <MockExamsFaqSection />
             <ContactForFide />
             <MockExamsNextStepsSection />

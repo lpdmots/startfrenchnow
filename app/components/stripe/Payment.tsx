@@ -103,8 +103,18 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
             }),
         })
             .then((res) => {
-                if (!res.ok) throw new Error("Failed to create payment intent");
-                return res.json();
+                if (res.ok) return res.json();
+                return res
+                    .json()
+                    .then((data) => {
+                        throw new Error(data?.error || "Failed to create payment intent");
+                    })
+                    .catch((error) => {
+                        if (error instanceof Error && error.message) {
+                            throw error;
+                        }
+                        throw new Error("Failed to create payment intent");
+                    });
             })
             .then((data) => {
                 if (data.clientSecret && data.pricingDetails && data.productInfos) {

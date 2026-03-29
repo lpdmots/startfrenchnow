@@ -20,6 +20,23 @@ const queryProduct = groq`
         *[_type=='product' && slug.current == $slug][0] 
     `;
 
+const queryUserIdByEmail = groq`
+    *[_type == "user" && lower(email) == $email][0]{
+        _id
+    }
+`;
+
+const queryMockExamPurchaseSnapshot = groq`
+    *[_type == "user" && _id == $userId][0]{
+        "remainingCredits": coalesce(credits[referenceKey == "mock_exam"][0].remainingCredits, 0),
+        "ownedCompilations": count(examCompilations)
+    }
+`;
+
+const queryActiveMockExamCompilationCount = groq`
+    count(*[_type == "examCompilation" && isActive == true])
+`;
+
 async function getOrCreateCustomer(sessionEmail: string): Promise<string> {
     const user = await client.fetch(queryUser, { sessionEmail });
 
@@ -55,6 +72,43 @@ export async function POST(request: NextRequest) {
         const effectiveEmail = (sessionEmail || email || "").trim().toLowerCase();
 
         const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch;
+        const requestedQuantity = Number.parseInt(String(quantity || "1"), 10) || 1;
+
+        if (product?.referenceKey === "mock_exam") {
+            const activeCompilationCount = Number(await client.fetch<number>(queryActiveMockExamCompilationCount));
+
+            if (!Number.isFinite(activeCompilationCount) || activeCompilationCount <= 0) {
+                return NextResponse.json({ error: "Aucun examen blanc n'est disponible pour le moment." }, { status: 409 });
+            }
+
+            let targetUserId = String(userId || "").trim();
+            if (!targetUserId && effectiveEmail) {
+                const existingUser = await client.fetch<{ _id?: string } | null>(queryUserIdByEmail, { email: effectiveEmail });
+                targetUserId = String(existingUser?._id || "").trim();
+            }
+
+            if (targetUserId) {
+                const snapshot = await client.fetch<{ remainingCredits?: number; ownedCompilations?: number } | null>(queryMockExamPurchaseSnapshot, { userId: targetUserId });
+                const remainingCredits = Number(snapshot?.remainingCredits || 0);
+                const ownedCompilations = Number(snapshot?.ownedCompilations || 0);
+
+                if (remainingCredits > 0) {
+                    return NextResponse.json({ error: "Vous avez déjà un crédit disponible. Utilisez-le avant un nouvel achat." }, { status: 409 });
+                }
+
+                const totalAfterPurchase = ownedCompilations + remainingCredits + requestedQuantity;
+                if (totalAfterPurchase > activeCompilationCount) {
+                    return NextResponse.json(
+                        {
+                            error: "Impossible d'acheter plus de crédits que le nombre de templates disponibles.",
+                        },
+                        { status: 409 }
+                    );
+                }
+            } else if (requestedQuantity > activeCompilationCount) {
+                return NextResponse.json({ error: "Impossible d'acheter plus de crédits que le nombre de templates disponibles." }, { status: 409 });
+            }
+        }
 
         // ✅ Guest-safe : si pas de userId, on considère “pas d’achats précédents”
         const userPurchasedLesson = userId ? ((await getUserPurchases(userId, product.referenceKey)) ?? undefined) : undefined;

@@ -30,10 +30,16 @@ export const ProfilButton = ({ profil, logout }: { profil: string; logout: strin
                         </span>
                     </div>
                     {isAdmin && (
-                        <LinkCurrentBlog href="/admin/comments" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale="fr">
-                            <FaCaretRight />
-                            Commentaires (Admin)
-                        </LinkCurrentBlog>
+                        <>
+                            <LinkCurrentBlog href="/admin/comments" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale="fr">
+                                <FaCaretRight />
+                                Commentaires (Admin)
+                            </LinkCurrentBlog>
+                            <LinkCurrentBlog href="/admin/exam-reviews" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale="fr">
+                                <FaCaretRight />
+                                Exam Reviews (Admin)
+                            </LinkCurrentBlog>
+                        </>
                     )}
                     <div>
                         <LogOut logout={logout} />

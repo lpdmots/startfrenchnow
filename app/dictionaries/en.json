@@ -1056,6 +1056,241 @@
                 }
             }
         },
+        "MockExamsPage": {
+            "Page": {
+                "home": "Home",
+                "fide": "FIDE",
+                "breadcrumbCurrent": "FIDE test mock exams",
+                "productName": "FIDE test mock exam (A1-A2 / A2-B1)",
+                "productDescription": "Online mock exam very close to the FIDE test format: guided flow, instant score, detailed correction, PDF support, and videos.",
+                "discoveryOfferPriceName": "Discovery offer price",
+                "regularPriceName": "Regular price"
+            },
+            "Hero": {
+                "titlePrefix": "Mock exam",
+                "titleHighlight": "FIDE",
+                "subtitle": "Take a full test, get an instant score, and leave with a clear action plan.",
+                "imageAlt": "FIDE mock exam illustration",
+                "logoAlt": "FIDE logo",
+                "discoveryBadge": "Discovery offer",
+                "discountBadge": "-80%",
+                "oldPricePrefix": "instead of",
+                "cta": "Buy the mock exam",
+                "ctaUseCredit": "Use my credit",
+                "ctaDisabled": "Exams sold out",
+                "disabled": {
+                    "hasCredit": "You already have an available credit. Use it before buying again.",
+                    "noTemplates": "All currently available templates are already assigned."
+                },
+                "cards": {
+                    "format": {
+                        "title": "Real format",
+                        "text": "Train in conditions very close to the FIDE test."
+                    },
+                    "score": {
+                        "title": "Score + correction",
+                        "text": "Get immediate results and concrete correction."
+                    },
+                    "level": {
+                        "title": "Clear FIDE level",
+                        "text": "Identify your current French level: A1, A2, or B1."
+                    },
+                    "expert": {
+                        "title": "Expert guidance",
+                        "text": "Request personalized feedback with your teacher."
+                    }
+                }
+            },
+            "Marquee": {
+                "completeTest": "Full FIDE test",
+                "fideFormat": "FIDE test format",
+                "pdfVideos": "PDF + videos",
+                "teacherFeedback": "Teacher feedback"
+            },
+            "Tests": {
+                "badge": "FIDE test sections",
+                "titlePrefix": "The same",
+                "titleHighlight": "sections",
+                "titleSuffix": "as in the FIDE test?",
+                "subtitle": "Yes. You follow the same exam logic and progression as in the real FIDE test.",
+                "checks": {
+                    "structure": "Same overall structure and progression",
+                    "guided": "A guided interface to complete each section clearly",
+                    "detailed": "Detailed evaluation"
+                },
+                "cards": {
+                    "inFideTest": "In the FIDE test",
+                    "inApp": "In the app",
+                    "speaking": {
+                        "title": "Speaking",
+                        "testText": "You face an examiner, describe an image, role-play a situation, and answer follow-up questions.",
+                        "appText": "You either record your audio or interact in real time with AI depending on the exercise type.",
+                        "imageAlt": "Speaking section screenshot"
+                    },
+                    "listening": {
+                        "title": "Listening",
+                        "testText": "You listen to a scenario with three recordings, then answer while following the instructions.",
+                        "appText": "You do the exact same tasks. Just follow the guided flow.",
+                        "imageAlt": "Listening section screenshot"
+                    },
+                    "readWrite": {
+                        "title": "Reading / Writing",
+                        "testText": "You alternate between reading comprehension and writing production exercises.",
+                        "appText": "You complete the same exercises in a clear and intuitive interface.",
+                        "imageAlt": "Reading and writing section screenshot"
+                    }
+                }
+            },
+            "Online": {
+                "badge": "Online preview",
+                "titlePrefix": "Taking the FIDE test",
+                "titleHighlight": "online",
+                "titleSuffix": "?",
+                "subtitle": "Yes, everything runs online to guide you clearly from start to finish of your mock exam.",
+                "cta": "Buy the mock exam - CHF 10",
+                "ctaUseCredit": "Use my credit",
+                "ctaDisabled": "Exams sold out",
+                "disabled": {
+                    "hasCredit": "You already have an available credit. Use it before buying again.",
+                    "noTemplates": "All currently available templates are already assigned."
+                },
+                "steps": {
+                    "step1": {
+                        "title": "Purchase & instant access",
+                        "text": "Right after purchase, you get access to the web app, PDFs, and related video resources."
+                    },
+                    "step2": {
+                        "title": "100% online session",
+                        "text": "Follow a guided path step by step, with clear instructions from beginning to end."
+                    },
+                    "step3": {
+                        "title": "No-commitment feedback",
+                        "text": "Receive immediate automatic evaluation, then request teacher feedback if needed."
+                    }
+                }
+            },
+            "Reviews": {
+                "badge": "Client feedback",
+                "titleHighlight": "Client experiences",
+                "titleSuffix": "with FIDE content",
+                "subtitle": "Read testimonials from learners who used Start French Now FIDE content to improve."
+            },
+            "Offer": {
+                "badge": "Pricing",
+                "titlePrefix": "Discovery",
+                "titleHighlight": "offer",
+                "subtitle": "Only one purchase is available for now: your first full mock exam at a reduced price.",
+                "main": {
+                    "offerBadge": "Active offer -80%",
+                    "title": "First purchase",
+                    "oldPricePrefix": "instead of",
+                    "bullets": {
+                        "exam": "1 full mock exam in the web app",
+                        "resources": "Immediate access to related PDFs and video resources",
+                        "feedback": "Automatic no-commitment feedback"
+                    },
+                    "cta": "Buy now - CHF 10",
+                    "ctaUseCredit": "Use my credit",
+                    "ctaDisabled": "Exams sold out"
+                },
+                "disabled": {
+                    "hasCredit": "You already have an available credit. Use it before buying again.",
+                    "noTemplates": "All currently available templates are already assigned."
+                },
+                "standard": {
+                    "badge": "Regular price",
+                    "title": "Standard plan",
+                    "description": "Standard price for one mock exam (outside the discovery offer).",
+                    "comingSoon": "Coming soon"
+                },
+                "reassurance": {
+                    "payment": "One-time secure payment via Stripe",
+                    "support": "Responsive support via dashboard messaging"
+                }
+            },
+            "Faq": {
+                "badge": "Mock-exam FAQ",
+                "titlePrefix": "Your",
+                "titleHighlight": "questions",
+                "titleSuffix": "our answers",
+                "subtitle": "Key points to know before starting your first mock exam.",
+                "items": {
+                    "format": {
+                        "title": "Does the mock exam follow the official FIDE test format?",
+                        "content": "Yes. The mock exam is very close to the official FIDE test format, with similar instructions and flow. The goal is to put you in near-real conditions, reduce uncertainty, and help you understand exactly what to expect on test day."
+                    },
+                    "parts": {
+                        "title": "Which parts are included?",
+                        "content": "All three parts are included: Speaking, Listening and Reading/Writing. The sequence is also respected to stay as close as possible to real FIDE test conditions."
+                    },
+                    "tracks": {
+                        "title": "Which tracks are available?",
+                        "content": "You can choose A1-A2 or A2-B1 depending on your objective. This mock test helps you place your level clearly and set a realistic progression target."
+                    },
+                    "duration": {
+                        "title": "How much time should I plan?",
+                        "content": "Plan around 1 hour for a full session. Choose a calm moment without interruptions to get the most reliable result."
+                    },
+                    "online": {
+                        "title": "Is the full process fully online?",
+                        "content": "Yes. The full process is online from start to finish, with step-by-step guidance and immediate feedback at the end of your mock exam."
+                    },
+                    "microphone": {
+                        "title": "Do I need a specific microphone?",
+                        "content": "No. Your computer's built-in microphone is usually enough if the sound is clear. We still recommend a quiet environment. A written transcription is also provided so you can verify audio capture quality."
+                    },
+                    "mobile": {
+                        "title": "Can I take the test on mobile?",
+                        "content": "Yes, both mobile and desktop are possible. All Start French Now content is multi-device. For the test itself, desktop is still recommended for comfort."
+                    },
+                    "pauseResume": {
+                        "title": "What if I stop before finishing?",
+                        "content": "Your answers are saved progressively, step by step, which greatly limits data loss. You can stop and resume later without losing your work."
+                    },
+                    "finalResult": {
+                        "title": "What do I get at the end?",
+                        "content": "As with the FIDE test logic, you get a success rate, a score, and an estimated level (A1/A2/B1) for each part, plus concrete improvement priorities."
+                    },
+                    "pdfVideos": {
+                        "title": "Are PDFs and videos included?",
+                        "content": "Yes. The speaking part includes video support, and Reading/Writing includes PDF support, with immediate and permanent access."
+                    },
+                    "retake": {
+                        "title": "Can I retake the same mock exam?",
+                        "content": "Yes, as many times as you want."
+                    },
+                    "packDifference": {
+                        "title": "What is the difference with the FIDE Pack?",
+                        "content": "The mock exam is purchased as a standalone product. The FIDE Pack automatically includes broader Start French Now FIDE content: regularly updated current FIDE test scenarios, plus many trainings, French courses, and dedicated FIDE courses."
+                    },
+                    "paymentMethods": {
+                        "title": "Which payment methods are accepted?",
+                        "content": "Secure Stripe checkout: card, Apple Pay, Google Pay, PayPal and Revolut."
+                    },
+                    "contactAfterPurchase": {
+                        "title": "How can I ask a question after purchase?",
+                        "content": "You can contact us via the dashboard messaging or by email at yohann@startfrenchnow.com."
+                    }
+                }
+            },
+            "NextSteps": {
+                "badge": "Go further",
+                "titlePrefix": "Do you want a more complete",
+                "titleHighlight": "support plan",
+                "titleSuffix": "?",
+                "subtitle": "The FIDE Pack and private lessons provide a more structured, complete, and personalized path.",
+                "pack": {
+                    "title": "Full FIDE Pack",
+                    "description": "Current scenarios, French courses, PDFs, and videos to move forward with a complete method.",
+                    "cta": "See the pack"
+                },
+                "private": {
+                    "title": "Private FIDE lessons",
+                    "description": "Targeted support with an experienced teacher to fix weak points and prepare you with current scenarios.",
+                    "cta": "Book a consultation"
+                }
+            }
+        },
         "PriceSliderFide": {
             "title": "<hs4>Pricing plans</hs4> for all use cases",
             "purchasedLessons1": "You have already purchased ",
