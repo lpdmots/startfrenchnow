@@ -21,7 +21,7 @@ export default async function FideMockExamsPage({ params: { locale } }: { params
     const homePath = isFr ? "/fr" : "/";
     const fidePath = isFr ? "/fr/fide" : "/fide";
     const mockExamsPath = isFr ? "/fr/fide/mock-exams" : "/fide/mock-exams";
-    const callbackPath = isFr ? "/fr/fide/mock-exams" : "/fide/mock-exams";
+    const callbackPath = "/fide/mock-exams";
     const checkoutPath = `/checkout/mock_exam?quantity=1&callbackUrl=${encodeURIComponent(callbackPath)}`;
     const faqItems = mockExamFaqItemKeys.map((itemKey) => ({
         question: faqT(`items.${itemKey}.title` as never),

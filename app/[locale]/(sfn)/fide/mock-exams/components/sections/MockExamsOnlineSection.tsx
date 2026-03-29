@@ -6,7 +6,7 @@ import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { m } from "framer-motion";
 import { ArrowRight, ChevronDown, ChevronRight } from "lucide-react";
 import Link from "next-intl/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { VideoFide } from "../../../components/VideoFide";
 
 const stepsContainer = {
@@ -39,9 +39,8 @@ type MockExamsOnlineSectionProps = {
 
 export function MockExamsOnlineSection({ checkoutDisabled = false, checkoutDisabledReason = null }: MockExamsOnlineSectionProps) {
     const t = useTranslations("MockExamsPage.Online");
-    const locale = useLocale();
-    const callbackUrl = locale === "fr" ? "/fr/fide/mock-exams" : "/fide/mock-exams";
-    const dashboardUrl = locale === "fr" ? "/fr/fide/dashboard#mock-exams" : "/fide/dashboard#mock-exams";
+    const callbackUrl = "/fide/mock-exams";
+    const dashboardUrl = "/fide/dashboard#mock-exams";
     const checkoutUrl = `/checkout/mock_exam?${new URLSearchParams({
         quantity: "1",
         callbackUrl,

@@ -34,6 +34,14 @@ export const Payment = ({ productSlug, quantity, currency, locale, email, sessio
         }
     }, [paymentIntentId, onPaymentIntentReady]);
 
+    const elementsOptions = useMemo(
+        () => ({
+            clientSecret,
+            locale: locale as StripeElementLocale | undefined,
+        }),
+        [clientSecret, locale],
+    );
+
     if (!pk) {
         // Message propre en dev si la clé manque
         return <div>Stripe public key manquante (NEXT_PUBLIC_STRIPE_PUBLIC_KEY)</div>;
@@ -52,7 +60,7 @@ export const Payment = ({ productSlug, quantity, currency, locale, email, sessio
     return (
         <div className="flex items-center w-full justify-center">
             {clientSecret && stripePromise && (
-                <Elements stripe={stripePromise} options={{ clientSecret, locale: locale as StripeElementLocale | undefined }}>
+                <Elements key={clientSecret} stripe={stripePromise} options={elementsOptions}>
                     <CheckoutForm
                         pricingDetails={pricingDetails}
                         setAreReady={setAreReady}
@@ -76,6 +84,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
     const emailRef = useRef(email);
     const sessionEmailRef = useRef(sessionEmail);
+    const requestIdRef = useRef(0);
 
     useEffect(() => {
         emailRef.current = email;
@@ -86,50 +95,68 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
     }, [sessionEmail]);
 
     useEffect(() => {
+        const currentRequestId = ++requestIdRef.current;
+        const abortController = new AbortController();
+
         setClientSecret("");
         setPaymentIntentId(null);
+        setPricingDetails(null);
+        setProductInfos(null);
         setErrorIntentMessage(null);
 
-        fetch("/api/create-payment-intent", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                productSlug,
-                quantity,
-                currency,
-                locale,
-                sessionEmail: sessionEmailRef.current,
-                email: emailRef.current,
-                userId,
-            }),
-        })
-            .then((res) => {
-                if (res.ok) return res.json();
-                return res
-                    .json()
-                    .then((data) => {
-                        throw new Error(data?.error || "Failed to create payment intent");
-                    })
-                    .catch((error) => {
-                        if (error instanceof Error && error.message) {
-                            throw error;
-                        }
-                        throw new Error("Failed to create payment intent");
-                    });
-            })
-            .then((data) => {
-                if (data.clientSecret && data.pricingDetails && data.productInfos) {
+        (async () => {
+            try {
+                const res = await fetch("/api/create-payment-intent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    signal: abortController.signal,
+                    body: JSON.stringify({
+                        productSlug,
+                        quantity,
+                        currency,
+                        locale,
+                        sessionEmail: sessionEmailRef.current,
+                        email: emailRef.current,
+                        userId,
+                    }),
+                });
+
+                let data: any = null;
+                try {
+                    data = await res.json();
+                } catch {
+                    data = null;
+                }
+
+                if (!res.ok) {
+                    throw new Error(data?.error || "Failed to create payment intent");
+                }
+
+                if (currentRequestId !== requestIdRef.current || abortController.signal.aborted) {
+                    return;
+                }
+
+                if (data?.clientSecret && data?.pricingDetails && data?.productInfos) {
                     setClientSecret(data.clientSecret);
                     setPricingDetails(data.pricingDetails);
                     setProductInfos(data.productInfos);
                     setPaymentIntentId(data.paymentIntentId || null);
-                } else {
-                    throw new Error("Invalid data from server");
+                    return;
                 }
-            })
-            .catch((error) => {
-                setErrorIntentMessage(error.message);
-            });
+
+                throw new Error("Invalid data from server");
+            } catch (error) {
+                if (abortController.signal.aborted || currentRequestId !== requestIdRef.current) {
+                    return;
+                }
+                const message = error instanceof Error && error.message ? error.message : "Failed to create payment intent";
+                setErrorIntentMessage(message);
+            }
+        })();
+
+        return () => {
+            abortController.abort();
+        };
     }, [productSlug, quantity, currency, locale, userId]);
 
     return { pricingDetails, productInfos, errorIntentMessage, clientSecret, paymentIntentId };

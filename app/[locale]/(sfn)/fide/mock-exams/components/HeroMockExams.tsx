@@ -3,7 +3,7 @@
 import { ArrowRight, Bot, CheckCircle2, Clock3, Target } from "lucide-react";
 import Image from "next/image";
 import Link from "next-intl/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 
 type HeroMockExamsProps = {
@@ -13,9 +13,8 @@ type HeroMockExamsProps = {
 
 export const HeroMockExams = ({ checkoutDisabled = false, checkoutDisabledReason = null }: HeroMockExamsProps) => {
     const t = useTranslations("MockExamsPage.Hero");
-    const locale = useLocale();
-    const callbackUrl = locale === "fr" ? "/fr/fide/mock-exams" : "/fide/mock-exams";
-    const dashboardUrl = locale === "fr" ? "/fr/fide/dashboard#mock-exams" : "/fide/dashboard#mock-exams";
+    const callbackUrl = "/fide/mock-exams";
+    const dashboardUrl = "/fide/dashboard#mock-exams";
     const checkoutUrl = `/checkout/mock_exam?${new URLSearchParams({
         quantity: "1",
         callbackUrl,

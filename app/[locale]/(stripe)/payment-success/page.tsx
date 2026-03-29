@@ -21,6 +21,23 @@ type PaymentSuccessProps = {
     params: { locale: Locale };
 };
 
+function normalizeLocalizedPath(pathLike?: string): string {
+    const raw = (pathLike || "").trim();
+    if (!raw) return "/";
+    if (/^https?:\/\//i.test(raw)) return "/";
+
+    let path = raw;
+    try {
+        path = decodeURIComponent(raw);
+    } catch {
+        path = raw;
+    }
+
+    if (!path.startsWith("/")) path = `/${path}`;
+    path = path.replace(/^\/(fr|en)(?=\/|$)/, "");
+    return path || "/";
+}
+
 export default async function PaymentSuccess({ params: { locale }, searchParams }: PaymentSuccessProps) {
     const session = await getServerSession(authOptions);
 
@@ -30,12 +47,14 @@ export default async function PaymentSuccess({ params: { locale }, searchParams 
 const PaymentSuccessNoAsync = ({ searchParams, session, locale }: { searchParams: PaymentSuccessProps["searchParams"]; session: any; locale: Locale }) => {
     const { amount = "", currency = "", slug = "" } = searchParams;
     const t = useTranslations("Checkout.PaymentSuccess");
+    const hasSlug = slug.trim().length > 0;
+    const normalizedSlug = normalizeLocalizedPath(slug);
 
     const isLoggedIn = !!session?.user?.email;
 
     const signInHref = (() => {
         // On renvoie l’utilisateur après auth vers la page “slug” (si dispo), sinon home
-        const callbackUrl = slug || "/";
+        const callbackUrl = normalizedSlug || "/";
         return `/auth/signIn?callbackUrl=${encodeURIComponent(callbackUrl)}`;
     })();
 
@@ -73,8 +92,8 @@ const PaymentSuccessNoAsync = ({ searchParams, session, locale }: { searchParams
                     </Link>
 
                     {/* ✅ connecté : comportement actuel */}
-                    {isLoggedIn && slug && (
-                        <Link href={slug} className="btn btn-primary flex items-center justify-center">
+                    {isLoggedIn && hasSlug && (
+                        <Link href={normalizedSlug} className="btn btn-primary flex items-center justify-center">
                             <NotebookPen className="mr-2 text-xl" />
                             {t("bookLesson")}
                         </Link>

@@ -40,8 +40,14 @@ export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuc
     };
 
     const return_url = useMemo(() => {
-        return `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success?productSlug=${productSlug}` + `&amount=${pricingDetails?.amount}&currency=${pricingDetails?.currency}&slug=${onSuccessUrl}`;
-    }, [productSlug, pricingDetails?.amount, pricingDetails?.currency, onSuccessUrl]);
+        const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || window.location.origin || "").replace(/\/$/, "");
+        const successUrl = new URL(`${baseUrl}/${locale}/payment-success`);
+        successUrl.searchParams.set("productSlug", productSlug);
+        successUrl.searchParams.set("amount", String(pricingDetails?.amount ?? ""));
+        successUrl.searchParams.set("currency", String(pricingDetails?.currency ?? ""));
+        successUrl.searchParams.set("slug", onSuccessUrl || "/");
+        return successUrl.toString();
+    }, [locale, productSlug, pricingDetails?.amount, pricingDetails?.currency, onSuccessUrl]);
 
     // PaymentElement : tabs desktop, accordion mobile (ouverture par défaut)
     const paymentElementOptions: StripePaymentElementOptions = useMemo(

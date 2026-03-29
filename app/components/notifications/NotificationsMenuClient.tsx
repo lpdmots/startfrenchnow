@@ -82,7 +82,13 @@ export default function NotificationsMenuClient({ locale = "fr", className, coun
     const modalData = useMemo(() => {
         if (!activeSystemItem) return null;
         const closeLabel = locale === "fr" ? "Vu" : "Seen";
-        const openLabel = locale === "fr" ? "Réserver un entretien" : "Book a study call";
+        const openLabel = activeSystemItem.link?.includes("calendly.com")
+            ? locale === "fr"
+                ? "Réserver un entretien"
+                : "Book a study call"
+            : locale === "fr"
+              ? "Accéder à mon achat"
+              : "Access my purchase";
         return {
             setOpen: (value: boolean) => {
                 if (!value) setActiveSystemItem(null);

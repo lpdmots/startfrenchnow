@@ -14,11 +14,15 @@ type PendingBenefit = {
 type PendingItem = {
     quantity?: number;
     referenceKey?: string;
+    productTitleFr?: string;
+    productTitleEn?: string;
     benefitsSnapshot?: PendingBenefit[];
 };
 
 type PendingPurchase = {
     _id: string;
+    _rev?: string;
+    stripePaymentId?: string;
     stripeCustomerId?: string;
     purchasedAt?: string;
     locale?: string;
@@ -82,9 +86,11 @@ export async function claimPendingPurchases(params: { email: string; userId: str
         && email==$email
         && !defined(assignedTo)
       ]{
-        _id, stripeCustomerId, purchasedAt, locale,
+        _id, _rev, stripePaymentId, stripeCustomerId, purchasedAt, locale,
         items[]{
           quantity, referenceKey,
+          "productTitleFr": productRef->title.fr,
+          "productTitleEn": productRef->title.en,
           benefitsSnapshot[]{benefitType, referenceKey, creditAmount, accessDuration}
         }
       }`,
@@ -248,21 +254,50 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     });
 
     for (const p of pendings) {
-        tx = tx.patch(p._id, (pp) =>
-            pp.set({
+        tx = tx.patch(p._id, (pp) => {
+            let patch = pp;
+            if (p._rev) {
+                patch = patch.ifRevisionId(p._rev);
+            }
+            return patch.set({
                 status: "assigned",
                 assignedTo: { _type: "reference", _ref: userId },
                 assignedAt: nowIso,
-            }),
-        );
+            });
+        });
     }
 
-    await tx.commit({ autoGenerateArrayKeys: true });
+    try {
+        await tx.commit({ autoGenerateArrayKeys: true });
+    } catch (error) {
+        console.error("[PurchaseClaim] commit failed", {
+            userId,
+            email,
+            pendingIds: pendings.map((p) => p._id),
+            error,
+        });
+        return { claimed: false, reason: "claim_conflict" as const, assignedPurchases: 0 };
+    }
 
-    const localeLike = pendings.find((p) => p.locale)?.locale || "fr";
+    const pendingsSorted = [...pendings].sort((a, b) => {
+        const aTs = a.purchasedAt ? Date.parse(a.purchasedAt) : 0;
+        const bTs = b.purchasedAt ? Date.parse(b.purchasedAt) : 0;
+        return bTs - aTs;
+    });
+    const latestPending = pendingsSorted[0];
+    const latestItem = latestPending?.items?.[0];
+    const localeLike = latestPending?.locale || "fr";
+    const productLabel = (localeLike || "").toLowerCase().startsWith("en") ? latestItem?.productTitleEn || latestItem?.productTitleFr : latestItem?.productTitleFr || latestItem?.productTitleEn;
+    const referenceKey = latestItem?.referenceKey;
+    const messageParams = {
+        localeLike,
+        userName: user.name,
+        referenceKey,
+        productLabel,
+    };
 
     try {
-        const mail = buildPurchaseMailMessage(localeLike, user.name);
+        const mail = buildPurchaseMailMessage(messageParams);
         const info = await transporterNico.sendMail({
             from: "Start French Now <nicolas@startfrenchnow.com>",
             to: user.email,
@@ -281,7 +316,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     }
 
     try {
-        await appendSystemNotification(userId, buildPurchaseSystemNotification(localeLike, user.name));
+        await appendSystemNotification(userId, buildPurchaseSystemNotification(messageParams));
     } catch (error) {
         console.error("[PurchaseNotification] append failed", { userId, error });
     }
