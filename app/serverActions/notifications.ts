@@ -1,8 +1,6 @@
 // app/serverActions/notifications.ts
 "use server";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
 import { SanityServerClient as sanity } from "@/app/lib/sanity.clientServerDev";
 import { Image } from "../types/sfn/blog";
 import { getSessionUserRef } from "./comments";
@@ -10,6 +8,8 @@ import { getSessionUserRef } from "./comments";
 type Locale = "fr" | "en";
 
 export type UINotificationCommentGroup = {
+    kind: "comment";
+    id: string;
     link: string; // URL vers la ressource + ancre #comment-<idPlusRécent>
     image?: Image; // resourceRef.mainImage
     title: string; // FR/EN selon locale (fallback si manquant)
@@ -22,10 +22,24 @@ export type UINotificationCommentGroup = {
     createdAt: string; // date de création de la notif la plus récente du groupe
 };
 
+export type UINotificationSystemItem = {
+    kind: "system";
+    key: string;
+    title: string;
+    body: string;
+    link?: string;
+    createdAt: string;
+};
+
+export type UINotificationItem = UINotificationCommentGroup | UINotificationSystemItem;
+
+function escapePathFilterValue(value: string): string {
+    return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
 function truncate100(s: string | undefined): string {
     const t = (s ?? "").trim();
     if (t.length <= 100) return t;
-    // coupe proprement sur un espace si possible
     const cut = t.slice(0, 100);
     const lastSpace = cut.lastIndexOf(" ");
     return (lastSpace > 60 ? cut.slice(0, lastSpace) : cut).trimEnd() + "…";
@@ -42,30 +56,32 @@ function buildResourceUrl(resourceType?: string, slug?: string): string {
         case "french_dashboard":
             return `/courses/dashboard`;
         default:
-            return `/`; // fallback minimal
+            return `/`;
     }
 }
 
 /**
- * listNotificationsComment
- * - lit les notifications "comment" de l'utilisateur connecté
- * - dé-référence les commentaires et leurs ressources (post/video/dashboard)
- * - regroupe par (resourceType, resourceRef._id)
- * - construit des groupes triés par createdAt (notif la plus récente du groupe)
- * - chaque groupe: link (vers ressource + ancre #comment-<id plus récent>), image, title FR/EN, liste de commentaires (triés récents → anciens)
+ * listNotifications
+ * - lit toutes les notifications de l'utilisateur connecté
+ * - "comment": groupées par ressource (comportement existant)
+ * - "system": rendues en items simples
  */
-export async function listNotificationsComment(locale: Locale = "fr"): Promise<{ items: UINotificationCommentGroup[] }> {
+export async function listNotifications(locale: Locale = "fr"): Promise<{ items: UINotificationItem[] }> {
     const { userRef: uidRef } = await getSessionUserRef();
 
-    // NB: on filtre kind == "comment" dès le GROQ pour éviter du bruit inutile
     const data = await sanity.fetch<{
         notifications?: Array<{
-            createdAt?: string; // createdAt de la notif (peut être absent, fallback sur _createdAt du comment)
+            _key?: string;
+            kind?: string;
+            title?: string;
+            body?: string;
+            link?: string;
+            createdAt?: string;
             reference?: {
-                _id: string; // comment id
-                _createdAt: string; // création du commentaire
+                _id: string;
+                _createdAt: string;
                 body?: string;
-                resourceType?: string; // "blog" | "pack_fide" | "fide_dashboard"
+                resourceType?: string;
                 createdBy?: { name?: string } | null;
                 guestName?: string | null;
                 resourceRef?: {
@@ -74,32 +90,37 @@ export async function listNotificationsComment(locale: Locale = "fr"): Promise<{
                     title?: string;
                     title_en?: string;
                     mainImage?: Image;
-                    slug?: string; // alias de slug.current
+                    slug?: string;
                 } | null;
             } | null;
         }>;
     }>(
         `*[_type=="user" && _id==$uid][0]{
-      "notifications": notifications[ kind == "comment" ]{
-        createdAt,
-        reference->{
-          _id,
-          _createdAt,
-          body,
-          resourceType,
-          createdBy->{ name },
-          guestName,
-          "resourceRef": resourceRef->{
-            _id,
-            _type,
+          "notifications": notifications[]{
+            _key,
+            kind,
             title,
-            title_en,
-            mainImage,
-            "slug": slug.current
+            body,
+            link,
+            createdAt,
+            reference->{
+              _id,
+              _createdAt,
+              body,
+              resourceType,
+              createdBy->{ name },
+              guestName,
+              "resourceRef": resourceRef->{
+                _id,
+                _type,
+                title,
+                title_en,
+                mainImage,
+                "slug": slug.current
+              }
+            }
           }
-        }
-      }
-    }`,
+        }`,
         { uid: uidRef?._ref || "" },
     );
 
@@ -113,18 +134,36 @@ export async function listNotificationsComment(locale: Locale = "fr"): Promise<{
             titleFr?: string;
             titleEn?: string;
             comments: { name: string; truncatedText: string; createdAt: string; id: string }[];
-            notifCreatedAts: string[]; // pour max() notif createdAt
+            notifCreatedAts: string[];
         }
     >();
+    const systemItems: UINotificationSystemItem[] = [];
 
-    for (const n of data?.notifications ?? []) {
+    for (const [idx, n] of (data?.notifications ?? []).entries()) {
+        if (n.kind === "system") {
+            const title = (n.title || "").trim() || (locale === "fr" ? "Notification" : "Notification");
+            const body = (n.body || "").trim();
+            const key = (n._key || `system-${idx}-${n.createdAt || ""}`).trim();
+            if (!key) continue;
+            systemItems.push({
+                kind: "system",
+                key,
+                title,
+                body,
+                link: n.link || undefined,
+                createdAt: n.createdAt || "",
+            });
+            continue;
+        }
+
+        if (n.kind !== "comment") continue;
         const ref = n.reference;
         if (!ref || !ref._id) continue;
 
         const r = ref.resourceRef;
         const resourceType = ref.resourceType;
         const resourceId = r?._id;
-        if (!resourceType || !resourceId) continue; // sans ressource on ne peut pas grouper
+        if (!resourceType || !resourceId) continue;
 
         const key = `${resourceType}::${resourceId}`;
         if (!groups.has(key)) {
@@ -141,10 +180,7 @@ export async function listNotificationsComment(locale: Locale = "fr"): Promise<{
         }
         const g = groups.get(key)!;
 
-        // Auteur
         const name = ref.createdBy?.name || ref.guestName || "Utilisateur";
-
-        // Comment meta
         const truncatedText = truncate100(ref.body);
         const commentCreatedAt = ref._createdAt;
         g.comments.push({
@@ -154,26 +190,20 @@ export async function listNotificationsComment(locale: Locale = "fr"): Promise<{
             id: ref._id,
         });
 
-        // Notif createdAt (fallback sur comment _createdAt si vide)
         g.notifCreatedAts.push(n.createdAt || commentCreatedAt);
     }
 
-    // Assemblage final
-    const items: UINotificationCommentGroup[] = Array.from(groups.values()).map((g) => {
-        // tri des commentaires du groupe: récents → anciens
+    const commentItems: UINotificationCommentGroup[] = Array.from(groups.entries()).map(([groupKey, g]) => {
         g.comments.sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0));
         const latestCommentId = g.comments[0]?.id;
-
-        // titre selon locale (fallback)
         const title = locale === "en" ? g.titleEn || g.titleFr || "" : g.titleFr || g.titleEn || "";
-
-        // createdAt du groupe = notif la plus récente (fallback inclus)
         const groupCreatedAt = g.notifCreatedAts.reduce((max, cur) => (cur > max ? cur : max), "");
-
         const baseUrl = buildResourceUrl(g.resourceType, g.slug);
         const link = latestCommentId ? `${baseUrl}#comment-${latestCommentId}` : baseUrl;
 
         return {
+            kind: "comment",
+            id: groupKey,
             link,
             image: g.image,
             title,
@@ -187,16 +217,20 @@ export async function listNotificationsComment(locale: Locale = "fr"): Promise<{
         };
     });
 
-    // tri des groupes: plus récent (par createdAt groupe) en premier
+    const items: UINotificationItem[] = [...commentItems, ...systemItems];
     items.sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0));
-
     return { items };
 }
 
+export async function listNotificationsComment(locale: Locale = "fr"): Promise<{ items: UINotificationCommentGroup[] }> {
+    const { items } = await listNotifications(locale);
+    return {
+        items: items.filter((item): item is UINotificationCommentGroup => item.kind === "comment"),
+    };
+}
+
 /**
- * markNotificationsSeen
- * - Retire les notifs correspondant à un post donné (dédup ciblé)
- * - Idempotent: si elle n’existe pas, pas d’erreur
+ * markNotificationsSeen (comment)
  */
 export async function markNotificationsSeen(commentIds: string[]): Promise<void> {
     const ids = Array.from(new Set((commentIds || []).filter(Boolean)));
@@ -205,55 +239,55 @@ export async function markNotificationsSeen(commentIds: string[]): Promise<void>
     const { userRef: uid, isAdmin } = await getSessionUserRef();
     if (!uid?._ref) return;
 
-    // Sélecteurs pour retirer les notifs ciblées
-    const selectors = ids.map((id) => `notifications[reference._ref=="${id}"]`);
+    const selectors = ids.map((id) => `notifications[reference._ref=="${escapePathFilterValue(id)}"]`);
 
     if (isAdmin) {
-        // Patch "vu" sur les commentaires existants + unset notifs, en une seule transaction
         const existing = await sanity.fetch<string[]>(`*[_type=="comment" && _id in $ids][]._id`, { ids });
-
         const tx = sanity.transaction();
-
         for (const cid of existing) {
             tx.patch(cid, (p) => p.set({ isSeen: true }));
         }
-
         tx.patch(uid._ref, (p) => p.unset(selectors));
-
         await tx.commit({ autoGenerateArrayKeys: true });
     } else {
-        // Non-admin : on ne modifie que les notifications
         await sanity.patch(uid._ref).unset(selectors).commit({ autoGenerateArrayKeys: true });
     }
 }
 
 /**
+ * markSystemNotificationsSeen
+ */
+export async function markSystemNotificationsSeen(notificationKeys: string[]): Promise<void> {
+    const keys = Array.from(new Set((notificationKeys || []).filter(Boolean)));
+    if (keys.length === 0) return;
+
+    const { userRef: uid } = await getSessionUserRef();
+    if (!uid?._ref) return;
+
+    const selectors = keys.map((key) => `notifications[_key=="${escapePathFilterValue(key)}"]`);
+    await sanity.patch(uid._ref).unset(selectors).commit({ autoGenerateArrayKeys: true });
+}
+
+/**
  * clearNotifications
- * - Vide la liste des notifications (tout marquer comme vu)
+ * - vide toutes les notifications (comment + system)
  */
 export async function clearNotifications(): Promise<void> {
     const { userRef: uid, isAdmin } = await getSessionUserRef();
     if (!uid?._ref) return;
 
     if (isAdmin) {
-        // Récupère tous les IDs de commentaires référencés dans les notifs "comment"
         let commentIds = await sanity.fetch<string[]>(`*[_type=="user" && _id==$id][0].notifications[kind=="comment" && defined(reference._ref)].reference._ref`, { id: uid._ref });
         commentIds = Array.from(new Set((commentIds || []).filter(Boolean)));
-
-        // Marque les commentaires "vu" + vide les notifications en une transaction
         const existing = commentIds.length ? await sanity.fetch<string[]>(`*[_type=="comment" && _id in $ids][]._id`, { ids: commentIds }) : [];
 
         const tx = sanity.transaction();
-
         for (const cid of existing) {
             tx.patch(cid, (p) => p.set({ isSeen: true }));
         }
-
         tx.patch(uid._ref, (p) => p.set({ notifications: [] }));
-
         await tx.commit({ autoGenerateArrayKeys: true });
     } else {
-        // Non-admin : on vide seulement les notifications
         await sanity.patch(uid._ref).set({ notifications: [] }).commit({ autoGenerateArrayKeys: true });
     }
 }

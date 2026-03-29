@@ -26,7 +26,7 @@ export const Payment = ({ productSlug, quantity, currency, locale, email, sessio
     const pk = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY;
     const stripePromise = useMemo(() => (pk ? loadStripe(pk) : null), [pk]);
 
-    const { errorIntentMessage, clientSecret, pricingDetails, productInfos, paymentIntentId } = usePaymentIntent(productSlug, quantity, currency, email, sessionEmail, userId);
+    const { errorIntentMessage, clientSecret, pricingDetails, productInfos, paymentIntentId } = usePaymentIntent(productSlug, quantity, currency, locale, email, sessionEmail, userId);
 
     useEffect(() => {
         if (paymentIntentId) {
@@ -68,7 +68,7 @@ export const Payment = ({ productSlug, quantity, currency, locale, email, sessio
     );
 };
 
-const usePaymentIntent = (productSlug: string, quantity: string, currency: string, email: string, sessionEmail: string | undefined, userId?: string) => {
+const usePaymentIntent = (productSlug: string, quantity: string, currency: string, locale: string, email: string, sessionEmail: string | undefined, userId?: string) => {
     const [pricingDetails, setPricingDetails] = useState<PricingDetails | null>(null);
     const [productInfos, setProductInfos] = useState<null | ProductInfos>(null);
     const [errorIntentMessage, setErrorIntentMessage] = useState<any>(null);
@@ -97,6 +97,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
                 productSlug,
                 quantity,
                 currency,
+                locale,
                 sessionEmail: sessionEmailRef.current,
                 email: emailRef.current,
                 userId,
@@ -129,7 +130,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
             .catch((error) => {
                 setErrorIntentMessage(error.message);
             });
-    }, [productSlug, quantity, currency, userId]);
+    }, [productSlug, quantity, currency, locale, userId]);
 
     return { pricingDetails, productInfos, errorIntentMessage, clientSecret, paymentIntentId };
 };

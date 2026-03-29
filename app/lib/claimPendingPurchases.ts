@@ -1,5 +1,8 @@
 // app/lib/claimPendingPurchases.ts
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
+import { transporterNico } from "@/app/lib/nodemailer";
+import { appendSystemNotification } from "@/app/lib/systemNotifications";
+import { buildPurchaseMailMessage, buildPurchaseSystemNotification } from "@/app/lib/purchaseMessages";
 
 type PendingBenefit = {
     benefitType: "lessons" | "credits" | "permission";
@@ -18,12 +21,14 @@ type PendingPurchase = {
     _id: string;
     stripeCustomerId?: string;
     purchasedAt?: string;
+    locale?: string;
     items?: PendingItem[];
 };
 
 type UserDoc = {
     _id: string;
     email: string;
+    name?: string;
     isActive?: boolean;
     stripeCustomerId?: string;
     permissions?: Array<{ _key: string; referenceKey: string; grantedAt?: string; expiresAt?: string | null }>;
@@ -54,7 +59,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     // 1) Récup user (avec _key des arrays)
     const user = (await client.fetch(
         `*[_type=="user" && _id==$userId][0]{
-    _id, email, isActive, stripeCustomerId,
+    _id, email, name, isActive, stripeCustomerId,
     permissions[]{_key, referenceKey, grantedAt, expiresAt},
     credits[]{_key, referenceKey, totalCredits, remainingCredits},
     lessons[]{_key, eventType, totalPurchasedMinutes}
@@ -77,7 +82,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
         && email==$email
         && !defined(assignedTo)
       ]{
-        _id, stripeCustomerId, purchasedAt,
+        _id, stripeCustomerId, purchasedAt, locale,
         items[]{
           quantity, referenceKey,
           benefitsSnapshot[]{benefitType, referenceKey, creditAmount, accessDuration}
@@ -253,6 +258,33 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     }
 
     await tx.commit({ autoGenerateArrayKeys: true });
+
+    const localeLike = pendings.find((p) => p.locale)?.locale || "fr";
+
+    try {
+        const mail = buildPurchaseMailMessage(localeLike, user.name);
+        const info = await transporterNico.sendMail({
+            from: "Start French Now <nicolas@startfrenchnow.com>",
+            to: user.email,
+            html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`,
+            subject: mail.subject,
+        });
+        console.info("[PurchaseEmail] SMTP result", {
+            to: user.email,
+            messageId: (info as any)?.messageId,
+            accepted: (info as any)?.accepted,
+            rejected: (info as any)?.rejected,
+            response: (info as any)?.response,
+        });
+    } catch (error) {
+        console.error("[PurchaseEmail] send failed", { userId, email: user.email, error });
+    }
+
+    try {
+        await appendSystemNotification(userId, buildPurchaseSystemNotification(localeLike, user.name));
+    } catch (error) {
+        console.error("[PurchaseNotification] append failed", { userId, error });
+    }
 
     return {
         claimed: true,

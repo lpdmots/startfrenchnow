@@ -404,7 +404,7 @@
     "NotificationsMenu": {
         "title": "Notifications",
         "refreshing": "Actualisation…",
-        "statusCount": "{count, plural, one {# commentaire} other {# commentaires}}",
+        "statusCount": "{count, plural, one {# notification} other {# notifications}}",
         "statusNone": "Aucune",
 
         "markAllSeenLabel": "Tout marquer comme vu",
@@ -1497,6 +1497,7 @@
             "successMessage": "Votre compte a été créé avec succès. Veuillez vérifier votre boîte de réception pour l'activer.",
             "errorMessages": {
                 "fillAllField": "Veuillez remplir tous les champs",
+                "submittedTooFast": "Soumission trop rapide. Attendez 2 secondes puis réessayez.",
                 "emailexist": "Un compte utilisant cette adresse e-mail existe déjà.",
                 "notActivated": "Un e-mail a été envoyé à votre boîte de réception. Veuillez cliquer sur le lien lorsque vous le recevrez.",
                 "emailInvalid": "Format d'e-mail invalide.",

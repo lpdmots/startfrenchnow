@@ -242,7 +242,7 @@ export const COURSES_PACKAGES_KEYS = ["udemy_course_beginner", "udemy_course_dia
 export const PACKAGES_KEYS = [...FIDE_PACKAGES_KEYS, ...COURSES_PACKAGES_KEYS] as const;
 export const LESSONS_CREDITS_PERMISSIONS = [...LESSONS, ...CREDITS, ...PERMISSIONS];
 
-export const NOTIFICATIONKINDS = ["comment"] as const;
+export const NOTIFICATIONKINDS = ["comment", "system"] as const;
 
 export const POSTCOMMENTRESOURCE = ["blog", "pack_fide", "udemy_course_beginner", "fide_scenario", "udemy_course_intermediate", "udemy_course_dialogs"] as const;
 export const COMMENTRESOURCES = [...POSTCOMMENTRESOURCE, "fide_dashboard", "french_dashboard"] as const;

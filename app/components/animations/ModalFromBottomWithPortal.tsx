@@ -37,13 +37,21 @@ export const ModalFromBottomWithPortal = ({ open, data }: Props) => {
         if (!isClient) return;
 
         const originalOverflow = document.body.style.overflow;
+        const modalFlagAttr = "data-portal-modal-open";
+        const previousFlag = document.body.getAttribute(modalFlagAttr);
 
         if (open) {
             document.body.style.overflow = "hidden";
+            document.body.setAttribute(modalFlagAttr, "true");
         }
 
         return () => {
             document.body.style.overflow = originalOverflow;
+            if (previousFlag === null) {
+                document.body.removeAttribute(modalFlagAttr);
+            } else {
+                document.body.setAttribute(modalFlagAttr, previousFlag);
+            }
         };
     }, [open, isClient]);
 
@@ -65,7 +73,7 @@ export const ModalFromBottomWithPortal = ({ open, data }: Props) => {
     return createPortal(
         <AnimatePresence>
             {open && (
-                <div className="fixed inset-0 px-5 flex items-center justify-center" style={{ zIndex: 100000 }}>
+                <div className="fixed inset-0 px-5 flex items-center justify-center" style={{ zIndex: 100000 }} data-keep-dropdown-open="true">
                     {/* Overlay sombre */}
                     <m.div
                         initial={{ opacity: 0 }}

@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
+import { resolveAuthLocale } from "@/app/lib/authMailMessages";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: "2024-09-30.acacia",
 });
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 const queryUserByEmail = `*[_type == "user" && lower(email) == $email][0]{
   _id, email, isActive
@@ -51,12 +52,14 @@ export async function POST(req: NextRequest) {
     const productSlug = paymentIntent.metadata?.productSlug;
     const quantityRaw = paymentIntent.metadata?.quantity;
     const metadataEmail = paymentIntent.metadata?.email;
+    const metadataLocale = paymentIntent.metadata?.locale;
 
     const receiptEmail = paymentIntent.receipt_email || undefined;
     const buyerEmail = (metadataEmail || receiptEmail || "").trim().toLowerCase();
 
     const stripePaymentId = paymentIntent.id;
     const stripeCustomerId = typeof paymentIntent.customer === "string" ? paymentIntent.customer : undefined;
+    const locale = resolveAuthLocale(metadataLocale);
 
     const qty = Number.parseInt(String(quantityRaw || "1"), 10) || 1;
 
@@ -95,6 +98,7 @@ export async function POST(req: NextRequest) {
             email: buyerEmail,
             stripePaymentId,
             stripeCustomerId,
+            locale,
             purchasedAt: new Date(paymentIntent.created * 1000).toISOString(),
             status: "paid",
             items: [

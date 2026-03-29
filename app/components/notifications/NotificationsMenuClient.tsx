@@ -1,18 +1,19 @@
 // app/components/notifications/NotificationsMenuClient.tsx
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next-intl/link";
-import { listNotificationsComment, clearNotifications, markNotificationsSeen } from "@/app/serverActions/notifications";
-import type { UINotificationCommentGroup } from "@/app/serverActions/notifications";
+import { clearNotifications, listNotifications, markNotificationsSeen, markSystemNotificationsSeen } from "@/app/serverActions/notifications";
+import type { UINotificationCommentGroup, UINotificationItem, UINotificationSystemItem } from "@/app/serverActions/notifications";
 import { LuClock } from "react-icons/lu";
 import clsx from "clsx";
 import { RelativeDate } from "../comments/CommentThread";
 import Image from "next/image";
 import urlFor from "@/app/lib/urlFor";
-import { MdChatBubbleOutline, MdNotifications, MdDoneAll } from "react-icons/md";
+import { MdChatBubbleOutline, MdNotifications, MdDoneAll, MdInfoOutline } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { ModalFromBottomWithPortal } from "../animations/ModalFromBottomWithPortal";
 
 type Props = {
     locale?: "fr" | "en";
@@ -22,16 +23,16 @@ type Props = {
 
 export default function NotificationsMenuClient({ locale = "fr", className, count }: Props) {
     const router = useRouter();
-    const [items, setItems] = useState<UINotificationCommentGroup[]>([]);
+    const [items, setItems] = useState<UINotificationItem[]>([]);
     const [isPending, startTransition] = useTransition();
     const [isClearing, startClearing] = useTransition();
     const [isMarking, startMarking] = useTransition();
+    const [activeSystemItem, setActiveSystemItem] = useState<UINotificationSystemItem | null>(null);
 
     useEffect(() => {
         startTransition(() => {
-            listNotificationsComment(locale)
+            listNotifications(locale)
                 .then((res) => {
-                    console.log("[Notifications] items:", res.items);
                     setItems(res.items);
                 })
                 .catch((err) => {
@@ -52,39 +53,100 @@ export default function NotificationsMenuClient({ locale = "fr", className, coun
         });
     };
 
-    // Suppression non bloquante + retrait optimiste de l'item
     const handleVisitGroup = (item: UINotificationCommentGroup) => {
         const ids = Array.from(new Set(item.comments.map((c) => c.id)));
         if (ids.length > 0) {
             startMarking(() => {
-                markNotificationsSeen(ids).catch((e) => console.error("[Notifications] markSeen error:", e));
+                markNotificationsSeen(ids).catch((e) => console.error("[Notifications] markSeen(comment) error:", e));
             });
         }
-        setItems((prev) => prev.filter((g) => g.link !== item.link));
+        setItems((prev) => prev.filter((g) => !(g.kind === "comment" && g.id === item.id)));
         router.refresh();
     };
 
-    return (
-        <div className={clsx("w-[340px] sm:w-[380px] max-h-[70vh] overflow-y-auto", "card p-4 mt-2", className)}>
-            <Header isPending={isPending && items.length === 0} count={count} hasItems={items.length > 0} isClearing={isClearing} onClearAll={handleClearAll} />
-            {isPending && items.length === 0 ? (
-                <SkeletonList />
-            ) : items.length === 0 ? (
-                <EmptyState />
-            ) : (
-                <div className="space-y-4">
-                    {items.map((g, idx) => (
-                        <div key={`${g.link}-${idx}`} style={items.length - 1 === idx ? {} : { borderBottom: "solid 2px var(--neutral-300)" }} className="pb-2">
-                            <GroupCard item={g} locale={locale} onVisitGroup={handleVisitGroup} />
-                        </div>
-                    ))}
+    const handleSystemItemConfirmed = useCallback(async (item: UINotificationSystemItem) => {
+        try {
+            await markSystemNotificationsSeen([item.key]);
+        } catch (e) {
+            console.error("[Notifications] markSeen(system) error:", e);
+        }
+        setItems((prev) => prev.filter((g) => !(g.kind === "system" && g.key === item.key)));
+        setActiveSystemItem(null);
+        router.refresh();
+    }, [router]);
+
+    const handleOpenSystemItem = (item: UINotificationSystemItem) => {
+        setActiveSystemItem(item);
+    };
+
+    const modalData = useMemo(() => {
+        if (!activeSystemItem) return null;
+        const closeLabel = locale === "fr" ? "Vu" : "Seen";
+        const openLabel = locale === "fr" ? "Réserver un entretien" : "Book a study call";
+        return {
+            setOpen: (value: boolean) => {
+                if (!value) setActiveSystemItem(null);
+            },
+            title: activeSystemItem.title,
+            message: (
+                <div>
+                    <p className="mb-0 text-neutral-700 whitespace-pre-line">{activeSystemItem.body}</p>
+                    {activeSystemItem.link ? (
+                        <p className="mb-0 mt-2 text-xs text-neutral-500 break-all">
+                            {activeSystemItem.link}
+                        </p>
+                    ) : null}
                 </div>
-            )}
-        </div>
+            ),
+            clickOutside: true,
+            oneButtonOnly: !activeSystemItem.link,
+            buttonOkStr: activeSystemItem.link ? openLabel : closeLabel,
+            buttonAnnulerStr: closeLabel,
+            functionOk: activeSystemItem.link
+                ? async () => {
+                      const link = activeSystemItem.link as string;
+                      window.open(link, "_blank", "noopener,noreferrer");
+                      await handleSystemItemConfirmed(activeSystemItem);
+                  }
+                : async () => {
+                      await handleSystemItemConfirmed(activeSystemItem);
+                  },
+            functionCancel: async () => {
+                await handleSystemItemConfirmed(activeSystemItem);
+            },
+        };
+    }, [activeSystemItem, handleSystemItemConfirmed, locale, router]);
+
+    return (
+        <>
+            <div className={clsx("w-[340px] sm:w-[380px] max-h-[70vh] overflow-y-auto", "card p-4 mt-2", className)}>
+                <Header isPending={isPending && items.length === 0} count={count} hasItems={items.length > 0} isClearing={isClearing} onClearAll={handleClearAll} />
+                {isPending && items.length === 0 ? (
+                    <SkeletonList />
+                ) : items.length === 0 ? (
+                    <EmptyState />
+                ) : (
+                    <div className="space-y-4">
+                        {items.map((item, idx) => (
+                            <div
+                                key={item.kind === "comment" ? `comment-${item.id}` : `system-${item.key}`}
+                                style={items.length - 1 === idx ? {} : { borderBottom: "solid 2px var(--neutral-300)" }}
+                                className="pb-2"
+                            >
+                                {item.kind === "comment" ? (
+                                    <CommentGroupCard item={item} locale={locale} onVisitGroup={handleVisitGroup} />
+                                ) : (
+                                    <SystemCard item={item} locale={locale} onOpen={handleOpenSystemItem} disabled={isMarking} />
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+            {modalData && <ModalFromBottomWithPortal open={Boolean(activeSystemItem)} data={modalData} />}
+        </>
     );
 }
-
-/* ====== UI SUB-COMPONENTS ====== */
 
 function Header({ isPending, count, hasItems, isClearing, onClearAll }: { isPending: boolean; count: number; hasItems: boolean; isClearing: boolean; onClearAll: () => void }) {
     const t = useTranslations("NotificationsMenu");
@@ -117,23 +179,16 @@ function Header({ isPending, count, hasItems, isClearing, onClearAll }: { isPend
     );
 }
 
-function GroupCard({ item, locale, onVisitGroup }: { item: UINotificationCommentGroup; locale?: "fr" | "en"; onVisitGroup: (item: UINotificationCommentGroup) => void }) {
+function CommentGroupCard({ item, locale, onVisitGroup }: { item: UINotificationCommentGroup; locale?: "fr" | "en"; onVisitGroup: (item: UINotificationCommentGroup) => void }) {
     const t = useTranslations("NotificationsMenu");
     const comments = item.comments.slice(0, 3);
     const moreCount = item.comments.length - comments.length;
 
-    // Clique gauche standard uniquement → suppression non bloquante + navigation
     const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-        if (
-            e.button !== 0 || // only left click
-            e.metaKey ||
-            e.ctrlKey ||
-            e.shiftKey ||
-            e.altKey
-        ) {
-            return; // on ne gère pas la suppression pour les ouvertures modifiées / nouvel onglet
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+            return;
         }
-        onVisitGroup(item); // fire & forget + retrait optimiste
+        onVisitGroup(item);
     };
 
     return (
@@ -178,6 +233,37 @@ function GroupCard({ item, locale, onVisitGroup }: { item: UINotificationComment
                 </div>
             </div>
         </Link>
+    );
+}
+
+function SystemCard({ item, locale, onOpen, disabled }: { item: UINotificationSystemItem; locale: "fr" | "en"; onOpen: (item: UINotificationSystemItem) => void; disabled?: boolean }) {
+    return (
+        <button
+            type="button"
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onOpen(item);
+            }}
+            disabled={disabled}
+            className={clsx("w-full text-left block rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 no-underline text-neutral-800", "transition-colors p-3 disabled:opacity-70")}
+        >
+            <div className="flex items-start gap-2">
+                <div className="h-9 w-9 rounded-lg bg-neutral-200/70 flex items-center justify-center shrink-0">
+                    <MdInfoOutline className="h-5 w-5 text-neutral-700" />
+                </div>
+                <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                        <h3 className="text-sm font-semibold text-neutral-900 line-clamp-2">{item.title}</h3>
+                        <span className="inline-flex items-center gap-1 shrink-0">
+                            <LuClock className="w-3.5 h-3.5 text-neutral-500" />
+                            <RelativeDate iso={item.createdAt} locale={locale} small={true} />
+                        </span>
+                    </div>
+                    <p className="text-sm text-neutral-700 line-clamp-2 mb-0 mt-1">{item.body}</p>
+                </div>
+            </div>
+        </button>
     );
 }
 

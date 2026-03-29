@@ -318,6 +318,26 @@ export default defineType({
                             title: "Référence",
                             type: "reference",
                             to: [{ type: "comment" }],
+                            hidden: ({ parent }) => parent?.kind !== "comment",
+                        }),
+                        defineField({
+                            name: "title",
+                            title: "Titre",
+                            type: "string",
+                            hidden: ({ parent }) => parent?.kind !== "system",
+                        }),
+                        defineField({
+                            name: "body",
+                            title: "Message",
+                            type: "text",
+                            rows: 3,
+                            hidden: ({ parent }) => parent?.kind !== "system",
+                        }),
+                        defineField({
+                            name: "link",
+                            title: "Lien",
+                            type: "string",
+                            hidden: ({ parent }) => parent?.kind !== "system",
                         }),
                         defineField({
                             name: "createdAt",

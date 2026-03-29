@@ -10,7 +10,11 @@ export const metadata = {
     robots: { index: false, follow: false },
 };
 
-const SignUp = () => {
+type Props = {
+    params: { locale: "fr" | "en" };
+};
+
+const SignUp = ({ params: { locale } }: Props) => {
     const t = useTranslations("Auth.SignUp");
     const tGoogle = useTranslations("Auth.ContinueWithGoogle");
     const tForm = useTranslations("Auth.SignUpForm");
@@ -25,7 +29,7 @@ const SignUp = () => {
         createAccount: tForm("createAccount"),
         successMessage: tForm("successMessage"),
         errorMessages: {
-            fillAllField: tForm("errorMessages.fillAllField"),
+            fillAllFields: tForm("errorMessages.fillAllField"),
             emailExist: tForm("errorMessages.emailexist"),
             notActivated: tForm("errorMessages.notActivated"),
             emailInvalid: tForm("errorMessages.emailInvalid"),
@@ -37,6 +41,7 @@ const SignUp = () => {
             subject: tEmail.raw("subject"),
             body: tEmail.raw("body"),
         },
+        locale,
     };
 
     const divider = (

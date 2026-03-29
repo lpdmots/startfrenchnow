@@ -400,7 +400,7 @@
     "NotificationsMenu": {
         "title": "Notifications",
         "refreshing": "Refreshing…",
-        "statusCount": "{count, plural, one {# comment} other {# comments}}",
+        "statusCount": "{count, plural, one {# notification} other {# notifications}}",
         "statusNone": "None",
 
         "markAllSeenLabel": "Mark all as seen",
@@ -1488,6 +1488,7 @@
             "successMessage": "Account created. Please check your email to activate it.",
             "errorMessages": {
                 "fillAllField": "Please fill in all fields",
+                "submittedTooFast": "Submitted too fast. Wait 2 seconds and try again.",
                 "emailexist": "An account already using this e-mail address exists.",
                 "notActivated": "An email has been sent to your inbox. Please click the link when you get it.",
                 "emailInvalid": "Invalid email format.",

@@ -66,10 +66,12 @@ async function getOrCreateCustomer(sessionEmail: string): Promise<string> {
 
 export async function POST(request: NextRequest) {
     try {
-        const { productSlug, quantity, currency, email, sessionEmail, userId } = await request.json();
+        const { productSlug, quantity, currency, email, sessionEmail, userId, locale } = await request.json();
 
         // Email “effectif” : si pas de session (guest), on utilise l’email du form
         const effectiveEmail = (sessionEmail || email || "").trim().toLowerCase();
+
+        const normalizedLocale = String(locale || "").trim().toLowerCase().startsWith("en") ? "en" : "fr";
 
         const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch;
         const requestedQuantity = Number.parseInt(String(quantity || "1"), 10) || 1;
@@ -126,6 +128,7 @@ export async function POST(request: NextRequest) {
             metadata: {
                 productSlug,
                 quantity,
+                locale: normalizedLocale,
                 ...(effectiveEmail ? { email: effectiveEmail } : {}),
             },
         });

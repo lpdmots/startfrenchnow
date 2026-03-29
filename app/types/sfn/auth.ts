@@ -37,7 +37,10 @@ export type NotificationKind = (typeof NOTIFICATIONKINDS)[number];
 export interface Notification {
     _key: string;
     kind: NotificationKind;
-    reference: Reference;
+    reference?: Reference;
+    title?: string;
+    body?: string;
+    link?: string;
     createdAt: string;
 }
 

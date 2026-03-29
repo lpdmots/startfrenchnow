@@ -7,18 +7,24 @@ import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { getActivateToken, isStrongPassword, isValidEmail, replaceInString } from "../lib/utils";
 
 export const handleSignup = async (formData: SignupFormData, mailMessages: any, antiBot?: { website?: string; startedAt?: number }) => {
+    const debugId = `signup-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const rawEmail = String(formData?.email || "");
+    const email = rawEmail.toLowerCase().trim();
+    console.info("[AuthSignup] Start", { debugId, email });
+
     // Anti-bot (best effort)
     if (antiBot?.website && antiBot.website.trim() !== "") {
         // On répond comme si c'était OK (évite de donner un signal)
+        console.warn("[AuthSignup] Honeypot filled, blocking signup attempt", { debugId, email });
         return { success: "ok", status: 200 };
     }
 
     const deltaMs = Date.now() - Number(antiBot?.startedAt || 0);
     if (Number.isFinite(deltaMs) && deltaMs > 0 && deltaMs < 1500) {
-        return { success: "ok", status: 200 };
+        console.warn("[AuthSignup] Submission blocked: submittedTooFast", { debugId, email, deltaMs });
+        return { error: "submittedTooFast", status: 429 };
     }
 
-    const email = formData.email.toLowerCase().trim();
     const password1 = formData.password1.trim();
     const password2 = formData.password2.trim();
     const name = formData.name.trim();
@@ -30,11 +36,13 @@ export const handleSignup = async (formData: SignupFormData, mailMessages: any, 
     const existingUser = await client.fetch(`*[_type == "user" && email == $email]`, {
         email: email,
     });
+    console.info("[AuthSignup] Signup request received", { debugId, email, hasExistingUser: existingUser.length > 0 });
 
     if (existingUser.length > 0) {
         if (existingUser[0].isActive) return { error: "emailExist", status: 400 };
         else {
             const updatedUser = await updateUserActivateToken(existingUser[0]._id);
+            console.info("[AuthSignup] Existing inactive user, resending activation email", { debugId, email, userId: updatedUser?._id });
             await sendActivationEmail(updatedUser, mailMessages);
             return { success: "notActivated", status: 200 };
         }
@@ -57,7 +65,7 @@ export const handleSignup = async (formData: SignupFormData, mailMessages: any, 
         const activateToken = getActivateToken();
         const tokenExpiration = getTokenExpiration();
 
-        const user = await client.create({
+        const createdUser = await client.create({
             _type: "user",
             name: name,
             email: email,
@@ -66,9 +74,12 @@ export const handleSignup = async (formData: SignupFormData, mailMessages: any, 
             activateToken,
             tokenExpiration,
         });
-        await sendActivationEmail(user, mailMessages);
+        console.info("[AuthSignup] User created, sending activation email", { debugId, email, userId: createdUser?._id });
+        await sendActivationEmail(createdUser, mailMessages);
+        console.info("[AuthSignup] Activation email send request completed", { debugId, email, userId: createdUser?._id });
     } catch (error: any) {
-        console.error(error);
+        const err = error instanceof Error ? { message: error.message, stack: error.stack } : error;
+        console.error("[AuthSignup] Signup failed", { debugId, email, error: err });
         return { error: "error500", status: 500 };
     }
 
@@ -95,7 +106,13 @@ export const sendNewActivationLink = async (email: string, mailMessages: any) =>
 
 export const sendActivationEmail = async (user: any, mailMessages: any) => {
     const body = replaceInString(mailMessages.body, { USERNAME: user.name, DOMAIN: process.env.NEXTAUTH_URL, ACTIVATETOKEN: user.activateToken });
-    await transporterNico.sendMail({
+    console.info("[ActivationEmail] Sending", {
+        to: user.email,
+        hasSubject: Boolean(mailMessages?.subject),
+        hasBody: Boolean(mailMessages?.body),
+        domain: process.env.NEXTAUTH_URL,
+    });
+    const info = await transporterNico.sendMail({
         from: "Start French Now <nicolas@startfrenchnow.com>",
         to: user.email,
         html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${body}<div style="display: flex; align-items: center; margin-top: 20px;">
@@ -105,6 +122,29 @@ export const sendActivationEmail = async (user: any, mailMessages: any) => {
       Yohann Coussot<br/>
       Professeur de français<br/>
       <a href="https://www.startfrenchnow.com" style="color: #1a73e8; text-decoration: none;">www.startfrenchnow.com</a>
+    </p>
+  </div></div></html>`,
+        subject: mailMessages.subject,
+    });
+    console.info("[ActivationEmail] SMTP result", {
+        to: user.email,
+        messageId: (info as any)?.messageId,
+        accepted: (info as any)?.accepted,
+        rejected: (info as any)?.rejected,
+        response: (info as any)?.response,
+    });
+};
+
+export const sendWelcomeEmail = async (user: any, mailMessages: any) => {
+    const body = replaceInString(mailMessages.body, { USERNAME: user.name, DOMAIN: process.env.NEXTAUTH_URL });
+    await transporterNico.sendMail({
+        from: "Start French Now <nicolas@startfrenchnow.com>",
+        to: user.email,
+        html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${body}<div style="display: flex; align-items: center; margin-top: 20px;">
+    <img src="https://www.startfrenchnow.com/images/yoh-coussot.png" alt="Yohann Coussot" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; margin-right: 12px;" />
+
+    <p style="margin: 0;">
+      Yohann Coussot
     </p>
   </div></div></html>`,
         subject: mailMessages.subject,

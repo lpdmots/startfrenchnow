@@ -3,9 +3,9 @@ import { useState } from "react";
 import { handleSignup } from "@/app/serverActions/authActions";
 import { SignupFormData } from "@/app/types/sfn/auth";
 import Spinner from "@/app/components/common/Spinner";
-import { subscribeNewsletter } from "@/app/lib/apiNavigation";
 
 const initialFormState: SignupFormData = { email: "", name: "", password1: "", password2: "" };
+const USER_FACING_ERROR_KEYS = new Set(["fillAllFields", "emailExist", "notActivated", "emailInvalid", "passwordMismatch", "passwordNotConform"]);
 
 export const SignUpForm = ({ messages }: { messages: any }) => {
     const [formData, setFormData] = useState(initialFormState);
@@ -31,9 +31,10 @@ export const SignUpForm = ({ messages }: { messages: any }) => {
             startedAt: Number(fd.get("startedAt") ?? 0),
         };
         const response = await handleSignup({ ...formData, subscribeNewsletter: checked }, messages.mailMessages, antiBot);
+        const errorKey = response?.error as string | undefined;
+        const userFacingError = errorKey && USER_FACING_ERROR_KEYS.has(errorKey) ? messages.errorMessages[errorKey] : "";
 
-        console.log(messages, response.error, messages.errorMessages[response?.error || ""]);
-        setMessage({ error: response?.error ? messages.errorMessages[response.error] : "", success: response?.success ? messages.successMessage : "", spinner: false });
+        setMessage({ error: userFacingError || "", success: response?.success ? messages.successMessage : "", spinner: false });
     };
 
     return (

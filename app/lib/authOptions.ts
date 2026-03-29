@@ -5,6 +5,9 @@ import { DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
+import { sendWelcomeEmail } from "@/app/serverActions/authActions";
+import { buildWelcomeSystemNotification, resolveAuthLocale, welcomeMailMessagesByLocale } from "@/app/lib/authMailMessages";
+import { appendSystemNotification } from "@/app/lib/systemNotifications";
 
 declare module "next-auth" {
     interface Session {
@@ -86,20 +89,25 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async signIn({ user, account, profile }) {
-            // --- OAuth (Google/Facebook)
-            if (["google", "facebook"].includes(account?.provider || "")) {
-                const email = profile?.email;
+            // --- OAuth (Google)
+            if (account?.provider === "google") {
+                const email = String((profile as any)?.email || "")
+                    .trim()
+                    .toLowerCase();
+                if (!email) return false;
 
                 let dbUser = await client.fetch('*[_type == "user" && email == $email][0]', { email });
+                let isNewOAuthUser = false;
                 if (!dbUser) {
                     const newUser = {
                         _type: "user",
                         email: email,
-                        name: profile?.name,
+                        name: (profile as any)?.name || email,
                         isActive: true,
                         oAuth: account?.provider,
                     };
                     dbUser = await client.create(newUser);
+                    isNewOAuthUser = true;
                 }
 
                 // Claim achats pending (safe: ta fonction refuse si isActive !== true)
@@ -108,6 +116,20 @@ export const authOptions: NextAuthOptions = {
                         await claimPendingPurchases({ email: dbUser.email, userId: dbUser._id });
                     } catch (e) {
                         console.error("claimPendingPurchases (oauth) failed:", e);
+                    }
+                }
+
+                if (isNewOAuthUser && dbUser?.email) {
+                    const locale = resolveAuthLocale((profile as any)?.locale);
+                    try {
+                        await sendWelcomeEmail(dbUser, welcomeMailMessagesByLocale[locale]);
+                    } catch (e) {
+                        console.error("sendWelcomeEmail (oauth) failed:", e);
+                    }
+                    try {
+                        await appendSystemNotification(dbUser._id, buildWelcomeSystemNotification(locale, dbUser.name));
+                    } catch (e) {
+                        console.error("appendSystemNotification (oauth) failed:", e);
                     }
                 }
 

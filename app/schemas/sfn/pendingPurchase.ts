@@ -28,6 +28,18 @@ export default defineType({
         }),
 
         defineField({
+            name: "locale",
+            title: "Locale",
+            type: "string",
+            options: {
+                list: [
+                    { title: "Français", value: "fr" },
+                    { title: "English", value: "en" },
+                ],
+            },
+        }),
+
+        defineField({
             name: "status",
             title: "Statut",
             type: "string",
