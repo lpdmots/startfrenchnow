@@ -1,7 +1,7 @@
 "use client";
 import { YourPurchase } from "@/app/components/stripe/YourPurchase";
 import { useCallback, useEffect, useState } from "react";
-import { PricingDetails, ProductFetch, ProductInfos } from "@/app/types/sfn/stripe";
+import { CouponFeedback, PricingDetails, ProductFetch, ProductInfos } from "@/app/types/sfn/stripe";
 import { ContactInformations } from "./ContactInformations";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { FaCheckCircle, FaSpinner, FaTimesCircle } from "react-icons/fa";
@@ -49,6 +49,9 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     const [areReady, setAreReady] = useState<AreReadyState>({ yourPurchase: true, contactInformations: false, payment: false });
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
     const [lastSyncedEmail, setLastSyncedEmail] = useState<string | null>(null);
+    const [couponInput, setCouponInput] = useState("");
+    const [appliedCouponCode, setAppliedCouponCode] = useState<string | undefined>(undefined);
+    const [couponFeedback, setCouponFeedback] = useState<CouponFeedback | null>(null);
 
     const amount = pricingDetails?.amount;
     const initialAmount = pricingDetails?.initialAmount;
@@ -70,7 +73,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
 
     useEffect(() => {
         setAreReady((state) => ({ ...state, payment: false }));
-    }, [productSlug, quantity, currency]);
+    }, [productSlug, quantity, currency, appliedCouponCode]);
 
     useEffect(() => {
         let cancelled = false;
@@ -127,10 +130,28 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
         [paymentIntentId, lastSyncedEmail],
     );
 
+    const applyCoupon = useCallback(() => {
+        const normalized = couponInput.trim().toUpperCase();
+        setCouponFeedback(null);
+
+        if (!normalized) {
+            setAppliedCouponCode(undefined);
+            return;
+        }
+
+        setAppliedCouponCode(normalized);
+    }, [couponInput]);
+
+    const removeCoupon = useCallback(() => {
+        setCouponInput("");
+        setAppliedCouponCode(undefined);
+        setCouponFeedback(null);
+    }, []);
+
     return (
         <div className="grid grid-cols-6 gap-4 lg:gap-8 w-full min-h-[65vh]">
             <div className="col-span-6 lg:col-span-4">
-                <div className="w-full flex flex-col gap-4">                    
+                <div className="w-full flex flex-col gap-4">
                     <div className="w-full">
                         <div className="flex w-full justify-between items-center color-neutral-700 gap-6">
                             <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center mb-4">
@@ -145,16 +166,43 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                         </div>
                         <div className="w-full mb-4">
                             {!isLoading && (
-                            <YourPurchase
-                                productInfos={productInfos as ProductInfos}
-                                pricingDetails={pricingDetails as PricingDetails}
-                                locale={locale}
-                                setQuantity={setQuantity}
-                                setCurrency={setCurrency}
-                                quantity={quantity}
-                                currency={currency}
-                            />
-                        )}
+                                <YourPurchase
+                                    productInfos={productInfos as ProductInfos}
+                                    pricingDetails={pricingDetails as PricingDetails}
+                                    locale={locale}
+                                    setQuantity={setQuantity}
+                                    setCurrency={setCurrency}
+                                    quantity={quantity}
+                                    currency={currency}
+                                />
+                            )}
+                        </div>
+                        <div className="w-full mb-6">
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <input
+                                    value={couponInput}
+                                    onChange={(event) => setCouponInput(event.target.value.toUpperCase())}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "Enter") {
+                                            event.preventDefault();
+                                            applyCoupon();
+                                        }
+                                    }}
+                                    placeholder={t("coupon.placeholder")}
+                                    className="rounded-md p-2 w-full sm:w-64 md:w-72 bg-neutral-100 text-neutral-700 h-12"
+                                    style={{ border: "1px solid var(--neutral-400)" }}
+                                />
+                                <button type="button" onClick={applyCoupon} className="btn btn-primary small h-12 p-0 flex items-center justify-center" disabled={!couponInput.trim()}>
+                                    {t("coupon.apply")}
+                                </button>
+                                {appliedCouponCode && (
+                                    <button type="button" onClick={removeCoupon} className="btn btn-secondary small h-12 p-0 flex items-center justify-center   ">
+                                        {t("coupon.remove")}
+                                    </button>
+                                )}
+                            </div>
+                            {couponFeedback && <p className={`mb-0 mt-2 text-sm ${couponFeedback.status === "applied" ? "text-secondary-5" : "text-secondary-4"}`}>{couponFeedback.message}</p>}
+                            {!couponFeedback && appliedCouponCode && <p className="mb-0 mt-2 text-sm text-neutral-600">{t("coupon.pending")}</p>}
                         </div>
                         <div className="flex w-full justify-between items-center color-neutral-700 gap-6 !p-0">
                             <h3 className="text-lg md:text-2xl text-neutral-700 text-left !font-bold flex items-center mb-4">
@@ -168,7 +216,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                             {isLoading && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
                         </div>
                         <ContactInformations sessionEmail={sessionEmail} formData={formData} setFormData={setFormData} onEmailBlur={syncEmailToStripe} />
-                    </div>                        
+                    </div>
                     <div className="lg:hidden">
                         <PriceLayout
                             initialAmount={initialAmount || 0}
@@ -198,6 +246,12 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                             userId={session?.user?._id}
                             onPaymentIntentReady={setPaymentIntentId}
                             onEmailSync={syncEmailToStripe}
+                            couponCode={appliedCouponCode}
+                            onPricingDataReady={(nextPricingDetails, nextProductInfos) => {
+                                setPricingDetails(nextPricingDetails);
+                                setProductInfos(nextProductInfos);
+                            }}
+                            onCouponFeedback={setCouponFeedback}
                         />
                     </div>
                 </div>

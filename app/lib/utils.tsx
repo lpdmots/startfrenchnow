@@ -2,6 +2,7 @@ import { Locale } from "@/i18n";
 import { Post, Reference, VocabItem } from "../types/sfn/blog";
 import { PricingDetails, PricingDetailsFetch, ProductFetch } from "../types/sfn/stripe";
 import { jsonrepair } from "jsonrepair";
+import { applyDiscountToAmount } from "./pricing";
 
 export function removeDuplicates(arr: any[]) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
@@ -367,7 +368,7 @@ export const getProductData = (product: ProductFetch, quantity: number, previous
     const { pricingDetails, ...rest } = product;
     const pricingDetail = pricingDetails.find((pricingDetail) => pricingDetail.currency === currency);
 
-    const plan = pricingDetail?.plans.reverse().find((plan) => {
+    const plan = [...(pricingDetail?.plans || [])].reverse().find((plan) => {
         const minimumQuantity = plan.minimumQuantity || 0;
         const maximumQuantity = plan.maximumQuantity || Infinity;
         if (plan.isCountingPreviousPurchases) {
@@ -396,32 +397,12 @@ export const getProductData = (product: ProductFetch, quantity: number, previous
     }
 
     const { discountValue, discountType, rounding } = plan.discount;
-    let unitPrice;
-
-    switch (discountType) {
-        case "percentage":
-            unitPrice = originalPrice * (1 - (discountValue || 0) / 100); // Applique un pourcentage de réduction
-            break;
-        case "flatDiscount":
-            unitPrice = originalPrice - (discountValue || 0); // Soustrait un montant fixe
-            break;
-        case "newPrice":
-            unitPrice = discountValue ? discountValue : originalPrice; // Utilise le nouveau prix directement
-            break;
-        default:
-            unitPrice = originalPrice; // Pas de réduction, utilise le prix original
-    }
-
-    unitPrice = unitPrice > 0 ? unitPrice : 0;
-
-    // arrondi selon le type d'arrondi: round, none, decimal
-    if (rounding === "round") {
-        unitPrice = Math.round(unitPrice);
-    } else if (rounding === "decimal") {
-        unitPrice = Math.round(unitPrice * 10) / 10;
-    } else if (rounding === "none") {
-        unitPrice = Math.round(unitPrice * 100) / 100;
-    }
+    const unitPrice = applyDiscountToAmount({
+        amount: originalPrice,
+        discountType,
+        discountValue: discountValue || 0,
+        rounding,
+    }).amount;
 
     const amount = unitPrice * quantity;
 

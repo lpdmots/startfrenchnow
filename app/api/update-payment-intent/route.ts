@@ -46,18 +46,20 @@ export async function POST(request: NextRequest) {
         }
 
         let customerId: string | undefined;
+        let currentMetadata: Stripe.Metadata = {};
         try {
             const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
             if (!paymentIntent.customer) {
                 customerId = await getOrCreateCustomer(effectiveEmail);
             }
+            currentMetadata = paymentIntent.metadata || {};
         } catch (error) {
             console.error("Unable to retrieve payment intent:", error);
         }
 
         const baseUpdate: Stripe.PaymentIntentUpdateParams = {
             receipt_email: effectiveEmail,
-            metadata: { email: effectiveEmail },
+            metadata: { ...currentMetadata, email: effectiveEmail },
         };
 
         try {

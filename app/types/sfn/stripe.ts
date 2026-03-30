@@ -1,16 +1,32 @@
 import { LESSONS_CREDITS_PERMISSIONS, PACKAGES_KEYS } from "@/app/lib/constantes";
 import { Block, Image, Level, Reference, Slug } from "./blog";
 
+export type CurrencyCode = "EUR" | "USD" | "CHF";
+export type DiscountType = "percentage" | "flatDiscount" | "newPrice";
+export type DiscountRounding = "round" | "none" | "decimal";
+
+export interface CouponFeedback {
+    code: string;
+    status: "applied" | "rejected";
+    message: string;
+    discountType?: DiscountType;
+    discountValue?: number;
+    discountAmount?: number;
+    stackable?: boolean;
+}
+
 export interface PricingDetails {
     initialUnitPrice: number;
     unitPrice: number;
     amount: number;
     initialAmount: number;
-    discountType?: "percentage" | "flatDiscount" | "newPrice";
+    discountType?: DiscountType;
     discountValue?: number;
-    currency: "EUR" | "USD" | "CHF";
-    currencies: ("EUR" | "USD" | "CHF")[];
+    currency: CurrencyCode;
+    currencies: CurrencyCode[];
     planName?: string;
+    amountBeforeCoupon?: number;
+    couponFeedback?: CouponFeedback;
 }
 
 export interface ProductFetch {
@@ -49,7 +65,7 @@ export interface PackageModule {
 
 export interface PricingDetailsFetch {
     originalPrice: number;
-    currency: "EUR" | "USD" | "CHF";
+    currency: CurrencyCode;
     plans: Plan[];
 }
 
@@ -63,8 +79,8 @@ export interface Plan {
 
 export interface Discount {
     discountValue: number;
-    discountType: "percentage" | "flatDiscount" | "newPrice";
-    rounding: "round" | "none" | "decimal";
+    discountType: DiscountType;
+    rounding: DiscountRounding;
 }
 
 export interface BenefitFetch {

@@ -357,6 +357,13 @@
         "yourPurchaseTitle": "Your Purchase",
         "paymentTitle": "Payment",
         "loading": "Loading...",
+        "coupon": {
+            "title": "Coupon code",
+            "placeholder": "Code Coupon",
+            "apply": "Apply",
+            "remove": "Remove",
+            "pending": "Checking coupon..."
+        },
         "contactInformations": {
             "email": "Email*:",
             "emailError": "Invalid email address.",

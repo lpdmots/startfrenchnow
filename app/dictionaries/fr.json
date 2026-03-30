@@ -361,6 +361,13 @@
         "yourPurchaseTitle": "Votre achat",
         "paymentTitle": "Paiement",
         "loading": "Chargement...",
+        "coupon": {
+            "title": "Code coupon",
+            "placeholder": "Code Coupon",
+            "apply": "Appliquer",
+            "remove": "Supprimer",
+            "pending": "Vérification du coupon..."
+        },
         "contactInformations": {
             "email": "Email* :",
             "emailError": "Adresse e-mail invalide.",

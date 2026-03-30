@@ -14,6 +14,10 @@ const queryUserByEmail = `*[_type == "user" && lower(email) == $email][0]{
   _id, email, isActive
 }`;
 
+const queryUserById = `*[_type == "user" && _id == $userId][0]{
+  _id, email, isActive
+}`;
+
 const queryProduct = `*[_type == "product" && slug.current == $productSlug][0]{
   _id,
   referenceKey,
@@ -27,6 +31,11 @@ const queryProduct = `*[_type == "product" && slug.current == $productSlug][0]{
 
 function uuid() {
     return globalThis.crypto.randomUUID();
+}
+
+function parseOptionalNumber(value?: string): number | undefined {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 export async function POST(req: NextRequest) {
@@ -53,6 +62,16 @@ export async function POST(req: NextRequest) {
     const quantityRaw = paymentIntent.metadata?.quantity;
     const metadataEmail = paymentIntent.metadata?.email;
     const metadataLocale = paymentIntent.metadata?.locale;
+    const metadataUserId = paymentIntent.metadata?.userId;
+    const metadataCouponId = paymentIntent.metadata?.couponId;
+    const metadataCouponCode = paymentIntent.metadata?.couponCode;
+    const metadataCouponRuleIndex = paymentIntent.metadata?.couponRuleIndex;
+    const metadataCouponStackable = paymentIntent.metadata?.couponStackable;
+    const metadataCouponDiscountType = paymentIntent.metadata?.couponDiscountType;
+    const metadataCouponDiscountValue = paymentIntent.metadata?.couponDiscountValue;
+    const metadataCouponDiscountAmount = paymentIntent.metadata?.couponDiscountAmount;
+    const metadataCouponAmountBefore = paymentIntent.metadata?.couponAmountBefore;
+    const metadataCouponAmountAfter = paymentIntent.metadata?.couponAmountAfter;
 
     const receiptEmail = paymentIntent.receipt_email || undefined;
     const buyerEmail = (metadataEmail || receiptEmail || "").trim().toLowerCase();
@@ -121,15 +140,55 @@ export async function POST(req: NextRequest) {
         // Si Stripe envoie 2 fois en parallèle, un seul doc sera créé
         await client.createIfNotExists(pendingDoc);
 
-        // 3) Optionnel : si user existe déjà et actif → claim immédiatement
+        // 3) Récup user (priorité metadata.userId, fallback email)
         console.log("[webhook] buyerEmail:", buyerEmail);
-        const dbUser = await client.fetch(queryUserByEmail, { email: buyerEmail });
+        let dbUser = null as null | { _id?: string; email?: string; isActive?: boolean };
+        const cleanUserId = String(metadataUserId || "").trim();
+        if (cleanUserId) {
+            dbUser = await client.fetch(queryUserById, { userId: cleanUserId });
+        }
+        if (!dbUser?._id) {
+            dbUser = await client.fetch(queryUserByEmail, { email: buyerEmail });
+        }
         console.log("[webhook] dbUser:", dbUser);
 
         if (dbUser?._id) {
             console.log("[webhook] isActive:", dbUser.isActive);
         }
 
+        // 4) Journal de consommation coupon (si coupon appliqué)
+        if (metadataCouponId && metadataCouponCode) {
+            const couponDiscountType = ["percentage", "flatDiscount", "newPrice"].includes(String(metadataCouponDiscountType || ""))
+                ? (metadataCouponDiscountType as "percentage" | "flatDiscount" | "newPrice")
+                : undefined;
+
+            const couponRedemptionDoc = {
+                _id: `couponRedemption_${stripePaymentId}`,
+                _type: "couponRedemption",
+                couponRef: { _type: "reference", _ref: metadataCouponId },
+                couponCode: metadataCouponCode,
+                status: "consumed",
+                stripePaymentId,
+                ...(dbUser?._id ? { userRef: { _type: "reference", _ref: dbUser._id } } : {}),
+                ...(buyerEmail ? { userEmail: buyerEmail } : {}),
+                productRef: { _type: "reference", _ref: product._id },
+                productSlug,
+                quantity: qty,
+                currency: String(paymentIntent.currency || "").toUpperCase(),
+                amountBeforeCoupon: parseOptionalNumber(metadataCouponAmountBefore),
+                amountAfterCoupon: parseOptionalNumber(metadataCouponAmountAfter),
+                discountAmount: parseOptionalNumber(metadataCouponDiscountAmount),
+                discountValue: parseOptionalNumber(metadataCouponDiscountValue),
+                ...(couponDiscountType ? { discountType: couponDiscountType } : {}),
+                stackable: metadataCouponStackable === "1",
+                appliedRuleIndex: parseOptionalNumber(metadataCouponRuleIndex),
+                consumedAt: new Date(paymentIntent.created * 1000).toISOString(),
+            };
+
+            await client.createIfNotExists(couponRedemptionDoc);
+        }
+
+        // 5) Optionnel : si user existe déjà et actif → claim immédiatement
         if (dbUser?._id && dbUser?.isActive === true) {
             try {
                 const res = await claimPendingPurchases({ email: buyerEmail, userId: dbUser._id });

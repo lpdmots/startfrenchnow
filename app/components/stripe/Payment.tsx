@@ -1,6 +1,6 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { StripeElementLocale, loadStripe } from "@stripe/stripe-js";
-import { PricingDetails, ProductInfos } from "@/app/types/sfn/stripe";
+import { CouponFeedback, PricingDetails, ProductInfos } from "@/app/types/sfn/stripe";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AreReadyState } from "./Checkout";
 import CheckoutForm from "./CheckoutForm";
@@ -17,22 +17,35 @@ interface PaymentProps {
     userId?: string;
     onPaymentIntentReady?: (paymentIntentId: string) => void;
     onEmailSync?: (email: string) => Promise<void> | void;
+    couponCode?: string;
+    onPricingDataReady?: (pricingDetails: PricingDetails, productInfos: ProductInfos) => void;
+    onCouponFeedback?: (feedback: CouponFeedback | null) => void;
 }
 
-export const Payment = ({ productSlug, quantity, currency, locale, email, sessionEmail, setAreReady, userId, onPaymentIntentReady, onEmailSync }: PaymentProps) => {
+export const Payment = ({ productSlug, quantity, currency, locale, email, sessionEmail, setAreReady, userId, onPaymentIntentReady, onEmailSync, couponCode, onPricingDataReady, onCouponFeedback }: PaymentProps) => {
     const t = useTranslations();
 
     // Charge Stripe uniquement au montage du composant (pas au chargement du module)
     const pk = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY;
     const stripePromise = useMemo(() => (pk ? loadStripe(pk) : null), [pk]);
 
-    const { errorIntentMessage, clientSecret, pricingDetails, productInfos, paymentIntentId } = usePaymentIntent(productSlug, quantity, currency, locale, email, sessionEmail, userId);
+    const { errorIntentMessage, clientSecret, pricingDetails, productInfos, paymentIntentId, couponFeedback } = usePaymentIntent(productSlug, quantity, currency, locale, email, sessionEmail, userId, couponCode);
 
     useEffect(() => {
         if (paymentIntentId) {
             onPaymentIntentReady?.(paymentIntentId);
         }
     }, [paymentIntentId, onPaymentIntentReady]);
+
+    useEffect(() => {
+        if (pricingDetails && productInfos) {
+            onPricingDataReady?.(pricingDetails, productInfos);
+        }
+    }, [pricingDetails, productInfos, onPricingDataReady]);
+
+    useEffect(() => {
+        onCouponFeedback?.(couponFeedback);
+    }, [couponFeedback, onCouponFeedback]);
 
     const elementsOptions = useMemo(
         () => ({
@@ -76,9 +89,10 @@ export const Payment = ({ productSlug, quantity, currency, locale, email, sessio
     );
 };
 
-const usePaymentIntent = (productSlug: string, quantity: string, currency: string, locale: string, email: string, sessionEmail: string | undefined, userId?: string) => {
+const usePaymentIntent = (productSlug: string, quantity: string, currency: string, locale: string, email: string, sessionEmail: string | undefined, userId?: string, couponCode?: string) => {
     const [pricingDetails, setPricingDetails] = useState<PricingDetails | null>(null);
     const [productInfos, setProductInfos] = useState<null | ProductInfos>(null);
+    const [couponFeedback, setCouponFeedback] = useState<CouponFeedback | null>(null);
     const [errorIntentMessage, setErrorIntentMessage] = useState<any>(null);
     const [clientSecret, setClientSecret] = useState("");
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
@@ -102,6 +116,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
         setPaymentIntentId(null);
         setPricingDetails(null);
         setProductInfos(null);
+        setCouponFeedback(null);
         setErrorIntentMessage(null);
 
         (async () => {
@@ -118,6 +133,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
                         sessionEmail: sessionEmailRef.current,
                         email: emailRef.current,
                         userId,
+                        couponCode,
                     }),
                 });
 
@@ -141,6 +157,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
                     setPricingDetails(data.pricingDetails);
                     setProductInfos(data.productInfos);
                     setPaymentIntentId(data.paymentIntentId || null);
+                    setCouponFeedback(data?.couponFeedback || null);
                     return;
                 }
 
@@ -157,7 +174,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
         return () => {
             abortController.abort();
         };
-    }, [productSlug, quantity, currency, locale, userId]);
+    }, [productSlug, quantity, currency, locale, userId, couponCode]);
 
-    return { pricingDetails, productInfos, errorIntentMessage, clientSecret, paymentIntentId };
+    return { pricingDetails, productInfos, errorIntentMessage, clientSecret, paymentIntentId, couponFeedback };
 };

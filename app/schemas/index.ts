@@ -10,6 +10,8 @@ import fideExam from "./sfn/fideExam";
 import productPackage from "./sfn/package";
 import comment from "./sfn/comment";
 import pendingPurchase from "./sfn/pendingPurchase";
+import coupon from "./sfn/coupon";
+import couponRedemption from "./sfn/couponRedemption";
 import mockExamTask from "./mock-exam/mockExamTask";
 import examCompilation from "./mock-exam/examCompilation";
 import examReview from "./mock-exam/examReview";
@@ -45,6 +47,8 @@ export const schemaTypes = [
     product,
     productPackage,
     pendingPurchase,
+    coupon,
+    couponRedemption,
     mockExamTask,
     examCompilation,
     mockExamSession,
