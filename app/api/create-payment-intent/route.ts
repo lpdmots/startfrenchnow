@@ -43,15 +43,16 @@ const queryCouponByCode = groq`
         _id,
         code,
         isActive,
-        stackable,
         maxUsesPerUser,
         maxUsesGlobal,
         validFrom,
         validUntil,
-        "assignedUserId": assignedUser._ref,
+        "assignedUserIds": assignedUsers[]._ref,
+        "legacyAssignedUserId": assignedUser._ref,
         rules[]{
             discountType,
             discountValue,
+            stackable,
             discountValuesByCurrency{
                 eur,
                 usd,
@@ -86,6 +87,7 @@ type CouponCurrencyValues = {
 type CouponRule = {
     discountType?: DiscountType;
     discountValue?: number;
+    stackable?: boolean;
     discountValuesByCurrency?: CouponCurrencyValues;
     rounding?: DiscountRounding;
     productIds?: string[];
@@ -95,12 +97,12 @@ type CouponDocument = {
     _id: string;
     code?: string;
     isActive?: boolean;
-    stackable?: boolean;
     maxUsesPerUser?: number;
     maxUsesGlobal?: number;
     validFrom?: string;
     validUntil?: string;
-    assignedUserId?: string;
+    assignedUserIds?: string[];
+    legacyAssignedUserId?: string;
     rules?: CouponRule[];
 };
 
@@ -233,11 +235,20 @@ async function evaluateCouponForPricing({
     const cleanUserId = String(userId || "").trim();
     const cleanEmail = String(effectiveEmail || "").trim().toLowerCase();
 
-    if (coupon.assignedUserId) {
+    const assignedUserIds = Array.from(
+        new Set(
+            [
+                ...(Array.isArray(coupon.assignedUserIds) ? coupon.assignedUserIds : []),
+                coupon.legacyAssignedUserId,
+            ].filter((id): id is string => typeof id === "string" && id.trim().length > 0),
+        ),
+    );
+
+    if (assignedUserIds.length > 0) {
         if (!cleanUserId) {
             return reject("requiresLogin");
         }
-        if (cleanUserId !== coupon.assignedUserId) {
+        if (!assignedUserIds.includes(cleanUserId)) {
             return reject("wrongUser");
         }
     }
@@ -296,7 +307,7 @@ async function evaluateCouponForPricing({
     }
 
     let finalAmount = baseAmount;
-    if (coupon.stackable) {
+    if (matchedRule.stackable) {
         const computed = applyDiscountToAmount({
             amount: baseAmount,
             discountType: matchedRule.discountType,
@@ -347,14 +358,14 @@ async function evaluateCouponForPricing({
         discountType: matchedRule.discountType,
         discountValue: resolvedDiscountValue,
         discountAmount,
-        stackable: !!coupon.stackable,
+        stackable: !!matchedRule.stackable,
     };
 
     const metadata: Record<string, string> = {
         couponId: coupon._id,
         couponCode: coupon.code || normalizedCode,
         couponRuleIndex: String(matchedRuleIndex),
-        couponStackable: coupon.stackable ? "1" : "0",
+        couponStackable: matchedRule.stackable ? "1" : "0",
         couponDiscountType: matchedRule.discountType,
         couponDiscountValue: String(resolvedDiscountValue),
         couponDiscountAmount: String(discountAmount),

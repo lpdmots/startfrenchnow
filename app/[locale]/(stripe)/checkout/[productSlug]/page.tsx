@@ -8,7 +8,7 @@ type Props = {
         productSlug: string;
         locale: "fr" | "en";
     };
-    searchParams: { quantity: string; callbackUrl: string; currency?: "CHF" | "EUR" | "USD" };
+    searchParams: { quantity: string; callbackUrl: string; currency?: "CHF" | "EUR" | "USD"; couponCode?: string };
 };
 
 function normalizeLocalizedPath(pathLike?: string): string {
@@ -28,7 +28,7 @@ function normalizeLocalizedPath(pathLike?: string): string {
     return path || "/";
 }
 
-export default function CheckoutPage({ params: { productSlug, locale }, searchParams: { quantity, callbackUrl, currency } }: Props) {
+export default function CheckoutPage({ params: { productSlug, locale }, searchParams: { quantity, callbackUrl, currency, couponCode } }: Props) {
     const t = useTranslations("Checkout");
     const normalizedCallbackUrl = normalizeLocalizedPath(callbackUrl);
 
@@ -42,7 +42,7 @@ export default function CheckoutPage({ params: { productSlug, locale }, searchPa
                     <h1 className="heading-3 inline-block">{t("checkout")}</h1>
                 </div>
                 <div className="flex grow h-full">
-                    <Checkout productSlug={productSlug} locale={locale} quantity={quantity} defaultCurrency={currency} />
+                    <Checkout productSlug={productSlug} locale={locale} quantity={quantity} defaultCurrency={currency} prefilledCouponCode={couponCode} />
                 </div>
             </div>
         </div>

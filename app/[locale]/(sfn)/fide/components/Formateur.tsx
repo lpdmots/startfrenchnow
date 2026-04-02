@@ -14,6 +14,11 @@ export const Formateur = () => {
 
     let COMPETENCES = [
         {
+            description: t.rich("competences.description1", intelRich()),
+            icon: "🎓",
+            color: "#00C9A7",
+        },
+        {
             description: t.rich("competences.description2", intelRich()),
             icon: "🎉",
             color: "#FF3D71",
@@ -22,11 +27,6 @@ export const Formateur = () => {
             description: t.rich("competences.description3", intelRich()),
             icon: "📚",
             color: "#FFB800",
-        },
-        {
-            description: t.rich("competences.description1", intelRich()),
-            icon: "🎓",
-            color: "#00C9A7",
         },
         {
             description: (
@@ -144,6 +144,12 @@ const CompetenceCard = ({ description, icon, color, index }: Competence) => {
 
 const ComparativeTabel = () => {
     const t = useTranslations("Fide.Formateur.ComparativeTabel");
+    const othersPrice = t.rich("offers.Others_Range", {
+        b4: (chunks) => <span className="font-semibold text-secondary-4">{chunks}</span>,
+    });
+    const ourPrice = t.rich("offers.Price_From", {
+        b5: (chunks) => <span className="font-semibold text-secondary-5">{chunks}</span>,
+    });
 
     const dataComparativTabel = [
         {
@@ -181,6 +187,12 @@ const ComparativeTabel = () => {
             smallTitle: t("smallTitles.Continuous_Support"),
             sfn: <FaCheck className="h-6 w-6 text-secondary-5" />,
             others: <FaTimes className="h-6 w-6 text-secondary-4" />,
+        },
+        {
+            title: t("titles.Price_Hour"),
+            smallTitle: t("smallTitles.Price_Hour"),
+            sfn: <span className="text-base font-semibold whitespace-nowrap md:text-lg">{ourPrice}</span>,
+            others: <span className="text-base font-semibold whitespace-nowrap md:text-lg">{othersPrice}</span>,
         },
     ];
 

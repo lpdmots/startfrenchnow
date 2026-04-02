@@ -19,11 +19,11 @@ export default defineType({
             initialValue: true,
         }),
         defineField({
-            name: "assignedUser",
-            title: "Utilisateur assigné (optionnel)",
-            type: "reference",
-            to: [{ type: "user" }],
-            description: "Si défini, seul cet utilisateur peut appliquer le coupon.",
+            name: "assignedUsers",
+            title: "Utilisateurs assignés (optionnel)",
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "user" }] }],
+            description: "Si renseigné, seuls ces utilisateurs peuvent appliquer le coupon.",
         }),
         defineField({
             name: "maxUsesPerUser",
@@ -38,13 +38,6 @@ export default defineType({
             type: "number",
             description: "Laisser vide pour illimité.",
             validation: (Rule) => Rule.min(1),
-        }),
-        defineField({
-            name: "stackable",
-            title: "Cumulable avec réduction produit",
-            type: "boolean",
-            initialValue: false,
-            description: "Si désactivé, le coupon n'est appliqué que s'il est plus avantageux que la réduction produit.",
         }),
         defineField({
             name: "validFrom",
@@ -96,6 +89,13 @@ export default defineType({
                                 ],
                             },
                             validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "stackable",
+                            title: "Cumulable avec réduction produit",
+                            type: "boolean",
+                            initialValue: false,
+                            description: "Si désactivé, le coupon n'est appliqué que s'il est plus avantageux que la réduction produit.",
                         }),
                         defineField({
                             name: "discountValue",

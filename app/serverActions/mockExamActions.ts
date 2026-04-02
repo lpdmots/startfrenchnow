@@ -7,6 +7,9 @@ import { requireSessionAndMockExam } from "@/app/components/auth/requireSession"
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import clientOpenai from "@/app/lib/openAi.client";
 import { MOCK_EXAM_COMPILATION_QUERY, MOCK_EXAM_TASKS_BY_IDS_QUERY, MOCK_EXAM_USER_COMPILATIONS_QUERY, USER_MOCK_EXAM_CREDITS_QUERY } from "@/app/lib/groqQueries";
+import { appendSystemNotification } from "@/app/lib/systemNotifications";
+import { transporterNico } from "@/app/lib/nodemailer";
+import { buildBravoCouponMailMessage, buildBravoCouponSystemNotification } from "@/app/lib/couponMessages";
 import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
 import type { Image } from "@/app/types/sfn/blog";
 import type {
@@ -927,6 +930,25 @@ const EXAM_REVIEW_BY_SESSION_QUERY = groq`
   }
 `;
 
+const BRAVO10_COUPON_CODE = "BRAVO10";
+const COUPON_PLANS_PATH = "/fide#plans";
+
+const COUPON_BY_CODE_FOR_ASSIGNMENT_QUERY = groq`
+  *[_type == "coupon" && lower(code) == $code][0]{
+    _id,
+    _rev,
+    code,
+    "assignedUserIds": assignedUsers[]._ref
+  }
+`;
+
+type CouponForAssignment = {
+    _id: string;
+    _rev?: string;
+    code?: string;
+    assignedUserIds?: string[];
+} | null;
+
 const mapSessionDocumentToLite = (session: SessionDocument): MockExamSessionLite => ({
     _id: session._id,
     status: session.status,
@@ -1349,7 +1371,83 @@ export async function patchSession(sessionKey: string, params: { set?: Record<st
     return patch.commit({ autoGenerateArrayKeys: true });
 }
 
-export async function finalizeMockExamSession(params: { compilationId: string; sessionKey: string }) {
+async function ensureUserAssignedToBravo10Coupon(userId: string): Promise<{ assignedNow: boolean; couponCode?: string }> {
+    if (!userId) return { assignedNow: false };
+    const normalizedCode = BRAVO10_COUPON_CODE.toLowerCase();
+
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+        const coupon = await client.fetch<CouponForAssignment>(COUPON_BY_CODE_FOR_ASSIGNMENT_QUERY, { code: normalizedCode });
+        if (!coupon?._id) {
+            return { assignedNow: false };
+        }
+
+        const assignedUserIds = Array.isArray(coupon.assignedUserIds) ? coupon.assignedUserIds.filter(Boolean) : [];
+        if (assignedUserIds.includes(userId)) {
+            return { assignedNow: false, couponCode: coupon.code || BRAVO10_COUPON_CODE };
+        }
+
+        try {
+            let patch = client.patch(coupon._id).setIfMissing({ assignedUsers: [] }).append("assignedUsers", [{ _type: "reference", _ref: userId }]);
+            if (coupon._rev) {
+                patch = patch.ifRevisionId(coupon._rev);
+            }
+            await patch.commit({ autoGenerateArrayKeys: true });
+            return { assignedNow: true, couponCode: coupon.code || BRAVO10_COUPON_CODE };
+        } catch (error) {
+            if (attempt === 2) {
+                throw error;
+            }
+        }
+    }
+
+    return { assignedNow: false };
+}
+
+async function notifyBravo10Unlocked(params: { userId: string; userName?: string | null; userEmail?: string | null; localeLike?: string | null; couponCode?: string | null }) {
+    const userId = String(params.userId || "").trim();
+    if (!userId) return;
+
+    const couponCode = String(params.couponCode || BRAVO10_COUPON_CODE).trim().toUpperCase();
+    const userName = String(params.userName || "").trim();
+    const userEmail = String(params.userEmail || "")
+        .trim()
+        .toLowerCase();
+
+    try {
+        await appendSystemNotification(
+            userId,
+            buildBravoCouponSystemNotification({
+                localeLike: params.localeLike,
+                userName,
+                couponCode,
+                plansPath: COUPON_PLANS_PATH,
+            }),
+        );
+    } catch (error) {
+        console.error("[MockExam] Notification coupon BRAVO10 impossible", { userId, error });
+    }
+
+    if (!userEmail) return;
+
+    try {
+        const mail = buildBravoCouponMailMessage({
+            localeLike: params.localeLike,
+            userName,
+            couponCode,
+            plansPath: COUPON_PLANS_PATH,
+        });
+        await transporterNico.sendMail({
+            from: "Start French Now <nicolas@startfrenchnow.com>",
+            to: userEmail,
+            html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`,
+            subject: mail.subject,
+        });
+    } catch (error) {
+        console.error("[MockExam] Email coupon BRAVO10 impossible", { userId, userEmail, error });
+    }
+}
+
+export async function finalizeMockExamSession(params: { compilationId: string; sessionKey: string; localeLike?: string }) {
     const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(params.compilationId || "");
@@ -1380,16 +1478,30 @@ export async function finalizeMockExamSession(params: { compilationId: string; s
     }
 
     const alreadyCompleted = targetSession.status === "completed";
-    if (alreadyCompleted && !totalSummary) {
-        return { ok: true as const, status: "completed" as const, scores: nextScores };
+
+    if (!alreadyCompleted || totalSummary) {
+        await patchSession(sessionKey, {
+            set: {
+                status: "completed",
+                scores: nextScores,
+            },
+        });
     }
 
-    await patchSession(sessionKey, {
-        set: {
-            status: "completed",
-            scores: nextScores,
-        },
-    });
+    try {
+        const couponAssignment = await ensureUserAssignedToBravo10Coupon(userId);
+        if (couponAssignment.assignedNow) {
+            await notifyBravo10Unlocked({
+                userId,
+                userName: session?.user?.name,
+                userEmail: session?.user?.email,
+                localeLike: params.localeLike,
+                couponCode: couponAssignment.couponCode || BRAVO10_COUPON_CODE,
+            });
+        }
+    } catch (error) {
+        console.error("[MockExam] Activation coupon BRAVO10 impossible pendant la finalisation", { userId, sessionKey, error });
+    }
 
     return { ok: true as const, status: "completed" as const, scores: nextScores };
 }

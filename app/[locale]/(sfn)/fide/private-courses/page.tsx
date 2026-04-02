@@ -1,9 +1,8 @@
 import { Locale } from "@/i18n";
 import { Formateur } from "../components/Formateur";
-import { WhatIsFide } from "../components/WhatIsFide";
 import HowClassLook from "../components/HowClassLook";
 import { ReviewsFide } from "../components/ReviewsFide";
-import { ContactForFide } from "../components/ContactForFide";
+import { ContactForFideBand } from "../components/ContactForFideBand";
 import PriceSliderFide from "../components/PriceSliderFide";
 import { ContactForFideCourses } from "../components/ContactForFideCourses";
 import { FideFaq } from "../components/FideFaq";
@@ -223,9 +222,7 @@ export default function FidePrivateCoursesPage({ params: { locale } }: { params:
         "@id": `${SITE}${privateCoursesPath}#private-fide-coaching`,
         serviceType: isFr ? "Cours privés de préparation au test FIDE" : "Private coaching for FIDE test preparation",
         name: isFr ? "Cours privés FIDE en ligne" : "Private FIDE coaching online",
-        description: isFr
-            ? "Préparation personnalisée au test FIDE (A1-A2 / A2-B1) avec accompagnement individuel."
-            : "Personalized one-to-one coaching for FIDE test preparation (A1-A2 / A2-B1).",
+        description: isFr ? "Préparation personnalisée au test FIDE (A1-A2 / A2-B1) avec accompagnement individuel." : "Personalized one-to-one coaching for FIDE test preparation (A1-A2 / A2-B1).",
         provider: {
             "@type": "Organization",
             name: "Start French Now",
@@ -271,8 +268,10 @@ export default function FidePrivateCoursesPage({ params: { locale } }: { params:
                 <Formateur />
             </div>
 
-            <div className="max-w-7xl m-auto py-24 px-4 lg:px-8">
-                <WhatIsFide />
+            <ContactForFideBand />
+
+            <div className="max-w-7xl m-auto pt-24 pb-24 px-4 lg:px-8">
+                <ReviewsFide />
             </div>
 
             <div className="bg-neutral-800 color-neutral-100 py-24 px-4 lg:px-8">
@@ -280,12 +279,6 @@ export default function FidePrivateCoursesPage({ params: { locale } }: { params:
                     <HowClassLook />
                 </div>
             </div>
-
-            <div className="max-w-7xl m-auto pt-24 pb-6 px-4 lg:px-8">
-                <ReviewsFide />
-            </div>
-
-            <ContactForFide />
 
             <div className="py-20 px-4 lg:px-8">
                 <div className="max-w-7xl m-auto flex flex-col gap-10">

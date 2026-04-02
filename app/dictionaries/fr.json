@@ -687,7 +687,7 @@
             "competences": {
                 "description1": "Plus de <b>8 ans</b> d'expérience en tant qu'expert FIDE.",
                 "description2": "Plus de <b>300</b> étudiants qui ont réussi leur test FIDE → <b>98%</b> de réussite.",
-                "description3": "Plus de <b>20 heures</b> de vidéos de préparation spécifique FIDE.",
+                "description3": "<b>16 ans d'expérience</b> dans l'enseignement du français pour les étrangers.",
                 "description4": "Meilleur formateur de français sur Udemy."
             },
             "formateurName": "Yohann Coussot",
@@ -719,7 +719,7 @@
                     "Price_Hour": "Tarif/heure"
                 },
                 "offers": {
-                    "Price_From": "Dès <b5>65</b5> CHF",
+                    "Price_From": "Dès <b5>70</b5> CHF",
                     "Others_Range": "<b4>90</b4> à <b4>120</b4> CHF"
                 },
                 "headings": {
@@ -815,7 +815,8 @@
                     "description": "Consolidez vos acquis avec des devoirs sur les sujets étudiés. Faites des exercices de vocabulaire, de grammaire ou de production écrite pour renforcer vos compétences."
                 }
             },
-            "title": "Boostez votre préparation FIDE avec des <hs2>cours privés</hs2>",
+            "title1": "À quoi ressemble",
+            "title2": "<hs3>un cours</hs3> ?",
             "videoDescription": "Un exemple de scénario <hs2>FIDE</hs2> avec une étudiante, Jessica.",
             "videoKey": "fide/apercu-d-une-classe.mp4",
             "posterImage": "/images/jessica-apercu-thumbnail.jpg"

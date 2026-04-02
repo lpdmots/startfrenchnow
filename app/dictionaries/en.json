@@ -684,7 +684,7 @@
             "competences": {
                 "description1": "Over <b>8 years</b> of experience as a FIDE expert.",
                 "description2": "Over <b>300</b> students passed their FIDE test with a <b>98%</b> success rate.",
-                "description3": "Over <b>20 hours</b> of specific FIDE preparation videos.",
+                "description3": "Over <b>16 years</b> of experience in teaching French to foreigners.",
                 "description4": "Best French instructor on Udemy."
             },
             "formateurTitle": "Formateur",
@@ -716,7 +716,7 @@
                     "Price_Hour": "Price/hour"
                 },
                 "offers": {
-                    "Price_From": "From <b5>65</b5> CHF",
+                    "Price_From": "From <b5>70</b5> CHF",
                     "Others_Range": "<b4>90</b4> to <b4>120</b4> CHF"
                 },
                 "headings": {
@@ -812,7 +812,8 @@
                     "description": "Consolidate learning with homework on the studied topic. Complete vocabulary, grammar, or written production exercises to reinforce your skills."
                 }
             },
-            "title": "Boost your FIDE preparation with <hs2>private lessons</hs2>",
+            "title1": "How <hs3>a class</hs3> can look",
+            "title2": "",
             "videoDescription": "A FIDE <hs2>scenario example</hs2> with a student, Jessica.",
             "videoKey": "fide/apercu-d-une-classe.mp4",
             "posterImage": "/images/jessica-apercu-thumbnail.jpg"

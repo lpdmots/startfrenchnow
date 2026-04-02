@@ -33,11 +33,11 @@ export const activationMailMessagesByLocale: Record<AuthLocale, MailMessage> = {
 export const welcomeMailMessagesByLocale: Record<AuthLocale, MailMessage> = {
     fr: {
         subject: "Start French Now : par où commencer ?",
-        body: "<p>Bonjour USERNAME,</p><p>Ravi de faire votre connaissance.</p><p>Sur le site, vous trouverez déjà tout pour commencer dès aujourd'hui :</p><ul><li>des cours de français pour progresser étape par étape</li><li>une section FIDE dédiée pour travailler vos objectifs</li><li>des vidéos + exercices pour pratiquer un peu chaque jour</li></ul><p>Si vous voulez aller plus vite, avec un cadre clair :</p><ul><li>des packs e-learning (guidés, simples et efficaces)</li><li>des cours privés FIDE (scénarios réels, corrections, objectifs personnalisés)</li></ul><p>Le plus simple : réservez votre plan d'étude gratuit (15 min) ici :<br/><a href='https://calendly.com/yohann-startfrenchnow/15min'>https://calendly.com/yohann-startfrenchnow/15min</a></p><p>Ou répondez simplement à cet email en me disant votre objectif.</p><p>À bientôt,</p>",
+        body: "<p>Bonjour USERNAME,</p><p>Ravi de faire votre connaissance.</p><p>Sur le site, vous trouverez déjà tout pour commencer dès aujourd'hui :</p><ul><li>des cours de français pour progresser étape par étape</li><li>une section FIDE dédiée pour travailler vos objectifs</li><li>des vidéos + exercices pour pratiquer un peu chaque jour</li></ul><p>Si vous voulez aller plus vite, avec un cadre clair :</p><ul><li>des packs e-learning (guidés, simples et efficaces)</li><li>des examens blancs FIDE corrigés (score, feedback, plan d’action)</li><li>des cours privés FIDE (scénarios réels, corrections, objectifs personnalisés)</li></ul><p>Le plus simple : réservez votre plan d'étude gratuit (15 min) ici :<br/><a href='https://calendly.com/yohann-startfrenchnow/15min'>https://calendly.com/yohann-startfrenchnow/15min</a></p><p>Ou répondez simplement à cet email en me disant votre objectif.</p><p>À bientôt,</p>",
     },
     en: {
         subject: "Start French Now: where should you begin?",
-        body: "<p>Hi USERNAME,</p><p>Great to meet you.</p><p>On the website, you'll already find everything you need to get started today:</p><ul><li>French courses to improve step by step</li><li>a dedicated FIDE section to work on your goals</li><li>videos + exercises to practice a little every day</li></ul><p>If you want faster, more structured progress:</p><ul><li>guided e-learning packs (simple and effective)</li><li>private FIDE lessons (real scenarios, corrections, personalized goals)</li></ul><p>Easiest option: book your free study plan (15 min) here:<br/><a href='https://calendly.com/yohann-startfrenchnow/15min'>https://calendly.com/yohann-startfrenchnow/15min</a></p><p>Or simply reply to this email and tell me your goal.</p><p>See you soon,</p>",
+        body: "<p>Hi USERNAME,</p><p>Great to meet you.</p><p>On the website, you'll already find everything you need to get started today:</p><ul><li>French courses to improve step by step</li><li>a dedicated FIDE section to work on your goals</li><li>videos + exercises to practice a little every day</li></ul><p>If you want faster, more structured progress:</p><ul><li>guided e-learning packs (simple and effective)</li><li>corrected FIDE mock exams (score, feedback, action plan)</li><li>private FIDE lessons (real scenarios, corrections, personalized goals)</li></ul><p>Easiest option: book your free study plan (15 min) here:<br/><a href='https://calendly.com/yohann-startfrenchnow/15min'>https://calendly.com/yohann-startfrenchnow/15min</a></p><p>Or simply reply to this email and tell me your goal.</p><p>See you soon,</p>",
     },
 };
 
@@ -61,6 +61,7 @@ On Start French Now, you can begin today with:
 
 To progress faster:
 • guided e-learning packs (mock exam)
+• corrected FIDE mock exams (score, feedback, action plan)
 • private FIDE lessons (real scenarios, corrections, personalized goals)
 
 Easiest option: book your free 15-minute study plan.`,
@@ -79,6 +80,7 @@ Sur Start French Now, vous pouvez commencer dès aujourd'hui avec :
 
 Pour progresser plus vite :
 • des packs e-learning (examen blanc)
+• des examens blancs FIDE corrigés (score, feedback, plan d’action)
 • des cours privés FIDE (scénarios réels, corrections, objectifs personnalisés)
 
 Le plus simple : réservez votre plan d'étude gratuit (15 min).`,

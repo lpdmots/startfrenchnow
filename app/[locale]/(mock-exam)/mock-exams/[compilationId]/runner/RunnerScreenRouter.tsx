@@ -28,9 +28,13 @@ import ExpandableCardDemo from "@/app/components/ui/expandable-card-demo-standar
 import useOutsideClick from "@/app/hooks/useOutsideClick";
 import SpeakingResponsePanel from "./SpeakingResponsePanel";
 import Link from "next/link";
-import ShimmerButton from "@/app/components/ui/shimmer-button";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { PopupModal } from "react-calendly";
+import { client } from "@/app/lib/sanity.client";
+import { groq } from "next-sanity";
+import { getAmount } from "@/app/serverActions/stripeActions";
+import { applyDiscountToAmount, roundCurrency } from "@/app/lib/pricing";
+import type { ProductFetch } from "@/app/types/sfn/stripe";
 
 type AdvancePayload = {
     nextState: string;
@@ -105,6 +109,46 @@ const TASK_TYPE_LABELS: Record<string, string> = {
     IMAGE_DESCRIPTION_A1_T2: "Tâche 2 - Interaction à partir d'images",
     DISCUSSION_B1: "Discussion B1",
 };
+const BRAVO_COUPON_CODE = "BRAVO10";
+const BRAVO_COUPON_PERCENT = 10;
+const PRICING_CURRENCY = "CHF" as const;
+const queryProduct = groq`
+    *[_type=='product' && slug.current == $slug][0]
+`;
+
+type FinalOfferKey = "packAutonome" | "packAccompagne" | "private6h";
+type CouponMode = "stackable" | "nonStackable";
+type FinalOfferPricing = {
+    baseAmount: number;
+    discountedAmount: number;
+};
+type FinalOfferConfig = {
+    key: FinalOfferKey;
+    slug: string;
+    quantity: string;
+    couponMode: CouponMode;
+};
+
+const FINAL_OFFER_CONFIGS: FinalOfferConfig[] = [
+    {
+        key: "packAutonome",
+        slug: "pack-fide",
+        quantity: "1",
+        couponMode: "stackable",
+    },
+    {
+        key: "packAccompagne",
+        slug: "pack-fide-accompagne",
+        quantity: "1",
+        couponMode: "stackable",
+    },
+    {
+        key: "private6h",
+        slug: "fide-preparation-class-6-hours",
+        quantity: "1",
+        couponMode: "nonStackable",
+    },
+];
 
 const detectExamLevel = (exam?: Exam): OralBranch | "A2" | null => {
     const levels = Array.isArray(exam?.levels) ? exam?.levels : [];
@@ -1702,10 +1746,30 @@ export default function RunnerScreenRouter({
 
     const [oralDetailsTab, setOralDetailsTab] = useState<"A2" | "BRANCH" | "LISTENING">("A2");
     const [finalDetailsOpenKey, setFinalDetailsOpenKey] = useState<"ORAL" | "LISTENING" | "READ_WRITE" | null>("ORAL");
-    const [isHumanFeedbackModalOpen, setIsHumanFeedbackModalOpen] = useState(false);
     const [isFeedbackCalendlyOpen, setIsFeedbackCalendlyOpen] = useState(false);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
+    const [finalOfferPricingByKey, setFinalOfferPricingByKey] = useState<Record<FinalOfferKey, FinalOfferPricing>>({
+        packAutonome: { baseAmount: 499, discountedAmount: 449.1 },
+        packAccompagne: { baseAmount: 875, discountedAmount: 787.5 },
+        private6h: { baseAmount: 420, discountedAmount: 378 },
+    });
+    const [isFinalOfferPricingLoading, setIsFinalOfferPricingLoading] = useState(false);
+    const routeParams = useParams() as { locale?: string | string[] };
     const router = useRouter();
+    const routeLocale = useMemo(() => {
+        const raw = routeParams?.locale;
+        if (Array.isArray(raw)) return String(raw[0] || "").trim();
+        return String(raw || "").trim();
+    }, [routeParams]);
+
+    const formatCurrency = useCallback((value: number) => {
+        return new Intl.NumberFormat("fr-FR", {
+            style: "currency",
+            currency: PRICING_CURRENCY,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(value);
+    }, []);
 
     useEffect(() => {
         if (resume.state !== ORAL_SECTION_SUMMARY) return;
@@ -1715,7 +1779,6 @@ export default function RunnerScreenRouter({
     useEffect(() => {
         if (resume.state !== EXAM_FINAL_SUMMARY) {
             setFinalDetailsOpenKey("ORAL");
-            setIsHumanFeedbackModalOpen(false);
             setIsFeedbackCalendlyOpen(false);
             finalizationRequestedRef.current = false;
         }
@@ -1729,7 +1792,7 @@ export default function RunnerScreenRouter({
         void fetch("/api/mock-exams/session/finalize", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ compilationId, sessionKey }),
+            body: JSON.stringify({ compilationId, sessionKey, locale: routeLocale || undefined }),
         })
             .then(async (response) => {
                 if (!response.ok) {
@@ -1741,11 +1804,81 @@ export default function RunnerScreenRouter({
                 console.error("[MockExam] Finalisation session en erreur", error);
                 finalizationRequestedRef.current = false;
             });
-    }, [compilationId, resume.state, sessionKey]);
+    }, [compilationId, resume.state, routeLocale, sessionKey]);
 
     useEffect(() => {
         setRootElement(document.getElementById("root") || document.body);
     }, []);
+
+    useEffect(() => {
+        if (resume.state !== EXAM_FINAL_SUMMARY) return;
+
+        let cancelled = false;
+        setIsFinalOfferPricingLoading(true);
+
+        (async () => {
+            try {
+                const nextEntries = await Promise.all(
+                    FINAL_OFFER_CONFIGS.map(async (offer): Promise<[FinalOfferKey, FinalOfferPricing] | null> => {
+                        const product = (await client.fetch(queryProduct, { slug: offer.slug })) as ProductFetch | null;
+                        if (!product) {
+                            return null;
+                        }
+
+                        const { pricingDetails } = await getAmount(product, offer.quantity, PRICING_CURRENCY, undefined);
+                        const baseAmount = roundCurrency(Number(pricingDetails.amount || 0));
+
+                        const discountedAmount =
+                            offer.couponMode === "stackable"
+                                ? applyDiscountToAmount({
+                                      amount: baseAmount,
+                                      discountType: "percentage",
+                                      discountValue: BRAVO_COUPON_PERCENT,
+                                      rounding: "none",
+                                  }).amount
+                                : (() => {
+                                      const couponOnlyAmount = applyDiscountToAmount({
+                                          amount: Number(pricingDetails.initialAmount || baseAmount),
+                                          discountType: "percentage",
+                                          discountValue: BRAVO_COUPON_PERCENT,
+                                          rounding: "none",
+                                      }).amount;
+                                      return couponOnlyAmount < baseAmount ? couponOnlyAmount : baseAmount;
+                                  })();
+
+                        return [
+                            offer.key,
+                            {
+                                baseAmount,
+                                discountedAmount: roundCurrency(discountedAmount),
+                            },
+                        ];
+                    }),
+                );
+
+                if (cancelled) return;
+
+                setFinalOfferPricingByKey((previous) => {
+                    const merged = { ...previous };
+                    nextEntries.forEach((entry) => {
+                        if (!entry) return;
+                        const [key, value] = entry;
+                        merged[key] = value;
+                    });
+                    return merged;
+                });
+            } catch (error) {
+                console.error("[MockExam] Impossible de charger les tarifs dynamiques des offres finales", error);
+            } finally {
+                if (cancelled) return;
+                setIsFinalOfferPricingLoading(false);
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [resume.state]);
 
     useEffect(() => {
         const onMessage = (event: MessageEvent) => {
@@ -4337,10 +4470,10 @@ export default function RunnerScreenRouter({
         const oralLevelRank = levelRank(validatedLevelCode);
         const readWriteLevelRank = levelRank(readWriteValidatedLevel);
         const weakestDimension = oralLevelRank <= readWriteLevelRank ? "oral" : "lire/écrire";
-        const isFeedbackRecommended = true;
-        const isPackRecommended = false;
-        const isPrivateRecommended = false;
         const branchPointsMax = inferredBranch === "B1" ? 24 : 8;
+        const packAutonomePricing = finalOfferPricingByKey.packAutonome;
+        const packAccompagnePricing = finalOfferPricingByKey.packAccompagne;
+        const private6hPricing = finalOfferPricingByKey.private6h;
 
         return (
             <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
@@ -4593,134 +4726,115 @@ export default function RunnerScreenRouter({
                     </div>
                 </div>
 
-                <div className="relative overflow-hidden rounded-2xl p-4 md:p-6" style={{ background: "linear-gradient(130deg, var(--neutral-200) 0%, var(--neutral-100) 56%, #dceedd 100%)" }}>
-                    <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-6">
-                        <div className="min-w-0">
-                            <div className="mb-2 inline-flex items-center rounded-full bg-secondary-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">
-                                Feedback professeur gratuit
+                <div className="relative overflow-hidden rounded-2xl p-4 md:p-6" style={{ background: "linear-gradient(130deg, var(--neutral-200) 0%, var(--neutral-100) 56%, #dce8ff 100%)" }}>
+                    <div className="grid grid-cols-1 gap-4 md:gap-6">
+                        <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-6">
+                            <div className="min-w-0">
+                                <div className="mb-2 inline-flex items-center rounded-full bg-secondary-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">
+                                    Entretien gratuit
+                                </div>
+                                <h2 className="mb-2 text-2xl font-semibold text-neutral-900">On prépare la suite ensemble</h2>
+                                <p className="mb-0 text-sm text-neutral-700">Réserve un entretien gratuit avec un professeur FIDE pour clarifier ton plan de progression.</p>
+                                <p className="mt-2 mb-0 text-sm text-neutral-700">
+                                    Axe prioritaire actuel: <span className="font-semibold text-neutral-900">{weakestDimension}</span>.
+                                </p>
+                                <div className="mt-4">
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center justify-center rounded-lg bg-secondary-2 px-4 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                        onClick={() => setIsFeedbackCalendlyOpen(true)}
+                                    >
+                                        Réserver mon entretien gratuit
+                                    </button>
+                                </div>
                             </div>
-                            <h2 className="mb-2 text-2xl font-semibold text-neutral-900">Pour aller plus loin</h2>
-                            <p className="mb-0 text-sm text-neutral-700">Demandez un feedback gratuit sur votre examen par un professeur FIDE expérimenté.</p>
-                            <p className="mt-2 mb-0 text-sm text-neutral-700">
-                                Axe prioritaire actuel: <span className="font-semibold text-neutral-900">{weakestDimension}</span>.
-                            </p>
-                            <div className="mt-4 flex flex-wrap items-center gap-3">
-                                <ShimmerButton type="button" className="min-w-[260px] small" onClick={() => setIsHumanFeedbackModalOpen(true)}>
-                                    Obtenir mon feedback gratuit
-                                </ShimmerButton>
-                                <Link href="/fide/dashboard" className="btn btn-secondary small min-w-[220px]">
-                                    Retour au dashboard
-                                </Link>
+
+                            <div className="mx-auto w-full max-w-[170px] md:mx-0 md:max-w-[220px]">
+                                <Image
+                                    src="/images/yoh-coussot.png"
+                                    alt="Professeur Start French Now"
+                                    width={220}
+                                    height={220}
+                                    className="h-auto w-full object-contain rounded-full border border-solid border-neutral-700"
+                                />
                             </div>
                         </div>
 
-                        <div className="mx-auto w-full max-w-[170px] md:mx-0 md:max-w-[220px]">
-                            <Image
-                                src="/images/yoh-coussot.png"
-                                alt="Professeur Start French Now"
-                                width={220}
-                                height={220}
-                                className="h-auto w-full object-contain rounded-full border border-solid border-neutral-700"
-                            />
+                        <div className="rounded-xl border border-solid border-secondary-2 bg-neutral-100 p-3 md:p-4">
+                            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-secondary-2">Coupon bien mérité</p>
+                            <p className="mb-0 text-sm text-neutral-800">
+                                Tu as débloqué <span className="font-semibold text-secondary-4">-10%</span> sur les 3 offres ci-dessous avec le code{" "}
+                                <span className="rounded bg-neutral-200 px-2 py-0.5 font-semibold text-neutral-900">{BRAVO_COUPON_CODE}</span> (à saisir au checkout).
+                            </p>
+                            {isFinalOfferPricingLoading ? <p className="mt-2 mb-0 text-xs text-neutral-600">Mise à jour des tarifs en cours…</p> : null}
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                            <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
+                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack autonome</p>
+                                <p className="mb-0 text-sm font-semibold text-neutral-900">Préparation FIDE en autonomie</p>
+                                <p className="mt-2 mb-0 text-sm text-neutral-700">Vidéos, scénarios et examens blancs pour t'entraîner à ton rythme.</p>
+                                <div className="mt-3 flex items-end gap-2">
+                                    <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packAutonomePricing.baseAmount)}</p>
+                                    <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(packAutonomePricing.discountedAmount)}</p>
+                                </div>
+                                <div className="mt-auto pt-3">
+                                    <Link
+                                        href={`/checkout/pack-fide?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
+                                        className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
+                                    >
+                                        {`Choisir le pack autonome - ${formatCurrency(packAutonomePricing.discountedAmount)}`}
+                                    </Link>
+                                </div>
+                            </article>
+
+                            <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
+                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack accompagné</p>
+                                <p className="mb-0 text-sm font-semibold text-neutral-900">Programme complet + accompagnement</p>
+                                <p className="mt-2 mb-0 text-sm text-neutral-700">Pack structuré avec coaching 1:1 intégré pour un suivi renforcé.</p>
+                                <div className="mt-3 flex items-end gap-2">
+                                    <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packAccompagnePricing.baseAmount)}</p>
+                                    <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(packAccompagnePricing.discountedAmount)}</p>
+                                </div>
+                                <div className="mt-auto pt-3">
+                                    <Link
+                                        href={`/checkout/pack-fide-accompagne?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
+                                        className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
+                                    >
+                                        {`Choisir le pack accompagné - ${formatCurrency(packAccompagnePricing.discountedAmount)}`}
+                                    </Link>
+                                </div>
+                            </article>
+
+                            <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
+                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">6h cours privés</p>
+                                <p className="mb-0 text-sm font-semibold text-neutral-900">Préparation Scénarios Express</p>
+                                <p className="mt-2 mb-0 text-sm text-neutral-700">6 cours avec votre professeur pour préparer tous les scénarios actuels de l'examen (A1/A2/B1)</p>
+                                <div className="mt-3 flex items-end gap-2">
+                                    <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(private6hPricing.baseAmount)}</p>
+                                    <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(private6hPricing.discountedAmount)}</p>
+                                </div>
+                                <div className="mt-auto pt-3">
+                                    <Link
+                                        href={`/checkout/fide-preparation-class-6-hours?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
+                                        className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
+                                    >
+                                        {`Choisir les 6h de cours privés - ${formatCurrency(private6hPricing.discountedAmount)}`}
+                                    </Link>
+                                </div>
+                            </article>
+                        </div>
+
+                        <div className="flex justify-end">
+                            <Link
+                                href="/fide/dashboard"
+                                className="inline-flex items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
+                            >
+                                Retour au dashboard
+                            </Link>
                         </div>
                     </div>
                 </div>
-
-                <AnimatePresence>
-                    {isHumanFeedbackModalOpen ? (
-                        <motion.div
-                            key="human-feedback-modal"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 z-[120] flex items-center justify-center p-3 md:p-6"
-                            style={{ backgroundColor: "rgba(23, 23, 23, 0.82)" }}
-                            onClick={() => setIsHumanFeedbackModalOpen(false)}
-                        >
-                            <motion.div
-                                initial={{ y: 10, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: 8, opacity: 0 }}
-                                transition={{ duration: 0.22, ease: "easeOut" }}
-                                className="my-3 h-max max-h-[92vh] w-full max-w-[920px] overflow-y-auto rounded-2xl border border-solid border-neutral-600 bg-neutral-100 p-4 md:my-0 md:max-h-[88vh] md:p-6"
-                                onClick={(event) => event.stopPropagation()}
-                            >
-                                <div className="mb-4 flex items-start justify-between gap-3">
-                                    <div>
-                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Accompagnement recommandé</p>
-                                        <h3 className="mb-0 text-xl font-semibold text-neutral-900">Transforme tes résultats en plan de progression</h3>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="inline-flex items-center rounded-lg border border-solid border-neutral-400 bg-neutral-100 px-3 py-1.5 text-sm font-semibold text-neutral-800 transition hover:border-neutral-600"
-                                        onClick={() => setIsHumanFeedbackModalOpen(false)}
-                                    >
-                                        Fermer
-                                    </button>
-                                </div>
-
-                                <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                                    <article
-                                        className={clsx("flex h-full flex-col rounded-xl border border-solid p-3", isFeedbackRecommended ? "border-secondary-2 bg-neutral-200" : "border-neutral-300")}
-                                    >
-                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Feedback Professionnel</p>
-                                        <p className="mb-0 text-sm font-semibold text-neutral-900">Entretien professeur + plan d'évolution</p>
-                                        <p className="mt-2 mb-0 text-sm text-neutral-700">Analyse les audios et écrits de l'examen pour identifier tes points forts et axes d'amélioration.</p>
-                                        {isFeedbackRecommended ? <p className="mt-2 mb-0 text-xs font-semibold uppercase tracking-wide text-secondary-2">Recommandé</p> : null}
-                                        <div className="mt-auto pt-3">
-                                            <button
-                                                type="button"
-                                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-5 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95 no-underline"
-                                                onClick={() => {
-                                                    setIsFeedbackCalendlyOpen(true);
-                                                    setIsHumanFeedbackModalOpen(false);
-                                                }}
-                                            >
-                                                FEEDBACK GRATUIT
-                                            </button>
-                                        </div>
-                                    </article>
-
-                                    <article
-                                        className={clsx("flex h-full flex-col rounded-xl border border-solid p-3", isPackRecommended ? "border-secondary-2 bg-neutral-200" : "border-neutral-300")}
-                                    >
-                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack FIDE</p>
-                                        <p className="mb-0 text-sm font-semibold text-neutral-900">Programme complet d'entraînement</p>
-                                        <p className="mt-2 mb-0 text-sm text-neutral-700">Scénarios, examens blancs et contenus structurés pour un entraînement régulier.</p>
-                                        {isPackRecommended ? <p className="mt-2 mb-0 text-xs font-semibold uppercase tracking-wide text-secondary-2">Recommandé</p> : null}
-                                        <div className="mt-auto pt-3">
-                                            <Link
-                                                href="/fide"
-                                                className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
-                                                onClick={() => setIsHumanFeedbackModalOpen(false)}
-                                            >
-                                                Voir le Pack FIDE
-                                            </Link>
-                                        </div>
-                                    </article>
-
-                                    <article
-                                        className={clsx("flex h-full flex-col rounded-xl border border-solid p-3", isPrivateRecommended ? "border-secondary-2 bg-neutral-200" : "border-neutral-300")}
-                                    >
-                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Cours privés</p>
-                                        <p className="mb-0 text-sm font-semibold text-neutral-900">Coaching 1:1 intensif</p>
-                                        <p className="mt-2 mb-0 text-sm text-neutral-700">Accompagnement premium ciblé pour accélérer la montée en niveau.</p>
-                                        {isPrivateRecommended ? <p className="mt-2 mb-0 text-xs font-semibold uppercase tracking-wide text-secondary-2">Recommandé</p> : null}
-                                        <div className="mt-auto pt-3">
-                                            <Link
-                                                href="/fide/dashboard"
-                                                className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
-                                                onClick={() => setIsHumanFeedbackModalOpen(false)}
-                                            >
-                                                Découvrir le coaching
-                                            </Link>
-                                        </div>
-                                    </article>
-                                </div>
-                            </motion.div>
-                        </motion.div>
-                    ) : null}
-                </AnimatePresence>
                 {rootElement ? (
                     <PopupModal
                         url="https://calendly.com/yohann-startfrenchnow/your-exam-feedback"

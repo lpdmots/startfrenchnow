@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next-intl/link";
 import { BookFirstMeeting } from "../../components/BookFirstMeeting";
 import { FideCourseRatings } from "@/app/components/sfn/courses/FideCourseRatings";
+import { SlideFromBottom } from "@/app/components/animations/Slides";
 
 export function HeroPrivateCourses() {
     return (
@@ -35,8 +36,12 @@ export function HeroPrivateCourses() {
                         <div className="relative">
                             <div className="mx-auto hidden w-full max-w-[860px] lg:grid lg:grid-cols-[350px_minmax(260px,360px)] lg:items-center lg:justify-center lg:gap-8">
                                 <div className="flex justify-center pt-12">
-                                    <div className="relative h-[340px] w-[340px] overflow-hidden rounded-full border-2 border-solid border-neutral-800 bg-neutral-100 shadow-1">
-                                        <Image src="/images/yoh-coussot.png" alt="Yohann Coussot" fill className="object-cover" />
+                                    <div className="relative h-[340px] w-[340px] overflow-hidden rounded-full border-2 border-solid border-neutral-800 bg-secondary-1 shadow-1">
+                                        <SlideFromBottom delay={0.15} duration={0.4}>
+                                            <div className="relative h-full w-full">
+                                                <Image src="/images/yoh-coussot.png" alt="Yohann Coussot" fill className="object-cover" />
+                                            </div>
+                                        </SlideFromBottom>
                                     </div>
                                 </div>
                                 <div className="grid h-[520px] grid-rows-4 gap-8">
@@ -99,8 +104,12 @@ export function HeroPrivateCourses() {
                             </div>
 
                             <div className="mx-auto flex w-full max-w-[460px] flex-col items-center gap-4 lg:hidden">
-                                <div className="relative h-56 w-56 overflow-hidden rounded-full border-2 border-solid border-neutral-800 bg-neutral-100 shadow-1">
-                                    <Image src="/images/yoh-coussot.png" alt="Yohann Coussot" fill className="object-cover" />
+                                <div className="relative h-56 w-56 overflow-hidden rounded-full border-2 border-solid border-neutral-800 bg-secondary-1 shadow-1">
+                                    <SlideFromBottom delay={0.15} duration={0.55}>
+                                        <div className="relative h-full w-full">
+                                            <Image src="/images/yoh-coussot.png" alt="Yohann Coussot" fill className="object-cover" />
+                                        </div>
+                                    </SlideFromBottom>
                                 </div>
                                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                     <article className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">

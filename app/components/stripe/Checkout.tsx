@@ -21,6 +21,7 @@ interface CheckoutProps {
     productSlug: string;
     quantity: string;
     defaultCurrency?: "CHF" | "EUR" | "USD";
+    prefilledCouponCode?: string;
 }
 
 export type AreReadyState = {
@@ -33,7 +34,12 @@ const queryProduct = groq`
         *[_type=='product' && slug.current == $slug][0] 
     `;
 
-export default function Checkout({ locale, productSlug, quantity: originalQuantity, defaultCurrency = "CHF" }: CheckoutProps) {
+const normalizeCouponCode = (raw?: string | null) =>
+    String(raw || "")
+        .trim()
+        .toUpperCase();
+
+export default function Checkout({ locale, productSlug, quantity: originalQuantity, defaultCurrency = "CHF", prefilledCouponCode }: CheckoutProps) {
     const { data: session } = useSession();
     const [pricingDetails, setPricingDetails] = useState<PricingDetails | null>(null);
     const [productInfos, setProductInfos] = useState<null | ProductInfos>(null);
@@ -49,8 +55,8 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     const [areReady, setAreReady] = useState<AreReadyState>({ yourPurchase: true, contactInformations: false, payment: false });
     const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
     const [lastSyncedEmail, setLastSyncedEmail] = useState<string | null>(null);
-    const [couponInput, setCouponInput] = useState("");
-    const [appliedCouponCode, setAppliedCouponCode] = useState<string | undefined>(undefined);
+    const [couponInput, setCouponInput] = useState(() => normalizeCouponCode(prefilledCouponCode));
+    const [appliedCouponCode, setAppliedCouponCode] = useState<string | undefined>(() => normalizeCouponCode(prefilledCouponCode) || undefined);
     const [couponFeedback, setCouponFeedback] = useState<CouponFeedback | null>(null);
 
     const amount = pricingDetails?.amount;
@@ -74,6 +80,14 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     useEffect(() => {
         setAreReady((state) => ({ ...state, payment: false }));
     }, [productSlug, quantity, currency, appliedCouponCode]);
+
+    useEffect(() => {
+        const normalizedPrefilledCouponCode = normalizeCouponCode(prefilledCouponCode);
+        if (!normalizedPrefilledCouponCode) return;
+        setCouponInput(normalizedPrefilledCouponCode);
+        setAppliedCouponCode(normalizedPrefilledCouponCode);
+        setCouponFeedback(null);
+    }, [prefilledCouponCode]);
 
     useEffect(() => {
         let cancelled = false;
@@ -183,7 +197,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                     value={couponInput}
                                     onChange={(event) => setCouponInput(event.target.value.toUpperCase())}
                                     onKeyDown={(event) => {
-                                        if (event.key === "Enter") {
+                                        if (event.key === "Enter" && !appliedCouponCode) {
                                             event.preventDefault();
                                             applyCoupon();
                                         }
@@ -192,11 +206,19 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                     className="rounded-md p-2 w-full sm:w-64 md:w-72 bg-neutral-100 text-neutral-700 h-12"
                                     style={{ border: "1px solid var(--neutral-400)" }}
                                 />
-                                <button type="button" onClick={applyCoupon} className="btn btn-primary small h-12 p-0 flex items-center justify-center" disabled={!couponInput.trim()}>
-                                    {t("coupon.apply")}
-                                </button>
+                                {!appliedCouponCode && (
+                                    <button type="button" onClick={applyCoupon} className="btn btn-primary small h-12 p-0 flex items-center justify-center" disabled={!couponInput.trim()}>
+                                        {t("coupon.apply")}
+                                    </button>
+                                )}
                                 {appliedCouponCode && (
-                                    <button type="button" onClick={removeCoupon} className="btn btn-secondary small h-12 p-0 flex items-center justify-center   ">
+                                    <button
+                                        type="button"
+                                        onClick={removeCoupon}
+                                        className="btn btn-secondary small p-0 h-12 flex items-center justify-center"
+                                        aria-label={t("coupon.remove")}
+                                        title={t("coupon.remove")}
+                                    >
                                         {t("coupon.remove")}
                                     </button>
                                 )}

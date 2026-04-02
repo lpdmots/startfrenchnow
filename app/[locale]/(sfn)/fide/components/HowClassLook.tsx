@@ -52,7 +52,11 @@ function HowClassLook() {
             <div className="col-span-2 lg:col-span-1 flex flex-col gap-8 order-1 lg:order-2">
                 <div>
                     <SlideFromBottom>
-                        <h2 className="display-2 text-center mg-bottom-56px color-neutral-100">{t.rich("title", intelRich())}</h2>
+                        <h2 className="display-2 text-center mg-bottom-56px text-neutral-100">
+                            {t.rich("title1", intelRich())}
+                            <br />
+                            {t.rich("title2", intelRich())}
+                        </h2>
                     </SlideFromBottom>
                 </div>
                 <div>
