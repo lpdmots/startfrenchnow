@@ -92,7 +92,7 @@ export const ModalFromBottomWithPortal = ({ open, data }: Props) => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -50, opacity: 0 }}
                         transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-                        className={clsx("absolute p-5 bg-neutral-200 text-neutral-900 max-w-md rounded-lg", className)}
+                        className={clsx("absolute p-5 bg-neutral-200 text-neutral-800 max-w-md rounded-lg", className)}
                         style={{ width: "98%" }}
                     >
                         <div className="grid grid-cols-5 gap-4 mb-2">

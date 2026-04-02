@@ -34,7 +34,7 @@ export const PriceLayout = ({ quantity, initialAmount, currency, amount, discoun
                     {amount ? <FaCheckCircle className="text-2xp text-secondary-2 mr-2 lg:mr-4" /> : <FaTimesCircle className="text-2xp text-neutral-400 mr-2 lg:mr-4" />}
                     {t("amountToPay")}
                 </h3>
-                {!amount && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
+                {!amount && <FaSpinner className="animate-spin text-secondary-2 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
             </div>
             <div className="flex justify-between w-full gap-4">
                 <p className="mb-0">{t("subtotal", { quantity })}</p>

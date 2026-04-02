@@ -85,7 +85,7 @@ export default function SommaireModal({ title = "Sommaire", children, openProp, 
                 {isOpen && (
                     <>
                         {/* Overlay */}
-                        <motion.div key="backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/20 z-50" />
+                        <motion.div key="backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-neutral-800/20 z-50" />
 
                         {/* Conteneur centré */}
                         <div className="fixed inset-0 grid place-items-center z-[60]">

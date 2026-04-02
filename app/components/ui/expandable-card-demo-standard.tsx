@@ -76,7 +76,7 @@ export default function ExpandableCardDemo({
         <>
             <AnimatePresence>
                 {active && typeof active === "object" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/20 h-full w-full z-10" />
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-neutral-800/20 h-full w-full z-10" />
                 )}
             </AnimatePresence>
             <AnimatePresence>

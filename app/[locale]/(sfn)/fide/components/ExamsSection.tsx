@@ -22,7 +22,7 @@ export default function ExamsSection({
     const t = useTranslations("ExamsSection");
 
     return (
-        <section id="exams" className="w-full bg-white py-24">
+        <section id="exams" className="w-full bg-neutral-100 py-24">
             <div className="mx-auto w-full max-w-7xl px-4 lg:px-8 overflow-hidden">
                 {/* Header */}
                 <SlideFromLeft>

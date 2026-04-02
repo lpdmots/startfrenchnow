@@ -10,8 +10,8 @@ export const REVIEW_STATUS_LABELS: Record<ReviewStatusValue, string> = {
 };
 
 export const REVIEW_STATUS_BADGE_CLASSES: Record<ReviewStatusValue, string> = {
-    requested: "bg-secondary-6 text-neutral-900",
-    scheduled: "bg-secondary-5 text-neutral-900",
+    requested: "bg-secondary-6 text-neutral-800",
+    scheduled: "bg-secondary-5 text-neutral-800",
     completed: "bg-secondary-2 text-neutral-100",
     cancelled: "bg-neutral-400 text-neutral-800",
 };

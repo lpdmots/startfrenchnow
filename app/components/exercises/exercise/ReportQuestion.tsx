@@ -95,7 +95,7 @@ export const ReportQuestion = ({ open, setOpen, exerciseId, question }: ReportQu
                                 opacity: 0,
                             }}
                             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-                            className="absolute z-100 p-5 bg-neutral-200 h-auto max-w-md text-white rounded-lg"
+                            className="absolute z-100 p-5 bg-neutral-200 h-auto max-w-md text-neutral-100 rounded-lg"
                             style={{ width: "98%" }}
                         >
                             <div className="flex flex-col gap-2">

@@ -175,7 +175,7 @@ function MentionsLegales({ params }: { params: { locale: string } }) {
                                 <div className="col-span-1 lg:col-span-2">
                                     {content.sections.map((section) => (
                                         <div key={section.title} className="mg-bottom-32px">
-                                            <h2 className="text-xl font-semibold text-neutral-900">{section.title}</h2>
+                                            <h2 className="text-xl font-semibold text-neutral-800">{section.title}</h2>
                                             <ul className="mt-3 space-y-2 text-neutral-700">
                                                 {section.items.map((item, index) => (
                                                     <li key={`${section.title}-${index}`}>{item}</li>

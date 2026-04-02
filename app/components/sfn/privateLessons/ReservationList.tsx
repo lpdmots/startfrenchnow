@@ -44,20 +44,20 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
                             {/* Heures Restantes */}
                             <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 small-shadow min-w-60 gap-4 rounded-2xl">
                                 <Image src="/images/schedule.png" alt="calendar" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
-                                <p className="text-lg font-semibold text-gray-700 mb-0">{t("remainingHours")}</p>
-                                <p className="text-xl font-bold text-blue-600 mb-0">{toHours(remainingMinutes || 0)} h</p>
+                                <p className="text-lg font-semibold text-neutral-700 mb-0">{t("remainingHours")}</p>
+                                <p className="text-xl font-bold text-secondary-2 mb-0">{toHours(remainingMinutes || 0)} h</p>
                             </div>
                             {/* Heures En Attente */}
                             <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 min-w-60 gap-4 rounded-2xl">
                                 <Image src="/images/hourglass.png" alt="hourglass" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
-                                <p className="text-lg font-semibold  text-gray-700 mb-0">{t("pendingHours")}</p>
-                                <p className="text-xl font-bold text-yellow-600 mb-0">{toHours(upcomingMinutes || 0)} h</p>
+                                <p className="text-lg font-semibold  text-neutral-700 mb-0">{t("pendingHours")}</p>
+                                <p className="text-xl font-bold text-primary mb-0">{toHours(upcomingMinutes || 0)} h</p>
                             </div>
                             {/* Heures Effectuées */}
                             <div className="flex flex-col items-center p-4 border-2 border-solid border-neutral-800 min-w-60 gap-4 rounded-2xl">
                                 <Image src="/images/completed.png" alt="check" height={60} width={60} className="contain h-8 w-8 lg:h-10 lg:w-10" />
-                                <p className="text-lg font-semibold  text-gray-600 mb-0">{t("completedHours")}</p>
-                                <p className="text-xl font-bold text-green-600 mb-0">{toHours(completedMinutes || 0)} h</p>
+                                <p className="text-lg font-semibold  text-neutral-600 mb-0">{t("completedHours")}</p>
+                                <p className="text-xl font-bold text-secondary-5 mb-0">{toHours(completedMinutes || 0)} h</p>
                             </div>
                         </div>
                     ) : (
@@ -86,11 +86,11 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
                         <table className="min-w-full rounded-lg overflow-hidden px-12">
                             <thead style={{ borderBottom: "solid var(--neutral-800) 2px" }}>
                                 <tr>
-                                    <th className="px-4 py-6 text-left text-gray-700">{t("status")}</th>
-                                    <th className="px-4 py-6 text-left text-gray-700">{t("date")}</th>
-                                    <th className="px-4 py-6 text-left text-gray-700">{t("time")}</th>
-                                    <th className="px-4 py-6 text-left text-gray-700">{t("zoomLink")}</th>
-                                    <th className="py-6 text-left text-gray-700"></th>
+                                    <th className="px-4 py-6 text-left text-neutral-700">{t("status")}</th>
+                                    <th className="px-4 py-6 text-left text-neutral-700">{t("date")}</th>
+                                    <th className="px-4 py-6 text-left text-neutral-700">{t("time")}</th>
+                                    <th className="px-4 py-6 text-left text-neutral-700">{t("zoomLink")}</th>
+                                    <th className="py-6 text-left text-neutral-700"></th>
                                 </tr>
                             </thead>
 
@@ -220,13 +220,13 @@ const EventRow = ({ eventType, event, index, locale }: { eventType: keyof typeof
                             {t("zoomLink")}
                         </a>
                     ) : (
-                        <span className="text-gray-400">{t("noZoomLink")}</span>
+                        <span className="text-neutral-400">{t("noZoomLink")}</span>
                     )}
                 </td>
                 <td className="px-4 py-6">
                     {isMoreThan48HoursAway && isLoading ? (
                         <div className="flex items-center">
-                            <FaSpinner className="animate-spin text-blue-500 h-6 w-6 ml-2" style={{ animationDuration: "2s" }} />
+                            <FaSpinner className="animate-spin text-secondary-2 h-6 w-6 ml-2" style={{ animationDuration: "2s" }} />
                         </div>
                     ) : isMoreThan48HoursAway ? (
                         <div className="flex items-center">

@@ -48,7 +48,7 @@ export const PdfDropdown = ({ children, content, className }: PdfDropdownProps) 
             {/* Bouton pour ouvrir/fermer le dropdown */}
             <button
                 type="button"
-                className="inline-flex items-center justify-center text-xs text-neutral-600 hover:text-neutral-900 transition-colors duration-200 focus:outline-none"
+                className="inline-flex items-center justify-center text-xs text-neutral-600 hover:text-neutral-800 transition-colors duration-200 focus:outline-none"
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();

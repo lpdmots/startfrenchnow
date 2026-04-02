@@ -1420,7 +1420,7 @@ export default function SpeakingResponsePanel({
                                             initial={isConversationWarning ? { x: 0, scale: 1 } : false}
                                             animate={isConversationWarning ? { x: [0, -4, 4, -3, 3, 0], scale: [1, 1.04, 1] } : { x: 0, scale: 1 }}
                                             transition={{ duration: 0.45 }}
-                                            className={clsx("rounded-lg px-3 py-1 text-sm font-semibold", isConversationWarning ? "bg-red-50 text-red-600" : "bg-neutral-200 text-neutral-700")}
+                                            className={clsx("rounded-lg px-3 py-1 text-sm font-semibold", isConversationWarning ? "bg-destructive/10 text-destructive" : "bg-neutral-200 text-neutral-700")}
                                         >
                                             Temps restant: {formatTimer(conversationRemainingSeconds)}
                                         </motion.div>
@@ -1496,7 +1496,7 @@ export default function SpeakingResponsePanel({
                                                     setVerificationMessage("");
                                                 }}
                                                 rows={8}
-                                                className="w-full max-w-full min-h-[220px] resize-y overflow-x-hidden rounded-xl border border-neutral-300 bg-neutral-100 p-3 text-neutral-900 break-words whitespace-pre-wrap outline-none transition focus:border-secondary-2"
+                                                className="w-full max-w-full min-h-[220px] resize-y overflow-x-hidden rounded-xl border border-neutral-300 bg-neutral-100 p-3 text-neutral-800 break-words whitespace-pre-wrap outline-none transition focus:border-secondary-2"
                                             />
                                             {verificationMessage && <p className="mb-0 text-sm italic">{verificationMessage}</p>}
                                         </div>

@@ -198,7 +198,7 @@ function CommentGroupCard({ item, locale, onVisitGroup }: { item: UINotification
     };
 
     return (
-        <Link href={item.link} onClick={handleClick} className={clsx("block rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 no-underline text-neutral-800", "transition-colors")}>
+        <Link href={item.link} onClick={handleClick} className={clsx("block rounded-xl border border-neutral-200 bg-neutral-100 hover:bg-neutral-200 no-underline text-neutral-800", "transition-colors")}>
             <div className="flex flex-col w-full">
                 <div className="flex w-full gap-2 items-center">
                     <div className="h-9 w-9 rounded-lg bg-neutral-200/70 flex items-center justify-center">
@@ -213,8 +213,8 @@ function CommentGroupCard({ item, locale, onVisitGroup }: { item: UINotification
 
                     <div className="min-w-0 flex-1 grow-1">
                         <div className="flex items-start justify-between gap-2">
-                            <h3 className="text-sm font-semibold text-neutral-900 line-clamp-2">{item.title || t("defaultTitle")}</h3>
-                            <span className="shrink-0 ml-auto inline-flex items-center rounded-full bg-neutral-900 text-white px-2 py-0.5 text-xs">{item.comments.length}</span>
+                            <h3 className="text-sm font-semibold text-neutral-800 line-clamp-2">{item.title || t("defaultTitle")}</h3>
+                            <span className="shrink-0 ml-auto inline-flex items-center rounded-full bg-neutral-800 text-neutral-100 px-2 py-0.5 text-xs">{item.comments.length}</span>
                         </div>
                     </div>
                 </div>
@@ -252,7 +252,7 @@ function SystemCard({ item, locale, onOpen, disabled }: { item: UINotificationSy
                 onOpen(item);
             }}
             disabled={disabled}
-            className={clsx("w-full text-left block rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 no-underline text-neutral-800", "transition-colors p-3 disabled:opacity-70")}
+            className={clsx("w-full text-left block rounded-xl border border-neutral-200 bg-neutral-100 hover:bg-neutral-200 no-underline text-neutral-800", "transition-colors p-3 disabled:opacity-70")}
         >
             <div className="flex items-start gap-2">
                 <div className="h-9 w-9 rounded-lg bg-neutral-200/70 flex items-center justify-center shrink-0">
@@ -260,7 +260,7 @@ function SystemCard({ item, locale, onOpen, disabled }: { item: UINotificationSy
                 </div>
                 <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-sm font-semibold text-neutral-900 line-clamp-2">{item.title}</h3>
+                        <h3 className="text-sm font-semibold text-neutral-800 line-clamp-2">{item.title}</h3>
                         <span className="inline-flex items-center gap-1 shrink-0">
                             <LuClock className="w-3.5 h-3.5 text-neutral-500" />
                             <RelativeDate iso={item.createdAt} locale={locale} small={true} />

@@ -1963,23 +1963,23 @@ export default function RunnerScreenRouter({
                     <div className="grow grid gap-8 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] xl:grid-cols-[minmax(0,600px)_minmax(0,1fr)] lg:items-center">
                         <div className="space-y-4">
                             <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">L'Examen Blanc</p>
-                            <h1 className="display-2 font-medium mb-0 text-neutral-900">Déroulement de l'examen</h1>
+                            <h1 className="display-2 font-medium mb-0 text-neutral-800">Déroulement de l'examen</h1>
                             <p className="mb-0 text-neutral-700">Regarde cette courte vidéo de préparation. Tu y verras les épreuves et l'ordre de passage pour te lancer sereinement.</p>
                             <div className="grid gap-2 text-sm text-neutral-700">
                                 <p className="mb-0">
-                                    <span className="font-semibold text-neutral-900">1.</span> Parler
+                                    <span className="font-semibold text-neutral-800">1.</span> Parler
                                 </p>
                                 <p className="mb-0">
-                                    <span className="font-semibold text-neutral-900">2.</span> Comprendre
+                                    <span className="font-semibold text-neutral-800">2.</span> Comprendre
                                 </p>
                                 <p className="mb-0">
-                                    <span className="font-semibold text-neutral-900">3.</span> Lire/Écrire
+                                    <span className="font-semibold text-neutral-800">3.</span> Lire/Écrire
                                 </p>
                             </div>
                             <p className="mb-0 text-xs text-neutral-600">Votre progression est sauvegardée automatiquement.</p>
                         </div>
 
-                        <div className="card relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="card relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {examIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={examIntroVideoUrl} />
@@ -2014,11 +2014,11 @@ export default function RunnerScreenRouter({
                 <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Tâche 1</p>
-                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Description d'image</h1>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-800">Description d'image</h1>
                         <p className="mb-0 text-sm text-neutral-600">Objectif: structurer ta réponse simplement, clairement, et dans le temps imparti.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {taskOneDescriptionIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={taskOneDescriptionIntroVideoUrl} />
@@ -2054,11 +2054,11 @@ export default function RunnerScreenRouter({
                 <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Tâche 2</p>
-                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Conversation téléphonique</h1>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-800">Conversation téléphonique</h1>
                         <p className="mb-0 text-sm text-neutral-600">Objectif: tenir un échange simple, écouter les relances et répondre clairement.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {taskTwoConversationIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={taskTwoConversationIntroVideoUrl} />
@@ -2094,11 +2094,11 @@ export default function RunnerScreenRouter({
                 <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Tâche 3</p>
-                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Discussion guidée</h1>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-800">Discussion guidée</h1>
                         <p className="mb-0 text-sm text-neutral-600">Objectif: exprimer ton avis de façon simple, justifier brièvement et interagir avec l'examinateur.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {taskThreeDiscussionIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={taskThreeDiscussionIntroVideoUrl} />
@@ -2134,11 +2134,11 @@ export default function RunnerScreenRouter({
                 <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Branche A1 - Tâche 1</p>
-                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Description d'image</h1>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-800">Description d'image</h1>
                         <p className="mb-0 text-sm text-neutral-600">Objectif: décrire l'image simplement, en phrases courtes et claires.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {speakBranchA1TaskOneIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={speakBranchA1TaskOneIntroVideoUrl} />
@@ -2168,11 +2168,11 @@ export default function RunnerScreenRouter({
                 <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Branche B1</p>
-                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Discussion guidée</h1>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-800">Discussion guidée</h1>
                         <p className="mb-0 text-sm text-neutral-600">Objectif: décrire une expérience, un processus ou une situation hypothétique.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {speakBranchB1IntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={speakBranchB1IntroVideoUrl} />
@@ -2198,7 +2198,7 @@ export default function RunnerScreenRouter({
                 <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-6 text-center">
                     <div className="flex flex-col items-center gap-3">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Parler Branche B1</p>
-                        <h1 className="display-2 mb-0 text-neutral-900">Choisis ton épreuve</h1>
+                        <h1 className="display-2 mb-0 text-neutral-800">Choisis ton épreuve</h1>
                         <p className="mb-0 text-sm text-neutral-600">Sélectionne l'une des deux tâches B1 proposées dans ce template.</p>
                     </div>
 
@@ -2285,7 +2285,7 @@ export default function RunnerScreenRouter({
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-1">
                             <p className="hidden lg:block mb-0 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-600">Discussion B1</p>
-                            <h2 className="mb-0 text-xl font-semibold text-neutral-900">{String(currentTask.title || "").trim() || "Épreuve B1"}</h2>
+                            <h2 className="mb-0 text-xl font-semibold text-neutral-800">{String(currentTask.title || "").trim() || "Épreuve B1"}</h2>
                             <p className="mb-0 text-sm text-neutral-600">
                                 {validatedCount}/{activities.length} validée{validatedCount > 1 ? "s" : ""}
                             </p>
@@ -2435,7 +2435,7 @@ export default function RunnerScreenRouter({
                     <div className="min-h-0 min-w-0 flex flex-col w-full max-w-[720px] mx-auto lg:max-w-none">
                         <div className="px-2 pb-2 md:px-4">
                             <p className="pl-2 md:pl-4 mb-0 text-lg font-semibold uppercase tracking-[0.14em] text-neutral-600">Parler Branche A1</p>
-                            <h2 className="pl-2 md:pl-4 mb-0 font-semibold leading-tight text-neutral-900 display-2">{isSituationStep ? "Situation" : `Image ${activeImageIndex + 1}`}</h2>
+                            <h2 className="pl-2 md:pl-4 mb-0 font-semibold leading-tight text-neutral-800 display-2">{isSituationStep ? "Situation" : `Image ${activeImageIndex + 1}`}</h2>
                         </div>
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -2507,7 +2507,7 @@ export default function RunnerScreenRouter({
                         ) : (
                             <article className="rounded-2xl border border-solid border-neutral-400 bg-neutral-100 p-4 md:p-5 shadow-1">
                                 <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-600">Étape obligatoire</p>
-                                <h3 className="mb-3 text-lg font-semibold text-neutral-900">Écoute la situation</h3>
+                                <h3 className="mb-3 text-lg font-semibold text-neutral-800">Écoute la situation</h3>
                                 {situationActivity?.audioUrl ? (
                                     <audio controls className="w-full" src={withCloudFrontPrefix(situationActivity.audioUrl)} />
                                 ) : (
@@ -2683,7 +2683,7 @@ export default function RunnerScreenRouter({
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1">
                                 <p className="hidden lg:block mb-0 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-600">Discussion</p>
-                                <h2 className="mb-0 text-xl font-semibold text-neutral-900">{activities.length} questions à traiter</h2>
+                                <h2 className="mb-0 text-xl font-semibold text-neutral-800">{activities.length} questions à traiter</h2>
                                 <p className="mb-0 text-sm text-neutral-600">
                                     {validatedCount}/{activities.length} validée{validatedCount > 1 ? "s" : ""}
                                 </p>
@@ -2843,7 +2843,7 @@ export default function RunnerScreenRouter({
                     ) : null}
                 </AnimatePresence>
 
-                {evaluationError && <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{evaluationError}</div>}
+                {evaluationError && <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{evaluationError}</div>}
 
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
                     <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
@@ -2942,17 +2942,17 @@ export default function RunnerScreenRouter({
             <section className={`w-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} px-2 py-2 md:px-4 md:py-5 !max-w-4xl`}>
                 <div className="mx-auto flex w-full flex-col gap-6">
                     <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Correction Parler A2</p>
-                    <h1 className="display-2 mb-0 text-neutral-900">{compilationName || "Examen blanc"}</h1>
+                    <h1 className="display-2 mb-0 text-neutral-800">{compilationName || "Examen blanc"}</h1>
                     <p className="mb-0 text-sm text-neutral-600">Regarde la correction et compare-la à tes réponses.</p>
 
                     <div className="w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {speakA2CorrectionVideoUrl ? (
                                 <video
                                     controls
                                     preload="metadata"
                                     poster={speakA2CorrectionImageUrl || undefined}
-                                    className="block aspect-video w-full rounded-[0.85rem] bg-neutral-950 object-contain"
+                                    className="block aspect-video w-full rounded-[0.85rem] bg-neutral-800 object-contain"
                                 >
                                     <source src={speakA2CorrectionVideoUrl} />
                                     Votre navigateur ne supporte pas la vidéo HTML5.
@@ -2999,9 +2999,9 @@ export default function RunnerScreenRouter({
                 <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-6 text-center">
                     <div className="flex flex-col items-center gap-3">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Parler - Branche</p>
-                        <h1 className="display-2 mb-0 text-neutral-900">Choisis ton niveau</h1>
+                        <h1 className="display-2 mb-0 text-neutral-800">Choisis ton niveau</h1>
                         <p className="mb-0 text-neutral-700">
-                            Recommandation IA: <span className="font-semibold text-neutral-900">{recommendedOralBranch}</span> (score Parler A2: {globalPercentage}%).
+                            Recommandation IA: <span className="font-semibold text-neutral-800">{recommendedOralBranch}</span> (score Parler A2: {globalPercentage}%).
                         </p>
                         <p className="mb-0 text-sm text-neutral-600">Tu peux suivre la recommandation ou choisir l'autre branche.</p>
                     </div>
@@ -3069,7 +3069,7 @@ export default function RunnerScreenRouter({
                     ) : null}
                 </AnimatePresence>
 
-                {branchEvaluationError && <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{branchEvaluationError}</div>}
+                {branchEvaluationError && <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{branchEvaluationError}</div>}
 
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
                     <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
@@ -3184,17 +3184,17 @@ export default function RunnerScreenRouter({
             <section className={`w-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} px-2 py-2 md:px-4 md:py-5 !max-w-4xl`}>
                 <div className="mx-auto flex w-full flex-col gap-6">
                     <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Correction Parler {inferredBranch}</p>
-                    <h1 className="display-2 mb-0 text-neutral-900">{branchCorrectionTaskTitle}</h1>
+                    <h1 className="display-2 mb-0 text-neutral-800">{branchCorrectionTaskTitle}</h1>
                     <p className="mb-0 text-sm text-neutral-600">Regarde la correction et compare-la à tes réponses.</p>
 
                     <div className="w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {speakBranchCorrectionVideoUrl ? (
                                 <video
                                     controls
                                     preload="metadata"
                                     poster={speakBranchCorrectionImageUrl || undefined}
-                                    className="block aspect-video w-full rounded-[0.85rem] bg-neutral-950 object-contain"
+                                    className="block aspect-video w-full rounded-[0.85rem] bg-neutral-800 object-contain"
                                 >
                                     <source src={speakBranchCorrectionVideoUrl} />
                                     Votre navigateur ne supporte pas la vidéo HTML5.
@@ -3243,13 +3243,13 @@ export default function RunnerScreenRouter({
                 <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Comprendre</p>
-                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Scénarios de compréhension orale</h1>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-800">Scénarios de compréhension orale</h1>
                         <p className="mb-0 text-sm text-neutral-600">
                             Suis l'ordre proposé et complète les {LISTENING_RECOMMENDED_SCENARIO_COUNT} scénarios. Tu auras {targetScenariosLabel}.
                         </p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {listeningIntroVideoUrl && (
                                 <video
                                     controls
@@ -3316,7 +3316,7 @@ export default function RunnerScreenRouter({
                     <div className="flex flex-col gap-4 lg:gap-8">
                         <div className="flex flex-col gap-1">
                             <p className="hidden lg:block mb-0 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-600">Comprendre</p>
-                            <h2 className="mb-0 text-xl font-semibold text-neutral-900">{orderedListeningScenarios.length} scénarios</h2>
+                            <h2 className="mb-0 text-xl font-semibold text-neutral-800">{orderedListeningScenarios.length} scénarios</h2>
                             <p className="mb-0 text-sm text-neutral-600">
                                 {listeningCompletedCount}/{orderedListeningScenarios.length} validé{listeningCompletedCount > 1 ? "s" : ""}
                             </p>
@@ -3401,7 +3401,7 @@ export default function RunnerScreenRouter({
                         ) : null}
                     </AnimatePresence>
 
-                    {listeningSaveError ? <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{listeningSaveError}</div> : null}
+                    {listeningSaveError ? <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{listeningSaveError}</div> : null}
                 </div>
             </section>
         );
@@ -3491,21 +3491,21 @@ export default function RunnerScreenRouter({
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                     <article className="rounded-2xl border border-solid border-neutral-600 p-4">
                         <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Parler A2</p>
-                        <p className="mb-1 text-2xl font-semibold text-neutral-900">
+                        <p className="mb-1 text-2xl font-semibold text-neutral-800">
                             {totalRow.score}/{18}
                         </p>
                         <p className="mb-0 text-sm text-neutral-600">{globalPercentage}%</p>
                     </article>
                     <article className="rounded-2xl border border-solid border-neutral-600 p-4">
                         <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Parler {inferredBranch}</p>
-                        <p className="mb-1 text-2xl font-semibold text-neutral-900">
+                        <p className="mb-1 text-2xl font-semibold text-neutral-800">
                             {branchTotalRow.score}/{branchPointsMax}
                         </p>
                         <p className="mb-0 text-sm text-neutral-600">{branchGlobalPercentage}%</p>
                     </article>
                     <article className="rounded-2xl border border-solid border-neutral-600 p-4">
                         <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Comprendre</p>
-                        <p className="mb-1 text-2xl font-semibold text-neutral-900">
+                        <p className="mb-1 text-2xl font-semibold text-neutral-800">
                             {listeningTotalRow.score}/{18}
                         </p>
                         <p className="mb-0 text-sm text-neutral-600">{listeningGlobalPercentage}%</p>
@@ -3536,7 +3536,7 @@ export default function RunnerScreenRouter({
 
                             <div className="flex flex-col items-start gap-1 md:items-end shrink-0">
                                 <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Niveau atteint</p>
-                                <p className={clsx("mb-0 text-7xl font-semibold tracking-tight text-neutral-900 md:text-8xl", validatedLevelCode === "Aucun" && "text-neutral-400 !text-4xl")}>
+                                <p className={clsx("mb-0 text-7xl font-semibold tracking-tight text-neutral-800 md:text-8xl", validatedLevelCode === "Aucun" && "text-neutral-400 !text-4xl")}>
                                     {validatedLevelCode}
                                 </p>
                             </div>
@@ -3645,7 +3645,7 @@ export default function RunnerScreenRouter({
                         <article className="rounded-xl border border-solid border-neutral-300 p-3">
                             <p className="mb-2 text-sm font-semibold text-neutral-800">Correction Parler A2</p>
                             {speakA2CorrectionVideoUrl ? (
-                                <video controls preload="metadata" poster={speakA2CorrectionImageUrl || undefined} className="block aspect-video w-full rounded-lg bg-neutral-950 object-contain">
+                                <video controls preload="metadata" poster={speakA2CorrectionImageUrl || undefined} className="block aspect-video w-full rounded-lg bg-neutral-800 object-contain">
                                     <source src={speakA2CorrectionVideoUrl} />
                                     Votre navigateur ne supporte pas la vidéo HTML5.
                                 </video>
@@ -3659,7 +3659,7 @@ export default function RunnerScreenRouter({
                         <article className="rounded-xl border border-solid border-neutral-300 p-3">
                             <p className="mb-2 text-sm font-semibold text-neutral-800">Correction Parler {inferredBranch}</p>
                             {speakBranchCorrectionVideoUrl ? (
-                                <video controls preload="metadata" poster={speakBranchCorrectionImageUrl || undefined} className="block aspect-video w-full rounded-lg bg-neutral-950 object-contain">
+                                <video controls preload="metadata" poster={speakBranchCorrectionImageUrl || undefined} className="block aspect-video w-full rounded-lg bg-neutral-800 object-contain">
                                     <source src={speakBranchCorrectionVideoUrl} />
                                     Votre navigateur ne supporte pas la vidéo HTML5.
                                 </video>
@@ -3692,7 +3692,7 @@ export default function RunnerScreenRouter({
             <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col items-center justify-center gap-6 px-2 pt-0`}>
                 <div className="w-full max-w-3xl text-center">
                     <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Lire/Écrire</p>
-                    <h1 className="display-2 mb-3 text-neutral-900">Choisis ton parcours</h1>
+                    <h1 className="display-2 mb-3 text-neutral-800">Choisis ton parcours</h1>
                     <p className="mb-0 text-sm text-neutral-700">
                         Recommandation IA selon tes résultats à l’oral: <span className="font-semibold text-secondary-2">{recommendedLabel}</span>
                     </p>
@@ -3757,14 +3757,14 @@ export default function RunnerScreenRouter({
                 <div className={`relative flex flex-col h-full w-full ${RUNNER_LAYOUT_MAX_WIDTH} items-center gap-8 justify-center`}>
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Lire/Écrire</p>
-                        <h1 className="display-2 font-medium mb-4 text-neutral-900">Parcours {selectedLabel}</h1>
+                        <h1 className="display-2 font-medium mb-4 text-neutral-800">Parcours {selectedLabel}</h1>
                         <p className="mb-0 text-sm text-neutral-600">
                             Tu vas réaliser <span className="font-semibold">{readWriteTasks.length}</span> module{readWriteTasks.length > 1 ? "s" : ""}, avec 2 tâches par module.
                         </p>
                         <p className="mb-0 mt-2 text-sm text-neutral-600">Commence quand tu es prêt. Tes réponses sont enregistrées question par question.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-950/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
                             {readWriteIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={readWriteIntroVideoUrl} />
@@ -3894,7 +3894,7 @@ export default function RunnerScreenRouter({
                     <div className="flex items-end justify-between gap-3 py-1">
                         <div className="min-w-0 flex flex-col justify-end">
                             <p className="mb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-600 shrink-0">Module {displayedModuleNumber}</p>
-                            <h2 className="mb-0 text-lg md:text-xl font-semibold text-neutral-900 truncate">{moduleLabel}</h2>
+                            <h2 className="mb-0 text-lg md:text-xl font-semibold text-neutral-800 truncate">{moduleLabel}</h2>
                         </div>
                         <div className="flex items-center gap-2">
                             {!isSituationStep && hasVisualText ? (
@@ -3924,7 +3924,7 @@ export default function RunnerScreenRouter({
                     </div>
 
                     <div className="rounded-2xl border border-solid border-neutral-600 bg-neutral-100 overflow-hidden">
-                        <div className="flex min-w-0 items-center justify-center overflow-hidden bg-neutral-50">
+                        <div className="flex min-w-0 items-center justify-center overflow-hidden bg-neutral-200">
                             {effectiveVisualMode === "IMAGE" && hasVisualImage ? (
                                 <button
                                     type="button"
@@ -3962,7 +3962,7 @@ export default function RunnerScreenRouter({
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-start lg:justify-end gap-2 py-1">
                             <p className="mb-0 text-xs font-semibold uppercase tracking-wide text-neutral-600 shrink-0">Tâche {readWriteGlobalTaskNumber}</p>
-                            <p className="mb-0 text-base md:text-lg font-semibold text-neutral-900 truncate text-left lg:text-right">{activityTitle}</p>
+                            <p className="mb-0 text-base md:text-lg font-semibold text-neutral-800 truncate text-left lg:text-right">{activityTitle}</p>
                         </div>
                         {!isSituationStep ? (
                             <div className="flex flex-wrap justify-start lg:justify-end gap-2">
@@ -4114,7 +4114,7 @@ export default function RunnerScreenRouter({
                                                                         })
                                                                     }
                                                                     rows={2}
-                                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none resize-none focus:border-secondary-2"
+                                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-800 leading-snug outline-none resize-none focus:border-secondary-2"
                                                                     placeholder={`Réponse pour le numéro ${number}...`}
                                                                 />
                                                             </div>
@@ -4134,7 +4134,7 @@ export default function RunnerScreenRouter({
                                                                 }))
                                                             }
                                                             rows={2}
-                                                            className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none resize-none focus:border-secondary-2"
+                                                            className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-800 leading-snug outline-none resize-none focus:border-secondary-2"
                                                             placeholder="Écrivez votre réponse..."
                                                         />
                                                     </div>
@@ -4150,7 +4150,7 @@ export default function RunnerScreenRouter({
                                                         }))
                                                     }
                                                     rows={4}
-                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none resize-none focus:border-secondary-2"
+                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-800 leading-snug outline-none resize-none focus:border-secondary-2"
                                                     placeholder="Copie ou colle ici le passage du texte correspondant..."
                                                 />
                                             ) : null}
@@ -4165,7 +4165,7 @@ export default function RunnerScreenRouter({
                                                         }))
                                                     }
                                                     rows={10}
-                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-900 leading-snug outline-none focus:border-secondary-2"
+                                                    className="w-full rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2.5 text-sm text-neutral-800 leading-snug outline-none focus:border-secondary-2"
                                                     placeholder="Écrivez votre réponse..."
                                                 />
                                             ) : null}
@@ -4204,12 +4204,12 @@ export default function RunnerScreenRouter({
                                 ) : null}
                             </div>
 
-                            {readWriteSaveError ? <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{readWriteSaveError}</div> : null}
+                            {readWriteSaveError ? <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{readWriteSaveError}</div> : null}
 
                             <div className="mt-auto pb-3 md:pb-5 flex flex-wrap items-center justify-between gap-3">
                                 <p className="mb-0 text-sm text-neutral-700">
                                     Questions renseignées:{" "}
-                                    <span className="font-semibold text-neutral-900">
+                                    <span className="font-semibold text-neutral-800">
                                         {readWriteCurrentActivityAnsweredCount}/{readWriteCurrentActivityQuestionTotal}
                                     </span>
                                 </p>
@@ -4252,7 +4252,7 @@ export default function RunnerScreenRouter({
                                         Fermer
                                     </button>
                                 </div>
-                                <div className="flex max-h-[calc(100vh-120px)] items-center justify-center overflow-hidden rounded-xl bg-neutral-50">
+                                <div className="flex max-h-[calc(100vh-120px)] items-center justify-center overflow-hidden rounded-xl bg-neutral-200">
                                     <Image
                                         src={activeVisualImageUrl as string}
                                         alt="Agrandissement illustration tâche"
@@ -4346,7 +4346,7 @@ export default function RunnerScreenRouter({
                     ) : null}
                 </AnimatePresence>
 
-                {readWriteEvaluationError ? <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{readWriteEvaluationError}</div> : null}
+                {readWriteEvaluationError ? <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{readWriteEvaluationError}</div> : null}
 
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
                     <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
@@ -4367,13 +4367,13 @@ export default function RunnerScreenRouter({
                             <div className="grid grid-cols-2 items-end gap-3">
                                 <div>
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
-                                    <p className="mb-0 text-2xl font-semibold leading-none text-neutral-900">
+                                    <p className="mb-0 text-2xl font-semibold leading-none text-neutral-800">
                                         {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
                                     </p>
                                 </div>
                                 <div className="text-right">
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Niveau atteint</p>
-                                    <p className={clsx("mb-0 text-2xl font-semibold leading-none text-neutral-900", readWriteValidatedLevel === "Aucun" && "text-neutral-400")}>
+                                    <p className={clsx("mb-0 text-2xl font-semibold leading-none text-neutral-800", readWriteValidatedLevel === "Aucun" && "text-neutral-400")}>
                                         {readWriteValidatedLevel}
                                     </p>
                                 </div>
@@ -4504,13 +4504,13 @@ export default function RunnerScreenRouter({
                                     />
                                     <div className="flex flex-col gap-1 text-sm text-neutral-700">
                                         <p className="mb-0">
-                                            <span className="font-semibold text-neutral-900">Parler:</span> {speakCompositeRow.score}/{speakCompositeRow.max}
+                                            <span className="font-semibold text-neutral-800">Parler:</span> {speakCompositeRow.score}/{speakCompositeRow.max}
                                         </p>
                                         <p className="mb-0">
-                                            <span className="font-semibold text-neutral-900">Comprendre:</span> {listeningTotalRow.score}/{18}
+                                            <span className="font-semibold text-neutral-800">Comprendre:</span> {listeningTotalRow.score}/{18}
                                         </p>
                                         <p className="mb-0">
-                                            <span className="font-semibold text-neutral-900">Pourcentage oral:</span> {finalOralPercentage}%
+                                            <span className="font-semibold text-neutral-800">Pourcentage oral:</span> {finalOralPercentage}%
                                         </p>
                                     </div>
                                 </div>
@@ -4521,7 +4521,7 @@ export default function RunnerScreenRouter({
                                     <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-600">Niveau atteint</p>
                                     <p
                                         className={clsx(
-                                            "mb-0 text-[5.1rem] font-semibold leading-none tracking-tight text-neutral-900 md:text-[6.4rem]",
+                                            "mb-0 text-[5.1rem] font-semibold leading-none tracking-tight text-neutral-800 md:text-[6.4rem]",
                                             validatedLevelCode === "Aucun" && "text-neutral-400",
                                         )}
                                     >
@@ -4553,10 +4553,10 @@ export default function RunnerScreenRouter({
                                     />
                                     <div className="flex flex-col gap-1 text-sm text-neutral-700">
                                         <p className="mb-0">
-                                            <span className="font-semibold text-neutral-900">Points:</span> {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
+                                            <span className="font-semibold text-neutral-800">Points:</span> {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
                                         </p>
                                         <p className="mb-0">
-                                            <span className="font-semibold text-neutral-900">Pourcentage:</span> {readWriteGlobalPercentage}%
+                                            <span className="font-semibold text-neutral-800">Pourcentage:</span> {readWriteGlobalPercentage}%
                                         </p>
                                     </div>
                                 </div>
@@ -4567,7 +4567,7 @@ export default function RunnerScreenRouter({
                                     <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-neutral-600">Niveau atteint</p>
                                     <p
                                         className={clsx(
-                                            "mb-0 text-[5.1rem] font-semibold leading-none tracking-tight text-neutral-900 md:text-[6.4rem]",
+                                            "mb-0 text-[5.1rem] font-semibold leading-none tracking-tight text-neutral-800 md:text-[6.4rem]",
                                             readWriteValidatedLevel === "Aucun" && "text-neutral-400",
                                         )}
                                     >
@@ -4614,7 +4614,7 @@ export default function RunnerScreenRouter({
                                                     {taskRows.map((row) => (
                                                         <div key={row.taskId} className="flex items-center justify-between gap-2 text-sm text-neutral-700">
                                                             <span className="truncate">{row.label}</span>
-                                                            <span className="font-semibold text-neutral-900">
+                                                            <span className="font-semibold text-neutral-800">
                                                                 {row.score ?? 0}/{row.max}
                                                             </span>
                                                         </div>
@@ -4628,7 +4628,7 @@ export default function RunnerScreenRouter({
                                                         branchRows.map((row) => (
                                                             <div key={row.rowId} className="flex items-center justify-between gap-2 text-sm text-neutral-700">
                                                                 <span className="truncate">{row.label}</span>
-                                                                <span className="font-semibold text-neutral-900">
+                                                                <span className="font-semibold text-neutral-800">
                                                                     {row.score ?? 0}/{row.max}
                                                                 </span>
                                                             </div>
@@ -4674,7 +4674,7 @@ export default function RunnerScreenRouter({
                                                     <span className="truncate">
                                                         Scénario {row.index + 1} {row.level ? `- ${row.level}` : ""}
                                                     </span>
-                                                    <span className="font-semibold text-neutral-900">
+                                                    <span className="font-semibold text-neutral-800">
                                                         {row.weightedScore}/{row.weightedMax}
                                                     </span>
                                                 </div>
@@ -4713,7 +4713,7 @@ export default function RunnerScreenRouter({
                                             {readWriteModuleRows.map((module) => (
                                                 <div key={module.moduleKey} className="flex items-center justify-between gap-2 text-sm text-neutral-700">
                                                     <p className="mb-0">{`Module ${module.moduleNumber} • ${module.moduleTitle}`}</p>
-                                                    <p className="mb-0 font-semibold text-neutral-900">
+                                                    <p className="mb-0 font-semibold text-neutral-800">
                                                         {module.score}/{module.max}
                                                     </p>
                                                 </div>
@@ -4733,10 +4733,10 @@ export default function RunnerScreenRouter({
                                 <div className="mb-2 inline-flex items-center rounded-full bg-secondary-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">
                                     Entretien gratuit
                                 </div>
-                                <h2 className="mb-2 text-2xl font-semibold text-neutral-900">On prépare la suite ensemble</h2>
+                                <h2 className="mb-2 text-2xl font-semibold text-neutral-800">On prépare la suite ensemble</h2>
                                 <p className="mb-0 text-sm text-neutral-700">Réserve un entretien gratuit avec un professeur FIDE pour clarifier ton plan de progression.</p>
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">
-                                    Axe prioritaire actuel: <span className="font-semibold text-neutral-900">{weakestDimension}</span>.
+                                    Axe prioritaire actuel: <span className="font-semibold text-neutral-800">{weakestDimension}</span>.
                                 </p>
                                 <div className="mt-4">
                                     <button
@@ -4764,7 +4764,7 @@ export default function RunnerScreenRouter({
                             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-secondary-2">Coupon bien mérité</p>
                             <p className="mb-0 text-sm text-neutral-800">
                                 Tu as débloqué <span className="font-semibold text-secondary-4">-10%</span> sur les 3 offres ci-dessous avec le code{" "}
-                                <span className="rounded bg-neutral-200 px-2 py-0.5 font-semibold text-neutral-900">{BRAVO_COUPON_CODE}</span> (à saisir au checkout).
+                                <span className="rounded bg-neutral-200 px-2 py-0.5 font-semibold text-neutral-800">{BRAVO_COUPON_CODE}</span> (à saisir au checkout).
                             </p>
                             {isFinalOfferPricingLoading ? <p className="mt-2 mb-0 text-xs text-neutral-600">Mise à jour des tarifs en cours…</p> : null}
                         </div>
@@ -4772,7 +4772,7 @@ export default function RunnerScreenRouter({
                         <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                             <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
                                 <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack autonome</p>
-                                <p className="mb-0 text-sm font-semibold text-neutral-900">Préparation FIDE en autonomie</p>
+                                <p className="mb-0 text-sm font-semibold text-neutral-800">Préparation FIDE en autonomie</p>
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">Vidéos, scénarios et examens blancs pour t'entraîner à ton rythme.</p>
                                 <div className="mt-3 flex items-end gap-2">
                                     <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packAutonomePricing.baseAmount)}</p>
@@ -4790,7 +4790,7 @@ export default function RunnerScreenRouter({
 
                             <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
                                 <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack accompagné</p>
-                                <p className="mb-0 text-sm font-semibold text-neutral-900">Programme complet + accompagnement</p>
+                                <p className="mb-0 text-sm font-semibold text-neutral-800">Programme complet + accompagnement</p>
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">Pack structuré avec coaching 1:1 intégré pour un suivi renforcé.</p>
                                 <div className="mt-3 flex items-end gap-2">
                                     <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packAccompagnePricing.baseAmount)}</p>
@@ -4808,7 +4808,7 @@ export default function RunnerScreenRouter({
 
                             <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
                                 <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">6h cours privés</p>
-                                <p className="mb-0 text-sm font-semibold text-neutral-900">Préparation Scénarios Express</p>
+                                <p className="mb-0 text-sm font-semibold text-neutral-800">Préparation Scénarios Express</p>
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">6 cours avec votre professeur pour préparer tous les scénarios actuels de l'examen (A1/A2/B1)</p>
                                 <div className="mt-3 flex items-end gap-2">
                                     <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(private6hPricing.baseAmount)}</p>

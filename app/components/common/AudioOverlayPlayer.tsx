@@ -217,7 +217,7 @@ export default function AudioOverlayPlayer({
                     </button>
 
                     <div className="absolute bottom-4 w-full" style={{ left: "50%", transform: "translateX(-50%)" }}>
-                        <div className="inset-0 flex flex-col items-center justify-center text-white bg-black/30 backdrop-blur-sm">
+                        <div className="inset-0 flex flex-col items-center justify-center text-neutral-100 bg-neutral-800/30 backdrop-blur-sm">
                             <audio ref={audioRef} crossOrigin="anonymous" src={getAudioUrl(currentTrackData.src)} preload="auto" />
 
                             {showText && (
@@ -338,7 +338,7 @@ const ResultBlock = ({ correctAnswers }: { correctAnswers: number }) => {
                             duration: 0.4,
                             ease: "easeOut",
                         }}
-                        className="text-3xl text-yellow-500"
+                        className="text-3xl text-primary"
                     >
                         {type === "full" && <FaStar className="text-primary" />}
                         {type === "half" && <FaStarHalfAlt className="text-primary" />}

@@ -130,7 +130,7 @@ function CommentCard({ id }: { id: string }) {
                 <div className="flex items-center justify-between gap-2">
                     <div className="text-sm text-neutral-500">{new Date(row.createdAt).toLocaleString()}</div>
 
-                    <div className="flex items-center gap-2">{row.status === "hidden" && <span className="text-xs bg-neutral-800 text-white px-2 py-0.5 rounded">Masqué</span>}</div>
+                    <div className="flex items-center gap-2">{row.status === "hidden" && <span className="text-xs bg-neutral-800 text-neutral-100 px-2 py-0.5 rounded">Masqué</span>}</div>
                     {row.isAnswered && <span className="text-xs bg-secondary-5 text-neutral-100 px-2 py-0.5 rounded">Répondu</span>}
                 </div>
 

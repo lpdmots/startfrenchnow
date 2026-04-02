@@ -176,7 +176,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                 )}
                                 {t("yourPurchaseTitle")}
                             </h3>
-                            {isLoading && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
+                            {isLoading && <FaSpinner className="animate-spin text-secondary-2 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
                         </div>
                         <div className="w-full mb-4">
                             {!isLoading && (
@@ -235,7 +235,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                 )}
                                 {t("contactInformationsTitle")}
                             </h3>
-                            {isLoading && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
+                            {isLoading && <FaSpinner className="animate-spin text-secondary-2 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
                         </div>
                         <ContactInformations sessionEmail={sessionEmail} formData={formData} setFormData={setFormData} onEmailBlur={syncEmailToStripe} />
                     </div>
@@ -255,7 +255,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                                 {getIsReady("payment") ? <FaCheckCircle className="text-2xp text-secondary-2 mr-2 lg:mr-4" /> : <FaTimesCircle className="text-2xp text-neutral-400 mr-2 lg:mr-4" />}
                                 {t("paymentTitle")}
                             </h3>
-                            {isLoading && <FaSpinner className="animate-spin text-blue-500 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
+                            {isLoading && <FaSpinner className="animate-spin text-secondary-2 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
                         </div>
                         <Payment
                             productSlug={productSlug}

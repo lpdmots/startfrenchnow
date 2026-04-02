@@ -155,7 +155,7 @@ export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleE
                     >
                         <div className="relative w-full h-full">
                             <motion.button
-                                className="absolute flex items-center justify-center text-white rounded-full p-4"
+                                className="absolute flex items-center justify-center text-neutral-100 rounded-full p-4"
                                 style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
                                 initial={{ backgroundColor: "rgba(128, 128, 128, 0.5)" }}
                                 animate={{

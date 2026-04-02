@@ -118,7 +118,7 @@ export function CoursesAccordionClient({
                     style={{ borderBottom: idx === fidePackSommaire.packages.length - 1 ? undefined : "2px solid var(--neutral-300)" }}
                 >
                     <div className="mb-3 flex items-center justify-between">
-                        {withPackageName && <h3 className="m-0 text-lg font-semibold text-neutral-900">{block.title}</h3>}
+                        {withPackageName && <h3 className="m-0 text-lg font-semibold text-neutral-800">{block.title}</h3>}
                         <div className="text-sm text-neutral-600">
                             <div className="text-sm text-neutral-600">
                                 {t("summary", {
@@ -215,7 +215,7 @@ function LessonRow({
                 </div>
                 <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                        <span className="truncate font-medium text-neutral-900 shrink">{lesson.title}</span>
+                        <span className="truncate font-medium text-neutral-800 shrink">{lesson.title}</span>
                         {!!level && level.length > 0 && <span className={clsx("text-sm")}>({LEVELDATA[level]?.label})</span>}
                     </div>
                     <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs text-neutral-600 w-full justify-between relative">
@@ -232,7 +232,7 @@ function LessonRow({
                 <div>
                     {lesson.isPreview && !hasPack && <span className="rounded bg-secondary-2 px-2 py-0.5 text-xs text-neutral-100">{t("freePreview")}</span>}
                     {locked && (
-                        <span className="inline-flex items-center gap-1 rounded bg-neutral-900 px-2 py-0.5 text-xs font-medium text-white">
+                        <span className="inline-flex items-center gap-1 rounded bg-neutral-200 px-2 py-0.5 text-xs font-medium text-neutral-800">
                             <LuLock className="text-[20px]" />
                         </span>
                     )}

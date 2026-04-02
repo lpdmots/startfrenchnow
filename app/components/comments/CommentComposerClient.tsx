@@ -102,7 +102,7 @@ export default function CommentComposerClient(props: Props) {
                                 required
                                 maxLength={80}
                                 placeholder={t("namePlaceholder")}
-                                className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                                className="w-full rounded-lg border-2 border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
                         <div className="w-full sm:w-auto">
@@ -111,7 +111,7 @@ export default function CommentComposerClient(props: Props) {
                                 type="email"
                                 name="guestEmail"
                                 placeholder={t("emailPlaceholder")}
-                                className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                                className="w-full rounded-lg border-2 border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
                     </div>
@@ -175,12 +175,12 @@ export default function CommentComposerClient(props: Props) {
                         rows={5}
                         maxLength={MAXCOMMENTLENGTH * 2} // on laisse taper un peu plus mais on bloque à l’envoi
                         placeholder={t("textareaPlaceholder")}
-                        className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                        className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                     />
                 </div>
 
                 {/* Erreur serveur */}
-                {serverError && <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{serverError}</div>}
+                {serverError && <div className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">{serverError}</div>}
 
                 {/* Actions */}
                 <div className="flex w-full justify-between items-center">

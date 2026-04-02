@@ -100,7 +100,7 @@ export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuc
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white w-full">
+        <form onSubmit={handleSubmit} className="bg-neutral-100 w-full">
             {/* ✅ Formulaire classique */}
             <PaymentElement
                 options={paymentElementOptions}
@@ -119,7 +119,7 @@ export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuc
             />
 
             {/* Message d’erreur plus clean */}
-            {errorMessage && <div className="mt-3 text-sm text-red-600">{errorMessage}</div>}
+            {errorMessage && <div className="mt-3 text-sm text-destructive">{errorMessage}</div>}
 
             <button disabled={!stripe || loading || !isEmailValid || !isComplete || !isPaymentElementReady} className="btn btn-primary small w-full mt-4">
                 {loading ? (

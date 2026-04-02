@@ -295,16 +295,16 @@ function SpeakingAnswersSection({ title, answers }: { title: string; answers: Re
                             {answer.transcriptFinal ? (
                                 <div className="mb-3">
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-500">Transcript</p>
-                                    <div className="rounded-md border border-neutral-300 bg-white p-3 text-sm whitespace-pre-wrap">{answer.transcriptFinal}</div>
+                                    <div className="rounded-md border border-neutral-300 bg-neutral-100 p-3 text-sm whitespace-pre-wrap">{answer.transcriptFinal}</div>
                                 </div>
                             ) : null}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div className="rounded-md border border-neutral-300 bg-white p-3">
+                                <div className="rounded-md border border-neutral-300 bg-neutral-100 p-3">
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-500">Score IA</p>
                                     <p className="mb-0 text-sm font-semibold">{formatAnswerScore(answer.AiScore)}</p>
                                 </div>
-                                <div className="rounded-md border border-neutral-300 bg-white p-3">
+                                <div className="rounded-md border border-neutral-300 bg-neutral-100 p-3">
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-500">Feedback IA</p>
                                     <p className="mb-0 text-sm whitespace-pre-wrap">{answer.AiFeedback || "-"}</p>
                                 </div>
@@ -365,21 +365,21 @@ function ReadWriteSection({ answers }: { answers: ReviewAnswer[] }) {
                             {questionHints.length ? (
                                 <div className="mb-3">
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-500">Questions associées</p>
-                                    <div className="rounded-md border border-neutral-300 bg-white p-3 text-sm whitespace-pre-wrap">{questionHints.join("\n")}</div>
+                                    <div className="rounded-md border border-neutral-300 bg-neutral-100 p-3 text-sm whitespace-pre-wrap">{questionHints.join("\n")}</div>
                                 </div>
                             ) : null}
 
                             <div className="mb-3">
                                 <p className="mb-1 text-xs uppercase tracking-wide text-neutral-500">Réponse de l&apos;étudiant</p>
-                                <div className="rounded-md border border-neutral-300 bg-white p-3 text-sm whitespace-pre-wrap">{answer.textAnswer || "-"}</div>
+                                <div className="rounded-md border border-neutral-300 bg-neutral-100 p-3 text-sm whitespace-pre-wrap">{answer.textAnswer || "-"}</div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div className="rounded-md border border-neutral-300 bg-white p-3">
+                                <div className="rounded-md border border-neutral-300 bg-neutral-100 p-3">
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-500">Score IA</p>
                                     <p className="mb-0 text-sm font-semibold">{formatAnswerScore(answer.AiScore)}</p>
                                 </div>
-                                <div className="rounded-md border border-neutral-300 bg-white p-3">
+                                <div className="rounded-md border border-neutral-300 bg-neutral-100 p-3">
                                     <p className="mb-1 text-xs uppercase tracking-wide text-neutral-500">Feedback IA</p>
                                     <p className="mb-0 text-sm whitespace-pre-wrap">{answer.AiFeedback || "-"}</p>
                                 </div>
@@ -498,7 +498,7 @@ export default async function AdminExamReviewDetailPage({ params }: { params: { 
                                     <select
                                         name="status"
                                         defaultValue={String(review.status || "requested")}
-                                        className="rounded-md border border-neutral-400 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary-2"
+                                        className="rounded-md border border-neutral-400 bg-neutral-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary-2"
                                     >
                                         {REVIEW_STATUS_VALUES.map((status) => (
                                             <option key={status} value={status}>

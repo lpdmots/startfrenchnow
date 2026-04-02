@@ -25,6 +25,49 @@
     --secondaryShades-5: #dbf8c9;
     --secondaryShades-6: #fcbdaa;
 
+    --primary-rgb: 255 196 49;
+    --secondary-1-rgb: 255 194 36;
+    --secondary-2-rgb: 28 146 255;
+    --secondary-3-rgb: 92 66 251;
+    --secondary-4-rgb: 255 74 96;
+    --secondary-5-rgb: 0 201 167;
+    --secondary-6-rgb: 238 26 36;
+    --neutral-100-rgb: 255 255 255;
+    --neutral-200-rgb: 250 249 246;
+    --neutral-300-rgb: 241 240 238;
+    --neutral-400-rgb: 158 157 155;
+    --neutral-500-rgb: 135 135 135;
+    --neutral-600-rgb: 94 94 95;
+    --neutral-700-rgb: 57 57 57;
+    --neutral-750-rgb: 20 20 20;
+    --neutral-800-rgb: 11 11 11;
+    --primaryShades-rgb: 255 238 194;
+    --secondaryShades-1-rgb: 255 238 194;
+    --secondaryShades-2-rgb: 173 216 255;
+    --secondaryShades-3-rgb: 220 215 254;
+    --secondaryShades-4-rgb: 255 184 191;
+    --secondaryShades-5-rgb: 219 248 201;
+    --secondaryShades-6-rgb: 252 189 170;
+
+    --background-rgb: var(--neutral-100-rgb);
+    --foreground-rgb: var(--neutral-800-rgb);
+    --card-rgb: var(--neutral-100-rgb);
+    --card-foreground-rgb: var(--neutral-800-rgb);
+    --popover-rgb: var(--neutral-100-rgb);
+    --popover-foreground-rgb: var(--neutral-800-rgb);
+    --primary-foreground-rgb: 20 20 20;
+    --secondary-rgb: var(--neutral-300-rgb);
+    --secondary-foreground-rgb: var(--neutral-800-rgb);
+    --muted-rgb: var(--neutral-300-rgb);
+    --muted-foreground-rgb: var(--neutral-600-rgb);
+    --accent-rgb: var(--neutral-200-rgb);
+    --accent-foreground-rgb: var(--neutral-800-rgb);
+    --destructive-rgb: var(--secondary-6-rgb);
+    --destructive-foreground-rgb: 255 255 255;
+    --border-rgb: var(--neutral-300-rgb);
+    --input-rgb: var(--neutral-300-rgb);
+    --ring-rgb: var(--secondary-2-rgb);
+
     --sm: 480px; /* A MODIFIER AUSSI DANS TAILWIND CONFIG */
     --md: 768px; /* A MODIFIER AUSSI DANS WithMediaQuery component (components/stories/) */
     --lg: 992px;
@@ -49,6 +92,40 @@
     --secondaryShades-3: #1c05b3;
     --secondaryShades-4: #cc0014;
     --secondaryShades-5: #439014;
+    --neutral-100-rgb: 29 29 29;
+    --neutral-200-rgb: 14 14 14;
+    --neutral-300-rgb: 94 94 95;
+    --neutral-400-rgb: 135 135 135;
+    --neutral-500-rgb: 236 234 232;
+    --neutral-600-rgb: 241 240 238;
+    --neutral-700-rgb: 250 249 246;
+    --neutral-750-rgb: 245 243 243;
+    --neutral-800-rgb: 255 255 255;
+    --primaryShades-rgb: 163 117 0;
+    --secondaryShades-1-rgb: 163 117 0;
+    --secondaryShades-2-rgb: 0 74 143;
+    --secondaryShades-3-rgb: 28 5 179;
+    --secondaryShades-4-rgb: 204 0 20;
+    --secondaryShades-5-rgb: 67 144 20;
+
+    --background-rgb: var(--neutral-100-rgb);
+    --foreground-rgb: var(--neutral-800-rgb);
+    --card-rgb: var(--neutral-200-rgb);
+    --card-foreground-rgb: var(--neutral-800-rgb);
+    --popover-rgb: var(--neutral-200-rgb);
+    --popover-foreground-rgb: var(--neutral-800-rgb);
+    --primary-foreground-rgb: 20 20 20;
+    --secondary-rgb: var(--neutral-300-rgb);
+    --secondary-foreground-rgb: var(--neutral-800-rgb);
+    --muted-rgb: var(--neutral-200-rgb);
+    --muted-foreground-rgb: var(--neutral-600-rgb);
+    --accent-rgb: var(--neutral-300-rgb);
+    --accent-foreground-rgb: var(--neutral-800-rgb);
+    --destructive-rgb: var(--secondary-6-rgb);
+    --destructive-foreground-rgb: 255 255 255;
+    --border-rgb: var(--neutral-300-rgb);
+    --input-rgb: var(--neutral-300-rgb);
+    --ring-rgb: var(--secondary-2-rgb);
 }
 /*! purgecss end ignore */
 

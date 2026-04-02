@@ -65,7 +65,7 @@ export const PostsListInfiniteScroll = ({ initialPosts, locale, category }: { in
             <div ref={lastPostRef} style={{ height: "1px" }} />
             {loading && (
                 <div className="w-full flex flex-col justify-center items-center">
-                    <FaSpinner className="animate-spin text-blue-500 h-8 w-8 mb-4" style={{ animationDuration: "2s" }} />
+                    <FaSpinner className="animate-spin text-secondary-2 h-8 w-8 mb-4" style={{ animationDuration: "2s" }} />
                     Chargement...
                 </div>
             )}

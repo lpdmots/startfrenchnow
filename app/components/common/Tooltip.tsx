@@ -16,7 +16,7 @@ const Tooltip = ({ children, tooltipContent }: { children: JSX.Element; tooltipC
                 data-popover
                 id="popover-company-profile"
                 role="tooltip"
-                className="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-80 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600"
+                className="absolute z-10 invisible inline-block text-sm text-neutral-500 transition-opacity duration-300 bg-neutral-100 border border-neutral-300 rounded-lg shadow-sm opacity-0 w-80 dark:text-neutral-400 dark:bg-neutral-800 dark:border-neutral-600"
             >
                 {tooltipContent}
             </div>

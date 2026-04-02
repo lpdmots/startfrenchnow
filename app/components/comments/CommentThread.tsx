@@ -525,7 +525,7 @@ export default function CommentThread({ resourceType, resourceId, items, isAuthe
                         setOpen: (open) => setDeleteOpenFor(open ? deleteOpenFor : null),
                         title: t("deleteModal.title"),
                         message: (
-                            <div className="text-neutral-900 text-sm mt-2">
+                            <div className="text-neutral-800 text-sm mt-2">
                                 <p className="mb-2">{t("deleteModal.messageLine1")}</p>
                                 <p className="text-neutral-600">{viewerIsAdmin ? t("deleteModal.messageAdmin") : t("deleteModal.messageAuthor")}</p>
                             </div>
@@ -644,7 +644,7 @@ function ReplyForm({
                                 onChange={(e) => setGuestName(e.target.value)}
                                 placeholder={t("nameRequired")}
                                 maxLength={80}
-                                className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                                className="w-full rounded-lg border-2 border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
                         <div className="w-full sm:w-auto">
@@ -653,7 +653,7 @@ function ReplyForm({
                                 onChange={(e) => setGuestEmail(e.target.value)}
                                 placeholder={t("emailOptional")}
                                 type="email"
-                                className="w-full rounded-lg border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                                className="w-full rounded-lg border-2 border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
                             />
                         </div>
                     </>
@@ -694,10 +694,10 @@ function ReplyForm({
                 rows={3}
                 maxLength={2000}
                 placeholder={t("replyPlaceholder")}
-                className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
             />
 
-            {error && <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+            {error && <div className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</div>}
 
             <div className="flex w-full justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -802,7 +802,7 @@ function InlineEditForm({
                 onChange={(e) => setValue(e.target.value)}
                 rows={5}
                 maxLength={2000}
-                className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
+                className="min-h-[120px] w-full resize-y rounded-md border-2 border-neutral-700 bg-neutral-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-400"
             />
             <div className="flex w-full justify-between items-center">
                 <div className="flex items-center gap-2">

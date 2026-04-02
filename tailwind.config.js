@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 const defaultTheme = require("tailwindcss/defaultTheme");
+const withOpacity = (cssVariable) => `rgb(var(${cssVariable}) / <alpha-value>)`;
 
 module.exports = {
     darkMode: ["class"],
@@ -29,31 +30,64 @@ module.exports = {
                 "2xl": "1400px",
             },
         },
-        colors: {
-            primary: "var(--primary)",
-            "secondary-1": "var(--secondary-1)",
-            "secondary-2": "var(--secondary-2)",
-            "secondary-3": "var(--secondary-3)",
-            "secondary-4": "var(--secondary-4)",
-            "secondary-5": "var(--secondary-5)",
-            "secondary-6": "var(--secondary-6)",
-            primaryShades: "var(--primaryShades)",
-            "secondaryShades-1": "var(--secondaryShades-1)",
-            "secondaryShades-2": "var(--secondaryShades-2)",
-            "secondaryShades-3": "var(--secondaryShades-3)",
-            "secondaryShades-4": "var(--secondaryShades-4)",
-            "secondaryShades-5": "var(--secondaryShades-5)",
-            "neutral-100": "var(--neutral-100)",
-            "neutral-200": "var(--neutral-200)",
-            "neutral-300": "var(--neutral-300)",
-            "neutral-400": "var(--neutral-400)",
-            "neutral-500": "var(--neutral-500)",
-            "neutral-600": "var(--neutral-600)",
-            "neutral-700": "var(--neutral-700)",
-            "neutral-750": "var(--neutral-750)",
-            "neutral-800": "var(--neutral-800)",
-        },
         extend: {
+            colors: {
+                background: withOpacity("--background-rgb"),
+                foreground: withOpacity("--foreground-rgb"),
+                card: {
+                    DEFAULT: withOpacity("--card-rgb"),
+                    foreground: withOpacity("--card-foreground-rgb"),
+                },
+                popover: {
+                    DEFAULT: withOpacity("--popover-rgb"),
+                    foreground: withOpacity("--popover-foreground-rgb"),
+                },
+                primary: {
+                    DEFAULT: withOpacity("--primary-rgb"),
+                    foreground: withOpacity("--primary-foreground-rgb"),
+                },
+                secondary: {
+                    DEFAULT: withOpacity("--secondary-rgb"),
+                    foreground: withOpacity("--secondary-foreground-rgb"),
+                },
+                muted: {
+                    DEFAULT: withOpacity("--muted-rgb"),
+                    foreground: withOpacity("--muted-foreground-rgb"),
+                },
+                accent: {
+                    DEFAULT: withOpacity("--accent-rgb"),
+                    foreground: withOpacity("--accent-foreground-rgb"),
+                },
+                destructive: {
+                    DEFAULT: withOpacity("--destructive-rgb"),
+                    foreground: withOpacity("--destructive-foreground-rgb"),
+                },
+                border: withOpacity("--border-rgb"),
+                input: withOpacity("--input-rgb"),
+                ring: withOpacity("--ring-rgb"),
+                "secondary-1": withOpacity("--secondary-1-rgb"),
+                "secondary-2": withOpacity("--secondary-2-rgb"),
+                "secondary-3": withOpacity("--secondary-3-rgb"),
+                "secondary-4": withOpacity("--secondary-4-rgb"),
+                "secondary-5": withOpacity("--secondary-5-rgb"),
+                "secondary-6": withOpacity("--secondary-6-rgb"),
+                primaryShades: withOpacity("--primaryShades-rgb"),
+                "secondaryShades-1": withOpacity("--secondaryShades-1-rgb"),
+                "secondaryShades-2": withOpacity("--secondaryShades-2-rgb"),
+                "secondaryShades-3": withOpacity("--secondaryShades-3-rgb"),
+                "secondaryShades-4": withOpacity("--secondaryShades-4-rgb"),
+                "secondaryShades-5": withOpacity("--secondaryShades-5-rgb"),
+                "secondaryShades-6": withOpacity("--secondaryShades-6-rgb"),
+                "neutral-100": withOpacity("--neutral-100-rgb"),
+                "neutral-200": withOpacity("--neutral-200-rgb"),
+                "neutral-300": withOpacity("--neutral-300-rgb"),
+                "neutral-400": withOpacity("--neutral-400-rgb"),
+                "neutral-500": withOpacity("--neutral-500-rgb"),
+                "neutral-600": withOpacity("--neutral-600-rgb"),
+                "neutral-700": withOpacity("--neutral-700-rgb"),
+                "neutral-750": withOpacity("--neutral-750-rgb"),
+                "neutral-800": withOpacity("--neutral-800-rgb"),
+            },
             fontFamily: {
                 sans: ["var(--font-poppins)", ...defaultTheme.fontFamily.sans],
             },
