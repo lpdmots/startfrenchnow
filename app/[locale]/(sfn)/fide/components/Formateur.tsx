@@ -191,8 +191,8 @@ const ComparativeTabel = () => {
         {
             title: t("titles.Price_Hour"),
             smallTitle: t("smallTitles.Price_Hour"),
-            sfn: <span className="text-base font-semibold whitespace-nowrap md:text-lg">{ourPrice}</span>,
-            others: <span className="text-base font-semibold whitespace-nowrap md:text-lg">{othersPrice}</span>,
+            sfn: <span className="block text-sm font-semibold leading-tight md:text-lg">{ourPrice}</span>,
+            others: <span className="block text-sm font-semibold leading-tight md:text-lg">{othersPrice}</span>,
         },
     ];
 

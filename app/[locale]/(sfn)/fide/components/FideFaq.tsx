@@ -192,7 +192,7 @@ export function FideFaq({
                 <SlideFromBottom>
                     <div className="flex w-full justify-center">
                         <div className={`text-center ${maxWidthClassName}`.trim()}>
-                            <h2 className="display-2">{resolvedTitle}</h2>
+                            <h2 className="display-2 pb-4 lg:pb-8">{resolvedTitle}</h2>
                             <p className="mg-bottom-48px">{resolvedSubtitle}</p>
                         </div>
                     </div>

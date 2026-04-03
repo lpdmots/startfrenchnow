@@ -22,20 +22,20 @@ export const CarouselReviews = ({ comments }: any) => {
 
     return (
         <>
-            <div className="slider-mask overflow-visible w-slider-mask">
+            <div className="h-full min-h-[450px] pt-[30px] overflow-visible w-slider-mask">
                 <AnimatePresence mode="wait">
                     <m.div key={slideIndex ? slideIndex : "empty"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
                         <Comment slideIndex={slideIndex} comments={comments} />
                     </m.div>
                 </AnimatePresence>
             </div>
-            <div className="btn-circle-secondary slider-arrow left---center-center w-slider-arrow-left" onClick={() => handleSlide(-1)}>
+            <div className="btn-circle-secondary slider-arrow max-[991px]:top-auto max-[991px]:right-[85px] max-[767px]:right-[75px] w-slider-arrow-left" onClick={() => handleSlide(-1)}>
                 <AiOutlineArrowLeft />
             </div>
-            <div className="btn-circle-secondary slider-arrow right---center-center w-slider-arrow-right" onClick={() => handleSlide(1)}>
+            <div className="btn-circle-secondary slider-arrow max-[991px]:left-[85px] max-[991px]:top-auto max-[767px]:left-[75px] w-slider-arrow-right" onClick={() => handleSlide(1)}>
                 <AiOutlineArrowRight />
             </div>
-            <div className="hidden-on-desktop w-slider-nav w-round"></div>
+            <div className="hidden w-slider-nav w-round"></div>
         </>
     );
 };
@@ -61,7 +61,7 @@ const CommentSlide = ({ selectedSlide }: { selectedSlide: any }) => {
     return (
         <div key={selectedSlide.userName} className="w-slide">
             <div className="relative card p-4 md:p-8 max-w-3xl m-auto">
-                <div className="mg-bottom-24px mg-top--80px keep absolute top-12">
+                <div className="mg-bottom-24px mt-[-80px] keep absolute top-12">
                     <Quote />
                 </div>
                 <div className="flex flex-col gap-4 min-h-[390px]">
@@ -128,7 +128,7 @@ const VideoSlide = ({ selectedSlide }: { selectedSlide: any }) => {
     return (
         <div key={selectedSlide.userName} className="w-slide">
             <div className="relative card p-4 md:p-8 max-w-3xl m-auto">
-                <div className="mg-bottom-24px mg-top--80px keep absolute top-12">
+                <div className="mg-bottom-24px mt-[-80px] keep absolute top-12">
                     <Quote />
                 </div>
                 <div className="flex flex-col gap-4 min-h-[390px]">

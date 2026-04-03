@@ -124,7 +124,7 @@ export function MarqueeSocial({ locale }: { locale: string }) {
     return (
         <div className="flex justify-center">
             <div
-                className={cn("relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background", !isMedium ? "h-[500px]" : "h-[800px]")}
+                className={cn("relative flex w-full flex-col items-center justify-center overflow-hidden bg-neutral-200", !isMedium ? "h-[500px]" : "h-[800px]")}
                 style={{ maxWidth: 1300 }}
             >
                 <Marquee vertical={!isMedium ? false : true} pauseOnHover className="[--duration:30s]">
@@ -160,19 +160,19 @@ function Comment({ review }: { review: CommentProps }) {
     return (
         <div key={review.userName} className="w-slide my-4">
             <div className="max-w-sm md:max-w-md">
-                <div className={`card link-card p-2 md:p-4 h-52`}>
-                    <div className="mg-bottom-24px mg-top--80px keep position-absolute top-16">
+                <div className="card link-card relative flex h-52 flex-col justify-between p-3 md:p-4">
+                    <div className="mg-bottom-24px mt-[-80px] keep position-absolute top-14">
                         <Quote />
                     </div>
-                    <div className="flex flex-row items-end justify-between gap-2 w-full mt-4">
-                        <div className="flex flex-col justify-center">
+                    <div className="mt-8 flex w-full flex-row items-start justify-between gap-3">
+                        <div className="min-w-0 flex flex-col justify-center">
                             <p className="font-bold mb-0 line-clamp-1">{userName}</p>
-                            <p className="italic mb-0">{created ? created : ""}</p>
+                            <p className="italic mb-0 text-sm">{created ? created : ""}</p>
                         </div>
                         {rating && (
                             <div className="flex flex-col items-center justify-center h-full shrink-0">
                                 <p className="text-2xl md:text-4xl font-extrabold mb-0">{rating}</p>
-                                <div>{renderStars(rating)}</div>
+                                <div className="mt-1 flex items-center gap-0.5 whitespace-nowrap">{renderStars(rating)}</div>
                             </div>
                         )}
                     </div>

@@ -52,7 +52,7 @@ const TestPage = () => {
                 <div className="container-default w-container">
                     <div className="inner-container _600px---mbl center">
                         <div className="text-center">
-                            <div className="inner-container _1015px center">
+                            <div className="inner-container max-w-[1015px] max-[991px]:max-w-full center">
                                 <h1 className="display-1 mg-bottom-12px">{t.rich("heroTitle", intelRich())}</h1>
                             </div>
                         </div>
@@ -93,24 +93,24 @@ const TestPage = () => {
                         <div className="mg-bottom-54px">
                             <div className="text-center---tablet">
                                 <div className="w-layout-grid grid-2-columns title-and-paragraph">
-                                    <div className="inner-container _525px">
+                                    <div className="inner-container max-w-[525px] max-[991px]:max-w-full">
                                         <div className="inner-container _400px---mbl center">
-                                            <div className="inner-container _350px---mbp center">
+                                            <div className="inner-container max-[479px]:max-w-[350px] center">
                                                 <h2 className="display-2">{t.rich("cefrLevelsTitle", intelRich())}</h2>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="inner-container _525px">
+                                    <div className="inner-container max-w-[525px] max-[991px]:max-w-full">
                                         <p className="mg-bottom-0 text-neutral-700">{t.rich("cefrLevelsDescription", intelRich())}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-layout-grid grid-2-columns values-grid">
+                        <div className="w-layout-grid grid-2-columns items-stretch max-[991px]:[grid-template-columns:1fr]">
                             {LevelsData.map(({ level, title, content, color }) => (
                                 <div key={level}>
                                     <SlideInOneByOneChild>
-                                        <div className="card image-left---text-rigth h-full !pr-0">
+                                        <div className="card grid overflow-hidden items-center [grid-auto-columns:1fr] gap-x-0 gap-y-0 [grid-template-columns:minmax(200px\,_0.65fr)_1fr] [grid-template-rows:auto] shadow-[none] hover:[transform:none] max-[767px]:[grid-template-columns:minmax(189px\,_0.65fr)_1fr] max-[479px]:[grid-template-columns:auto] h-full !pr-0">
                                             <div className="flex justify-center items-center p-6 lg:p-12">
                                                 <div
                                                     className="flex justify-center items-center text-5xl xl:text-7xl rounded-full aspect-square h-32 w-32 md:h-40 md:w-40"

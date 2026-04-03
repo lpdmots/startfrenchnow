@@ -37,7 +37,7 @@ export default function AdminCommentsPageClient({ comments, priorityAssignee }: 
                 <div className="container-default w-container">
                     <div className="inner-container _600px---tablet center">
                         <div className="inner-container _500px---mbl center mb-8">
-                            <div className="inner-container _725px center---full-width-mbl">
+                            <div className="inner-container max-w-[725px] mr-auto ml-auto max-[991px]:max-w-full max-[767px]:max-w-full mr-auto ml-auto max-[767px]:max-w-full">
                                 <div className="text-center mg-bottom-40px">
                                     <h1 className="display-1 mg-bottom-8px mb-8">
                                         Modération des <span className="heading-span-secondary-1">commentaires</span>

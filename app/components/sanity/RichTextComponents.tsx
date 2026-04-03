@@ -159,7 +159,7 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
             </span>
         ),
         hightlightYellow: ({ children }: any) => <span className="heading-span-secondary-1">{children}</span>,
-        hightlightGreen: ({ children }: any) => <span className="heading-span-secondary-5">{children}</span>,
+        hightlightGreen: ({ children }: any) => <span className="pr-[4px] pl-[4px] [background-image:linear-gradient(180deg\,_transparent_6%\,_var(--secondary-5)_0)] text-[var(--neutral-100)] max-[479px]:[white-space:normal]">{children}</span>,
         hightlightOrange: ({ children }: any) => <span className="heading-span-secondary-6">{children}</span>,
         hightlightPurple: ({ children }: any) => <span className="heading-span-secondary-3">{children}</span>,
         left: ({ children }: any) => <p style={{ textAlign: "left" }}>{children}</p>,

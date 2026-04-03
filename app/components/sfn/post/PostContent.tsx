@@ -24,7 +24,7 @@ function PostContent({ post }: { post: Post }) {
 
     return (
         <>
-            <section className="section hero v4 wf-section">
+            <section className="section hero pt-[53px] pb-[113px] max-[991px]:pb-[94px] max-[767px]:pb-[78px] max-[479px]:pt-[50px] max-[479px]:pb-[65px] wf-section">
                 <div className="container-default w-container">
                     <div className="inner-container _600px---mbl center">
                         <div className="flex w-full justify-center items-center gap-8 mb-8">
@@ -33,7 +33,7 @@ function PostContent({ post }: { post: Post }) {
                             </Link>
                         </div>
                         <div className="text-center">
-                            <div className="inner-container _1015px center">
+                            <div className="inner-container max-w-[1015px] max-[991px]:max-w-full center">
                                 <h1 className="display-1 mg-bottom-12px">{title}</h1>
                             </div>
                         </div>
@@ -57,7 +57,7 @@ function PostContent({ post }: { post: Post }) {
                 <div className="container-default w-container">
                     <div className="inner-container _600px---tablet center">
                         <div className="grid-2-columns post-rigth-sidebar _1-col-tablet">
-                            <div className="inner-container _758px">
+                            <div className="inner-container max-w-[758px]">
                                 <div className="mg-bottom-48px">
                                     <PortableText value={body} components={RichTextComponents(categories[0] as keyof typeof CATEGORIESCOLORS)} />
                                 </div>

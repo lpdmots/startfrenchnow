@@ -28,7 +28,7 @@ function VideoList({ posts, locale }: Props) {
                         </div>
                     </div>
                     <div className="col-span-7 lg:col-span-4">
-                        <div role="list" className="grid-1-column gap-32px w-dyn-items">
+                        <div role="list" className="grid-1-column gap-x-[32px] gap-y-[32px] w-dyn-items">
                             <div role="listitem" className="w-dyn-item">
                                 {chunk.length > 1 && (
                                     <ParentToChildrens>

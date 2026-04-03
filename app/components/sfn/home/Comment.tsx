@@ -7,18 +7,21 @@ function Comment({ slideIndex, comments }: { slideIndex: any; comments: CommentP
     const { userImage, rating, created, results } = selectedSlide;
     return (
         <div key={selectedSlide.userName} className="w-slide">
-            <div className="inner-container testimonial-slider">
-                <div className={`card testimonial-card flex flex-col justify-center ${!!rating && "!mr-0"}`} style={{ minHeight: 300 }}>
-                    <div className="mg-bottom-24px mg-top--80px keep position-absolute top-12">
+            <div className="inner-container max-w-[85%] mr-auto ml-auto max-[991px]:max-w-[600px] max-[767px]:max-w-[500px]">
+                <div
+                    className={`card mr-[100px] pt-[45px] pb-[45px] pl-[45px] shadow-[none] hover:[transform:none] max-[991px]:mr-0 max-[991px]:pr-[45px] max-[767px]:pr-[30px] max-[767px]:pl-[30px] max-[479px]:pr-[24px] max-[479px]:pl-[24px] flex flex-col justify-center ${!!rating && "!mr-0"}`}
+                    style={{ minHeight: 300 }}
+                >
+                    <div className="mg-bottom-24px mt-[-80px] keep position-absolute top-12">
                         <Quote />
                     </div>
-                    <div className="testimonial-card-content-wrapper position-relative">
+                    <div className="flex justify-between items-center [grid-auto-columns:1fr] gap-x-[5px] gap-y-[24px] [grid-template-columns:auto_auto] [grid-template-rows:auto] max-[991px]:flex-col max-[991px]:gap-y-[64px] max-[767px]:gap-y-[53px] max-[479px]:gap-y-[44px] position-relative">
                         <div className={`${userImage ? "inner-container _500px" : "w-full"} grow`}>
                             <div>
                                 <p className={` ${selectedSlide.comment.length > 300 && "text-base"}`}>{selectedSlide.comment}</p>
-                                <div className="flex-horizontal space-between wrap-24px">
-                                    <div className="full-width-mobile">
-                                        <div className="text-200 bold color-neutral-800">
+                                <div className="flex-horizontal space-between flex-wrap gap-6">
+                                    <div className="w-full md:w-auto">
+                                        <div className="text-[18px] leading-[1.111em] font-bold text-neutral-800">
                                             {selectedSlide.userName}
                                             {created ? " - " + created : ""}
                                         </div>
@@ -28,9 +31,9 @@ function Comment({ slideIndex, comments }: { slideIndex: any; comments: CommentP
                             </div>
                         </div>
                         {rating && (
-                            <div className="flex flex-col items-center justify-center h-full" style={{ minWidth: 300 }}>
+                            <div className="flex flex-col items-center justify-center h-full shrink-0" style={{ minWidth: 300 }}>
                                 <p className="text-3xl md:text-5xl font-extrabold">{rating}</p>
-                                <div>{renderStars(rating, true)}</div>
+                                <div className="w-full flex shrink-0 justify-center">{renderStars(rating, true)}</div>
                             </div>
                         )}
                         {!!userImage && userImage}

@@ -36,7 +36,7 @@ export const CredentialsForm = ({ callbackUrl, messages }: { callbackUrl: string
     };
 
     return (
-        <form onSubmit={handleSubmit} className="utility-page-form w-password-page">
+        <form onSubmit={handleSubmit} className="flex w-full max-w-[900px] flex-col items-stretch w-password-page">
             <div className="flex flex-col w-full gap-4">
                 <div className="flex flex-col gap-4">
                     <input type="email" className="input w-password-page w-input" onChange={handleChange} name="email" placeholder={messages.yourEmailAddress} autoComplete="on" />

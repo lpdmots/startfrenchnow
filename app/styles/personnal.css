@@ -76,6 +76,21 @@ body {
     transform: translate(0px, 0px);
 }
 
+.heading-span-secondary-5 {
+    padding-right: 4px;
+    padding-left: 4px;
+    background-image: linear-gradient(180deg, transparent 10%, var(--secondary-5) 0);
+    color: var(--neutral-100);
+}
+
+.marquee-pack-fide-content,
+.marquee-pack-fide-item,
+.marquee-pack-fide-item p {
+    border: 0 !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
 section {
     padding-top: 240px;
     padding-bottom: 240px;

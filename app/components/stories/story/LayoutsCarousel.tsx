@@ -24,8 +24,8 @@ export const LayoutsCarousel = () => {
         title: <h3 className="display-3">Enregistrez Vos Progrès</h3>,
         message: (
             <div className="flex flex-col sm:gap-2 lg:gap-4">
-                <p className="mb-0">Voulez-vous garder vos scores et ce que vous avez accompli ? Connectez-vous !</p>
-                <p>
+                <p className="mb-0 text-neutral-800">Voulez-vous garder vos scores et ce que vous avez accompli ? Connectez-vous !</p>
+                <p className="text-neutral-800">
                     <strong>Vous n'avez pas de compte ?</strong> Créez-en un, commencez l'histoire de nouveau, vous pourrez reprendre l'aventure en cours.
                 </p>
             </div>
@@ -53,7 +53,7 @@ export const LayoutsCarousel = () => {
     const layout = layouts[slideIndex];
 
     return (
-        <div className="slider-wrapper w-slider flex justify-center items-center pb-0 grow">
+        <div className="h-full bg-[transparent] max-[991px]:pb-[120px] max-[767px]:pb-[110px] max-[479px]:pb-[100px] w-slider flex justify-center items-center pb-0 grow">
             <AnimatePresence mode="wait">
                 <m.div
                     className="h-full w-full flex justify-center items-around"

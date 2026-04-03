@@ -78,7 +78,7 @@ const StoryReport = ({ params: { slug } }: Props) => {
                         <span className="heading-span-secondary-2">Nous contacter</span>
                     </h1>
                     <p>Un bug à signaler ? Une suggestion pour améliorer nos histoires interactives ?</p>
-                    <textarea placeholder={"Laissez-nous un message..."} ref={comment} className="text-area w-input mt-4" maxLength={1000}></textarea>
+                    <textarea placeholder={"Laissez-nous un message..."} ref={comment} className="max-h-[200px] max-w-full min-h-[144px] min-w-full p-[24px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[22px] bg-[var(--neutral-100)] [transition:box-shadow_300ms_ease\,_color_300ms_ease\,_border-color_300ms_ease] text-[var(--neutral-800)] text-[18px] font-bold hover:border-[var(--neutral-800)] hover:shadow-[5px_5px_0_0_var(--neutral-800)] shadow-[5px_5px_0_0_var(--neutral-800)] font-medium min-h-[102px] pt-[20px] pb-[20px] rounded-[18px] text-[16px] max-[767px]:min-h-[134px] max-[767px]:pt-[20px] max-[767px]:pb-[20px] max-[767px]:rounded-[18px] max-[767px]:text-[16px] max-[767px]:min-h-[92px] max-[767px]:pt-[18px] max-[767px]:pb-[18px] max-[767px]:rounded-[14px] max-[767px]:text-[14px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] w-input mt-4" maxLength={1000}></textarea>
                     <div className="flex w-full justify-center gap-4 mt-4">
                         <button className="btn-secondary" onClick={() => router.push("/stories/" + slug)}>
                             Annuler

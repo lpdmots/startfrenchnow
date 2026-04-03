@@ -22,12 +22,12 @@ export default function ExamsSection({
     const t = useTranslations("ExamsSection");
 
     return (
-        <section id="exams" className="w-full bg-neutral-100 py-24">
+        <section id="exams" className="w-full bg-neutral-200 py-24">
             <div className="mx-auto w-full max-w-7xl px-4 lg:px-8 overflow-hidden">
                 {/* Header */}
                 <SlideFromLeft>
                     <header className="mb-12">
-                        <h2 className="display-2">{t.rich("title", { ...intelRich(), exams: totalExams })}</h2>
+                        <h2 className="display-2 mb-4 lg:mb-8">{t.rich("title", { ...intelRich(), exams: totalExams })}</h2>
                         <p>{t("subtitle")}</p>
                     </header>
                 </SlideFromLeft>

@@ -19,7 +19,7 @@ export const DashboardHero = ({ coursesByKey, locale }: Props) => {
     return (
         <section className="flex flex-col max-w-7xl w-full gap-4 lg:gap-8 py-0">
             <div className="text-center---tablet">
-                <div className="inner-container _550px---tablet center">
+                <div className="inner-container max-[991px]:max-w-[550px] center">
                     <h1 className="display-2 font-medium">{t.rich("title", intelRich())}</h1>
                 </div>
             </div>

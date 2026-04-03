@@ -20,7 +20,7 @@ const Activated = () => {
                         <div className="flex-horizontal">
                             <div className="grid-2-columns _1-col-tablet position-relative">
                                 <div className="flex justify-center w-full">
-                                    <div className="image-wrapper hero-image" style={{ height: 270, width: 234, backgroundColor: "var(--primary)" }}>
+                                    <div className="image-wrapper max-w-[500px] border-solid border-[4px] border-[var(--neutral-800)] rounded-[32px] shadow-[13px_13px_0_0_var(--neutral-800)] max-[991px]:max-w-full max-[767px]:w-full max-[767px]:max-w-full max-[767px]:shadow-[13px_13px_0_0_var(--neutral-800)]" style={{ height: 270, width: 234, backgroundColor: "var(--primary)" }}>
                                         <SlideFromBottom>
                                             <Image src="/images/teacher-inversed-activated.png" height={270} width={234} alt="The teacher" className="image, object-cover" priority />
                                         </SlideFromBottom>

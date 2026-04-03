@@ -44,9 +44,9 @@ export const AdditionalCourses = () => {
     return (
         <div className="flex flex-col justify-center">
             <div className="text-center---tablet mb-6 lg:mb12">
-                <div className="inner-container _500px---tablet center">
+                <div className="inner-container max-[991px]:max-w-[500px] center">
                     <SlideFromBottom>
-                        <div className="inner-container _300px---mbl center">
+                        <div className="inner-container max-[767px]:max-w-[300px] center">
                             <h2 className="display-2">{t.rich("title", intelRich())}</h2>
                         </div>
                     </SlideFromBottom>

@@ -63,24 +63,24 @@ const InfosVideos = ({ hasPack }: { hasPack: boolean }) => {
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
             <h3 className="mg-bottom-32px underline">{t("title")}</h3>
 
-            <p>
-                <PiGraduationCap className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <PiGraduationCap className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("formationComplete")}</span>
             </p>
-            <p>
-                <MdOndemandVideo className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <MdOndemandVideo className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("video")}</span>
             </p>
-            <p>
-                <RiFolderDownloadLine className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <RiFolderDownloadLine className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("downloads")}</span>
             </p>
-            <p>
-                <HiOutlineDevicePhoneMobile className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <HiOutlineDevicePhoneMobile className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("access")}</span>
             </p>
-            <p>
-                <BsInfinity className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-4 flex items-center">
+                <BsInfinity className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("lifetime")}</span>
             </p>
             {hasPack ? (

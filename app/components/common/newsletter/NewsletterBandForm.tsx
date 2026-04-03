@@ -10,7 +10,7 @@ export const NewsletterBandForm = ({ formMessages }: { formMessages: any }) => {
         <>
             {success ? (
                 <div className="success-message color-neutral-100 w-form-done">
-                    <div className="flex-horizontal success-message-horizontal">
+                    <div className="flex-horizontal justify-start items-start max-[767px]:flex-col max-[767px]:items-center max-[767px]:text-center max-[479px]:flex-col">
                         <BsCheckCircle className="mr-2" style={{ fontSize: 28 }} />
                         <div>{formMessages["successMessage"]}</div>
                     </div>
@@ -21,7 +21,7 @@ export const NewsletterBandForm = ({ formMessages }: { formMessages: any }) => {
                 </div>
             ) : (
                 <form className="form-3" onSubmit={handleSubmit}>
-                    <label className="field-label">Label</label>
+                    <label className="hidden">Label</label>
                     <div className="position-relative">
                         <input type="email" className="input small button-inside w-input" value={email} placeholder={formMessages["placeholder"]} onChange={handleChange} />
                         <button className="btn-primary inside-input variant small w-button min-w-36">{pending ? <Spinner radius maxHeight="40px" /> : formMessages["button"]}</button>

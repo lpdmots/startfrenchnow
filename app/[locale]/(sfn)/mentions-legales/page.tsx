@@ -158,13 +158,13 @@ function MentionsLegales({ params }: { params: { locale: string } }) {
                 <div className="container-default w-container">
                     <div className="inner-container _600px---tablet center">
                         <div className="inner-container _500px---mbl center">
-                            <div className="mg-bottom-60px">
+                            <div className="mb-[60px] max-[767px]:mb-[50px]">
                                 <div className="text-center---tablet">
                                     <div className="w-layout-grid grid-2-columns title-and-paragraph v2">
                                         <div className="flex-horizontal start flex-wrap center---tablet">
                                             <h1 className="display-1 color-neutral-800 mg-bottom-0 ml-4">{content.title}</h1>
                                         </div>
-                                        <div className="inner-container _560px">
+                                        <div className="inner-container max-w-[560px] self-end">
                                             <p className="text-center md:text-right mg-bottom-0 text-xl underline">{content.subtitle}</p>
                                         </div>
                                     </div>

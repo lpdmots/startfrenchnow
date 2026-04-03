@@ -50,11 +50,11 @@ export function StoryTabs({ stories }: { stories: StoryCard[] }) {
         <div className="container-default w-container">
             <section id="storiesTab" className="w-layout-grid grid-2-columns blog-left-sidebar wf-section">
                 <div className="sticky-top _48px-top sticky-tbl">
-                    <div className="inner-container _380">
+                    <div className="inner-container max-w-[380px] max-[991px]:max-w-full">
                         <div className="text-center---tablet">
-                            <div className="card categories-card">
+                            <div className="card flex p-[48px_25px] flex-col shadow-[none] hover:[transform:none] max-[991px]:flex max-[991px]:pt-[40px] max-[991px]:pb-[40px] max-[991px]:flex-row max-[991px]:justify-center max-[991px]:gap-x-[16px] max-[991px]:gap-y-[16px] max-[767px]:p-[32px_24px] max-[767px]:flex-wrap max-[767px]:gap-x-[10px] max-[767px]:gap-y-[10px] max-[479px]:flex-col max-[479px]:gap-y-[5px]">
                                 <div className="w-dyn-list">
-                                    <div className="collection-list categories w-dyn-items">
+                                    <div className="max-[991px]:flex max-[991px]:flex-wrap max-[991px]:gap-x-[16px] max-[991px]:gap-y-[16px] max-[767px]:gap-x-[10px] max-[767px]:gap-y-[10px] max-[479px]:flex-col max-[479px]:gap-y-0 categories w-dyn-items">
                                         {categories.map((category) => (
                                             <button
                                                 key={category}

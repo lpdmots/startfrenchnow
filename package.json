@@ -7,6 +7,9 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
+        "audit:webflow-classes": "node scripts/style/inventoryWebflowClasses.mjs",
+        "apply:webflow-drop": "node scripts/style/applyWebflowDropCandidates.mjs",
+        "replace:webflow-classes": "node scripts/style/replaceWebflowClassesWithTailwind.mjs",
         "migrate:mock-exam-task-ref": "node scripts/sanity/migrateMockExamAnswersTaskRef.mjs",
         "sync:mock-exam-tasks-dev-to-prod": "node scripts/sanity/syncMockExamTasksDevToProd.mjs"
     },

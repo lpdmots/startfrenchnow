@@ -19,7 +19,7 @@ function UdemyBusiness() {
                             <div
                                 id="w-node-_686f4507-61d8-cbed-f166-5192bfa063e2-c2543d52"
                                 data-w-id="686f4507-61d8-cbed-f166-5192bfa063e2"
-                                className="inner-container _584px _100---tablet col-span-3"
+                                className="inner-container max-w-[584px] _100---tablet col-span-3"
                             >
                                 <SlideFromBottom delay={0.5}>
                                     <>

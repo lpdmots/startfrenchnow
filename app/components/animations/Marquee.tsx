@@ -66,8 +66,8 @@ const Marquee = ({ content }: { content: JSX.Element }) => {
     };
 
     return (
-        <section className="section pd-top-5---bottom-5 wf-section">
-            <div className="logo-strip-wrapper text-neutral-100 p-3" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <section className="section overflow-hidden pt-[5%] pb-[5%] wf-section">
+            <div className="flex justify-around overflow-hidden w-[110%] pt-[60px] pb-[60px] bg-[var(--neutral-800)] [transform:translate(-15px\,_0px)_rotate(-5deg)] max-[767px]:pt-[50px] max-[767px]:pb-[50px] max-[479px]:pt-[40px] max-[479px]:pb-[40px] text-neutral-100 p-3" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <div className="marquee">
                     <m.div className="trackInitial h-full flex items-center" variants={marqueeInitialVariants} initial="initial" animate={controls}>
                         {content}

@@ -61,26 +61,27 @@ const SignUp = ({ params: { locale } }: Props) => {
     );
 
     return (
-        <div className="flex justify-center items-center min-h-screen w-screen">
+        <div className="flex min-h-screen w-full items-center justify-center px-4">
             <div className="flex flex-col p-2 sm:p-4 w-full" style={{ maxWidth: 550 }}>
-                <div data-w-id="2078a685-0c58-ebe5-b8d7-ebd2a748e8ad" className="card no-hover">
-                    <div className="pd---content-inside-card large !py-6">
+                <div data-w-id="2078a685-0c58-ebe5-b8d7-ebd2a748e8ad" className="card shadow-[none] [transition:none_0ms_ease] hover:[transform:none] w-full">
+                    <div className="flex max-h-none w-full flex-col items-center px-6 py-8 text-center sm:px-8 sm:py-10">
                         <div className="mb-6">
                             <div className="image-wrapper rigth-shadow-circle password-page-icon flex justify-center items-center" style={{ height: 75, width: 75 }}>
                                 <IoMdLock style={{ height: 50, width: 50, color: "var(--neutral-800)" }} />
                             </div>
                         </div>
                         <h1 className="display-2 mg-bottom-12px mb-4">{t.rich("signUp", intelRich())}</h1>
-
-                        <SignUpForm messages={messagesForm} />
-                        {divider}
-                        <ContinueWithGoogle message={tGoogle("label")} />
+                        <div className="w-full max-w-[430px]">
+                            <SignUpForm messages={messagesForm} />
+                            {divider}
+                            <ContinueWithGoogle message={tGoogle("label")} />
+                        </div>
                     </div>
                 </div>
 
                 <div className="flex justify-between items-center w-full mt-4">
                     <div className="flex header-nav-list-item middle items-center">
-                        <Link href="/" className="flex nav-link header-nav-link p-0">
+                        <Link href="/" className="flex nav-link header-nav-link p-0 mx-0">
                             <IoArrowBackOutline className="text-xl md:text-2xl mr-2" />
                             <p className="mb-0" style={{ marginTop: 2 }}>
                                 {t("homepage")}

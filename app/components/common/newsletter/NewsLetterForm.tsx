@@ -10,7 +10,7 @@ export const NewsLetterForm = ({ formMessages }: { formMessages: any }) => {
         <>
             {success ? (
                 <div className="success-message text-left w-form-done">
-                    <div className="flex-horizontal success-message-horizontal items-center">
+                    <div className="flex-horizontal justify-start items-start max-[767px]:flex-col max-[767px]:items-center max-[767px]:text-center max-[479px]:flex-col items-center">
                         <BsCheckCircle className="mr-2" style={{ fontSize: 28 }} />
                         <div>{formMessages["successMessage"]}</div>
                     </div>
@@ -37,7 +37,7 @@ export const NewsLetterForm = ({ formMessages }: { formMessages: any }) => {
                         <label htmlFor="website">Website</label>
                         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
                     </div>
-                    <label className="field-label">Label</label>
+                    <label className="hidden">Label</label>
                     <div className="position-relative">
                         <input type="email" className="input button-inside w-input" value={email} placeholder={formMessages["placeholder"]} id="Email" onChange={handleChange} />
                         <button type="submit" className="btn-primary inside-input default w-button" style={{ minWidth: 145 }}>

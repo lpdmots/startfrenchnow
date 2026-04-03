@@ -104,17 +104,17 @@ function Hobbies() {
             <div className="container-default w-container">
                 <div className="inner-container _500px---mbl center">
                     <SlideFromBottom>
-                        <h2 className="display-2 text-center mg-bottom-56px">{t.rich("title", intelRich())}</h2>
+                        <h2 className="display-2 text-center mb-[56px] max-[767px]:mb-[48px] max-[479px]:mb-[40px]">{t.rich("title", intelRich())}</h2>
                     </SlideFromBottom>
-                    <div className="inner-container _935px center">
-                        <div className="grid-1-column gap-32px mg-bottom-64px">
+                    <div className="inner-container max-w-[935px] center">
+                        <div className="grid-1-column gap-x-[32px] gap-y-[32px] mg-bottom-64px">
                             {HOBBIES.map(({ title, description, icon, background }) => (
-                                <Scale className="card resume-card-v2" key={title}>
+                                <Scale className="card flex overflow-hidden justify-start items-center max-[767px]:flex-col-reverse max-[479px]:flex-col-reverse" key={title}>
                                     <>
-                                        <div className={`resume-card-left-content ${background} justify-center`}>
-                                            <div className="resume-card-period-v2">{icon}</div>
+                                        <div className={`flex h-full max-w-[200px] min-w-[200px] p-[64px_35px] justify-center items-center [border-right:3px_solid_var(--neutral-800)] bg-[var(--neutral-200)] max-[991px]:flex max-[991px]:max-w-[180px] max-[991px]:min-w-[180px] max-[991px]:p-[45px_24px] max-[991px]:justify-center max-[991px]:items-center max-[767px]:w-full max-[767px]:max-w-full max-[767px]:p-[35px_24px] max-[767px]:justify-start max-[767px]:[border-top:3px_solid_var(--neutral-800)] max-[767px]:border-r-0 ${background} justify-center`}>
+                                            <div className="text-[var(--neutral-800)] text-[24px] leading-[1.5em] font-bold max-[991px]:text-[22px] max-[767px]:text-[18px]">{icon}</div>
                                         </div>
-                                        <div className="resume-card-content-rigth">
+                                        <div className="flex w-full p-[45px_40px] justify-between items-center gap-x-[34px] max-[767px]:p-[35px_24px] max-[767px]:gap-x-[24px] max-[767px]:gap-y-[24px] max-[479px]:flex-wrap-reverse">
                                             <div className="inner-container ">
                                                 <h3 className="display-4">{title}</h3>
                                                 {description}

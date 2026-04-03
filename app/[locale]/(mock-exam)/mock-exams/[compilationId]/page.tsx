@@ -81,17 +81,11 @@ export default async function MockExamCompilationPage({ params: { compilationId 
     if (!compilation || compilation.isActive === false || !isUnlocked) {
         notFound();
     }
-    const readWriteTaskIds = [
-        ...(compilation.examConfig?.readWriteTaskIds?.A1_A2 || []),
-        ...(compilation.examConfig?.readWriteTaskIds?.A2_B1 || []),
-    ]
+    const readWriteTaskIds = [...(compilation.examConfig?.readWriteTaskIds?.A1_A2 || []), ...(compilation.examConfig?.readWriteTaskIds?.A2_B1 || [])]
         .map((ref) => ref?._ref)
         .filter(Boolean) as string[];
 
-    const [userSessions, readWriteTasks] = await Promise.all([
-        getCompilationSessions(userId, compilationId),
-        readWriteTaskIds.length ? getMockExamTasksByIds(readWriteTaskIds) : Promise.resolve([]),
-    ]);
+    const [userSessions, readWriteTasks] = await Promise.all([getCompilationSessions(userId, compilationId), readWriteTaskIds.length ? getMockExamTasksByIds(readWriteTaskIds) : Promise.resolve([])]);
 
     const sessions = (userSessions || []).slice().sort((a, b) => (b.startedAt || "").localeCompare(a.startedAt || ""));
     const inProgress = sessions.find((entry) => entry.status === "in_progress");
@@ -149,7 +143,6 @@ export default async function MockExamCompilationPage({ params: { compilationId 
                             {coverUrl ? (
                                 <>
                                     <Image src={coverUrl} alt="Image de compilation" fill className="object-cover" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                                 </>
                             ) : (
                                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,#f6d6b8_0%,#f0c090_32%,#dca46c_62%,#b87a47_100%)]" />

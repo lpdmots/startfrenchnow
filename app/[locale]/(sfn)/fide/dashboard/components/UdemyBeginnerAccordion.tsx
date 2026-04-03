@@ -43,7 +43,7 @@ export const UdemyBeginnerAccordion = ({ locale, userId, hasPack }: { locale: Lo
     return (
         <Accordion type="multiple" value={openModuleKeys} onValueChange={setOpenModuleKeys} className="w-full text-neutral-800">
             <AccordionItem value="udemy-beginner">
-                <AccordionTrigger className="hover:no-underline rounded-lg text-neutral-800 border-2 border-solid border-neutral-800 bg-neutral-100 sm:mx-4">
+                <AccordionTrigger className="px-4 hover:no-underline rounded-lg text-neutral-800 border-2 border-solid border-neutral-800 bg-neutral-100 sm:mx-4">
                     <div className="flex flex-col sm:flex-row w-full sm:items-center justify-between pr-4 sm:flex-wrap">
                         <div className="flex gap-2 mr-2">
                             <p className="font-medium text-neutral-800 text-base mb-0">Les Bases du Français A0 {">"} A2</p>

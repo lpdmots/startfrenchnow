@@ -74,8 +74,8 @@ const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {
                     <div className="container-default w-container">
                         <div className="inner-container _500px---mbl center">
                             <div className="mg-bottom-40px">
-                                <div className="text-center---mbl">
-                                    <div className="w-layout-grid grid-2-columns title-and-buttons">
+                                <div className="max-md:text-center">
+                                    <div className="w-layout-grid grid-2-columns gap-x-[40px] gap-y-[30px] [grid-template-columns:1fr_auto] max-[991px]:[grid-template-columns:1fr] max-[767px]:[grid-template-columns:1fr]">
                                         <h2 className="display-2 mg-bottom-0">{t.rich("latestPosts", intelRich())}</h2>
                                         <Link href="/blog" className="btn-secondary w-button">
                                             <span className="flex items-center">
@@ -87,7 +87,7 @@ const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {
                                 </div>
                             </div>
                             <div className="w-dyn-list">
-                                <div role="list" className="grid-2-columns blog-post-section---grid w-dyn-items">
+                                <div role="list" className="grid-2-columns items-stretch gap-x-[40px] max-[991px]:gap-x-[20px] w-dyn-items">
                                     {latestPosts.slice(0, 2).map((post) => (
                                         <ParentToChildrens key={post.title}>
                                             <PrimaryPost post={post} locale={locale} />

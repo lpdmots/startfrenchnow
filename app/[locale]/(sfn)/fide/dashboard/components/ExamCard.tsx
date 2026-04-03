@@ -103,14 +103,14 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
 export const RenderStars = ({ stars, areBig = false }: { stars: number | null; areBig?: boolean }) => {
     if (stars === undefined || stars === null) {
         return (
-            <>
+            <span className="inline-flex items-center gap-0.5 whitespace-nowrap">
                 <FaRegStar className={`${areBig ? "text-2xl" : "text-xl "} fill-neutral-400`} />
                 <FaRegStar className={`${areBig ? "text-2xl" : "text-xl "} fill-neutral-400`} />
                 <FaRegStar className={`${areBig ? "text-2xl" : "text-xl "} fill-neutral-400`} />
-            </>
+            </span>
         );
     } else {
-        return renderStars(stars, areBig, 3);
+        return <span className="inline-flex items-center gap-0.5 whitespace-nowrap">{renderStars(stars, areBig, 3)}</span>;
     }
 };
 

@@ -18,7 +18,7 @@ export const Carousel = ({ data, inventoryArrows = false }: { data: JSX.Element[
 
     return (
         <>
-            <div className={`slider-wrapper w-slider flex flex-col h-full w-full ${inventoryArrows ? "p-0" : "pb-16 sm:pb-24 lg:pb-0"}`}>
+            <div className={`h-full bg-[transparent] max-[991px]:pb-[120px] max-[767px]:pb-[110px] max-[479px]:pb-[100px] w-slider flex flex-col h-full w-full ${inventoryArrows ? "p-0" : "pb-16 sm:pb-24 lg:pb-0"}`}>
                 <AnimatePresence mode="wait">
                     <m.div
                         className="h-full w-full flex-col flex justify-center items-center"
@@ -43,15 +43,15 @@ export const Carousel = ({ data, inventoryArrows = false }: { data: JSX.Element[
                 </AnimatePresence>
                 {!inventoryArrows && (
                     <>
-                        <div className="btn-circle-secondary slider-arrow left---center-center w-slider-arrow-left" style={{ zIndex: 0 }} onClick={() => handleSlide(-1)}>
+                        <div className="btn-circle-secondary slider-arrow max-[991px]:top-auto max-[991px]:right-[85px] max-[767px]:right-[75px] w-slider-arrow-left" style={{ zIndex: 0 }} onClick={() => handleSlide(-1)}>
                             <AiOutlineArrowLeft />
                         </div>
-                        <div className="btn-circle-secondary slider-arrow right---center-center w-slider-arrow-right" style={{ zIndex: 0 }} onClick={() => handleSlide(1)}>
+                        <div className="btn-circle-secondary slider-arrow max-[991px]:left-[85px] max-[991px]:top-auto max-[767px]:left-[75px] w-slider-arrow-right" style={{ zIndex: 0 }} onClick={() => handleSlide(1)}>
                             <AiOutlineArrowRight />
                         </div>
                     </>
                 )}
-                <div className="hidden-on-desktop w-slider-nav w-round"></div>
+                <div className="hidden w-slider-nav w-round"></div>
             </div>
         </>
     );

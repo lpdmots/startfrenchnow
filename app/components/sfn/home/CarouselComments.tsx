@@ -10,7 +10,7 @@ const defaultComments: CommentProps[] = [
     {
         userName: "Santiago Terreno D.",
         userImage: (
-            <div className="testimonial-image-wrapper image-comment lg:h-auto">
+            <div className="relative w-[47%] mt-[-100px] mr-[-100px] mb-[-100px] pr-0 max-[991px]:w-full max-[991px]:h-full max-[991px]:max-w-[421px] max-[991px]:mt-0 max-[991px]:mr-0 max-[991px]:mb-0 max-[767px]:min-h-auto max-[767px]:min-w-auto image-comment lg:h-auto">
                 <Image src="/images/andy-smith-image-paperfolio-webflow-template.png" height={500} width={500} alt={"Avatar de Santiago"} className="image object-contain" />
             </div>
         ),
@@ -20,7 +20,7 @@ const defaultComments: CommentProps[] = [
     {
         userName: "Kanishka A.",
         userImage: (
-            <div className="testimonial-image-wrapper image-comment lg:h-auto">
+            <div className="relative w-[47%] mt-[-100px] mr-[-100px] mb-[-100px] pr-0 max-[991px]:w-full max-[991px]:h-full max-[991px]:max-w-[421px] max-[991px]:mt-0 max-[991px]:mr-0 max-[991px]:mb-0 max-[767px]:min-h-auto max-[767px]:min-w-auto image-comment lg:h-auto">
                 <Image src="/images/frances-willem-image-paperfolio-webflow-template.png" height={500} width={500} alt={"Avatar de Kanishka"} className="image object-contain" />
             </div>
         ),
@@ -30,7 +30,7 @@ const defaultComments: CommentProps[] = [
     {
         userName: "Diana S.",
         userImage: (
-            <div className="testimonial-image-wrapper image-comment lg:h-auto">
+            <div className="relative w-[47%] mt-[-100px] mr-[-100px] mb-[-100px] pr-0 max-[991px]:w-full max-[991px]:h-full max-[991px]:max-w-[421px] max-[991px]:mt-0 max-[991px]:mr-0 max-[991px]:mb-0 max-[767px]:min-h-auto max-[767px]:min-w-auto image-comment lg:h-auto">
                 <Image src="/images/lily-woods-image-paperflow-webflow-template.png" height={500} width={500} alt={"Avatar de Diana"} className="image object-contain" />
             </div>
         ),
@@ -51,20 +51,20 @@ export const CarouselComments = ({ comments }: any) => {
     };
     return (
         <>
-            <div className="slider-mask overflow-visible w-slider-mask">
+            <div className="h-full min-h-[450px] pt-[30px] overflow-visible w-slider-mask">
                 <AnimatePresence mode="wait">
                     <m.div key={slideIndex ? slideIndex : "empty"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
                         <Comment slideIndex={slideIndex} comments={commentsList} />
                     </m.div>
                 </AnimatePresence>
             </div>
-            <div className="btn-circle-secondary slider-arrow left---center-center w-slider-arrow-left" onClick={() => handleSlide(-1)}>
+            <div className="btn-circle-secondary slider-arrow max-[991px]:top-auto max-[991px]:right-[85px] max-[767px]:right-[75px] w-slider-arrow-left" onClick={() => handleSlide(-1)}>
                 <AiOutlineArrowLeft />
             </div>
-            <div className="btn-circle-secondary slider-arrow right---center-center w-slider-arrow-right" onClick={() => handleSlide(1)}>
+            <div className="btn-circle-secondary slider-arrow max-[991px]:left-[85px] max-[991px]:top-auto max-[767px]:left-[75px] w-slider-arrow-right" onClick={() => handleSlide(1)}>
                 <AiOutlineArrowRight />
             </div>
-            <div className="hidden-on-desktop w-slider-nav w-round"></div>
+            <div className="hidden w-slider-nav w-round"></div>
         </>
     );
 };

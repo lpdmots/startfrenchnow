@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-02T18:53:08.492Z",
+  "scannedWebflowFiles": [
+    "app/styles/webflow.css",
+    "app/styles/i-dont-speak-french.webflow.css"
+  ],
+  "scannedRoots": [
+    "app",
+    "components",
+    "pages"
+  ],
+  "keepUsageThreshold": 10,
+  "totals": {
+    "webflowClasses": 146,
+    "keep": 146,
+    "replace": 0,
+    "dropCandidates": 0
+  }
+}

@@ -15,7 +15,7 @@ function HomeReviews() {
                     <div className="flex w-full justify-center">
                         <div className="text-center max-w-5xl">
                             <h2 className="display-2">{t.rich("title", intelRich())}</h2>
-                            <p className="mg-bottom-48px">
+                            <p className="mg-bottom-48px mt-4">
                                 {t("description")}
                             </p>
                         </div>
@@ -32,7 +32,7 @@ function HomeReviews() {
 export default HomeReviews;
 
 {
-    /* <div className="slider-wrapper w-slider">
+    /* <div className="h-full bg-[transparent] max-[991px]:pb-[120px] max-[767px]:pb-[110px] max-[479px]:pb-[100px] w-slider">
                         <CarouselComments />
                     </div> */
 }

@@ -58,11 +58,11 @@ const LayoutWrapper = ({ children }: { children: JSX.Element }) => {
     return (
         <div className="utility-page-wrap password-page pt-16">
             <div className="utility-page-content w-password-page w-form">
-                <div className="utility-page-form w-password-page">
+                <div className="flex w-full max-w-[900px] flex-col items-stretch w-password-page">
                     <div className="container-default w-container">
                         <div className="inner-container _600px---mbl center">
-                            <div data-w-id="2078a685-0c58-ebe5-b8d7-ebd2a748e8ad" className="card no-hover">
-                                <div className="pd---content-inside-card large">{children}</div>
+                            <div data-w-id="2078a685-0c58-ebe5-b8d7-ebd2a748e8ad" className="card shadow-[none] [transition:none_0ms_ease] hover:[transform:none]">
+                                <div className="p-[35px_40px_40px] flex p-[64px_90px_80px] flex-col items-center text-center max-[767px]:p-[32px_24px_40px] max-[767px]:p-[56px_34px] max-[479px]:p-[40px_24px] p-[28px_56px] rounded-[18px] text-[20px] leading-[1.1em] p-[22px_38px] rounded-[16px] min-h-[86px] rounded-[20px] font-medium leading-[24px] min-h-[28px] min-w-[28px] w-[88px] h-[88px] min-h-[88px] min-w-[88px] text-[30px] leading-[32px] flex p-[64px_90px_80px] flex-col items-center text-center max-h-[none] p-[28px_28px_54px] max-[991px]:p-[26px_52px] max-[991px]:pr-[24px] max-[991px]:pb-[45px] max-[991px]:pl-[24px] max-[767px]:p-[24px_43px] max-[767px]:rounded-[16px] max-[767px]:text-[18px] max-[767px]:p-[20px_32px] max-[767px]:rounded-[14px] max-[767px]:min-h-[72px] max-[767px]:min-h-[68px] max-[767px]:min-w-auto max-[767px]:w-[72px] max-[767px]:h-[72px] max-[767px]:min-w-[72px] max-[767px]:text-[26px] max-[767px]:leading-[28px] max-[767px]:p-[56px_34px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] max-[479px]:min-h-[64px] max-[479px]:text-[18px] max-[479px]:leading-[22px] max-[479px]:min-h-[26px] max-[479px]:min-w-[26px] max-[479px]:p-[40px_24px]">{children}</div>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@ const EmailInput = ({ setState, translation }: { setState: Dispatch<SetStateActi
             </div>
             <h1 className="display-2 mg-bottom-12px">{translation["title"]}</h1>
             <p className="mg-bottom-24px keep">{translation["description"]}</p>
-            <div className="w-layout-grid grid-1-column full-width gap-row-24px">
+            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
                 <input type="email" className="input w-password-page w-input" value={email} onChange={handleChange} placeholder={translation["emailPlaceholder"]} />
                 <button type="submit" className="btn-primary w-password-page w-button">
                     {isLoading ? <Spinner radius maxHeight="40px" /> : translation["submitBtn"]}
@@ -133,7 +133,7 @@ const UnknownSub = ({ setState, translation }: { setState: Dispatch<SetStateActi
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">{translation.title}</h1>
-            <div className="w-layout-grid grid-1-column full-width gap-row-24px">
+            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
                 <div className="flex justify-center items-center">
                     <p>{translation.description}</p>
                 </div>
@@ -161,7 +161,7 @@ const ErrorLayout = ({ setState, translation }: { setState: Dispatch<SetStateAct
                 </div>
             </div>
             <h1 className="display-2 mg-bottom-12px">{translation.title}</h1>
-            <div className="w-layout-grid grid-1-column full-width gap-row-24px">
+            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
                 <div className="flex justify-center items-center">
                     <p>{translation.description}</p>
                 </div>
@@ -200,7 +200,7 @@ const VideoChoice = ({ state, setState, translation }: { state: State; setState:
             </div>
             <h1 className="display-2 mg-bottom-12px">{translation.title}</h1>
             <p className="mg-bottom-24px keep">{translation.description}</p>
-            <div className="w-layout-grid grid-1-column full-width gap-row-24px">
+            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
                 <button className="btn-primary w-password-page w-button" onClick={(e) => handleClick("mon-premier-cours-pour-debutants")}>
                     {isLoading === "mon-premier-cours-pour-debutants" ? <Spinner radius maxHeight="40px" /> : translation.btnBeginner}
                 </button>

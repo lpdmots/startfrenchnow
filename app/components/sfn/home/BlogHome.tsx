@@ -36,11 +36,11 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
             <div className="inner-container _600px---tablet center">
                 <div className="inner-container _500px---mbl center">
                     <SlideFromBottom>
-                        <div className="mg-bottom-56px">
+                        <div className="mb-[56px] max-[767px]:mb-[48px] max-[479px]:mb-[40px]">
                             <div className="text-center---tablet">
-                                <div data-w-id="a1ac5fbd-201a-a9b1-b1a1-3019f18603fe" className="w-layout-grid grid-2-columns title-and-buttons _1-col-tablet">
+                                <div data-w-id="a1ac5fbd-201a-a9b1-b1a1-3019f18603fe" className="w-layout-grid grid-2-columns gap-x-[40px] gap-y-[30px] [grid-template-columns:1fr_auto] max-[991px]:[grid-template-columns:1fr] max-[767px]:[grid-template-columns:1fr] _1-col-tablet">
                                     <h2 className="display-2 mg-bottom-0">{t.rich("title", intelRich())}</h2>
-                                    <div className="buttons-row center-tablet">
+                                    <div className="buttons-row max-[991px]:justify-center">
                                         <Link href="/blog" className="btn-secondary w-button">
                                             <span className="flex items-center">
                                                 <BiPencil className="mr-2" />
@@ -53,7 +53,7 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
                         </div>
                     </SlideFromBottom>
 
-                    <div className="grid-2-columns blog-featured-grid">
+                    <div className="grid-2-columns gap-x-[32px] gap-y-[32px] [grid-template-columns:1fr_1.2fr] max-[991px]:[grid-template-columns:1fr] max-[767px]:max-w-[600px]">
                         <Scale>
                             <div className="w-dyn-list">
                                 <div role="list" className="height-100 w-dyn-items">
@@ -67,8 +67,8 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
                                 </div>
                             </div>
                         </Scale>
-                        <div className="collection-list-wrapper w-dyn-list">
-                            <div role="list" className="grid-1-column gap-32px w-dyn-items">
+                        <div className="h-full w-dyn-list">
+                            <div role="list" className="grid-1-column gap-x-[32px] gap-y-[32px] w-dyn-items">
                                 <Scale>
                                     <div role="listitem" className="w-dyn-item">
                                         {posts.length > 1 && (

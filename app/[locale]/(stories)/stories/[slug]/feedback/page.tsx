@@ -285,7 +285,7 @@ export default function Feedback({ params: { slug } }: Props) {
             {divider}
             <div className="w-full">
                 <label htmlFor="message">{t[language].commentLabel}</label>
-                <textarea ref={comment} placeholder={t[language].placeholder} className="text-area w-input" maxLength={1000}></textarea>
+                <textarea ref={comment} placeholder={t[language].placeholder} className="max-h-[200px] max-w-full min-h-[144px] min-w-full p-[24px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[22px] bg-[var(--neutral-100)] [transition:box-shadow_300ms_ease\,_color_300ms_ease\,_border-color_300ms_ease] text-[var(--neutral-800)] text-[18px] font-bold hover:border-[var(--neutral-800)] hover:shadow-[5px_5px_0_0_var(--neutral-800)] shadow-[5px_5px_0_0_var(--neutral-800)] font-medium min-h-[102px] pt-[20px] pb-[20px] rounded-[18px] text-[16px] max-[767px]:min-h-[134px] max-[767px]:pt-[20px] max-[767px]:pb-[20px] max-[767px]:rounded-[18px] max-[767px]:text-[16px] max-[767px]:min-h-[92px] max-[767px]:pt-[18px] max-[767px]:pb-[18px] max-[767px]:rounded-[14px] max-[767px]:text-[14px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] w-input" maxLength={1000}></textarea>
             </div>
             <div className="py-4 flex justify-center gap-4">
                 <button className="btn btn-secondary" onClick={() => router.push("/stories")}>
@@ -309,7 +309,7 @@ const CommentCollapse = forwardRef<HTMLTextAreaElement, any>(function (props: { 
     };
 
     const content = (
-        <textarea ref={ref} placeholder={t[props.language].commentPlaceholder} className="text-area w-input mt-4" maxLength={1000} value={textValue} onChange={handleTextChange}></textarea>
+        <textarea ref={ref} placeholder={t[props.language].commentPlaceholder} className="max-h-[200px] max-w-full min-h-[144px] min-w-full p-[24px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[22px] bg-[var(--neutral-100)] [transition:box-shadow_300ms_ease\,_color_300ms_ease\,_border-color_300ms_ease] text-[var(--neutral-800)] text-[18px] font-bold hover:border-[var(--neutral-800)] hover:shadow-[5px_5px_0_0_var(--neutral-800)] shadow-[5px_5px_0_0_var(--neutral-800)] font-medium min-h-[102px] pt-[20px] pb-[20px] rounded-[18px] text-[16px] max-[767px]:min-h-[134px] max-[767px]:pt-[20px] max-[767px]:pb-[20px] max-[767px]:rounded-[18px] max-[767px]:text-[16px] max-[767px]:min-h-[92px] max-[767px]:pt-[18px] max-[767px]:pb-[18px] max-[767px]:rounded-[14px] max-[767px]:text-[14px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] w-input mt-4" maxLength={1000} value={textValue} onChange={handleTextChange}></textarea>
     );
 
     return (

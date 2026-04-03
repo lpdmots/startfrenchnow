@@ -23,8 +23,7 @@ export const HeroMockExams = ({ checkoutDisabled = false, checkoutDisabledReason
         if (checkoutDisabled) return;
         window.location.assign(checkoutUrl);
     };
-    const disabledMessage =
-        checkoutDisabledReason === "hasCredit" ? t("disabled.hasCredit") : checkoutDisabledReason === "noTemplates" ? t("disabled.noTemplates") : null;
+    const disabledMessage = checkoutDisabledReason === "hasCredit" ? t("disabled.hasCredit") : checkoutDisabledReason === "noTemplates" ? t("disabled.noTemplates") : null;
     const isCreditAvailable = checkoutDisabledReason === "hasCredit";
 
     return (
@@ -32,7 +31,7 @@ export const HeroMockExams = ({ checkoutDisabled = false, checkoutDisabledReason
             <div className="w-full px-4 lg:px-8">
                 <div className="mx-auto w-full max-w-6xl">
                     <div className="mx-auto w-full">
-                        <h1 className="display-1 text-center md:text-left">
+                        <h1 className="display-1 text-center md:text-left mb-4">
                             {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span>
                         </h1>
                         <p className="mb-0 text-center md:text-left text-base text-neutral-700 sm:text-lg">{t("subtitle")}</p>
@@ -53,7 +52,9 @@ export const HeroMockExams = ({ checkoutDisabled = false, checkoutDisabledReason
                                         <div className="flex flex-col">
                                             <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
                                                 <p className="mb-0 inline-flex rounded-full bg-neutral-200 text-base font-semibold uppercase tracking-wide text-neutral-800">{t("discoveryBadge")}</p>
-                                                <p className="mb-0 inline-flex rounded-full bg-secondaryShades-4 px-3 py-1 text-base font-semibold uppercase tracking-wide text-neutral-800">{t("discountBadge")}</p>
+                                                <p className="mb-0 inline-flex rounded-full bg-secondaryShades-4 px-3 py-1 text-base font-semibold uppercase tracking-wide text-neutral-800">
+                                                    {t("discountBadge")}
+                                                </p>
                                             </div>
                                             <div className="mb-0 flex items-end justify-center gap-2 whitespace-nowrap sm:justify-start sm:gap-3">
                                                 <p className="mb-0 text-3xl font-extrabold leading-none text-secondary-6 sm:text-5xl">10 CHF</p>
@@ -79,11 +80,7 @@ export const HeroMockExams = ({ checkoutDisabled = false, checkoutDisabledReason
                                                 <ArrowRight className="h-4 w-4" />
                                             </Link>
                                         ) : (
-                                            <button
-                                                type="button"
-                                                disabled
-                                                className="btn btn-secondary inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
-                                            >
+                                            <button type="button" disabled className="btn btn-secondary inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto">
                                                 {t("ctaDisabled")}
                                             </button>
                                         )}

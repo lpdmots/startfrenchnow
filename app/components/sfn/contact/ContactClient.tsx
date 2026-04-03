@@ -39,15 +39,18 @@ export const ContactClient = ({ nameList, messages }: { nameList: string; messag
     return (
         <>
             <div className="sticky-top _48px-top sticky-tbl">
-                <div className="inner-container _380">
+                <div className="inner-container max-w-[380px] max-[991px]:max-w-full">
                     <div className="text-center---tablet">
-                        <div className="card categories-card">
+                        <div className="card flex p-[48px_25px] flex-col shadow-[none] hover:[transform:none] max-[991px]:flex max-[991px]:pt-[40px] max-[991px]:pb-[40px] max-[991px]:flex-row max-[991px]:justify-center max-[991px]:gap-x-[16px] max-[991px]:gap-y-[16px] max-[767px]:p-[32px_24px] max-[767px]:flex-wrap max-[767px]:gap-x-[10px] max-[767px]:gap-y-[10px] max-[479px]:flex-col max-[479px]:gap-y-[5px]">
                             <div className="flex items-center">
                                 <Image src="/images/envelope-icon-large-paperfolio-webflow-template.svg" height={34} width={46} alt="envelope icon" className="mb-6 mr-4" />
                                 <p>{messages["contactPrompt"]}</p>
                             </div>
                             <div className="w-dyn-list">
-                                <div role="list" className="collection-list categories w-dyn-items">
+                                <div
+                                    role="list"
+                                    className="max-[991px]:flex max-[991px]:flex-wrap max-[991px]:gap-x-[16px] max-[991px]:gap-y-[16px] max-[767px]:gap-x-[10px] max-[767px]:gap-y-[10px] max-[479px]:flex-col max-[479px]:gap-y-0 categories w-dyn-items"
+                                >
                                     <div role="listitem" className="w-dyn-item w-full" onClick={() => handleMailTo("yohann")}>
                                         <div className={`blog-categories-item-wrapper w-full ${mailTo === "yohann" && "current pointer-events-none"}`}>
                                             <p className="text-lg mb-0 w-full text-center">Yohann</p>
@@ -114,14 +117,14 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
     return (
         <>
             <SlideFromBottom delay={0.4}>
-                <div className="width-100 _100---tablet">
+                <div className="mt-0 w-full _100---tablet">
                     <div className="card form w-form">
                         {!submitted ? (
                             <>
                                 <div className="flex">
                                     <SimpleButton>
-                                        <Link href={`mailto:${mailTo}@startfrenchnow.com`} className="text-decoration-none w-inline-block mb-2">
-                                            <p className="contact-link underline decoration-dotted">
+                                        <Link href={`mailto:${mailTo}@startfrenchnow.com`} className="no-underline w-inline-block mb-2">
+                                            <p className="text-neutral-800 text-[20px] max-md:text-[18px] leading-[1.111em] font-medium underline decoration-dotted">
                                                 {messages["emailTo"]}
                                                 {mailTo.charAt(0).toUpperCase() + mailTo.slice(1)}
                                             </p>
@@ -152,7 +155,13 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
                                                 onChange={handleChange}
                                                 value={values.name}
                                                 type="text"
-                                                className="input icon-input name-icon w-input"
+                                                className="input icon-input pl-[54px] placeholder:text-neutral-600 w-input"
+                                                style={{
+                                                    backgroundImage: "url('/images/icon-1-contact-paperfolio-template.svg')",
+                                                    backgroundPosition: "24px 50%",
+                                                    backgroundSize: "20px 20px",
+                                                    backgroundRepeat: "no-repeat",
+                                                }}
                                                 name="name"
                                                 placeholder="John Doe"
                                                 id="name"
@@ -164,7 +173,13 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
                                             <input
                                                 onChange={handleChange}
                                                 type="email"
-                                                className="input icon-input email-icon w-input"
+                                                className="input icon-input pl-[54px] placeholder:text-neutral-600 w-input"
+                                                style={{
+                                                    backgroundImage: "url('/images/icon-2-contact-paperfolio-template.svg')",
+                                                    backgroundPosition: "24px 50%",
+                                                    backgroundSize: "20px 20px",
+                                                    backgroundRepeat: "no-repeat",
+                                                }}
                                                 name="email"
                                                 placeholder={messages["emailPlaceholder"]}
                                                 value={values.email}
@@ -179,7 +194,7 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
                                                 onChange={handleChange}
                                                 value={values.subject}
                                                 type="text"
-                                                className="input w-input"
+                                                className="input placeholder:text-neutral-600 w-input"
                                                 name="subject"
                                                 placeholder={messages["subjectPlaceholder"]}
                                                 id="subject"
@@ -194,7 +209,7 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
                                                 id="message"
                                                 name="message"
                                                 placeholder={messages["messagePlaceholder"]}
-                                                className="text-area w-input"
+                                                className="max-h-[200px] max-w-full min-h-[144px] min-w-full p-[24px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[22px] bg-[var(--neutral-100)] [transition:box-shadow_300ms_ease\,_color_300ms_ease\,_border-color_300ms_ease] text-[var(--neutral-800)] text-[18px] font-bold hover:border-[var(--neutral-800)] hover:shadow-[5px_5px_0_0_var(--neutral-800)] shadow-[5px_5px_0_0_var(--neutral-800)] font-medium min-h-[102px] pt-[20px] pb-[20px] rounded-[18px] text-[16px] max-[767px]:min-h-[134px] max-[767px]:pt-[20px] max-[767px]:pb-[20px] max-[767px]:rounded-[18px] max-[767px]:text-[16px] max-[767px]:min-h-[92px] max-[767px]:pt-[18px] max-[767px]:pb-[18px] max-[767px]:rounded-[14px] max-[767px]:text-[14px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] placeholder:text-neutral-600 w-input"
                                                 maxLength={5000}
                                                 value={values.message}
                                                 required={true}
@@ -216,10 +231,10 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
                                 </form>
                             </>
                         ) : (
-                            <div className="success-message w-form-done">
-                                <div>
+                            <div className="success-message w-form-done flex w-full justify-center items-center">
+                                <div className="flex flex-col w-full items-center">
                                     <BsCheckCircle className="mr-2" style={{ fontSize: 28 }} />
-                                    <div className="heading-h3-size mg-bottom-8px">{messages["successTitle"]}</div>
+                                    <div className="text-[24px] leading-[1.417em] font-bold text-neutral-800 mg-bottom-8px">{messages["successTitle"]}</div>
                                     <div>
                                         {messages["successMessage"]}
                                         {!!newsletterCheck && messages["successNewsletter"]}. <br />

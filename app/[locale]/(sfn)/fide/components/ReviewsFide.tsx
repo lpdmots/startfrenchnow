@@ -496,7 +496,7 @@ export const ReviewsFide = () => {
             <SlideFromBottom>
                 <div className="flex w-full justify-center">
                     <div className="text-center max-w-5xl">
-                        <h2 className="display-2">{t.rich("title", intelRich())}</h2>
+                        <h2 className="display-2 pb-4 lg:pb-8">{t.rich("title", intelRich())}</h2>
                         <p className="mg-bottom-48px">{t("description")}</p>
                     </div>
                 </div>

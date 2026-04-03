@@ -51,11 +51,11 @@ export const WhyStories = () => {
                     <div className="inner-container _500px---mbl center">
                         <div className="w-layout-grid grid-2-columns blog-left-sidebar gap-column-64px">
                             <div id="w-node-eb9abc4f-1a64-dc91-46de-47243848b65b-b9543dac" data-w-id="eb9abc4f-1a64-dc91-46de-47243848b65b" className="sticky-top _48px-top sticky-tbl">
-                                <div className="inner-container _535px">
+                                <div className="inner-container max-w-[535px] max-[991px]:max-w-full">
                                     <div className="text-center---tablet">
-                                        <div className="inner-container _500px---tablet center">
+                                        <div className="inner-container max-[991px]:max-w-[500px] center">
                                             <SlideFromBottom>
-                                                <div className="inner-container _300px---mbl center">
+                                                <div className="inner-container max-[767px]:max-w-[300px] center">
                                                     <h2 className="display-2 color-neutral-100">
                                                         <span className="z-index-1">{t.rich("title", intelRich())}</span>
                                                     </h2>

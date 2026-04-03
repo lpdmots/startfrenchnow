@@ -72,20 +72,18 @@ export const LastComments = ({
     }, []);
 
     return (
-        <section className="section overflow-hidden testimonial-section wf-section pt-0 pb-24">
+        <section className="section overflow-hidden max-[767px]:pb-[150px] wf-section pt-0 pb-24">
             <div className="container-default w-container">
                 <SlideFromBottom>
-                    <div className="inner-container _600px center">
+                    <div className="inner-container max-w-[600px] max-[991px]:max-w-full center">
                         <div className="inner-container _600px---tablet center">
                             <div className="text-center mg-bottom-40px">
                                 <div className="inner-container _400px---mbl center">
                                     <div className="center">
-                                        <h2 className="display-2">{t["title"]}</h2>
+                                        <h2 className="display-2 mb-4">{t["title"]}</h2>
                                     </div>
                                 </div>
-                                <p className="mg-bottom-48px">
-                                    {t["description"]}
-                                </p>
+                                <p className="mg-bottom-48px">{t["description"]}</p>
                                 {ctaExtra}
                                 <Link href={hasCourse ? "/courses/dashboard" : courseUrl} className="btn-primary project-btn w-inline-block">
                                     <span className="line-rounded-icon link-icon-right">{hasCourse ? t["continue"] : t["buyNow"]}</span>
@@ -95,7 +93,7 @@ export const LastComments = ({
                     </div>
                 </SlideFromBottom>
                 <Fade delay={0.6}>
-                    <div className="slider-wrapper w-slider">
+                    <div className="h-full bg-[transparent] max-[991px]:pb-[120px] max-[767px]:pb-[110px] max-[479px]:pb-[100px] w-slider">
                         <CarouselComments comments={comments} />
                     </div>
                 </Fade>

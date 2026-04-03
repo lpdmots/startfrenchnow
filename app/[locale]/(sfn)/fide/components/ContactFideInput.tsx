@@ -39,7 +39,7 @@ export const ContactFideInput = ({ formMessages }: { formMessages: any }) => {
         <>
             {success ? (
                 <div className="success-message text-left w-form-done color-neutral-100">
-                    <div className="flex-horizontal success-message-horizontal items-center">
+                    <div className="flex-horizontal justify-start items-start max-[767px]:flex-col max-[767px]:items-center max-[767px]:text-center max-[479px]:flex-col items-center">
                         <BsCheckCircle className="mr-2 min-w-8" style={{ fontSize: 28 }} />
                         <div>{formMessages["successMessage"]}</div>
                     </div>
@@ -50,7 +50,7 @@ export const ContactFideInput = ({ formMessages }: { formMessages: any }) => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
-                    <label className="field-label">Label</label>
+                    <label className="hidden">Label</label>
                     <div className="position-relative">
                         <input type="email" name="email" className="input button-inside w-input" placeholder={formMessages["placeholder"]} id="Email" required />
                         <button type="submit" className="btn-primary border border-neutral-100 sm:border-0 inside-input default w-button" style={{ minWidth: 145 }}>

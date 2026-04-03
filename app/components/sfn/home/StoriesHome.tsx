@@ -14,14 +14,14 @@ export const StoriesHome = () => {
                 <div className="inner-container center">
                     <div className="inner-container _500px---mbl center">
                         <div className="w-layout-grid grid-2-columns story-grid-v2">
-                            <div id="w-node-_686f4507-61d8-cbed-f166-5192bfa063e2-c2543d52" data-w-id="686f4507-61d8-cbed-f166-5192bfa063e2" className="inner-container _584px _100---tablet">
+                            <div id="w-node-_686f4507-61d8-cbed-f166-5192bfa063e2-c2543d52" data-w-id="686f4507-61d8-cbed-f166-5192bfa063e2" className="inner-container max-w-[584px] _100---tablet">
                                 <SlideFromBottom>
                                     <div className="inner-container _300px---mbp">
                                         <h2 className="display-2 color-neutral-100">{t.rich("title", intelRich())}</h2>
                                     </div>
                                 </SlideFromBottom>
                                 <SlideFromBottom>
-                                    <p className="color-neutral-300 mg-bottom-24px">{t.rich("description", intelRich())}</p>
+                                    <p className="color-neutral-300 mg-bottom-24px mt-4">{t.rich("description", intelRich())}</p>
                                 </SlideFromBottom>
                                 <SlideInOneByOneParent>
                                     <div className="mg-bottom-40px">

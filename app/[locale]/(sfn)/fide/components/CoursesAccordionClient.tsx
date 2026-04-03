@@ -112,11 +112,7 @@ export function CoursesAccordionClient({
     return (
         <>
             {fidePackSommaire.packages.map((block, idx) => (
-                <div
-                    key={block.referenceKey}
-                    className={clsx("p-0 pb-2 sm:p-4", noPadding && "p-0")}
-                    style={{ borderBottom: idx === fidePackSommaire.packages.length - 1 ? undefined : "2px solid var(--neutral-300)" }}
-                >
+                <div key={block.referenceKey} className={clsx("p-0 pb-2 sm:p-4", noPadding && "p-0")}>
                     <div className="mb-3 flex items-center justify-between">
                         {withPackageName && <h3 className="m-0 text-lg font-semibold text-neutral-800">{block.title}</h3>}
                         <div className="text-sm text-neutral-600">
@@ -130,13 +126,13 @@ export function CoursesAccordionClient({
                     </div>
 
                     {/* 4) Accordéon contrôlé */}
-                    <Accordion type="multiple" value={openModuleKeys} onValueChange={setOpenModuleKeys} className="w-full text-neutral-800">
+                    <Accordion type="multiple" value={openModuleKeys} onValueChange={setOpenModuleKeys} className="w-full text-neutral-800 space-y-2">
                         {block.modules.map((mod) => {
                             const numberOfWatchedLessons = mod.posts.map((post) => post._id).filter((id) => safeWatched.includes(id)).length;
 
                             return (
                                 <AccordionItem key={mod._key} value={mod._key}>
-                                    <AccordionTrigger className="hover:no-underline rounded-lg text-neutral-800 border-2 border-solid border-neutral-800 bg-neutral-100">
+                                    <AccordionTrigger className="px-4 hover:no-underline rounded-lg text-neutral-800 border-2 border-solid border-neutral-800 bg-neutral-100 mb-2">
                                         <div className="flex flex-col sm:flex-row w-full sm:items-center justify-between pr-4 sm:flex-wrap">
                                             <div className="flex gap-2 mr-2">
                                                 <div className="font-medium text-neutral-800 text-base">
@@ -154,7 +150,7 @@ export function CoursesAccordionClient({
                                     </AccordionTrigger>
 
                                     <AccordionContent>
-                                        <div className="divide-y divide-neutral-100 bg-neutral-100 p-2 rounded-lg border border-solid border-neutral-800">
+                                        <div className="bg-neutral-100 p-2 rounded-lg border border-solid border-neutral-800">
                                             {mod.posts.map((post) => (
                                                 <LessonRow
                                                     key={post.slug.current}

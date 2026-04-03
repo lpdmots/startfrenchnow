@@ -43,25 +43,27 @@ const SignIn = ({ searchParams }: { searchParams: { [key: string]: string | stri
     );
 
     return (
-        <div className="flex justify-center items-center min-h-screen w-screen">
+        <div className="flex min-h-screen w-full items-center justify-center px-4">
             <div className="flex flex-col p-2 sm:p-4 w-full" style={{ maxWidth: 550 }}>
-                <div className="card no-hover w-full ">
-                    <div className="pd---content-inside-card large !py-6">
+                <div className="card shadow-[none] [transition:none_0ms_ease] hover:[transform:none] w-full ">
+                    <div className="flex max-h-none w-full flex-col items-center px-6 py-8 text-center sm:px-8 sm:py-10">
                         <div className="mb-6">
                             <div className="image-wrapper rigth-shadow-circle password-page-icon flex justify-center items-center" style={{ height: 75, width: 75 }}>
                                 <FaUserGraduate style={{ height: 50, width: 50, color: "var(--neutral-800)" }} />
                             </div>
                         </div>
                         <h1 className="display-2 mg-bottom-12px mb-2">{t.rich("helloAgain", intelRich())}</h1>
-                        <p>{t.rich("welcomeBack", intelRich())}</p>
-                        {info && (
-                            <div className="info-register-message password w-password-page w-form-fail !mx-0 !mt-0 mb-4">
-                                <div>{t(`infoMessages.${info}`)}</div>
-                            </div>
-                        )}
-                        <CredentialsForm callbackUrl={callbackUrl as string} messages={messages} />
-                        {divider}
-                        <ContinueWithGoogle message={tGoogle("label")} />
+                        <p className="mb-4">{t.rich("welcomeBack", intelRich())}</p>
+                        <div className="w-full max-w-[430px]">
+                            {info && (
+                                <div className="info-register-message password w-password-page w-form-fail !mx-0 !mt-0 mb-4">
+                                    <div>{t(`infoMessages.${info}`)}</div>
+                                </div>
+                            )}
+                            <CredentialsForm callbackUrl={callbackUrl as string} messages={messages} />
+                            {divider}
+                            <ContinueWithGoogle message={tGoogle("label")} />
+                        </div>
                     </div>
                 </div>
 

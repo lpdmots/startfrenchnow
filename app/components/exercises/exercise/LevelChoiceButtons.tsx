@@ -24,7 +24,7 @@ export const LevelChoiceButtons = ({ _id }: { _id: string }) => {
             <p className="underline text-bold mb-0">{locale === "fr" ? "Difficulté :" : "Difficulty:"}</p>
             <SimpleButton>
                 <div className="tab-lang">
-                    <span className={`flex items-center ${levelChoice === "level1" && "text-secondary-5 bold"}`} onClick={() => handleLevel("level1")} style={{ maxWidth: 200, padding: 8 }}>
+                    <span className={`flex items-center ${levelChoice === "level1" && "text-secondary-5 font-bold"}`} onClick={() => handleLevel("level1")} style={{ maxWidth: 200, padding: 8 }}>
                         <span>{locale === "fr" ? "1" : "1"}</span>
                     </span>
                     {levelChoice === "level1" ? <motion.div className="tab-underline bg-secondary-5" style={{ height: 2 }} layoutId="underline-2" /> : null}
@@ -32,7 +32,7 @@ export const LevelChoiceButtons = ({ _id }: { _id: string }) => {
             </SimpleButton>
             <SimpleButton>
                 <div className="tab-lang">
-                    <span className={`flex items-center ${levelChoice === "level2" && "text-secondary-1 bold"}`} onClick={() => handleLevel("level2")} style={{ maxWidth: 200, padding: 8 }}>
+                    <span className={`flex items-center ${levelChoice === "level2" && "text-secondary-1 font-bold"}`} onClick={() => handleLevel("level2")} style={{ maxWidth: 200, padding: 8 }}>
                         <span>{locale === "fr" ? "2" : "2"}</span>
                     </span>
                     {levelChoice === "level2" ? <motion.div className="tab-underline bg-secondary-1" style={{ height: 2 }} layoutId="underline-2" /> : null}
@@ -40,7 +40,7 @@ export const LevelChoiceButtons = ({ _id }: { _id: string }) => {
             </SimpleButton>
             <SimpleButton>
                 <div className="tab-lang">
-                    <span className={`flex items-center ${levelChoice === "level3" && "text-secondary-4 bold"}`} onClick={() => handleLevel("level3")} style={{ maxWidth: 200, padding: 8 }}>
+                    <span className={`flex items-center ${levelChoice === "level3" && "text-secondary-4 font-bold"}`} onClick={() => handleLevel("level3")} style={{ maxWidth: 200, padding: 8 }}>
                         <span>{locale === "fr" ? "3" : "3"}</span>
                     </span>
                     {levelChoice === "level3" ? <motion.div className="tab-underline bg-secondary-4" style={{ height: 2 }} layoutId="underline-2" /> : null}

@@ -10,7 +10,7 @@ export const NewsletterCardForm = ({ formMessages }: { formMessages: any }) => {
         <>
             {success ? (
                 <div className="success-message w-form-done">
-                    <div className="flex-horizontal success-message-vertical">
+                    <div className="flex-horizontal flex-col">
                         <BsCheckCircle style={{ fontSize: 28 }} />
                         <div className="ml-2">{formMessages["successMessage"]}</div>
                     </div>
@@ -21,8 +21,8 @@ export const NewsletterCardForm = ({ formMessages }: { formMessages: any }) => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
-                    <label className="field-label-3">Email Address</label>
-                    <input type="email" className="input small mg-bottom-16px w-input" value={email} onChange={handleChange} placeholder={formMessages["placeholder"]} id="email" />
+                    <label className="hidden">Email Address</label>
+                    <input type="email" className="input small mb-[16px] max-[479px]:mb-[8px] w-input" value={email} onChange={handleChange} placeholder={formMessages["placeholder"]} id="email" />
                     <button type="submit" className="btn-primary full-width w-button  min-w-36">
                         {pending ? <Spinner radius maxHeight="40px" /> : formMessages["button"]}
                     </button>

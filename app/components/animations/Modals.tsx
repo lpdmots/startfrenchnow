@@ -61,7 +61,7 @@ export const ModalFromBottom = ({ data }: Props) => {
                         opacity: 0,
                     }}
                     transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-                    className={clsx("absolute z-100 p-5 bg-neutral-200 h-auto max-w-md text-neutral-100 rounded-lg", className)}
+                    className={clsx("absolute z-100 p-5 bg-neutral-200 h-auto max-w-md text-neutral-800 rounded-lg", className)}
                     style={{ width: "98%" }}
                 >
                     <div className="grid grid-cols-5 gap-4 mb-2">

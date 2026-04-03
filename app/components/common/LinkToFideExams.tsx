@@ -70,7 +70,7 @@ export function LinkArrowToFideExams({ children, target, rel, category, classNam
 
     return (
         <m.span variants={ParentVariants} whileHover="visible">
-            <Link href={href} className={cn("link-wrapper w-inline-block", hoverColor, className)} target={target} rel={rel} onClick={(e) => e.stopPropagation()}>
+            <Link href={href} className={cn("inline-block text-[var(--neutral-800)] leading-[20px] font-normal flex items-center text-[var(--neutral-300)] no-underline hover:text-[var(--secondary-2)] w-inline-block", hoverColor, className)} target={target} rel={rel} onClick={(e) => e.stopPropagation()}>
                 <span className="flex items-center justify-between">
                     <span className="link-text underline mr-1">{children}</span>
                     <m.span className="flex items-center" variants={childrenVariant} style={{ width: 20 }}>

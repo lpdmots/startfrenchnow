@@ -82,7 +82,7 @@ function LessonCards() {
                 </div>
                 <SlideFromBottom>
                     <div className="flex justify-center md:hidden xl:grid">
-                        <div className="card card-secondary-1 flex flex-col md:flex-row gap-4 !justify-around items-center card-contact-featured mt-16 shadow-2">
+                        <div className="card p-[40px_30px] justify-center items-center border-[var(--primary)] bg-[var(--primary)] flex flex-col md:flex-row gap-4 !justify-around items-center card-contact-featured mt-16 shadow-2">
                             <Image className="display-inline " src="/images/get-in-touch-image-paperfolio-webflow-template.svg" height={90} width={90} alt="get in touch" />
                             <div className=" max-w-xl">
                                 <h3 className="display-4">{t("notSureTitle")}</h3>

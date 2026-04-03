@@ -39,7 +39,7 @@ export const ContactFideBlogInput = ({ formMessages }: { formMessages: any }) =>
         <>
             {success ? (
                 <div className="success-message text-left w-form-done color-neutral-100">
-                    <div className="flex-horizontal success-message-horizontal items-center">
+                    <div className="flex-horizontal justify-start items-start max-[767px]:flex-col max-[767px]:items-center max-[767px]:text-center max-[479px]:flex-col items-center">
                         <BsCheckCircle className="mr-2 min-w-8" style={{ fontSize: 28 }} />
                         <div>{formMessages["successMessage"]}</div>
                     </div>
@@ -50,8 +50,8 @@ export const ContactFideBlogInput = ({ formMessages }: { formMessages: any }) =>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
-                    <label className="field-label-3">Email Address</label>
-                    <input type="email" className="input small mg-bottom-16px w-input" name="email" placeholder={formMessages["placeholder"]} id="email" />
+                    <label className="hidden">Email Address</label>
+                    <input type="email" className="input small mb-[16px] max-[479px]:mb-[8px] w-input" name="email" placeholder={formMessages["placeholder"]} id="email" />
                     <button type="submit" className="btn-primary full-width w-button small min-w-36">
                         {pending ? <Spinner radius maxHeight="40px" /> : formMessages["button"]}
                     </button>

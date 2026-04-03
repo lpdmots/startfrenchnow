@@ -9,21 +9,31 @@ function GetPdfBand() {
     const t = useTranslations("Fide.WhatIsFide");
     const messages = getFormMessages(t);
     return (
-        <div className="footer-newsletter footer-newsletter-inversed-colors">
-            <div className="container-default w-container">
+        <div
+            className="footer-newsletter mb-[-1px] relative overflow-hidden"
+            style={{
+                background: "none",
+                backgroundImage: "none",
+            }}
+        >
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="h-1/2" style={{ backgroundColor: "var(--neutral-800)" }} />
+                <div className="h-1/2" style={{ backgroundColor: "var(--neutral-200)" }} />
+            </div>
+            <div className="container-default w-container relative z-[1]">
                 <SlideFromLeft>
-                    <div data-w-id="302ad83d-63c4-ff55-2757-b5c6518390b4" className="flex-horizontal space-between flex-vertical-tbl">
+                    <div data-w-id="302ad83d-63c4-ff55-2757-b5c6518390b4" className="flex-horizontal space-between max-[767px]:flex-col max-[767px]:justify-center max-[767px]:items-center">
                         <div className="image-wrapper newsletter-image-wrapper position-relative">
                             <Image src="/images/newsletter-image-paperfolio-webflow-template.svg" height={189} width={190} alt="Newsletter Icon" className="image" />
                         </div>
                         <div className="newsletter-wrapper">
-                            <div className="text-center-mbl">
+                            <div className="max-[767px]:text-center">
                                 <p className="display-4 mb-0">{t.rich("AskForPdf.askTitelBand", intelRich())}</p>
                                 <div className="flex items-center">
                                     <p className="mb-0 mr-2">{t("AskForPdf.askDescription")}</p>
                                 </div>
                             </div>
-                            <div className="footer-form-block w-form">
+                            <div className="flex w-full max-w-[470px] min-h-[72px] mb-0 flex-col justify-center max-[991px]:max-w-full max-[767px]:max-w-[470px] max-[767px]:min-h-[60px] max-[479px]:min-h-[138px] w-form">
                                 <AskForPdf messages={messages} withLabel={false} />
                             </div>
                         </div>

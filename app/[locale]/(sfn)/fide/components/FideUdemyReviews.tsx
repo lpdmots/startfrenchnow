@@ -35,7 +35,7 @@ function FideUdemyReviews() {
 export default FideUdemyReviews;
 
 {
-    /* <div className="slider-wrapper w-slider">
+    /* <div className="h-full bg-[transparent] max-[991px]:pb-[120px] max-[767px]:pb-[110px] max-[479px]:pb-[100px] w-slider">
                         <CarouselComments />
                     </div> */
 }

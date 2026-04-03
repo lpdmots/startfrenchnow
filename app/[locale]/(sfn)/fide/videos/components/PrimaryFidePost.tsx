@@ -29,9 +29,9 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
             className="!no-underline group" // group = hover parent
             data-analytics={isLocked ? "click_buy_pack_from_catalog" : undefined}
         >
-            <div className="relative blog-card-wrapper card link-card w-inline-block overflow-hidden">
+            <div className="relative max-w-[1010px] ml-auto text-[var(--neutral-600)] no-underline flex h-full p-[30px_30px_40px] flex-col rounded-[32px] max-h-[none] p-[28px_28px_54px] max-[991px]:w-full max-[991px]:max-h-[none] max-[991px]:pr-[24px] max-[991px]:pb-[45px] max-[991px]:pl-[24px] max-[767px]:pt-[24px] max-[767px]:pr-[24px] max-[767px]:pl-[24px] max-[479px]:rounded-[24px] card link-card w-inline-block overflow-hidden">
                 {/* Image + badges */}
-                <div className="blog-card-image-wrapper inside-card max-heigth-330px">
+                <div className="blog-card-image-wrapper inside-card max-h-[330px] max-[991px]:max-h-[none] max-[479px]:min-h-[140px]">
                     <ScaleChildren>
                         <Image
                             src={urlFor(postMainImage).url()}
@@ -39,13 +39,13 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
                             height={400}
                             loading="lazy"
                             alt={postTitle || "no title"}
-                            className={`blog-card-image transition duration-200 ${isLocked ? "group-hover:opacity-60" : ""}`}
+                            className={`w-full h-full object-cover transition duration-200 ${isLocked ? "group-hover:opacity-60" : ""}`}
                             style={{ minHeight: 150, objectFit: "contain" }}
                         />
                     </ScaleChildren>
 
                     {/* Badge pack (existant) */}
-                    <div className="blog-card-badge-wrapper-top text-right pointer-events-none">
+                    <div className="absolute left-auto top-[20px] right-[20px] bottom-auto text-right pointer-events-none">
                         <div className="badge-primary small" style={{ backgroundColor: packageColor }}>
                             {packageTitle}
                         </div>
@@ -53,13 +53,13 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
                 </div>
 
                 {/* Contenu carte */}
-                <div className={`blog-card-content-inside ${isLocked ? "transition md:group-hover:opacity-70" : ""}`}>
+                <div className={`flex p-[40px_0px_0px] flex-col [flex:1_1] max-[479px]:p-[24px_0px_0px] ${isLocked ? "transition md:group-hover:opacity-70" : ""}`}>
                     <div className="inner-container _350px---mbl flex items-center gap-2 mb-2">
                         {isLocked && <Image src="/images/cadenas-ferme.png" alt="Contenu réservé au Pack FIDE" width={32} height={32} className="h-8 w-8" />}
                         <h2 className="blog-card-title display-4 mg-bottom-24px mb-0">{postTitle}</h2>
                     </div>
-                    <div className="mg-top-auto">
-                        <div className="flex-col gap-24px _15px---mbp">
+                    <div className="mt-auto">
+                        <div className="flex-col gap-x-[24px] gap-y-[24px] max-[479px]:flex-wrap max-[479px]:gap-x-[15px] max-[479px]:gap-y-[15px] max-[479px]:gap-x-[15px] max-[479px]:gap-y-[15px]">
                             <p className="line-clamp-4">{postDescription}</p>
 
                             <div className="flex justify-end items-center text-300 medium color-neutral-600 gap-2 flex-wrap text-base">

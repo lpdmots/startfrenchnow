@@ -4,7 +4,7 @@ import React from "react";
 
 export const CategoryBadge = ({ category, label, primary = false }: { category: Category; label: string; primary?: boolean }) => {
     const badgeColors = CATEGORIESCOLORS[category as keyof typeof CATEGORIESCOLORS];
-    const classes = primary ? "blog-card-badge-wrapper-top text-right" : "";
+    const classes = primary ? "absolute left-auto top-[20px] right-[20px] bottom-auto text-right" : "";
 
     if (!label) return null;
 

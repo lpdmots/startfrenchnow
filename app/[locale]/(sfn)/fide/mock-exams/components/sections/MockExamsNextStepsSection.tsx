@@ -9,7 +9,7 @@ export function MockExamsNextStepsSection() {
     return (
         <section id="mock-exams-next-steps" className="pt-4 pb-14 lg:pt-8 lg:pb-24">
             <div className="mx-auto w-full max-w-7xl px-4 lg:px-8">
-                <div className="rounded-3xl border border-neutral-300 bg-gradient-to-br from-neutral-100 to-secondaryShades-6 p-5 md:p-7 lg:p-10">
+                <div className="p-0">
                     <SlideFromBottom delay={0.05} duration={0.35}>
                         <div className="mx-auto mb-8 max-w-3xl text-center">
                             <p className="mb-3 inline-flex rounded-full bg-secondary-3 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>

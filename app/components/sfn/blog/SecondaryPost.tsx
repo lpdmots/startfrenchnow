@@ -22,8 +22,8 @@ const SecondaryPost = ({ post, locale }: { post: Post; locale: string }) => {
 
     return (
         <ClientSideRoute route={pathBase + post.slug.current} locale={locale as Locale}>
-            <div className="card blog-secondary-card link-card w-inline-block !p-4 !sm:p-8">
-                <div className="blog-card-image-wrapper inside-card blog-secondary-card-image flex flex-col gap-4 h-full" style={{ maxHeight: "none", overflow: "visible" }}>
+            <div className="card flex p-[30px] items-center gap-x-[28px] gap-y-[28px] max-[767px]:pt-[24px] max-[767px]:pr-[24px] max-[767px]:pl-[24px] max-[767px]:flex-col max-[767px]:items-stretch link-card w-inline-block !p-4 !sm:p-8">
+                <div className="blog-card-image-wrapper inside-card flex max-h-[242px] max-w-[274px] justify-center items-center self-start [flex:1_1] max-[991px]:max-w-[222px] max-[767px]:max-h-[none] max-[767px]:max-w-[199%] flex flex-col gap-4 h-full" style={{ maxHeight: "none", overflow: "visible" }}>
                     <div className="rounded-2xl sm:rounded-3xl" style={{ overflow: "hidden" }}>
                         <ScaleChildren>
                             <Image
@@ -32,14 +32,14 @@ const SecondaryPost = ({ post, locale }: { post: Post; locale: string }) => {
                                 height={200}
                                 loading="lazy"
                                 alt={post.title || "no title"}
-                                className="blog-card-image object-contain"
+                                className="w-full h-full object-cover object-contain"
                                 style={{ width: "auto", height: "auto", maxHeight: "200px", minHeight: 150 }}
                             />
                         </ScaleChildren>
                     </div>
                     <CategoryBadge category={firstCategory} label={categoryName as unknown as string} />
                 </div>
-                <div className="inner-container blog-secondary-card-content flex flex-col justify-between" style={{ minHeight: 200 }}>
+                <div className="inner-container min-w-[205px] [flex:1_1] max-[767px]:min-w-auto flex flex-col justify-between" style={{ minHeight: 200 }}>
                     <div>
                         <h2 className="bl font-extrabold">{title || "Pas de titre"}</h2>
                         <p className="mg-bottom-0 line-clamp-5">{description || "Pas de description"}</p>

@@ -19,15 +19,15 @@ export const HeroSfn = () => {
         <section className="section hero v1 wf-section !pb-0">
             <div className="flex justify-center w-full items-center">
                 <div className="px-8" style={{ maxWidth: 1500 }}>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 hero-v1 gap-8 xl:gap-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-[20px] [grid-template-columns:1fr_0.7fr] min-[1440px]:gap-x-[90px] max-[991px]:gap-y-[60px] max-[991px]:[grid-template-columns:1fr] gap-8 xl:gap-12">
                         <div id="w-node-d6ab327c-c12b-e1a4-6a28-7aaa783883be-b9543dac" data-w-id="d6ab327c-c12b-e1a4-6a28-7aaa783883be" className="inner-container test" style={{ maxWidth: 650 }}>
                             <div className="text-center---tablet">
-                                <div className="inner-container _550px---tablet center">
-                                    <h1 className="hero-title">{t.rich("title", intelRich())}</h1>
+                                <div className="inner-container max-[991px]:max-w-[550px] center">
+                                    <h1 className="text-[var(--neutral-800)] text-[72px] leading-[1.181em] font-bold self-end text-[var(--neutral-100)] pb-4 max-[1200px]:text-[48px] max-[1200px]:leading-[1.188em] max-[479px]:text-[34px] max-[479px]:leading-[1.353em]">{t.rich("title", intelRich())}</h1>
                                 </div>
                                 <p className="mb-8">{t.rich("description", intelRich())}</p>
                             </div>
-                            <div className="buttons-row center-tablet">
+                            <div className="buttons-row max-[991px]:justify-center">
                                 <Link href="/courses/beginners" className="no-underline">
                                     <ShimmerButton className="btn-primary button-row w-button flex items-center justify-center">
                                         <HiAcademicCap className="mr-2" style={{ fontSize: 20 }} />

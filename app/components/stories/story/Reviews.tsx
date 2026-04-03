@@ -81,7 +81,7 @@ const Review = ({ review, userStoryData }: { review: Review; userStoryData: User
                 <h2 className={`display-4 my-0 heading-span-${review.color}`}>{review?.title} </h2>
                 <p className="font-bold my-0">{ratio}</p>
             </div>
-            <div className={oneScore ? "max-w-2xl" : "w-layout-grid grid-2-columns values-grid"}>
+            <div className={oneScore ? "max-w-2xl" : "w-layout-grid grid-2-columns items-stretch max-[991px]:[grid-template-columns:1fr]"}>
                 {review?.scores?.map((score) => (
                     <Score key={score.title} score={score} />
                 ))}
@@ -97,7 +97,7 @@ const Review = ({ review, userStoryData }: { review: Review; userStoryData: User
                     </button>
                 </div>
             )}
-            <div className="w-layout-grid grid-3-columns values-grid">
+            <div className="w-layout-grid grid [grid-auto-columns:1fr] gap-x-[32px] gap-y-[32px] [grid-template-columns:1fr_1fr_1fr] [grid-template-rows:auto] justify-between gap-x-[24px] [grid-template-columns:0.4fr_minmax(max-content\,_1.1fr)_0.4fr] max-[991px]:[grid-template-columns:1fr_1fr] max-[991px]:[grid-template-columns:1fr] max-[991px]:gap-x-[15px] max-[991px]:[grid-template-columns:0.25fr_minmax(auto\,_1.1fr)_0.25fr] max-[767px]:[grid-template-columns:1fr] max-[767px]:gap-x-[28px] max-[767px]:gap-y-[60px] max-[767px]:[grid-template-columns:1fr_1fr] max-[479px]:[grid-template-columns:1fr] max-[479px]:gap-x-[18px] items-stretch max-[991px]:[grid-template-columns:1fr]">
                 {filtredSuccess.map((success) => (
                     <Success key={success.title} success={success} userStoryData={userStoryData} />
                 ))}
@@ -111,11 +111,11 @@ const Score = ({ score }: { score: ScoreProps }) => {
 
     return (
         <SlideFromBottom>
-            <div className="card image-left---text-rigth">
-                <div className="image-wrapper card-value-image-left-wrapper flex justify-center items-center p-6 w-full !max-w-none">
+            <div className="card grid overflow-hidden items-center [grid-auto-columns:1fr] gap-x-0 gap-y-0 [grid-template-columns:minmax(200px\,_0.65fr)_1fr] [grid-template-rows:auto] shadow-[none] hover:[transform:none] max-[767px]:[grid-template-columns:minmax(189px\,_0.65fr)_1fr] max-[479px]:[grid-template-columns:auto]">
+                <div className="image-wrapper h-full max-w-[233px] max-[479px]:flex max-[479px]:max-w-full max-[479px]:justify-center max-[479px]:items-center flex justify-center items-center p-6 w-full !max-w-none">
                     <ScoreGauge score={score?.value || 0} />
                 </div>
-                <div className="card-value-conter-left">
+                <div className="p-[40px_22px_40px_30px] max-[767px]:p-[32px_24px]">
                     <h3>{title}</h3>
                     <p className="mg-bottom-0">
                         <PortableText value={text} components={RichTextStory(true)} />
@@ -157,7 +157,7 @@ const Success = ({ success, userStoryData }: { success: Success; userStoryData: 
                 <h3 className="hidden sm:block text-center bl font-bold w-full col-span-4 mt-2" style={{ color }}>
                     {title}
                 </h3>
-                <div className="image-wrapper card-value-image-left-wrapper flex justify-center p-2 w-full !max-w-none">
+                <div className="image-wrapper h-full max-w-[233px] max-[479px]:flex max-[479px]:max-w-full max-[479px]:justify-center max-[479px]:items-center flex justify-center p-2 w-full !max-w-none">
                     <Image src={imgToDisplay} height={100} width={100} loading="eager" alt={title} className="h-full w-full object-contain max-h-24" style={{ opacity: unlocked ? 1 : 0.7 }} />
                 </div>
                 <div className="p-2 pl-2 sm:pl-0 col-span-3 flex flex-col justify-center">

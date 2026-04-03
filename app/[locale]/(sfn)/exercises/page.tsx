@@ -77,7 +77,7 @@ const ExercisePageNoAsync = ({ exercises, allThemes }: { exercises: SimpleExerci
         <div className="w-full flex flex-col items-center py-12 px-2 sm:px-4 overflow-x-hidden">
             <div className="w-full max-w-7xl">
                 <div className="flex justify-center w-full items-center">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 hero-v1 md:gap-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-[20px] [grid-template-columns:1fr_0.7fr] min-[1440px]:gap-x-[90px] max-[991px]:gap-y-[60px] max-[991px]:[grid-template-columns:1fr] md:gap-12">
                         <div style={{ maxWidth: 650 }} className="h-full flex flex-col justify-center items-start gap-4 md:gap-8">
                             <h1 className="display-1">{t.rich("title", intelRich())}</h1>
                             <p className="mb-8">{t("description")}</p>

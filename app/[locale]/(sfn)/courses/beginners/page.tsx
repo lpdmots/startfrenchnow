@@ -56,15 +56,7 @@ export default async function BeginnersPage({ params: { locale } }: { params: { 
         }
     }
 
-    return (
-        <BeginnerPageNoAsync
-            hero={hero}
-            locale={locale}
-            hasBeginnerCourse={hasBeginnerCourse}
-            frenchBeginnerSommaire={frenchBeginnerSommaire}
-            pricingDetails={pricingDetails}
-        />
-    );
+    return <BeginnerPageNoAsync hero={hero} locale={locale} hasBeginnerCourse={hasBeginnerCourse} frenchBeginnerSommaire={frenchBeginnerSommaire} pricingDetails={pricingDetails} />;
 }
 
 const BeginnerPageNoAsync = ({
@@ -107,7 +99,7 @@ const BeginnerPageNoAsync = ({
                         <div className="inner-container _700px---tablet center">
                             <div className="inner-container _600px---mbl center">
                                 <div data-w-id="fdb28f9a-b843-42ff-6712-94a9cd3389a9" className="text-center mg-bottom-40px">
-                                    <h1 className="display-1">{t.rich("title", intelRich())}</h1>
+                                    <h1 className="display-1 mb-4">{t.rich("title", intelRich())}</h1>
                                     <div className="inner-container _500px---mbl center">{t("description")}</div>
                                 </div>
                             </div>
@@ -163,7 +155,7 @@ const YouLearn = () => {
         <div className="container-default w-container">
             <div className="flex flex-col items-center max-w-4xl">
                 <SlideFromBottom>
-                    <h2 className="mb-8 w-full text-center">{t.rich("title", intelRich())}</h2>
+                    <h2 className="display-3 mb-8 w-full text-center">{t.rich("title", intelRich())}</h2>
                 </SlideFromBottom>
                 <div className="grid grid-cols-2 md:gap-8">
                     <div className="col-span-2 md:col-span-1">
@@ -232,17 +224,7 @@ const YouLearn = () => {
     );
 };
 
-const PricingCallout = ({
-    pricingDetails,
-    locale,
-    align,
-    className,
-}: {
-    pricingDetails: PricingDetails;
-    locale: Locale;
-    align: "left" | "center";
-    className?: string;
-}) => {
+const PricingCallout = ({ pricingDetails, locale, align, className }: { pricingDetails: PricingDetails; locale: Locale; align: "left" | "center"; className?: string }) => {
     const t = useTranslations("Courses.Beginners.Pricing");
     const formatAmount = (value: number) => {
         const normalized = Math.round(value * 100) / 100;
@@ -260,24 +242,18 @@ const PricingCallout = ({
     const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
     const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
     const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
-    const discountBadge = hasDiscount
-        ? isPercentage
-            ? t("savePercent", { percent: pricingDetails.discountValue })
-            : t("saveAmount", { amount: formatPrice(discountAmount) })
-        : null;
+    const discountBadge = hasDiscount ? (isPercentage ? t("savePercent", { percent: pricingDetails.discountValue }) : t("saveAmount", { amount: formatPrice(discountAmount) })) : null;
 
     const alignText = align === "center" ? "text-center" : "text-left";
     const alignRow = align === "center" ? "justify-center" : "justify-start";
 
     return (
-        <div className={`rounded-2xl border border-secondaryShades-5 ${alignText} ${className || ""}`.trim()}>
+        <div className={`${alignText} ${className || ""}`.trim()}>
             {hasDiscount && <div className="text-xs uppercase tracking-[0.12em] text-secondary-2 font-extrabold">{t("offerLabel")}</div>}
             <div className={`${hasDiscount ? "mt-2" : "mt-0"} flex flex-wrap items-baseline gap-x-3 ${alignRow}`}>
                 <span className="text-4xl sm:text-5xl font-extrabold">{formatPrice(pricingDetails.amount)}</span>
                 {hasDiscount && <span className="text-base sm:text-lg text-neutral-500 line-through">{formatPrice(pricingDetails.initialAmount)}</span>}
-                {discountBadge && (
-                    <span className="inline-flex rounded-full bg-secondary-2/10 text-sm font-semibold text-secondary-2">{discountBadge}</span>
-                )}
+                {discountBadge && <span className="inline-flex rounded-full bg-secondary-2/10 text-sm font-semibold text-secondary-2">{discountBadge}</span>}
             </div>
         </div>
     );
@@ -293,7 +269,7 @@ const Description = ({ hasBeginnerCourse, frenchBeginnerSommaire, hero }: { hasB
             </SlideFromBottom>
             <SlideFromBottom>
                 <div>
-                    <h2 className="mt-4 sm:mt-8">{t.rich("header1", intelRich())}</h2>
+                    <h2 className="display-3 mb-4 mt-4 sm:mt-8">{t.rich("header1", intelRich())}</h2>
                     <ul>
                         <li>{t("listItem1")}</li>
                         <li>{t("listItem2")}</li>
@@ -304,14 +280,14 @@ const Description = ({ hasBeginnerCourse, frenchBeginnerSommaire, hero }: { hasB
             </SlideFromBottom>
             <SlideFromBottom>
                 <div>
-                    <h2 className="mt-4 sm:mt-8">{t.rich("header2", intelRich())}</h2>
+                    <h2 className="display-3 mb-4 mt-4 sm:mt-8">{t.rich("header2", intelRich())}</h2>
                     <p>{t("para2")}</p>
                     <p>{t("para3")}</p>
                     <p>{t.rich("para4", intelRich())}</p>
                 </div>
             </SlideFromBottom>
             <SlideFromBottom>
-                <h2 className="mt-4 sm:mt-8">{t.rich("header3", intelRich())}</h2>
+                <h2 className="display-3 mb-4 mt-4 sm:mt-8">{t.rich("header3", intelRich())}</h2>
             </SlideFromBottom>
 
             <CoursesAccordionClient
@@ -331,24 +307,24 @@ const Infos = ({ hasBeginnerCourse, pricingSlot }: { hasBeginnerCourse: boolean;
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
             <h3 className="mg-bottom-32px underline">{t("header")}</h3>
-            <p>
-                <MdOndemandVideo className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <MdOndemandVideo className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t.rich("video", intelRich())}</span>
             </p>
-            <p>
-                <IoDocumentTextOutline className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <IoDocumentTextOutline className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("articles")}</span>
             </p>
-            <p>
-                <RiFolderDownloadLine className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <RiFolderDownloadLine className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t.rich("resources", intelRich())}</span>
             </p>
-            <p>
-                <HiOutlineDevicePhoneMobile className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-3 flex items-center">
+                <HiOutlineDevicePhoneMobile className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("accessMobileTV")}</span>
             </p>
-            <p>
-                <BsInfinity className="text-2xl mr-2 sm:mr-4" />
+            <p className="mb-4 flex items-center">
+                <BsInfinity className="text-2xl mr-2 sm:mr-4 shrink-0" />
                 <span>{t("unlimitedAccess")}</span>
             </p>
             {pricingSlot}
@@ -370,7 +346,7 @@ const IsForYou = ({ hasBeginnerCourse, pricingSlot }: { hasBeginnerCourse: boole
                             <div data-w-id="7d793e39-0063-6541-01fd-68629184b004" className="text-center mg-bottom-64px">
                                 <SlideFromBottom>
                                     <div>
-                                        <h2 className="display-2 mg-bottom-12px">{t.rich("title", intelRich())}</h2>
+                                        <h2 className="display-3 display-2 mg-bottom-12px">{t.rich("title", intelRich())}</h2>
                                         <p>
                                             {t("description")} <LinkArrow url={"/contact"}>{t("help")}</LinkArrow>
                                         </p>
@@ -386,7 +362,7 @@ const IsForYou = ({ hasBeginnerCourse, pricingSlot }: { hasBeginnerCourse: boole
                                             <div className="mg-bottom--32px">
                                                 <div className="rich-text-white w-richtext">
                                                     <SlideFromBottom>
-                                                        <h2 style={{ color: "var(--neutral-100)" }}>{t.rich("prerequisitesTitle", intelRich())}</h2>
+                                                        <h2 className="display-3" style={{ color: "var(--neutral-100)" }}>{t.rich("prerequisitesTitle", intelRich())}</h2>
                                                     </SlideFromBottom>
                                                     <SlideInOneByOneParent>
                                                         <div className="mg-bottom-40px">
@@ -458,7 +434,7 @@ const IsForYou = ({ hasBeginnerCourse, pricingSlot }: { hasBeginnerCourse: boole
                                             <div id="w-node-_7d793e39-0063-6541-01fd-68629184b01d-7a543d63" className="mg-bottom--32px">
                                                 <SlideFromBottom>
                                                     <div>
-                                                        <h2 style={{ color: "var(--neutral-100)" }}>{t.rich("levelTitle", intelRich())}</h2>
+                                                        <h2 className="display-3" style={{ color: "var(--neutral-100)" }}>{t.rich("levelTitle", intelRich())}</h2>
                                                         <p>{t.rich("levelDescription", intelRich())}</p>
                                                     </div>
                                                 </SlideFromBottom>

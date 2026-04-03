@@ -38,7 +38,7 @@ export const SignUpForm = ({ messages }: { messages: any }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="utility-page-form w-password-page">
+        <form onSubmit={handleSubmit} className="flex w-full max-w-[900px] flex-col items-stretch w-password-page">
             <input type="hidden" name="startedAt" value={startedAt} />
 
             <div
@@ -58,7 +58,7 @@ export const SignUpForm = ({ messages }: { messages: any }) => {
             <div className="flex flex-col w-full gap-2">
                 <input type="email" className="input w-password-page w-input" onChange={handleChange} name="email" placeholder={messages.enterYourEmail} autoComplete="email" />
                 <input type="text" className="input w-password-page w-input" onChange={handleChange} name="name" placeholder={messages.enterYourUsername} autoComplete="username" />
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
                     <input type="password" className="input w-password-page w-input" onChange={handleChange} name="password1" placeholder={messages.password} autoComplete="new-password" />
                     <input type="password" className="input w-password-page w-input" onChange={handleChange} name="password2" placeholder={messages.confirm} autoComplete="new-password" />
                 </div>

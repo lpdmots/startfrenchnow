@@ -1979,7 +1979,7 @@ export default function RunnerScreenRouter({
                             <p className="mb-0 text-xs text-neutral-600">Votre progression est sauvegardée automatiquement.</p>
                         </div>
 
-                        <div className="card relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="card relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {examIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={examIntroVideoUrl} />
@@ -2018,7 +2018,7 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-sm text-neutral-600">Objectif: structurer ta réponse simplement, clairement, et dans le temps imparti.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {taskOneDescriptionIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={taskOneDescriptionIntroVideoUrl} />
@@ -2058,7 +2058,7 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-sm text-neutral-600">Objectif: tenir un échange simple, écouter les relances et répondre clairement.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {taskTwoConversationIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={taskTwoConversationIntroVideoUrl} />
@@ -2098,7 +2098,7 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-sm text-neutral-600">Objectif: exprimer ton avis de façon simple, justifier brièvement et interagir avec l'examinateur.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {taskThreeDiscussionIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={taskThreeDiscussionIntroVideoUrl} />
@@ -2138,7 +2138,7 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-sm text-neutral-600">Objectif: décrire l'image simplement, en phrases courtes et claires.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {speakBranchA1TaskOneIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={speakBranchA1TaskOneIntroVideoUrl} />
@@ -2172,7 +2172,7 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-sm text-neutral-600">Objectif: décrire une expérience, un processus ou une situation hypothétique.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {speakBranchB1IntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={speakBranchB1IntroVideoUrl} />
@@ -2946,7 +2946,7 @@ export default function RunnerScreenRouter({
                     <p className="mb-0 text-sm text-neutral-600">Regarde la correction et compare-la à tes réponses.</p>
 
                     <div className="w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {speakA2CorrectionVideoUrl ? (
                                 <video
                                     controls
@@ -3188,7 +3188,7 @@ export default function RunnerScreenRouter({
                     <p className="mb-0 text-sm text-neutral-600">Regarde la correction et compare-la à tes réponses.</p>
 
                     <div className="w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {speakBranchCorrectionVideoUrl ? (
                                 <video
                                     controls
@@ -3249,7 +3249,7 @@ export default function RunnerScreenRouter({
                         </p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {listeningIntroVideoUrl && (
                                 <video
                                     controls
@@ -3764,7 +3764,7 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 mt-2 text-sm text-neutral-600">Commence quand tu es prêt. Tes réponses sont enregistrées question par question.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
-                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 bg-neutral-800/95 p-2 shadow-1">
+                        <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
                             {readWriteIntroVideoUrl && (
                                 <video controls preload="metadata" className="block h-auto w-full rounded-[0.85rem]">
                                     <source src={readWriteIntroVideoUrl} />

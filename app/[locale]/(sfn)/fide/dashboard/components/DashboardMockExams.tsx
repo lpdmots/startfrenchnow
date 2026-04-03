@@ -76,7 +76,9 @@ export const DashboardMockExams = ({
                 <div className="card border-2 border-solid border-neutral-700 p-6 text-center">
                     {canUseCredit ? (
                         <>
-                            <p className="mb-2 font-semibold text-lg">Tu as {credits} crédit{credits > 1 ? "s" : ""} disponible{credits > 1 ? "s" : ""}.</p>
+                            <p className="mb-2 font-semibold text-lg">
+                                Tu as {credits} crédit{credits > 1 ? "s" : ""} disponible{credits > 1 ? "s" : ""}.
+                            </p>
                             <p className="mb-4 text-neutral-600">Active ton examen blanc maintenant pour commencer la passation.</p>
                             <div className="flex justify-center">
                                 <PurchaseMockExamForm disabled={!canUseCredit} credits={credits} ctaLabel="Utiliser mon crédit" />
@@ -84,7 +86,9 @@ export const DashboardMockExams = ({
                         </>
                     ) : hasCredit && availableToPurchase <= 0 ? (
                         <>
-                            <p className="mb-2 font-semibold text-lg">Tu as {credits} crédit{credits > 1 ? "s" : ""}, mais aucun template n&apos;est disponible pour le moment.</p>
+                            <p className="mb-2 font-semibold text-lg">
+                                Tu as {credits} crédit{credits > 1 ? "s" : ""}, mais aucun template n&apos;est disponible pour le moment.
+                            </p>
                             <p className="mb-0 text-neutral-600">Reviens un peu plus tard, de nouveaux examens seront ajoutés.</p>
                         </>
                     ) : canBuyFromShop ? (
@@ -122,7 +126,6 @@ export const DashboardMockExams = ({
                                     {imgUrl ? (
                                         <>
                                             <Image src={imgUrl} alt={`Compilation ${index + 1}`} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                                         </>
                                     ) : (
                                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,#f6d6b8_0%,#f0c090_32%,#dca46c_62%,#b87a47_100%)]" />

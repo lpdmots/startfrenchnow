@@ -22,9 +22,9 @@ const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; 
 
     return (
         <Link href={href} aria-label={ariaLabel} className="!no-underline group" data-analytics={isLocked ? "click_buy_pack_from_catalog_secondary" : undefined}>
-            <div className="relative card blog-secondary-card link-card w-inline-block !p-4 !sm:p-8 overflow-hidden">
+            <div className="relative card flex p-[30px] items-center gap-x-[28px] gap-y-[28px] max-[767px]:pt-[24px] max-[767px]:pr-[24px] max-[767px]:pl-[24px] max-[767px]:flex-col max-[767px]:items-stretch link-card w-inline-block !p-4 !sm:p-8 overflow-hidden">
                 {/* Image + badge pack */}
-                <div className="blog-card-image-wrapper inside-card blog-secondary-card-image flex flex-col gap-4 h-full" style={{ maxHeight: "none", overflow: "visible" }}>
+                <div className="blog-card-image-wrapper inside-card flex max-h-[242px] max-w-[274px] justify-center items-center self-start [flex:1_1] max-[991px]:max-w-[222px] max-[767px]:max-h-[none] max-[767px]:max-w-[199%] flex flex-col gap-4 h-full" style={{ maxHeight: "none", overflow: "visible" }}>
                     <div className="rounded-2xl sm:rounded-3xl" style={{ overflow: "hidden" }}>
                         <ScaleChildren>
                             <Image
@@ -33,7 +33,7 @@ const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; 
                                 height={200}
                                 loading="lazy"
                                 alt={postTitle || "no title"}
-                                className={`blog-card-image object-contain transition duration-200 ${isLocked ? "group-hover:opacity-60" : ""}`}
+                                className={`w-full h-full object-cover object-contain transition duration-200 ${isLocked ? "group-hover:opacity-60" : ""}`}
                                 style={{ width: "auto", height: "auto", maxHeight: "200px", minHeight: 150 }}
                             />
                         </ScaleChildren>
@@ -47,7 +47,7 @@ const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; 
                 </div>
 
                 {/* Contenu carte */}
-                <div className={`inner-container blog-secondary-card-content flex flex-col justify-between ${isLocked ? "transition md:group-hover:opacity-70" : ""}`} style={{ minHeight: 200 }}>
+                <div className={`inner-container min-w-[205px] [flex:1_1] max-[767px]:min-w-auto flex flex-col justify-between ${isLocked ? "transition md:group-hover:opacity-70" : ""}`} style={{ minHeight: 200 }}>
                     <div>
                         <div className="flex gap-2 items-center mb-2">
                             {isLocked && <Image src="/images/cadenas-ferme.png" alt="Contenu réservé au Pack FIDE" width={32} height={32} className="h-8 w-8 mt-0.5 shrink-0" />}

@@ -15,13 +15,13 @@ export function MockExamsFaqSection() {
     return (
         <section id="mock-exams-faq" className="pt-14 pb-6 lg:pt-24 lg:pb-10">
             <div className="mx-auto w-full max-w-7xl px-2 lg:px-8">
-                <div className="rounded-3xl border border-neutral-300 bg-gradient-to-br from-neutral-100 to-secondaryShades-6 p-2 md:p-7 lg:p-10">
+                <div className="p-0">
                     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-10">
                         <SlideFromLeft>
                             <div className="lg:sticky lg:top-24 lg:self-start">
                                 <p className="mb-4 md:mb-8 inline-flex rounded-full bg-secondary-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
                                 <h2 className="display-2 mb-3">
-                                    {t("titlePrefix")} <span className="heading-span-secondary-5">{t("titleHighlight")}</span>,
+                                    {t("titlePrefix")} <span className="heading-span-secondary-5 max-[479px]:[white-space:normal]">{t("titleHighlight")}</span>,
                                     <br />
                                     {t("titleSuffix")}
                                 </h2>

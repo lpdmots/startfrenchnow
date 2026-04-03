@@ -11,7 +11,7 @@ export const ContactForFide = () => {
         <SlideFromLeft>
             <div className="footer-newsletter newsletter-section mt-12">
                 <div className="container-default w-container">
-                    <div className="flex-horizontal space-between newsletter-section---main">
+                    <div className="flex-horizontal space-between max-[991px]:max-w-[600px] max-[991px]:mr-auto max-[991px]:ml-auto max-[991px]:justify-center max-[767px]:max-w-[500px] max-[767px]:flex-col max-[767px]:justify-center max-[767px]:items-center">
                         <div className="image-wrapper newsletter-image-wrapper newsletter-section">
                             <Image
                                 src="/images/newsletter-image-paperfolio-webflow-template.svg"
@@ -27,7 +27,7 @@ export const ContactForFide = () => {
                                 <p className="display-4 color-neutral-100 mb-0 text-center md:text-left">{t("title")}</p>
                                 <p className="color-neutral-300 mb-0 text-center md:text-left">{t("description")}</p>
                             </div>
-                            <div className="newsletter-form-block w-form">
+                            <div className="flex w-full max-w-[470px] min-h-[68px] mb-0 flex-col justify-center max-[991px]:max-w-full max-[767px]:min-h-[58px] max-[479px]:min-h-[136px] w-form">
                                 <BookFirstMeeting label={tbutton("buttonPrimary")} variant="secondary" />
                             </div>
                         </div>

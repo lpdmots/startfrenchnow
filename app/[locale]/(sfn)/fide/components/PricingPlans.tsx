@@ -132,7 +132,7 @@ export function PricingPlans({
                 <div id="plans" className="mb-10 text-center">
                     <SlideFromBottom>
                         <>
-                            <h2 className="display-2">
+                            <h2 className="display-2 mb-4 lg:mb-8">
                                 <span className="heading-span-secondary-1">{t("titleHighlight")}</span> {t("titleRest")}
                             </h2>
                             <p className="text-lg">{t("subtitle")}</p>

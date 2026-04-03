@@ -26,12 +26,12 @@ function CourseRecommendationCard({ post }: { post: Post }) {
     const imageAlt = recommendedLevel ? t("imageAltWithLevel", { level: course.levelLabel }) : t("imageAltFallback");
 
     return (
-        <div data-w-id="32f4274f-5340-1bd4-838f-6737839a901b" className="newsletter-card p-4 sm:p-8">
+        <div data-w-id="32f4274f-5340-1bd4-838f-6737839a901b" className="flex max-w-[388px] p-[45px_32px_55px] flex-col justify-start items-center rounded-[24px] bg-[var(--primary)] shadow-[10px_10px_0_0_var(--neutral-800)] max-[991px]:max-w-full max-[991px]:pr-[40px] max-[991px]:pl-[40px] max-[767px]:p-[40px_34px_50px] max-[479px]:pr-[24px] max-[479px]:pl-[24px] max-[479px]:justify-center p-4 sm:p-8">
             <div className="mb-4 w-full flex justify-center">
                 <Image src={course.image} height={150} width={200} loading="eager" alt={imageAlt} className="w-full h-auto rounded-2xl border-2 border-solid border-neutral-800" />
             </div>
             <div className="text-centermb-8">
-                <div className="inner-container _400px---tablet center">
+                <div className="inner-container max-[991px]:max-w-[400px] center">
                     <div className="inner-container _350px---mbl center">
                         <h2 className="display-4 mb-2">{title}</h2>
                         <p className="mb-0 text-lg">{description}</p>
