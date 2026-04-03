@@ -8,7 +8,7 @@ import { MobileTabsContent } from "./MobileTabsContent";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
 import { Reviews } from "./Reviews";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 import { ModalFromBottom } from "../../animations/Modals";
 
 export const LayoutsCarousel = () => {

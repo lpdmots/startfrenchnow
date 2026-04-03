@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { Fade } from "../../animations/Fades";
 import Image from "next/image";
 import { MdOutlineEmail } from "react-icons/md";

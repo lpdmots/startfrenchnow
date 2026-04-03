@@ -2,7 +2,7 @@ import React from "react";
 import { HeroData } from "./dashboardUtils";
 import urlFor from "@/app/lib/urlFor";
 import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { formatRelative, formatToBadge } from "./VideoCard";
 import Image from "next/image";
 import { intelRich } from "@/app/lib/intelRich";

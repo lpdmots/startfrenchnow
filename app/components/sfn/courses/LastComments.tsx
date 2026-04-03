@@ -5,7 +5,7 @@ import { Fade } from "../../animations/Fades";
 import LinkArrow from "../../common/LinkArrow";
 import { SlideFromBottom } from "../../animations/Slides";
 import { getLastComments } from "@/app/serverActions/udemyActions";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 
 export interface CommentProps {
     userName?: string;

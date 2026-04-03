@@ -1,7 +1,7 @@
 import React from "react";
 import { SlideFromBottom, SlideFromRight } from "@/app/components/animations/Slides";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { FidePackSommaire } from "@/app/serverActions/productActions";
 import urlFor from "@/app/lib/urlFor";

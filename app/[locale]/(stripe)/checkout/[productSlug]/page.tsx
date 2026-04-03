@@ -1,6 +1,6 @@
 import Checkout from "@/app/components/stripe/Checkout";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 
 type Props = {

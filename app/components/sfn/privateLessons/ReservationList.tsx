@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Popover } from "../../animations/Popover";
 import { toHours } from "@/app/lib/utils";
 import { BookMeeting } from "@/app/[locale]/(sfn)/fide/components/BookMeeting";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { RxCross1 } from "react-icons/rx";
 import { Event } from "@/app/types/sfn/lessons";
 import { ModalFromBottom } from "../../animations/Modals";

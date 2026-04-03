@@ -5,7 +5,7 @@ import { LEVELDATA } from "@/app/lib/constantes";
 import { Locale } from "@/i18n";
 import { ImPlay2 } from "react-icons/im";
 import { FlatFidePackItem } from "../page";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { ScaleChildren } from "@/app/components/animations/ParentToChildrens";
 
 const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; locale: Locale; hasPack: boolean }) => {

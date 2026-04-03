@@ -3,10 +3,10 @@ import { Video } from "@/app/types/sfn/video";
 import { getSubscriber, updateSubscriber } from "@/app/lib/apiNavigation";
 import { client } from "@/app/lib/sanity.client";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { useState, FormEvent, ChangeEvent, Dispatch, SetStateAction } from "react";
 import Spinner from "@/app/components/common/Spinner";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 
 interface State {
     subscriberId: string | null;

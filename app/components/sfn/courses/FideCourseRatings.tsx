@@ -1,7 +1,7 @@
 "use client";
 import { FaUserGraduate } from "react-icons/fa";
 import { CompteurIncrement, CompteurStarsIncrement } from "../../common/CompteurIncrement";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import CircularProgressMagic from "../../common/CircularProgressMagic";
 

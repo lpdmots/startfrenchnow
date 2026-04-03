@@ -5,7 +5,7 @@ import { FaUserGraduate } from "react-icons/fa";
 import { CompteurIncrement, CompteurStarsIncrement } from "../../common/CompteurIncrement";
 import { getCourseDetails } from "@/app/serverActions/udemyActions";
 import { UdemyColor } from "../../common/logos/Udemy";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 
 interface CourseDetails {
     avg_rating: number;

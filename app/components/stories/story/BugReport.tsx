@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useRouter } from "next-intl/client";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { TbMessageReport } from "react-icons/tb";
 
 const BugReport = () => {

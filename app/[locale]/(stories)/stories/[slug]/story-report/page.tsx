@@ -4,7 +4,7 @@ import Spinner from "@/app/components/common/Spinner";
 import { sendContactForm } from "@/app/lib/apiNavigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 import { useEffect, useRef, useState } from "react";
 
 interface Props {

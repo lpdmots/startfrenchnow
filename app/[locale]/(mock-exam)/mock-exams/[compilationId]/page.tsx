@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import urlFor from "@/app/lib/urlFor";

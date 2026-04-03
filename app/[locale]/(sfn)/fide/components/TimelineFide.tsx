@@ -1,6 +1,6 @@
 import { Timeline } from "@/app/components/ui/timeline";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import React from "react";
 import { FideCourseCard } from "./FideCourseCard";

@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import React from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import { SlideFromBottom } from "../../animations/Slides";

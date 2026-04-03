@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next-intl/client";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useConsentBannerOffset } from "@/app/hooks/useConsentBannerOffset";
 

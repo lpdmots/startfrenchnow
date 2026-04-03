@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { AiFillSignal } from "react-icons/ai";
 import { IoTime } from "react-icons/io5";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { MdOutlineEmail } from "react-icons/md";
 import { SlideFromBottom, SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 import { ParentToChildrens, ScaleChildren } from "../../animations/ParentToChildrens";

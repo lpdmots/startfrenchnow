@@ -2,7 +2,7 @@
 import { StarRating } from "@/app/components/common/StarRating.js";
 import { forwardRef, MouseEvent, useRef, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 import { setStoryFeedback, updateFeedback } from "@/app/serverActions/storyActions";
 import { useSession } from "next-auth/react";
 import Spinner from "@/app/components/common/Spinner";

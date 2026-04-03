@@ -2,7 +2,7 @@
 import { useSetStartData } from "@/app/hooks/stories/useSetStartData";
 import { useStoryStore } from "@/app/stores/storiesStore";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 import { ModalFromBottom } from "../../animations/Modals";
 import urlFor from "@/app/lib/urlFor";
 import { ElementProps } from "@/app/types/stories/element";

@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { RiSpeakLine } from "react-icons/ri";
 import { LuFileText, LuGlasses, LuGraduationCap, LuLightbulb, LuPencil, LuVideo } from "react-icons/lu";
 import DropdownMenu from "../common/DropdownMenu";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import clsx from "clsx";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;

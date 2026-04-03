@@ -4,7 +4,7 @@ import { UdemySmall } from "@/app/components/common/logos/Udemy";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaCheck, FaStar, FaStarHalfAlt, FaTimes, FaUserGraduate } from "react-icons/fa";

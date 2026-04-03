@@ -9,7 +9,7 @@ import { MdOndemandVideo } from "react-icons/md";
 import { RiFolderDownloadLine } from "react-icons/ri";
 import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 import { BsInfinity, BsTrophy } from "react-icons/bs";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { CourseRatings } from "@/app/components/sfn/courses/CourseRatings";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useLocale, useTranslations } from "next-intl";

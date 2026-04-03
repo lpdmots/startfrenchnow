@@ -1,7 +1,7 @@
 import { HeroData } from "./dashboardUtils";
 import Image from "next/image";
 import urlFor from "@/app/lib/urlFor";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 

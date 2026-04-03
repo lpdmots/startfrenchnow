@@ -2,7 +2,7 @@
 
 import React from "react";
 import { m } from "framer-motion";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { CATEGORIESTEXTCOLORS } from "@/app/lib/constantes";
 import { cn } from "@/app/lib/schadcn-utils";

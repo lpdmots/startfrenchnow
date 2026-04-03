@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Locale } from "@/i18n";
 import { CATEGORIESCOLORS } from "@/app/lib/constantes";
 import { RichTextComponents } from "@/app/components/sanity/RichTextComponents";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import VideoProgressPlayer from "./VideoProgressPlayer";
 import { ManualWatched } from "./ManualWatched";

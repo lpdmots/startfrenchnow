@@ -4,7 +4,7 @@ import { Fade } from "@/app/components/animations/Fades";
 import { SlideFromBottom, SlideFromLeft, SlideFromRight } from "@/app/components/animations/Slides";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { ArrowRight, CheckCircle2, Clock3, Sparkles } from "lucide-react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 type MockExamsOfferSectionProps = {

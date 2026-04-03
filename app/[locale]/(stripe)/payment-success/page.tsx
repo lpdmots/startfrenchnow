@@ -1,5 +1,5 @@
 import { NotebookPen } from "lucide-react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 import { getServerSession } from "next-auth";

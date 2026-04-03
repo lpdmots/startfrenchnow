@@ -8,7 +8,7 @@ import { toHours } from "@/app/lib/utils";
 import { clsx } from "clsx";
 import { NotebookPen } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 
 export default function ClientLessonFetcher({ eventType, isSmall = false }: { eventType: keyof typeof EVENT_TYPES; isSmall?: boolean }) {
     const t = useTranslations("dashboard.PrivateLessons.common");

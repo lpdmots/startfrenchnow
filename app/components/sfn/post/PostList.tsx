@@ -2,7 +2,7 @@ import { CATEGORIES } from "@/app/lib/constantes";
 import { Category, Post } from "@/app/types/sfn/blog";
 import { Locale } from "@/i18n";
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { intelRich } from "@/app/lib/intelRich";
 import { PostsListInfiniteScroll } from "./PostsListInfiniteScroll";
 import LinkToFideVideos from "../../common/LinkToFideVideos";

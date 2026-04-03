@@ -7,7 +7,7 @@ import PriceSliderFide from "../components/PriceSliderFide";
 import { ContactForFideCourses } from "../components/ContactForFideCourses";
 import { FideFaq } from "../components/FideFaq";
 import { AdditionalCourses } from "../components/AdditionalCourses";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { HeroPrivateCourses } from "./components/HeroPrivateCourses";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");

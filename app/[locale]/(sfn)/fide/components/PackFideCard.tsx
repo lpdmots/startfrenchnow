@@ -2,7 +2,7 @@ import { ParentToChildrens, RotateChildren, ScaleChildren, TranslateRightChildre
 import { Separator } from "@/app/components/ui/separator";
 import { cn } from "@/app/lib/schadcn-utils";
 import clsx from "clsx";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import React, { useEffect, useState } from "react";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 import { BookFirstMeeting, BookReservation } from "./BookFirstMeeting";

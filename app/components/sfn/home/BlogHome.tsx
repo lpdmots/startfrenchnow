@@ -10,7 +10,7 @@ import { Scale } from "../../animations/Scale";
 import { ParentToChildrens } from "../../animations/ParentToChildrens";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { localizePosts } from "@/app/lib/utils";
 import { Locale } from "@/i18n";
 import { BLOGCATEGORIES } from "@/app/lib/constantes";

@@ -4,7 +4,7 @@ import { InstagramBig, InstagramSmall } from "../../common/logos/Instagram";
 import { TiktokBig, TiktokSmall } from "../../common/logos/Tiktok";
 import { UdemyBig, UdemySmall } from "../../common/logos/Udemy";
 import { YoutubeBig, YoutubeSmall } from "../../common/logos/Youtube";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 
 function MarqueeContent() {
     return (

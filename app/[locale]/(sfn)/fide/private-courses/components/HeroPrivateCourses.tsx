@@ -1,6 +1,6 @@
 import { CheckCircle2, Clock3, MessageCircle, Target } from "lucide-react";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { BookFirstMeeting } from "../../components/BookFirstMeeting";
 import { FideCourseRatings } from "@/app/components/sfn/courses/FideCourseRatings";
 import { SlideFromBottom } from "@/app/components/animations/Slides";

@@ -8,7 +8,7 @@ import { StoryNavbar } from "./StoryNavbar";
 import DarkMode from "../../common/DarkMode";
 import { ModalFromBottom } from "../../animations/Modals";
 import SimpleButton from "../../animations/SimpleButton";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 import { ReviewFormularNavbar } from "./ReviewFormular";
 import { useSession } from "next-auth/react";
 import { getUserStoryData } from "@/app/serverActions/storyActions";

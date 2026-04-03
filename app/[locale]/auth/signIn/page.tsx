@@ -1,5 +1,5 @@
 import { FaUserGraduate } from "react-icons/fa";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { CredentialsForm } from "@/app/components/auth/CredentialsForm";
 import { ContinueWithGoogle } from "@/app/components/auth/ContinueWithGoogle";

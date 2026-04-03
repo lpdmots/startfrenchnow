@@ -1,5 +1,5 @@
 import { SlideFromBottom, SlideInOneByOneChild, SlideInOneByOneParent } from "@/app/components/animations/Slides";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ArrowRight, BookOpen, UserRound } from "lucide-react";
 

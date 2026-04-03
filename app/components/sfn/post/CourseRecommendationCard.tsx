@@ -1,7 +1,7 @@
 import { BLOG_COURSE_FALLBACK_LEVEL, BLOG_COURSE_RECOMMENDATIONS } from "@/app/lib/constantes";
 import type { Level, Post } from "@/app/types/sfn/blog";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
 type BlogCourseLevel = keyof typeof BLOG_COURSE_RECOMMENDATIONS;

@@ -4,7 +4,7 @@ import React from "react";
 import { AiFillSignal } from "react-icons/ai";
 import { ImPlay2 } from "react-icons/im";
 import { FiLock } from "react-icons/fi";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { LEVELDATA } from "@/app/lib/constantes";
 import { FlatFidePackItem } from "../page";
 import { ScaleChildren } from "@/app/components/animations/ParentToChildrens";

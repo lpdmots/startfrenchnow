@@ -12,7 +12,7 @@ import BlogFideFloatingHelp from "@/app/components/sfn/post/BlogFideFloatingHelp
 import BlogContactFloatingHelp from "@/app/components/sfn/post/BlogContactFloatingHelp";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { BLOGCATEGORIES } from "@/app/lib/constantes";
 import CommentList from "@/app/components/comments/CommentList";
 import CommentComposer from "@/app/components/comments/CommentComposer";

@@ -1,4 +1,4 @@
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { MdOndemandVideo } from "react-icons/md";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiFolderDownloadLine } from "react-icons/ri";

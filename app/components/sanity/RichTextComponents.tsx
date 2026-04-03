@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import urlFor from "@/app/lib/urlFor";
 import TabelVoc from "./RichTextSfnComponents/TabelVoc";
 import { FaFileDownload } from "react-icons/fa";

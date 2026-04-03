@@ -1,6 +1,6 @@
 import { HeroData } from "./dashboardUtils";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { formatRelative, formatToBadge } from "./VideoCard";
 import { toHours } from "@/app/lib/utils";
 import { useTranslations } from "next-intl";

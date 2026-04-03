@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { LuBarChart3, LuClock, LuFileCheck2, LuCheckCircle2, LuActivity } from "react-icons/lu";
 import { LucideSparkles } from "lucide-react";
 import Image from "next/image";

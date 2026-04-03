@@ -4,7 +4,7 @@ import Image from "next/image";
 import { SlideFromBottom } from "../../animations/Slides";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { Locale } from "@/i18n";
 
 export const WhyStories = () => {
