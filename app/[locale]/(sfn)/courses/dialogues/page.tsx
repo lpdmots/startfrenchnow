@@ -269,7 +269,7 @@ const PricingCallout = ({
     const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
     const discountBadge = hasDiscount
         ? isPercentage
-            ? t("savePercent", { percent: pricingDetails.discountValue })
+            ? t("savePercent", { percent: pricingDetails.discountValue as number })
             : t("saveAmount", { amount: formatPrice(discountAmount) })
         : null;
 

@@ -246,7 +246,7 @@ const PricingCallout = ({ pricingDetails, locale, align, className }: { pricingD
     const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
     const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
     const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
-    const discountBadge = hasDiscount ? (isPercentage ? t("savePercent", { percent: pricingDetails.discountValue }) : t("saveAmount", { amount: formatPrice(discountAmount) })) : null;
+    const discountBadge = hasDiscount ? (isPercentage ? t("savePercent", { percent: pricingDetails.discountValue as number }) : t("saveAmount", { amount: formatPrice(discountAmount) })) : null;
 
     const alignText = align === "center" ? "text-center" : "text-left";
     const alignRow = align === "center" ? "justify-center" : "justify-start";
