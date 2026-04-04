@@ -67,7 +67,6 @@
         "next-intl": "^3.26.5",
         "next-sanity": "^5.5.11",
         "node-emoji": "^2.2.0",
-        "node-fetch": "^3.3.2",
         "nodemailer": "^7.0.7",
         "openai": "^4.14.2",
         "postcss-flexbugs-fixes": "^5.0.2",
