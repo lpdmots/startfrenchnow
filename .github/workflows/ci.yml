@@ -1,0 +1,75 @@
+name: CI
+
+on:
+    pull_request:
+    push:
+        branches:
+            - main
+
+jobs:
+    verify:
+        runs-on: ubuntu-latest
+        env:
+            NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+            NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+            NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+            NEXT_PUBLIC_SANITY_DATASET_PROD: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET_PROD }}
+            NEXT_PUBLIC_SANITY_API_VERSION: ${{ secrets.NEXT_PUBLIC_SANITY_API_VERSION }}
+            SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+            NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+            NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+            UDEMY_API_KEY: ${{ secrets.UDEMY_API_KEY }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Typecheck
+              run: npm run typecheck
+
+            - name: Lint
+              run: npm run lint:quiet
+
+            - name: Check build env
+              id: build_env
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  required=(
+                    NEXT_PUBLIC_GTM_ID
+                    NEXT_PUBLIC_SANITY_PROJECT_ID
+                    NEXT_PUBLIC_SANITY_DATASET
+                    NEXT_PUBLIC_SANITY_DATASET_PROD
+                    NEXT_PUBLIC_SANITY_API_VERSION
+                    SANITY_API_TOKEN
+                    NEXTAUTH_SECRET
+                    NEXTAUTH_URL
+                  )
+                  missing=()
+                  for var in "${required[@]}"; do
+                    if [ -z "${!var:-}" ]; then
+                      missing+=("$var")
+                    fi
+                  done
+                  if [ "${#missing[@]}" -eq 0 ]; then
+                    echo "ready=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "ready=false" >> "$GITHUB_OUTPUT"
+                    echo "missing=${missing[*]}" >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Build
+              if: steps.build_env.outputs.ready == 'true'
+              run: npm run build -- --no-lint
+
+            - name: Build skipped (missing secrets)
+              if: steps.build_env.outputs.ready != 'true'
+              run: echo "::warning::Build step skipped because required secrets are missing: ${{ steps.build_env.outputs.missing }}"
