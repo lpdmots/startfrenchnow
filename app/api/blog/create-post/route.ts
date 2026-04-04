@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
 import { createSlug } from "@/app/lib/utils";
 import { htmlToBlocks } from "@sanity/block-tools";
-import Schema from "@sanity/schema";
+import { Schema } from "@sanity/schema";
 import { JSDOM } from "jsdom";
 import { v4 as uuidv4 } from "uuid";
 
