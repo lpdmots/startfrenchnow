@@ -5,11 +5,11 @@ import "@fontsource/poppins/700.css";
 import "@/app/styles/globals.css";
 import Providers from "./providers";
 import { NextIntlClientProvider } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Toaster } from "@/app/components/ui/toaster";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { locales, type Locale } from "@/i18n";
-import { cookies } from "next/headers";
 import Script from "next/script";
 import enMessages from "@/app/dictionaries/en.json";
 import frMessages from "@/app/dictionaries/fr.json";
@@ -26,12 +26,19 @@ export async function generateMetadata({ params: { locale } }: { params: { local
         metadataBase: baseUrl,
         title: "Start French Now",
         robots: { index: true, follow: true },
-        themeColor: [
-            { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-            { media: "(prefers-color-scheme: dark)", color: "#0b0b0b" },
-        ],
         icons: { icon: "/favicon.ico" },
     };
+}
+
+export const viewport: Viewport = {
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+        { media: "(prefers-color-scheme: dark)", color: "#0b0b0b" },
+    ],
+};
+
+export function generateStaticParams() {
+    return locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout({ children, params }: { children: React.ReactNode; params: { locale: Locale } }) {
@@ -41,21 +48,38 @@ export default async function RootLayout({ children, params }: { children: React
         throw new Error("Missing NEXT_PUBLIC_GTM_ID in .env.local");
     }
 
-    // Show a 404 error if the user requests an unknown locale
-    if (params.locale !== locale) {
+    if (!locales.includes(locale)) {
         notFound();
     }
 
-    // Applique le thème dès le rendu serveur
-    const cookieTheme = cookies().get("sfn-theme")?.value;
-    const ssrTheme = cookieTheme === "dark" ? "dark" : "light";
+    // Enable static rendering for next-intl in App Router
+    setRequestLocale(locale);
 
     const messages = locale === "fr" ? frMessages : enMessages;
 
     return (
-        <html lang={locale} dir="ltr" data-theme={ssrTheme} suppressHydrationWarning className="font-sans">
+        <html lang={locale} dir="ltr" data-theme="light" suppressHydrationWarning className="font-sans">
             <head>
                 <meta name="color-scheme" content="light dark" />
+                <Script id="theme-init" strategy="beforeInteractive">
+                    {`
+                  (function () {
+                    try {
+                      var themeFromStorage = localStorage.getItem('sfn-theme');
+                      var themeFromCookie = document.cookie
+                        .split('; ')
+                        .find(function (row) { return row.indexOf('sfn-theme=') === 0; })
+                        ?.split('=')[1];
+                      var theme = themeFromStorage || themeFromCookie;
+                      if (theme === 'dark') {
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                      } else {
+                        document.documentElement.setAttribute('data-theme', 'light');
+                      }
+                    } catch (e) {}
+                  })();
+                `}
+                </Script>
                 {/* 1) Consent Mode v2: default = denied (Advanced mode) */}
                 <Script id="consent-default" strategy="beforeInteractive">
                     {`
