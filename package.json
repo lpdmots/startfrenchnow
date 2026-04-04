@@ -79,6 +79,7 @@
         "react-img-mapper": "^1.5.1",
         "react-lite-youtube-embed": "^2.3.52",
         "react-tiny-popover": "^7.2.4",
+        "request": "^2.88.2",
         "sanitize-html": "^2.17.0",
         "sanity": "^3.0.0",
         "sanity-plugin-iframe-pane": "^2.1.1",
