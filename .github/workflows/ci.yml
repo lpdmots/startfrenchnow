@@ -68,7 +68,7 @@ jobs:
 
             - name: Build
               if: steps.build_env.outputs.ready == 'true'
-              run: npm run build -- --no-lint
+              run: npm run build
 
             - name: Build skipped (missing secrets)
               if: steps.build_env.outputs.ready != 'true'

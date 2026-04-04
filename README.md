@@ -18,7 +18,7 @@ Important: utiliser `npm ci` (et pas `npm i`) pour respecter exactement `package
 - `npm run dev`: dev server principal avec Turbopack
 - `npm run typecheck`: verification TypeScript sans emission
 - `npm run lint:quiet`: lint sans warnings non bloquants
-- `npm run build -- --no-lint`: build prod
+- `npm run build`: build prod
 - `npm run analyze`: build + rapport bundle analyzer (`ANALYZE=true`)
 
 ## Notes de workflow
@@ -35,4 +35,4 @@ Le workflow execute:
 1. `npm ci`
 2. `npm run typecheck`
 3. `npm run lint:quiet`
-4. `npm run build -- --no-lint` (si les secrets requis sont presents)
+4. `npm run build` (si les secrets requis sont presents)
