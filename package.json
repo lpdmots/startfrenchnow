@@ -4,8 +4,6 @@
     "private": true,
     "scripts": {
         "dev": "next dev --turbo",
-        "dev:webpack": "next dev",
-        "dev:studio": "next dev",
         "build": "next build",
         "analyze": "ANALYZE=true npm run build -- --no-lint",
         "start": "next start",
