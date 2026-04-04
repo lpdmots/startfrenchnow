@@ -4,7 +4,7 @@ import { CommentProps } from "../courses/LastComments";
 import { renderStars } from "../../common/CompteurIncrement";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
 import { cn } from "@/app/lib/schadcn-utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getLastComments } from "@/app/serverActions/udemyActions";
 
 const COURSE_ID = "3693426";
@@ -82,11 +82,11 @@ export function MarqueeSocial({ locale }: { locale: string }) {
     const isMedium = useMediaQuery("(max-width: 768px)");
     const [comments, setComments] = useState<CommentProps[]>([]);
 
-    const getDate = (dateString: string) => {
+    const getDate = useCallback((dateString: string) => {
         const date = new Date(dateString);
         const options: Intl.DateTimeFormatOptions = { day: "numeric", month: "long", year: "numeric" };
         return date.toLocaleDateString(locale, options);
-    };
+    }, [locale]);
 
     const firstRow = comments.length ? comments.slice(comments.length / 2) : reviews.slice(reviews.length / 2);
     const secondRow = comments.length ? comments.slice(0, comments.length / 2) : reviews.slice(0, reviews.length / 2);
@@ -102,14 +102,14 @@ export function MarqueeSocial({ locale }: { locale: string }) {
                     console.error(comments.error.message);
                     continue;
                 }
-                const filtredComments = comments
-                    .filter((comment: any) => comment.content.length > 50 && comment.rating > 4)
+                const filtredComments = (Array.isArray(comments) ? comments : [])
+                    .filter((comment: any) => typeof comment?.content === "string" && comment.content.length > 50 && typeof comment?.rating === "number" && comment.rating > 4)
                     .map((comment: any) => {
-                        const date = getDate(comment.created);
+                        const date = typeof comment?.created === "string" ? getDate(comment.created) : "";
                         return {
                             comment: comment.content,
                             rating: comment.rating,
-                            userName: comment.user.display_name,
+                            userName: comment?.user?.display_name || "Anonymous",
                             created: date,
                         };
                     });
@@ -119,7 +119,7 @@ export function MarqueeSocial({ locale }: { locale: string }) {
             useFullComments.length = Math.min(useFullComments.length, NBREOFCOMMENTS);
             setComments(useFullComments);
         })();
-    }, []);
+    }, [getDate]);
 
     return (
         <div className="flex justify-center">
