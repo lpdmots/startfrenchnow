@@ -7,6 +7,7 @@
         "dev:webpack": "next dev",
         "dev:studio": "next dev",
         "build": "next build",
+        "analyze": "ANALYZE=true npm run build -- --no-lint",
         "start": "next start",
         "lint": "next lint",
         "typecheck": "tsc --noEmit --pretty false",
@@ -95,6 +96,7 @@
     },
     "devDependencies": {
         "@fullhuman/postcss-purgecss": "^5.0.0",
+        "@next/bundle-analyzer": "^14.2.35",
         "@sanity/eslint-config-studio": "^2.0.1",
         "@tailwindcss/line-clamp": "^0.4.4",
         "@types/bcrypt": "^5.0.0",

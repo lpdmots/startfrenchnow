@@ -1,8 +1,12 @@
 /** @type {import('next').NextConfig} */
 
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+    enabled: process.env.ANALYZE === "true",
+});
 const withNextIntl = require("next-intl/plugin")("./i18n.ts");
 
-module.exports = withNextIntl({
+module.exports = withBundleAnalyzer(
+    withNextIntl({
     reactStrictMode: true,
     images: {
         remotePatterns: [
@@ -46,4 +50,5 @@ module.exports = withNextIntl({
 
         return redirects;
     },
-});
+    })
+);
