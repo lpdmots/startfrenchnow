@@ -44,6 +44,11 @@ const queryLatest = groq`
 `;
 
 export async function generateStaticParams() {
+    // Keep dev responsive: avoid precomputing all post slugs while coding.
+    if (process.env.NODE_ENV === "development") {
+        return [];
+    }
+
     const posts = await client.fetch<{ slug: string }[]>(querySlugs, {
         categories: BLOGCATEGORIES,
     });
