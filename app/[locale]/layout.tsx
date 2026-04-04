@@ -1,5 +1,4 @@
 import "@/app/styles/globals.css";
-import { Poppins } from "next/font/google";
 import Providers from "./providers";
 import { NextIntlClientProvider, useLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -11,12 +10,6 @@ import Script from "next/script";
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
-
-const poppins = Poppins({
-    subsets: ["latin"],
-    weight: ["400", "500", "600", "700"],
-    variable: "--font-poppins",
-});
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }): Promise<Metadata> {
     if (!locales.includes(locale)) notFound();
@@ -59,7 +52,7 @@ export default async function RootLayout({ children, params }: { children: React
     }
 
     return (
-        <html lang={locale} dir="ltr" data-theme={ssrTheme} suppressHydrationWarning className={`${poppins.variable} font-sans`}>
+        <html lang={locale} dir="ltr" data-theme={ssrTheme} suppressHydrationWarning className="font-sans">
             <head>
                 <meta name="color-scheme" content="light dark" />
                 {/* 1) Consent Mode v2: default = denied (Advanced mode) */}
