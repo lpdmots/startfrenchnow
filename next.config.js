@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 
+const path = require("path");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
@@ -7,6 +8,7 @@ const withNextIntl = require("next-intl/plugin")("./i18n.ts");
 
 module.exports = withBundleAnalyzer(
     withNextIntl({
+    outputFileTracingRoot: path.join(__dirname),
     reactStrictMode: true,
     images: {
         remotePatterns: [

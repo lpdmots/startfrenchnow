@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 import { createExamReviewFromCalendlyBooking } from "@/app/serverActions/mockExamActions";
 
 type PageProps = {
-    params: { slug: string };
-    searchParams: { event_uri?: string; test?: string; continue_url?: string; session_key?: string; compilation_id?: string };
+    params: Promise<{ slug: string }>;
+    searchParams: Promise<{ event_uri?: string; test?: string; continue_url?: string; session_key?: string; compilation_id?: string }>;
 };
 
 type CalendlyScheduledEvent = {
@@ -71,7 +71,9 @@ async function fetchScheduledEvent(eventUriRaw?: string): Promise<CalendlySchedu
     return null;
 }
 
-export default async function RdvSuccess({ params, searchParams }: PageProps) {
+export default async function RdvSuccess(props: PageProps) {
+    const searchParams = await props.searchParams;
+    const params = await props.params;
     // supporte event_uri (ta route) + eventUri (au cas où)
     const eventUri = searchParams.event_uri;
     const continueUrl = searchParams.continue_url || "/fide";

@@ -5,9 +5,13 @@ import { getVideosPostsSlice } from "@/app/serverActions/blogActions";
 import { NUMBER_OF_POSTS_TO_FETCH } from "@/app/lib/constantes";
 import { intelRich } from "@/app/lib/intelRich";
 import { localizePosts } from "@/app/lib/utils";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 
-export default async function Videos({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function Videos(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const postsData: Post[] = await getVideosPostsSlice(0, NUMBER_OF_POSTS_TO_FETCH);
     const posts = localizePosts(postsData, locale);
     return <VideosNoAsync posts={posts} />;

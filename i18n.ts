@@ -4,6 +4,7 @@ import frMessages from "./app/dictionaries/fr.json";
 
 export type Locale = "en" | "fr";
 export const locales = ["en", "fr"] as const;
+type SupportedLocale = Locale;
 
 const messagesByLocale = {
     en: enMessages,
@@ -14,10 +15,14 @@ const messagesByLocale = {
 
 export default getRequestConfig(async ({ requestLocale }) => {
     const requested = await requestLocale;
-    const locale: Locale = requested === "fr" ? "fr" : "en";
+    const locale: SupportedLocale = requested === "fr" ? "fr" : "en";
 
     return {
         locale,
         messages: messagesByLocale[locale],
     };
 });
+
+export function normalizeLocale(locale: string | undefined): Locale {
+    return locale === "fr" ? "fr" : "en";
+}

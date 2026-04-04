@@ -5,7 +5,13 @@ import { ReactNode } from "react";
 import enMessages from "@/app/dictionaries/en.json";
 import frMessages from "@/app/dictionaries/fr.json";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
     const t = await getTranslations({ locale: locale, namespace: "Metadata.Fide" });
 
     const path = "/fide";
@@ -27,10 +33,20 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 
 interface Props {
     children: ReactNode;
-    params: { locale: string };
+    params: Promise<{ locale: string }>;
 }
 
-export default async function FideLayout({ children, params: { locale } }: Props) {
+export default async function FideLayout(props: Props) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
+    const {
+        children
+    } = props;
+
     const fullMessages = locale === "fr" ? frMessages : enMessages;
     const messages = fullMessages["Fide"];
 

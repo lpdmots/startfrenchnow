@@ -1,4 +1,4 @@
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import React from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
@@ -10,7 +10,14 @@ import { getCategoryPostsSlice } from "@/app/serverActions/blogActions";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 
-export default async function VideosFidePage({ params: { locale }, searchParams }: { params: { locale: Locale }; searchParams: Record<string, string | string[] | undefined> }) {
+export default async function VideosFidePage(
+    props: { params: Promise<{ locale: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
+) {
+    const searchParams = await props.searchParams;
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const fidePackSommaire = await getFidePackSommaire(locale);

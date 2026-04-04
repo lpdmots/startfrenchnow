@@ -1,3 +1,4 @@
+import { use } from "react";
 import { FaUserGraduate } from "react-icons/fa";
 import { Link } from "@/i18n/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -9,8 +10,12 @@ import { intelRich } from "@/app/lib/intelRich";
 export const metadata = {
     robots: { index: false, follow: false },
 };
+export const dynamic = "force-dynamic";
 
-const SignIn = ({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) => {
+const SignIn = (
+    props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }
+) => {
+    const searchParams = use(props.searchParams);
     const callbackUrl = searchParams?.callbackUrl || "/";
     const info = searchParams?.info || "";
     const t = useTranslations("Auth.SignIn");

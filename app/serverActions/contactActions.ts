@@ -14,8 +14,8 @@ const getRateStore = () => {
     return g.__pdfRateStore as Map<string, number[]>;
 };
 
-const getIp = () => {
-    const h = headers();
+const getIp = async () => {
+    const h = await headers();
     const xff = h.get("x-forwarded-for")?.split(",")[0]?.trim();
     return xff || h.get("x-real-ip") || "unknown";
 };
@@ -96,7 +96,7 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
         return { status: "success" };
     }
 
-    const ip = getIp();
+    const ip = await getIp();
     if (!allowRequest(ip)) {
         return { status: "error", error: "rateLimited" };
     }

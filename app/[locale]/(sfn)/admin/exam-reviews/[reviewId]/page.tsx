@@ -392,7 +392,8 @@ function ReadWriteSection({ answers }: { answers: ReviewAnswer[] }) {
     );
 }
 
-export default async function AdminExamReviewDetailPage({ params }: { params: { locale: string; reviewId: string } }) {
+export default async function AdminExamReviewDetailPage(props: { params: Promise<{ locale: string; reviewId: string }> }) {
+    const params = await props.params;
     const { locale, reviewId } = params;
     const detailPath = locale === "fr" ? `/fr/admin/exam-reviews/${reviewId}` : `/admin/exam-reviews/${reviewId}`;
     const session = await getServerSession(authOptions);

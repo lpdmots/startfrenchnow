@@ -9,7 +9,13 @@ import { getServerSession } from "next-auth";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
-export default async function FideMockExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function FideMockExamsPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
     const t = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Page" });
     const faqT = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Faq" });
     const session = await getServerSession(authOptions);

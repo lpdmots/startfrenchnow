@@ -5,7 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 
-export async function GET(_: NextRequest, { params }: { params: { componentType: string; componentId: string } }) {
+export async function GET(
+    _: NextRequest,
+    props: { params: Promise<{ componentType: string; componentId: string }> }
+) {
+    const params = await props.params;
     const { componentType, componentId } = params;
     const groqQuery = groqQueries[componentType];
 

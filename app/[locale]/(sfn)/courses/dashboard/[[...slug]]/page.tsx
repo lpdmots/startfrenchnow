@@ -1,4 +1,4 @@
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { DashboardHero } from "../components/DashboardHero";
 import { groq } from "next-sanity";
 import { getPackSommaire } from "@/app/serverActions/productActions";
@@ -27,7 +27,12 @@ export type CourseBundle = {
     hero: ReturnType<typeof buildHeroData> | null;
 };
 
-async function DashboardPage({ params: { locale, slug: specifiedId } }: { params: { locale: Locale; slug?: string } }) {
+async function DashboardPage(props: { params: Promise<{ locale: string; slug?: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    const { slug: specifiedId } = params;
+
     const session = await requireSessionAndFrench({
         callbackUrl: "/courses/dashboard",
         info: "frenchCourses",

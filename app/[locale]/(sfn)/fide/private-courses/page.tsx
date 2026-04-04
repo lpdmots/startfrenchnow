@@ -1,4 +1,4 @@
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { Formateur } from "../components/Formateur";
 import HowClassLook from "../components/HowClassLook";
 import { ReviewsFide } from "../components/ReviewsFide";
@@ -168,7 +168,11 @@ const PRIVATE_COURSES_FAQ = {
     ],
 } as const;
 
-export default function FidePrivateCoursesPage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function FidePrivateCoursesPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const isFr = locale === "fr";
     const pageContent = PAGE_CONTENT[isFr ? "fr" : "en"];
     const homePath = isFr ? "/fr" : "/";

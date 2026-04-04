@@ -1,15 +1,22 @@
+import { use } from "react";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { NewPasswordForm } from "@/app/components/auth/NewPasswordForm";
 
 interface Props {
-    params: {
+    params: Promise<{
         token: string;
-    };
+    }>;
 }
 
-const NewPassword = ({ params: { token } }: Props) => {
+const NewPassword = (props: Props) => {
+    const params = use(props.params);
+
+    const {
+        token
+    } = params;
+
     const t = useTranslations("Auth.NewPassword");
     const messages = {
         passwordPlaceholder: t("NewPasswordForm.passwordPlaceholder"),

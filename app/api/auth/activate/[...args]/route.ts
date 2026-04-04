@@ -13,10 +13,11 @@ export const dynamic = "force-dynamic";
 
 
 interface Props {
-    params: { args: string[] };
+    params: Promise<{ args: string[] }>;
 }
 
-export async function GET(_request: NextRequest, { params }: Props) {
+export async function GET(_request: NextRequest, props: Props) {
+    const params = await props.params;
     const { args } = params;
     const token = args.at(0);
     const localeFromUrl = args.at(1);

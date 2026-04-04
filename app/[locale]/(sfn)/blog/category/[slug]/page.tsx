@@ -9,10 +9,10 @@ import { localizePosts } from "@/app/lib/utils";
 import LinkToFideVideos from "@/app/components/common/LinkToFideVideos";
 
 type Props = {
-    params: {
+    params: Promise<{
         slug: Category;
         locale: Locale;
-    };
+    }>;
 };
 
 export const revalidate = 86400;
@@ -22,7 +22,14 @@ export async function generateStaticParams() {
     return BLOGCATEGORIES.filter((slug) => slug !== "fide").map((slug) => ({ slug }));
 }
 
-async function Categories({ params: { slug, locale } }: Props) {
+async function Categories(props: Props) {
+    const params = await props.params;
+
+    const {
+        slug,
+        locale
+    } = params;
+
     const postsData: Post[] = await getCategoryPostsSlice(slug, 0, 10);
     const posts = localizePosts(postsData, locale);
     return <CategoriesNoAsync posts={posts} slug={slug} />;

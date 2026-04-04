@@ -1,12 +1,13 @@
 import { GetNewLink } from "@/app/components/auth/GetNewLink";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import React from "react";
+import React, { use } from "react";
 import { useTranslations } from "next-intl";
 
 type TypeProps = "no-user" | "already-active" | "expired";
 
-const Error = ({ params }: { params: { type: TypeProps } }) => {
+const Error = (props: { params: Promise<{ type: TypeProps }> }) => {
+    const params = use(props.params);
     const t = useTranslations("Auth.Error");
     const tLink = useTranslations("Auth.GetNewLink");
     const tEmail = useTranslations("Auth.Email");

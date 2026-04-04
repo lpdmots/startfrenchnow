@@ -16,7 +16,7 @@ import { CoursesAccordionClient } from "../../fide/components/CoursesAccordionCl
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { FidePackSommaire, getPackSommaire } from "@/app/serverActions/productActions";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { Progress } from "@/app/types/sfn/auth";
 import { client } from "@/app/lib/sanity.client";
 import { HeroData, buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
@@ -34,7 +34,11 @@ const queryProduct = groq`
     *[_type=='product' && referenceKey == $referenceKey][0]
 `;
 
-export default async function BeginnersPage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function BeginnersPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id ?? null;
     const hasBeginnerCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_beginner");

@@ -15,7 +15,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { getPackSommaire } from "@/app/serverActions/productActions";
 import { client } from "@/app/lib/sanity.client";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { Progress } from "@/app/types/sfn/auth";
 import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
 import { buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
@@ -35,7 +35,11 @@ const queryProduct = groq`
     *[_type=='product' && referenceKey == $referenceKey][0]
 `;
 
-export default async function DialogsPage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function DialogsPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id ?? null;
     const hasDialogsCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_dialogs");

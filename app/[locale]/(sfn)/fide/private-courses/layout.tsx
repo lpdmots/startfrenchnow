@@ -1,6 +1,12 @@
 import { Locale } from "@/i18n";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
     const isFr = locale === "fr";
     const path = "/fide/private-courses";
     const canonical = isFr ? `/fr${path}` : path;

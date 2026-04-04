@@ -7,7 +7,7 @@ import PostContent from "@/app/components/sfn/post/PostContent";
 import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import BlogFideFloatingHelp from "@/app/components/sfn/post/BlogFideFloatingHelp";
 import BlogContactFloatingHelp from "@/app/components/sfn/post/BlogContactFloatingHelp";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
@@ -56,8 +56,10 @@ export async function generateStaticParams() {
     return posts.map((post) => ({ slug: post.slug }));
 }
 
-async function Post({ params }: { params: { locale: Locale; slug: string } }) {
-    const { locale, slug } = params;
+async function Post(props: { params: Promise<{ locale: string; slug: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+    const { slug } = params;
     const postData: Promise<BlogPost> = client.fetch(query, { slug });
     const rowLatestPostsData: Promise<BlogPost[]> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
     const [post, rowLatestPosts] = await Promise.all([postData, rowLatestPostsData]);

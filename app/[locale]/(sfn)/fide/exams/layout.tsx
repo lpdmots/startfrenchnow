@@ -1,7 +1,13 @@
 import { getTranslations } from "next-intl/server";
 import { Locale } from "@/i18n";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
     const t = await getTranslations({ locale: locale, namespace: "Metadata.FideExams" });
 
     const path = "/fide/exams";
