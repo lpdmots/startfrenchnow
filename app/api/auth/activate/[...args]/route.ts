@@ -9,6 +9,9 @@ import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 import { activationMailMessagesByLocale, buildWelcomeSystemNotification, resolveAuthLocale, welcomeMailMessagesByLocale } from "@/app/lib/authMailMessages";
 import { appendSystemNotification } from "@/app/lib/systemNotifications";
 
+export const dynamic = "force-dynamic";
+
+
 interface Props {
     params: { args: string[] };
 }

@@ -3,6 +3,9 @@ import { groq } from "next-sanity";
 import { DeleteObjectsCommand, ListObjectsV2Command, S3Client } from "@aws-sdk/client-s3";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const retentionDays = Math.max(1, Number(process.env.MOCK_EXAM_AUDIO_RETENTION_DAYS || 7));

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
+
+export const dynamic = "force-dynamic";
+
 //import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
 import fetch from "node-fetch";
@@ -7,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 import { Exam, ExamCompetence, Response } from "@/app/types/fide/exam";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL;

@@ -5,6 +5,9 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { authOptions } from "@/app/lib/authOptions";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const region = process.env.AWS_REGION || "";

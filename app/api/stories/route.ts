@@ -3,6 +3,9 @@ import { UserProps, UserScore, UserStory } from "@/app/types/sfn/auth";
 import { Adventure, StoryStats } from "@/app/types/stories/adventure";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 const INITIALSTORYSTATS = {
     gamesStarted: 0,
     games: 0,

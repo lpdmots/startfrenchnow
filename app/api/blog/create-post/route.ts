@@ -7,6 +7,9 @@ import Schema from "@sanity/schema";
 import { JSDOM } from "jsdom";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;

@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { finalizeMockExamSession } from "@/app/serverActions/mockExamActions";
 
+export const dynamic = "force-dynamic";
+
+
 export async function POST(request: Request) {
     try {
         const body = (await request.json()) as { compilationId?: string; sessionKey?: string; locale?: string };

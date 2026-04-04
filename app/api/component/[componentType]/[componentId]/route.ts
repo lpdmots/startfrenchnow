@@ -2,6 +2,9 @@ import { client } from "@/app/lib/sanity.client";
 import { groqQueries } from "@/app/lib/groqQueries";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 export async function GET(_: NextRequest, { params }: { params: { componentType: string; componentId: string } }) {
     const { componentType, componentId } = params;
     const groqQuery = groqQueries[componentType];

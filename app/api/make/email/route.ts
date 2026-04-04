@@ -1,6 +1,9 @@
 import { sendContactEmail } from "@/app/serverActions/contactActions";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 export async function POST(request: NextRequest) {
     const ContactFromFideFormData = {
         objectif: "B1",

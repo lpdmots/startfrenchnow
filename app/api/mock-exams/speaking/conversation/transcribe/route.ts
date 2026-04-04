@@ -4,6 +4,9 @@ import { groq } from "next-sanity";
 import { authOptions } from "@/app/lib/authOptions";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`

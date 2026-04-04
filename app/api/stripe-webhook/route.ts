@@ -4,6 +4,9 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 import { resolveAuthLocale } from "@/app/lib/authMailMessages";
 
+export const dynamic = "force-dynamic";
+
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: "2025-02-24.acacia",
 });

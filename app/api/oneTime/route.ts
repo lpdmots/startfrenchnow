@@ -2,6 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;

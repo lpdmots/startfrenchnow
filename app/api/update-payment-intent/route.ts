@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 if (process.env.STRIPE_SECRET_KEY === undefined) {
     throw new Error("STRIPE_SECRET_KEY is not defined");
 }

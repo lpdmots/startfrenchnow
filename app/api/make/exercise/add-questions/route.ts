@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+
+
 // Fonctio
 export async function POST(request: NextRequest) {
     const secret_key = request.headers.get("SFN-API-Key");

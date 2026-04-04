@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 const mailerToken = process.env.MAILERLITE_API_ACCESS_TOKEN;
 
 export async function POST(request: NextRequest) {

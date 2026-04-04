@@ -6,6 +6,9 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { buildConversationPrompt } from "@/app/[locale]/(mock-exam)/mock-exams/[compilationId]/runner/prompt-base";
 import { resolveConversationVoice } from "@/app/[locale]/(mock-exam)/mock-exams/[compilationId]/runner/conversation-voice";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const model = process.env.OPENAI_REALTIME_MODEL_PHONE_A2 || process.env.OPENAI_REALTIME_MODEL || "gpt-realtime";

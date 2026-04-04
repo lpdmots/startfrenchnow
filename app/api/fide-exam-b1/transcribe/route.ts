@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs"; // nécessaire pour utiliser fetch avec form-data côté serveur
 
 export async function POST(req: NextRequest) {

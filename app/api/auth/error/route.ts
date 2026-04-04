@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 export async function GET(_request: NextRequest) {
     const { searchParams } = new URL(_request.url);
     const error = searchParams.get("error");
