@@ -67,12 +67,14 @@ export default async function RootLayout(props: { children: React.ReactNode; par
 
   const messages = locale === "fr" ? frMessages : enMessages;
 
-  return (
-      <html lang={locale} dir="ltr" data-theme="light" suppressHydrationWarning className="font-sans">
-          <head>
-              <meta name="color-scheme" content="light dark" />
-              <Script id="theme-init" strategy="beforeInteractive">
-                  {`
+      return (
+          <html lang={locale} dir="ltr" data-theme="light" suppressHydrationWarning className="font-sans">
+              <head>
+                  <meta name="color-scheme" content="light dark" />
+              </head>
+              <body>
+                  <Script id="theme-init" strategy="beforeInteractive">
+                      {`
                 (function () {
                   try {
                     var themeFromStorage = localStorage.getItem('sfn-theme');
@@ -289,12 +291,10 @@ export default async function RootLayout(props: { children: React.ReactNode; par
                   document.head.appendChild(tacScript);
                 })();
               `}
-              </Script>
-          </head>
-          <body>
-              <main id="root">
-                  <NextIntlClientProvider locale={locale} messages={messages}>
-                      <Providers>{children}</Providers>
+                  </Script>
+                  <main id="root">
+                      <NextIntlClientProvider locale={locale} messages={messages}>
+                          <Providers>{children}</Providers>
                   </NextIntlClientProvider>
                   <Toaster />
               </main>
