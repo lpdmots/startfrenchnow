@@ -1435,7 +1435,7 @@
         "Email": {
             "activationEmail": {
                 "subject": "Activation de votre compte Start French Now",
-                "body": "<p>Bonjour USERNAME,</p> <br><p>Merci de vous être inscrit à Start French Now.</p> <p>Pour activer votre compte et commencer votre apprentissage, veuillez cliquer sur le lien suivant : <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/fr'>activer mon compte</a></span>.</p><br> <p>Nous sommes ravis de vous accompagner dans votre apprentissage du français et vous souhaitons une expérience enrichissante sur notre plateforme.</p><br><p>À très bientôt !</p><p>Cordialement,</p>"
+                "body": "<p>Bonjour USERNAME,</p> <br><p>Merci de vous être inscrit à Start French Now.</p> <p>Pour activer votre compte et commencer votre apprentissage, veuillez cliquer sur le lien suivant : <span><a href='DOMAIN/api/activate/ACTIVATETOKEN/fr'>activer mon compte</a></span>.</p><br> <p>Nous sommes ravis de vous accompagner dans votre apprentissage du français et vous souhaitons une expérience enrichissante sur notre plateforme.</p><br><p>À très bientôt !</p><p>Cordialement,</p>"
             },
             "ResetPasswordMail": {
                 "subject": "Réinitialisation de votre mot de passe Start French Now",

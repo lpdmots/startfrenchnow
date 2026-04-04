@@ -1426,7 +1426,7 @@
         "Email": {
             "activationEmail": {
                 "subject": "Please activate your account and Start French Now",
-                "body": "<p>Bonjour USERNAME,</p> <br><p>Thank you for signing up on Start French Now.</p> <p>To activate your account and begin your learning journey, please click on the following link: <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/en'>Activate My Account</a></span>.</p><br> <p>We’re excited to support you in your French learning experience and wish you a rewarding journey on our platform.</p><br><p>See you soon on Start French Now!</p><p>Best regards,</p>"
+                "body": "<p>Bonjour USERNAME,</p> <br><p>Thank you for signing up on Start French Now.</p> <p>To activate your account and begin your learning journey, please click on the following link: <span><a href='DOMAIN/api/activate/ACTIVATETOKEN/en'>Activate My Account</a></span>.</p><br> <p>We’re excited to support you in your French learning experience and wish you a rewarding journey on our platform.</p><br><p>See you soon on Start French Now!</p><p>Best regards,</p>"
             },
             "ResetPasswordMail": {
                 "subject": "Reset your password",
