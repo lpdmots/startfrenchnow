@@ -1,5 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode } from "react";
+import enMessages from "@/app/dictionaries/en.json";
+import frMessages from "@/app/dictionaries/fr.json";
 
 interface Props {
     children: ReactNode;
@@ -10,14 +12,8 @@ export const metadata = {
 };
 
 export default async function CheckoutLayout({ children, params: { locale } }: Props) {
-    let messages;
-
-    try {
-        const fullMessages = (await import(`@/app/dictionaries/${locale}.json`)).default;
-        messages = fullMessages["Checkout"];
-    } catch (error) {
-        throw new Error(`Impossible de charger les messages "Checkout" pour la locale ${locale}`);
-    }
+    const fullMessages = locale === "fr" ? frMessages : enMessages;
+    const messages = fullMessages["Checkout"];
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>

@@ -2,6 +2,8 @@ import { Locale } from "@/i18n";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { ReactNode } from "react";
+import enMessages from "@/app/dictionaries/en.json";
+import frMessages from "@/app/dictionaries/fr.json";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
     const t = await getTranslations({ locale: locale, namespace: "Metadata.Fide" });
@@ -29,14 +31,8 @@ interface Props {
 }
 
 export default async function FideLayout({ children, params: { locale } }: Props) {
-    let messages;
-
-    try {
-        const fullMessages = (await import(`@/app/dictionaries/${locale}.json`)).default;
-        messages = fullMessages["Fide"];
-    } catch (error) {
-        throw new Error(`Impossible de charger les messages de "Fide" pour la locale ${locale}`);
-    }
+    const fullMessages = locale === "fr" ? frMessages : enMessages;
+    const messages = fullMessages["Fide"];
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>

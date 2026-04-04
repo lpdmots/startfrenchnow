@@ -1,12 +1,14 @@
 import "@/app/styles/globals.css";
 import Providers from "./providers";
-import { NextIntlClientProvider, useLocale } from "next-intl";
+import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { Toaster } from "@/app/components/ui/toaster";
 import { Metadata } from "next";
 import { locales, type Locale } from "@/i18n";
 import { cookies } from "next/headers";
 import Script from "next/script";
+import enMessages from "@/app/dictionaries/en.json";
+import frMessages from "@/app/dictionaries/fr.json";
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
@@ -44,12 +46,7 @@ export default async function RootLayout({ children, params }: { children: React
     const cookieTheme = cookies().get("sfn-theme")?.value;
     const ssrTheme = cookieTheme === "dark" ? "dark" : "light";
 
-    let messages;
-    try {
-        messages = (await import(`@/app/dictionaries/${locale}.json`)).default;
-    } catch {
-        notFound();
-    }
+    const messages = locale === "fr" ? frMessages : enMessages;
 
     return (
         <html lang={locale} dir="ltr" data-theme={ssrTheme} suppressHydrationWarning className="font-sans">
