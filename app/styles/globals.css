@@ -1,4 +1,12 @@
+@import "./normalize.css";
+@import "./webflow.css";
+@import "./i-dont-speak-french.webflow.css";
+@import "./personnal.css";
+
+@tailwind base;
 @tailwind components;
+@tailwind utilities;
+
 :root {
     --primary: #ffc431;
     --secondary-1: #ffc224;
@@ -128,11 +136,3 @@
     --ring-rgb: var(--secondary-2-rgb);
 }
 /*! purgecss end ignore */
-
-@import "./normalize.css";
-@import "./webflow.css";
-@import "./i-dont-speak-french.webflow.css";
-@import "./personnal.css";
-
-@tailwind base;
-@tailwind utilities;
