@@ -1,42 +1,41 @@
+# Start French Now
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NE PAS FAIRE npm i MAIS FAIRE npm ci POUR INSTALLER LES DEPENDANCES DE package-lock.json ET BIEN GARDER LES BONNES VERSIONS
+## Prerequis
 
+- Node `22.x` requis (`package.json -> engines`)
+- npm `>=10`
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+npm ci
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Important: utiliser `npm ci` (et pas `npm i`) pour respecter exactement `package-lock.json`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts utiles
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- `npm run dev`: dev server principal avec Turbopack
+- `npm run dev:webpack`: dev server webpack (fallback si comportement instable en turbo)
+- `npm run dev:studio`: alias webpack pour travailler sur `/studio`
+- `npm run typecheck`: verification TypeScript sans emission
+- `npm run lint:quiet`: lint sans warnings non bloquants
+- `npm run build -- --no-lint`: build prod
+- `npm run analyze`: build + rapport bundle analyzer (`ANALYZE=true`)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Notes de workflow
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Le mode turbo est prioritaire pour le front public.
+- Pour `Sanity Studio`, preferer `npm run dev:studio` si HMR/turbo devient instable localement.
+- Les articles blog sont configures en ISR avec endpoint `/api/revalidate` pour forcer la mise a jour immediate via webhook Sanity.
 
-## Learn More
+## CI
 
-To learn more about Next.js, take a look at the following resources:
+Workflow GitHub Actions: `.github/workflows/ci.yml`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Le workflow execute:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. `npm ci`
+2. `npm run typecheck`
+3. `npm run lint:quiet`
+4. `npm run build -- --no-lint` (si les secrets requis sont presents)
