@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "next dev --turbo",
         "dev:webpack": "next dev",
+        "dev:studio": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
