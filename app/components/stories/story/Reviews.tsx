@@ -1,5 +1,5 @@
 "use client";
-import { Review, ScoreProps, Success } from "@/app/types/stories/element";
+import type { Review, ScoreProps, Success } from "@/app/types/stories/element";
 import { LayoutProps } from "@/app/types/stories/state";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ScoreGauge from "./ScoreGauge";

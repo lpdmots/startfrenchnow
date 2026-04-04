@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 import { client } from "@/app/lib/sanity.client";
-import { Post } from "@/app/types/sfn/blog";
+import type { Post as BlogPost } from "@/app/types/sfn/blog";
 import PrimaryPost from "@/app/components/sfn/blog/PrimaryPost";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import PostContent from "@/app/components/sfn/post/PostContent";
@@ -32,11 +32,11 @@ const queryLatest = groq`
 
 async function Post({ params }: { params: { locale: Locale; slug: string } }) {
     const { locale, slug } = params;
-    const postData: Promise<Post> = client.fetch(query, { slug });
-    const rowLatestPostsData: Promise<Post[]> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
+    const postData: Promise<BlogPost> = client.fetch(query, { slug });
+    const rowLatestPostsData: Promise<BlogPost[]> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
     const [post, rowLatestPosts] = await Promise.all([postData, rowLatestPostsData]);
 
-    const latestPostsRaw = rowLatestPosts.filter((post) => post.slug.current !== slug) as Post[];
+    const latestPostsRaw = rowLatestPosts.filter((post) => post.slug.current !== slug) as BlogPost[];
 
     if (!post) return <p className="h-64 flex justify-center items-center">Sorry this post has been deleted...</p>;
 
@@ -52,8 +52,8 @@ async function Post({ params }: { params: { locale: Locale; slug: string } }) {
 export default Post;
 
 interface PropsNoAsync {
-    post: Post;
-    latestPosts: Post[];
+    post: BlogPost;
+    latestPosts: BlogPost[];
 }
 
 const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {

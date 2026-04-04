@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Locale } from "@/i18n";
 import { StickyCol } from "./[slug]/components/StickyCol";
 import { authOptions } from "@/app/lib/authOptions";

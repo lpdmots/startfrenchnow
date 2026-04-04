@@ -5,7 +5,7 @@ import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 import { resolveAuthLocale } from "@/app/lib/authMailMessages";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: "2024-09-30.acacia",
+    apiVersion: "2025-02-24.acacia",
 });
 
 export const runtime = "nodejs";

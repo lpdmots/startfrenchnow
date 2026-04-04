@@ -300,7 +300,7 @@ export default function Feedback({ params: { slug } }: Props) {
     );
 }
 
-const CommentCollapse = forwardRef<HTMLTextAreaElement, any>(function (props: { language: "fr" | "en" }, ref) {
+const CommentCollapse = forwardRef<HTMLTextAreaElement, { language: "fr" | "en" }>(function (props, ref) {
     const [textValue, setTextValue] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 

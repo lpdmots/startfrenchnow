@@ -9,11 +9,11 @@ import MarqueeContent from "@/app/components/sfn/home/MarqueeContent";
 import { HeroSfn } from "@/app/components/sfn/home/HeroSfn";
 import { Locale } from "@/i18n";
 import Marquee from "@/app/components/ui/marquee";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }): Promise<Metadata> {
-    const t = await getTranslator(locale, "Metadata.Home");
+    const t = await getTranslations({ locale: locale, namespace: "Metadata.Home" });
 
     return {
         title: t("title"),

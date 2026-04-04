@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { Locale } from "@/i18n";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }: { params: { locale: Locale; slug: string } }): Promise<Metadata> {
-    const t = await getTranslator(params.locale, "Metadata.Category");
+    const t = await getTranslations({ locale: params.locale, namespace: "Metadata.Category" });
 
     const path = `/blog/category/${params.slug}`;
     const canonical = params.locale === "fr" ? `/fr${path}` : path;
 
     return {
-        title: t.rich("title"),
+        title: t("title"),
         description: t("description"),
         alternates: {
             canonical,

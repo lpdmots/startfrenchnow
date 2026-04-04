@@ -4,14 +4,14 @@ import { mockExamFaqItemKeys } from "./faqItemKeys";
 import { authOptions } from "@/app/lib/authOptions";
 import { getMockExamCheckoutEligibility } from "@/app/serverActions/mockExamActions";
 import { Locale } from "@/i18n";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { getServerSession } from "next-auth";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
 export default async function FideMockExamsPage({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Fide.MockExamsPage.Page");
-    const faqT = await getTranslator(locale, "Fide.MockExamsPage.Faq");
+    const t = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Page" });
+    const faqT = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Faq" });
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id;
     const checkoutEligibility = userId ? await getMockExamCheckoutEligibility(userId) : null;

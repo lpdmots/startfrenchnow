@@ -243,11 +243,11 @@ export async function markNotificationsSeen(commentIds: string[]): Promise<void>
 
     if (isAdmin) {
         const existing = await sanity.fetch<string[]>(`*[_type=="comment" && _id in $ids][]._id`, { ids });
-        const tx = sanity.transaction();
+        const tx: any = sanity.transaction();
         for (const cid of existing) {
-            tx.patch(cid, (p) => p.set({ isSeen: true }));
+            tx.patch(cid, (p: any) => p.set({ isSeen: true }));
         }
-        tx.patch(uid._ref, (p) => p.unset(selectors));
+        tx.patch(uid._ref, (p: any) => p.unset(selectors));
         await tx.commit({ autoGenerateArrayKeys: true });
     } else {
         await sanity.patch(uid._ref).unset(selectors).commit({ autoGenerateArrayKeys: true });
@@ -281,11 +281,11 @@ export async function clearNotifications(): Promise<void> {
         commentIds = Array.from(new Set((commentIds || []).filter(Boolean)));
         const existing = commentIds.length ? await sanity.fetch<string[]>(`*[_type=="comment" && _id in $ids][]._id`, { ids: commentIds }) : [];
 
-        const tx = sanity.transaction();
+        const tx: any = sanity.transaction();
         for (const cid of existing) {
-            tx.patch(cid, (p) => p.set({ isSeen: true }));
+            tx.patch(cid, (p: any) => p.set({ isSeen: true }));
         }
-        tx.patch(uid._ref, (p) => p.set({ notifications: [] }));
+        tx.patch(uid._ref, (p: any) => p.set({ notifications: [] }));
         await tx.commit({ autoGenerateArrayKeys: true });
     } else {
         await sanity.patch(uid._ref).set({ notifications: [] }).commit({ autoGenerateArrayKeys: true });

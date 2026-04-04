@@ -41,13 +41,13 @@ export async function POST(request: NextRequest) {
         }
 
         const arrayBuffer = await audioFile.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-        if (!buffer.byteLength) {
+        const bytes = new Uint8Array(arrayBuffer);
+        if (!bytes.byteLength) {
             return NextResponse.json({ error: "Audio vide." }, { status: 400 });
         }
 
         const openAiForm = new FormData();
-        openAiForm.append("file", new Blob([buffer]), audioFile.name || "conversation.webm");
+        openAiForm.append("file", new Blob([bytes]), audioFile.name || "conversation.webm");
         openAiForm.append("model", "whisper-1");
         openAiForm.append("language", "fr");
         openAiForm.append("response_format", "verbose_json");

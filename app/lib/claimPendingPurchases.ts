@@ -232,9 +232,9 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     const nowIso = new Date().toISOString();
 
     // 5) Transaction : patch user + patch chaque pendingPurchase
-    let tx = client.transaction();
+    let tx: any = client.transaction();
 
-    tx = tx.patch(userId, (p) => {
+    tx = tx.patch(userId, (p: any) => {
         let patch = p;
 
         // arrays exist
@@ -254,7 +254,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     });
 
     for (const p of pendings) {
-        tx = tx.patch(p._id, (pp) => {
+        tx = tx.patch(p._id, (pp: any) => {
             let patch = pp;
             if (p._rev) {
                 patch = patch.ifRevisionId(p._rev);

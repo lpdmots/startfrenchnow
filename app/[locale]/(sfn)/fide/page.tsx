@@ -19,7 +19,7 @@ import { client } from "@/app/lib/sanity.client";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
 import { groq } from "next-sanity";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
@@ -27,7 +27,7 @@ async function ExamsPage({ params: { locale } }: { params: { locale: Locale } })
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const hasReservation = !!session?.user?.lessons?.some((lesson) => lesson.eventType === "Fide Preparation Class" && lesson.totalPurchasedMinutes > 0);
-    const tFaq = await getTranslator(locale, "Fide.FideFAQ");
+    const tFaq = await getTranslations({ locale: locale, namespace: "Fide.FideFAQ" });
     const queryProduct = groq`
         *[_type=='product' && slug.current == $slug][0]
     `;

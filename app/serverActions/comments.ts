@@ -230,10 +230,10 @@ export async function createComment(input: CreateCommentInput) {
 
         if (recipients.size > 0) {
             const nowIsoStr = new Date().toISOString();
-            const tx = sanity.transaction();
+            const tx: any = sanity.transaction();
 
             for (const userId of recipients) {
-                tx.patch(userId, (p) =>
+                tx.patch(userId, (p: any) =>
                     p
                         .setIfMissing({ notifications: [] })
                         .unset([`notifications[reference._ref=="${created._id}"][kind=="comment"]`])
@@ -370,7 +370,7 @@ export async function toggleUpvote(input: ToggleUpvoteInput) {
     const myId = userRef._ref;
     const hasVoted = (doc.upvoters || []).includes(myId);
 
-    const tx = sanity.transaction();
+    const tx: any = sanity.transaction();
 
     if (hasVoted) {
         tx.patch(commentId, {

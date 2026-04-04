@@ -18,8 +18,12 @@ export async function GET(_request: NextRequest, { params }: Props) {
     const token = args.at(0);
     const localeFromUrl = args.at(1);
     const locale = resolveAuthLocale(localeFromUrl);
+    if (!token) {
+        return redirect(`/${locale}/auth/error/no-user`);
+    }
 
-    const user: UserProps = await client.fetch('*[_type == "user" && activateToken == $token][0]', { token });
+    const userQuery: string = '*[_type == "user" && activateToken == $token][0]';
+    const user = (await (client as any).fetch(userQuery, { token })) as UserProps | null;
 
     if (!user) {
         return redirect(`/${locale}/auth/error/no-user`);

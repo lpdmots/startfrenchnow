@@ -1,8 +1,8 @@
 import { Locale } from "@/i18n";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Metadata.Courses.Dialogues");
+    const t = await getTranslations({ locale: locale, namespace: "Metadata.Courses.Dialogues" });
 
     const path = "/courses/dialogues";
     const canonical = locale === "fr" ? `/fr${path}` : path;

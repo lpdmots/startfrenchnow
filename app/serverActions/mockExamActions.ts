@@ -1313,9 +1313,9 @@ export async function purchaseMockExamCompilation() {
     const compilationId = nextAvailable._id;
     const now = new Date().toISOString();
 
-    await client
-        .transaction()
-        .patch(userId, (patch) =>
+    const tx: any = client.transaction();
+    await tx
+        .patch(userId, (patch: any) =>
             patch
                 .setIfMissing({ credits: [], examCompilations: [] })
                 .set({
@@ -2908,7 +2908,7 @@ export async function restartMockExamCompilation(formData: FormData) {
     const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const compilationId = String(formData.get("compilationId") || "");
-    if (!userId || !compilationId) return null;
+    if (!userId || !compilationId) return;
 
     const createResult = await getOrCreateInProgressMockExamSession(compilationId, { forceNew: true });
     if (!createResult.ok || !createResult.session?._id) {

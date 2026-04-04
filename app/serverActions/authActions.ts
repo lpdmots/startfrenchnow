@@ -187,7 +187,8 @@ export const sendPasswordEmail = async (user: any, mailMessages: any) => {
 };
 
 export const updateUserPassword = async (password: string, token: string) => {
-    const user = await client.fetch(`*[_type == "user" && resetPasswordToken == $token && resetPasswordExpiration > $date][0]`, { token, date: new Date().toISOString() });
+    const query: string = `*[_type == "user" && resetPasswordToken == $token && resetPasswordExpiration > $date][0]`;
+    const user = await (client as any).fetch(query, { token, date: new Date().toISOString() });
 
     if (!user) return { error: "Invalid or expired token.", status: 400 };
     if (!isStrongPassword(password)) {

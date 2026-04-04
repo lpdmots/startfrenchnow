@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         }
 
         // 2) Prépare la migration: levels: [normalize(level)], unset level
-        const tx = client.transaction();
+        const tx: any = client.transaction();
         let toPatch = 0;
 
         for (const doc of exams) {
