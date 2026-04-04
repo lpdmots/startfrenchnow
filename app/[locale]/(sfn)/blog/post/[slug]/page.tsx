@@ -17,18 +17,39 @@ import { BLOGCATEGORIES } from "@/app/lib/constantes";
 import CommentList from "@/app/components/comments/CommentList";
 import CommentComposer from "@/app/components/comments/CommentComposer";
 
+export const revalidate = 86400;
+
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
         {
             ...,
         }
     `;
+const querySlugs = groq`
+    *[
+      _type == 'post'
+      && dateTime(publishedAt) < dateTime(now())
+      && isReady == true
+      && defined(slug.current)
+      && count(categories[@ in $categories]) > 0
+    ]{
+      "slug": slug.current
+    }
+`;
 const queryLatest = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && count(categories[@ in $categories]) > 0] 
     {
         ...,
     } | order(publishedAt desc) [0...3]
 `;
+
+export async function generateStaticParams() {
+    const posts = await client.fetch<{ slug: string }[]>(querySlugs, {
+        categories: BLOGCATEGORIES,
+    });
+
+    return posts.map((post) => ({ slug: post.slug }));
+}
 
 async function Post({ params }: { params: { locale: Locale; slug: string } }) {
     const { locale, slug } = params;
