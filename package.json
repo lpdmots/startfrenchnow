@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.438.0",
+        "@fontsource/poppins": "^5.2.7",
         "@google-cloud/text-to-speech": "^4.2.3",
         "@portabletext/react": "^2.0.0",
         "@radix-ui/react-accordion": "^1.2.1",

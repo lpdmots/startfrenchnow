@@ -8,6 +8,7 @@
 @tailwind utilities;
 
 :root {
+    --font-poppins: "Poppins";
     --primary: #ffc431;
     --secondary-1: #ffc224;
     --secondary-2: #1c92ff;
