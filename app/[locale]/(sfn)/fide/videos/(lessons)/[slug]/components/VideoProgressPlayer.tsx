@@ -67,6 +67,8 @@ export default function VideoProgressPlayer({
     const addWatchedVideo = useSfnStore((s) => s.addWatchedVideo);
     const subtitlePreference = useSfnStore((s) => s.subtitlePreference);
     const setSubtitlePreference = useSfnStore((s) => s.setSubtitlePreference);
+    const hasSubtitles = Boolean(subtitleFRUrl || subtitleENUrl);
+    const shouldUseCrossOrigin = hasSubtitles && !src.includes("/fide-exam/videos/");
 
     // ===== Reprise au chargement =====
     useEffect(() => {
@@ -357,6 +359,7 @@ export default function VideoProgressPlayer({
             autoPlay={autoPlay}
             playsInline
             preload="metadata"
+            crossOrigin={shouldUseCrossOrigin ? "anonymous" : undefined}
             onEnded={(e) => {
                 if (document.fullscreenElement) {
                     document.exitFullscreen().catch(() => {});
@@ -365,7 +368,6 @@ export default function VideoProgressPlayer({
                 // Recharge la première frame = réaffiche le poster
                 v.load();
             }}
-            crossOrigin="anonymous"
         >
             {subtitleFRUrl && <track kind="subtitles" src={subtitleFRUrl} srcLang="fr" label="Français" />}
             {subtitleENUrl && <track kind="subtitles" src={subtitleENUrl} srcLang="en" label="English" />}

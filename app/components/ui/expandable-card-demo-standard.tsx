@@ -148,7 +148,17 @@ export default function ExpandableCardDemo({
                     const isLocked = !hasPack && !exam.isPreview;
                     const contentType = exam.pdf?.includes("scenarios") ? "scenarios" : exam.pdf ? "pdf" : "exam";
                     if (contentType === "exam")
-                        return <ExamCard key={exam._id} exam={exam} isLocked={isLocked} setActive={setActive} withStars={withStars} logs={logs} isLargePreviewCard={isLargePreviewCard && isPreviewSection} />;
+                        return (
+                            <ExamCard
+                                key={exam._id}
+                                exam={exam}
+                                isLocked={isLocked}
+                                setActive={setActive}
+                                withStars={withStars}
+                                logs={logs}
+                                isLargePreviewCard={isLargePreviewCard && isPreviewSection}
+                            />
+                        );
                     if (contentType === "pdf") return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} />;
                     return <LinkCard key={exam._id} exam={exam} isLocked={isLocked} isScenarios={true} />;
                 })}

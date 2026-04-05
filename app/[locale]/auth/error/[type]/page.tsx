@@ -1,16 +1,29 @@
 import { GetNewLink } from "@/app/components/auth/GetNewLink";
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import React, { use } from "react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
-type TypeProps = "no-user" | "already-active" | "expired";
+type TypeProps = "no-user" | "already-active" | "expired" | "email-already-used";
 
-const Error = (props: { params: Promise<{ type: TypeProps }> }) => {
-    const params = use(props.params);
-    const t = useTranslations("Auth.Error");
-    const tLink = useTranslations("Auth.GetNewLink");
-    const tEmail = useTranslations("Auth.Email");
+function DangerSign({ className = "" }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 220 190" className={className} aria-hidden="true">
+            <path
+                d="M97.9 11.4c5.2-8.8 18-8.8 23.2 0l85.1 143.3c5.3 8.9-1.1 20.3-11.5 20.3H23.3c-10.4 0-16.8-11.4-11.5-20.3L97.9 11.4Z"
+                fill="#F8C531"
+                stroke="#0B0B0B"
+                strokeWidth="2.8"
+            />
+            <rect x="103.5" y="52" width="13" height="62" rx="6.5" fill="#0B0B0B" />
+            <circle cx="110" cy="130" r="7.5" fill="#0B0B0B" />
+        </svg>
+    );
+}
+
+export default async function Error(props: { params: Promise<{ type: TypeProps }> }) {
+    const params = await props.params;
+    const t = await getTranslations("Auth.Error");
+    const tLink = await getTranslations("Auth.GetNewLink");
+    const tEmail = await getTranslations("Auth.Email");
 
     const messages = {
         placeholder: tLink("placeholder"),
@@ -25,54 +38,42 @@ const Error = (props: { params: Promise<{ type: TypeProps }> }) => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen justify-center items-center">
-            <div className="utility-page-wrap not-found">
-                <div className="container-default w-container">
-                    <div className="position-relative z-index-1">
-                        <div className="flex-horizontal">
-                            <div id="w-node-d245282e-bd6f-ff12-2569-ce176b30a962-33543d3f" data-w-id="d245282e-bd6f-ff12-2569-ce176b30a962" className="position-absolute relative leading-[437px] font-bold left-[0%] top-[0%] right-auto bottom-auto mt-[-11%] ml-[4%] max-[991px]:left-auto max-[991px]:top-auto max-[991px]:bottom-auto max-[991px]:mt-[0%] max-[991px]:ml-[0%] max-[767px]:text-[120px] max-[479px]:text-[100px] max-[479px]:leading-[100px] max-[479px]:top-[18%]">
-                                <div className="text-[var(--neutral-400)] text-[25.8vw] leading-[1.181em] font-bold min-[1440px]:text-[370px] max-[991px]:text-[47vw] max-[991px]:text-center">400</div>
+        <main className="min-h-screen bg-[#F5F5F5] flex items-center">
+            <div className="relative w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 lg:py-28 min-h-[640px] md:min-h-[760px]">
+                <div className="absolute top-0 left-0 pointer-events-none select-none">
+                    <span className="block font-bold leading-none text-neutral-400/35 text-[42vw] md:text-[26vw] lg:text-[420px]">
+                        400
+                    </span>
+                </div>
+                <div className="relative grid grid-cols-1 md:grid-cols-[1fr_1fr] items-center md:items-end gap-10 md:gap-20 lg:gap-28 md:min-h-[520px]">
+                    <div className="order-1 flex justify-center md:justify-center md:self-center">
+                        <DangerSign className="w-[170px] sm:w-[220px] md:w-[330px] lg:w-[390px]" />
+                    </div>
+                    <div className="order-2 text-center md:text-left md:self-end md:justify-self-end md:max-w-[560px] md:pb-6">
+                        <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight text-neutral-950">{t("oops")}</h2>
+                        <h1 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-neutral-950">{t("title")}</h1>
+                        <p className="mt-6 text-lg leading-relaxed text-neutral-700">{t(`messages.${params.type}`)}</p>
+
+                        {params.type === "no-user" && (
+                            <div className="mt-8 flex justify-center md:justify-start w-full">
+                                <GetNewLink messages={messages} />
                             </div>
-                            <div className="grid-2-columns _1-col-tablet position-relative">
-                                <div className="flex-horizontal position-relative">
-                                    <div className="image-wrapper w-32 md:w-56 lg:w-80 relative h-32 md:h-56 lg:h-80">
-                                        <Image
-                                            src="/images/page-not-found-icon-paperfolio-webflow-template.svg"
-                                            fill
-                                            loading="eager"
-                                            alt="Page Not Found - Paperfolio Webflow Template"
-                                            style={{ objectFit: "contain" }}
-                                        />
-                                    </div>
-                                </div>
-                                <div id="w-node-ffe9a45f-94fb-9c90-1679-9bd8e1c7012d-33543d3f" className="inner-container _600px---tablet center">
-                                    <div data-w-id="619efe17469a19c94a600b1500000000000b" className="utility-page-content mg-bottom-0 position-relative w-form">
-                                        <div className="display-1 mg-bottom-8px">{t("oops")}</div>
-                                        <h1 className="display-2">{t("title")}</h1>
-                                        <p className="mg-bottom-32px">{t(`messages.${params.type}`)}</p>
-                                        <div className="flex justify-center lg:justify-start w-full">{params.type === "no-user" && <GetNewLink messages={messages} />}</div>
-                                        {params.type === "already-active" ? (
-                                            <div className="buttons-row center">
-                                                <Link href="/auth/signIn" className="btn-primary full-width w-button">
-                                                    {t("btnLogin")}
-                                                </Link>
-                                            </div>
-                                        ) : (
-                                            <div className="buttons-row center">
-                                                <Link href="/" className="btn-primary full-width w-button">
-                                                    {t("btnHome")}
-                                                </Link>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
+                        )}
+
+                        <div className="mt-8 flex justify-center md:justify-start">
+                            {params.type === "already-active" ? (
+                                <Link href="/auth/signIn" className="btn btn-primary full-width w-button w-full max-w-[360px] text-center">
+                                    {t("btnLogin")}
+                                </Link>
+                            ) : (
+                                <Link href="/" className="btn btn-primary full-width w-button w-full max-w-[360px] text-center">
+                                    {t("btnHome")}
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     );
-};
-
-export default Error;
+}

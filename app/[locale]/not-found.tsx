@@ -34,15 +34,15 @@ export default async function LocaleNotFound() {
 
     return (
         <main className="min-h-screen bg-[#F5F5F5] flex items-center">
-            <div className="relative w-full max-w-[1200px] mx-auto px-6 py-14 md:py-20">
-                <div className="absolute inset-0 pointer-events-none select-none flex items-center justify-center">
-                    <span className="font-bold leading-none text-neutral-400/35 text-[42vw] md:text-[30vw] lg:text-[370px]">404</span>
+            <div className="relative w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 lg:py-28 min-h-[640px] md:min-h-[760px]">
+                <div className="absolute top-0 left-0 pointer-events-none select-none">
+                    <span className="block font-bold leading-none text-neutral-400/35 text-[42vw] md:text-[26vw] lg:text-[420px]">404</span>
                 </div>
-                <div className="relative grid grid-cols-1 md:grid-cols-[1fr_1fr] items-center gap-8 md:gap-14">
-                    <div className="order-1 flex justify-center md:justify-end">
-                        <DangerSign className="w-[170px] sm:w-[220px] md:w-[320px] lg:w-[360px]" />
+                <div className="relative grid grid-cols-1 md:grid-cols-[1fr_1fr] items-center md:items-end gap-10 md:gap-20 lg:gap-28 md:min-h-[520px]">
+                    <div className="order-1 flex justify-center md:justify-center md:self-center">
+                        <DangerSign className="w-[170px] sm:w-[220px] md:w-[330px] lg:w-[390px]" />
                     </div>
-                    <div className="order-2 text-center md:text-left">
+                    <div className="order-2 text-center md:text-left md:self-end md:justify-self-end md:max-w-[560px] md:pb-6">
                         <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight text-neutral-950">Oops!</h2>
                         <h1 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-neutral-950">
                             {copy.title}
@@ -53,7 +53,7 @@ export default async function LocaleNotFound() {
                         <div className="mt-8 flex justify-center md:justify-start">
                             <Link
                                 href="/"
-                                className="w-full max-w-[360px] inline-flex items-center justify-center rounded-2xl bg-black px-8 py-4 text-2xl font-semibold text-white transition-opacity hover:opacity-90"
+                                className="btn btn-primary full-width w-button w-full max-w-[360px] text-center"
                             >
                                 {copy.cta}
                             </Link>
