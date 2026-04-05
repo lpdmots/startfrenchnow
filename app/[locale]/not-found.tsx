@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { cookies } from "next/headers";
 
 function DangerSign({ className = "" }: { className?: string }) {
     return (
@@ -15,7 +16,22 @@ function DangerSign({ className = "" }: { className?: string }) {
     );
 }
 
-export default function LocaleNotFound() {
+export default async function LocaleNotFound() {
+    const cookieStore = await cookies();
+    const locale = cookieStore.get("NEXT_LOCALE")?.value === "en" ? "en" : "fr";
+    const copy =
+        locale === "en"
+            ? {
+                  title: "Page Not Found",
+                  description: "This page does not exist or has been moved. Check the URL or go back to homepage.",
+                  cta: "Go to homepage",
+              }
+            : {
+                  title: "Page introuvable",
+                  description: "Cette page n'existe pas ou a ete deplacee. Verifiez l'adresse ou revenez a l'accueil.",
+                  cta: "Retour a l'accueil",
+              };
+
     return (
         <main className="min-h-screen bg-[#F5F5F5] flex items-center">
             <div className="relative w-full max-w-[1200px] mx-auto px-6 py-14 md:py-20">
@@ -29,18 +45,17 @@ export default function LocaleNotFound() {
                     <div className="order-2 text-center md:text-left">
                         <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight text-neutral-950">Oops!</h2>
                         <h1 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-neutral-950">
-                            Page Not Found
+                            {copy.title}
                         </h1>
                         <p className="mt-6 text-lg leading-relaxed text-neutral-700">
-                            Cette page n&apos;existe pas ou a ete deplacee. Verifiez l&apos;adresse ou revenez a
-                            l&apos;accueil pour continuer.
+                            {copy.description}
                         </p>
                         <div className="mt-8 flex justify-center md:justify-start">
                             <Link
                                 href="/"
                                 className="w-full max-w-[360px] inline-flex items-center justify-center rounded-2xl bg-black px-8 py-4 text-2xl font-semibold text-white transition-opacity hover:opacity-90"
                             >
-                                Go to homepage
+                                {copy.cta}
                             </Link>
                         </div>
                     </div>
