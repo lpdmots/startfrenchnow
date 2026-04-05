@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs"; // nécessaire pour utiliser fetch avec form-data côté serveur
 
 export async function POST(req: NextRequest) {
@@ -12,9 +15,9 @@ export async function POST(req: NextRequest) {
         }
 
         // Convertir File en ReadableStream pour Whisper
-        const buffer = Buffer.from(await file.arrayBuffer());
+        const bytes = new Uint8Array(await file.arrayBuffer());
         const form = new FormData();
-        form.append("file", new Blob([buffer]), "audio.webm");
+        form.append("file", new Blob([bytes]), "audio.webm");
         form.append("model", "whisper-1");
         form.append("language", "fr"); // optionnel si tu veux forcer le français
         form.append("response_format", "json");

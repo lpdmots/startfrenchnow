@@ -1,6 +1,6 @@
 import { Category, Post } from "@/app/types/sfn/blog";
 import { useLocale, useTranslations } from "next-intl";
-import { CATEGORIES, HEADINGSPANCOLORS } from "@/app/lib/constantes";
+import { BLOGCATEGORIES, CATEGORIES, HEADINGSPANCOLORS } from "@/app/lib/constantes";
 import { Locale } from "@/i18n";
 import { PostsListInfiniteScroll } from "@/app/components/sfn/post/PostsListInfiniteScroll";
 import { getCategoryPostsSlice } from "@/app/serverActions/blogActions";
@@ -9,15 +9,27 @@ import { localizePosts } from "@/app/lib/utils";
 import LinkToFideVideos from "@/app/components/common/LinkToFideVideos";
 
 type Props = {
-    params: {
+    params: Promise<{
         slug: Category;
         locale: Locale;
-    };
+    }>;
 };
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
-async function Categories({ params: { slug, locale } }: Props) {
+export async function generateStaticParams() {
+    // Keep parity with sitemap and sidebar UX: "fide" uses dedicated FIDE pages.
+    return BLOGCATEGORIES.filter((slug) => slug !== "fide").map((slug) => ({ slug }));
+}
+
+async function Categories(props: Props) {
+    const params = await props.params;
+
+    const {
+        slug,
+        locale
+    } = params;
+
     const postsData: Post[] = await getCategoryPostsSlice(slug, 0, 10);
     const posts = localizePosts(postsData, locale);
     return <CategoriesNoAsync posts={posts} slug={slug} />;

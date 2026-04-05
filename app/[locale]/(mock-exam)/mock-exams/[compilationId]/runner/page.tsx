@@ -18,13 +18,19 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
-export default async function MockExamRunnerPage({
-    params: { compilationId },
-    searchParams,
-}: {
-    params: { compilationId: string };
-    searchParams?: { restart?: string };
-}) {
+export default async function MockExamRunnerPage(
+    props: {
+        params: Promise<{ compilationId: string }>;
+        searchParams?: Promise<{ restart?: string }>;
+    }
+) {
+    const searchParams = await props.searchParams;
+    const params = await props.params;
+
+    const {
+        compilationId
+    } = params;
+
     const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
     const isAdmin = session?.user?.isAdmin === true;

@@ -2,7 +2,7 @@
 
 import { langData } from "@/app/lib/constantes";
 import { Locale } from "@/i18n";
-import { usePathname, useRouter } from "next-intl/client";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import Image from "next/image";
 import { useTransition } from "react";
 import DropdownMenu from "./DropdownMenu";

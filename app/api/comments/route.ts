@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { listComments } from "@/app/serverActions/comments";
 import { CommentResourceType } from "@/app/types/sfn/comment";
 
+export const dynamic = "force-dynamic";
+
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const resourceType = (searchParams.get("rt") || "") as CommentResourceType;

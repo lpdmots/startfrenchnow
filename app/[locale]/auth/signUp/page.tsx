@@ -1,4 +1,5 @@
-import Link from "next-intl/link";
+import { use } from "react";
+import { Link } from "@/i18n/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { IoMdLock } from "react-icons/io";
 import { ContinueWithGoogle } from "@/app/components/auth/ContinueWithGoogle";
@@ -9,12 +10,19 @@ import { intelRich } from "@/app/lib/intelRich";
 export const metadata = {
     robots: { index: false, follow: false },
 };
+export const dynamic = "force-dynamic";
 
 type Props = {
-    params: { locale: "fr" | "en" };
+    params: Promise<{ locale: "fr" | "en" }>;
 };
 
-const SignUp = ({ params: { locale } }: Props) => {
+const SignUp = (props: Props) => {
+    const params = use(props.params);
+
+    const {
+        locale
+    } = params;
+
     const t = useTranslations("Auth.SignUp");
     const tGoogle = useTranslations("Auth.ContinueWithGoogle");
     const tForm = useTranslations("Auth.SignUpForm");

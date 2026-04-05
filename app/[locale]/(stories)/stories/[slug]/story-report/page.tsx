@@ -4,16 +4,22 @@ import Spinner from "@/app/components/common/Spinner";
 import { sendContactForm } from "@/app/lib/apiNavigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next-intl/client";
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "@/i18n/navigation";
+import { useEffect, useRef, useState, use } from "react";
 
 interface Props {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
-const StoryReport = ({ params: { slug } }: Props) => {
+const StoryReport = (props: Props) => {
+    const params = use(props.params);
+
+    const {
+        slug
+    } = params;
+
     const comment = useRef<HTMLTextAreaElement>(null);
     const { data: session, status } = useSession();
     const [isLoading, setIsLoading] = useState(true);

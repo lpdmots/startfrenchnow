@@ -7,7 +7,7 @@ import NewsletterCard from "../../common/newsletter/NewsletterCard";
 import Helper from "./Helper";
 import VideoBlog from "../../sanity/RichTextSfnComponents/VideoBlog";
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { Locale } from "@/i18n";
 import { CategoryBadge } from "../blog/CategoryBadge";
 import { BLOGCATEGORIES, CATEGORIESCOLORS } from "@/app/lib/constantes";

@@ -1,4 +1,4 @@
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { DashboardHero } from "../components/DashboardHero";
 import { groq } from "next-sanity";
 import { getCalendlyData, getFidePackSommaire } from "@/app/serverActions/productActions";
@@ -29,7 +29,12 @@ export const dynamic = "force-dynamic";
 
 const queryExams = groq`*[_type=='fideExam' && competence=="Comprendre"]{ ..., _id }`;
 
-async function DashboardPage({ params: { locale, slug: specifiedId } }: { params: { locale: Locale; slug?: string } }) {
+async function DashboardPage(props: { params: Promise<{ locale: string; slug?: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    const { slug: specifiedId } = params;
+
     const session = await requireSessionAndFide({ callbackUrl: "/fide/dashboard", info: "privateLessons" });
     const userId = session?.user?._id ?? null;
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");

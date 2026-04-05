@@ -148,7 +148,8 @@ const CONTENT: Record<Locale, { title: string; subtitle: string; sections: Legal
     },
 };
 
-function MentionsLegales({ params }: { params: { locale: string } }) {
+async function MentionsLegales(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
     const locale = params.locale as Locale;
     const content = CONTENT[locale] ?? CONTENT.fr;
 

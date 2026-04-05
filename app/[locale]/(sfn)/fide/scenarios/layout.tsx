@@ -1,11 +1,19 @@
 import { getServerSession } from "next-auth";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { authOptions } from "@/app/lib/authOptions";
 import { getPackSommaire } from "@/app/serverActions/productActions";
 import { CoursesAccordionClient } from "../components/CoursesAccordionClient";
 import { StickyCol } from "../videos/(lessons)/[slug]/components/StickyCol";
 
-export default async function VideosPostLayout({ children, params: { locale } }: { children: React.ReactNode; params: { locale: Locale } }) {
+export default async function VideosPostLayout(props: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
+    const {
+        children
+    } = props;
+
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const fidePackSommaire = await getPackSommaire(locale);

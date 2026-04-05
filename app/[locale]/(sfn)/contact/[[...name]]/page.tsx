@@ -1,7 +1,14 @@
+import { use } from "react";
 import { ContactClient } from "@/app/components/sfn/contact/ContactClient";
 import { useTranslations } from "next-intl";
 
-function Contact({ params: { name: nameList } }: { params: { name: string } }) {
+function Contact(props: { params: Promise<{ name: string }> }) {
+    const params = use(props.params);
+
+    const {
+        name: nameList
+    } = params;
+
     const t = useTranslations("Contact");
     const contactMessages = getContactMessages(t);
     return (

@@ -9,7 +9,28 @@ const query = groq`
     && isReady == true
     && count(categories[@ in $categories]) > 0
     ] {
-        ...,
+        _id,
+        _type,
+        _createdAt,
+        _updatedAt,
+        _rev,
+        slug,
+        title,
+        title_en,
+        description,
+        description_en,
+        metaDescription,
+        metaDescription_en,
+        body,
+        body_en,
+        categories,
+        mainImage,
+        mainVideo,
+        level,
+        publishedAt,
+        isPreview,
+        durationSec,
+        isReady
     } | order(publishedAt desc)
     [$offset...$limit]
 `;
@@ -20,7 +41,28 @@ export const getPostsSlice = async (offset: number, limit: number) => {
 
 const queryOnlyCategory = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && $category in categories] {
-        ...,
+        _id,
+        _type,
+        _createdAt,
+        _updatedAt,
+        _rev,
+        slug,
+        title,
+        title_en,
+        description,
+        description_en,
+        metaDescription,
+        metaDescription_en,
+        body,
+        body_en,
+        categories,
+        mainImage,
+        mainVideo,
+        level,
+        publishedAt,
+        isPreview,
+        durationSec,
+        isReady
     } | order(publishedAt desc)
     [$offset...$limit]
 `;
@@ -31,7 +73,28 @@ export const getCategoryPostsSlice = async (category: string, offset: number, li
 
 const queryOnlyVideos = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && defined(mainVideo.url) && mainVideo.url != '' && count(categories[@ in $categories]) > 0] {
-        ...,
+        _id,
+        _type,
+        _createdAt,
+        _updatedAt,
+        _rev,
+        slug,
+        title,
+        title_en,
+        description,
+        description_en,
+        metaDescription,
+        metaDescription_en,
+        body,
+        body_en,
+        categories,
+        mainImage,
+        mainVideo,
+        level,
+        publishedAt,
+        isPreview,
+        durationSec,
+        isReady
     } | order(publishedAt desc)
     [$offset...$limit]
 `;

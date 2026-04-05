@@ -216,8 +216,8 @@ export default function AudioOverlayPlayer({
                         <FaRegFlag size={16} className="mr-1" /> AIDE
                     </button>
 
-                    <div className="absolute bottom-4 w-full" style={{ left: "50%", transform: "translateX(-50%)" }}>
-                        <div className="inset-0 flex flex-col items-center justify-center text-neutral-100 bg-neutral-800/30 backdrop-blur-sm">
+                    <div className="absolute bottom-4 w-full text-neutral-800" style={{ left: "50%", transform: "translateX(-50%)" }}>
+                        <div className="inset-0 flex flex-col items-center justify-center">
                             <audio ref={audioRef} crossOrigin="anonymous" src={getAudioUrl(currentTrackData.src)} preload="auto" />
 
                             {showText && (
@@ -230,7 +230,7 @@ export default function AudioOverlayPlayer({
 
                             <VisualizerBars audioRef={audioRef} isPlaying={playing} className={`h-24 mb-2 ${showText ? "hidden" : "block"}`} />
 
-                            {!showText && <h2 className="text-2xl font-semibold my-2">{currentTrackData.title}</h2>}
+                            {!showText && <h2 className="text-2xl text-neutral-800 font-semibold my-2">{currentTrackData.title}</h2>}
 
                             <div className="flex items-center gap-6 mt-2">
                                 <button
@@ -685,10 +685,7 @@ export const AudioOverlayPlayerControls = ({ src, className = "" }: { src?: stri
                     onClick={togglePlay}
                     aria-label={isPlaying ? "Pause" : "Lecture"}
                     disabled={isPlayDisabled}
-                    className={clsx(
-                        "bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid",
-                        isPlayDisabled ? "opacity-50 cursor-not-allowed" : "",
-                    )}
+                    className={clsx("bg-neutral-200 p-3 rounded-full flex items-center justify-center border-2 border-neutral-800 border-solid", isPlayDisabled ? "opacity-50 cursor-not-allowed" : "")}
                 >
                     {isPlaying ? <FaPause size={32} className="text-neutral-800" /> : <FaPlay size={32} className="text-neutral-800" />}
                 </button>

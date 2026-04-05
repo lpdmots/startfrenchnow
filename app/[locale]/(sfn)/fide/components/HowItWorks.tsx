@@ -1,7 +1,7 @@
 import { ParentToChildrens, ScaleChildren } from "@/app/components/animations/ParentToChildrens";
 import { SlideInOneByOneChild, SlideInOneByOneParent } from "@/app/components/animations/Slides";
 import clsx from "clsx";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 
 const steps: Array<{
     id: string;

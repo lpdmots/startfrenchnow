@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getMailOptions, transporter } from "@/app/lib/nodemailer";
 
+export const dynamic = "force-dynamic";
+
+
 const RATE_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const RATE_MAX = 5; // 5 messages / fenêtre
 

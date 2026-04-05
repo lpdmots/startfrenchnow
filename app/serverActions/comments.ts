@@ -75,14 +75,15 @@ export async function getSessionUserRef() {
 }
 
 /** Rate-limit ultra simple par cookie (MVP) : 5 posts / 5 min */
-function canPostRateLimited(bucketKey = "cmnt_rate_bucket", limit = 5, windowMin = 5) {
-    const storeCookie = cookies().get(bucketKey)?.value;
+async function canPostRateLimited(bucketKey = "cmnt_rate_bucket", limit = 5, windowMin = 5) {
+    const cookieStore = await cookies();
+    const storeCookie = cookieStore.get(bucketKey)?.value;
     const now = Date.now();
     const arr: number[] = storeCookie ? JSON.parse(storeCookie) : [];
     const recent = arr.filter((ts) => now - ts < windowMin * 60_000);
     if (recent.length >= limit) return false;
     recent.push(now);
-    cookies().set(bucketKey, JSON.stringify(recent), {
+    cookieStore.set(bucketKey, JSON.stringify(recent), {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
@@ -122,8 +123,9 @@ export async function createComment(input: CreateCommentInput) {
     if (honeypot && honeypot.trim() !== "") throw new Error("Spam détecté.");
 
     // Rate limit basique (MVP)
-    const ip = headers().get("x-forwarded-for") || headers().get("x-real-ip") || "unknown";
-    if (!canPostRateLimited()) throw new Error("Vous avez posté trop rapidement. Réessayez bientôt.");
+    const headerStore = await headers();
+    const ip = headerStore.get("x-forwarded-for") || headerStore.get("x-real-ip") || "unknown";
+    if (!(await canPostRateLimited())) throw new Error("Vous avez posté trop rapidement. Réessayez bientôt.");
 
     // Validations générales
     if (!body?.trim()) throw new Error("Message vide.");
@@ -230,10 +232,10 @@ export async function createComment(input: CreateCommentInput) {
 
         if (recipients.size > 0) {
             const nowIsoStr = new Date().toISOString();
-            const tx = sanity.transaction();
+            const tx: any = sanity.transaction();
 
             for (const userId of recipients) {
-                tx.patch(userId, (p) =>
+                tx.patch(userId, (p: any) =>
                     p
                         .setIfMissing({ notifications: [] })
                         .unset([`notifications[reference._ref=="${created._id}"][kind=="comment"]`])
@@ -370,7 +372,7 @@ export async function toggleUpvote(input: ToggleUpvoteInput) {
     const myId = userRef._ref;
     const hasVoted = (doc.upvoters || []).includes(myId);
 
-    const tx = sanity.transaction();
+    const tx: any = sanity.transaction();
 
     if (hasVoted) {
         tx.patch(commentId, {

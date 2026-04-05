@@ -2,6 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
@@ -49,7 +52,7 @@ export async function POST(req: NextRequest) {
         }
 
         // 2) Prépare la migration: levels: [normalize(level)], unset level
-        const tx = client.transaction();
+        const tx: any = client.transaction();
         let toPatch = 0;
 
         for (const doc of exams) {

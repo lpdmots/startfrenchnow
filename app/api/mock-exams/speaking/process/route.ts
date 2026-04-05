@@ -5,6 +5,9 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { authOptions } from "@/app/lib/authOptions";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs";
 
 const region = process.env.AWS_REGION || "";
@@ -84,14 +87,14 @@ export async function POST(req: NextRequest) {
         }
 
         const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+        const bytes = new Uint8Array(arrayBuffer);
 
-        if (!buffer.byteLength) {
+        if (!bytes.byteLength) {
             return NextResponse.json({ error: "Fichier audio vide." }, { status: 400 });
         }
 
         const transcriptionForm = new FormData();
-        transcriptionForm.append("file", new Blob([buffer]), file.name || "audio.webm");
+        transcriptionForm.append("file", new Blob([bytes]), file.name || "audio.webm");
         transcriptionForm.append("model", "whisper-1");
         transcriptionForm.append("language", "fr");
         transcriptionForm.append("response_format", "json");
@@ -121,7 +124,7 @@ export async function POST(req: NextRequest) {
             new PutObjectCommand({
                 Bucket: bucketName,
                 Key: key,
-                Body: buffer,
+                Body: bytes,
                 ContentType: file.type || "audio/webm",
             }),
         );

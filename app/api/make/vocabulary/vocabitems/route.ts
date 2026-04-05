@@ -9,6 +9,9 @@ import { getRules } from "../../article/route";
 import { JSDOM } from "jsdom";
 import { Schema } from "@sanity/schema";
 
+export const dynamic = "force-dynamic";
+
+
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 const defaultSchema = Schema.compile({

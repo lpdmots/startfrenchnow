@@ -20,6 +20,7 @@ export const PostsListInfiniteScroll = ({ initialPosts, locale, category }: { in
 
     // Fonction pour charger les nouveaux posts
     const loadMorePosts = async () => {
+        if (loading || !hasMorePosts) return;
         if (initialPosts.length < NUMBER_OF_POSTS_TO_FETCH) {
             setHasMorePosts(false);
             return;
@@ -46,7 +47,7 @@ export const PostsListInfiniteScroll = ({ initialPosts, locale, category }: { in
         if (observer.current) observer.current.disconnect();
 
         observer.current = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && hasMorePosts) {
+            if (entries[0].isIntersecting && hasMorePosts && !loading) {
                 // Ne charger que s'il y a encore des posts
                 loadMorePosts();
             }
@@ -57,7 +58,7 @@ export const PostsListInfiniteScroll = ({ initialPosts, locale, category }: { in
         }
 
         return () => observer.current?.disconnect();
-    }, [posts, hasMorePosts]);
+    }, [posts, hasMorePosts, loading]);
 
     return (
         <>

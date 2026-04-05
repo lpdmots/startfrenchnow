@@ -10,7 +10,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiFolderDownloadLine } from "react-icons/ri";
 import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 import { BsInfinity, BsTrophy } from "react-icons/bs";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { CourseRatings } from "@/app/components/sfn/courses/CourseRatings";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useLocale, useTranslations } from "next-intl";
@@ -19,7 +19,7 @@ import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoice
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { FidePackSommaire, getPackSommaire } from "@/app/serverActions/productActions";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { HeroData, buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
 import { client } from "@/app/lib/sanity.client";
 import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
@@ -36,7 +36,11 @@ const queryProduct = groq`
     *[_type=='product' && referenceKey == $referenceKey][0]
 `;
 
-export default async function IntermediatesPage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function IntermediatesPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id ?? null;
     const hasIntermediateCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_intermediate");
@@ -264,7 +268,7 @@ const PricingCallout = ({
     const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
     const discountBadge = hasDiscount
         ? isPercentage
-            ? t("savePercent", { percent: pricingDetails.discountValue })
+            ? t("savePercent", { percent: pricingDetails.discountValue as number })
             : t("saveAmount", { amount: formatPrice(discountAmount) })
         : null;
 

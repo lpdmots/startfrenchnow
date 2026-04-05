@@ -1,21 +1,23 @@
 import { groq } from "next-sanity";
 import { client } from "@/app/lib/sanity.client";
-import { Post } from "@/app/types/sfn/blog";
+import type { Post as BlogPost } from "@/app/types/sfn/blog";
 import PrimaryPost from "@/app/components/sfn/blog/PrimaryPost";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import PostContent from "@/app/components/sfn/post/PostContent";
 import { ParentToChildrens } from "@/app/components/animations/ParentToChildrens";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import BlogFideFloatingHelp from "@/app/components/sfn/post/BlogFideFloatingHelp";
 import BlogContactFloatingHelp from "@/app/components/sfn/post/BlogContactFloatingHelp";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { BLOGCATEGORIES } from "@/app/lib/constantes";
 import CommentList from "@/app/components/comments/CommentList";
 import CommentComposer from "@/app/components/comments/CommentComposer";
+
+export const revalidate = 86400;
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -23,6 +25,17 @@ const query = groq`
             ...,
         }
     `;
+const querySlugs = groq`
+    *[
+      _type == 'post'
+      && dateTime(publishedAt) < dateTime(now())
+      && isReady == true
+      && defined(slug.current)
+      && count(categories[@ in $categories]) > 0
+    ]{
+      "slug": slug.current
+    }
+`;
 const queryLatest = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && count(categories[@ in $categories]) > 0] 
     {
@@ -30,13 +43,28 @@ const queryLatest = groq`
     } | order(publishedAt desc) [0...3]
 `;
 
-async function Post({ params }: { params: { locale: Locale; slug: string } }) {
-    const { locale, slug } = params;
-    const postData: Promise<Post> = client.fetch(query, { slug });
-    const rowLatestPostsData: Promise<Post[]> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
+export async function generateStaticParams() {
+    // Keep dev responsive: avoid precomputing all post slugs while coding.
+    if (process.env.NODE_ENV === "development") {
+        return [];
+    }
+
+    const posts = await client.fetch<{ slug: string }[]>(querySlugs, {
+        categories: BLOGCATEGORIES,
+    });
+
+    return posts.map((post) => ({ slug: post.slug }));
+}
+
+async function Post(props: { params: Promise<{ locale: string; slug: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+    const { slug } = params;
+    const postData: Promise<BlogPost> = client.fetch(query, { slug });
+    const rowLatestPostsData: Promise<BlogPost[]> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
     const [post, rowLatestPosts] = await Promise.all([postData, rowLatestPostsData]);
 
-    const latestPostsRaw = rowLatestPosts.filter((post) => post.slug.current !== slug) as Post[];
+    const latestPostsRaw = rowLatestPosts.filter((post) => post.slug.current !== slug) as BlogPost[];
 
     if (!post) return <p className="h-64 flex justify-center items-center">Sorry this post has been deleted...</p>;
 
@@ -52,8 +80,8 @@ async function Post({ params }: { params: { locale: Locale; slug: string } }) {
 export default Post;
 
 interface PropsNoAsync {
-    post: Post;
-    latestPosts: Post[];
+    post: BlogPost;
+    latestPosts: BlogPost[];
 }
 
 const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {

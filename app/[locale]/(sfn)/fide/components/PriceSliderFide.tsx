@@ -12,7 +12,7 @@ import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
 import { Locale } from "@/i18n";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { groq } from "next-sanity";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";

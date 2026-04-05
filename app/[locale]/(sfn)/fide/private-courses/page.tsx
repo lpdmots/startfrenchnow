@@ -1,4 +1,4 @@
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { Formateur } from "../components/Formateur";
 import HowClassLook from "../components/HowClassLook";
 import { ReviewsFide } from "../components/ReviewsFide";
@@ -7,7 +7,7 @@ import PriceSliderFide from "../components/PriceSliderFide";
 import { ContactForFideCourses } from "../components/ContactForFideCourses";
 import { FideFaq } from "../components/FideFaq";
 import { AdditionalCourses } from "../components/AdditionalCourses";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { HeroPrivateCourses } from "./components/HeroPrivateCourses";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
@@ -168,7 +168,11 @@ const PRIVATE_COURSES_FAQ = {
     ],
 } as const;
 
-export default function FidePrivateCoursesPage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function FidePrivateCoursesPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const isFr = locale === "fr";
     const pageContent = PAGE_CONTENT[isFr ? "fr" : "en"];
     const homePath = isFr ? "/fr" : "/";

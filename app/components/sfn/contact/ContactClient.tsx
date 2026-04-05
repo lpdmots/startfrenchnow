@@ -1,7 +1,7 @@
 "use client";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { BsCheckCircle } from "react-icons/bs";
 import { sendContactForm, subscribeNewsletter } from "@/app/lib/apiNavigation";

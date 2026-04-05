@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { useSfnStore } from "@/app/stores/sfnStore";
 import { m } from "framer-motion";
 import { HiOutlineArrowRight } from "react-icons/hi";

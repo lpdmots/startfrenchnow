@@ -2,7 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { clearNotifications, listNotifications, markNotificationsSeen, markSystemNotificationsSeen } from "@/app/serverActions/notifications";
 import type { UINotificationCommentGroup, UINotificationItem, UINotificationSystemItem } from "@/app/serverActions/notifications";
 import { LuClock } from "react-icons/lu";

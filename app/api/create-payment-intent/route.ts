@@ -8,11 +8,14 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { groq } from "next-sanity";
 import { getUserPurchases } from "@/app/serverActions/productActions";
 
+export const dynamic = "force-dynamic";
+
+
 if (process.env.STRIPE_SECRET_KEY === undefined) {
     throw new Error("STRIPE_SECRET_KEY is not defined");
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2024-09-30.acacia",
+    apiVersion: "2025-02-24.acacia",
 });
 
 const queryUser = `*[_type == "user" && email == $sessionEmail][0] { stripeCustomerId, _id, alias }`;

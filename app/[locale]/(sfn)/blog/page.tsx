@@ -5,9 +5,10 @@ import { NUMBER_OF_POSTS_TO_FETCH } from "@/app/lib/constantes";
 import { localizePosts } from "@/app/lib/utils";
 import { Locale } from "@/i18n";
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
-export default async function Blog({ params }: { params: { locale: string } }) {
+export default async function Blog(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
     const locale = params.locale as Locale;
     const postsData: Post[] = await getPostsSlice(0, NUMBER_OF_POSTS_TO_FETCH);
     const posts = localizePosts(postsData, locale);

@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 import { client } from "@/app/lib/sanity.client";
 import { Post } from "@/app/types/sfn/blog";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
 import { findAdjacentFromTOC } from "@/app/lib/tocNavigation";
@@ -21,8 +21,10 @@ const query = groq`
         }
     `;
 
-async function DialogsVideosPage({ params }: { params: { locale: Locale; slug: string } }) {
-    const { locale, slug } = params;
+async function DialogsVideosPage(props: { params: Promise<{ locale: string; slug: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+    const { slug } = params;
 
     // 0) Session → déterminer l’accès Pack FIDE
     const session = await getServerSession(authOptions);

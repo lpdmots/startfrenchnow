@@ -1,4 +1,4 @@
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { getServerSession } from "next-auth";
 import { groq } from "next-sanity";
 import { redirect } from "next/navigation";

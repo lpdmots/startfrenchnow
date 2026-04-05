@@ -1,5 +1,5 @@
 "use client";
-import { Review, ScoreProps, Success } from "@/app/types/stories/element";
+import type { Review, ScoreProps, Success } from "@/app/types/stories/element";
 import { LayoutProps } from "@/app/types/stories/state";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ScoreGauge from "./ScoreGauge";
@@ -13,7 +13,7 @@ import { getUserStoryData, storyToStats } from "@/app/serverActions/storyActions
 import { useSession } from "next-auth/react";
 import { UserStory } from "@/app/types/sfn/auth";
 import { GiSpellBook } from "react-icons/gi";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 import { IoFilter } from "react-icons/io5";
 import Image from "next/image";
 

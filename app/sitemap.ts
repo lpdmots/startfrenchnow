@@ -3,6 +3,8 @@ import type { MetadataRoute } from "next";
 import { client } from "@/app/lib/sanity.client";
 import { BLOGCATEGORIES } from "@/app/lib/constantes";
 
+export const revalidate = 3600;
+
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
 function abs(path: string) {

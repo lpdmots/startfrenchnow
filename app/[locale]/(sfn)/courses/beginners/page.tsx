@@ -6,7 +6,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiFolderDownloadLine } from "react-icons/ri";
 import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 import { BsInfinity, BsTrophy } from "react-icons/bs";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { CourseRatings } from "@/app/components/sfn/courses/CourseRatings";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";
@@ -16,7 +16,7 @@ import { CoursesAccordionClient } from "../../fide/components/CoursesAccordionCl
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { FidePackSommaire, getPackSommaire } from "@/app/serverActions/productActions";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { Progress } from "@/app/types/sfn/auth";
 import { client } from "@/app/lib/sanity.client";
 import { HeroData, buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
@@ -34,7 +34,11 @@ const queryProduct = groq`
     *[_type=='product' && referenceKey == $referenceKey][0]
 `;
 
-export default async function BeginnersPage({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function BeginnersPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id ?? null;
     const hasBeginnerCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_beginner");
@@ -242,7 +246,7 @@ const PricingCallout = ({ pricingDetails, locale, align, className }: { pricingD
     const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
     const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
     const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
-    const discountBadge = hasDiscount ? (isPercentage ? t("savePercent", { percent: pricingDetails.discountValue }) : t("saveAmount", { amount: formatPrice(discountAmount) })) : null;
+    const discountBadge = hasDiscount ? (isPercentage ? t("savePercent", { percent: pricingDetails.discountValue as number }) : t("saveAmount", { amount: formatPrice(discountAmount) })) : null;
 
     const alignText = align === "center" ? "text-center" : "text-left";
     const alignRow = align === "center" ? "justify-center" : "justify-start";

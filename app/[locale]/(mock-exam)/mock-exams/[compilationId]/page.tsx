@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import urlFor from "@/app/lib/urlFor";
@@ -69,7 +69,13 @@ const formatDate = (iso?: string) => {
     }
 };
 
-export default async function MockExamCompilationPage({ params: { compilationId } }: { params: { compilationId: string } }) {
+export default async function MockExamCompilationPage(props: { params: Promise<{ compilationId: string }> }) {
+    const params = await props.params;
+
+    const {
+        compilationId
+    } = params;
+
     const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = session?.user?._id;
 

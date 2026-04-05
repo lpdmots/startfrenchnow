@@ -6,7 +6,7 @@ import { Fade } from "../animations/Fades";
 import { LinkCurrent, LinkTranslation } from "./LinkCurrent";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import NewsletterFooter from "./newsletter/NewsletterFooter";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { FacebookFooter } from "./logos/FacebookFooter";
 import { YoutubeFooter } from "./logos/Youtube";
 import { InstagramFooter } from "./logos/Instagram";

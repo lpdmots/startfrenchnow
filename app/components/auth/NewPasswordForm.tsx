@@ -1,7 +1,7 @@
 "use client";
 import Spinner from "@/app/components/common/Spinner";
 import { updateUserPassword } from "@/app/serverActions/authActions";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { useState, useRef } from "react";
 
 export const NewPasswordForm = ({ messages, token }: { messages: any; token: string }) => {

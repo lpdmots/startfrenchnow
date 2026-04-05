@@ -7,7 +7,6 @@ export const TarteauCitronLink = () => {
     const locale = useLocale();
     const openPanel = () => {
         if (typeof window !== "undefined") {
-            // @ts-expect-error: injected globally by tarteaucitron script
             window.tarteaucitron?.userInterface?.openPanel?.();
         }
     };

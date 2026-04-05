@@ -1,6 +1,6 @@
 import { VideoFide } from "./VideoFide";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { intelRich } from "@/app/lib/intelRich";
 import { BookFirstMeeting } from "./BookFirstMeeting";
 import { FideCourseRatings } from "@/app/components/sfn/courses/FideCourseRatings";

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import urlFor from "@/app/lib/urlFor";
 import type { ExamCompilationLite } from "@/app/serverActions/mockExamActions";
 import type { ScoreSummary } from "@/app/types/fide/mock-exam";

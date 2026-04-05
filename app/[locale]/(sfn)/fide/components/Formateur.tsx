@@ -4,7 +4,7 @@ import { UdemySmall } from "@/app/components/common/logos/Udemy";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaCheck, FaStar, FaStarHalfAlt, FaTimes, FaUserGraduate } from "react-icons/fa";
@@ -225,7 +225,7 @@ const ComparativeTabel = () => {
                                     <div className="block md:hidden mb-0 text-lg leading-tight">{row.smallTitle}</div>
                                 </div>
                                 <div className="col-span-1 min-h-16 flex items-center justify-center" style={{ borderBottom }}>
-                                    <p className="mb-0 w-full text-center leading-tight">{row.others}</p>
+                                    <p className="mb-0 flex justify-center w-full">{row.others}</p>
                                 </div>
                             </div>
                         );
@@ -253,7 +253,7 @@ const ComparativeTabel = () => {
                                     const borderBottom = index !== dataComparativTabel.length - 1 ? "1px solid var(--secondary-2)" : "none";
                                     return (
                                         <div key={row.title || "sans titre"} className="flex justify-center items-center min-h-16 w-full" style={{ borderBottom }}>
-                                            <p className="mb-0 w-full text-center leading-tight">{row.sfn}</p>
+                                            <p className="mb-0 flex justify-center w-full">{row.sfn}</p>
                                         </div>
                                     );
                                 })}

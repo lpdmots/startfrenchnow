@@ -22,11 +22,11 @@ export function resolveAuthLocale(localeLike?: string | null): AuthLocale {
 export const activationMailMessagesByLocale: Record<AuthLocale, MailMessage> = {
     fr: {
         subject: "Activation de votre compte Start French Now",
-        body: "<p>Bonjour USERNAME,</p><br><p>Votre lien d'activation précédent a expiré.</p><p>Pour activer votre compte, veuillez cliquer sur le lien suivant : <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/fr'>activer mon compte</a></span>.</p><br><p>À très bientôt !</p><p>Cordialement,</p>",
+        body: "<p>Bonjour USERNAME,</p><br><p>Votre lien d'activation précédent a expiré.</p><p>Pour activer votre compte, veuillez cliquer sur le lien suivant : <span><a href='DOMAIN/api/activate/ACTIVATETOKEN/fr'>activer mon compte</a></span>.</p><br><p>À très bientôt !</p><p>Cordialement,</p>",
     },
     en: {
         subject: "Please activate your account and Start French Now",
-        body: "<p>Hello USERNAME,</p><br><p>Your previous activation link has expired.</p><p>Please click <span><a href='DOMAIN/api/auth/activate/ACTIVATETOKEN/en'>here</a></span> to activate your account.</p><br><p>See you soon on Start French Now!</p><p>Best regards,</p>",
+        body: "<p>Hello USERNAME,</p><br><p>Your previous activation link has expired.</p><p>Please click <span><a href='DOMAIN/api/activate/ACTIVATETOKEN/en'>here</a></span> to activate your account.</p><br><p>See you soon on Start French Now!</p><p>Best regards,</p>",
     },
 };
 

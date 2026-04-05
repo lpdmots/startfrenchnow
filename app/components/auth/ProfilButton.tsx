@@ -1,10 +1,10 @@
 "use client";
 import { FaCaretRight, FaRegUser, FaUserGraduate } from "react-icons/fa";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import DropdownMenu from "../common/DropdownMenu";
 import { LogOut } from "./LogOut";
 import { useSession } from "next-auth/react";
-import { usePathname } from "next-intl/client";
+import { usePathname } from "@/i18n/navigation";
 import { LinkCurrentBlog } from "../common/LinkCurrentBlog";
 
 export const ProfilButton = ({ profil, logout }: { profil: string; logout: string }) => {

@@ -1,8 +1,8 @@
 "use client";
 import { StarRating } from "@/app/components/common/StarRating.js";
-import { forwardRef, MouseEvent, useRef, useState } from "react";
+import { forwardRef, MouseEvent, useRef, useState, use } from "react";
 import Image from "next/image";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 import { setStoryFeedback, updateFeedback } from "@/app/serverActions/storyActions";
 import { useSession } from "next-auth/react";
 import Spinner from "@/app/components/common/Spinner";
@@ -13,9 +13,9 @@ import { useStoryStore } from "@/app/stores/storiesStore";
 import SimpleButton from "@/app/components/animations/SimpleButton";
 
 type Props = {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 };
 
 const initialStars = {
@@ -120,7 +120,13 @@ interface SubmitResponse {
     success: boolean;
 }
 
-export default function Feedback({ params: { slug } }: Props) {
+export default function Feedback(props: Props) {
+    const params = use(props.params);
+
+    const {
+        slug
+    } = params;
+
     const [stars, setStars] = useState(initialStars);
     const [language, setLanguage] = useState<"fr" | "en">("fr");
     const [checkboxes, setCheckboxes] = useState(initialCheckBoxes);
@@ -300,7 +306,7 @@ export default function Feedback({ params: { slug } }: Props) {
     );
 }
 
-const CommentCollapse = forwardRef<HTMLTextAreaElement, any>(function (props: { language: "fr" | "en" }, ref) {
+const CommentCollapse = forwardRef<HTMLTextAreaElement, { language: "fr" | "en" }>(function (props, ref) {
     const [textValue, setTextValue] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 

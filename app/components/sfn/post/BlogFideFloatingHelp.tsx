@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineCalendar, HiOutlineQuestionMarkCircle, HiOutlineMail } from "react-icons/hi";
 import { PopupModal } from "react-calendly";

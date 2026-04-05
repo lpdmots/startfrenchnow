@@ -5,12 +5,18 @@ import { client } from "@/app/lib/sanity.client";
 import { groqQueries } from "@/app/lib/groqQueries";
 
 type Props = {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 };
 
-const Story = async ({ params: { slug } }: Props) => {
+const Story = async (props: Props) => {
+    const params = await props.params;
+
+    const {
+        slug
+    } = params;
+
     const story = await client.fetch(groqQueries["adventure"], { slug });
     return (
         <div className="flex justify-center">

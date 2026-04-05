@@ -1,5 +1,6 @@
 import { BsConeStriped } from "react-icons/bs";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Learn French at Your Own Pace with Expert-led Video Lessons",
@@ -32,9 +33,9 @@ function Maintenance() {
                                         <p className="mg-bottom-32px">But its not ready yet, we are working on it...</p>
                                         <div id="w-node-_43cc762b-abd3-c8a6-16ac-a7037f01a843-33543d3f" className="inner-container max-w-[254px] mt-0 w-full max-[479px]:max-w-full">
                                             <div className="buttons-row center">
-                                                <a href="/" className="btn-primary full-width w-button">
+                                                <Link href="/" className="btn-primary full-width w-button">
                                                     Go to homepage
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>

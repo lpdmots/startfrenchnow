@@ -4,6 +4,9 @@ import { Choice, ElementProps, Extract } from "@/app/types/stories/element";
 import { groq } from "next-sanity";
 import { Block } from "@/app/types/sfn/blog";
 
+export const dynamic = "force-dynamic";
+
+
 const query = groq`
     *[_type == "element" && code == $code && adventure._ref == "9d9e0112-482c-4a8b-a9a8-c5f70b99d2ce" ][0]{ 
         _id,

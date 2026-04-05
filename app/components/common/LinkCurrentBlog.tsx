@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { usePathname } from "next-intl/client";
-import Link from "next-intl/link";
+import { usePathname } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { Locale } from "@/i18n";
 import LinkToFideVideos from "./LinkToFideVideos";
 import LinkToFideExams from "./LinkToFideExams";

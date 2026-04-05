@@ -9,17 +9,25 @@ import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 import { activationMailMessagesByLocale, buildWelcomeSystemNotification, resolveAuthLocale, welcomeMailMessagesByLocale } from "@/app/lib/authMailMessages";
 import { appendSystemNotification } from "@/app/lib/systemNotifications";
 
+export const dynamic = "force-dynamic";
+
+
 interface Props {
-    params: { args: string[] };
+    params: Promise<{ args: string[] }>;
 }
 
-export async function GET(_request: NextRequest, { params }: Props) {
+export async function GET(_request: NextRequest, props: Props) {
+    const params = await props.params;
     const { args } = params;
     const token = args.at(0);
     const localeFromUrl = args.at(1);
     const locale = resolveAuthLocale(localeFromUrl);
+    if (!token) {
+        return redirect(`/${locale}/auth/error/no-user`);
+    }
 
-    const user: UserProps = await client.fetch('*[_type == "user" && activateToken == $token][0]', { token });
+    const userQuery: string = '*[_type == "user" && activateToken == $token][0]';
+    const user = (await (client as any).fetch(userQuery, { token })) as UserProps | null;
 
     if (!user) {
         return redirect(`/${locale}/auth/error/no-user`);

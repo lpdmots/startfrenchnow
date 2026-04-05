@@ -1,6 +1,9 @@
 import textToSpeechSimple from "@/app/lib/textToSpeechSimple";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export async function POST(request: NextRequest) {

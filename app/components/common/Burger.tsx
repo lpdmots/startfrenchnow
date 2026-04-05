@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useRef } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import { usePathname } from "next-intl/client";
-import Link from "next-intl/link";
+import { usePathname } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { FaCaretRight, FaLock } from "react-icons/fa";
 import { Locale } from "@/i18n";

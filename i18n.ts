@@ -1,10 +1,28 @@
 import { getRequestConfig } from "next-intl/server";
+import enMessages from "./app/dictionaries/en.json";
+import frMessages from "./app/dictionaries/fr.json";
 
 export type Locale = "en" | "fr";
 export const locales = ["en", "fr"] as const;
+type SupportedLocale = Locale;
+
+const messagesByLocale = {
+    en: enMessages,
+    fr: frMessages,
+} as const;
 
 // Mettre à jour la constante langData dans lib/constantes.ts
 
-export default getRequestConfig(async ({ locale }) => ({
-    messages: (await import(`@/app/dictionaries/${locale}.json`)).default,
-}));
+export default getRequestConfig(async ({ requestLocale }) => {
+    const requested = await requestLocale;
+    const locale: SupportedLocale = requested === "fr" ? "fr" : "en";
+
+    return {
+        locale,
+        messages: messagesByLocale[locale],
+    };
+});
+
+export function normalizeLocale(locale: string | undefined): Locale {
+    return locale === "fr" ? "fr" : "en";
+}

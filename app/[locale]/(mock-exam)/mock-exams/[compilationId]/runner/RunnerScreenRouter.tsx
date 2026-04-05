@@ -1964,7 +1964,7 @@ export default function RunnerScreenRouter({
                         <div className="space-y-4">
                             <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">L'Examen Blanc</p>
                             <h1 className="display-2 font-medium mb-0 text-neutral-800">Déroulement de l'examen</h1>
-                            <p className="mb-0 text-neutral-700">Regarde cette courte vidéo de préparation. Tu y verras les épreuves et l'ordre de passage pour te lancer sereinement.</p>
+                            <p className="mb-0 text-neutral-700">Regardez cette courte vidéo de préparation. Vous y verrez les épreuves et l'ordre de passage pour vous lancer sereinement.</p>
                             <div className="grid gap-2 text-sm text-neutral-700">
                                 <p className="mb-0">
                                     <span className="font-semibold text-neutral-800">1.</span> Parler
@@ -2095,7 +2095,7 @@ export default function RunnerScreenRouter({
                     <div className="lg:max-w-[700px]">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Tâche 3</p>
                         <h1 className="display-2 font-medium mb-4 text-neutral-800">Discussion guidée</h1>
-                        <p className="mb-0 text-sm text-neutral-600">Objectif: exprimer ton avis de façon simple, justifier brièvement et interagir avec l'examinateur.</p>
+                        <p className="mb-0 text-sm text-neutral-600">Objectif: exprimer votre avis de façon simple, justifier brièvement et interagir avec l'examinateur.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
                         <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
@@ -2198,7 +2198,7 @@ export default function RunnerScreenRouter({
                 <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-6 text-center">
                     <div className="flex flex-col items-center gap-3">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Parler Branche B1</p>
-                        <h1 className="display-2 mb-0 text-neutral-800">Choisis ton épreuve</h1>
+                        <h1 className="display-2 mb-0 text-neutral-800">Choisissez votre épreuve</h1>
                         <p className="mb-0 text-sm text-neutral-600">Sélectionne l'une des deux tâches B1 proposées dans ce template.</p>
                     </div>
 
@@ -2943,7 +2943,7 @@ export default function RunnerScreenRouter({
                 <div className="mx-auto flex w-full flex-col gap-6">
                     <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Correction Parler A2</p>
                     <h1 className="display-2 mb-0 text-neutral-800">{compilationName || "Examen blanc"}</h1>
-                    <p className="mb-0 text-sm text-neutral-600">Regarde la correction et compare-la à tes réponses.</p>
+                    <p className="mb-0 text-sm text-neutral-600">Regardez la correction et comparez-la à vos réponses.</p>
 
                     <div className="w-full">
                         <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
@@ -2999,7 +2999,7 @@ export default function RunnerScreenRouter({
                 <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-6 text-center">
                     <div className="flex flex-col items-center gap-3">
                         <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Parler - Branche</p>
-                        <h1 className="display-2 mb-0 text-neutral-800">Choisis ton niveau</h1>
+                        <h1 className="display-2 mb-0 text-neutral-800">Choisissez votre niveau</h1>
                         <p className="mb-0 text-neutral-700">
                             Recommandation IA: <span className="font-semibold text-neutral-800">{recommendedOralBranch}</span> (score Parler A2: {globalPercentage}%).
                         </p>
@@ -3185,7 +3185,7 @@ export default function RunnerScreenRouter({
                 <div className="mx-auto flex w-full flex-col gap-6">
                     <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Correction Parler {inferredBranch}</p>
                     <h1 className="display-2 mb-0 text-neutral-800">{branchCorrectionTaskTitle}</h1>
-                    <p className="mb-0 text-sm text-neutral-600">Regarde la correction et compare-la à tes réponses.</p>
+                    <p className="mb-0 text-sm text-neutral-600">Regardez la correction et comparez-la à vos réponses.</p>
 
                     <div className="w-full">
                         <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
@@ -3692,9 +3692,9 @@ export default function RunnerScreenRouter({
             <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col items-center justify-center gap-6 px-2 pt-0`}>
                 <div className="w-full max-w-3xl text-center">
                     <p className="mb-0 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">Lire/Écrire</p>
-                    <h1 className="display-2 mb-3 text-neutral-800">Choisis ton parcours</h1>
+                    <h1 className="display-2 mb-3 text-neutral-800">Choisissez votre parcours</h1>
                     <p className="mb-0 text-sm text-neutral-700">
-                        Recommandation IA selon tes résultats à l’oral: <span className="font-semibold text-secondary-2">{recommendedLabel}</span>
+                        Recommandation IA selon vos résultats à l’oral: <span className="font-semibold text-secondary-2">{recommendedLabel}</span>
                     </p>
                 </div>
 
@@ -3761,7 +3761,7 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-sm text-neutral-600">
                             Tu vas réaliser <span className="font-semibold">{readWriteTasks.length}</span> module{readWriteTasks.length > 1 ? "s" : ""}, avec 2 tâches par module.
                         </p>
-                        <p className="mb-0 mt-2 text-sm text-neutral-600">Commence quand tu es prêt. Tes réponses sont enregistrées question par question.</p>
+                        <p className="mb-0 mt-2 text-sm text-neutral-600">Commencez quand vous êtes prêt. Vos réponses sont enregistrées question par question.</p>
                     </div>
                     <div className="max-w-[700px] w-full">
                         <div className="relative overflow-hidden rounded-[1.2rem] border-2 border-solid border-neutral-800 p-2 shadow-1">
@@ -4733,10 +4733,10 @@ export default function RunnerScreenRouter({
                                 <div className="mb-2 inline-flex items-center rounded-full bg-secondary-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">
                                     Entretien gratuit
                                 </div>
-                                <h2 className="mb-2 text-2xl font-semibold text-neutral-800">On prépare la suite ensemble</h2>
-                                <p className="mb-0 text-sm text-neutral-700">Réserve un entretien gratuit avec un professeur FIDE pour clarifier ton plan de progression.</p>
+                                <h2 className="mb-2 text-2xl font-semibold text-neutral-800">Obtenez un retour précis sur votre examen</h2>
+                                <p className="mb-0 text-sm text-neutral-700">Durant cet entretien gratuit, votre professeur FIDE commente vos forces, vos points à corriger et vos erreurs clés, puis vous donne des priorités concrètes pour progresser.</p>
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">
-                                    Axe prioritaire actuel: <span className="font-semibold text-neutral-800">{weakestDimension}</span>.
+                                    Priorité identifiée aujourd&apos;hui: <span className="font-semibold text-neutral-800">{weakestDimension}</span>.
                                 </p>
                                 <div className="mt-4">
                                     <button
@@ -4744,7 +4744,7 @@ export default function RunnerScreenRouter({
                                         className="inline-flex items-center justify-center rounded-lg bg-secondary-2 px-4 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
                                         onClick={() => setIsFeedbackCalendlyOpen(true)}
                                     >
-                                        Réserver mon entretien gratuit
+                                        Obtenir votre retour personnalisé gratuit
                                     </button>
                                 </div>
                             </div>
@@ -4763,7 +4763,7 @@ export default function RunnerScreenRouter({
                         <div className="rounded-xl border border-solid border-secondary-2 bg-neutral-100 p-3 md:p-4">
                             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-secondary-2">Coupon bien mérité</p>
                             <p className="mb-0 text-sm text-neutral-800">
-                                Tu as débloqué <span className="font-semibold text-secondary-4">-10%</span> sur les 3 offres ci-dessous avec le code{" "}
+                                Vous avez débloqué <span className="font-semibold text-secondary-4">-10%</span> sur les 3 offres ci-dessous avec le code{" "}
                                 <span className="rounded bg-neutral-200 px-2 py-0.5 font-semibold text-neutral-800">{BRAVO_COUPON_CODE}</span> (à saisir au checkout).
                             </p>
                             {isFinalOfferPricingLoading ? <p className="mt-2 mb-0 text-xs text-neutral-600">Mise à jour des tarifs en cours…</p> : null}
@@ -4773,7 +4773,7 @@ export default function RunnerScreenRouter({
                             <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
                                 <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack autonome</p>
                                 <p className="mb-0 text-sm font-semibold text-neutral-800">Préparation FIDE en autonomie</p>
-                                <p className="mt-2 mb-0 text-sm text-neutral-700">Vidéos, scénarios et examens blancs pour t'entraîner à ton rythme.</p>
+                                <p className="mt-2 mb-0 text-sm text-neutral-700">Vidéos, scénarios et examens blancs pour vous entraîner à votre rythme.</p>
                                 <div className="mt-3 flex items-end gap-2">
                                     <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packAutonomePricing.baseAmount)}</p>
                                     <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(packAutonomePricing.discountedAmount)}</p>

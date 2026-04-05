@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { BiExit } from "react-icons/bi";
 import { GiSpellBook } from "react-icons/gi";
 import SimpleButton from "../../animations/SimpleButton";
-import { useRouter, usePathname } from "next-intl/client";
+import { useRouter, usePathname } from "@/i18n/navigation";
 import { useSession } from "next-auth/react";
 import { useStoryStore } from "@/app/stores/storiesStore";
 import { setStoryFeedback } from "@/app/serverActions/storyActions";
@@ -96,7 +96,7 @@ const ModalAskForComment = ({ setOpen }: { setOpen: Dispatch<SetStateAction<bool
                         opacity: 0,
                     }}
                     transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-                    className="absolute z-100 p-5 bg-neutral-200 h-auto max-w-md  text-neutral-100 rounded-lg"
+                    className="absolute z-100 p-5 bg-neutral-200 h-auto max-w-md  text-neutral-800 rounded-lg"
                     style={{ width: "98%" }}
                 >
                     <div>

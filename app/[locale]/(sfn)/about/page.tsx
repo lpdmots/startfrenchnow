@@ -1,7 +1,7 @@
 import Hobbies from "@/app/components/sfn/about/Hobbies";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import React from "react";
 import { MdOutlineEmail } from "react-icons/md";
 import { Fade } from "@/app/components/animations/Fades";

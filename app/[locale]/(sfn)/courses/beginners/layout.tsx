@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
 import { Locale } from "@/i18n";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }): Promise<Metadata> {
-    const t = await getTranslator(locale, "Metadata.Courses.Beginners");
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
+    const t = await getTranslations({ locale: locale, namespace: "Metadata.Courses.Beginners" });
 
     const path = "/courses/beginners";
     const canonical = locale === "fr" ? `/fr${path}` : path;

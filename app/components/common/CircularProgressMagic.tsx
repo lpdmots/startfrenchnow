@@ -94,7 +94,7 @@ export default function CircularProgressMagic({
             </svg>
             <span
                 data-current-value={currentPercent}
-                className={clsx("duration-[var(--transition-length)] delay-[var(--delay)] absolute inset-0 m-auto size-fit ease-linear animate-in fade-in", fontHeight)}
+                className={clsx("[transition-duration:var(--transition-length)] [transition-delay:var(--delay)] absolute inset-0 m-auto size-fit ease-linear animate-in fade-in", fontHeight)}
             >
                 {typeof centerText === "string" ? centerText : currentPercent ? `${currentPercent}%` : "?"}
             </span>

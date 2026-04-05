@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { LuGraduationCap, LuInfinity, LuRefreshCw, LuSmartphone } from "react-icons/lu";
 import { LucideBadgeCheck } from "lucide-react";
 import { HiOutlineShieldCheck } from "react-icons/hi";

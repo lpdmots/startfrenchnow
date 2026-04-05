@@ -6,6 +6,9 @@ import { extractAndParseJson } from "@/app/lib/utils";
 import { Question } from "@/app/types/sfn/blog";
 import { Format } from "./types";
 
+export const dynamic = "force-dynamic";
+
+
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export async function POST(request: NextRequest) {

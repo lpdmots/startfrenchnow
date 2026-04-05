@@ -1,5 +1,5 @@
 "use client";
-import { ExerciseType, ResponsesLayouts, Exercise as ExerciseProps, Question, Exercise, LevelChoice } from "@/app/types/sfn/blog";
+import type { ExerciseType, ResponsesLayouts, Exercise as ExerciseProps, Question, Exercise, LevelChoice } from "@/app/types/sfn/blog";
 import { CATEGORIESCOLORS, RESPONSESLAYOUTS } from "@/app/lib/constantes";
 import { RichTextComponents } from "../../sanity/RichTextComponents";
 import { PortableText } from "@portabletext/react";

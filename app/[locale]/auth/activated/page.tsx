@@ -1,6 +1,6 @@
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import React from "react";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";

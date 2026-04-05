@@ -1,18 +1,15 @@
 "use client";
-import { Video } from "@/app/types/sfn/video";
 import { getSubscriber, updateSubscriber } from "@/app/lib/apiNavigation";
-import { client } from "@/app/lib/sanity.client";
 import Image from "next/image";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { useState, FormEvent, ChangeEvent, Dispatch, SetStateAction } from "react";
 import Spinner from "@/app/components/common/Spinner";
-import { useRouter } from "next-intl/client";
+import { useRouter } from "@/i18n/navigation";
 
 interface State {
     subscriberId: string | null;
     subscriberGroups: string[];
     unknownSub: boolean;
-    video: Video | null;
     error: boolean;
 }
 
@@ -20,14 +17,12 @@ const initialValue = {
     subscriberId: null,
     subscriberGroups: [],
     unknownSub: false,
-    video: null,
     error: false,
 };
 
 export function MyFreeVideoFront({ translation }: { translation: any }) {
     const [state, setState] = useState<State>(initialValue);
-    const { subscriberId, unknownSub, video, error } = state;
-    console.log({ subscriberId, unknownSub, video, error });
+    const { subscriberId, unknownSub, error } = state;
 
     if (error)
         return (
@@ -56,19 +51,13 @@ export function MyFreeVideoFront({ translation }: { translation: any }) {
 
 const LayoutWrapper = ({ children }: { children: JSX.Element }) => {
     return (
-        <div className="utility-page-wrap password-page pt-16">
-            <div className="utility-page-content w-password-page w-form">
-                <div className="flex w-full max-w-[900px] flex-col items-stretch w-password-page">
-                    <div className="container-default w-container">
-                        <div className="inner-container _600px---mbl center">
-                            <div data-w-id="2078a685-0c58-ebe5-b8d7-ebd2a748e8ad" className="card shadow-[none] [transition:none_0ms_ease] hover:[transform:none]">
-                                <div className="p-[35px_40px_40px] flex p-[64px_90px_80px] flex-col items-center text-center max-[767px]:p-[32px_24px_40px] max-[767px]:p-[56px_34px] max-[479px]:p-[40px_24px] p-[28px_56px] rounded-[18px] text-[20px] leading-[1.1em] p-[22px_38px] rounded-[16px] min-h-[86px] rounded-[20px] font-medium leading-[24px] min-h-[28px] min-w-[28px] w-[88px] h-[88px] min-h-[88px] min-w-[88px] text-[30px] leading-[32px] flex p-[64px_90px_80px] flex-col items-center text-center max-h-[none] p-[28px_28px_54px] max-[991px]:p-[26px_52px] max-[991px]:pr-[24px] max-[991px]:pb-[45px] max-[991px]:pl-[24px] max-[767px]:p-[24px_43px] max-[767px]:rounded-[16px] max-[767px]:text-[18px] max-[767px]:p-[20px_32px] max-[767px]:rounded-[14px] max-[767px]:min-h-[72px] max-[767px]:min-h-[68px] max-[767px]:min-w-auto max-[767px]:w-[72px] max-[767px]:h-[72px] max-[767px]:min-w-[72px] max-[767px]:text-[26px] max-[767px]:leading-[28px] max-[767px]:p-[56px_34px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] max-[479px]:min-h-[64px] max-[479px]:text-[18px] max-[479px]:leading-[22px] max-[479px]:min-h-[26px] max-[479px]:min-w-[26px] max-[479px]:p-[40px_24px]">{children}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <main className="min-h-screen bg-[#F5F5F5] flex items-start">
+            <div className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 md:px-10 pt-8 md:pt-12 pb-14 md:pb-20">
+                <section className="relative mx-auto w-full max-w-[760px] rounded-[28px] border border-neutral-200 bg-white/95 p-6 sm:p-8 md:p-10 shadow-[0_20px_70px_rgba(0,0,0,0.08)] backdrop-blur">
+                    {children}
+                </section>
             </div>
-        </div>
+        </main>
     );
 };
 
@@ -103,16 +92,23 @@ const EmailInput = ({ setState, translation }: { setState: Dispatch<SetStateActi
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="mg-bottom-54px flex justify-center w-full">
-                <div className="image-wrapper rigth-shadow-circle password-page-icon">
-                    <Image src="/images/home-hero-image-paperfolio-webflow-template.svg" priority height={184} width={196.73} alt="password protected" className="w-full h-auto" />
+            <div className="mb-8 flex justify-center w-full">
+                <div className="relative h-[120px] w-[128px] sm:h-[150px] sm:w-[160px]">
+                    <Image src="/images/home-hero-image-paperfolio-webflow-template.svg" priority fill alt="Free video" className="object-contain" />
                 </div>
             </div>
-            <h1 className="display-2 mg-bottom-12px">{translation["title"]}</h1>
-            <p className="mg-bottom-24px keep">{translation["description"]}</p>
-            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
-                <input type="email" className="input w-password-page w-input" value={email} onChange={handleChange} placeholder={translation["emailPlaceholder"]} />
-                <button type="submit" className="btn-primary w-password-page w-button">
+            <h1 className="text-center text-3xl md:text-4xl font-bold tracking-tight text-neutral-950">{translation["title"]}</h1>
+            <p className="mt-3 text-center text-base md:text-lg text-neutral-700">{translation["description"]}</p>
+            <div className="mt-8 grid grid-cols-1 gap-4">
+                <input
+                    type="email"
+                    className="h-12 rounded-xl border border-neutral-300 px-4 text-base outline-none transition focus:border-neutral-900 focus:ring-2 focus:ring-neutral-200"
+                    value={email}
+                    onChange={handleChange}
+                    placeholder={translation["emailPlaceholder"]}
+                    required
+                />
+                <button type="submit" className="btn btn-primary w-full justify-center">
                     {isLoading ? <Spinner radius maxHeight="40px" /> : translation["submitBtn"]}
                 </button>
             </div>
@@ -127,20 +123,20 @@ const UnknownSub = ({ setState, translation }: { setState: Dispatch<SetStateActi
 
     return (
         <>
-            <div className="mg-bottom-54px flex justify-center w-full">
-                <div className="image-wrapper rigth-shadow-circle password-page-icon">
-                    <Image src="/images/password-protected-paperfolio-webflow-template.svg" alt="password protected" width="184" height="184" className="image" style={{ width: "auto" }} />
+            <div className="mb-8 flex justify-center w-full">
+                <div className="relative h-[120px] w-[120px] sm:h-[150px] sm:w-[150px]">
+                    <Image src="/images/password-protected-paperfolio-webflow-template.svg" alt="Not found subscriber" fill className="object-contain" />
                 </div>
             </div>
-            <h1 className="display-2 mg-bottom-12px">{translation.title}</h1>
-            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
+            <h1 className="text-center text-3xl md:text-4xl font-bold tracking-tight text-neutral-950">{translation.title}</h1>
+            <div className="mt-6 grid grid-cols-1 gap-4">
                 <div className="flex justify-center items-center">
-                    <p>{translation.description}</p>
+                    <p className="text-center text-base md:text-lg text-neutral-700">{translation.description}</p>
                 </div>
-                <button onClick={handleTryAgain} className="btn-primary w-password-page w-button">
+                <button onClick={handleTryAgain} className="btn btn-primary w-full justify-center">
                     {translation.tryAgainBtn}
                 </button>
-                <Link href="/" className="btn-secondary w-button">
+                <Link href="/" className="btn w-full justify-center border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50">
                     {translation.goHomeBtn}
                 </Link>
             </div>
@@ -155,20 +151,20 @@ const ErrorLayout = ({ setState, translation }: { setState: Dispatch<SetStateAct
 
     return (
         <>
-            <div className="mg-bottom-54px flex justify-center w-full">
-                <div className="image-wrapper rigth-shadow-circle password-page-icon">
-                    <Image src="/images/page-not-found-icon-paperfolio-webflow-template.svg" height={184} width={184} alt="password protected" className="p-8" style={{ height: "100%" }} />
+            <div className="mb-8 flex justify-center w-full">
+                <div className="relative h-[120px] w-[120px] sm:h-[150px] sm:w-[150px]">
+                    <Image src="/images/page-not-found-icon-paperfolio-webflow-template.svg" fill alt="Error" className="object-contain p-3" />
                 </div>
             </div>
-            <h1 className="display-2 mg-bottom-12px">{translation.title}</h1>
-            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
+            <h1 className="text-center text-3xl md:text-4xl font-bold tracking-tight text-neutral-950">{translation.title}</h1>
+            <div className="mt-6 grid grid-cols-1 gap-4">
                 <div className="flex justify-center items-center">
-                    <p>{translation.description}</p>
+                    <p className="text-center text-base md:text-lg text-neutral-700">{translation.description}</p>
                 </div>
-                <button onClick={handleTryAgain} className="btn-primary w-password-page w-button">
+                <button onClick={handleTryAgain} className="btn btn-primary w-full justify-center">
                     {translation.tryAgainBtn}
                 </button>
-                <Link href="/contact" className="btn-secondary w-button">
+                <Link href="/contact" className="btn w-full justify-center border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50">
                     {translation.contactBtn}
                 </Link>
             </div>
@@ -193,18 +189,18 @@ const VideoChoice = ({ state, setState, translation }: { state: State; setState:
 
     return (
         <div>
-            <div className="mg-bottom-54px flex justify-center w-full">
-                <div className="image-wrapper rigth-shadow-circle password-page-icon relative bg-secondary-2">
-                    <Image src="/images/about-me-image-paperfolio-webflow-template.svg" loading="eager" height={184} width={184} alt="password protected" style={{ height: "100%" }} />
+            <div className="mb-8 flex justify-center w-full">
+                <div className="relative h-[120px] w-[120px] sm:h-[150px] sm:w-[150px] rounded-full bg-[#F4E84A] p-3">
+                    <Image src="/images/about-me-image-paperfolio-webflow-template.svg" loading="eager" fill alt="Choose your video" className="object-contain" />
                 </div>
             </div>
-            <h1 className="display-2 mg-bottom-12px">{translation.title}</h1>
-            <p className="mg-bottom-24px keep">{translation.description}</p>
-            <div className="w-layout-grid grid-1-column full-width gap-y-[24px]">
-                <button className="btn-primary w-password-page w-button" onClick={(e) => handleClick("mon-premier-cours-pour-debutants")}>
+            <h1 className="text-center text-3xl md:text-4xl font-bold tracking-tight text-neutral-950">{translation.title}</h1>
+            <p className="mt-3 text-center text-base md:text-lg text-neutral-700">{translation.description}</p>
+            <div className="mt-8 grid grid-cols-1 gap-4">
+                <button className="btn btn-primary w-full justify-center" onClick={() => handleClick("mon-premier-cours-pour-debutants")}>
                     {isLoading === "mon-premier-cours-pour-debutants" ? <Spinner radius maxHeight="40px" /> : translation.btnBeginner}
                 </button>
-                <button className="btn-primary w-password-page w-button" onClick={(e) => handleClick("cours-pour-les-low-intermediaires")}>
+                <button className="btn btn-primary w-full justify-center" onClick={() => handleClick("cours-pour-les-low-intermediaires")}>
                     {isLoading === "cours-pour-les-low-intermediaires" ? <Spinner radius maxHeight="40px" /> : translation.btnIntermediate}
                 </button>
             </div>

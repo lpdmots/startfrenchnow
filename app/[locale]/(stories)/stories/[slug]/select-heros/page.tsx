@@ -8,9 +8,9 @@ import { groq } from "next-sanity";
 import { groqQueries } from "@/app/lib/groqQueries";
 
 type Props = {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 };
 
 export const revalidate = 60;
@@ -27,7 +27,13 @@ export const revalidate = 60;
     return slugRoutes.map((slug) => ({ slug }));
 } */
 
-async function StartStory({ params: { slug } }: Props) {
+async function StartStory(props: Props) {
+    const params = await props.params;
+
+    const {
+        slug
+    } = params;
+
     const story = await client.fetch(groqQueries["adventure"], { slug });
     const element = await client.fetch(groqQueries["element"], { componentId: story.firstChapter?._ref || "" });
 

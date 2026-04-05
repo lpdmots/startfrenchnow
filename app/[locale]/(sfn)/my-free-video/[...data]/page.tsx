@@ -11,7 +11,13 @@ const queryVideo = groq`
     *[_type=='video' && slug.current == $slug][0]
 `;
 
-async function FreeVideo({ params: { data } }: { params: { data: string[] } }) {
+async function FreeVideo(props: { params: Promise<{ data: string[] }> }) {
+    const params = await props.params;
+
+    const {
+        data
+    } = params;
+
     const video = await client.fetch(queryVideo, { slug: data[0] });
     const { subscriber } = await getSubscriberFromServer(data[1]);
     //console.log({ subscriber, video });

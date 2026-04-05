@@ -7,14 +7,7 @@ module.exports = {
     darkMode: ["class"],
     content: ["./app/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
 
-    safelist: [
-        {
-            pattern: /\[.*\]/, // Pattern pour capturer toutes les classes dynamiques avec des crochets
-        },
-        "msw-sm",
-        "msw-md",
-        "msw-lg",
-    ],
+    safelist: ["msw-sm", "msw-md", "msw-lg"],
     theme: {
         screens: {
             sm: "480px",

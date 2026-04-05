@@ -1,9 +1,15 @@
 import "@/app/styles/stories.css";
 import { Locale } from "@/i18n";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Metadata.StoriesApp");
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
+    const t = await getTranslations({ locale: locale, namespace: "Metadata.StoriesApp" });
 
     return {
         title: t("title"),

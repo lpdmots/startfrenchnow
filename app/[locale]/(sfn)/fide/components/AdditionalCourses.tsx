@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { SlideFromBottom, SlideInOneByOneChild } from "@/app/components/animations/Slides";
 import { ParentToChildrens, ScaleChildren } from "@/app/components/animations/ParentToChildrens";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { AiFillSignal } from "react-icons/ai";
 import { IoTime } from "react-icons/io5";
 

@@ -7,13 +7,17 @@ import UdemyBusiness from "@/app/components/sfn/home/UdemyBusiness";
 import WhoIAm from "@/app/components/sfn/home/WhoIAm";
 import MarqueeContent from "@/app/components/sfn/home/MarqueeContent";
 import { HeroSfn } from "@/app/components/sfn/home/HeroSfn";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import Marquee from "@/app/components/ui/marquee";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }): Promise<Metadata> {
-    const t = await getTranslator(locale, "Metadata.Home");
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
+    const t = await getTranslations({ locale: locale, namespace: "Metadata.Home" });
 
     return {
         title: t("title"),
@@ -29,7 +33,11 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     };
 }
 
-function Home({ params: { locale } }: { params: { locale: Locale } }) {
+async function Home(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     return (
         <div className="page-wrapper flex flex-col gap-8 md:gap-12">
             <HeroSfn />

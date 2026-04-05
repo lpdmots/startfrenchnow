@@ -2,8 +2,8 @@
 import { useState } from "react";
 import Spinner from "@/app/components/common/Spinner";
 import { signIn } from "next-auth/react";
-import Link from "next-intl/link";
-import { useRouter } from "next-intl/client";
+import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 const initialFormState = { email: "", password: "" };
 

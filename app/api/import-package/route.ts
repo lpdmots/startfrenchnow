@@ -8,6 +8,9 @@ import { ProductPackage, PackageModule } from "@/app/types/sfn/stripe";
 import { createSlug } from "@/app/lib/utils";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+
+
 export const runtime = "nodejs"; // lecture disque locale
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;

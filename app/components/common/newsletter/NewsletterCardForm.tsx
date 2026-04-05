@@ -23,7 +23,7 @@ export const NewsletterCardForm = ({ formMessages }: { formMessages: any }) => {
                 <form onSubmit={handleSubmit}>
                     <label className="hidden">Email Address</label>
                     <input type="email" className="input small mb-[16px] max-[479px]:mb-[8px] w-input" value={email} onChange={handleChange} placeholder={formMessages["placeholder"]} id="email" />
-                    <button type="submit" className="btn-primary full-width w-button  min-w-36">
+                    <button type="submit" className="btn-primary full-width w-button  min-w-36 mt-2">
                         {pending ? <Spinner radius maxHeight="40px" /> : formMessages["button"]}
                     </button>
                 </form>

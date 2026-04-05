@@ -3,7 +3,7 @@
 import { LuLock, LuFileText, LuClock } from "react-icons/lu";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/app/components/ui/accordion";
 import clsx from "clsx";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { FidePackSommaire } from "@/app/serverActions/productActions";
 import { Level, Post } from "@/app/types/sfn/blog";
 import { LEVELDATA } from "@/app/lib/constantes";

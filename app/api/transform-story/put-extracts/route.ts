@@ -6,6 +6,9 @@ import { JSDOM } from "jsdom";
 import { v4 as uuidv4 } from "uuid";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
+export const dynamic = "force-dynamic";
+
+
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 const defaultSchema = Schema.compile({

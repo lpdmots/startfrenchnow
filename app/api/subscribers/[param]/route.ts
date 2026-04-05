@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+
 const mailerToken = process.env.MAILERLITE_API_ACCESS_TOKEN;
 
-export async function GET(_: NextRequest, { params }: { params: { param: string } }) {
+export async function GET(_: NextRequest, props: { params: Promise<{ param: string }> }) {
+    const params = await props.params;
     const { param: email } = params;
     try {
         const response = await fetch(`https://connect.mailerlite.com/api/subscribers/${email}`, {
@@ -19,7 +23,8 @@ export async function GET(_: NextRequest, { params }: { params: { param: string 
     }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { param: string } }) {
+export async function PUT(request: NextRequest, props: { params: Promise<{ param: string }> }) {
+    const params = await props.params;
     const { param: subscriberId } = params;
     const { fields, groups } = await request.json();
 

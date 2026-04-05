@@ -1,14 +1,15 @@
+import { use } from "react";
 import Checkout from "@/app/components/stripe/Checkout";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 
 type Props = {
-    params: {
+    params: Promise<{
         productSlug: string;
         locale: "fr" | "en";
-    };
-    searchParams: { quantity: string; callbackUrl: string; currency?: "CHF" | "EUR" | "USD"; couponCode?: string };
+    }>;
+    searchParams: Promise<{ quantity: string; callbackUrl: string; currency?: "CHF" | "EUR" | "USD"; couponCode?: string }>;
 };
 
 function normalizeLocalizedPath(pathLike?: string): string {
@@ -28,7 +29,23 @@ function normalizeLocalizedPath(pathLike?: string): string {
     return path || "/";
 }
 
-export default function CheckoutPage({ params: { productSlug, locale }, searchParams: { quantity, callbackUrl, currency, couponCode } }: Props) {
+export default function CheckoutPage(props: Props) {
+    const searchParams = use(props.searchParams);
+
+    const {
+        quantity,
+        callbackUrl,
+        currency,
+        couponCode
+    } = searchParams;
+
+    const params = use(props.params);
+
+    const {
+        productSlug,
+        locale
+    } = params;
+
     const t = useTranslations("Checkout");
     const normalizedCallbackUrl = normalizeLocalizedPath(callbackUrl);
 

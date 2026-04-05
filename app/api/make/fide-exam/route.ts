@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
-//import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 
-import fetch from "node-fetch";
+export const dynamic = "force-dynamic";
+
+//import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 import { Exam, ExamCompetence, Response } from "@/app/types/fide/exam";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
@@ -202,7 +204,7 @@ async function loadAudiosToS3(audioUrls: string[], examId: string, level: string
             throw new Error(`Échec du téléchargement de l'audio : ${url}, index: ${index}`);
         }
 
-        const buffer = await audioResponse.buffer();
+        const buffer = Buffer.from(await audioResponse.arrayBuffer());
         const contentType = audioResponse.headers.get("content-type") || "audio/mpeg";
         const extension = contentType.split("/")[1];
         const filename = `fide-exam/comprendre/${level}/${examId}-${index + 1}.${extension}`;

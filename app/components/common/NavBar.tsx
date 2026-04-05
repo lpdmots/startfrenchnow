@@ -1,6 +1,6 @@
 import { FaRegEnvelope } from "react-icons/fa";
 import Burger from "./Burger";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import DarkMode from "./DarkMode";
 import Logo from "./logos/Logo";
 import { ProfilButton } from "../auth/ProfilButton";

@@ -1,8 +1,14 @@
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Locale } from "@/i18n";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Metadata.FideVideos");
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
+    const t = await getTranslations({ locale: locale, namespace: "Metadata.FideVideos" });
 
     const path = "/fide/videos";
     const canonical = locale === "fr" ? `/fr${path}` : path;

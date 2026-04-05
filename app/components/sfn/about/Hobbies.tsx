@@ -3,7 +3,7 @@ import { IoBeer, IoLanguageSharp } from "react-icons/io5";
 import { SiYourtraveldottv } from "react-icons/si";
 import { ImFilm } from "react-icons/im";
 import { MdOutlineEmail } from "react-icons/md";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { SlideFromBottom } from "../../animations/Slides";
 import { Scale } from "../../animations/Scale";
 import { useTranslations } from "next-intl";

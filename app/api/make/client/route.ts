@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerProd";
 
+export const dynamic = "force-dynamic";
+
+
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export async function POST(request: NextRequest) {

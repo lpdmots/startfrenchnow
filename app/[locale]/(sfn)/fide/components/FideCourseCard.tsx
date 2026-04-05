@@ -1,7 +1,7 @@
 "use client";
 import { ParentToChildrens, ScaleChildren, TranslateRightChildren } from "@/app/components/animations/ParentToChildrens";
 import { motion } from "framer-motion";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import React from "react";
 

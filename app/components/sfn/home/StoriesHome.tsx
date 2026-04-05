@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { GiSpellBook } from "react-icons/gi";
 import { SlideFromBottom, SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 import { useTranslations } from "next-intl";

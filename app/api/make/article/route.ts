@@ -5,9 +5,11 @@ import { Category, VocabItem } from "@/app/types/sfn/blog";
 import { htmlToBlocks } from "@sanity/block-tools";
 import { Schema } from "@sanity/schema";
 import { JSDOM } from "jsdom";
-import fetch from "node-fetch";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
+
+export const dynamic = "force-dynamic";
+
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL;

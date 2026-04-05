@@ -1,10 +1,18 @@
 import { Locale } from "@/i18n";
 import { NextIntlClientProvider } from "next-intl";
-import { getTranslator } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { ReactNode } from "react";
+import enMessages from "@/app/dictionaries/en.json";
+import frMessages from "@/app/dictionaries/fr.json";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }) {
-    const t = await getTranslator(locale, "Metadata.Fide");
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+
+    const {
+        locale
+    } = params;
+
+    const t = await getTranslations({ locale: locale, namespace: "Metadata.Fide" });
 
     const path = "/fide";
     const canonical = locale === "fr" ? `/fr${path}` : path;
@@ -25,18 +33,22 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 
 interface Props {
     children: ReactNode;
-    params: { locale: string };
+    params: Promise<{ locale: string }>;
 }
 
-export default async function FideLayout({ children, params: { locale } }: Props) {
-    let messages;
+export default async function FideLayout(props: Props) {
+    const params = await props.params;
 
-    try {
-        const fullMessages = (await import(`@/app/dictionaries/${locale}.json`)).default;
-        messages = fullMessages["Fide"];
-    } catch (error) {
-        throw new Error(`Impossible de charger les messages de "Fide" pour la locale ${locale}`);
-    }
+    const {
+        locale
+    } = params;
+
+    const {
+        children
+    } = props;
+
+    const fullMessages = locale === "fr" ? frMessages : enMessages;
+    const messages = fullMessages["Fide"];
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>

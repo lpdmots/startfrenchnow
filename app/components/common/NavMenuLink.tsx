@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Link from "next-intl/link";
-import { usePathname } from "next-intl/client";
+import { Link } from "@/i18n/navigation";
+import { usePathname } from "@/i18n/navigation";
 import clsx from "clsx";
 import { Locale } from "@/i18n";
 import { isActivePath } from "./navActive";

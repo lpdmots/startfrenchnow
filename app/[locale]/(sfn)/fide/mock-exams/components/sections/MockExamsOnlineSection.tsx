@@ -5,7 +5,7 @@ import { SlideFromBottom } from "@/app/components/animations/Slides";
 import ShimmerButton from "@/app/components/ui/shimmer-button";
 import { m } from "framer-motion";
 import { ArrowRight, ChevronDown, ChevronRight } from "lucide-react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { VideoFide } from "../../../components/VideoFide";
 

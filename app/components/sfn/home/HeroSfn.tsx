@@ -4,7 +4,7 @@ import { HeroVideo } from "./HeroVideo";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import { CourseRatings } from "../courses/CourseRatings";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import ShimmerButton from "../../ui/shimmer-button";
 
 export const HeroSfn = () => {

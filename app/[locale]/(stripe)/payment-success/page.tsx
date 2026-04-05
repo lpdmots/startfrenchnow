@@ -1,11 +1,11 @@
 import { NotebookPen } from "lucide-react";
-import Link from "next-intl/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 import { getServerSession } from "next-auth";
 import { useTranslations } from "next-intl";
 import { authOptions } from "@/app/lib/authOptions";
-import { Locale } from "@/i18n";
+import { Locale, normalizeLocale } from "@/i18n";
 import { intelRich } from "@/app/lib/intelRich";
 
 export const metadata = {
@@ -13,13 +13,14 @@ export const metadata = {
 };
 
 type PaymentSuccessProps = {
-    searchParams: {
+    searchParams: Promise<{
         amount?: string;
         currency?: string;
         slug?: string;
-    };
-    params: { locale: Locale };
+    }>;
+    params: Promise<{ locale: string }>;
 };
+type PaymentSuccessSearchParams = Awaited<PaymentSuccessProps["searchParams"]>;
 
 function normalizeLocalizedPath(pathLike?: string): string {
     const raw = (pathLike || "").trim();
@@ -38,13 +39,18 @@ function normalizeLocalizedPath(pathLike?: string): string {
     return path || "/";
 }
 
-export default async function PaymentSuccess({ params: { locale }, searchParams }: PaymentSuccessProps) {
+export default async function PaymentSuccess(props: PaymentSuccessProps) {
+    const searchParams = await props.searchParams;
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+
+    
     const session = await getServerSession(authOptions);
 
     return <PaymentSuccessNoAsync searchParams={searchParams} session={session} locale={locale} />;
 }
 
-const PaymentSuccessNoAsync = ({ searchParams, session, locale }: { searchParams: PaymentSuccessProps["searchParams"]; session: any; locale: Locale }) => {
+const PaymentSuccessNoAsync = ({ searchParams, session, locale }: { searchParams: PaymentSuccessSearchParams; session: any; locale: Locale }) => {
     const { amount = "", currency = "", slug = "" } = searchParams;
     const t = useTranslations("Checkout.PaymentSuccess");
     const hasSlug = slug.trim().length > 0;

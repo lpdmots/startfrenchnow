@@ -28,7 +28,10 @@ function parseTypeParam(v?: string | string[]): TypeParam | undefined {
     return (["speak", "understand", "read-write"] as const).includes(norm as any) ? (norm as TypeParam) : undefined;
 }
 
-export default async function FideExamPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
+export default async function FideExamPage(
+    props: { searchParams: Promise<Record<string, string | string[] | undefined>> }
+) {
+    const searchParams = await props.searchParams;
     const exams: Exam[] = await client.fetch(queryExams);
     const session = await getServerSession(authOptions);
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
