@@ -1,8 +1,7 @@
 import { Fade } from "@/app/components/animations/Fades";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
-import { CarouselReviews } from "@/app/components/common/CarouselReviews.tsx/CarouselReviews";
 import { useTranslations } from "next-intl";
-import { sharedFideReviews } from "../../../components/ReviewsFide";
+import { DeferredMockExamsReviewsCarousel } from "../DeferredMockExamsReviewsCarousel";
 
 export function MockExamsReviewsSection() {
     const t = useTranslations("Fide.MockExamsPage.Reviews");
@@ -22,10 +21,7 @@ export function MockExamsReviewsSection() {
                     </div>
                 </SlideFromBottom>
                 <Fade delay={0.6}>
-                    <div className="relative mt-8 min-h-[470px]">
-                        <CarouselReviews comments={[...sharedFideReviews].sort((a, b) => (b.date ?? 0) - (a.date ?? 0))} />
-                        <div className="h-20 lg:hidden"></div>
-                    </div>
+                    <DeferredMockExamsReviewsCarousel />
                 </Fade>
             </div>
         </section>

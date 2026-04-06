@@ -20,7 +20,7 @@ body {
     line-height: 20px;
     color: #333;
 }
-img {
+img:not([data-nimg]) {
     max-width: 100%;
     vertical-align: middle;
     display: inline-block;

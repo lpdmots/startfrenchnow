@@ -28,7 +28,10 @@ async function BeginnersVideosPage(props: { params: Promise<{ locale: string; sl
 
     // 0) Session → déterminer l’accès Pack FIDE
     const session = await getServerSession(authOptions);
-    const hasPermission = !!session?.user?.permissions?.some((p: Permission) => p.referenceKey === "udemy_course_beginner");
+    const now = Date.now();
+    const hasPermission = !!session?.user?.permissions?.some(
+        (p: Permission) => p.referenceKey === "udemy_course_beginner" && (!p.expiresAt || new Date(p.expiresAt).getTime() > now),
+    );
 
     // 1) Post courant (inchangé)
     const post: Post = await client.fetch(query, { slug });
@@ -37,11 +40,6 @@ async function BeginnersVideosPage(props: { params: Promise<{ locale: string; sl
     // 2) Si pas d’accès et pas en preview → redirection
     const isPreview = !!post.isPreview;
     if (!isPreview) {
-        const session = await getServerSession(authOptions);
-        const now = Date.now();
-
-        const hasPermission = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_beginner" && (!p.expiresAt || new Date(p.expiresAt).getTime() > now));
-
         if (!hasPermission) {
             redirect("/courses/beginners");
         }

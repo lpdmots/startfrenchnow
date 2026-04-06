@@ -55,7 +55,14 @@ export function MockExamsTestsSection() {
                                         <p className="mb-0 text-base text-neutral-200">{t("cards.speaking.appText")}</p>
                                     </div>
                                 </div>
-                                <Image src="/images/parler-mock-exam.png" alt={t("cards.speaking.imageAlt")} width={760} height={680} className="h-auto w-full rounded-lg object-contain" />
+                                <Image
+                                    src="/images/parler-mock-exam.png"
+                                    alt={t("cards.speaking.imageAlt")}
+                                    width={760}
+                                    height={680}
+                                    className="h-auto w-full rounded-lg object-contain"
+                                    sizes="(min-width: 1024px) 720px, 100vw"
+                                />
                             </article>
                         </SlideFromBottom>
 
@@ -85,6 +92,7 @@ export function MockExamsTestsSection() {
                                     width={760}
                                     height={680}
                                     className="h-auto w-full rounded-lg object-contain"
+                                    sizes="(min-width: 1024px) 720px, 100vw"
                                 />
                             </article>
                         </SlideFromBottom>
@@ -115,6 +123,7 @@ export function MockExamsTestsSection() {
                                     width={760}
                                     height={680}
                                     className="h-auto w-full rounded-lg object-contain"
+                                    sizes="(min-width: 1024px) 720px, 100vw"
                                 />
                             </article>
                         </SlideFromBottom>

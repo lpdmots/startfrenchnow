@@ -1,9 +1,6 @@
-import { SlideFromBottom } from "../../animations/Slides";
-import { Fade } from "../../animations/Fades";
-import LinkArrow from "../../common/LinkArrow";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
-import { MarqueeSocial } from "./MarqueeSocial";
+import { DeferredMarqueeSocial } from "./DeferredMarqueeSocial";
 
 function HomeReviews() {
     const t = useTranslations("CommentsCarousel");
@@ -11,19 +8,15 @@ function HomeReviews() {
     return (
         <div className="my-12 w-full flex flex-col items-center">
             <div className="w-full p-2 sm:p-4" style={{ maxWidth: 1500 }}>
-                <SlideFromBottom>
-                    <div className="flex w-full justify-center">
-                        <div className="text-center max-w-5xl">
-                            <h2 className="display-2">{t.rich("title", intelRich())}</h2>
-                            <p className="mg-bottom-48px mt-4">
-                                {t("description")}
-                            </p>
-                        </div>
+                <div className="flex w-full justify-center">
+                    <div className="text-center max-w-5xl">
+                        <h2 className="display-2">{t.rich("title", intelRich())}</h2>
+                        <p className="mg-bottom-48px mt-4">
+                            {t("description")}
+                        </p>
                     </div>
-                </SlideFromBottom>
-                <Fade delay={0.6}>
-                    <MarqueeSocial locale={locale} />
-                </Fade>
+                </div>
+                <DeferredMarqueeSocial locale={locale} />
             </div>
         </div>
     );

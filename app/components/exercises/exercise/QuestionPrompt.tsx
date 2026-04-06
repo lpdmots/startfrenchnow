@@ -104,7 +104,7 @@ const RenderImageBlock = ({ imageData }: { imageData: string }) => {
     if (!imageData) return null;
     return (
         <div className="w-full flex items-center justify-center my-2 rounded-xl overflow-hidden">
-            <Image src={urlFor(imageData).url()} alt="image" height={350} width={500} className="object-contain h-auto rounded-xl" style={{ maxWidth: "100%", maxHeight: 350 }} />
+            <Image src={urlFor(imageData).url()} alt="image" height={350} width={500} className="object-contain h-auto rounded-xl" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: 350 }} />
         </div>
     );
 };
@@ -113,7 +113,7 @@ const RenderImageSpan = ({ imageData }: { imageData: string }) => {
     if (!imageData) return null;
     return (
         <span className="mb-0 mx-2">
-            <Image src={urlFor(imageData).url()} alt="image" height={75} width={75} className="object-contain" style={{ maxWidth: "100%" }} />
+            <Image src={urlFor(imageData).url()} alt="image" height={75} width={75} className="object-contain" style={{ width: "auto", height: "auto", maxWidth: "100%" }} />
         </span>
     );
 };

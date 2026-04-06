@@ -49,8 +49,10 @@ function formatRelativeCompact(date: Date, locale: UILocale) {
 export function RelativeDate({ iso, locale = "fr", small = false }: { iso: string; locale?: UILocale; small?: boolean }) {
     const d = useMemo(() => new Date(iso), [iso]);
     const dfnsLocale = locale === "fr" ? fr : enUS;
-    const long = useMemo(() => formatDistanceToNow(d, { addSuffix: true, locale: dfnsLocale }), [d, dfnsLocale]);
-    const compact = useMemo(() => formatRelativeCompact(d, locale), [d, locale]);
+    const isValidDate = useMemo(() => !Number.isNaN(d.getTime()), [d]);
+    const fallback = locale === "fr" ? "à l'instant" : "just now";
+    const long = useMemo(() => (isValidDate ? formatDistanceToNow(d, { addSuffix: true, locale: dfnsLocale }) : fallback), [d, dfnsLocale, fallback, isValidDate]);
+    const compact = useMemo(() => (isValidDate ? formatRelativeCompact(d, locale) : fallback), [d, fallback, isValidDate, locale]);
 
     if (small) return <span className="text-xs text-neutral-500">{compact}</span>;
 

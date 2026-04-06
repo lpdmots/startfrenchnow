@@ -1,33 +1,11 @@
-"use client";
-
 import { Fade } from "@/app/components/animations/Fades";
 import { SlideFromBottom, SlideFromLeft, SlideFromRight } from "@/app/components/animations/Slides";
-import ShimmerButton from "@/app/components/ui/shimmer-button";
-import { ArrowRight, CheckCircle2, Clock3, Sparkles } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import { CheckCircle2, Clock3, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { MockExamCheckoutCTA } from "../checkout/MockExamCheckoutCTA";
 
-type MockExamsOfferSectionProps = {
-    checkoutDisabled?: boolean;
-    checkoutDisabledReason?: "hasCredit" | "noTemplates" | null;
-};
-
-export function MockExamsOfferSection({ checkoutDisabled = false, checkoutDisabledReason = null }: MockExamsOfferSectionProps) {
-    const t = useTranslations("MockExamsPage.Offer");
-    const callbackUrl = "/fide/mock-exams";
-    const dashboardUrl = "/fide/dashboard#mock-exams";
-    const checkoutUrl = `/checkout/mock_exam?${new URLSearchParams({
-        quantity: "1",
-        callbackUrl,
-    }).toString()}`;
-
-    const handleCheckout = () => {
-        if (checkoutDisabled) return;
-        window.location.assign(checkoutUrl);
-    };
-    const disabledMessage =
-        checkoutDisabledReason === "hasCredit" ? t("disabled.hasCredit") : checkoutDisabledReason === "noTemplates" ? t("disabled.noTemplates") : null;
-    const isCreditAvailable = checkoutDisabledReason === "hasCredit";
+export function MockExamsOfferSection() {
+    const t = useTranslations("Fide.MockExamsPage.Offer");
 
     return (
         <section id="mock-exams-offer" className="bg-neutral-200 py-14 lg:py-20">
@@ -79,22 +57,21 @@ export function MockExamsOfferSection({ checkoutDisabled = false, checkoutDisabl
                                 </div>
 
                                 <div className="md:pb-0.5">
-                                    {!checkoutDisabled ? (
-                                        <ShimmerButton type="button" onClick={handleCheckout} className="btn btn-primary small inline-flex w-full items-center justify-center gap-2 sm:w-auto">
-                                            {t("main.cta")}
-                                            <ArrowRight className="h-4 w-4" />
-                                        </ShimmerButton>
-                                    ) : isCreditAvailable ? (
-                                        <Link href={dashboardUrl} className="btn btn-secondary small inline-flex w-full items-center justify-center gap-2 no-underline sm:w-auto">
-                                            {t("main.ctaUseCredit")}
-                                            <ArrowRight className="h-4 w-4" />
-                                        </Link>
-                                    ) : (
-                                        <button type="button" disabled className="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto">
-                                            {t("main.ctaDisabled")}
-                                        </button>
-                                    )}
-                                    {disabledMessage ? <p className="mb-0 mt-2 text-xs text-neutral-600">{disabledMessage}</p> : null}
+                                    <MockExamCheckoutCTA
+                                        labels={{
+                                            cta: t("main.cta"),
+                                            ctaUseCredit: t("main.ctaUseCredit"),
+                                            ctaDisabled: t("main.ctaDisabled"),
+                                            disabledHasCredit: t("disabled.hasCredit"),
+                                            disabledNoTemplates: t("disabled.noTemplates"),
+                                        }}
+                                        useShimmer
+                                        ctaClassName="btn btn-primary small inline-flex w-full items-center justify-center gap-2 sm:w-auto"
+                                        useCreditClassName="btn btn-secondary small inline-flex w-full items-center justify-center gap-2 no-underline sm:w-auto"
+                                        disabledClassName="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
+                                        containerClassName="flex flex-col gap-2"
+                                        disabledMessageClassName="mb-0 mt-2 text-xs text-neutral-600"
+                                    />
                                 </div>
                             </div>
                         </article>

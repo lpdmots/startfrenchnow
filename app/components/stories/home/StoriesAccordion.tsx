@@ -44,7 +44,14 @@ const Accordion = ({ story, expanded, setExpanded }: AccordionProps) => {
             <m.div initial={false}>
                 <div className="hidden sm:flex relative justify-end">
                     <m.div className="absolute left-0" initial={{ width: "50%" }} animate={{ width: isOpen ? "100%" : "50%" }} transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}>
-                        <Image src={urlFor(story.images.primary).url()} width={810} height={500} loading="lazy" alt={story.name} style={{ objectFit: "cover", maxHeight: "300px" }} />
+                        <Image
+                            src={urlFor(story.images.primary).url()}
+                            width={810}
+                            height={500}
+                            loading="lazy"
+                            alt={story.name}
+                            style={{ objectFit: "cover", maxHeight: "300px", width: "100%", height: "auto" }}
+                        />
                     </m.div>
                     <m.div
                         key="title"
@@ -74,7 +81,14 @@ const Accordion = ({ story, expanded, setExpanded }: AccordionProps) => {
                 </div>
                 <div className="sm:hidden">
                     <div>
-                        <Image src={urlFor(story.images.primary).url()} width={480} height={300} loading="lazy" alt={story.name} style={{ objectFit: "cover", maxHeight: "300px" }} />
+                        <Image
+                            src={urlFor(story.images.primary).url()}
+                            width={480}
+                            height={300}
+                            loading="lazy"
+                            alt={story.name}
+                            style={{ objectFit: "cover", maxHeight: "300px", width: "100%", height: "auto" }}
+                        />
                     </div>
                     <div className="flex flex-col justify-around items-center overflow-hidden p-4">
                         <div className="flex justify-center w-full gap-4">

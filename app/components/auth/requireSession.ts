@@ -18,13 +18,40 @@ type RequireSessionWithAccessOptions = RequireSessionOptions & {
 
 type AppSession = Session;
 
-type MockExamAccessSnapshot = {
+type UserAccessSnapshot = {
+    permissions?: Array<{ referenceKey?: string; expiresAt?: string | null }> | null;
+    lessons?: Array<{ eventType?: string; totalPurchasedMinutes?: number }> | null;
     mockCredit?: {
         totalCredits?: number;
         remainingCredits?: number;
     } | null;
     compilationCount?: number;
 } | null;
+
+const FRENCH_COURSE_KEYS = new Set(["udemy_course_beginner", "udemy_course_intermediate", "udemy_course_dialogs"]);
+
+const isPermissionActive = (expiresAt?: string | null) => !expiresAt || new Date(expiresAt).getTime() > Date.now();
+
+const hasPermission = (
+    permissions: Array<{ referenceKey?: string; expiresAt?: string | null }> | null | undefined,
+    predicate: (referenceKey: string) => boolean,
+) => !!permissions?.some((p) => !!p?.referenceKey && predicate(p.referenceKey) && isPermissionActive(p.expiresAt));
+
+const hasPackFidePermission = (permissions: Array<{ referenceKey?: string; expiresAt?: string | null }> | null | undefined) =>
+    hasPermission(permissions, (referenceKey) => referenceKey === "pack_fide");
+
+const hasFrenchCoursePermission = (permissions: Array<{ referenceKey?: string; expiresAt?: string | null }> | null | undefined) =>
+    hasPermission(permissions, (referenceKey) => FRENCH_COURSE_KEYS.has(referenceKey));
+
+const hasPrivateLesson = (lessons: Array<{ eventType?: string; totalPurchasedMinutes?: number }> | null | undefined) =>
+    !!lessons?.some((lesson) => lesson?.eventType === "Fide Preparation Class");
+
+const hasMockExamFromSnapshot = (snapshot: UserAccessSnapshot) => {
+    const totalCredits = Number(snapshot?.mockCredit?.totalCredits || 0);
+    const remainingCredits = Number(snapshot?.mockCredit?.remainingCredits || 0);
+    const compilationCount = Number(snapshot?.compilationCount || 0);
+    return hasPackFidePermission(snapshot?.permissions) || totalCredits > 0 || remainingCredits > 0 || compilationCount > 0;
+};
 
 const buildSignInQuery = ({ callbackUrl = "/", info = "" }: RequireSessionOptions = {}) => {
     const qs = new URLSearchParams();
@@ -43,16 +70,24 @@ const getSessionOrRedirectToSignIn = async ({ callbackUrl = "/", info = "" }: Re
     return session;
 };
 
-export const hasPackFideAccess = (session: AppSession) => !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
+export const hasPackFideAccess = (session: AppSession) => hasPackFidePermission(session?.user?.permissions || []);
 
-export const hasPrivateCourseAccess = (session: AppSession) => !!session?.user?.lessons?.some((lesson) => lesson.eventType === "Fide Preparation Class");
+export const hasPrivateCourseAccess = (session: AppSession) => hasPrivateLesson(session?.user?.lessons || []);
 
-const hasMockExamAccessFromDb = async (session: AppSession) => {
+const getUserAccessSnapshot = async (session: AppSession) => {
     const userId = session?.user?._id;
-    if (!userId) return false;
+    if (!userId) return null;
 
-    const snapshot = await client.fetch<MockExamAccessSnapshot>(
+    return client.fetch<UserAccessSnapshot>(
         `*[_type == "user" && _id == $userId][0]{
+            permissions[]{
+                referenceKey,
+                expiresAt
+            },
+            lessons[]{
+                eventType,
+                totalPurchasedMinutes
+            },
             "mockCredit": credits[referenceKey == "mock_exam"][0]{
                 totalCredits,
                 remainingCredits
@@ -61,11 +96,6 @@ const hasMockExamAccessFromDb = async (session: AppSession) => {
         }`,
         { userId },
     );
-
-    const totalCredits = Number(snapshot?.mockCredit?.totalCredits || 0);
-    const remainingCredits = Number(snapshot?.mockCredit?.remainingCredits || 0);
-    const compilationCount = Number(snapshot?.compilationCount || 0);
-    return totalCredits > 0 || remainingCredits > 0 || compilationCount > 0;
 };
 
 export const hasMockExamAccess = async (session: AppSession) => {
@@ -73,17 +103,41 @@ export const hasMockExamAccess = async (session: AppSession) => {
         return true;
     }
 
-    return hasMockExamAccessFromDb(session);
+    const snapshot = await getUserAccessSnapshot(session);
+    return hasMockExamFromSnapshot(snapshot);
 };
 
 export const hasFrenchCourseAccess = (session: AppSession) =>
-    !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_beginner" || p.referenceKey === "udemy_course_intermediate" || p.referenceKey === "udemy_course_dialogs");
+    hasFrenchCoursePermission(session?.user?.permissions || []);
 
-const ACCESS_RULES: Record<SessionAccessRule, (session: AppSession) => boolean | Promise<boolean>> = {
-    packFide: hasPackFideAccess,
-    privateCourse: hasPrivateCourseAccess,
-    mockExam: hasMockExamAccess,
-    frenchCourse: hasFrenchCourseAccess,
+const hasAccessFromSession = (rule: SessionAccessRule, session: AppSession) => {
+    switch (rule) {
+        case "packFide":
+            return hasPackFideAccess(session);
+        case "privateCourse":
+            return hasPrivateCourseAccess(session);
+        case "mockExam":
+            return session?.user?.hasMockExamAccess === true || hasPackFideAccess(session);
+        case "frenchCourse":
+            return hasFrenchCourseAccess(session);
+        default:
+            return false;
+    }
+};
+
+const hasAccessFromSnapshot = (rule: SessionAccessRule, snapshot: UserAccessSnapshot) => {
+    switch (rule) {
+        case "packFide":
+            return hasPackFidePermission(snapshot?.permissions);
+        case "privateCourse":
+            return hasPrivateLesson(snapshot?.lessons);
+        case "mockExam":
+            return hasMockExamFromSnapshot(snapshot);
+        case "frenchCourse":
+            return hasFrenchCoursePermission(snapshot?.permissions);
+        default:
+            return false;
+    }
 };
 
 export async function requireSession({ callbackUrl = "/", info = "" }: RequireSessionOptions = {}) {
@@ -97,18 +151,20 @@ export async function requireSessionWithAccess({ callbackUrl = "/", info = "", a
         return session;
     }
 
-    let isAuthorized = false;
     for (const rule of anyOf) {
-        if (await ACCESS_RULES[rule](session)) {
-            isAuthorized = true;
-            break;
+        if (hasAccessFromSession(rule, session)) {
+            return session;
         }
     }
-    if (!isAuthorized) {
-        redirect(unauthorizedRedirectTo);
+
+    const snapshot = await getUserAccessSnapshot(session);
+    for (const rule of anyOf) {
+        if (hasAccessFromSnapshot(rule, snapshot)) {
+            return session;
+        }
     }
 
-    return session;
+    redirect(unauthorizedRedirectTo);
 }
 
 export async function requireSessionAndFide({ callbackUrl = "/", info = "" }: { callbackUrl?: string; info?: string } = {}) {

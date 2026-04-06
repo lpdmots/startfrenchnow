@@ -49,11 +49,12 @@ export async function generateStaticParams() {
         return [];
     }
 
-    const posts = await client.fetch<{ slug: string }[]>(querySlugs, {
+    const posts = await client.fetch<{ slug: string }[] | null>(querySlugs, {
         categories: BLOGCATEGORIES,
     });
 
-    return posts.map((post) => ({ slug: post.slug }));
+    if (!Array.isArray(posts)) return [];
+    return posts.filter((post) => Boolean(post?.slug)).map((post) => ({ slug: post.slug }));
 }
 
 async function Post(props: { params: Promise<{ locale: string; slug: string }> }) {
@@ -61,10 +62,9 @@ async function Post(props: { params: Promise<{ locale: string; slug: string }> }
     const locale = normalizeLocale(params.locale);
     const { slug } = params;
     const postData: Promise<BlogPost> = client.fetch(query, { slug });
-    const rowLatestPostsData: Promise<BlogPost[]> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
+    const rowLatestPostsData: Promise<BlogPost[] | null> = client.fetch(queryLatest, { categories: BLOGCATEGORIES });
     const [post, rowLatestPosts] = await Promise.all([postData, rowLatestPostsData]);
-
-    const latestPostsRaw = rowLatestPosts.filter((post) => post.slug.current !== slug) as BlogPost[];
+    const latestPostsRaw = (Array.isArray(rowLatestPosts) ? rowLatestPosts : []).filter((post) => post?.slug?.current && post.slug.current !== slug) as BlogPost[];
 
     if (!post) return <p className="h-64 flex justify-center items-center">Sorry this post has been deleted...</p>;
 

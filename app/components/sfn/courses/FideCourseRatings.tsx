@@ -10,7 +10,7 @@ export const FideCourseRatings = () => {
         <div className="flex justify-center w-full">
             <div className="flex justify-around gap-2 md:gap-8 lg:gap-12" style={{ maxWidth: "95vw" }}>
                 <Link href="https://fide-service.ch/fr/home" target="_blank" className="w-full md:w-auto flex items-center">
-                    <Image src="/images/fideLogo.png" alt="FIDE Logo" width={120} height={50} className="w-auto object-contain" />
+                    <Image src="/images/fideLogo.png" alt="FIDE Logo" width={120} height={50} className="object-contain" />
                 </Link>
                 <div className="flex flex-col  justify-center items-center gap-2" style={{ minWidth: 80 }}>
                     <div className="flex flex-col justify-between items-center h-full">

@@ -34,7 +34,8 @@ async function ScenariosFidePage(props: { params: Promise<{ locale: string; slug
 
     // 0) Session → déterminer l’accès Pack FIDE
     const session = await getServerSession(authOptions);
-    const hasPack = !!session?.user?.permissions?.some((p: Permission) => p.referenceKey === "pack_fide");
+    const now = Date.now();
+    const hasPack = !!session?.user?.permissions?.some((p: Permission) => p.referenceKey === "pack_fide" && (!p.expiresAt || new Date(p.expiresAt).getTime() > now));
 
     // 1) Post courant (inchangé)
     const post: Post = await client.fetch(query, { slug });
@@ -43,13 +44,6 @@ async function ScenariosFidePage(props: { params: Promise<{ locale: string; slug
     // 2) Si pas d’accès et pas en preview → redirection
     const isPreview = !!post.isPreview;
     if (!isPreview) {
-        const session = await getServerSession(authOptions);
-        const now = Date.now();
-
-        const hasPack = !!session?.user?.permissions?.some(
-            (p) => p.referenceKey === "pack_fide" && (!p.expiresAt || new Date(p.expiresAt).getTime() > now) // enlève cette ligne si tu ne gères pas l’expiration
-        );
-
         if (!hasPack) {
             redirect("/fide/exams");
         }

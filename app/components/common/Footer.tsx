@@ -98,7 +98,9 @@ function Footer() {
                                     <div className="flex flex-col items-center md:items-start">
                                         <div className="flex items-center mb-6">
                                             <div className="flex w-[40px] h-[40px] max-h-[40px] max-w-[40px] min-h-[40px] min-w-[40px] justify-center items-center rounded-[50%] bg-[var(--neutral-100)] [transition:background-color_300ms_ease\,_color_300ms_ease] text-[var(--neutral-800)] no-underline hover:bg-[var(--secondary-2)] hover:text-[var(--neutral-100)] mr-[14px] [transition-property:none] hover:bg-[var(--neutral-100)] max-[479px]:w-[40px] max-[479px]:h-[40px] max-[479px]:min-h-[40px] max-[479px]:min-w-[40px] max-[479px]:rounded-[50%] max-[479px]:text-[14px] icon-left">
-                                                <Image src="/images/email-icon-paperfolio-webflow-template.svg" width={29} height={19} loading="eager" alt="email icon" />
+                                                <div className="relative w-[29px] h-[19px]">
+                                                    <Image src="/images/email-icon-paperfolio-webflow-template.svg" fill loading="eager" alt="email icon" className="object-contain" sizes="29px" />
+                                                </div>
                                             </div>
                                             <div className="text-[24px] leading-[1.083em] font-normal font-medium mb-[20px] mt-[20px] text-[var(--neutral-100)] font-bold max-[991px]:text-[22px] max-[767px]:text-[20px] medium mb-[20px] mt-[20px] text-[var(--neutral-100)]">{t("contact_us")}</div>
                                         </div>

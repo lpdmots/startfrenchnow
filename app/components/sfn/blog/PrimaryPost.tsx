@@ -26,15 +26,9 @@ const PrimaryPost = ({ post, locale }: { post: Post; locale: string }) => {
             <div className="max-w-[1010px] ml-auto text-[var(--neutral-600)] no-underline flex h-full p-[30px_30px_40px] flex-col rounded-[32px] max-h-[none] p-[28px_28px_54px] max-[991px]:w-full max-[991px]:max-h-[none] max-[991px]:pr-[24px] max-[991px]:pb-[45px] max-[991px]:pl-[24px] max-[767px]:pt-[24px] max-[767px]:pr-[24px] max-[767px]:pl-[24px] max-[479px]:rounded-[24px] card link-card w-inline-block">
                 <div className="blog-card-image-wrapper inside-card max-h-[330px] max-[991px]:max-h-[none] max-[479px]:min-h-[140px]">
                     <ScaleChildren>
-                        <Image
-                            src={urlFor(post.mainImage).url()}
-                            width={400}
-                            height={400}
-                            loading="lazy"
-                            alt={title || "no title"}
-                            className="w-full h-full object-cover"
-                            style={{ minHeight: 150, objectFit: "contain" }}
-                        />
+                        <div className="relative w-full min-h-[150px] h-[min(330px,55vw)]">
+                            <Image src={urlFor(post.mainImage).url()} fill loading="lazy" alt={title || "no title"} className="object-contain" sizes="(max-width: 991px) 100vw, 50vw" />
+                        </div>
                     </ScaleChildren>
                     <CategoryBadge category={firstCategory} label={categoryName as unknown as string} primary={true} />
                 </div>

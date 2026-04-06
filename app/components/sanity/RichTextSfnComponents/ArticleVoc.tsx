@@ -19,16 +19,18 @@ const queryThemes = groq`
     `;
 
 export const ArticleVoc = async ({ data }: TabelVocProps) => {
-    const refs = data.themes.map((theme) => theme._ref);
-    const filters = data.filters;
+    const refs = Array.isArray(data?.themes) ? data.themes.map((theme) => theme?._ref).filter(Boolean) : [];
+    const filters = data?.filters ?? { status: "all", nature: "all", tags: [] };
+    if (!refs.length) return null;
+
     const themes: ThemeWithVocab[] = await client.fetch(queryThemes, { refs });
-    const allVocabItems = themes?.map((theme) => theme.vocabItems).flat();
-    const vocabItems = allVocabItems?.filter((item) => filterVocabItems(item, filters));
+    const allVocabItems = (themes || []).flatMap((theme) => (Array.isArray(theme?.vocabItems) ? theme.vocabItems : []));
+    const vocabItems = allVocabItems.filter((item) => filterVocabItems(item, filters));
     if (!themes || !vocabItems?.length) {
         console.warn("No themes or vocabItems found");
         return null;
     }
-    const category = themes[0].category;
+    const category = themes[0]?.category || data?.category || "tips";
     let imageIndex = 0;
 
     return (

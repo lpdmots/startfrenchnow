@@ -3,7 +3,6 @@ import { SlideFromBottom } from "@/app/components/animations/Slides";
 import TypingAnimation from "@/app/components/ui/typing-animation";
 import { useSfnStore } from "@/app/stores/sfnStore";
 import clsx from "clsx";
-import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { FaPlay } from "react-icons/fa";
 import { PiArrowBendLeftUpDuotone } from "react-icons/pi";
@@ -24,7 +23,6 @@ interface VideoFideProps {
 
 export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleENUrl, isAnimated = true, className = "", videoClassName = "" }: VideoFideProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const posterUrl = !poster ? undefined : poster?.startsWith("/images") ? poster : cloudFrontDomain + poster;
     const subtitlePreference = useSfnStore((s) => s.subtitlePreference);
@@ -123,12 +121,10 @@ export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleE
 
     const content = (
         <>
-            <motion.div
+            <div
                 id="hero-video"
-                className={`cms-featured-image-wrapper image-wrapper radius-lg mx-auto p-0 bg-neutral-800 ${className}`}
+                className={`group cms-featured-image-wrapper image-wrapper radius-lg mx-auto p-0 bg-neutral-800 ${className}`}
                 style={{ lineHeight: 0 }}
-                onHoverStart={() => setIsHovered(true)}
-                onHoverEnd={() => setIsHovered(false)}
             >
                 <video
                     ref={videoRef}
@@ -154,22 +150,16 @@ export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleE
                         }}
                     >
                         <div className="relative w-full h-full">
-                            <motion.button
-                                className="absolute flex items-center justify-center text-neutral-100 rounded-full p-4"
+                            <button
+                                className="absolute flex items-center justify-center text-neutral-100 rounded-full p-4 opacity-80 group-hover:opacity-100 transition-colors transition-opacity duration-100 bg-[rgba(229,2,6,0.8)] group-hover:bg-[rgba(229,2,6,1)]"
                                 style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-                                initial={{ backgroundColor: "rgba(128, 128, 128, 0.5)" }}
-                                animate={{
-                                    backgroundColor: isHovered ? "rgba(229,2,6,1)" : "rgba(229,2,6,0.8)",
-                                    opacity: isHovered ? 1 : 0.8,
-                                }}
-                                transition={{ duration: 0.1 }}
                             >
                                 <FaPlay size={32} />
-                            </motion.button>
+                            </button>
                         </div>
                     </div>
                 )}
-            </motion.div>
+            </div>
             {!!subtitle && (
                 <div className="w-full mt-6 justify-end hidden sm:flex">
                     <div className="flex justify-end items-center">

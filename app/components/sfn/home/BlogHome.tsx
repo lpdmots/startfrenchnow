@@ -14,6 +14,7 @@ import { Link } from "@/i18n/navigation";
 import { localizePosts } from "@/app/lib/utils";
 import { Locale } from "@/i18n";
 import { BLOGCATEGORIES } from "@/app/lib/constantes";
+import { unstable_cache } from "next/cache";
 
 const query = groq`
     *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && count(categories[@ in $categories]) > 0] {
@@ -21,8 +22,27 @@ const query = groq`
     } | order(publishedAt desc)[0...3]
 `;
 
+const sanityHomeClient = client.withConfig({
+    useCdn: true,
+    timeout: 3500,
+    maxRetries: 0,
+});
+
+const getHomePosts = unstable_cache(
+    async () => {
+        try {
+            return await sanityHomeClient.fetch<Post[]>(query, { categories: BLOGCATEGORIES });
+        } catch (error) {
+            console.error("[BlogHome] sanity fetch failed, rendering empty posts fallback", error);
+            return [] as Post[];
+        }
+    },
+    ["home-blog-posts"],
+    { revalidate: 1800, tags: ["home-blog-posts"] }
+);
+
 export default async function BlogHome({ locale }: { locale: Locale }) {
-    const postsData: Post[] = await client.fetch(query, { categories: BLOGCATEGORIES });
+    const postsData = await getHomePosts();
     const posts = localizePosts(postsData, locale);
     return <BlogHomeRender posts={posts} />;
 }

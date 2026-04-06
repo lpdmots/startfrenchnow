@@ -1,58 +1,12 @@
-"use client";
-
 import { Fade } from "@/app/components/animations/Fades";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
-import ShimmerButton from "@/app/components/ui/shimmer-button";
-import { m } from "framer-motion";
-import { ArrowRight, ChevronDown, ChevronRight } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { VideoFide } from "../../../components/VideoFide";
+import { MockExamCheckoutCTA } from "../checkout/MockExamCheckoutCTA";
 
-const stepsContainer = {
-    hidden: { opacity: 1 },
-    visible: {
-        opacity: 1,
-        transition: {
-            delayChildren: 0.1,
-            staggerChildren: 0.1,
-        },
-    },
-};
-
-const stepItem = {
-    hidden: { opacity: 0, y: 24 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.35,
-            ease: "easeOut",
-        },
-    },
-};
-
-type MockExamsOnlineSectionProps = {
-    checkoutDisabled?: boolean;
-    checkoutDisabledReason?: "hasCredit" | "noTemplates" | null;
-};
-
-export function MockExamsOnlineSection({ checkoutDisabled = false, checkoutDisabledReason = null }: MockExamsOnlineSectionProps) {
-    const t = useTranslations("MockExamsPage.Online");
-    const callbackUrl = "/fide/mock-exams";
-    const dashboardUrl = "/fide/dashboard#mock-exams";
-    const checkoutUrl = `/checkout/mock_exam?${new URLSearchParams({
-        quantity: "1",
-        callbackUrl,
-    }).toString()}`;
-
-    const handleCheckout = () => {
-        if (checkoutDisabled) return;
-        window.location.assign(checkoutUrl);
-    };
-    const disabledMessage =
-        checkoutDisabledReason === "hasCredit" ? t("disabled.hasCredit") : checkoutDisabledReason === "noTemplates" ? t("disabled.noTemplates") : null;
-    const isCreditAvailable = checkoutDisabledReason === "hasCredit";
+export function MockExamsOnlineSection() {
+    const t = useTranslations("Fide.MockExamsPage.Online");
 
     return (
         <section id="mock-exams-video" className="py-14 lg:py-24">
@@ -69,22 +23,21 @@ export function MockExamsOnlineSection({ checkoutDisabled = false, checkoutDisab
 
                 <Fade delay={0.15} duration={0.35}>
                     <div className="mb-4 flex w-full flex-col items-center justify-center gap-2 md:mb-8">
-                        {!checkoutDisabled ? (
-                            <ShimmerButton type="button" onClick={handleCheckout} className="btn btn-primary small inline-flex w-full items-center justify-center gap-2 sm:w-auto" variant="primary">
-                                {t("cta")}
-                                <ArrowRight className="h-4 w-4" />
-                            </ShimmerButton>
-                        ) : isCreditAvailable ? (
-                            <Link href={dashboardUrl} className="btn btn-secondary small inline-flex w-full items-center justify-center gap-2 no-underline sm:w-auto">
-                                {t("ctaUseCredit")}
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
-                        ) : (
-                            <button type="button" disabled className="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto">
-                                {t("ctaDisabled")}
-                            </button>
-                        )}
-                        {disabledMessage ? <p className="mb-0 text-center text-xs text-neutral-600">{disabledMessage}</p> : null}
+                        <MockExamCheckoutCTA
+                            labels={{
+                                cta: t("cta"),
+                                ctaUseCredit: t("ctaUseCredit"),
+                                ctaDisabled: t("ctaDisabled"),
+                                disabledHasCredit: t("disabled.hasCredit"),
+                                disabledNoTemplates: t("disabled.noTemplates"),
+                            }}
+                            useShimmer
+                            ctaClassName="btn btn-primary small inline-flex w-full items-center justify-center gap-2 sm:w-auto"
+                            useCreditClassName="btn btn-secondary small inline-flex w-full items-center justify-center gap-2 no-underline sm:w-auto"
+                            disabledClassName="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
+                            containerClassName="flex flex-col items-center gap-2"
+                            disabledMessageClassName="mb-0 text-center text-xs text-neutral-600"
+                        />
                     </div>
                 </Fade>
 
@@ -94,50 +47,54 @@ export function MockExamsOnlineSection({ checkoutDisabled = false, checkoutDisab
                     </div>
                 </SlideFromBottom>
 
-                <m.div
-                    className="mx-auto grid max-w-5xl grid-cols-1 gap-3 pt-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-stretch lg:gap-4 lg:pt-16"
-                    variants={stepsContainer}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                >
-                    <m.article variants={stepItem} className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">
-                        <div className="absolute inset-y-0 left-0 w-1 bg-secondary-2" />
-                        <div className="mb-2 flex items-center gap-2">
-                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-2 text-sm font-semibold text-neutral-800">1</span>
-                            <p className="mb-0 text-base font-bold text-neutral-800">{t("steps.step1.title")}</p>
+                <div className="mx-auto grid max-w-5xl grid-cols-1 gap-3 pt-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-stretch lg:gap-4 lg:pt-16">
+                    <SlideFromBottom delay={0.1} duration={0.35}>
+                        <article className="relative h-full w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md flex flex-col">
+                            <div className="absolute inset-y-0 left-0 w-1 bg-secondary-2" />
+                            <div className="mb-2 flex items-center gap-2">
+                                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-2 text-sm font-semibold text-neutral-800">1</span>
+                                <p className="mb-0 text-base font-bold text-neutral-800">{t("steps.step1.title")}</p>
+                            </div>
+                            <p className="mb-0 text-sm text-neutral-700">{t("steps.step1.text")}</p>
+                        </article>
+                    </SlideFromBottom>
+
+                    <Fade delay={0.15} duration={0.3}>
+                        <div className="h-full min-h-10 flex items-center justify-center text-neutral-500 lg:text-neutral-400">
+                            <ChevronDown className="h-5 w-5 lg:hidden" />
+                            <ChevronRight className="hidden h-5 w-5 lg:block" />
                         </div>
-                        <p className="mb-0 text-sm text-neutral-700">{t("steps.step1.text")}</p>
-                    </m.article>
+                    </Fade>
 
-                    <m.div variants={stepItem} className="flex items-center justify-center text-neutral-500 lg:text-neutral-400">
-                        <ChevronDown className="h-5 w-5 lg:hidden" />
-                        <ChevronRight className="hidden h-5 w-5 lg:block" />
-                    </m.div>
+                    <SlideFromBottom delay={0.2} duration={0.35}>
+                        <article className="relative h-full w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md flex flex-col">
+                            <div className="absolute inset-y-0 left-0 w-1 bg-secondary-5" />
+                            <div className="mb-2 flex items-center gap-2">
+                                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-5 text-sm font-semibold text-neutral-800">2</span>
+                                <p className="mb-0 text-base font-bold text-neutral-800">{t("steps.step2.title")}</p>
+                            </div>
+                            <p className="mb-0 text-sm text-neutral-700">{t("steps.step2.text")}</p>
+                        </article>
+                    </SlideFromBottom>
 
-                    <m.article variants={stepItem} className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">
-                        <div className="absolute inset-y-0 left-0 w-1 bg-secondary-5" />
-                        <div className="mb-2 flex items-center gap-2">
-                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-5 text-sm font-semibold text-neutral-800">2</span>
-                            <p className="mb-0 text-base font-bold text-neutral-800">{t("steps.step2.title")}</p>
+                    <Fade delay={0.25} duration={0.3}>
+                        <div className="h-full min-h-10 flex items-center justify-center text-neutral-500 lg:text-neutral-400">
+                            <ChevronDown className="h-5 w-5 lg:hidden" />
+                            <ChevronRight className="hidden h-5 w-5 lg:block" />
                         </div>
-                        <p className="mb-0 text-sm text-neutral-700">{t("steps.step2.text")}</p>
-                    </m.article>
+                    </Fade>
 
-                    <m.div variants={stepItem} className="flex items-center justify-center text-neutral-500 lg:text-neutral-400">
-                        <ChevronDown className="h-5 w-5 lg:hidden" />
-                        <ChevronRight className="hidden h-5 w-5 lg:block" />
-                    </m.div>
-
-                    <m.article variants={stepItem} className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">
-                        <div className="absolute inset-y-0 left-0 w-1 bg-secondary-6" />
-                        <div className="mb-2 flex items-center gap-2">
-                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-4 text-sm font-semibold text-neutral-800">3</span>
-                            <p className="mb-0 text-base font-bold text-neutral-800">{t("steps.step3.title")}</p>
-                        </div>
-                        <p className="mb-0 text-sm text-neutral-700">{t("steps.step3.text")}</p>
-                    </m.article>
-                </m.div>
+                    <SlideFromBottom delay={0.3} duration={0.35}>
+                        <article className="relative h-full w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md flex flex-col">
+                            <div className="absolute inset-y-0 left-0 w-1 bg-secondary-6" />
+                            <div className="mb-2 flex items-center gap-2">
+                                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-4 text-sm font-semibold text-neutral-800">3</span>
+                                <p className="mb-0 text-base font-bold text-neutral-800">{t("steps.step3.title")}</p>
+                            </div>
+                            <p className="mb-0 text-sm text-neutral-700">{t("steps.step3.text")}</p>
+                        </article>
+                    </SlideFromBottom>
+                </div>
             </div>
         </section>
     );

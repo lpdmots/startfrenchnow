@@ -124,7 +124,7 @@ const ImageMapResponse = ({ response, clickedAreas, isSolo = false }: ImageMapRe
     );
     const image = response.image && (
         <span className="mb-0 mx-2">
-            <Image src={urlFor(response.image).url()} alt="image" height={75} width={75} className="object-contain" style={{ maxWidth: "100%" }} />
+            <Image src={urlFor(response.image).url()} alt="image" height={75} width={75} className="object-contain" style={{ width: "auto", height: "auto", maxWidth: "100%" }} />
         </span>
     );
     const isChecked = clickedAreas.includes(JSON.parse(response.isCorrect || "")?.name);

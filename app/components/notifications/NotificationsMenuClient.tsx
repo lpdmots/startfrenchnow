@@ -11,7 +11,6 @@ import { RelativeDate } from "../comments/CommentThread";
 import Image from "next/image";
 import urlFor from "@/app/lib/urlFor";
 import { MdChatBubbleOutline, MdNotifications, MdDoneAll, MdInfoOutline } from "react-icons/md";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ModalFromBottomWithPortal } from "../animations/ModalFromBottomWithPortal";
 
@@ -19,35 +18,50 @@ type Props = {
     locale?: "fr" | "en";
     className?: string;
     count: number;
+    onCountChange?: (count: number) => void;
 };
 
-export default function NotificationsMenuClient({ locale = "fr", className, count }: Props) {
-    const router = useRouter();
+export default function NotificationsMenuClient({ locale = "fr", className, count, onCountChange }: Props) {
     const [items, setItems] = useState<UINotificationItem[]>([]);
     const [isPending, startTransition] = useTransition();
     const [isClearing, startClearing] = useTransition();
     const [isMarking, startMarking] = useTransition();
     const [activeSystemItem, setActiveSystemItem] = useState<UINotificationSystemItem | null>(null);
+    const [hasLoadedItems, setHasLoadedItems] = useState(false);
+
+    const syncItems = useCallback(
+        (updater: UINotificationItem[] | ((prev: UINotificationItem[]) => UINotificationItem[])) => {
+            setItems((prev) => (typeof updater === "function" ? (updater as (prev: UINotificationItem[]) => UINotificationItem[])(prev) : updater));
+        },
+        [],
+    );
 
     useEffect(() => {
         startTransition(() => {
             listNotifications(locale)
                 .then((res) => {
-                    setItems(res.items);
+                    syncItems(res.items);
                 })
                 .catch((err) => {
                     console.error("[Notifications] fetch error:", err);
-                    setItems([]);
+                    syncItems([]);
+                })
+                .finally(() => {
+                    setHasLoadedItems(true);
                 });
         });
-    }, [locale]);
+    }, [locale, syncItems]);
+
+    useEffect(() => {
+        if (!hasLoadedItems) return;
+        onCountChange?.(items.length);
+    }, [hasLoadedItems, items.length, onCountChange]);
 
     const handleClearAll = () => {
         startClearing(() => {
             clearNotifications()
                 .then(() => {
-                    setItems([]);
-                    router.refresh();
+                    syncItems([]);
                 })
                 .catch((err) => console.error("[Notifications] clear error:", err));
         });
@@ -60,8 +74,7 @@ export default function NotificationsMenuClient({ locale = "fr", className, coun
                 markNotificationsSeen(ids).catch((e) => console.error("[Notifications] markSeen(comment) error:", e));
             });
         }
-        setItems((prev) => prev.filter((g) => !(g.kind === "comment" && g.id === item.id)));
-        router.refresh();
+        syncItems((prev) => prev.filter((g) => !(g.kind === "comment" && g.id === item.id)));
     };
 
     const handleSystemItemConfirmed = useCallback(async (item: UINotificationSystemItem) => {
@@ -70,10 +83,9 @@ export default function NotificationsMenuClient({ locale = "fr", className, coun
         } catch (e) {
             console.error("[Notifications] markSeen(system) error:", e);
         }
-        setItems((prev) => prev.filter((g) => !(g.kind === "system" && g.key === item.key)));
+        syncItems((prev) => prev.filter((g) => !(g.kind === "system" && g.key === item.key)));
         setActiveSystemItem(null);
-        router.refresh();
-    }, [router]);
+    }, [syncItems]);
 
     const handleOpenSystemItem = (item: UINotificationSystemItem) => {
         setActiveSystemItem(item);
@@ -121,7 +133,7 @@ export default function NotificationsMenuClient({ locale = "fr", className, coun
                 await handleSystemItemConfirmed(activeSystemItem);
             },
         };
-    }, [activeSystemItem, handleSystemItemConfirmed, locale, router]);
+    }, [activeSystemItem, handleSystemItemConfirmed, locale]);
 
     return (
         <>

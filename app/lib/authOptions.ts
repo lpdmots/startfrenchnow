@@ -9,6 +9,12 @@ import { sendWelcomeEmail } from "@/app/serverActions/authActions";
 import { buildWelcomeSystemNotification, resolveAuthLocale, welcomeMailMessagesByLocale } from "@/app/lib/authMailMessages";
 import { appendSystemNotification } from "@/app/lib/systemNotifications";
 
+const SANITY_SESSION_TIMEOUT_MS = 3500;
+const sanitySessionClient = client.withConfig({
+    timeout: SANITY_SESSION_TIMEOUT_MS,
+    maxRetries: 0,
+});
+
 declare module "next-auth" {
     interface Session {
         user: {
@@ -154,7 +160,13 @@ export const authOptions: NextAuthOptions = {
             const email = (user as any)?.email || token.email;
             if (!email) return token;
 
-            const u = (await client.fetch('*[_type == "user" && email == $email][0]', { email })) as UserProps | null;
+            let u: UserProps | null = null;
+            try {
+                u = (await sanitySessionClient.fetch('*[_type == "user" && email == $email][0]', { email })) as UserProps | null;
+            } catch (error) {
+                console.error("[authOptions.jwt] sanity fetch failed, keeping current token", error);
+                return token;
+            }
             if (!u) return token;
 
             const now = Date.now();

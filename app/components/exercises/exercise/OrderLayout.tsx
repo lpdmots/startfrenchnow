@@ -136,7 +136,7 @@ const ButtonOrder = ({ response, handleSelect, showResponses = false, isCorrect 
     };
 
     const imageRender = response.image && (
-        <Image src={urlFor(image).url()} alt="image" height={100} width={200} className="object-cover rounded-xl mb-2" style={{ maxWidth: "100%", maxHeight: 100 }} />
+        <Image src={urlFor(image).url()} alt="image" height={100} width={200} className="object-cover rounded-xl mb-2" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: 100 }} />
     );
 
     const backgroundColor = showResponses && isCorrect ? COLORVARIABLESSHADES["green"] : showResponses && !isCorrect ? COLORVARIABLESSHADES["red"] : undefined;

@@ -158,7 +158,15 @@ const Success = ({ success, userStoryData }: { success: Success; userStoryData: 
                     {title}
                 </h3>
                 <div className="image-wrapper h-full max-w-[233px] max-[479px]:flex max-[479px]:max-w-full max-[479px]:justify-center max-[479px]:items-center flex justify-center p-2 w-full !max-w-none">
-                    <Image src={imgToDisplay} height={100} width={100} loading="eager" alt={title} className="h-full w-full object-contain max-h-24" style={{ opacity: unlocked ? 1 : 0.7 }} />
+                    <Image
+                        src={imgToDisplay}
+                        height={100}
+                        width={100}
+                        loading="eager"
+                        alt={title}
+                        className="object-contain max-h-24"
+                        style={{ width: "auto", height: "auto", opacity: unlocked ? 1 : 0.7 }}
+                    />
                 </div>
                 <div className="p-2 pl-2 sm:pl-0 col-span-3 flex flex-col justify-center">
                     <h3 className="block sm:hidden text-center bl font-bold w-full col-span-4 mt-2" style={{ color }}>

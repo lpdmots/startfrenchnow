@@ -61,7 +61,14 @@ const InventoryItem = ({ object }: { object: VariableState }) => {
     return (
         <div className="flex flex-col justify-center items-center rounded-xl simple-border cursor-pointer" onClick={handleClick} style={{ borderColor: "var(--neutral-500)", width: "100%" }}>
             <div className="h-3/4 p-2">
-                <Image src={urlFor(display.image).url()} width={125} height={125} alt={display.name} className="w-full h-full object-contain" />
+                <Image
+                    src={urlFor(display.image).url()}
+                    width={125}
+                    height={125}
+                    alt={display.name}
+                    className="max-w-full max-h-full object-contain"
+                    style={{ width: "auto", height: "auto" }}
+                />
             </div>
             <p className="flex justify-center items-center text-center mb-0 bs grow p-1">
                 {display.name}

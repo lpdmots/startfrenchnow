@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { authOptions } from "@/app/lib/authOptions";
 import { Locale, normalizeLocale } from "@/i18n";
 import { intelRich } from "@/app/lib/intelRich";
+import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 
 export const metadata = {
     robots: { index: false, follow: false },
@@ -44,8 +45,17 @@ export default async function PaymentSuccess(props: PaymentSuccessProps) {
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
 
-    
     const session = await getServerSession(authOptions);
+    if (session?.user?.email && session?.user?._id) {
+        try {
+            await claimPendingPurchases({
+                email: session.user.email,
+                userId: session.user._id,
+            });
+        } catch (error) {
+            console.error("claimPendingPurchases (payment-success) failed:", error);
+        }
+    }
 
     return <PaymentSuccessNoAsync searchParams={searchParams} session={session} locale={locale} />;
 }

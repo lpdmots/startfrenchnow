@@ -9,8 +9,11 @@ import MarqueeContent from "@/app/components/sfn/home/MarqueeContent";
 import { HeroSfn } from "@/app/components/sfn/home/HeroSfn";
 import { Locale, normalizeLocale } from "@/i18n";
 import Marquee from "@/app/components/ui/marquee";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Metadata } from "next";
+import { Suspense } from "react";
+
+export const revalidate = 1800;
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const params = await props.params;
@@ -36,6 +39,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 async function Home(props: { params: Promise<{ locale: string }> }) {
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
+    setRequestLocale(locale);
 
     
     return (
@@ -61,7 +65,9 @@ async function Home(props: { params: Promise<{ locale: string }> }) {
             <section className="section py-0 wf-section">
                 <WhoIAm />
             </section>
-            <BlogHome locale={locale} />
+            <Suspense fallback={<div className="container-default w-container my-12 lg:my-24 min-h-[420px]" />}>
+                <BlogHome locale={locale} />
+            </Suspense>
         </div>
     );
 }

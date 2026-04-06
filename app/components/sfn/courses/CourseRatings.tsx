@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Slides";
 import { FaUserGraduate } from "react-icons/fa";
 import { CompteurIncrement, CompteurStarsIncrement } from "../../common/CompteurIncrement";
 import { getCourseDetails } from "@/app/serverActions/udemyActions";
@@ -25,8 +24,7 @@ interface Props {
 
 export const CourseRatings = ({ courseIds, baseNumbers, isUdemy = true }: Props) => {
     const [course, setCourse] = useState<CourseDetails | null>(null);
-    const [isComponentVisible, setIsComponentVisible] = useState(false);
-    const { subscribers, rating, reviews } = baseNumbers;
+    const { subscribers, rating } = baseNumbers;
 
     useEffect(() => {
         (async () => {
@@ -44,29 +42,21 @@ export const CourseRatings = ({ courseIds, baseNumbers, isUdemy = true }: Props)
     }, [courseIds]);
 
     return (
-        <SlideInOneByOneParent onVisible={setIsComponentVisible}>
-            <div className="flex justify-center w-full">
-                <div className="flex justify-around gap-2 md:gap-8 lg:gap-12" style={{ maxWidth: "95vw" }}>
-                    {isUdemy && (
-                        <SlideInOneByOneChild>
-                            <Link href="https://www.udemy.com/user/yohann-coussot/" target="_blank" className="w-full md:w-auto">
-                                <UdemyColor width={120} height={50} />
-                            </Link>
-                        </SlideInOneByOneChild>
-                    )}
-                    <SlideInOneByOneChild>
-                        <div className="flex flex-col  justify-center items-center gap-2" style={{ minWidth: 80 }}>
-                            <p className="font-extrabold text-xl md:text-2xl mb-0">
-                                <CompteurIncrement nombreDeBase={subscribers} nombreFinal={isComponentVisible && course?.num_subscribers ? course?.num_subscribers : subscribers} />
-                            </p>
-                            <FaUserGraduate className="text-lg md:text-3xl" />
-                        </div>
-                    </SlideInOneByOneChild>
-                    <SlideInOneByOneChild>
-                        <CompteurStarsIncrement nombreDeBase={rating} nombreFinal={isComponentVisible && course?.avg_rating ? course?.avg_rating : rating} />
-                    </SlideInOneByOneChild>
+        <div className="flex justify-center w-full">
+            <div className="flex justify-around gap-2 md:gap-8 lg:gap-12" style={{ maxWidth: "95vw" }}>
+                {isUdemy && (
+                    <Link href="https://www.udemy.com/user/yohann-coussot/" target="_blank" className="w-full md:w-auto">
+                        <UdemyColor width={120} height={50} />
+                    </Link>
+                )}
+                <div className="flex flex-col justify-center items-center gap-2" style={{ minWidth: 80 }}>
+                    <p className="font-extrabold text-xl md:text-2xl mb-0">
+                        <CompteurIncrement nombreDeBase={subscribers} nombreFinal={course?.num_subscribers || subscribers} />
+                    </p>
+                    <FaUserGraduate className="text-lg md:text-3xl" />
                 </div>
+                <CompteurStarsIncrement nombreDeBase={rating} nombreFinal={course?.avg_rating || rating} />
             </div>
-        </SlideInOneByOneParent>
+        </div>
     );
 };

@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { cookies } from "next/headers";
+import { useLocale } from "next-intl";
 
 function DangerSign({ className = "" }: { className?: string }) {
     return (
@@ -16,9 +16,8 @@ function DangerSign({ className = "" }: { className?: string }) {
     );
 }
 
-export default async function LocaleNotFound() {
-    const cookieStore = await cookies();
-    const locale = cookieStore.get("NEXT_LOCALE")?.value === "en" ? "en" : "fr";
+export default function LocaleNotFound() {
+    const locale = useLocale() === "en" ? "en" : "fr";
     const copy =
         locale === "en"
             ? {

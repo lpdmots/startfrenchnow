@@ -74,7 +74,7 @@ function FidePostContent({
                     </div>
                 ) : mainImage ? (
                     <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto mt-6" style={{ maxWidth: "800px" }}>
-                        <Image src={urlFor(mainImage).url()} height={800} width={800} loading="eager" alt={title} className="image object-contain rounded-lg" />
+                        <Image src={urlFor(mainImage).url()} height={800} width={800} loading="eager" alt={title} className="w-full h-auto object-contain rounded-lg" />
                     </div>
                 ) : null}
             </div>

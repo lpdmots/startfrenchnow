@@ -22,7 +22,7 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
         image: ({ value }: any) => {
             return (
                 <div className="cms-featured-image-wrapper image-wrapper border-radius-30px mx-auto my-12" style={{ maxWidth: "700px" }}>
-                    <Image src={urlFor(value).url()} height={700} width={700} loading="eager" alt="Blog Post Image" className="image object-contain rounded-lg" />
+                    <Image src={urlFor(value).url()} height={700} width={700} loading="eager" alt="Blog Post Image" className="w-full h-auto object-contain rounded-lg" />
                 </div>
             );
         },
@@ -140,12 +140,16 @@ export const RichTextComponents = (category?: keyof typeof CATEGORIESCOLORS) => 
             return <TranslationPopover data={{ ...value, category }}>{children}</TranslationPopover>;
         },
         sound: ({ children, value }: any) => {
-            const { phonetics, vocabItem } = value;
-            return (
-                <Sound vocabItemId={vocabItem._ref} phonetics={phonetics}>
-                    {children}
-                </Sound>
-            );
+            const vocabItemId = value?.vocabItem?._ref || value?.vocabItemId;
+            const phonetics = value?.phonetics as string | undefined;
+            if (!vocabItemId) return <>{children}</>;
+            return <Sound vocabItemId={vocabItemId} phonetics={phonetics}>{children}</Sound>;
+        },
+        Sound: ({ children, value }: any) => {
+            const vocabItemId = value?.vocabItem?._ref || value?.vocabItemId;
+            const phonetics = value?.phonetics as string | undefined;
+            if (!vocabItemId) return <>{children}</>;
+            return <Sound vocabItemId={vocabItemId} phonetics={phonetics}>{children}</Sound>;
         },
         highlight: ({ children }: any) => (
             <span className={HEADINGSPANCOLORS[category || "vocabulary"]} style={{ whiteSpace: "normal" }}>

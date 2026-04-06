@@ -10,15 +10,12 @@ import { CoursesAccordionClient } from "./CoursesAccordionClient";
 import { Locale } from "@/i18n";
 import { useTranslations } from "next-intl";
 import { UdemyBeginnerAccordion } from "../dashboard/components/UdemyBeginnerAccordion";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
 import { intelRich } from "@/app/lib/intelRich";
 import { PiGraduationCap } from "react-icons/pi";
 
-export async function VideosSection({ locale, hasPack = false }: { locale: Locale; hasPack?: boolean }) {
+export async function VideosSection({ locale, hasPack = false, userId }: { locale: Locale; hasPack?: boolean; userId?: string }) {
     const fidePackSommaire = await getFidePackSommaire(locale);
-    const session = await getServerSession(authOptions);
-    return <VideosSectionNoAsync fidePackSommaire={fidePackSommaire} hasPack={hasPack} locale={locale} userId={session?.user?._id} />;
+    return <VideosSectionNoAsync fidePackSommaire={fidePackSommaire} hasPack={hasPack} locale={locale} userId={userId} />;
 }
 
 function VideosSectionNoAsync({ fidePackSommaire, hasPack = false, locale, userId }: { fidePackSommaire: FidePackSommaire; hasPack?: boolean; locale: Locale; userId?: string }) {

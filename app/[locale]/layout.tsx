@@ -39,6 +39,8 @@ export const viewport: Viewport = {
     ],
 };
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
     return locales.map((locale) => ({ locale }));
 }
@@ -59,7 +61,7 @@ export default async function RootLayout(props: { children: React.ReactNode; par
     const messages = locale === "fr" ? frMessages : enMessages;
 
     return (
-        <html lang={locale} dir="ltr" data-theme="light" suppressHydrationWarning className="font-sans">
+        <html lang={locale} dir="ltr" data-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning className="font-sans">
             <head>
                 <meta name="color-scheme" content="light dark" />
             </head>

@@ -33,7 +33,7 @@ export const DesktopLayoutSelect = ({ story, element }: { story: Adventure; elem
                             height={400}
                             alt={`Illustration de l'aventure ${story.name}`}
                             className="rounded-xl shadow-1 simple-border"
-                            style={{ objectFit: "cover", maxHeight: "400px" }}
+                            style={{ objectFit: "cover", maxHeight: "400px", width: "auto", height: "auto" }}
                             priority
                         />
                     </div>

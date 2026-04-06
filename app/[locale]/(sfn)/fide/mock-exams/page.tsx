@@ -1,11 +1,8 @@
 import { HeroMockExams } from "./components/HeroMockExams";
 import { MockExamsPageSections } from "./components/MockExamsPageSections";
 import { mockExamFaqItemKeys } from "./faqItemKeys";
-import { authOptions } from "@/app/lib/authOptions";
-import { getMockExamCheckoutEligibility } from "@/app/serverActions/mockExamActions";
-import { Locale } from "@/i18n";
 import { getTranslations } from "next-intl/server";
-import { getServerSession } from "next-auth";
+import { MockExamEligibilityProvider } from "./components/checkout/MockExamEligibilityProvider";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
@@ -18,11 +15,6 @@ export default async function FideMockExamsPage(props: { params: Promise<{ local
 
     const t = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Page" });
     const faqT = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Faq" });
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?._id;
-    const checkoutEligibility = userId ? await getMockExamCheckoutEligibility(userId) : null;
-    const checkoutDisabled = checkoutEligibility ? !checkoutEligibility.canCheckout : false;
-    const checkoutDisabledReason = checkoutEligibility?.reason || null;
     const isFr = locale === "fr";
     const homePath = isFr ? "/fr" : "/";
     const fidePath = isFr ? "/fr/fide" : "/fide";
@@ -117,8 +109,10 @@ export default async function FideMockExamsPage(props: { params: Promise<{ local
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
-            <HeroMockExams checkoutDisabled={checkoutDisabled} checkoutDisabledReason={checkoutDisabledReason} />
-            <MockExamsPageSections checkoutDisabled={checkoutDisabled} checkoutDisabledReason={checkoutDisabledReason} />
+            <MockExamEligibilityProvider>
+                <HeroMockExams />
+                <MockExamsPageSections />
+            </MockExamEligibilityProvider>
         </div>
     );
 }
