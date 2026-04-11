@@ -123,13 +123,13 @@ export const DashboardMockExams = ({
                                 className="group card border-2 border-solid border-neutral-700 shadow-on-hover p-0 overflow-hidden no-underline text-neutral-800"
                             >
                                 <div className="relative w-full aspect-[16/10] bg-neutral-200">
-                                    {imgUrl ? (
-                                        <>
-                                            <Image src={imgUrl} alt={`Compilation ${index + 1}`} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                                        </>
-                                    ) : (
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,#f6d6b8_0%,#f0c090_32%,#dca46c_62%,#b87a47_100%)]" />
-                                    )}
+                                    <Image
+                                        src={imgUrl || "/images/mock-exam-hero2.png"}
+                                        alt={`Compilation ${index + 1}`}
+                                        fill
+                                        sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
                                     <div className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide bg-neutral-100/95 text-neutral-800">EXAMEN BLANC</div>
                                 </div>
 

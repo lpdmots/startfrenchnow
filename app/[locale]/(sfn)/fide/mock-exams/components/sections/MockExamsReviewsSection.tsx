@@ -12,9 +12,9 @@ export function MockExamsReviewsSection() {
                 <SlideFromBottom>
                     <div className="flex w-full justify-center">
                         <div className="max-w-5xl text-center">
-                            <p className="mb-3 inline-flex rounded-full bg-secondary-3 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
+                            <p className="mb-3 inline-flex rounded-full bg-secondary-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
                             <h2 className="display-2 mb-2">
-                                <span className="heading-span-secondary-3">{t("titleHighlight")}</span> {t("titleSuffix")}
+                                <span className="heading-span-secondary-5">{t("titleHighlight")}</span> {t("titleSuffix")}
                             </h2>
                             <p className="mb-0 text-base text-neutral-700 md:text-lg">{t("subtitle")}</p>
                         </div>

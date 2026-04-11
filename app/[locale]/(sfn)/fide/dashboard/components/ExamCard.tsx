@@ -69,7 +69,7 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
                 <Image
                     width={400}
                     height={300}
-                    src={last?.image ? urlFor(last?.image).url() : "/images/fake-exam.png"}
+                    src={last?.image ? urlFor(last?.image).url() : "/images/mock-exam-hero2.png"}
                     alt={last?.title || ""}
                     className="w-auto h-full mx-auto rounded-lg object-cover object-top"
                     style={{ height: 203 }}

@@ -12,12 +12,12 @@ export function MockExamsOfferSection() {
             <div className="mx-auto w-full max-w-7xl px-4 lg:px-8">
                 <SlideFromBottom delay={0.05} duration={0.35}>
                     <div className="mx-auto mb-8 max-w-4xl text-center">
-                        <p className="mb-2 sm:mb-4 inline-flex items-center gap-2 rounded-full bg-secondary-6 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">
+                        <p className="mb-2 sm:mb-4 inline-flex items-center gap-2 rounded-full bg-secondary-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">
                             <Sparkles className="h-3.5 w-3.5" />
                             {t("badge")}
                         </p>
                         <h2 className="display-2 mb-3">
-                            {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span>
+                            {t("titlePrefix")} <span className="heading-span-secondary-5">{t("titleHighlight")}</span>
                         </h2>
                         <p className="mb-0 text-base text-neutral-700 md:text-lg">{t("subtitle")}</p>
                     </div>
@@ -25,16 +25,16 @@ export function MockExamsOfferSection() {
 
                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1.25fr_0.75fr] lg:gap-6">
                     <SlideFromLeft delay={0.1} duration={0.35}>
-                        <article className="relative overflow-hidden rounded-3xl border-2 border-secondary-6 bg-neutral-100 p-5 shadow-lg md:p-7">
-                            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-secondaryShades-4 opacity-40" />
-                            <div className="pointer-events-none absolute -bottom-16 -left-12 h-36 w-36 rounded-full bg-secondaryShades-4 opacity-30" />
+                        <article className="relative overflow-hidden rounded-3xl border-2 border-secondary-5 bg-neutral-100 p-5 shadow-lg md:p-7">
+                            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-secondaryShades-5 opacity-40" />
+                            <div className="pointer-events-none absolute -bottom-16 -left-12 h-36 w-36 rounded-full bg-secondaryShades-5 opacity-30" />
 
                             <div className="relative grid grid-cols-1 gap-5 md:grid-cols-[1fr_auto] md:items-end">
                                 <div>
-                                    <p className="mb-2 inline-flex rounded-full bg-secondaryShades-4 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("main.offerBadge")}</p>
+                                    <p className="mb-2 inline-flex rounded-full bg-secondaryShades-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("main.offerBadge")}</p>
                                     <p className="mb-1 text-lg font-bold text-neutral-800">{t("main.title")}</p>
                                     <div className="mb-4 flex items-end gap-3 whitespace-nowrap">
-                                        <p className="mb-0 text-5xl font-extrabold leading-none text-secondary-6 md:text-6xl">10 CHF</p>
+                                        <p className="mb-0 text-5xl font-extrabold leading-none text-secondary-5 md:text-6xl">10 CHF</p>
                                         <p className="mb-0 text-base font-semibold text-neutral-500">
                                             {t("main.oldPricePrefix")} <span className="line-through">50 CHF</span>
                                         </p>
@@ -42,15 +42,15 @@ export function MockExamsOfferSection() {
 
                                     <div className="grid grid-cols-1 gap-2">
                                         <p className="mb-0 flex items-start gap-2 text-sm text-neutral-700">
-                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-secondary-6" />
+                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-secondary-5" />
                                             <span>{t("main.bullets.exam")}</span>
                                         </p>
                                         <p className="mb-0 flex items-start gap-2 text-sm text-neutral-700">
-                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-secondary-6" />
+                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-secondary-5" />
                                             <span>{t("main.bullets.resources")}</span>
                                         </p>
                                         <p className="mb-0 flex items-start gap-2 text-sm text-neutral-700">
-                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-secondary-6" />
+                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-secondary-5" />
                                             <span>{t("main.bullets.feedback")}</span>
                                         </p>
                                     </div>

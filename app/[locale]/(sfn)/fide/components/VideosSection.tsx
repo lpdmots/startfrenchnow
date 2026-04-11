@@ -27,8 +27,8 @@ function VideosSectionNoAsync({ fidePackSommaire, hasPack = false, locale, userI
                 {/* Header */}
                 <header className="mb-6 text-center max-w-5xl">
                     <h2 className="display-2">
-                        {t("titlePart1")} <span className="heading-span-secondary-4">{t("titleHighlight1")}</span> {t("titlePart2")}{" "}
-                        <span className="heading-span-secondary-4">{t("titleHighlight2")}</span> {t("titlePart3")}
+                        {t("titlePart1")} <span className="heading-span-secondary-6">{t("titleHighlight1")}</span> {t("titlePart2")}{" "}
+                        <span className="heading-span-secondary-6">{t("titleHighlight2")}</span> {t("titlePart3")}
                     </h2>
                     <p className="">{t("subtitle")}</p>
                 </header>

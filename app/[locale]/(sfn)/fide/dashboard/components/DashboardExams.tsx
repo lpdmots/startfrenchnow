@@ -24,7 +24,7 @@ export const DashboardExams = ({ hero, locale, hasPack }: DashboardExamsProps) =
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
                 <div className="col-span-1 flex justify-center w-full">
                     <Image
-                        src="/images/fide-exams-dashboard.png"
+                        src="/images/mock-exam-hero2.png"
                         alt={t("altExamsImage")}
                         width={400}
                         height={400}

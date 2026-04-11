@@ -7,7 +7,21 @@ import { useState, useEffect } from "react";
 import { PopupModal } from "react-calendly";
 import { useRouter } from "next/navigation";
 
-export const BookFirstMeeting = ({ label, variant = "primary", test = false, small = false }: { label: string; variant?: "primary" | "secondary"; test?: boolean; small?: boolean }) => {
+export const BookFirstMeeting = ({
+    label,
+    variant = "primary",
+    test = false,
+    small = false,
+    className,
+    buttonClassName,
+}: {
+    label: string;
+    variant?: "primary" | "secondary";
+    test?: boolean;
+    small?: boolean;
+    className?: string;
+    buttonClassName?: string;
+}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
     const router = useRouter();
@@ -57,8 +71,12 @@ export const BookFirstMeeting = ({ label, variant = "primary", test = false, sma
     if (!rootElement) return null; // Assure que rien n'est rendu si rootElement n'est pas prêt
 
     return (
-        <div className="w-full sm:w-auto">
-            <ShimmerButton className={clsx("w-button flex items-center justify-center w-full sm:w-auto", { small: small })} variant={variant} onClick={() => setIsOpen(true)}>
+        <div className={clsx("w-full sm:w-auto", className)}>
+            <ShimmerButton
+                className={clsx("w-button flex items-center justify-center w-full sm:w-auto", { small: small }, buttonClassName)}
+                variant={variant}
+                onClick={() => setIsOpen(true)}
+            >
                 <NotebookPen className="mr-2 text-xl" />
                 {label}
             </ShimmerButton>

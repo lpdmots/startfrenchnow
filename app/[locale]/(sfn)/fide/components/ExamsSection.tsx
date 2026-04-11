@@ -10,16 +10,34 @@ import { LinkArrowToFideExams } from "@/app/components/common/LinkToFideExams";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 import { SlideFromLeft, SlideFromRight } from "@/app/components/animations/Slides";
+import type { ReactNode } from "react";
+
+const examsHeadingRich = (headingSpanClassName: string) => {
+    const rich = intelRich();
+    const headingSpan = (chunks: ReactNode) => <span className={headingSpanClassName}>{chunks}</span>;
+    return {
+        ...rich,
+        hs1: headingSpan,
+        hs2: headingSpan,
+        hs3: headingSpan,
+        hs4: headingSpan,
+        hs5: headingSpan,
+        hs6: headingSpan,
+    };
+};
 
 export default function ExamsSection({
     stats = { totalExams: 100, avgDurationMin: 12, completionRate: 0.82 },
     hasPack,
+    headingSpanClassName = "heading-span-secondary-2",
 }: {
     stats?: { totalExams: number; avgDurationMin: number; completionRate: number };
     hasPack?: boolean;
+    headingSpanClassName?: string;
 }) {
     const { totalExams, avgDurationMin, completionRate } = stats;
     const t = useTranslations("ExamsSection");
+    const rich = examsHeadingRich(headingSpanClassName);
 
     return (
         <section id="exams" className="w-full bg-neutral-200 py-24">
@@ -27,7 +45,7 @@ export default function ExamsSection({
                 {/* Header */}
                 <SlideFromLeft>
                     <header className="mb-12">
-                        <h2 className="display-2 mb-4 lg:mb-8">{t.rich("title", { ...intelRich(), exams: totalExams })}</h2>
+                        <h2 className="display-2 mb-4 lg:mb-8">{t.rich("title", { ...rich, exams: totalExams })}</h2>
                         <p>{t("subtitle")}</p>
                     </header>
                 </SlideFromLeft>
@@ -61,7 +79,7 @@ export default function ExamsSection({
                     )}
                     <LinkArrowToFideExams className="text-xl font-bold text-neutral-700" category="culture">
                         <span className="flex items-center">
-                            <HiCheckCircle className="text-6xl mr-2 text-secondary-5" /> <span>{t("linkAllExams")}</span>
+                            <HiCheckCircle className="text-6xl mr-2 text-secondary-6" /> <span>{t("linkAllExams")}</span>
                         </span>
                     </LinkArrowToFideExams>
                 </div>

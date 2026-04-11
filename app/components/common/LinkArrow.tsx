@@ -36,7 +36,17 @@ function LinkArrow({ children, url, target = "_blank", rel, category, className 
 
     return (
         <m.span variants={ParentVariants} whileHover="visible">
-            <Link href={url} className={cn("inline-block text-[var(--neutral-800)] leading-[20px] font-normal flex items-center text-[var(--neutral-300)] no-underline hover:text-[var(--secondary-2)] w-inline-block", hoverColor, className)} target={target} rel={rel} onClick={(event) => event.stopPropagation()}>
+            <Link
+                href={url}
+                className={cn(
+                    "inline-block text-[var(--neutral-800)] leading-[20px] font-normal flex items-center text-[var(--neutral-700)] no-underline hover:text-[var(--secondary-2)] w-inline-block",
+                    hoverColor,
+                    className,
+                )}
+                target={target}
+                rel={rel}
+                onClick={(event) => event.stopPropagation()}
+            >
                 <span className="flex items-center justify-between">
                     <span className="link-text underline mr-1">{children}</span>
                     <m.span className="flex items-center" variants={childrenVariant} style={{ width: 20 }}>

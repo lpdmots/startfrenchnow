@@ -13,9 +13,9 @@ export function MockExamsOnlineSection() {
             <div className="mx-auto w-full max-w-7xl px-4 lg:px-8">
                 <SlideFromBottom delay={0.05} duration={0.35}>
                     <div className="mx-auto mb-8 max-w-4xl text-center">
-                        <p className="mb-2 inline-flex rounded-full bg-secondary-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
+                        <p className="mb-2 inline-flex rounded-full bg-secondary-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
                         <h2 className="display-2 mb-3">
-                            {t("titlePrefix")} <span className="heading-span-secondary-2">{t("titleHighlight")}</span> {t("titleSuffix")}
+                            {t("titlePrefix")} <span className="heading-span-secondary-5">{t("titleHighlight")}</span> {t("titleSuffix")}
                         </h2>
                         <p className="mb-0 text-base text-neutral-700 md:text-lg">{t("subtitle")}</p>
                     </div>

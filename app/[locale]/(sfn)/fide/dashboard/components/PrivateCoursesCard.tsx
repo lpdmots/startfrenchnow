@@ -40,11 +40,11 @@ const PrivateCoursesCard = ({ hero, locale }: { hero: HeroData | undefined; loca
 
             <div className="overflow-hidden w-full rounded-xl flex justify-center bg-neutral-300">
                 <Image
-                    src={isKind ? "/images/pack-fide-cours-urgent.png" : "/images/instructeur-cours-prives.png"}
+                    src="/images/etudiante-cours.png"
                     width={300}
                     height={200}
                     alt={t("altThumb")}
-                    className="object-cover w-full h-full"
+                    className="object-cover object-top w-full h-full"
                     style={{ height: 203 }}
                 />
             </div>

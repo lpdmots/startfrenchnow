@@ -5,12 +5,12 @@ import { BookFirstMeeting } from "../../components/BookFirstMeeting";
 import { FideCourseRatings } from "@/app/components/sfn/courses/FideCourseRatings";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 
+const HERO_IMAGE_SRC = "/images/etudiante-cours.png";
+const HERO_IMAGE_ALT = "Cours privé de français";
+
 export function HeroPrivateCourses() {
     return (
         <section id="HeroPrivateCourses" className="section hero v1 wf-section relative isolate overflow-hidden !pt-6 !pb-8 lg:!pb-10">
-            <div className="pointer-events-none absolute -z-10 -left-20 top-2 h-64 w-64 rounded-full bg-secondary-2/20 blur-3xl" />
-            <div className="pointer-events-none absolute -z-10 right-0 top-1/3 h-72 w-72 rounded-full bg-secondary-5/20 blur-3xl" />
-
             <div className="relative z-0 w-full px-4 lg:px-8">
                 <div className="mx-auto w-full max-w-7xl">
                     <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(320px,420px)_1fr] lg:gap-12">
@@ -25,21 +25,21 @@ export function HeroPrivateCourses() {
                             <p className="mb-0 text-center text-base text-neutral-700 sm:text-lg lg:text-left">
                                 Un coaching 1:1 centré sur vos blocages réels pour arriver prêt le jour de l&apos;examen.
                             </p>
-                            <div className="flex no-wrap items-center justify-center gap-3 lg:justify-start w-full">
-                                <Link href="#plans" className="btn btn-secondary small !py-5 shrink-0">
+                            <div className="flex w-full flex-col items-stretch justify-center gap-3 md:flex-row md:flex-nowrap md:items-center lg:justify-start">
+                                <Link href="#plans" className="btn btn-secondary small !py-5 text-center whitespace-nowrap shrink-0 w-full md:w-auto">
                                     Voir les formules
                                 </Link>
-                                <BookFirstMeeting label="Entretien gratuit" small={true} />
+                                <BookFirstMeeting label="Entretien gratuit" small={true} className="w-full md:!w-auto shrink-0" buttonClassName="!w-full md:!w-auto shrink-0 whitespace-nowrap" />
                             </div>
                         </div>
 
                         <div className="relative">
                             <div className="mx-auto hidden w-full max-w-[860px] lg:grid lg:grid-cols-[350px_minmax(260px,360px)] lg:items-center lg:justify-center lg:gap-8">
                                 <div className="flex justify-center pt-12">
-                                    <div className="relative h-[340px] w-[340px] overflow-hidden rounded-full border-2 border-solid border-neutral-800 bg-secondary-1 shadow-1">
+                                    <div className="relative h-[340px] w-[340px] overflow-hidden" style={{ borderBottomRightRadius: 100 }}>
                                         <SlideFromBottom delay={0.15} duration={0.4}>
                                             <div className="relative h-full w-full">
-                                                <Image src="/images/yoh-coussot.png" alt="Yohann Coussot" fill className="object-cover" />
+                                                <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
                                             </div>
                                         </SlideFromBottom>
                                     </div>
@@ -104,10 +104,10 @@ export function HeroPrivateCourses() {
                             </div>
 
                             <div className="mx-auto flex w-full max-w-[460px] flex-col items-center gap-4 lg:hidden">
-                                <div className="relative h-56 w-56 overflow-hidden rounded-full border-2 border-solid border-neutral-800 bg-secondary-1 shadow-1">
+                                <div className="relative h-56 w-56 overflow-hidden" style={{ borderBottomRightRadius: 64 }}>
                                     <SlideFromBottom delay={0.15} duration={0.55}>
                                         <div className="relative h-full w-full">
-                                            <Image src="/images/yoh-coussot.png" alt="Yohann Coussot" fill className="object-cover" />
+                                            <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
                                         </div>
                                     </SlideFromBottom>
                                 </div>

@@ -488,15 +488,29 @@ const reviewsComments = [
 
 export const sharedFideReviews = reviewsComments;
 
-export const ReviewsFide = () => {
+type ReviewsFideProps = {
+    headingSpanClassName?: string;
+};
+
+export const ReviewsFide = ({ headingSpanClassName = "heading-span-secondary-2" }: ReviewsFideProps) => {
     const t = useTranslations("Fide.ReviewsFide");
+
+    const richTitle = {
+        ...intelRich(),
+        hs1: (chunks: any) => <span className={headingSpanClassName}>{chunks}</span>,
+        hs2: (chunks: any) => <span className={headingSpanClassName}>{chunks}</span>,
+        hs3: (chunks: any) => <span className={headingSpanClassName}>{chunks}</span>,
+        hs4: (chunks: any) => <span className={headingSpanClassName}>{chunks}</span>,
+        hs5: (chunks: any) => <span className={headingSpanClassName}>{chunks}</span>,
+        hs6: (chunks: any) => <span className={headingSpanClassName}>{chunks}</span>,
+    };
 
     return (
         <>
             <SlideFromBottom>
                 <div className="flex w-full justify-center">
                     <div className="text-center max-w-5xl">
-                        <h2 className="display-2 pb-4 lg:pb-8">{t.rich("title", intelRich())}</h2>
+                        <h2 className="display-2 pb-4 lg:pb-8">{t.rich("title", richTitle)}</h2>
                         <p className="mg-bottom-48px">{t("description")}</p>
                     </div>
                 </div>

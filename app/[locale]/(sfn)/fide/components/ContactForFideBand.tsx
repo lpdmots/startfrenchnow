@@ -8,7 +8,12 @@ export const ContactForFideBand = () => {
     const tbutton = useTranslations("Fide.HeroFide");
 
     return (
-        <div className="footer-newsletter mb-[-1px] [background-image:linear-gradient(180deg\,_var(--neutral-800)_0\,_var(--neutral-800)_60%\,_var(--neutral-100)_60%\,_transparent_100%)] max-[767px]:[background-image:linear-gradient(180deg\,_var(--neutral-800)_0\,_var(--neutral-800)_60%\,_var(--neutral-100)_60%\,_transparent_100%)]">
+        <div
+            className="footer-newsletter mb-[-1px]"
+            style={{
+                backgroundImage: "linear-gradient(180deg, var(--neutral-800) 0%, var(--neutral-800) 50%, var(--neutral-200) 50%, var(--neutral-200) 100%)",
+            }}
+        >
             <div className="container-default w-container">
                 <SlideFromLeft>
                     <div className="flex-horizontal space-between max-[767px]:flex-col max-[767px]:justify-center max-[767px]:items-center">

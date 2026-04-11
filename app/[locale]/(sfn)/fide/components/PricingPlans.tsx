@@ -54,8 +54,6 @@ export function PricingPlans({
     const buildPriceContent = (pricingDetails?: PricingDetails | null) => {
         if (!pricingDetails) return { priceContent: null };
         const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
-        const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
-        const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
 
         return {
             priceContent: (
@@ -147,9 +145,8 @@ export function PricingPlans({
                         </span>
                     </p>
                 </div>
-                {/* Layout 3 colonnes (Free allégé + 2 vraies cards) */}
                 <SlideInOneByOneParent delayChildren={0.5} delay={0.1}>
-                    <div className="flex flex-col lg:flex-row flex-nowrap gap-6 lg:gap-2 xl:gap-8">
+                    <div className="flex flex-col lg:flex-row flex-nowrap gap-6 lg:gap-4 xl:gap-6">
                         <SlideInOneByOneChild>
                             <div className="flex justify-center order-2 lg:order-1">
                                 <PriceCard card={CARDS[0]} hasPack={hasPack} />

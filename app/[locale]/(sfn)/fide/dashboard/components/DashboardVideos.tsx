@@ -65,7 +65,7 @@ const DashboardVideos = ({ hero, locale, hasPack, fidePackSommaire, userId }: Da
                         <SlideFromRight>
                             <div className="flex flex-col items-center gap-2 lg:gap-8 lg:mt-8">
                                 <Image
-                                    src="/images/videos-section-dashboard.png"
+                                    src="/images/pack-fide-hero.png"
                                     alt={t("altVideo")}
                                     width={400}
                                     height={400}

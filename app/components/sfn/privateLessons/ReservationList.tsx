@@ -67,7 +67,7 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
                 </div>
                 <div className="col-span-1 flex flex-col gap-4 items-center order-1 xl:order-2">
                     <Image
-                        src="/images/private-lessons-dashboard.png"
+                        src="/images/etudiante-cours.png"
                         alt="private lessons"
                         width={400}
                         height={400}

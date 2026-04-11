@@ -12,9 +12,9 @@ export function MockExamsTestsSection() {
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(300px,400px)_minmax(0,1fr)] lg:gap-12">
                     <SlideFromLeft>
                         <div className="lg:sticky lg:top-24 lg:self-start">
-                            <p className="mb-2 inline-flex rounded-full bg-secondaryShades-1 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("badge")}</p>
+                            <p className="mb-2 inline-flex rounded-full bg-secondaryShades-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("badge")}</p>
                             <h2 className="display-2 mb-4 text-neutral-100">
-                                {t("titlePrefix")} <span className="heading-span-secondary-1">{t("titleHighlight")}</span> {t("titleSuffix")}
+                                {t("titlePrefix")} <span className="heading-span-secondary-5">{t("titleHighlight")}</span> {t("titleSuffix")}
                             </h2>
                             <p className="mb-4 text-base text-neutral-200 md:text-lg">{t("subtitle")}</p>
                             <div className="space-y-2">

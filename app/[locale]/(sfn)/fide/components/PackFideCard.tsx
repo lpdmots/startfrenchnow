@@ -1,3 +1,5 @@
+"use client";
+
 import { ParentToChildrens, RotateChildren, ScaleChildren, TranslateRightChildren } from "@/app/components/animations/ParentToChildrens";
 import { Separator } from "@/app/components/ui/separator";
 import { cn } from "@/app/lib/schadcn-utils";
@@ -5,7 +7,7 @@ import clsx from "clsx";
 import { Link } from "@/i18n/navigation";
 import React, { useEffect, useState } from "react";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
-import { BookFirstMeeting, BookReservation } from "./BookFirstMeeting";
+import { BookReservation } from "./BookFirstMeeting";
 import { useSession } from "next-auth/react";
 
 interface CardProps {
@@ -18,7 +20,8 @@ interface CardProps {
         extras: string[];
         color: string;
         labelCTA: string;
-        checkoutUrl: string;
+        checkoutUrl?: string;
+        labelColor?: string;
     };
     hasPack?: boolean;
     bookReservation?: boolean;
@@ -26,9 +29,10 @@ interface CardProps {
 }
 
 export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }: CardProps) => {
-    const { title, description, price, priceContent, features, extras, color, labelCTA, checkoutUrl } = card;
-    const bgColor = `bg-${color}`;
-    const textColor = `text-${color}`;
+    const { title, description, price, priceContent, features, extras, color, labelCTA, checkoutUrl, labelColor } = card;
+    const shouldBookReservation = bookReservation || !checkoutUrl;
+    const colorCssVar = `var(--${color})`;
+    const labelCssVar = `var(--${labelColor ? labelColor : "neutral-100"})`;
     const { data: session } = useSession();
     const [hasReservation, setHasReservation] = useState(false);
 
@@ -46,14 +50,24 @@ export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }:
                     <ScaleChildren scale={1.05} duration={0}>
                         <div className={cn("image-wrapper-card-top p-2 flex justify-center rounded-sm", "bg-neutral-300")}>
                             <div className="flex gap-4 justify-center items-center w-full">
-                                <p className={cn("mb-0 text-neutral-800 text-3xl font-bold underline", `decoration-${color}`)}>{title}</p>
+                                <p className="mb-0 text-neutral-800 text-3xl font-bold underline" style={{ textDecorationColor: colorCssVar }}>
+                                    {title}
+                                </p>
                             </div>
                         </div>
                     </ScaleChildren>
                     <div className="bs p-4 flex flex-col space-between">{description}</div>
                     <RotateChildren rotation={4}>
-                        <div className={cn("p-4 flex justify-center items-center -mx-12", bgColor)} style={{ transform: "rotate(-4deg)" }}>
-                            {priceContent ? <div className="w-full text-center text-neutral-100">{priceContent}</div> : <p className="text-4xl sm:text-5xl text-neutral-100 font-bold mb-0">{price}</p>}
+                        <div className="p-4 flex justify-center items-center -mx-12" style={{ transform: "rotate(-4deg)", backgroundColor: colorCssVar }}>
+                            {priceContent ? (
+                                <div className="w-full text-center" style={{ color: labelCssVar }}>
+                                    {priceContent}
+                                </div>
+                            ) : (
+                                <p className="text-4xl sm:text-5xl font-bold mb-0" style={{ color: labelCssVar }}>
+                                    {price}
+                                </p>
+                            )}
                         </div>
                     </RotateChildren>
                     <div className="flex flex-col grow min-h-72">
@@ -64,7 +78,7 @@ export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }:
                             {features.map((feature, index) => (
                                 <React.Fragment key={index}>
                                     <div className="grid grid-cols-9 gap-2">
-                                        <FaCheck className={cn("text-xl col-span-1", textColor)} />
+                                        <FaCheck className="text-xl col-span-1" style={{ color: colorCssVar }} />
                                         <p className="text-neutral-800 col-span-8 mb-0 text-sm">{feature}</p>
                                     </div>
                                     {index !== features.length - 1 && <Separator />}
@@ -72,11 +86,11 @@ export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }:
                             ))}
                         </div>
                         <div className="flex w-full justify-center p-4 pt-0">
-                            {bookReservation ? (
+                            {shouldBookReservation ? (
                                 <BookReservation label={labelCTA} hasPack={false} openFreeHours={setIsOpen} />
                             ) : (
                                 <Link
-                                    href={hasPack ? "#" : checkoutUrl}
+                                    href={hasPack ? "#" : checkoutUrl || "#"}
                                     style={{ ["--hover-color" as any]: `var(--${color})` }}
                                     className={clsx(
                                         "btn btn-primary small w-full text-center",

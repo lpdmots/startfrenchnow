@@ -40,11 +40,11 @@ export const intelRich = () => {
         b4: (chunks: any) => <span className="font-bold text-secondary-4">{chunks}</span>,
         b5: (chunks: any) => <span className="font-bold text-secondary-5">{chunks}</span>,
         b6: (chunks: any) => <span className="font-bold text-secondary-6">{chunks}</span>,
-        hs1: (chunks: any) => <span className="heading-span-secondary-1">{chunks}</span>,
+        hs1: (chunks: any) => <span className="heading-span-secondary-2">{chunks}</span>,
         hs2: (chunks: any) => <span className="heading-span-secondary-2">{chunks}</span>,
-        hs3: (chunks: any) => <span className="heading-span-secondary-3">{chunks}</span>,
-        hs4: (chunks: any) => <span className="heading-span-secondary-4">{chunks}</span>,
-        hs5: (chunks: any) => <span className="heading-span-secondary-5">{chunks}</span>,
-        hs6: (chunks: any) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs3: (chunks: any) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs4: (chunks: any) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs5: (chunks: any) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs6: (chunks: any) => <span className="heading-span-secondary-2">{chunks}</span>,
     };
 };

@@ -2,6 +2,21 @@ import { useTranslations } from "next-intl";
 import { ContactFideForm } from "./ContactFideForm";
 import { intelRich } from "@/app/lib/intelRich";
 import { BookFirstMeeting } from "./BookFirstMeeting";
+import type { ReactNode } from "react";
+
+const intelRichContact = () => {
+    const rich = intelRich();
+    const highlight = (chunks: ReactNode) => <span className="heading-span-secondary-1">{chunks}</span>;
+    return {
+        ...rich,
+        hs1: highlight,
+        hs2: highlight,
+        hs3: highlight,
+        hs4: highlight,
+        hs5: highlight,
+        hs6: highlight,
+    };
+};
 
 export const ContactForFideCourses = () => {
     const t = useTranslations("Fide.ContactForFideCourses");
@@ -10,7 +25,7 @@ export const ContactForFideCourses = () => {
 
     return (
         <div className="flex flex-col items-center justify-center color-neutral-100">
-            <h2 className="display-2 color-neutral-100 text-center pb-4 lg:pb-8">{t.rich("title", intelRich())}</h2>
+            <h2 className="display-2 color-neutral-100 text-center pb-4 lg:pb-8">{t.rich("title", intelRichContact())}</h2>
             <p className="text-center mb-12">{t.rich("description1", intelRich())}</p>
             <div className="flex flex-col gap-4 md:gap-8">
                 <div className="flex justify-center">

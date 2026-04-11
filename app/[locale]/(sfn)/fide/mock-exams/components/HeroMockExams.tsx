@@ -12,7 +12,7 @@ export const HeroMockExams = () => {
                 <div className="mx-auto w-full max-w-6xl">
                     <div className="mx-auto w-full">
                         <h1 className="display-1 text-center md:text-left mb-4">
-                            {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span>
+                            <span className="heading-span-secondary-5">{t("titlePrefix")}</span> {t("titleHighlight")}
                         </h1>
                         <p className="mb-0 text-center md:text-left text-base text-neutral-700 sm:text-lg">{t("subtitle")}</p>
                     </div>
@@ -20,7 +20,7 @@ export const HeroMockExams = () => {
                     <div className="mt-8 grid grid-cols-1 items-center gap-6 lg:mt-10 lg:grid-cols-[minmax(280px,430px)_1fr] lg:gap-8">
                         <div className="order-2 hidden w-full max-w-[320px] mx-auto sm:block sm:max-w-[440px] md:max-w-[540px] lg:order-1 lg:mx-0 lg:max-w-none">
                             <Image
-                                src="/images/mock-exam-hero.png"
+                                src="/images/mock-exam-hero2.png"
                                 alt={t("imageAlt")}
                                 width={760}
                                 height={680}
@@ -29,14 +29,7 @@ export const HeroMockExams = () => {
                                 priority
                             />
                             <div className="mt-5 mb-4 sm:mb-auto flex items-end w-full justify-center sm:mt-8">
-                                <Image
-                                    src="/images/fideLogo.png"
-                                    alt={t("logoAlt")}
-                                    width={90}
-                                    height={36}
-                                    className="object-contain"
-                                    sizes="90px"
-                                />
+                                <Image src="/images/fideLogo.png" alt={t("logoAlt")} width={90} height={36} className="object-contain" sizes="90px" />
                             </div>
                         </div>
 
@@ -47,7 +40,7 @@ export const HeroMockExams = () => {
                                         <div className="flex flex-col">
                                             <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
                                                 <p className="mb-0 inline-flex rounded-full bg-neutral-200 text-base font-semibold uppercase tracking-wide text-neutral-800">{t("discoveryBadge")}</p>
-                                                <p className="mb-0 inline-flex rounded-full bg-secondaryShades-4 px-3 py-1 text-base font-semibold uppercase tracking-wide text-neutral-800">
+                                                <p className="mb-0 inline-flex rounded-full bg-secondaryShades-4 px-3 py-1 text-base font-semibold uppercase tracking-wide text-secondary-4">
                                                     {t("discountBadge")}
                                                 </p>
                                             </div>
@@ -80,23 +73,9 @@ export const HeroMockExams = () => {
                             </div>
 
                             <div className="order-2 mx-auto w-full max-w-[280px] sm:hidden">
-                                <Image
-                                    src="/images/mock-exam-hero.png"
-                                    alt={t("imageAlt")}
-                                    width={760}
-                                    height={680}
-                                    className="h-auto w-full object-contain"
-                                    sizes="280px"
-                                />
+                                <Image src="/images/mock-exam-hero.png" alt={t("imageAlt")} width={760} height={680} className="h-auto w-full object-contain" sizes="280px" />
                                 <div className="mt-4 mb-4 sm:mb-auto flex items-end w-full justify-center">
-                                    <Image
-                                        src="/images/fideLogo.png"
-                                        alt={t("logoAlt")}
-                                        width={72}
-                                        height={29}
-                                        className="object-contain"
-                                        sizes="72px"
-                                    />
+                                    <Image src="/images/fideLogo.png" alt={t("logoAlt")} width={72} height={29} className="object-contain" sizes="72px" />
                                 </div>
                             </div>
 
