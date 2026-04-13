@@ -12,9 +12,10 @@ type Props = {
     filteredPackSommaire: FlatFidePackSommaire;
     locale: string;
     hasPack: boolean;
+    hidePackageBadge?: boolean;
 };
 
-function VideoList({ filteredPackSommaire, locale, hasPack }: Props) {
+function VideoList({ filteredPackSommaire, locale, hasPack, hidePackageBadge = false }: Props) {
     const chunkedPosts = splitArrayIntoChunks(filteredPackSommaire, 3);
 
     return (
@@ -26,7 +27,7 @@ function VideoList({ filteredPackSommaire, locale, hasPack }: Props) {
                             <div role="listitem" className="height-100 w-dyn-item">
                                 {chunk.length > 0 && (
                                     <ParentToChildrens>
-                                        <PrimaryFidePost post={chunk[0]} locale={locale} hasPack={hasPack} />
+                                        <PrimaryFidePost post={chunk[0]} locale={locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} />
                                     </ParentToChildrens>
                                 )}
                             </div>
@@ -38,14 +39,14 @@ function VideoList({ filteredPackSommaire, locale, hasPack }: Props) {
                             <div role="listitem" className="w-dyn-item">
                                 {chunk.length > 1 && (
                                     <ParentToChildrens>
-                                        <SecondaryFidePost post={chunk[1]} locale={locale as Locale} hasPack={hasPack} />
+                                        <SecondaryFidePost post={chunk[1]} locale={locale as Locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} />
                                     </ParentToChildrens>
                                 )}
                             </div>
                             <div role="listitem" className="w-dyn-item">
                                 {chunk.length > 2 && (
                                     <ParentToChildrens>
-                                        <SecondaryFidePost post={chunk[2]} locale={locale as Locale} hasPack={hasPack} />
+                                        <SecondaryFidePost post={chunk[2]} locale={locale as Locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} />
                                     </ParentToChildrens>
                                 )}
                             </div>

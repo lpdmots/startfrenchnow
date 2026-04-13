@@ -9,6 +9,14 @@ export const ResourcesButton = ({ locale, dictionnary }: { locale: Locale; dicti
         content: (
             <div className="card p-4 pr-12 mt-4">
                 <div className="flex flex-col" style={{ minWidth: 125 }}>
+                    <LinkCurrentBlog href="/fide/videos" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
+                        <FaCaretRight />
+                        {dictionnary.fideVideos}
+                    </LinkCurrentBlog>
+                    <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
+                        <FaCaretRight />
+                        {dictionnary.fideScenarios}
+                    </LinkCurrentBlog>
                     <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {dictionnary.videos}

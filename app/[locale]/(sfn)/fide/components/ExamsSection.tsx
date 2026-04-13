@@ -61,7 +61,14 @@ export default function ExamsSection({
 
                     <div className="col-span-1 lg:col-span-4 flex justify-center items-center">
                         <SlideFromRight>
-                            <Image src="/images/examsMobile.png" alt={t("imageAlt")} width={800} height={500} className="w-full h-auto object-contain max-w-2xl" />
+                            <Image
+                                src="/images/examsMobile.png"
+                                alt={t("imageAlt")}
+                                width={800}
+                                height={500}
+                                sizes="(min-width: 1024px) 42vw, 100vw"
+                                className="w-full h-auto object-contain max-w-2xl"
+                            />
                         </SlideFromRight>
                     </div>
                 </div>

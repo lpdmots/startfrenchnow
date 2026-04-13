@@ -71,7 +71,7 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
                         alt="private lessons"
                         width={400}
                         height={400}
-                        className="px-2 object-contain w-full overflow-hidden max-w-56 xl:max-w-none h-auto"
+                        className="px-2 object-contain w-full overflow-hidden max-w-56 xl:max-w-none h-auto rounded-br-3xl"
                     />
                 </div>
             </div>
@@ -176,7 +176,13 @@ const EventRow = ({ eventType, event, index, locale }: { eventType: keyof typeof
                     </span>
                     .
                 </p>
-                <textarea id="reason" name="reason" placeholder={t("optionalMessage")} className="max-h-[200px] max-w-full min-h-[144px] min-w-full p-[24px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[22px] bg-[var(--neutral-100)] [transition:box-shadow_300ms_ease\,_color_300ms_ease\,_border-color_300ms_ease] text-[var(--neutral-800)] text-[18px] font-bold hover:border-[var(--neutral-800)] hover:shadow-[5px_5px_0_0_var(--neutral-800)] shadow-[5px_5px_0_0_var(--neutral-800)] font-medium min-h-[102px] pt-[20px] pb-[20px] rounded-[18px] text-[16px] max-[767px]:min-h-[134px] max-[767px]:pt-[20px] max-[767px]:pb-[20px] max-[767px]:rounded-[18px] max-[767px]:text-[16px] max-[767px]:min-h-[92px] max-[767px]:pt-[18px] max-[767px]:pb-[18px] max-[767px]:rounded-[14px] max-[767px]:text-[14px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] w-input placeholder:text-neutral-500" maxLength={3000}></textarea>
+                <textarea
+                    id="reason"
+                    name="reason"
+                    placeholder={t("optionalMessage")}
+                    className="max-h-[200px] max-w-full min-h-[144px] min-w-full p-[24px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[22px] bg-[var(--neutral-100)] [transition:box-shadow_300ms_ease\,_color_300ms_ease\,_border-color_300ms_ease] text-[var(--neutral-800)] text-[18px] font-bold hover:border-[var(--neutral-800)] hover:shadow-[5px_5px_0_0_var(--neutral-800)] shadow-[5px_5px_0_0_var(--neutral-800)] font-medium min-h-[102px] pt-[20px] pb-[20px] rounded-[18px] text-[16px] max-[767px]:min-h-[134px] max-[767px]:pt-[20px] max-[767px]:pb-[20px] max-[767px]:rounded-[18px] max-[767px]:text-[16px] max-[767px]:min-h-[92px] max-[767px]:pt-[18px] max-[767px]:pb-[18px] max-[767px]:rounded-[14px] max-[767px]:text-[14px] max-[479px]:pr-[20px] max-[479px]:pl-[20px] w-input placeholder:text-neutral-500"
+                    maxLength={3000}
+                ></textarea>
             </>
         ),
         functionOk,

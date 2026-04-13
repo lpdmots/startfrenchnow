@@ -13,7 +13,7 @@ export function HeroPackFide() {
                             Réussissez le test avec le <span className="heading-span-secondary-6">Pack FIDE</span>
                         </h1>
                         <p className="mb-0 max-w-3xl text-base text-neutral-700 sm:text-lg">
-                            Une préparation claire et complète avec desvidéos guidées, <b className="underline decoration-secondary-6">les scénarios actuels</b> expliqués et des examens blancs.
+                            Une préparation claire et complète avec des vidéos guidées, <b className="underline decoration-secondary-6">les scénarios actuels</b> expliqués et des examens blancs.
                         </p>
                         <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
                             <Link href="#pack-pricing" aria-label="Voir les offres" className="btn btn-primary w-full text-center sm:w-auto inline-flex items-center justify-center gap-2">
@@ -49,7 +49,6 @@ export function HeroPackFide() {
                                 sizes="(min-width: 1280px) 250px, (min-width: 1024px) 22vw, (min-width: 640px) 26vw, 34vw"
                                 className="w-full max-w-none !border-neutral-300 !bg-neutral-100"
                                 notchClassName="!bg-neutral-300"
-                                priority
                             />
                         </div>
                     </div>

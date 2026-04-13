@@ -10,7 +10,17 @@ import { FlatFidePackItem } from "../page";
 import { ScaleChildren } from "@/app/components/animations/ParentToChildrens";
 import clsx from "clsx";
 
-const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; locale: string; hasPack: boolean }) => {
+const PrimaryFidePost = ({
+    post,
+    locale,
+    hasPack,
+    hidePackageBadge = false,
+}: {
+    post: FlatFidePackItem;
+    locale: string;
+    hasPack: boolean;
+    hidePackageBadge?: boolean;
+}) => {
     const { packageTitle, packageColor, moduleTitle, moduleLevel, postSlug, postMainVideo, postMainImage, postTitle, postDescription, postLevel, postDurationSec, postIsPreview } = post;
 
     const level = postLevel?.map((lev) => LEVELDATA[lev]) ?? moduleLevel?.map((lev) => LEVELDATA[lev]) ?? null;
@@ -45,11 +55,13 @@ const PrimaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; lo
                     </ScaleChildren>
 
                     {/* Badge pack (existant) */}
-                    <div className="absolute left-auto top-[20px] right-[20px] bottom-auto text-right pointer-events-none">
-                        <div className="badge-primary small" style={{ backgroundColor: packageColor }}>
-                            {packageTitle}
+                    {!hidePackageBadge && (
+                        <div className="absolute left-auto top-[20px] right-[20px] bottom-auto text-right pointer-events-none">
+                            <div className="badge-primary small" style={{ backgroundColor: packageColor }}>
+                                {packageTitle}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* Contenu carte */}

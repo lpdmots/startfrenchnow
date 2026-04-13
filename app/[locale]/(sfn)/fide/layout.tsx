@@ -1,4 +1,3 @@
-import { Locale } from "@/i18n";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { ReactNode } from "react";
@@ -16,6 +15,8 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 
     const path = "/fide";
     const canonical = locale === "fr" ? `/fr${path}` : path;
+    const localeTag = locale === "fr" ? "fr_CH" : "en_US";
+    const socialImage = "/images/hero-fide4.png";
 
     return {
         title: t("title"),
@@ -27,6 +28,21 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
                 fr: `/fr${path}`,
                 "x-default": path,
             },
+        },
+        openGraph: {
+            title: t("title"),
+            description: t("description"),
+            url: canonical,
+            type: "website",
+            locale: localeTag,
+            alternateLocale: locale === "fr" ? ["en_US"] : ["fr_CH"],
+            images: [socialImage],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: t("title"),
+            description: t("description"),
+            images: [socialImage],
         },
     };
 }

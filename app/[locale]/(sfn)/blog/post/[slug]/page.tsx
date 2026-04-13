@@ -14,10 +14,9 @@ import BlogLangFixedButton from "@/app/components/sfn/blog/BlogLangFixedButton";
 import { localizePosts } from "@/app/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { BLOGCATEGORIES } from "@/app/lib/constantes";
-import CommentList from "@/app/components/comments/CommentList";
-import CommentComposer from "@/app/components/comments/CommentComposer";
+import BlogComments from "@/app/components/comments/BlogComments";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -93,10 +92,7 @@ const PostNoAsync = ({ post, latestPosts }: PropsNoAsync) => {
     return (
         <>
             <PostContent post={post} />
-            <div className="w-full flex items-center flex-col gap-4 m-auto max-w-7xl my-8 pb-12 md:pb-24 ">
-                <CommentComposer resourceType="blog" resourceId={post._id} />
-                <CommentList resourceType="blog" resourceId={post._id} locale={locale as Locale} />
-            </div>
+            <BlogComments resourceId={post._id} locale={locale as Locale} />
             <div className="page-wrapper">
                 <div className="section pd-top-0 wf-section">
                     <div className="container-default w-container">

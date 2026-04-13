@@ -16,6 +16,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoices";
 
+export const revalidate = 86400;
+
 const COURSE_ID = "4440636";
 const COURSE_URL = "https://www.udemy.com/course/french-grammar-the-past-tenses/";
 

@@ -23,15 +23,7 @@ type FideFaqProps = {
     maxWidthClassName?: string;
 };
 
-export function FideFaq({
-    title,
-    subtitle,
-    items,
-    variant = "default",
-    showHeader = true,
-    className = "",
-    maxWidthClassName = "max-w-5xl",
-}: FideFaqProps = {}) {
+export function FideFaq({ title, subtitle, items, variant = "default", showHeader = true, className = "", maxWidthClassName = "max-w-5xl" }: FideFaqProps = {}) {
     const t = useTranslations("Fide.FideFAQ");
 
     const data: FideFaqItem[] = items ?? [
@@ -51,8 +43,14 @@ export function FideFaq({
                         <li>{t("de_quel_niveau_besoin.content.list.item4")}</li>
                     </ul>
                     <p>{t("de_quel_niveau_besoin.content.part2")}</p>
-                    <div className="flex justify-end">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
                         <LinkArrow url="https://fide-info.ch/doc/708/fideFR_CompetencesLinguistiques.pdf">{t("de_quel_niveau_besoin.content.link")}</LinkArrow>
+                        <span className="text-sm text-neutral-600">
+                            Besoin d'un avis rapide ?{" "}
+                            <LinkArrow url="#ContactForFIDECourses" target="_self" className="text-sm font-semibold inline-flex">
+                                Prendre un entretien
+                            </LinkArrow>
+                        </span>
                     </div>
                 </>
             ),
@@ -62,10 +60,16 @@ export function FideFaq({
             content: (
                 <div>
                     <p>{t("ou_et_quand_passer_examen.content.part1")}</p>
-                    <div className="flex justify-end">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
                         <LinkArrow url="https://fide-service.ch/en/proofs/fide-test/#:~:text=The%20fide%20test%20assesses%20your,Secretariat%20for%20Migration%20(SEM)">
                             {t("ou_et_quand_passer_examen.content.link")}
                         </LinkArrow>
+                        <span className="text-sm text-neutral-600">
+                            S'entraîner au format ?{" "}
+                            <LinkArrow url="/fide/mock-exams" target="_self" className="text-sm font-semibold inline-flex">
+                                Voir les examens blancs
+                            </LinkArrow>
+                        </span>
                     </div>
                 </div>
             ),
@@ -129,21 +133,23 @@ export function FideFaq({
                     <p>{t("preparation_examen.content.part1")}</p>
                     <p>{t("preparation_examen.content.part2")}</p>
                     <p>
-                        {t("preparation_examen.content.link1a")}{" "}
-                        <span>
-                            <LinkArrow url="#HeroFide" target="_self">
-                                {t("preparation_examen.content.link1b")}
-                            </LinkArrow>
-                        </span>
+                        Pour un parcours structuré,{" "}
+                        <LinkArrow url="/fide/pack-fide" target="_self" className="font-semibold inline-flex">
+                            découvrez le Pack FIDE
+                        </LinkArrow>
+                        .
                     </p>
-                    <>
-                        {t("preparation_examen.content.link2a")}{" "}
-                        <span>
-                            <LinkArrow url="#ContactForFIDECourses" target="_self">
-                                {t("preparation_examen.content.link2b")}
-                            </LinkArrow>
-                        </span>
-                    </>
+                    <p className="mb-0">
+                        Besoin de pratique guidée ?{" "}
+                        <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
+                            Cours privés
+                        </LinkArrow>{" "}
+                        ou{" "}
+                        <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
+                            examens blancs
+                        </LinkArrow>
+                        .
+                    </p>
                 </>
             ),
         },
@@ -153,12 +159,15 @@ export function FideFaq({
                 <>
                     <p>{t("sujets_oral_examen.content.part1")}</p>
                     <p>
-                        {t("sujets_oral_examen.content.linka")}{" "}
-                        <span>
-                            <LinkArrow url="#whatIsFIDE" target="_self">
-                                {t("sujets_oral_examen.content.linkb")}
-                            </LinkArrow>
-                        </span>
+                        Pour vous entraîner à l'oral,{" "}
+                        <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
+                            réservez des cours privés
+                        </LinkArrow>{" "}
+                        ou{" "}
+                        <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
+                            testez des examens blancs
+                        </LinkArrow>
+                        .
                     </p>
                 </>
             ),
@@ -175,9 +184,11 @@ export function FideFaq({
                         <li>{t("meilleure_ecole_preparation.content.list.item3")}</li>
                         <li>{t("meilleure_ecole_preparation.content.list.item4")}</li>
                     </ul>
-                    <LinkArrow url="#ContactForFIDECourses" target="_self">
-                        {t("meilleure_ecole_preparation.content.link")}
-                    </LinkArrow>
+                    <div className="flex flex-wrap items-center justify-end gap-3">
+                        <LinkArrow url="#ContactForFIDECourses" target="_self">
+                            {t("meilleure_ecole_preparation.content.link")}
+                        </LinkArrow>
+                    </div>
                 </>
             ),
         },

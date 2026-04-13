@@ -43,6 +43,8 @@ function NavBar() {
     const resourcesDict = {
         resourcesTitle: t("resources.resourcesTitle"),
         button: t("resources.button"),
+        fideVideos: t("resources.fideVideos"),
+        fideScenarios: t("resources.fideScenarios"),
         videos: t("resources.videos"),
         blog: t("resources.blog"),
         exercises: t("resources.exercises"),
@@ -53,19 +55,25 @@ function NavBar() {
     const links = (
         <>
             <li className="header-nav-list-item middle !px-0">
-                <NavMenuLink href="/fide" activeMatch={["/fide"]} locale={locale as Locale}>
+                <NavMenuLink
+                    href="/fide"
+                    activeMatch={["/fide", "/fide/mock-exams", "/fide/pack-fide", "/fide/private-courses"]}
+                    matchPrefix={false}
+                    locale={locale as Locale}
+                    className="nav-trigger-fide current-fide"
+                >
                     <FideButton locale={locale as Locale} />
                 </NavMenuLink>
             </li>
             <li className="header-nav-list-item middle !px-0">
-                <NavMenuLink href="/courses/beginners" activeMatch={["/courses"]} locale={locale as Locale}>
+                <NavMenuLink href="/courses/beginners" activeMatch={["/courses"]} locale={locale as Locale} className="nav-trigger-fr current-fr">
                     <CoursesButton locale={locale as Locale} dictionnary={coursesDict} />
                 </NavMenuLink>
             </li>
             <li className="header-nav-list-item middle !px-0">
                 <NavMenuLink
                     href="/blog"
-                    activeMatch={["/blog", "/videos", "/exercises", "/stories", "/test-your-level"]}
+                    activeMatch={["/blog", "/videos", "/exercises", "/stories", "/test-your-level", "/fide/videos", "/fide/exams"]}
                     locale={locale as Locale}
                 >
                     <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />

@@ -3,14 +3,16 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { BookFirstMeeting } from "../../components/BookFirstMeeting";
 import { FideCourseRatings } from "@/app/components/sfn/courses/FideCourseRatings";
-import { SlideFromBottom } from "@/app/components/animations/Slides";
 
 const HERO_IMAGE_SRC = "/images/etudiante-cours.png";
 const HERO_IMAGE_ALT = "Cours privé de français";
 
 export function HeroPrivateCourses() {
     return (
-        <section id="HeroPrivateCourses" className="section hero v1 wf-section relative isolate overflow-hidden !pt-6 !pb-8 lg:!pb-10">
+        <section
+            id="HeroPrivateCourses"
+            className="section hero v1 wf-section relative isolate overflow-hidden !pt-6 !pb-8 lg:!pb-10 lg:min-h-[calc(100svh-150px)] lg:flex lg:flex-col lg:justify-center"
+        >
             <div className="relative z-0 w-full px-4 lg:px-8">
                 <div className="mx-auto w-full max-w-7xl">
                     <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(320px,420px)_1fr] lg:gap-12">
@@ -37,11 +39,9 @@ export function HeroPrivateCourses() {
                             <div className="mx-auto hidden w-full max-w-[860px] lg:grid lg:grid-cols-[350px_minmax(260px,360px)] lg:items-center lg:justify-center lg:gap-8">
                                 <div className="flex justify-center pt-12">
                                     <div className="relative h-[340px] w-[340px] overflow-hidden" style={{ borderBottomRightRadius: 100 }}>
-                                        <SlideFromBottom delay={0.15} duration={0.4}>
-                                            <div className="relative h-full w-full">
-                                                <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
-                                            </div>
-                                        </SlideFromBottom>
+                                        <div className="relative h-full w-full">
+                                            <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="grid h-[520px] grid-rows-4 gap-8">
@@ -105,11 +105,9 @@ export function HeroPrivateCourses() {
 
                             <div className="mx-auto flex w-full max-w-[460px] flex-col items-center gap-4 lg:hidden">
                                 <div className="relative h-56 w-56 overflow-hidden" style={{ borderBottomRightRadius: 64 }}>
-                                    <SlideFromBottom delay={0.15} duration={0.55}>
-                                        <div className="relative h-full w-full">
-                                            <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
-                                        </div>
-                                    </SlideFromBottom>
+                                    <div className="relative h-full w-full">
+                                        <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
+                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                     <article className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">

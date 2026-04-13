@@ -15,6 +15,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const description = isFr
         ? "Préparez le test FIDE avec des cours privés personnalisés: scénarios actuels, plan ciblé, réservation flexible et suivi expert."
         : "Prepare for the FIDE test with private 1:1 coaching: current scenarios, targeted plan, flexible booking, and expert guidance.";
+    const socialImage = "/images/etudiante-cours.png";
 
     return {
         title,
@@ -34,13 +35,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             type: "website",
             locale: localeTag,
             alternateLocale: isFr ? ["en_US"] : ["fr_CH"],
-            images: ["/images/fide-presentation-thumbnail.png"],
+            images: [socialImage],
         },
         twitter: {
             card: "summary_large_image",
             title,
             description,
-            images: ["/images/fide-presentation-thumbnail.png"],
+            images: [socialImage],
         },
     };
 }

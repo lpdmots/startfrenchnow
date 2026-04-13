@@ -10,6 +10,7 @@ import { LEVELDATA } from "@/app/lib/constantes";
 import { removeDuplicates, secondsToMinutes } from "@/app/lib/utils";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
 import { MdOndemandVideo } from "react-icons/md";
 import { FaCaretDown, FaCaretRight, FaRegArrowAltCircleRight, FaRegCheckCircle } from "react-icons/fa";
 import { useInitializePackFideWatched } from "@/app/hooks/lessons/useInitializePackFideWatched";
@@ -29,7 +30,8 @@ const LOCKEDTARGET: Record<string, string> = {
 };
 
 export function CoursesAccordionClient({
-    hasPack = false,
+    hasPack,
+    permissionKey,
     fidePackSommaire,
     expandAll,
     defaultModuleKeyIndex,
@@ -39,6 +41,7 @@ export function CoursesAccordionClient({
     withPackageName = true,
 }: {
     hasPack?: boolean;
+    permissionKey?: string;
     fidePackSommaire: FidePackSommaire;
     expandAll?: boolean;
     defaultModuleKeyIndex?: number;
@@ -51,7 +54,10 @@ export function CoursesAccordionClient({
     const isFideSection = pathname?.includes("/fide") || false;
     const t = useTranslations(isFideSection ? "FidePack.CoursesAccordionClient" : "Fide.FidePack.CoursesAccordionClient");
     const params = useParams();
-    console.log({ hasPack, fidePackSommaire, expandAll, defaultModuleKeyIndex, currentPostSlug, linkPrefix, noPadding, withPackageName });
+    const { data: session } = useSession();
+    const sessionHasPack = permissionKey ? !!session?.user?.permissions?.some((p) => p.referenceKey === permissionKey) : false;
+    const effectiveHasPack = typeof hasPack === "boolean" ? hasPack : sessionHasPack;
+    console.log({ hasPack: effectiveHasPack, fidePackSommaire, expandAll, defaultModuleKeyIndex, currentPostSlug, linkPrefix, noPadding, withPackageName });
     const activeSlug = useMemo<string | null>(() => {
         // Sur le dashboard : pas de slug de leçon
         if (pathname?.includes("/fide/dashboard")) return null;
@@ -155,7 +161,7 @@ export function CoursesAccordionClient({
                                                 <LessonRow
                                                     key={post.slug.current}
                                                     lesson={post as unknown as Post}
-                                                    hasPack={hasPack}
+                                                    hasPack={effectiveHasPack}
                                                     moduleLevel={mod.level?.[0]}
                                                     activeSlug={activeSlug}
                                                     watchedVideos={safeWatched}

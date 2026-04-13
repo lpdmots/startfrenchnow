@@ -12,6 +12,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const description = isFr
         ? "Préparez le FIDE avec une plateforme e-learning complète: programme vidéo, 100+ examens blancs et formules autonome ou accompagnée."
         : "Prepare for FIDE with a complete e-learning platform: video program, 100+ mock exams, and self-paced or guided plans.";
+    const socialImage = "/images/pack-fide-hero.png";
 
     return {
         title,
@@ -31,13 +32,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             type: "website",
             locale: localeTag,
             alternateLocale: isFr ? ["en_US"] : ["fr_CH"],
-            images: ["/images/fide-presentation-thumbnail.png"],
+            images: [socialImage],
         },
         twitter: {
             card: "summary_large_image",
             title,
             description,
-            images: ["/images/fide-presentation-thumbnail.png"],
+            images: [socialImage],
         },
     };
 }
@@ -45,4 +46,3 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
 }
-

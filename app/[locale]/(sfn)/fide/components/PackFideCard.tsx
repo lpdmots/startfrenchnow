@@ -50,7 +50,7 @@ export const PriceCard = ({ card, hasPack, bookReservation = false, setIsOpen }:
                     <ScaleChildren scale={1.05} duration={0}>
                         <div className={cn("image-wrapper-card-top p-2 flex justify-center rounded-sm", "bg-neutral-300")}>
                             <div className="flex gap-4 justify-center items-center w-full">
-                                <p className="mb-0 text-neutral-800 text-3xl font-bold underline" style={{ textDecorationColor: colorCssVar }}>
+                                <p className="mb-0 w-full text-center text-neutral-800 text-3xl font-bold underline" style={{ textDecorationColor: colorCssVar }}>
                                     {title}
                                 </p>
                             </div>

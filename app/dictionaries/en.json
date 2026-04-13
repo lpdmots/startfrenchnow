@@ -122,6 +122,8 @@
         "resources": {
             "resourcesTitle": "Our resources",
             "button": "Resources",
+            "fideVideos": "FIDE Videos",
+            "fideScenarios": "FIDE Scenarios",
             "videos": "All our Videos",
             "blog": "Articles & Resources",
             "exercises": "Flashcards & Exercises",
@@ -132,6 +134,7 @@
             "buttonLabel": "FIDE",
             "fide": "FIDE Test",
             "packFide": "Pack FIDE",
+            "privateCourses": "Private FIDE Coaching",
             "dashboard": "FIDE Dashboard",
             "videos": "FIDE Lessons",
             "mockExams": "FIDE Mock Exam",

@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import { Link } from "@/i18n/navigation";
 import type { PricingDetails } from "@/app/types/sfn/stripe";
 import { PriceCard } from "../../components/PackFideCard";
+import LinkArrow from "@/app/components/common/LinkArrow";
 
 type PackFidePricingSectionProps = {
     locale: string;
-    hasPack: boolean;
+    hasPack?: boolean;
     pricingAutonomie?: PricingDetails | null;
     pricingAccompagne?: PricingDetails | null;
 };
@@ -25,7 +25,7 @@ type PackCard = {
     disableWhenHasPack?: boolean;
 };
 
-export function PackFidePricingSection({ locale, hasPack, pricingAutonomie, pricingAccompagne }: PackFidePricingSectionProps) {
+export function PackFidePricingSection({ locale, hasPack = false, pricingAutonomie, pricingAccompagne }: PackFidePricingSectionProps) {
     const isFr = locale === "fr";
     const callbackPath = isFr ? "/fr/fide/pack-fide#pack-pricing" : "/fide/pack-fide#pack-pricing";
 
@@ -124,27 +124,40 @@ export function PackFidePricingSection({ locale, hasPack, pricingAutonomie, pric
                 </div>
 
                 <div className="flex w-full justify-center">
-                    <div>
-                        <div className="flex flex-col lg:flex-row justify-center gap-6 lg:gap-12 mb-6 lg:mb-12">
+                    <div className="w-full">
+                        <div className="flex flex-col items-center lg:flex-row lg:items-stretch justify-center gap-6 lg:gap-12 mb-6 lg:mb-12">
                             {cards.map((card) => (
                                 <PriceCard key={card.key} card={card} hasPack={card.disableWhenHasPack ? hasPack : false} />
                             ))}
                         </div>
 
-                        <div className="w-full rounded-2xl border border-neutral-300 bg-neutral-100 p-6 lg:p-8">
-                            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-secondary-2">{isFr ? "Option complémentaire" : "Complementary option"}</p>
-                            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-                                <div className="max-w-lg">
-                                    <h3 className="text-2xl lg:text-3xl font-bold mb-2">{isFr ? "Coaching privé (hors pack)" : "Private coaching (outside the pack)"}</h3>
-                                    <p className="mb-0 text-neutral-700">
+                        <div className="w-full">
+                            <div className="grid items-center gap-6 py-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-10 lg:py-9 border-y border-neutral-300">
+                                <div>
+                                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-secondary-2">{isFr ? "Option complémentaire" : "Complementary option"}</p>
+                                    <h3 className="text-2xl lg:text-[32px] lg:leading-tight font-bold mb-3">{isFr ? "Cours privés FIDE" : "Private FIDE lessons"}</h3>
+                                    <p className="mb-4 text-sm text-neutral-700 max-w-2xl">
                                         {isFr
-                                            ? "Besoin d'un suivi 1:1 ? Ajoutez des cours privés pour travailler vos points bloquants avec feedback direct."
-                                            : "Need 1:1 guidance? Add private lessons to work on your specific blocking points with direct feedback."}
+                                            ? "Pour un accompagnement 1:1 ciblé: travaillez vos points bloquants, corrigez vos erreurs en direct et gagnez en confiance à l'oral."
+                                            : "For targeted 1:1 support: work on blocking points, fix mistakes live, and build confidence for the speaking part."}
                                     </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        <span className="rounded-full border px-3 py-1 text-sm font-semibold text-neutral-800" style={{ borderColor: "rgba(var(--secondary-2-rgb), 0.35)" }}>
+                                            {isFr ? "Coaching individuel" : "1:1 coaching"}
+                                        </span>
+                                        <span className="rounded-full border px-3 py-1 text-sm font-semibold text-neutral-800" style={{ borderColor: "rgba(var(--secondary-2-rgb), 0.35)" }}>
+                                            {isFr ? "Scénarios actuels" : "Current scenarios"}
+                                        </span>
+                                        <span className="rounded-full border px-3 py-1 text-sm font-semibold text-neutral-800" style={{ borderColor: "rgba(var(--secondary-2-rgb), 0.35)" }}>
+                                            {isFr ? "Feedback direct" : "Direct feedback"}
+                                        </span>
+                                    </div>
                                 </div>
-                                <Link href="/fide/private-courses" className="btn btn-secondary small shrink-0 text-center no-underline">
-                                    {isFr ? "Découvrir les cours privés" : "Explore private lessons"}
-                                </Link>
+                                <div className="flex flex-col items-start gap-3 border-neutral-300 lg:items-end lg:border-l lg:pl-8 min-w-[230px]">
+                                    <LinkArrow url="/fide/private-courses" target="_self" className="text-lg font-bold text-secondary-2 hover:!text-secondary-2">
+                                        {isFr ? "Voir les cours privés" : "See private lessons"}
+                                    </LinkArrow>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -6,11 +6,21 @@ import { LogOut } from "./LogOut";
 import { useSession } from "next-auth/react";
 import { usePathname } from "@/i18n/navigation";
 import { LinkCurrentBlog } from "../common/LinkCurrentBlog";
+import { useLocale, useTranslations } from "next-intl";
+import { COURSES_PACKAGES_KEYS } from "@/app/lib/constantes";
 
 export const ProfilButton = ({ profil, logout }: { profil: string; logout: string }) => {
     const { data: session } = useSession();
     const pathname = usePathname();
     const isAdmin = session?.user?.isAdmin === true;
+    const locale = useLocale() as "fr" | "en";
+    const t = useTranslations("Navigation");
+    const hasFideDashboardAccess = !!(
+        session?.user?.hasMockExamAccess === true ||
+        session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide") ||
+        session?.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class")
+    );
+    const hasCoursesDashboardAccess = !!session?.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
 
     if (!session)
         return (
@@ -40,6 +50,18 @@ export const ProfilButton = ({ profil, logout }: { profil: string; logout: strin
                                 Exam Reviews (Admin)
                             </LinkCurrentBlog>
                         </>
+                    )}
+                    {hasFideDashboardAccess && (
+                        <LinkCurrentBlog href="/fide/dashboard" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale={locale}>
+                            <FaCaretRight />
+                            {t("fideButton.dashboard")}
+                        </LinkCurrentBlog>
+                    )}
+                    {hasCoursesDashboardAccess && (
+                        <LinkCurrentBlog href="/courses/dashboard" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale={locale}>
+                            <FaCaretRight />
+                            {t("courses.dashboard")}
+                        </LinkCurrentBlog>
                     )}
                     <div>
                         <LogOut logout={logout} />

@@ -24,6 +24,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "/", // home
         "/fide",
         "/fide/mock-exams",
+        "/fide/private-courses",
+        "/fide/pack-fide",
         "/fide/exams",
         "/fide/videos",
         "/blog",

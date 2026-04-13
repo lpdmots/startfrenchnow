@@ -4,26 +4,15 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
-import { FaCaretRight, FaLock } from "react-icons/fa";
+import { FaCaretRight } from "react-icons/fa";
 import { Locale } from "@/i18n";
 import { useTranslations } from "next-intl";
-import clsx from "clsx";
-import { useSession } from "next-auth/react";
-import { COURSES_PACKAGES_KEYS } from "@/app/lib/constantes";
 
 const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLElement | null>(null);
     const pathname = usePathname();
     const t = useTranslations("Navigation.fideButton");
-
-    const { data: session } = useSession();
-    const hasDashboardAccess = !!(
-        session?.user?.hasMockExamAccess === true ||
-        session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide") ||
-        session?.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class")
-    );
-    const hasDashboardFrAccess = !!session?.user?.permissions?.some((p) => COURSES_PACKAGES_KEYS.includes(p.referenceKey as any));
 
     useOutsideClick(ref, () => {
         setOpen(false);
@@ -43,56 +32,33 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                         <li className="w-full">
                             <div className="w-full">
                                 <div onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0 w-full">
-                                    <LinkCurrentBlog href="/fide" className="nav-link header-nav-link !p-2 block w-full" locale={locale}>
+                                    <LinkCurrentBlog href="/fide" className="nav-link header-nav-link nav-link-fide current-fide !p-2 block w-full" locale={locale}>
                                         {t("buttonLabel")}
                                     </LinkCurrentBlog>
                                 </div>
                                 <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide" matchPrefix={false} className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                        <LinkCurrentBlog href="/fide" matchPrefix={false} className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {t("fide")}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                        <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {t("mockExams")}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/fide/videos"
-                                            withParams="fide-videos"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/fide/pack-fide" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
-                                            {t("videos")}
+                                            {t("packFide")}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href="/fide/exams"
-                                            withParams="fide-exams"
-                                            className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0"
-                                            locale={locale as Locale}
-                                        >
+                                        <LinkCurrentBlog href="/fide/private-courses" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
-                                            {t("exams")}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href={hasDashboardAccess ? "/fide/dashboard" : "#"}
-                                            className={clsx(
-                                                "nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0",
-                                                !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
-                                            )}
-                                            locale={locale as Locale}
-                                        >
-                                            {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
-                                            {t("dashboard")}
+                                            {t("privateCourses")}
                                         </LinkCurrentBlog>
                                     </div>
                                 </div>
@@ -103,40 +69,27 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                 <div className="p-2 font-bold">{messages.coursesDict.coursesTitle}</div>
                                 <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                        <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.beginners}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/intermediates" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                        <LinkCurrentBlog href="/courses/intermediates" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.intermediates}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/dialogues" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                        <LinkCurrentBlog href="/courses/dialogues" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.dialogues}
                                         </LinkCurrentBlog>
                                     </div>
                                     <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/past-tenses" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                        <LinkCurrentBlog href="/courses/past-tenses" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />
                                             {messages.coursesDict.pastTenses}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog
-                                            href={hasDashboardFrAccess ? "/courses/dashboard" : "#"}
-                                            className={clsx(
-                                                "nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0",
-                                                !hasDashboardFrAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600",
-                                            )}
-                                            locale={locale as Locale}
-                                        >
-                                            {hasDashboardFrAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
-                                            {messages.coursesDict.dashboard}
                                         </LinkCurrentBlog>
                                     </div>
                                 </div>
@@ -150,6 +103,18 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                                     </LinkCurrentBlog>
                                 </div>
                                 <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
+                                    <div onClick={() => setOpen(false)}>
+                                        <LinkCurrentBlog href="/fide/videos" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                            <FaCaretRight />
+                                            {messages.resourcesDict.fideVideos}
+                                        </LinkCurrentBlog>
+                                    </div>
+                                    <div onClick={() => setOpen(false)}>
+                                        <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
+                                            <FaCaretRight />
+                                            {messages.resourcesDict.fideScenarios}
+                                        </LinkCurrentBlog>
+                                    </div>
                                     <div onClick={() => setOpen(false)}>
                                         <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
                                             <FaCaretRight />

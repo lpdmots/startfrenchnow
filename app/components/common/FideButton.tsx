@@ -3,46 +3,35 @@ import { useTranslations } from "next-intl";
 import DropdownMenu from "./DropdownMenu";
 import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { Locale } from "@/i18n";
-import { FaCaretDown, FaCaretRight, FaLock } from "react-icons/fa";
-import clsx from "clsx";
-import { useSession } from "next-auth/react";
+import { FaCaretDown, FaCaretRight } from "react-icons/fa";
 
 export const FideButton = ({ locale }: { locale: Locale }) => {
     const t = useTranslations("Navigation.fideButton");
-    const { data: session } = useSession();
-    const hasDashboardAccess = !!(
-        session?.user?.hasMockExamAccess === true ||
-        session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide") ||
-        session?.user?.lessons?.some((l) => l.eventType === "Fide Preparation Class")
-    );
 
     const dropdownLearn = {
         content: (
             <div className="card p-4 pr-12 mt-4">
-                <div className="flex flex-col" style={{ minWidth: 125 }}>
-                    <LinkCurrentBlog href="/fide" matchPrefix={false} className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
+                <div className="flex flex-col" style={{ minWidth: 180 }}>
+                    <LinkCurrentBlog
+                        href="/fide"
+                        matchPrefix={false}
+                        className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center"
+                        locale={locale as Locale}
+                    >
                         <FaCaretRight />
                         {t("fide")}
                     </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
+                    <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
                         {t("mockExams")}
                     </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide/videos" withParams="fide-videos" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
+                    <LinkCurrentBlog href="/fide/pack-fide" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
                         <FaCaretRight />
-                        {t("videos")}
+                        {t("packFide")}
                     </LinkCurrentBlog>
-                    <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center" withParams="fide-exams" locale={locale as Locale}>
+                    <LinkCurrentBlog href="/fide/private-courses" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
-                        {t("exams")}
-                    </LinkCurrentBlog>
-                    <LinkCurrentBlog
-                        href={hasDashboardAccess ? "/fide/dashboard" : "#"}
-                        className={clsx("nav-link header-nav-link p-1 m-0 font-medium pl-8 flex items-center", !hasDashboardAccess && "opacity-50 cursor-not-allowed hover:text-neutral-600")}
-                        locale={locale as Locale}
-                    >
-                        {hasDashboardAccess ? <FaCaretRight /> : <FaLock className="mr-2" />}
-                        {t("dashboard")}
+                        {t("privateCourses")}
                     </LinkCurrentBlog>
                 </div>
             </div>

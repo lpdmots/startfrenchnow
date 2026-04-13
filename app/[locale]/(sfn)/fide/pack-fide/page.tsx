@@ -1,6 +1,4 @@
 import { normalizeLocale } from "@/i18n";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
 import { client } from "@/app/lib/sanity.client";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
@@ -8,17 +6,17 @@ import { groq } from "next-sanity";
 import { Link } from "@/i18n/navigation";
 import type { ReactNode } from "react";
 import Marquee from "@/app/components/ui/marquee";
-import { ReviewsFide } from "../components/ReviewsFide";
 import { FideFaq } from "../components/FideFaq";
 import { ContactForFideCourses } from "../components/ContactForFideCourses";
 import MarqueePackFideContent from "../components/MarqueePackFideContent";
 import { VideosSection } from "../components/VideosSection";
-import ExamsSection from "../components/ExamsSection";
 import { HeroPackFide } from "./components/HeroPackFide";
 import { WhatIsPackFideSection } from "./components/WhatIsPackFideSection";
 import { PackFideNextStepsSection } from "./components/PackFideNextStepsSection";
-import { PackFidePricingSection } from "./components/PackFidePricingSection";
+import { PackFidePricingSectionClient } from "./components/PackFidePricingSectionClient";
 import { ContactForFide } from "../components/ContactForFide";
+import { DeferredPackFideExamsSection } from "./components/DeferredPackFideExamsSection";
+import { DeferredPackFideReviews } from "./components/DeferredPackFideReviews";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 const queryProductBySlug = groq`*[_type=='product' && slug.current == $slug][0]`;
@@ -33,9 +31,6 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
     const isFr = locale === "fr";
-
-    const session = await getServerSession(authOptions);
-    const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
 
     const [autonomieProduct, accompagneProduct] = await Promise.all([
         client.fetch<ProductFetch>(queryProductBySlug, { slug: "pack-fide" }),
@@ -66,9 +61,6 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
     const homePath = isFr ? "/fr" : "/";
     const fidePath = isFr ? "/fr/fide" : "/fide";
     const packPath = isFr ? "/fr/fide/pack-fide" : "/fide/pack-fide";
-    const callbackPath = `${packPath}#pack-pricing`;
-    const checkoutAutonomiePath = `/checkout/pack-fide?quantity=1&callbackUrl=${encodeURIComponent(callbackPath)}`;
-    const checkoutAccompagnePath = `/checkout/pack-fide-accompagne?quantity=1&callbackUrl=${encodeURIComponent(callbackPath)}`;
 
     const faqItems: FaqItem[] = isFr
         ? [
@@ -268,7 +260,7 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
         description: isFr
             ? "Programme vidéo FIDE, examens blancs et parcours structuré pour préparer l'examen avec confiance."
             : "Structured FIDE video program, mock exams, and guided path to prepare with confidence.",
-        image: [`${SITE}/images/fide-presentation-thumbnail.png`],
+        image: [`${SITE}/images/pack-fide-hero.png`],
         brand: {
             "@type": "Brand",
             name: "Start French Now",
@@ -276,14 +268,14 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
         offers: [
             {
                 "@type": "Offer",
-                url: `${SITE}${checkoutAutonomiePath}`,
+                url: `${SITE}${packPath}#pack-pricing`,
                 priceCurrency: pricingAutonomie?.currency ?? "CHF",
                 price: pricingAutonomie?.amount ?? 499,
                 availability: "https://schema.org/InStock",
             },
             {
                 "@type": "Offer",
-                url: `${SITE}${checkoutAccompagnePath}`,
+                url: `${SITE}${packPath}#pack-pricing`,
                 priceCurrency: pricingAccompagne?.currency ?? "CHF",
                 price: pricingAccompagne?.amount ?? 875,
                 availability: "https://schema.org/InStock",
@@ -302,14 +294,10 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             </div>
 
             <WhatIsPackFideSection />
-
-            <VideosSection locale={locale} hasPack={hasPack} userId={session?.user?._id} />
+            <PackFidePricingSectionClient locale={locale} pricingAutonomie={pricingAutonomie} pricingAccompagne={pricingAccompagne} />
             <ContactForFide />
-            <ExamsSection hasPack={hasPack} headingSpanClassName="heading-span-secondary-6" />
-
-            <div className="max-w-7xl m-auto pt-24 pb-8 px-4 lg:px-8">
-                <ReviewsFide headingSpanClassName="heading-span-secondary-6" />
-            </div>
+            <VideosSection locale={locale} />
+            <DeferredPackFideExamsSection />
 
             <div className="max-w-screen overflow-hidden h-48 lg:h-64">
                 <div className="bg-neutral-800 py-4 lg:py-8 my-12 custom-rotate overflow-hidden">
@@ -318,8 +306,10 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
                     </Marquee>
                 </div>
             </div>
-            <PackFidePricingSection locale={locale} hasPack={hasPack} pricingAutonomie={pricingAutonomie} pricingAccompagne={pricingAccompagne} />
 
+            <div className="max-w-7xl m-auto pt-24 pb-24 px-4 lg:px-8">
+                <DeferredPackFideReviews />
+            </div>
             <div id="ContactForFIDECourses" className="py-24 px-4 lg:px-8 bg-neutral-800">
                 <div className="max-w-7xl m-auto">
                     <ContactForFideCourses />

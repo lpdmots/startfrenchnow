@@ -8,7 +8,17 @@ import { FlatFidePackItem } from "../page";
 import { Link } from "@/i18n/navigation";
 import { ScaleChildren } from "@/app/components/animations/ParentToChildrens";
 
-const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; locale: Locale; hasPack: boolean }) => {
+const SecondaryFidePost = ({
+    post,
+    locale,
+    hasPack,
+    hidePackageBadge = false,
+}: {
+    post: FlatFidePackItem;
+    locale: Locale;
+    hasPack: boolean;
+    hidePackageBadge?: boolean;
+}) => {
     const { packageTitle, packageColor, moduleTitle, moduleLevel, postSlug, postMainVideo, postMainImage, postTitle, postDescription, postLevel, postDurationSec, postIsPreview } = post;
 
     const level = postLevel?.map((lev) => LEVELDATA[lev]) ?? moduleLevel?.map((lev) => LEVELDATA[lev]) ?? null;
@@ -39,11 +49,13 @@ const SecondaryFidePost = ({ post, locale, hasPack }: { post: FlatFidePackItem; 
                         </ScaleChildren>
                     </div>
 
-                    <div>
-                        <div className="badge-primary small" style={{ backgroundColor: packageColor }}>
-                            {packageTitle}
+                    {!hidePackageBadge && (
+                        <div>
+                            <div className="badge-primary small" style={{ backgroundColor: packageColor }}>
+                                {packageTitle}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* Contenu carte */}

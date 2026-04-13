@@ -13,6 +13,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const path = "/fide/mock-exams";
     const canonical = locale === "fr" ? `/fr${path}` : path;
     const localeTag = locale === "fr" ? "fr_CH" : "en_US";
+    const socialImage = "/images/mock-exam-hero2.png";
 
     return {
         title: t("title"),
@@ -32,11 +33,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             type: "website",
             locale: localeTag,
             alternateLocale: locale === "fr" ? ["en_US"] : ["fr_CH"],
+            images: [socialImage],
         },
         twitter: {
             card: "summary_large_image",
             title: t("title"),
             description: t("description"),
+            images: [socialImage],
         },
     };
 }

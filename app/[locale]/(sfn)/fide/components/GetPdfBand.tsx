@@ -5,20 +5,28 @@ import Image from "next/image";
 import React from "react";
 import { AskForPdf } from "./AskForPdf";
 
-function GetPdfBand() {
+function GetPdfBand({ fullDarkBackground = false, insetDarkPanel = false }: { fullDarkBackground?: boolean; insetDarkPanel?: boolean }) {
     const t = useTranslations("Fide.WhatIsFide");
     const messages = getFormMessages(t);
     return (
         <div
-            className="footer-newsletter mb-[-1px] relative overflow-hidden"
+            className={`footer-newsletter mb-[-1px] relative overflow-hidden py-6 ${insetDarkPanel ? "bg-neutral-200" : ""}`}
             style={{
                 background: "none",
                 backgroundImage: "none",
             }}
         >
             <div className="absolute inset-0 pointer-events-none">
-                <div className="h-1/2" style={{ backgroundColor: "var(--neutral-800)" }} />
-                <div className="h-1/2" style={{ backgroundColor: "var(--neutral-200)" }} />
+                {insetDarkPanel ? (
+                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[60%]" style={{ backgroundColor: "var(--neutral-800)" }} />
+                ) : fullDarkBackground ? (
+                    <div className="h-full" style={{ backgroundColor: "var(--neutral-800)" }} />
+                ) : (
+                    <>
+                        <div className="h-1/2" style={{ backgroundColor: "var(--neutral-800)" }} />
+                        <div className="h-1/2" style={{ backgroundColor: "var(--neutral-200)" }} />
+                    </>
+                )}
             </div>
             <div className="container-default w-container relative z-[1]">
                 <SlideFromLeft>

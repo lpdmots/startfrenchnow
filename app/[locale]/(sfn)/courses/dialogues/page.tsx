@@ -11,21 +11,19 @@ import LinkArrow from "@/app/components/common/LinkArrow";
 import { useLocale, useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 import CoursesOtherChoices from "@/app/components/sfn/courses/CoursesOtherChoices";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
 import { getPackSommaire } from "@/app/serverActions/productActions";
 import { client } from "@/app/lib/sanity.client";
 import { Locale, normalizeLocale } from "@/i18n";
-import { Progress } from "@/app/types/sfn/auth";
-import { FRENCH_USER_PROGRESS_QUERY } from "@/app/lib/groqQueries";
 import { buildHeroData } from "../../fide/dashboard/components/dashboardUtils";
 import { CoursesAccordionClient } from "../../fide/components/CoursesAccordionClient";
 import VideoBlog from "@/app/components/sanity/RichTextSfnComponents/VideoBlog";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
 import { groq } from "next-sanity";
+import CourseActionLink from "@/app/components/sfn/courses/CourseActionLink";
+import CoursePricingGuard from "@/app/components/sfn/courses/CoursePricingGuard";
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
 const COURSE_ID = "5651144";
 const PRODUCT_REFERENCE_KEY = "udemy_course_dialogs";
@@ -39,18 +37,12 @@ export default async function DialogsPage(props: { params: Promise<{ locale: str
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
 
-    
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?._id ?? null;
-    const hasDialogsCourse = !!session?.user?.permissions?.some((p) => p.referenceKey === "udemy_course_dialogs");
-
-    const [dialogsCourseSommaire, dialogsCourseUserProgress, product] = await Promise.all([
+    const [dialogsCourseSommaire, product] = await Promise.all([
         getPackSommaire(locale, "udemy_course_dialogs"),
-        userId ? client.fetch<Progress>(FRENCH_USER_PROGRESS_QUERY, { userId, courseKey: "udemy_course_dialogs" }) : Promise.resolve(null),
         client.fetch<ProductFetch>(queryProduct, { referenceKey: PRODUCT_REFERENCE_KEY }),
     ]);
 
-    const hero = buildHeroData(dialogsCourseUserProgress, dialogsCourseSommaire, []);
+    const hero = buildHeroData(null, dialogsCourseSommaire, []);
     let pricingDetails: PricingDetails | null = null;
     if (product) {
         try {
@@ -65,7 +57,6 @@ export default async function DialogsPage(props: { params: Promise<{ locale: str
         <DialogsPageNoAsync
             hero={hero}
             locale={locale}
-            hasDialogsCourse={hasDialogsCourse}
             dialogsCourseSommaire={dialogsCourseSommaire}
             pricingDetails={pricingDetails}
         />
@@ -75,13 +66,11 @@ export default async function DialogsPage(props: { params: Promise<{ locale: str
 function DialogsPageNoAsync({
     hero,
     locale,
-    hasDialogsCourse,
     dialogsCourseSommaire,
     pricingDetails,
 }: {
     hero: ReturnType<typeof buildHeroData>;
     locale: Locale;
-    hasDialogsCourse: boolean;
     dialogsCourseSommaire: Awaited<ReturnType<typeof getPackSommaire>>;
     pricingDetails: PricingDetails | null;
 }) {
@@ -100,8 +89,12 @@ function DialogsPageNoAsync({
     };
 
     const renderPricingCallout = (align: "left" | "center", className?: string) => {
-        if (hasDialogsCourse || !pricingDetails) return null;
-        return <PricingCallout pricingDetails={pricingDetails} locale={locale} align={align} className={className} />;
+        if (!pricingDetails) return null;
+        return (
+            <CoursePricingGuard permissionKey={PRODUCT_REFERENCE_KEY}>
+                <PricingCallout pricingDetails={pricingDetails} locale={locale} align={align} className={className} />
+            </CoursePricingGuard>
+        );
     };
 
     return (
@@ -134,11 +127,11 @@ function DialogsPageNoAsync({
                         <div className="inner-container _600px---mbl center">
                             <div className="grid-2-columns post-rigth-sidebar gap-48px items-start">
                                 <div id="w-node-_37753ff7-31f0-69be-55cd-ec34f268f026-7a543d63" className="col-span-2 lg:col-span-1 order-2 lg:order-1 mt-24 lg:mt-0">
-                                    <Description hasDialogsCourse={hasDialogsCourse} dialogsCourseSommaire={dialogsCourseSommaire} hero={hero} />
+                                    <Description dialogsCourseSommaire={dialogsCourseSommaire} hero={hero} />
                                 </div>
                                 <div id="w-node-_5477c579-dd4f-3f5a-c700-1cd0a30d540b-7a543d63" className="lg:sticky lg:top-11 col-span-2 lg:col-span-1 order-1 lg:order-2 overflow-hidden">
                                     <SlideFromRight>
-                                        <Infos hasDialogsCourse={hasDialogsCourse} pricingSlot={renderPricingCallout("left", "mb-3")} />
+                                        <Infos pricingSlot={renderPricingCallout("left", "mb-3")} />
                                     </SlideFromRight>
                                 </div>
                             </div>
@@ -149,13 +142,13 @@ function DialogsPageNoAsync({
             {/* <div className="section overflow-hidden pt-[5%] pb-[5%] wf-section">
                 <Marquee />
             </div> */}
-            <IsForYou hasDialogsCourse={hasDialogsCourse} pricingSlot={renderPricingCallout("left", "mt-4 mb-3")} />
+            <IsForYou pricingSlot={renderPricingCallout("left", "mt-4 mb-3")} />
             <LastComments
                 courseId={COURSE_ID}
                 locale={locale}
                 t={tLastComments}
                 courseUrl={CHECKOUT_URL}
-                hasCourse={hasDialogsCourse}
+                hasCourse={false}
                 udemyCourseUrl={COURSE_URL}
                 ctaExtra={renderPricingCallout("center", "mb-4")}
             />
@@ -291,11 +284,9 @@ const PricingCallout = ({
 };
 
 const Description = ({
-    hasDialogsCourse,
     dialogsCourseSommaire,
     hero,
 }: {
-    hasDialogsCourse: boolean;
     dialogsCourseSommaire: Awaited<ReturnType<typeof getPackSommaire>>;
     hero: ReturnType<typeof buildHeroData>;
 }) => {
@@ -334,7 +325,7 @@ const Description = ({
             </SlideFromBottom>
             <CoursesAccordionClient
                 fidePackSommaire={dialogsCourseSommaire}
-                hasPack={hasDialogsCourse}
+                permissionKey={PRODUCT_REFERENCE_KEY}
                 expandAll={false}
                 defaultModuleKeyIndex={defaultModuleKeyIndex}
                 currentPostSlug={hero.video?.main?.slug}
@@ -344,7 +335,7 @@ const Description = ({
     );
 };
 
-const Infos = ({ hasDialogsCourse, pricingSlot }: { hasDialogsCourse: boolean; pricingSlot?: React.ReactNode }) => {
+const Infos = ({ pricingSlot }: { pricingSlot?: React.ReactNode }) => {
     const t = useTranslations("Courses.Dialogues.Infos");
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">
@@ -366,14 +357,19 @@ const Infos = ({ hasDialogsCourse, pricingSlot }: { hasDialogsCourse: boolean; p
                 <span>{t("unlimitedAccess")}</span>
             </p>
             {pricingSlot}
-            <Link href={hasDialogsCourse ? "/courses/dashboard" : CHECKOUT_URL} className="btn-primary full-width project-btn w-inline-block">
-                <span className="line-rounded-icon link-icon-right"> {hasDialogsCourse ? t("continue") : t("buyNow")}</span>
-            </Link>
+            <CourseActionLink
+                permissionKey={PRODUCT_REFERENCE_KEY}
+                checkoutUrl={CHECKOUT_URL}
+                dashboardUrl="/courses/dashboard"
+                buyLabel={t("buyNow")}
+                continueLabel={t("continue")}
+                className="btn-primary full-width project-btn w-inline-block"
+            />
         </div>
     );
 };
 
-const IsForYou = ({ hasDialogsCourse, pricingSlot }: { hasDialogsCourse: boolean; pricingSlot?: React.ReactNode }) => {
+const IsForYou = ({ pricingSlot }: { pricingSlot?: React.ReactNode }) => {
     const t = useTranslations("Courses.Dialogues.IsForYou");
     return (
         <div className="section pd-top-150px---bottom-150px wf-section pt-0">
@@ -427,12 +423,14 @@ const IsForYou = ({ hasDialogsCourse, pricingSlot }: { hasDialogsCourse: boolean
                                             </div>
                                             {pricingSlot}
                                             <SlideFromBottom>
-                                                <Link
-                                                    href={hasDialogsCourse ? "/courses/dashboard" : CHECKOUT_URL}
+                                                <CourseActionLink
+                                                    permissionKey={PRODUCT_REFERENCE_KEY}
+                                                    checkoutUrl={CHECKOUT_URL}
+                                                    dashboardUrl="/courses/dashboard"
+                                                    buyLabel={t("buyNow")}
+                                                    continueLabel={t("continue")}
                                                     className="btn-secondary full-width project-btn w-inline-block hover:bg-secondary-2"
-                                                >
-                                                    <span className="line-rounded-icon link-icon-right">{hasDialogsCourse ? t("continue") : t("buyNow")}</span>
-                                                </Link>
+                                                />
                                             </SlideFromBottom>
                                         </div>
                                         <div id="w-node-_5bb3ab87-9318-b7e8-6001-6380f57edcdf-7a543d63" className="inner-container _416px _100---tablet overflow-hidden">

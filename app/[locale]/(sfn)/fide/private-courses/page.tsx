@@ -1,13 +1,13 @@
 import { normalizeLocale } from "@/i18n";
 import { Formateur } from "../components/Formateur";
-import HowClassLook from "../components/HowClassLook";
-import { ReviewsFide } from "../components/ReviewsFide";
 import { ContactForFideBand } from "../components/ContactForFideBand";
 import { ContactForFideCourses } from "../components/ContactForFideCourses";
 import { FideFaq } from "../components/FideFaq";
 import { HeroPrivateCourses } from "./components/HeroPrivateCourses";
 import { PrivateCoursesPricingSection } from "./components/PrivateCoursesPricingSection";
 import { PrivateCoursesNextStepsSection } from "./components/PrivateCoursesNextStepsSection";
+import { DeferredPrivateCoursesHowClassLook } from "./components/DeferredPrivateCoursesHowClassLook";
+import { DeferredPrivateCoursesReviews } from "./components/DeferredPrivateCoursesReviews";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import type { ReactNode } from "react";
 
@@ -264,18 +264,17 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
 
             <ContactForFideBand />
 
-            <div className="max-w-7xl m-auto pt-24 pb-24 px-4 lg:px-8">
-                <ReviewsFide />
-            </div>
+            <PrivateCoursesPricingSection locale={locale} site={SITE} title={offersTitleNode} subtitle="Choisissez une formule claire selon votre délai et votre niveau actuel." />
 
             <div className="bg-neutral-800 color-neutral-100 py-24 px-4 lg:px-8">
                 <div className="max-w-7xl m-auto">
-                    <HowClassLook />
+                    <DeferredPrivateCoursesHowClassLook />
                 </div>
             </div>
 
-            <PrivateCoursesPricingSection locale={locale} site={SITE} title={offersTitleNode} subtitle="Choisissez une formule claire selon votre délai et votre niveau actuel." />
-
+            <div className="max-w-7xl m-auto pt-24 pb-24 px-4 lg:px-8">
+                <DeferredPrivateCoursesReviews />
+            </div>
             <div id="ContactForFIDECourses" className="py-24 px-4 lg:px-8 bg-neutral-800">
                 <div className="max-w-7xl m-auto">
                     <ContactForFideCourses />

@@ -1,0 +1,100 @@
+import Image from "next/image";
+import { Link } from "@/i18n/navigation";
+import { ArrowRight, BookOpen, FileCheck2, UserRound } from "lucide-react";
+
+export function FidePageHubSection() {
+    return (
+        <section id="fide-hub" className="py-16 lg:py-24">
+            <div className="max-w-7xl m-auto px-4 lg:px-8">
+                <div className="text-center mb-8">
+                    <h2 className="display-2 mb-4">
+                        Passez de l'<span className="heading-span-secondary-6">info</span> à la préparation
+                    </h2>
+                    <p className="mb-0">Trois formats complémentaires selon votre rythme et votre besoin.</p>
+                </div>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+                    <Link
+                        href="/fide/pack-fide"
+                        className="group flex h-full flex-col rounded-2xl border border-neutral-300 bg-neutral-100 p-5 !no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-secondary-6 hover:shadow-md"
+                    >
+                        <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
+                            <Image
+                                src="/images/pack-fide-hero.png"
+                                alt="Aperçu du Pack FIDE"
+                                width={1200}
+                                height={675}
+                                sizes="(min-width: 992px) 380px, (min-width: 768px) 33vw, 100vw"
+                                className="h-full w-full max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                            />
+                        </div>
+                        <div className="flex flex-1 flex-col">
+                            <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-4">
+                                <BookOpen className="h-5 w-5 text-secondary-6" />
+                            </div>
+                            <p className="mb-1 text-lg font-bold text-neutral-800">Pack FIDE</p>
+                            <p className="mb-4 text-sm text-neutral-700">Vidéos guidées, méthode et progression à votre rythme.</p>
+                            <p className="mb-0 mt-auto inline-flex items-center gap-2 text-sm font-semibold text-secondary-6">
+                                Voir le pack
+                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                            </p>
+                        </div>
+                    </Link>
+
+                    <Link
+                        href="/fide/mock-exams"
+                        className="group flex h-full flex-col rounded-2xl border border-neutral-300 bg-neutral-100 p-5 !no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-secondary-5 hover:shadow-md"
+                    >
+                        <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
+                            <Image
+                                src="/images/mock-exam-hero2.png"
+                                alt="Aperçu des examens blancs FIDE"
+                                width={1200}
+                                height={675}
+                                sizes="(min-width: 992px) 380px, (min-width: 768px) 33vw, 100vw"
+                                className="h-full w-full max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                            />
+                        </div>
+                        <div className="flex flex-1 flex-col">
+                            <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-5">
+                                <FileCheck2 className="h-5 w-5 text-secondary-5" />
+                            </div>
+                            <p className="mb-1 text-lg font-bold text-neutral-800">Examens blancs</p>
+                            <p className="mb-4 text-sm text-neutral-700">Entraînement ciblé sur des scénarios proches de l'examen.</p>
+                            <p className="mb-0 mt-auto inline-flex items-center gap-2 text-sm font-semibold text-secondary-5">
+                                Voir les examens blancs
+                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                            </p>
+                        </div>
+                    </Link>
+
+                    <Link
+                        href="/fide/private-courses"
+                        className="group flex h-full flex-col rounded-2xl border border-neutral-300 bg-neutral-100 p-5 !no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-secondary-2 hover:shadow-md"
+                    >
+                        <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
+                            <Image
+                                src="/images/etudiante-cours.png"
+                                alt="Aperçu des cours privés FIDE"
+                                width={1200}
+                                height={675}
+                                sizes="(min-width: 992px) 380px, (min-width: 768px) 33vw, 100vw"
+                                className="h-full w-full max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                            />
+                        </div>
+                        <div className="flex flex-1 flex-col">
+                            <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-2">
+                                <UserRound className="h-5 w-5 text-secondary-2" />
+                            </div>
+                            <p className="mb-1 text-lg font-bold text-neutral-800">Cours privés</p>
+                            <p className="mb-4 text-sm text-neutral-700">Accompagnement 1:1 pour corriger vos points bloquants.</p>
+                            <p className="mb-0 mt-auto inline-flex items-center gap-2 text-sm font-semibold text-secondary-2">
+                                Voir les cours privés
+                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                            </p>
+                        </div>
+                    </Link>
+                </div>
+            </div>
+        </section>
+    );
+}
