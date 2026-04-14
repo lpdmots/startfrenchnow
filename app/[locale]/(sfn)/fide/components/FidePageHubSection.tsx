@@ -1,16 +1,20 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight, BookOpen, FileCheck2, UserRound } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function FidePageHubSection() {
+    const t = useTranslations("Fide.FidePageHub");
+
     return (
         <section id="fide-hub" className="py-16 lg:py-24">
+            <div id="plans" className="scroll-mt-24" />
             <div className="max-w-7xl m-auto px-4 lg:px-8">
                 <div className="text-center mb-8">
                     <h2 className="display-2 mb-4">
-                        Passez de l'<span className="heading-span-secondary-6">info</span> à la préparation
+                        {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span> {t("titleSuffix")}
                     </h2>
-                    <p className="mb-0">Trois formats complémentaires selon votre rythme et votre besoin.</p>
+                    <p className="mb-0">{t("subtitle")}</p>
                 </div>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
                     <Link
@@ -20,7 +24,7 @@ export function FidePageHubSection() {
                         <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
                             <Image
                                 src="/images/pack-fide-hero.png"
-                                alt="Aperçu du Pack FIDE"
+                                alt={t("cards.pack.imageAlt")}
                                 width={1200}
                                 height={675}
                                 sizes="(min-width: 992px) 380px, (min-width: 768px) 33vw, 100vw"
@@ -31,10 +35,10 @@ export function FidePageHubSection() {
                             <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-4">
                                 <BookOpen className="h-5 w-5 text-secondary-6" />
                             </div>
-                            <p className="mb-1 text-lg font-bold text-neutral-800">Pack FIDE</p>
-                            <p className="mb-4 text-sm text-neutral-700">Vidéos guidées, méthode et progression à votre rythme.</p>
+                            <p className="mb-1 text-lg font-bold text-neutral-800">{t("cards.pack.title")}</p>
+                            <p className="mb-4 text-sm text-neutral-700">{t("cards.pack.description")}</p>
                             <p className="mb-0 mt-auto inline-flex items-center gap-2 text-sm font-semibold text-secondary-6">
-                                Voir le pack
+                                {t("cards.pack.cta")}
                                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                             </p>
                         </div>
@@ -47,7 +51,7 @@ export function FidePageHubSection() {
                         <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
                             <Image
                                 src="/images/mock-exam-hero2.png"
-                                alt="Aperçu des examens blancs FIDE"
+                                alt={t("cards.mockExams.imageAlt")}
                                 width={1200}
                                 height={675}
                                 sizes="(min-width: 992px) 380px, (min-width: 768px) 33vw, 100vw"
@@ -58,10 +62,10 @@ export function FidePageHubSection() {
                             <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-5">
                                 <FileCheck2 className="h-5 w-5 text-secondary-5" />
                             </div>
-                            <p className="mb-1 text-lg font-bold text-neutral-800">Examens blancs</p>
-                            <p className="mb-4 text-sm text-neutral-700">Entraînement ciblé sur des scénarios proches de l'examen.</p>
+                            <p className="mb-1 text-lg font-bold text-neutral-800">{t("cards.mockExams.title")}</p>
+                            <p className="mb-4 text-sm text-neutral-700">{t("cards.mockExams.description")}</p>
                             <p className="mb-0 mt-auto inline-flex items-center gap-2 text-sm font-semibold text-secondary-5">
-                                Voir les examens blancs
+                                {t("cards.mockExams.cta")}
                                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                             </p>
                         </div>
@@ -74,7 +78,7 @@ export function FidePageHubSection() {
                         <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
                             <Image
                                 src="/images/etudiante-cours.png"
-                                alt="Aperçu des cours privés FIDE"
+                                alt={t("cards.private.imageAlt")}
                                 width={1200}
                                 height={675}
                                 sizes="(min-width: 992px) 380px, (min-width: 768px) 33vw, 100vw"
@@ -85,10 +89,10 @@ export function FidePageHubSection() {
                             <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-2">
                                 <UserRound className="h-5 w-5 text-secondary-2" />
                             </div>
-                            <p className="mb-1 text-lg font-bold text-neutral-800">Cours privés</p>
-                            <p className="mb-4 text-sm text-neutral-700">Accompagnement 1:1 pour corriger vos points bloquants.</p>
+                            <p className="mb-1 text-lg font-bold text-neutral-800">{t("cards.private.title")}</p>
+                            <p className="mb-4 text-sm text-neutral-700">{t("cards.private.description")}</p>
                             <p className="mb-0 mt-auto inline-flex items-center gap-2 text-sm font-semibold text-secondary-2">
-                                Voir les cours privés
+                                {t("cards.private.cta")}
                                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                             </p>
                         </div>

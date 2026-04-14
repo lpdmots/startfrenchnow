@@ -25,7 +25,7 @@ export const UdemyBeginnerAccordion = ({ locale, userId, hasPack }: { locale: Lo
     const [packSommaire, setPackSommaire] = useState<FidePackSommaire | null>(null);
     const [hero, setHero] = useState<HeroData | null>(null);
     const [openModuleKeys, setOpenModuleKeys] = useState<string[]>([]);
-    const t = useTranslations("VideosSection");
+    const t = useTranslations("Fide.VideosSection");
 
     useEffect(() => {
         const fetchData = async () => {

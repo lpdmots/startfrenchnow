@@ -3,11 +3,13 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { BookFirstMeeting } from "../../components/BookFirstMeeting";
 import { FideCourseRatings } from "@/app/components/sfn/courses/FideCourseRatings";
+import { useTranslations } from "next-intl";
 
 const HERO_IMAGE_SRC = "/images/etudiante-cours.png";
-const HERO_IMAGE_ALT = "Cours privé de français";
 
 export function HeroPrivateCourses() {
+    const t = useTranslations("Fide.PrivateCoursesHero");
+
     return (
         <section
             id="HeroPrivateCourses"
@@ -18,20 +20,25 @@ export function HeroPrivateCourses() {
                     <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(320px,420px)_1fr] lg:gap-12">
                         <div className="flex flex-col gap-5 lg:gap-12">
                             <h1 className="display-1 mb-0 whitespace-nowrap text-center leading-[1.03] lg:text-left" style={{ whiteSpace: "nowrap" }}>
-                                Préparez le test
+                                {t("title.line1")}
                                 <br />
-                                FIDE avec <br />
-                                des cours
-                                <br /> <span className="heading-span-secondary-2">privés</span>
+                                {t("title.line2")} <br />
+                                {t("title.line3")}
+                                <br /> <span className="heading-span-secondary-2">{t("title.highlight")}</span>
                             </h1>
                             <p className="mb-0 text-center text-base text-neutral-700 sm:text-lg lg:text-left">
-                                Un coaching 1:1 centré sur vos blocages réels pour arriver prêt le jour de l&apos;examen.
+                                {t("subtitle")}
                             </p>
                             <div className="flex w-full flex-col items-stretch justify-center gap-3 md:flex-row md:flex-nowrap md:items-center lg:justify-start">
                                 <Link href="#plans" className="btn btn-secondary small !py-5 text-center whitespace-nowrap shrink-0 w-full md:w-auto">
-                                    Voir les formules
+                                    {t("ctaPrimary")}
                                 </Link>
-                                <BookFirstMeeting label="Entretien gratuit" small={true} className="w-full md:!w-auto shrink-0" buttonClassName="!w-full md:!w-auto shrink-0 whitespace-nowrap" />
+                                <BookFirstMeeting
+                                    label={t("ctaSecondary")}
+                                    small={true}
+                                    className="w-full md:!w-auto shrink-0"
+                                    buttonClassName="!w-full md:!w-auto shrink-0 whitespace-nowrap"
+                                />
                             </div>
                         </div>
 
@@ -40,7 +47,7 @@ export function HeroPrivateCourses() {
                                 <div className="flex justify-center pt-12">
                                     <div className="relative h-[340px] w-[340px] overflow-hidden" style={{ borderBottomRightRadius: 100 }}>
                                         <div className="relative h-full w-full">
-                                            <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
+                                            <Image src={HERO_IMAGE_SRC} alt={t("imageAlt")} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
                                         </div>
                                     </div>
                                 </div>
@@ -54,9 +61,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-2">
                                                 <Target className="h-4 w-4 text-secondary-2" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Plan personnalisé</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.plan.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Objectifs clairs dès la 1re séance.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.plan.text")}</p>
                                     </article>
 
                                     <article
@@ -68,9 +75,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-5">
                                                 <MessageCircle className="h-4 w-4 text-secondary-5" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Scénarios actuels</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.scenarios.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Pratique orale ciblée A1-A2 / A2-B1.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.scenarios.text")}</p>
                                     </article>
 
                                     <article
@@ -82,9 +89,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-4">
                                                 <CheckCircle2 className="h-4 w-4 text-secondary-4" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Feedback direct</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.feedback.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Corrections concrètes et actionnables.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.feedback.text")}</p>
                                     </article>
 
                                     <article
@@ -96,9 +103,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-1">
                                                 <Clock3 className="h-4 w-4 text-secondary-1" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Flexible</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.flexible.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Réservation possible rapidement.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.flexible.text")}</p>
                                     </article>
                                 </div>
                             </div>
@@ -106,7 +113,7 @@ export function HeroPrivateCourses() {
                             <div className="mx-auto flex w-full max-w-[460px] flex-col items-center gap-4 lg:hidden">
                                 <div className="relative h-56 w-56 overflow-hidden" style={{ borderBottomRightRadius: 64 }}>
                                     <div className="relative h-full w-full">
-                                        <Image src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
+                                        <Image src={HERO_IMAGE_SRC} alt={t("imageAlt")} fill sizes="(min-width: 992px) 340px, 224px" className="object-cover" />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -116,9 +123,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-2">
                                                 <Target className="h-4 w-4 text-secondary-2" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Plan personnalisé</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.plan.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Objectifs clairs dès la 1re séance.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.plan.text")}</p>
                                     </article>
                                     <article className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">
                                         <div className="absolute inset-y-0 left-0 w-1 bg-secondary-5" />
@@ -126,9 +133,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-5">
                                                 <MessageCircle className="h-4 w-4 text-secondary-5" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Scénarios actuels</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.scenarios.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Pratique orale ciblée A1-A2 / A2-B1.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.scenarios.text")}</p>
                                     </article>
                                     <article className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">
                                         <div className="absolute inset-y-0 left-0 w-1 bg-secondary-4" />
@@ -136,9 +143,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-4">
                                                 <CheckCircle2 className="h-4 w-4 text-secondary-4" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Feedback direct</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.feedback.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Corrections concrètes et actionnables.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.feedback.text")}</p>
                                     </article>
                                     <article className="relative w-full overflow-hidden rounded-2xl border border-neutral-300 bg-neutral-100 p-4 shadow-md">
                                         <div className="absolute inset-y-0 left-0 w-1 bg-secondary-1" />
@@ -146,9 +153,9 @@ export function HeroPrivateCourses() {
                                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-1">
                                                 <Clock3 className="h-4 w-4 text-secondary-1" />
                                             </span>
-                                            <p className="mb-0 text-base font-bold text-neutral-800">Flexible</p>
+                                            <p className="mb-0 text-base font-bold text-neutral-800">{t("cards.flexible.title")}</p>
                                         </div>
-                                        <p className="mb-0 text-sm text-neutral-700">Réservation possible rapidement.</p>
+                                        <p className="mb-0 text-sm text-neutral-700">{t("cards.flexible.text")}</p>
                                     </article>
                                 </div>
                             </div>

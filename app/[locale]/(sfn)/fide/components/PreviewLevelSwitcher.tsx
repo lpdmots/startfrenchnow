@@ -41,7 +41,7 @@ export const PreviewLevelSwitcher = ({ exams, videosUrl }: Props) => {
     const [selectedLevel, setSelectedLevel] = useState<Level>("A2");
     const selectedExams = exams.filter((ex) => ex.levels.includes(selectedLevel));
     const selectedVideo = videosUrl[selectedLevel];
-    const t = useTranslations("PreviewsSection");
+    const t = useTranslations("Fide.PreviewsSection");
 
     return (
         <div className="flex justify-center w-full">

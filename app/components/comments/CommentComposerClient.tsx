@@ -27,7 +27,7 @@ export default function CommentComposerClient(props: Props) {
     const [serverError, setServerError] = useState<string | null>(null);
     const [value, setValue] = useState("");
 
-    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(props.resourceType) ? "CommentComposer" : "Fide.CommentComposer";
+    const translationKey = "Fide.CommentComposer";
     const t = useTranslations(translationKey);
 
     const nameRef = useRef<HTMLInputElement | null>(null);

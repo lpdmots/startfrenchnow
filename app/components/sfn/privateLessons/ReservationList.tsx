@@ -31,8 +31,8 @@ export const ReservationList = ({ eventType, locale }: { eventType: "Fide Prepar
     const { privateLessons } = useSfnStore();
     const privateLesson = privateLessons.find((lesson) => lesson.eventType === eventType);
     const { completedMinutes, upcomingMinutes, remainingMinutes } = privateLesson || {};
-    const t = useTranslations("dashboard.PrivateLessons.common");
-    const tSpe = useTranslations("dashboard.PrivateLessons");
+    const t = useTranslations("Fide.dashboard.PrivateLessons.common");
+    const tSpe = useTranslations("Fide.dashboard.PrivateLessons");
 
     return (
         <div className="w-full flex flex-col gap-6 md:gap-12">
@@ -129,7 +129,7 @@ const EventRow = ({ eventType, event, index, locale }: { eventType: keyof typeof
     const { data: session } = useSession();
     const { setPrivateLesson } = useSfnStore();
     const [message, setMessage] = useState<null | { title: string; description: string }>(null);
-    const t = useTranslations("dashboard.PrivateLessons.common.eventRow");
+    const t = useTranslations("Fide.dashboard.PrivateLessons.common.eventRow");
 
     useEffect(() => {
         if (message) {

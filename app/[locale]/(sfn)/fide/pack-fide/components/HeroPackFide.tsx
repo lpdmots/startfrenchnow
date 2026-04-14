@@ -2,31 +2,34 @@ import { Link } from "@/i18n/navigation";
 import { Safari } from "@/app/components/ui/safari";
 import { Iphone } from "@/app/components/ui/iphone";
 import { FaListUl, FaTags } from "react-icons/fa";
+import { useTranslations } from "next-intl";
 
 export function HeroPackFide() {
+    const t = useTranslations("Fide.PackFideHero");
+
     return (
         <section id="hero-pack-fide" className="section hero v1 wf-section relative overflow-x-clip !pt-6 !pb-0">
             <div className="w-full px-4 lg:px-8">
                 <div className="mx-auto w-full max-w-7xl">
                     <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-12 sm:gap-5 pb-6 text-center lg:pb-10">
                         <h1 className="display-1 mb-0 leading-[1.03] mt-12 sm:mt-6">
-                            Réussissez le test avec le <span className="heading-span-secondary-6">Pack FIDE</span>
+                            {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span>
                         </h1>
                         <p className="mb-0 max-w-3xl text-base text-neutral-700 sm:text-lg">
-                            Une préparation claire et complète avec des vidéos guidées, <b className="underline decoration-secondary-6">les scénarios actuels</b> expliqués et des examens blancs.
+                            {t("subtitle.prefix")} <b className="underline decoration-secondary-6">{t("subtitle.bold")}</b> {t("subtitle.suffix")}
                         </p>
                         <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
-                            <Link href="#pack-pricing" aria-label="Voir les offres" className="btn btn-primary w-full text-center sm:w-auto inline-flex items-center justify-center gap-2">
+                            <Link href="#pack-pricing" aria-label={t("ctaOffers.aria")} className="btn btn-primary w-full text-center sm:w-auto inline-flex items-center justify-center gap-2">
                                 <FaTags className="text-sm" />
-                                Les offres
+                                {t("ctaOffers.label")}
                             </Link>
                             <Link
                                 href="#videosSection"
-                                aria-label="Voir le sommaire"
+                                aria-label={t("ctaSummary.aria")}
                                 className="btn btn-secondary w-full text-center no-underline sm:w-auto inline-flex items-center justify-center gap-2"
                             >
                                 <FaListUl className="text-sm" />
-                                Le sommaire
+                                {t("ctaSummary.label")}
                             </Link>
                         </div>
                     </div>
@@ -35,7 +38,7 @@ export function HeroPackFide() {
                         <div className="absolute left-1/2 top-0 w-[94%] -translate-x-1/2 -rotate-[1.3deg] origin-bottom sm:w-[90%] sm:-rotate-[1.6deg] lg:left-[38%] lg:w-[70%] lg:-rotate-[2deg] mt-4">
                             <Safari
                                 imageSrc="/images/hero-desktop-pack-fide.png"
-                                alt="Aperçu desktop du pack FIDE"
+                                alt={t("images.desktopAlt")}
                                 url="startfrenchnow.com/fr/fide/pack-fide"
                                 sizes="(min-width: 1280px) 1050px, (min-width: 1024px) 82vw, (min-width: 640px) 90vw, 94vw"
                                 priority
@@ -45,7 +48,7 @@ export function HeroPackFide() {
                         <div className="absolute right-[2%] top-[4%] hidden w-[34%] rotate-[8deg] sm:right-[4%] sm:top-[6%] sm:w-[26%] lg:right-[4%] lg:top-[8%] lg:block lg:w-[22%] border border-neutral-700 rounded-[2.8rem]">
                             <Iphone
                                 src="/images/hero-pack-fide-mobile.png"
-                                alt="Aperçu mobile du pack FIDE"
+                                alt={t("images.mobileAlt")}
                                 sizes="(min-width: 1280px) 250px, (min-width: 1024px) 22vw, (min-width: 640px) 26vw, 34vw"
                                 className="w-full max-w-none !border-neutral-300 !bg-neutral-100"
                                 notchClassName="!bg-neutral-300"

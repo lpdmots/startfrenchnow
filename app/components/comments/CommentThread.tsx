@@ -87,7 +87,7 @@ function scrollToComment(id: string, highlight = true) {
 }
 
 export function AuthorLine({ name, isYou, isAdmin, status, resourceType }: { name: string; isYou?: boolean; isAdmin?: boolean; status?: string; resourceType: CommentResourceType }) {
-    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const translationKey = "Fide.CommentThread";
     const t = useTranslations(translationKey);
 
     return (
@@ -109,7 +109,7 @@ export function AuthorLine({ name, isYou, isAdmin, status, resourceType }: { nam
 
 export default function CommentThread({ resourceType, resourceId, items, isAuthenticated, viewerIsAdmin, locale = "fr" }: Props) {
     const router = useRouter();
-    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const translationKey = "Fide.CommentThread";
     const t = useTranslations(translationKey);
     const [voteBusyId, setVoteBusyId] = useState<string | null>(null);
     const [replyOpenFor, setReplyOpenFor] = useState<string | null>(null);
@@ -573,7 +573,7 @@ function ReplyForm({
     isAuthenticated: boolean;
     onDone: () => void;
 }) {
-    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const translationKey = "Fide.CommentThread";
     const t = useTranslations(translationKey);
     const [body, setBody] = useState("");
     const [guestName, setGuestName] = useState("");
@@ -742,7 +742,7 @@ function InlineEditForm({
     busy: boolean;
     resourceType: CommentResourceType;
 }) {
-    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const translationKey = "Fide.CommentThread";
     const t = useTranslations(translationKey);
     const [value, setValue] = useState(initialValue);
     const tooLong = value.length > 1000;
@@ -836,7 +836,7 @@ export function UpvoteIconButton({
     onClick: () => void;
     resourceType: CommentResourceType;
 }) {
-    const translationKey = ["fide_dashboard", "pack_fide", "fide_scenario"].includes(resourceType) ? "CommentThread" : "Fide.CommentThread";
+    const translationKey = "Fide.CommentThread";
     const t = useTranslations(translationKey);
 
     return (

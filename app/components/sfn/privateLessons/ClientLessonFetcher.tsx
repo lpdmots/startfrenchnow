@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 export default function ClientLessonFetcher({ eventType, isSmall = false }: { eventType: keyof typeof EVENT_TYPES; isSmall?: boolean }) {
-    const t = useTranslations("dashboard.PrivateLessons.common");
+    const t = useTranslations("Fide.dashboard.PrivateLessons.common");
     const { privateLesson } = useGetCalendlyData(eventType as keyof typeof EVENT_TYPES);
     const areRemainingMinutes = privateLesson?.remainingMinutes || 0 > 0;
     if (!privateLesson) return <div className="h-8"></div>;
@@ -33,7 +33,7 @@ export default function ClientLessonFetcher({ eventType, isSmall = false }: { ev
             )}
             <div>
                 <div className="flex gap-2 flex-wrap">
-                    <Link href="/fide#plans" className="no-underline w-full sm:max-w-72">
+                    <Link href="/fide/private-courses#plans" className="no-underline w-full sm:max-w-72">
                         <button className={clsx("btn btn-secondary flex items-center justify-center w-full", isSmall ? "small" : "")}>
                             <span className="h-6 flex items-center">{t("buyLessons")}</span>
                         </button>

@@ -25,7 +25,7 @@ export function FideStickyScrollReveal({
     const reduceMotion = useReducedMotion();
     const [activeCard, setActiveCard] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
-    const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const itemRefs = useRef<(HTMLElement | null)[]>([]);
 
     useEffect(() => {
         if (!containerRef.current) return;

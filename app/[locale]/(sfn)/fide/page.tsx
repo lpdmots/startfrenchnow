@@ -71,24 +71,25 @@ async function ExamsPage(props: { params: Promise<{ locale: string }> }) {
     const locale = normalizeLocale(params.locale);
     const isFr = locale === "fr";
     const tFaq = await getTranslations({ locale, namespace: "Fide.FideFAQ" });
+    const tGuides = await getTranslations({ locale, namespace: "Fide.FidePageDetailedGuides" });
     const detailedGuideSlugs = IS_DEV ? [...FIDE_DETAILED_GUIDE_SLUGS, ...FIDE_DEV_EXTRA_GUIDE_SLUGS] : FIDE_DETAILED_GUIDE_SLUGS;
     const detailedGuides = await getDetailedGuidesBySlugs(detailedGuideSlugs);
     const detailedGuideCards: FlatFidePackSommaire = detailedGuides
         .filter((post) => post.slug?.current && post.mainImage)
         .map((post, index) => ({
-            packageTitle: "Gratuites",
+            packageTitle: tGuides("packageTitle"),
             packageReferenceKey: "free-guides",
             packageColor: GUIDE_PACKAGE_COLORS[index % GUIDE_PACKAGE_COLORS.length],
             moduleKey: `guide-${post._id}`,
-            moduleTitle: "Guides détaillés",
+            moduleTitle: tGuides("moduleTitle"),
             moduleSubtitle: undefined,
             moduleLevel: undefined,
             postId: post._id,
             postSlug: { _type: "slug", current: post.slug?.current ?? "" },
             postMainVideo: undefined,
             postMainImage: post.mainImage!,
-            postTitle: post.title ?? "Guide FIDE",
-            postDescription: post.description ?? "Conseils pratiques et méthode pour réussir le test FIDE.",
+            postTitle: post.title ?? tGuides("fallbackTitle"),
+            postDescription: post.description ?? tGuides("fallbackDescription"),
             postLevel: undefined,
             postDurationSec: undefined,
             postIsPreview: true,
@@ -317,7 +318,7 @@ async function ExamsPage(props: { params: Promise<{ locale: string }> }) {
             <FidePageHubSection />
             <FidePageTipsSection />
             <ContactForFideBand />
-            <FidePageDetailedGuidesSection guides={detailedGuideCards} />
+            <FidePageDetailedGuidesSection guides={detailedGuideCards} locale={locale} />
             <FidePageContactSection />
             <FidePageFaqSection />
         </div>

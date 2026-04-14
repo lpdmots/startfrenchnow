@@ -36,7 +36,7 @@ export default function ExamsSection({
     headingSpanClassName?: string;
 }) {
     const { totalExams, avgDurationMin, completionRate } = stats;
-    const t = useTranslations("ExamsSection");
+    const t = useTranslations("Fide.ExamsSection");
     const rich = examsHeadingRich(headingSpanClassName);
 
     return (
@@ -75,15 +75,9 @@ export default function ExamsSection({
 
                 {/* CTAs */}
                 <div className="flex gap-4 justify-center items-center w-full flex-wrap">
-                    {hasPack ? (
-                        <Link href="/fide#plans" className="w-full sm:w-auto !no-underline">
-                            <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto">{t("ctaHasPack")}</ShimmerButton>
-                        </Link>
-                    ) : (
-                        <Link href="#plans" className="w-full sm:w-auto !no-underline">
-                            <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto">{t("ctaNoPack")}</ShimmerButton>
-                        </Link>
-                    )}
+                    <Link href="/fide/pack-fide#pack-pricing" className="w-full sm:w-auto !no-underline">
+                        <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto">{t("ctaBuyPack")}</ShimmerButton>
+                    </Link>
                     <LinkArrowToFideExams className="text-xl font-bold text-neutral-700" category="culture">
                         <span className="flex items-center">
                             <HiCheckCircle className="text-6xl mr-2 text-secondary-6" /> <span>{t("linkAllExams")}</span>

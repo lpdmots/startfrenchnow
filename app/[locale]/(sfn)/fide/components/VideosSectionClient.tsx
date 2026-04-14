@@ -29,7 +29,7 @@ export function VideosSectionClient({
     const sessionHasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const effectiveHasPack = hasPack ?? sessionHasPack;
     const effectiveUserId = userId ?? (session?.user?._id as string | undefined);
-    const t = useTranslations("VideosSection");
+    const t = useTranslations("Fide.VideosSection");
 
     return (
         <section id="videosSection" className="max-w-7xl m-auto py-24 px-4 lg:px-8">
@@ -62,7 +62,7 @@ export function VideosSectionClient({
 }
 
 const InfosVideos = ({ hasPack }: { hasPack: boolean }) => {
-    const t = useTranslations("InfosVideos");
+    const t = useTranslations("Fide.InfosVideos");
 
     return (
         <div data-w-id="58b3cf56-b90f-933e-2320-8780e9f6f100" className="card project-card p-4 sm:p-8">

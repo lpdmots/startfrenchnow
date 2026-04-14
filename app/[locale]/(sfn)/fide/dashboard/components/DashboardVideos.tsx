@@ -80,7 +80,7 @@ const DashboardVideos = ({ hero, locale, hasPack, fidePackSommaire, userId }: Da
                                         <p className="mb-0 mt-6 lg:mt-12 text-center w-full ">{t.rich("lastActivityRich", { ...intelRich(), time: lastActivity || "-" })}</p>
                                     </div>
                                 ) : (
-                                    <Link href="/fide#plans" className="w-full no-underline mt-2 lg:mt-8 flex justify-center">
+                                    <Link href="/fide/pack-fide#pack-pricing" className="w-full no-underline mt-2 lg:mt-8 flex justify-center">
                                         <ShimmerButton className="w-full max-w-lg">{t("ctaBuyPack")}</ShimmerButton>
                                     </Link>
                                 )}
@@ -115,7 +115,7 @@ const MiniVideoCard = ({ video, hasPack, locale }: { video: HeroVideoData["mini"
 
     return (
         <div className="group relative col-span-4 md:col-span-2 xl:col-span-1 p-2 border-2 border-solid border-neutral-600 rounded-lg h-full shadow-on-hover overflow-hidden">
-            <Link href={isLocked ? "/fide#plans" : `/fide/videos/${video.slug}`} className="no-underline w-full h-full text-neutral-800 flex gap-4 items-center">
+            <Link href={isLocked ? "/fide/pack-fide#pack-pricing" : `/fide/videos/${video.slug}`} className="no-underline w-full h-full text-neutral-800 flex gap-4 items-center">
                 <div className="shrink-0">
                     <img width={400} height={300} src={urlFor(video.mainImage).url()} alt={video.title} className="mx-auto w-20 h-20 md:mx-0 rounded-lg object-cover object-top" />
                 </div>

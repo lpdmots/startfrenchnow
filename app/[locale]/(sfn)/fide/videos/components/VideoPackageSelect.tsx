@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const VideoPackageSelect = ({ flatFidePackSommaire, packages, locale, hasPack, initialPackageKey }: Props) => {
-    const t = useTranslations("FideVideosPage.packageSelect");
+    const t = useTranslations("Fide.FideVideosPage.packageSelect");
     const allLabel = t("all");
 
     const keyToTitle = (key?: string) => {

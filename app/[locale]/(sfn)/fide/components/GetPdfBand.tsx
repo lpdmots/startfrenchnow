@@ -32,7 +32,7 @@ function GetPdfBand({ fullDarkBackground = false, insetDarkPanel = false }: { fu
                 <SlideFromLeft>
                     <div data-w-id="302ad83d-63c4-ff55-2757-b5c6518390b4" className="flex-horizontal space-between max-[767px]:flex-col max-[767px]:justify-center max-[767px]:items-center">
                         <div className="image-wrapper newsletter-image-wrapper position-relative">
-                            <Image src="/images/newsletter-image-paperfolio-webflow-template.svg" height={189} width={190} alt="Newsletter Icon" className="image" />
+                            <Image src="/images/newsletter-image-paperfolio-webflow-template.svg" height={189} width={190} alt={t("AskForPdf.imageAlt")} className="image" />
                         </div>
                         <div className="newsletter-wrapper">
                             <div className="max-[767px]:text-center">

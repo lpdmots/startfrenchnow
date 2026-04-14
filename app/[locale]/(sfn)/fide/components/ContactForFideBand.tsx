@@ -18,7 +18,7 @@ export const ContactForFideBand = () => {
                 <SlideFromLeft>
                     <div className="flex-horizontal space-between max-[767px]:flex-col max-[767px]:justify-center max-[767px]:items-center">
                         <div className="image-wrapper newsletter-image-wrapper position-relative">
-                            <Image src="/images/newsletter-image-paperfolio-webflow-template.svg" height={189} width={190} alt="Newsletter Icon" className="image" />
+                            <Image src="/images/newsletter-image-paperfolio-webflow-template.svg" height={189} width={190} alt={t("imageAlt")} className="image" />
                         </div>
                         <div className="newsletter-wrapper">
                             <div className="max-[767px]:text-center">

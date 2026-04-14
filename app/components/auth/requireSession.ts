@@ -172,7 +172,7 @@ export async function requireSessionAndFide({ callbackUrl = "/", info = "" }: { 
         callbackUrl,
         info,
         anyOf: ["packFide", "privateCourse", "mockExam"],
-        unauthorizedRedirectTo: "/fide#plans",
+        unauthorizedRedirectTo: "/fide/pack-fide#pack-pricing",
     });
 }
 

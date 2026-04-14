@@ -1,6 +1,7 @@
-import { Locale } from "@/i18n";
+import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 
-export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const params = await props.params;
 
     const {
@@ -8,13 +9,12 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     } = params;
 
     const isFr = locale === "fr";
+    const t = await getTranslations({ locale, namespace: "Metadata.FidePrivateCourses" });
     const path = "/fide/private-courses";
     const canonical = isFr ? `/fr${path}` : path;
     const localeTag = isFr ? "fr_CH" : "en_US";
-    const title = isFr ? "Cours privés FIDE en ligne (1:1) | Préparation test FIDE | Start French Now" : "Private FIDE Coaching Online (1:1) | FIDE Test Prep | Start French Now";
-    const description = isFr
-        ? "Préparez le test FIDE avec des cours privés personnalisés: scénarios actuels, plan ciblé, réservation flexible et suivi expert."
-        : "Prepare for the FIDE test with private 1:1 coaching: current scenarios, targeted plan, flexible booking, and expert guidance.";
+    const title = t("title");
+    const description = t("description");
     const socialImage = "/images/etudiante-cours.png";
 
     return {

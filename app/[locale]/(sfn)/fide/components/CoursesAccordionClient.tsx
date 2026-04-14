@@ -23,8 +23,8 @@ const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
 const LOCKEDTARGET: Record<string, string> = {
     "/courses/beginners/": "/courses/beginners/",
-    "/fide/scenarios/": "/fide#plans",
-    "/fide/videos/": "/fide#plans",
+    "/fide/scenarios/": "/fide/pack-fide#pack-pricing",
+    "/fide/videos/": "/fide/pack-fide#pack-pricing",
     "/courses/intermediates/": "/courses/intermediates/",
     "/courses/dialogues/": "/courses/dialogues/",
 };
@@ -52,7 +52,7 @@ export function CoursesAccordionClient({
 }) {
     const pathname = usePathname();
     const isFideSection = pathname?.includes("/fide") || false;
-    const t = useTranslations(isFideSection ? "FidePack.CoursesAccordionClient" : "Fide.FidePack.CoursesAccordionClient");
+    const t = useTranslations("Fide.FidePack.CoursesAccordionClient");
     const params = useParams();
     const { data: session } = useSession();
     const sessionHasPack = permissionKey ? !!session?.user?.permissions?.some((p) => p.referenceKey === permissionKey) : false;
@@ -200,7 +200,7 @@ function LessonRow({
 }) {
     const pathname = usePathname();
     const isFideSection = pathname?.includes("/fide") || false;
-    const t = useTranslations(isFideSection ? "FidePack.CoursesAccordionClient" : "Fide.FidePack.CoursesAccordionClient");
+    const t = useTranslations("Fide.FidePack.CoursesAccordionClient");
     const isActive = lesson.slug.current === activeSlug;
     const locked = !lesson.isPreview && !hasPack;
     const level = lesson.level?.[0] || moduleLevel || undefined;

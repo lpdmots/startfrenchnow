@@ -4780,7 +4780,7 @@ export default function RunnerScreenRouter({
                                 </div>
                                 <div className="mt-auto pt-3">
                                     <Link
-                                        href={`/checkout/pack-fide?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
+                                        href={`/checkout/pack-fide?quantity=1&callbackUrl=${encodeURIComponent("/fide/pack-fide#pack-pricing")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
                                         className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
                                     >
                                         {`Choisir le pack autonome - ${formatCurrency(packAutonomePricing.discountedAmount)}`}
@@ -4798,7 +4798,7 @@ export default function RunnerScreenRouter({
                                 </div>
                                 <div className="mt-auto pt-3">
                                     <Link
-                                        href={`/checkout/pack-fide-accompagne?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
+                                        href={`/checkout/pack-fide-accompagne?quantity=1&callbackUrl=${encodeURIComponent("/fide/pack-fide#pack-pricing")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
                                         className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
                                     >
                                         {`Choisir le pack accompagné - ${formatCurrency(packAccompagnePricing.discountedAmount)}`}
@@ -4816,7 +4816,7 @@ export default function RunnerScreenRouter({
                                 </div>
                                 <div className="mt-auto pt-3">
                                     <Link
-                                        href={`/checkout/fide-preparation-class-6-hours?quantity=1&callbackUrl=${encodeURIComponent("/fide#plans")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
+                                        href={`/checkout/fide-preparation-class-6-hours?quantity=1&callbackUrl=${encodeURIComponent("/fide/private-courses#plans")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
                                         className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
                                     >
                                         {`Choisir les 6h de cours privés - ${formatCurrency(private6hPricing.discountedAmount)}`}

@@ -51,7 +51,7 @@ export default Comment;
 
 const CommentSlide = ({ selectedSlide }: { selectedSlide: any }) => {
     const locale = useLocale();
-    const t = useTranslations("ReviewsFide.circularProgress");
+    const t = useTranslations("Fide.ReviewsFide.circularProgress");
     const { userImage, userName, comment, score, title, progressFrom, progressTo, lessons, date } = selectedSlide;
     const getDate = () => {
         const dateString = new Date(date);
@@ -102,7 +102,7 @@ const CommentSlide = ({ selectedSlide }: { selectedSlide: any }) => {
 const VideoSlide = ({ selectedSlide }: { selectedSlide: any }) => {
     const locale = useLocale();
     const [open, setOpen] = useState(false);
-    const t = useTranslations("ReviewsFide.circularProgress");
+    const t = useTranslations("Fide.ReviewsFide.circularProgress");
     const { userName, comment, score, title, progressFrom, progressTo, lessons, date, videoUrl, videoThumbnail, modalComment, subtitleENUrl, subtitleFRUrl } = selectedSlide;
     const getDate = () => {
         const dateString = new Date(date);
@@ -197,7 +197,7 @@ type CommentPreviewProps = {
 };
 
 export function CommentPreview({ comment, onClick }: CommentPreviewProps) {
-    const t = useTranslations("ReviewsFide");
+    const t = useTranslations("Fide.ReviewsFide");
     return (
         <m.button
             type="button"

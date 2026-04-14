@@ -17,6 +17,7 @@ import { PackFidePricingSectionClient } from "./components/PackFidePricingSectio
 import { ContactForFide } from "../components/ContactForFide";
 import { DeferredPackFideExamsSection } from "./components/DeferredPackFideExamsSection";
 import { DeferredPackFideReviews } from "./components/DeferredPackFideReviews";
+import { getTranslations } from "next-intl/server";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 const queryProductBySlug = groq`*[_type=='product' && slug.current == $slug][0]`;
@@ -31,6 +32,7 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
     const isFr = locale === "fr";
+    const t = await getTranslations({ locale, namespace: "Fide.PackFidePage" });
 
     const [autonomieProduct, accompagneProduct] = await Promise.all([
         client.fetch<ProductFetch>(queryProductBySlug, { slug: "pack-fide" }),
@@ -62,157 +64,80 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
     const fidePath = isFr ? "/fr/fide" : "/fide";
     const packPath = isFr ? "/fr/fide/pack-fide" : "/fide/pack-fide";
 
-    const faqItems: FaqItem[] = isFr
-        ? [
-              {
-                  question: "Que contient exactement le Pack FIDE e-learning ?",
-                  answer: "Le pack comprend un parcours vidéo structuré (du niveau débutant jusqu'au B1), des contenus spécifiques à l'examen FIDE (méthode, points clés, conseils pratiques), plus de 100 examens blancs, des supports de travail et des mises à jour régulières. Vous avez aussi un dashboard pour suivre votre progression et un espace d'échange avec votre professeur.",
-              },
-              {
-                  question: "Quelle est la différence entre le pack autonome et le pack accompagné ?",
-                  answer: "Le pack autonome vous donne tous les contenus pour travailler en autonomie. Le pack accompagné ajoute un suivi pédagogique plus étroit, avec des sessions ciblées sur les scénarios FIDE actuels.",
-              },
-              {
-                  question: "Le pack convient-il si je pars de zéro ?",
-                  answer: "Oui. Le parcours est progressif et pensé pour vous amener étape par étape vers le niveau attendu au FIDE. Si vous débutez, vous commencez par les bases du français (cours débutant inclus), puis vous montez progressivement jusqu'au B1 avec les contenus spécifiques FIDE.",
-              },
-              {
-                  question: "Est-ce que les scénarios sont mis à jour ?",
-                  answer: "Oui. Les contenus sont régulièrement ajustés selon les retours récents de candidats et l'évolution des attentes de l'examen. Quand de nouveaux scénarios apparaissent, nous les intégrons pour que votre préparation reste alignée avec les sujets les plus pertinents.",
-              },
-              {
-                  question: "Puis-je combiner le pack avec des cours privés ?",
-                  answer: "Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les scénarios actuels du FIDE. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés.",
-                  content: (
-                      <p className="mb-0">
-                          Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les
-                          scénarios actuels du FIDE. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés.{" "}
-                          <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
-                              Voir les cours privés
-                          </Link>
-                          .
-                      </p>
-                  ),
-              },
-              {
-                  question: "Y a-t-il une option gratuite avant d'acheter ?",
-                  answer: "Oui. Vous pouvez consulter des vidéos gratuites et des aperçus pour tester la méthode avant d'acheter le pack.",
-                  content: (
-                      <p className="mb-0">
-                          Oui. Vous pouvez commencer par des contenus gratuits pour tester la méthode.{" "}
-                          <Link href="/fide/videos" className="font-semibold text-secondary-6 underline">
-                              Accéder aux vidéos gratuites
-                          </Link>
-                          .
-                      </p>
-                  ),
-              },
-              {
-                  question: "Est-ce que le pack suffit pour préparer aussi l'oral ?",
-                  answer: "Oui, le pack couvre les bases indispensables, y compris l'expression orale. Si vous avez besoin de retours directs et personnalisés, ajoutez des examens blancs encadrés ou des cours privés.",
-                  content: (
-                      <p className="mb-0">
-                          Oui, le pack couvre les bases indispensables, y compris l'expression orale. Si vous avez besoin de retours directs et personnalisés, ajoutez des{" "}
-                          <Link href="/fide/mock-exams" className="font-semibold text-secondary-5 underline">
-                              examens blancs encadrés
-                          </Link>{" "}
-                          ou des{" "}
-                          <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
-                              cours privés
-                          </Link>
-                          .
-                      </p>
-                  ),
-              },
-              {
-                  question: "Comment choisir entre les formules ?",
-                  answer: "Si vous hésitez entre les formules, réservez un entretien gratuit. Le professeur vous aidera à définir un plan de formation personnalisé selon votre niveau, votre délai et votre objectif.",
-                  content: (
-                      <p className="mb-0">
-                          Si vous hésitez entre les formules,{" "}
-                          <Link href="/fide/pack-fide#ContactForFIDECourses" className="font-semibold text-secondary-6 underline">
-                              réservez un entretien gratuit
-                          </Link>
-                          . Le professeur vous aidera à définir un plan de formation personnalisé selon votre niveau, votre délai et votre objectif.
-                      </p>
-                  ),
-              },
-          ]
-        : [
-              {
-                  question: "What is included in the FIDE e-learning pack?",
-                  answer: "The pack includes a structured video path (from beginner to B1), FIDE-specific content (method, key exam points, practical tips), 100+ mock exams, study resources, and regular updates. You also get a dashboard to track progress and a messaging space to exchange with your teacher.",
-              },
-              {
-                  question: "What is the difference between the self-paced and guided packs?",
-                  answer: "The self-paced pack gives you all content for independent study. The guided pack adds closer pedagogical support, with targeted sessions on current FIDE scenarios.",
-              },
-              {
-                  question: "Is this suitable if I start from zero?",
-                  answer: "Yes. The path is progressive and designed to take you step by step toward the expected FIDE level. If you are starting from scratch, you begin with the included beginner course, then move up to B1 through FIDE-specific content.",
-              },
-              {
-                  question: "Are scenarios updated regularly?",
-                  answer: "Yes. Content is regularly updated based on recent candidate feedback and exam expectations. When new scenarios appear, we integrate them so your preparation stays aligned with the most relevant topics.",
-              },
-              {
-                  question: "Can I combine the pack with private coaching?",
-                  answer: "Yes. Many learners combine e-learning with 1:1 coaching. The guided pack already includes closer support and targeted work on current FIDE scenarios. If you want even more personalized support, you can add private lessons.",
-                  content: (
-                      <p className="mb-0">
-                          Yes. Many learners combine e-learning with 1:1 coaching. The guided pack already includes closer support and targeted work on current FIDE scenarios. If you want even more
-                          personalized support, you can add private lessons.{" "}
-                          <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
-                              See private coaching
-                          </Link>
-                          .
-                      </p>
-                  ),
-              },
-              {
-                  question: "Is there a free option before purchasing?",
-                  answer: "Yes. You can start with free videos and previews to test the method before buying.",
-                  content: (
-                      <p className="mb-0">
-                          Yes. You can start with free resources before purchasing.{" "}
-                          <Link href="/fide/videos" className="font-semibold text-secondary-6 underline">
-                              Access free videos
-                          </Link>
-                          .
-                      </p>
-                  ),
-              },
-              {
-                  question: "Is the pack enough for speaking preparation as well?",
-                  answer: "Yes, the pack covers essential speaking foundations. If you need direct, personalized feedback, add supervised mock exams or private coaching.",
-                  content: (
-                      <p className="mb-0">
-                          Yes, the pack covers essential speaking foundations. If you need direct, personalized feedback, add{" "}
-                          <Link href="/fide/mock-exams" className="font-semibold text-secondary-5 underline">
-                              supervised mock exams
-                          </Link>{" "}
-                          or{" "}
-                          <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
-                              private coaching
-                          </Link>
-                          .
-                      </p>
-                  ),
-              },
-              {
-                  question: "How should I choose between plans?",
-                  answer: "If you are unsure which plan fits you best, book a free consultation. Your teacher can help you define a personalized plan based on your current level, timeline, and target.",
-                  content: (
-                      <p className="mb-0">
-                          If you are unsure which plan fits you best,{" "}
-                          <Link href="/fide/pack-fide#ContactForFIDECourses" className="font-semibold text-secondary-6 underline">
-                              book a free consultation
-                          </Link>
-                          . Your teacher can help you define a personalized plan based on your current level, timeline, and target.
-                      </p>
-                  ),
-              },
-          ];
+    const faqItems: FaqItem[] = [
+        {
+            question: t("faq.items.included.title"),
+            answer: t("faq.items.included.content"),
+        },
+        {
+            question: t("faq.items.difference.title"),
+            answer: t("faq.items.difference.content"),
+        },
+        {
+            question: t("faq.items.fromZero.title"),
+            answer: t("faq.items.fromZero.content"),
+        },
+        {
+            question: t("faq.items.updates.title"),
+            answer: t("faq.items.updates.content"),
+        },
+        {
+            question: t("faq.items.combine.title"),
+            answer: t("faq.items.combine.content"),
+            content: (
+                <p className="mb-0">
+                    {t("faq.items.combine.content")}{" "}
+                    <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
+                        {t("faq.items.combine.cta")}
+                    </Link>
+                    .
+                </p>
+            ),
+        },
+        {
+            question: t("faq.items.freeOption.title"),
+            answer: t("faq.items.freeOption.content"),
+            content: (
+                <p className="mb-0">
+                    {t("faq.items.freeOption.content")}{" "}
+                    <Link href="/fide/videos" className="font-semibold text-secondary-6 underline">
+                        {t("faq.items.freeOption.cta")}
+                    </Link>
+                    .
+                </p>
+            ),
+        },
+        {
+            question: t("faq.items.speaking.title"),
+            answer: t("faq.items.speaking.content"),
+            content: (
+                <p className="mb-0">
+                    {t("faq.items.speaking.content")}{" "}
+                    <Link href="/fide/mock-exams" className="font-semibold text-secondary-5 underline">
+                        {t("faq.items.speaking.ctaMock")}
+                    </Link>{" "}
+                    {t("faq.items.speaking.ctaSeparator")}{" "}
+                    <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
+                        {t("faq.items.speaking.ctaPrivate")}
+                    </Link>
+                    .
+                </p>
+            ),
+        },
+        {
+            question: t("faq.items.choose.title"),
+            answer: t("faq.items.choose.content"),
+            content: (
+                <p className="mb-0">
+                    {t("faq.items.choose.content")}{" "}
+                    <Link href="/fide/pack-fide#ContactForFIDECourses" className="font-semibold text-secondary-6 underline">
+                        {t("faq.items.choose.cta")}
+                    </Link>
+                    . {t("faq.items.choose.tail")}
+                </p>
+            ),
+        },
+    ];
 
     const faqJsonLd = {
         "@context": "https://schema.org",
@@ -234,19 +159,19 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             {
                 "@type": "ListItem",
                 position: 1,
-                name: isFr ? "Accueil" : "Home",
+                name: t("breadcrumbs.home"),
                 item: `${SITE}${homePath}`,
             },
             {
                 "@type": "ListItem",
                 position: 2,
-                name: "FIDE",
+                name: t("breadcrumbs.fide"),
                 item: `${SITE}${fidePath}`,
             },
             {
                 "@type": "ListItem",
                 position: 3,
-                name: isFr ? "Pack FIDE e-learning" : "FIDE e-learning pack",
+                name: t("breadcrumbs.current"),
                 item: `${SITE}${packPath}`,
             },
         ],
@@ -256,14 +181,12 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
         "@context": "https://schema.org",
         "@type": "Product",
         "@id": `${SITE}${packPath}#fide-pack-product`,
-        name: isFr ? "Pack FIDE e-learning" : "FIDE e-learning pack",
-        description: isFr
-            ? "Programme vidéo FIDE, examens blancs et parcours structuré pour préparer l'examen avec confiance."
-            : "Structured FIDE video program, mock exams, and guided path to prepare with confidence.",
+        name: t("schema.productName"),
+        description: t("schema.productDescription"),
         image: [`${SITE}/images/pack-fide-hero.png`],
         brand: {
             "@type": "Brand",
-            name: "Start French Now",
+            name: t("schema.brand"),
         },
         offers: [
             {
@@ -321,17 +244,11 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
                     <FideFaq
                         variant="thin"
                         title={
-                            isFr ? (
-                                <>
-                                    <span className="heading-span-secondary-6">FAQ</span> spéciale Pack FIDE
-                                </>
-                            ) : (
-                                <>
-                                    <span className="heading-span-secondary-6">FAQ</span> for the FIDE Pack
-                                </>
-                            )
+                            <>
+                                <span className="heading-span-secondary-6">FAQ</span> {t("faq.titleSuffix")}
+                            </>
                         }
-                        subtitle={isFr ? "Toutes les réponses essentielles pour choisir votre formule e-learning." : "Essential answers to choose the right e-learning option."}
+                        subtitle={t("faq.subtitle")}
                         items={faqItems.map((item) => ({
                             title: item.question,
                             content: item.content ?? <p>{item.answer}</p>,

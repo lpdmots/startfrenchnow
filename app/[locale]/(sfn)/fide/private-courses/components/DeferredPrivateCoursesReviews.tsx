@@ -40,7 +40,7 @@ export function DeferredPrivateCoursesReviews() {
     return (
         <div ref={containerRef}>
             {isVisible ? (
-                <NextIntlClientProvider locale={locale} messages={{ ...messages, Fide: messages }}>
+                <NextIntlClientProvider locale={locale} messages={messages}>
                     <ReviewsFide />
                 </NextIntlClientProvider>
             ) : (

@@ -33,11 +33,21 @@ function LinkArrow({ children, url, target = "_blank", rel, category, className 
     };
 
     const hoverColor = "hover:!" + CATEGORIESTEXTCOLORS[(category || "tips") as keyof typeof CATEGORIESTEXTCOLORS];
+    const normalizedUrl = (() => {
+        if (url.startsWith("#") || url.startsWith("http") || url.startsWith("mailto:") || url.startsWith("tel:")) {
+            return url;
+        }
+        if (url.startsWith("/")) {
+            const stripped = url.replace(/^\/(fr|en)(?=\/|$)/, "");
+            return stripped === "" ? "/" : stripped;
+        }
+        return url;
+    })();
 
     return (
         <m.span variants={ParentVariants} whileHover="visible">
             <Link
-                href={url}
+                href={normalizedUrl}
                 className={cn(
                     "inline-block text-[var(--neutral-800)] leading-[20px] font-normal flex items-center text-[var(--neutral-700)] no-underline hover:text-[var(--secondary-2)] w-inline-block",
                     hoverColor,

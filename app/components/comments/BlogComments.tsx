@@ -57,7 +57,7 @@ export default function BlogComments({ resourceId, locale = "fr", pageSize = 20 
     const [items, setItems] = useState<ThreadItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const resourceType: CommentResourceType = "post";
+    const resourceType: CommentResourceType = "blog";
 
     const mapItem = useCallback((c: ApiComment): ThreadItem => {
         return {

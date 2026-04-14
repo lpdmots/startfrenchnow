@@ -35,7 +35,7 @@ const TYPE_BY_LABEL = new Map<string, TypeParam>([
 ]);
 
 export const ExamCardsList: React.FC<Props> = ({ exams, initialLevel = "all", initialType, hasPack }) => {
-    const t = useTranslations("FideExams.filters");
+    const t = useTranslations("Fide.FideExams.filters");
 
     // 1) État local initialisé depuis le SSR (zéro jank)
     const [level, setLevel] = useState<LevelParam>(initialLevel ?? "all");

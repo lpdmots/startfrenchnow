@@ -931,7 +931,7 @@ const EXAM_REVIEW_BY_SESSION_QUERY = groq`
 `;
 
 const BRAVO10_COUPON_CODE = "BRAVO10";
-const COUPON_PLANS_PATH = "/fide#plans";
+const COUPON_PLANS_PATH = "/fide/pack-fide#pack-pricing";
 
 const COUPON_BY_CODE_FOR_ASSIGNMENT_QUERY = groq`
   *[_type == "coupon" && lower(code) == $code][0]{

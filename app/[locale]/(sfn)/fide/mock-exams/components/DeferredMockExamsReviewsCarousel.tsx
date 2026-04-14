@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { NextIntlClientProvider, useLocale, useMessages } from "next-intl";
 import { sharedFideReviews } from "../../components/ReviewsFide";
 
 const CarouselReviews = dynamic(() => import("@/app/components/common/CarouselReviews.tsx/CarouselReviews").then((module) => module.CarouselReviews), {
@@ -12,6 +13,8 @@ const CarouselReviews = dynamic(() => import("@/app/components/common/CarouselRe
 export function DeferredMockExamsReviewsCarousel() {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const locale = useLocale();
+    const messages = useMessages() as Record<string, unknown>;
 
     useEffect(() => {
         const node = containerRef.current;
@@ -35,7 +38,13 @@ export function DeferredMockExamsReviewsCarousel() {
 
     return (
         <div ref={containerRef} className="relative mt-8 min-h-[470px]">
-            {isVisible ? <CarouselReviews comments={sortedComments} /> : <div className="h-[470px] w-full rounded-2xl bg-neutral-200/70" />}
+            {isVisible ? (
+                <NextIntlClientProvider locale={locale} messages={messages}>
+                    <CarouselReviews comments={sortedComments} />
+                </NextIntlClientProvider>
+            ) : (
+                <div className="h-[470px] w-full rounded-2xl bg-neutral-200/70" />
+            )}
             <div className="h-20 lg:hidden" />
         </div>
     );

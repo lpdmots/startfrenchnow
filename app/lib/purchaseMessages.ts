@@ -63,11 +63,8 @@ function resolveDashboardLabel(locale: AuthLocale, referenceKey?: string | null)
     return isCoursesDashboard(referenceKey) ? "dashboard FR" : "dashboard FIDE";
 }
 
-function resolveMenuName(locale: AuthLocale, referenceKey?: string | null): string {
-    if (locale === "en") {
-        return isCoursesDashboard(referenceKey) ? "Courses" : "FIDE";
-    }
-    return isCoursesDashboard(referenceKey) ? "Cours" : "FIDE";
+function resolveMenuName(locale: AuthLocale): string {
+    return locale === "en" ? "Profile button" : "bouton Profil";
 }
 
 export function buildPurchaseMailMessage(params: BuildPurchaseMessageParams = {}): PurchaseMailMessage {
@@ -76,7 +73,7 @@ export function buildPurchaseMailMessage(params: BuildPurchaseMessageParams = {}
     const productLabel = resolveProductLabel(locale, params.referenceKey, params.productLabel);
     const safeProductLabel = escapeHtml(productLabel);
     const dashboardLabel = resolveDashboardLabel(locale, params.referenceKey);
-    const menuName = resolveMenuName(locale, params.referenceKey);
+    const menuName = resolveMenuName(locale);
     const dashboardPath = resolveDashboardPath(locale, params.referenceKey, params.dashboardPath);
     const dashboardUrl = toAbsoluteUrl(dashboardPath);
 

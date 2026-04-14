@@ -36,7 +36,7 @@ const EXAMS_OTHER_LEVELS_NOT_IN = groq`
 `;
 
 export const ExamsSuggestions = ({ hero, hasPack }: { hero: HeroData; hasPack: boolean }) => {
-    const t = useTranslations("dashboard.Exams.ExamsSuggestions");
+    const t = useTranslations("Fide.dashboard.Exams.ExamsSuggestions");
     const { data: session } = useSession();
     const userId = (session as any)?.user?._id as string | undefined;
 

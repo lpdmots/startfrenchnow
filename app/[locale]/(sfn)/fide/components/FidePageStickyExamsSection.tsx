@@ -1,199 +1,152 @@
 import { FideLiteYoutubeEmbed } from "./FideLiteYoutubeEmbed";
 import { FideStickyScrollReveal } from "./FideStickyScrollReveal";
 import LinkArrow from "@/app/components/common/LinkArrow";
+import { useTranslations } from "next-intl";
 
 export function FidePageStickyExamsSection() {
+    const t = useTranslations("Fide.FidePageStickyExams");
+    const rich = {
+        strong: (chunks: any) => <strong>{chunks}</strong>,
+        b: (chunks: any) => <strong>{chunks}</strong>,
+        i: (chunks: any) => <i>{chunks}</i>,
+    };
+
     const stickyItems = [
         {
             id: "fide-oral-speaking",
             content: (
                 <>
-                    <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">Partie Orale : Parler</h3>
+                    <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">{t("speaking.title")}</h3>
                     <div className="space-y-4">
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            La partie <strong>« Parler »</strong> est l'épreuve orale la plus importante et la plus exigeante du test FIDE. Elle dure environ <strong>15 à 20 minutes</strong> avec
-                            <strong> deux examinateurs</strong>: l'un pose les questions, l'autre observe et évalue. L'épreuve commence toujours au <strong>niveau A2</strong>, puis vous êtes orienté
-                            vers
-                            <strong> A1</strong> ou <strong>B1</strong> selon votre performance.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p1", rich)}</p>
 
                         <div className="rounded-2xl border border-neutral-300 bg-neutral-50 p-4 shadow-sm">
-                            <p className="mb-2 font-bold text-neutral-800">Les 3 tâches du niveau A2</p>
+                            <p className="mb-2 font-bold text-neutral-800">{t("speaking.a2Tasks.title")}</p>
                             <ul className="mb-0 list-none pl-0 space-y-2">
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-6 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>Description d'image</strong>: personnes, lieu, actions et problème éventuel.
-                                    </span>
+                                    <span>{t.rich("speaking.a2Tasks.items.1", rich)}</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-5 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>Jeu de rôle</strong>: souvent une conversation téléphonique (annuler, déplacer un rendez-vous, etc.).
-                                    </span>
+                                    <span>{t.rich("speaking.a2Tasks.items.2", rich)}</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-2 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>Questions générales</strong> sur un thème pour parler de vos habitudes, préférences et expériences.
-                                    </span>
+                                    <span>{t.rich("speaking.a2Tasks.items.3", rich)}</span>
                                 </li>
                             </ul>
                         </div>
 
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            Si le niveau A2 est bien réussi, vous accédez au <strong>niveau B1</strong>. À ce stade, vous choisissez entre deux thèmes et répondez à des questions plus développées:
-                            raconter une expérience passée, présenter des avantages et inconvénients, et répondre à des questions hypothétiques (souvent avec le conditionnel).
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p2", rich)}</p>
 
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            Les compétences clés à maîtriser sont: <strong>décrire clairement une situation</strong>, interagir dans un contexte courant, parler de soi, raconter un événement passé et
-                            développer une réponse nuancée au niveau B1. Cette partie représente une part majeure de l'évaluation orale, donc la préparation est stratégique.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p3", rich)}</p>
 
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            Le conseil principal: s'entraîner avec un professeur, surtout pour sécuriser les tâches A2 qui conditionnent à la fois la note globale et l'accès au niveau B1.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p4", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="text-sm text-neutral-600">
-                            Besoin d'un entraînement guidé ?{" "}
+                            {t("speaking.ctaLine.prefix")}{" "}
                             <LinkArrow url="/fide/private-courses" target="_self" className="text-sm font-semibold !text-secondary-2 hover:!text-secondary-2 inline-flex">
-                                Coaching privé
+                                {t("speaking.ctaLine.linkLabel")}
                             </LinkArrow>
                         </span>
                         <LinkArrow url="/blog/post/2-le-test-fide-la-partie-orale-parler" target="_self" className="text-lg font-semibold text-secondary-2 hover:!text-secondary-2">
-                            Lire le guide complet
+                            {t("speaking.ctaGuide")}
                         </LinkArrow>
                     </div>
                 </>
             ),
-            media: <FideLiteYoutubeEmbed id="HJ0gjYlbmAw" title="Le test FIDE : La Partie Orale - Parler" />,
+            media: <FideLiteYoutubeEmbed id="HJ0gjYlbmAw" title={t("speaking.videoTitle")} />,
         },
         {
             id: "fide-oral-listening",
             content: (
                 <>
-                    <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">Partie Orale : Comprendre</h3>
+                    <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">{t("listening.title")}</h3>
                     <div className="space-y-4">
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            La partie <strong>« Comprendre »</strong> évalue la compréhension orale sur trois niveaux possibles: <strong>A1</strong>, <strong>A2</strong> et <strong>B1</strong>. Le
-                            niveau proposé dépend de votre performance à l'épreuve orale précédente. L'objectif est de vérifier votre capacité à comprendre des situations concrètes de la vie
-                            quotidienne.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("listening.paragraphs.p1", rich)}</p>
 
                         <div className="rounded-2xl border border-neutral-300 bg-neutral-50 p-4 shadow-sm">
-                            <p className="mb-2 font-bold text-neutral-800">Format selon le niveau</p>
+                            <p className="mb-2 font-bold text-neutral-800">{t("listening.levelFormat.title")}</p>
                             <ul className="mb-0 list-none pl-0 space-y-2">
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-6 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>A1</strong>: courts enregistrements liés à des scènes illustrées, 3 questions par situation, réponse en choisissant l'image correcte. Audio écoutable
-                                        deux fois.
-                                    </span>
+                                    <span>{t.rich("listening.levelFormat.items.a1", rich)}</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-5 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>A2</strong>: format proche du A1, mais avec des situations plus complexes, des enregistrements plus longs et des distracteurs.
-                                    </span>
+                                    <span>{t.rich("listening.levelFormat.items.a2", rich)}</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-2 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>B1</strong>: audios plus naturels et plus longs, réponse orale en phrase complète à partir des informations entendues.
-                                    </span>
+                                    <span>{t.rich("listening.levelFormat.items.b1", rich)}</span>
                                 </li>
                             </ul>
                         </div>
 
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            Stratégies recommandées: demander une deuxième écoute si nécessaire, observer précisément les illustrations, faire confiance à sa première impression, et réviser les
-                            <strong> nombres</strong>, <strong>heures</strong> et <strong>dates</strong>, très fréquents dans l'épreuve.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("listening.paragraphs.p2", rich)}</p>
 
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            La compréhension orale représente <strong>un tiers de la note globale de l'oral</strong>, tandis que l'expression orale compte pour les deux tiers restants.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("listening.paragraphs.p3", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="text-sm text-neutral-600">
-                            S'entraîner au format exact ?{" "}
+                            {t("listening.ctaLine.prefix")}{" "}
                             <LinkArrow url="/fide/mock-exams" target="_self" className="text-sm font-semibold !text-secondary-5 hover:!text-secondary-5 inline-flex">
-                                Examens blancs
+                                {t("listening.ctaLine.linkLabel")}
                             </LinkArrow>
                         </span>
                         <LinkArrow url="/blog/post/3-le-test-fide-la-partie-orale-comprendre" target="_self" className="text-lg font-semibold text-secondary-2 hover:!text-secondary-2">
-                            Lire le guide complet
+                            {t("listening.ctaGuide")}
                         </LinkArrow>
                     </div>
                 </>
             ),
-            media: <FideLiteYoutubeEmbed id="q2ov3ONIszw" title="Le test FIDE : La Partie Orale - Comprendre" />,
+            media: <FideLiteYoutubeEmbed id="q2ov3ONIszw" title={t("listening.videoTitle")} />,
         },
         {
             id: "fide-read-write",
             content: (
                 <>
-                    <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">Lire et Écrire</h3>
+                    <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">{t("readWrite.title")}</h3>
                     <div className="space-y-4">
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            La partie <strong>« Lire et Écrire »</strong> est généralement plus accessible que l'oral, car les tâches sont plus structurées et plus prévisibles. Le niveau maximal
-                            attendu est souvent <strong>A2</strong>, ce qui la rend plus abordable pour les candidats qui ont déjà une base en français.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p1", rich)}</p>
                         <div className="rounded-2xl border border-neutral-300 bg-neutral-50 p-4 shadow-sm">
-                            <p className="mb-2 font-bold text-neutral-800">Structure de l'épreuve écrite</p>
+                            <p className="mb-2 font-bold text-neutral-800">{t("readWrite.structure.title")}</p>
                             <ul className="mb-0 list-none pl-0 space-y-2">
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-6 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>Durée</strong>: environ 60 minutes.
-                                    </span>
+                                    <span>{t.rich("readWrite.structure.items.duration", rich)}</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-5 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>Modules</strong>: selon le niveau visé, modules 1 à 3 ou modules 4 à 6.
-                                    </span>
+                                    <span>{t.rich("readWrite.structure.items.modules", rich)}</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-neutral-700">
                                     <div className="bullet bg-secondary-2 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                    <span>
-                                        <strong>Dans chaque module</strong>: compréhension écrite + production écrite.
-                                    </span>
+                                    <span>{t.rich("readWrite.structure.items.perModule", rich)}</span>
                                 </li>
                             </ul>
                         </div>
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            Les tâches sont variées mais claires:{" "}
-                            <i>repérer et recopier des informations, remplir un formulaire, répondre à un email ou rédiger une lettre simple, choisir le bon résumé d'un document</i>.
-                        </p>
-                        <p>
-                            L'objectif est d'évaluer <b>la compréhension d'écrits pratiques</b> et la capacité à <b>produire des messages simples</b> mais adaptés.
-                        </p>
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            Pour progresser, nous vous conseillons de vous entraîner avec des examens blancs et leurs corrigés, puis de répéter les formats clés: formulaires, extraction d'informations
-                            précises et rédaction de messages courts en respectant strictement les consignes.
-                        </p>
-                        <p className="mb-0 text-neutral-700 text-justify">
-                            En résumé, cette partie repose surtout sur la <strong>méthode</strong>, la <strong>compréhension des consignes</strong> et l'<strong>entraînement pratique</strong>, ce qui
-                            en fait souvent une épreuve plus facile à réussir que l'oral.
-                        </p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p2", rich)}</p>
+                        <p>{t.rich("readWrite.paragraphs.p3", rich)}</p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p4", rich)}</p>
+                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p5", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="text-sm text-neutral-600">
-                            Réviser à votre rythme ?{" "}
+                            {t("readWrite.ctaLine.prefix")}{" "}
                             <LinkArrow url="/fide/pack-fide" target="_self" className="text-sm font-semibold !text-secondary-6 hover:!text-secondary-6 inline-flex">
-                                Pack FIDE
+                                {t("readWrite.ctaLine.linkLabel")}
                             </LinkArrow>
                         </span>
                         <LinkArrow url="/blog/post/4-le-test-fide-lire-et-ecrire" target="_self" className="text-lg font-semibold text-secondary-2 hover:!text-secondary-2">
-                            Lire le guide complet
+                            {t("readWrite.ctaGuide")}
                         </LinkArrow>
                     </div>
                 </>
             ),
-            media: <FideLiteYoutubeEmbed id="aSyBOLTKkcc" title="Le test FIDE : Lire et Écrire" />,
+            media: <FideLiteYoutubeEmbed id="aSyBOLTKkcc" title={t("readWrite.videoTitle")} />,
         },
     ];
 
@@ -204,10 +157,10 @@ export function FidePageStickyExamsSection() {
                 activationOffset={0.04}
                 sectionTitle={
                     <>
-                        <span className="heading-span-secondary-2">Les épreuves</span> du test FIDE
+                        <span className="heading-span-secondary-2">{t("sectionTitleHighlight")}</span> {t("sectionTitleSuffix")}
                     </>
                 }
-                sectionSubtitle="Trois épreuves, trois formats : découvrez ce qui vous attend et comment vous préparer efficacement."
+                sectionSubtitle={t("sectionSubtitle")}
             />
         </section>
     );

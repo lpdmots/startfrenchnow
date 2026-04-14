@@ -105,7 +105,7 @@ const BGDLOCALE = {
 };
 
 const MiniVideoCard = ({ video, hasPack, locale, color, type }: { video: HeroVideoData["mini"][number]; hasPack?: boolean; locale: Locale; color?: string; type?: string }) => {
-    const t = useTranslations("Fide.dashboard.DashboardVideos");
+    const t = useTranslations(`Courses.Dashboard.${type ?? "Beginner"}`);
     const isLocked = !hasPack && !video.isPreview;
     const linkPrefix = PREFIXES[type as keyof typeof PREFIXES] || "/courses/beginners/";
 

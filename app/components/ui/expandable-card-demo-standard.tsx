@@ -187,7 +187,7 @@ const ExamCard = ({
         <motion.div
             layoutId={`card-${exam.title}-${exam._id}`}
             key={`card-${exam.title}-${exam._id}`}
-            onClick={isLocked ? () => router.push("/fide#plans") : () => setActive(exam)}
+            onClick={isLocked ? () => router.push("/fide/pack-fide#pack-pricing") : () => setActive(exam)}
             className={clsx(
                 "group relative p-4 flex flex-col justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 overflow-hidden h-full w-full mx-auto",
                 isLargePreviewCard ? "max-w-[760px]" : "max-w-md",
@@ -246,7 +246,7 @@ const LinkCard = ({ exam, isLocked, isScenarios = false }: { exam: Exam; isLocke
     const router = useRouter();
     return (
         <div
-            onClick={isLocked ? () => router.push("/fide#plans") : undefined}
+            onClick={isLocked ? () => router.push("/fide/pack-fide#pack-pricing") : undefined}
             className="group relative p-4 flex flex-col justify-between items-center hover:bg-neutral-300 bg-neutral-200 rounded-xl cursor-pointer border-2 border-solid border-neutral-800 overflow-hidden h-full w-full max-w-md mx-auto"
         >
             <Link

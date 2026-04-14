@@ -10,6 +10,7 @@ import { DeferredPrivateCoursesHowClassLook } from "./components/DeferredPrivate
 import { DeferredPrivateCoursesReviews } from "./components/DeferredPrivateCoursesReviews";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import type { ReactNode } from "react";
+import { getTranslations } from "next-intl/server";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
@@ -19,179 +20,94 @@ type PrivateCoursesFaqItem = {
     content?: ReactNode;
 };
 
-const PAGE_CONTENT = {
-    fr: {
-        faqTitle: "FAQ des cours privés FIDE",
-        faqSubtitle: "Réponses rapides pour choisir la formule la plus adaptée à votre objectif.",
-    },
-    en: {
-        faqTitle: "Private FIDE Coaching FAQ",
-        faqSubtitle: "Quick answers to choose the right private coaching plan for your goal.",
-    },
-} as const;
-
-const PRIVATE_COURSES_FAQ: Record<"fr" | "en", PrivateCoursesFaqItem[]> = {
-    fr: [
-        {
-            question: "À qui s’adressent les cours privés FIDE ?",
-            answer: "Ces cours s’adressent aux candidats qui préparent le test FIDE (A1-A2 ou A2-B1), que vous partiez de zéro ou que vous souhaitiez consolider votre niveau avant l’examen.",
-        },
-        {
-            question: "Les cours privés sont-ils 100% en ligne ?",
-            answer: "Oui. Les cours se déroulent en visioconférence, avec un accompagnement pas à pas et des horaires flexibles.",
-        },
-        {
-            question: "Travaillez-vous les scénarios actuels du test FIDE ?",
-            answer: "Oui. Nous travaillons les scénarios les plus récents du test, basés sur les retours de nos étudiants ayant passé l’examen, pour vous entraîner sur des situations réalistes.",
-        },
-        {
-            question: "Combien d’heures faut-il prévoir ?",
-            answer: "Le volume dépend de votre niveau actuel, de votre objectif et de votre délai. Si vous hésitez, nous vous aidons à définir gratuitement un plan personnalisé et réaliste.",
-            content: (
-                <>
-                    <p>Le volume dépend de votre niveau actuel, de votre objectif et de votre délai.</p>
-                    <p>Si vous hésitez, nous vous aidons à définir gratuitement un plan personnalisé et réaliste.</p>
-                    <div className="flex justify-end">
-                        <LinkArrow url="https://calendly.com/yohann-startfrenchnow/15min">Demander un plan gratuit</LinkArrow>
-                    </div>
-                </>
-            ),
-        },
-        {
-            question: "Puis-je réserver rapidement si mon examen est proche ?",
-            answer: "Oui. Selon les disponibilités, vous pouvez démarrer rapidement, y compris en préparation intensive de dernière minute.",
-        },
-        {
-            question: "Puis-je combiner ces cours avec le Pack FIDE ?",
-            answer: "Oui. Les cours privés complètent parfaitement le Pack FIDE: vous progressez en autonomie entre les séances, puis vous corrigez vos points faibles avec un coach.",
-            content: (
-                <>
-                    <p>Oui. Les cours privés complètent parfaitement le Pack FIDE: vous progressez en autonomie entre les séances, puis vous corrigez vos points faibles avec un coach.</p>
-                    <div className="flex justify-end">
-                        <LinkArrow url="/fide/pack-fide" target="_self">
-                            Voir le Pack FIDE e-learning
-                        </LinkArrow>
-                    </div>
-                </>
-            ),
-        },
-        {
-            question: "Que se passe-t-il après chaque cours ?",
-            answer: "Après chaque séance, vous repartez avec des priorités claires, des corrections concrètes et des exercices ciblés pour progresser rapidement.",
-        },
-        {
-            question: "Comment commencer ?",
-            answer: "Réservez un premier entretien gratuit ou envoyez-nous votre objectif, votre niveau et votre date d’examen. Nous vous proposerons une formule adaptée.",
-            content: (
-                <>
-                    <p>Réservez un premier entretien gratuit ou envoyez-nous votre objectif, votre niveau et votre date d’examen.</p>
-                    <p>Nous vous proposerons une formule adaptée.</p>
-                    <div className="flex justify-end">
-                        <LinkArrow url="https://calendly.com/yohann-startfrenchnow/15min">Réserver un premier entretien</LinkArrow>
-                    </div>
-                    <div className="flex justify-end">
-                        <LinkArrow url="#ContactForFIDECourses" target="_self">
-                            Envoyer un message
-                        </LinkArrow>
-                    </div>
-                </>
-            ),
-        },
-    ],
-    en: [
-        {
-            question: "Who are private FIDE courses for?",
-            answer: "These lessons are for learners preparing the FIDE test (A1-A2 or A2-B1), whether you are starting from zero or want to secure your level before exam day.",
-        },
-        {
-            question: "Are private lessons fully online?",
-            answer: "Yes. All lessons are online, with step-by-step coaching and flexible scheduling.",
-        },
-        {
-            question: "Do you train with current FIDE scenarios?",
-            answer: "Yes. We train with the most up-to-date scenarios based on feedback from students who have recently taken the exam.",
-        },
-        {
-            question: "How many hours do I need?",
-            answer: "It depends on your current level, target, and timeline. If needed, we can help you define a clear and realistic study plan for free.",
-            content: (
-                <>
-                    <p>It depends on your current level, target, and timeline.</p>
-                    <p>If needed, we can help you define a clear and realistic study plan for free.</p>
-                    <div className="flex justify-end">
-                        <LinkArrow url="https://calendly.com/yohann-startfrenchnow/15min">Request a free study plan</LinkArrow>
-                    </div>
-                </>
-            ),
-        },
-        {
-            question: "Can I book quickly if my exam is soon?",
-            answer: "Yes. Depending on availability, you can start quickly, including intensive last-minute preparation.",
-        },
-        {
-            question: "Can I combine private lessons with the FIDE Pack?",
-            answer: "Yes. Private coaching pairs very well with the FIDE Pack: self-study between lessons, then targeted coaching on your weak points.",
-            content: (
-                <>
-                    <p>Yes. Private coaching pairs very well with the FIDE Pack: self-study between lessons, then targeted coaching on your weak points.</p>
-                    <div className="flex justify-end">
-                        <LinkArrow url="/fide/pack-fide" target="_self">
-                            See the FIDE e-learning pack
-                        </LinkArrow>
-                    </div>
-                </>
-            ),
-        },
-        {
-            question: "What do I get after each lesson?",
-            answer: "After each lesson, you leave with clear priorities, concrete corrections, and focused exercises to keep improving.",
-        },
-        {
-            question: "How do I get started?",
-            answer: "Book a free first call or send us your goal, current level, and exam date. We will recommend the best option for you.",
-            content: (
-                <>
-                    <p>Book a free first call or send us your goal, current level, and exam date.</p>
-                    <p>We will recommend the best option for you.</p>
-                    <div className="flex justify-end">
-                        <LinkArrow url="https://calendly.com/yohann-startfrenchnow/15min">Book a first call</LinkArrow>
-                    </div>
-                    <div className="flex justify-end">
-                        <LinkArrow url="#ContactForFIDECourses" target="_self">
-                            Send a message
-                        </LinkArrow>
-                    </div>
-                </>
-            ),
-        },
-    ],
-};
-
 export default async function FidePrivateCoursesPage(props: { params: Promise<{ locale: string }> }) {
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
 
     const isFr = locale === "fr";
-    const pageContent = PAGE_CONTENT[isFr ? "fr" : "en"];
+    const t = await getTranslations({ locale, namespace: "Fide.PrivateCoursesPage" });
+    const faqT = await getTranslations({ locale, namespace: "Fide.PrivateCoursesFaq" });
     const homePath = isFr ? "/fr" : "/";
     const fidePath = isFr ? "/fr/fide" : "/fide";
     const privateCoursesPath = isFr ? "/fr/fide/private-courses" : "/fide/private-courses";
     const offersTitleNode = (
         <>
-            Choisissez votre rythme de <span className="heading-span-secondary-2">coaching privé</span>
+            {t("offersTitle.prefix")} <span className="heading-span-secondary-2">{t("offersTitle.highlight")}</span>
         </>
     );
-    const faqTitleNode = isFr ? (
+    const faqTitleNode = (
         <>
-            <span className="heading-span-secondary-2">FAQ</span> des cours privés FIDE
-        </>
-    ) : (
-        <>
-            <span className="heading-span-secondary-2">FAQ</span> for private FIDE coaching
+            <span className="heading-span-secondary-2">FAQ</span> {t("faqTitleSuffix")}
         </>
     );
 
-    const faqItems = PRIVATE_COURSES_FAQ[isFr ? "fr" : "en"];
+    const faqItems: PrivateCoursesFaqItem[] = [
+        {
+            question: faqT("items.audience.title"),
+            answer: faqT("items.audience.content"),
+        },
+        {
+            question: faqT("items.online.title"),
+            answer: faqT("items.online.content"),
+        },
+        {
+            question: faqT("items.scenarios.title"),
+            answer: faqT("items.scenarios.content"),
+        },
+        {
+            question: faqT("items.hours.title"),
+            answer: faqT("items.hours.content"),
+            content: (
+                <>
+                    <p>{faqT("items.hours.contentLine1")}</p>
+                    <p>{faqT("items.hours.contentLine2")}</p>
+                    <div className="flex justify-end">
+                        <LinkArrow url="https://calendly.com/yohann-startfrenchnow/15min">{faqT("items.hours.cta")}</LinkArrow>
+                    </div>
+                </>
+            ),
+        },
+        {
+            question: faqT("items.quickBooking.title"),
+            answer: faqT("items.quickBooking.content"),
+        },
+        {
+            question: faqT("items.pack.title"),
+            answer: faqT("items.pack.content"),
+            content: (
+                <>
+                    <p>{faqT("items.pack.content")}</p>
+                    <div className="flex justify-end">
+                        <LinkArrow url="/fide/pack-fide" target="_self">
+                            {faqT("items.pack.cta")}
+                        </LinkArrow>
+                    </div>
+                </>
+            ),
+        },
+        {
+            question: faqT("items.afterLesson.title"),
+            answer: faqT("items.afterLesson.content"),
+        },
+        {
+            question: faqT("items.getStarted.title"),
+            answer: faqT("items.getStarted.content"),
+            content: (
+                <>
+                    <p>{faqT("items.getStarted.contentLine1")}</p>
+                    <p>{faqT("items.getStarted.contentLine2")}</p>
+                    <div className="flex justify-end">
+                        <LinkArrow url="https://calendly.com/yohann-startfrenchnow/15min">{faqT("items.getStarted.ctaPrimary")}</LinkArrow>
+                    </div>
+                    <div className="flex justify-end">
+                        <LinkArrow url="#ContactForFIDECourses" target="_self">
+                            {faqT("items.getStarted.ctaSecondary")}
+                        </LinkArrow>
+                    </div>
+                </>
+            ),
+        },
+    ];
 
     const faqJsonLd = {
         "@context": "https://schema.org",
@@ -213,19 +129,19 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
             {
                 "@type": "ListItem",
                 position: 1,
-                name: isFr ? "Accueil" : "Home",
+                name: t("breadcrumbs.home"),
                 item: `${SITE}${homePath}`,
             },
             {
                 "@type": "ListItem",
                 position: 2,
-                name: "FIDE",
+                name: t("breadcrumbs.fide"),
                 item: `${SITE}${fidePath}`,
             },
             {
                 "@type": "ListItem",
                 position: 3,
-                name: isFr ? "Cours privés FIDE" : "Private FIDE coaching",
+                name: t("breadcrumbs.current"),
                 item: `${SITE}${privateCoursesPath}`,
             },
         ],
@@ -235,12 +151,12 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
         "@context": "https://schema.org",
         "@type": "Service",
         "@id": `${SITE}${privateCoursesPath}#private-fide-coaching`,
-        serviceType: isFr ? "Cours privés de préparation au test FIDE" : "Private coaching for FIDE test preparation",
-        name: isFr ? "Cours privés FIDE en ligne" : "Private FIDE coaching online",
-        description: isFr ? "Préparation personnalisée au test FIDE (A1-A2 / A2-B1) avec accompagnement individuel." : "Personalized one-to-one coaching for FIDE test preparation (A1-A2 / A2-B1).",
+        serviceType: t("schema.serviceType"),
+        name: t("schema.name"),
+        description: t("schema.description"),
         provider: {
             "@type": "Organization",
-            name: "Start French Now",
+            name: t("schema.brand"),
             url: SITE,
         },
         areaServed: "CH",
@@ -264,7 +180,7 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
 
             <ContactForFideBand />
 
-            <PrivateCoursesPricingSection locale={locale} site={SITE} title={offersTitleNode} subtitle="Choisissez une formule claire selon votre délai et votre niveau actuel." />
+            <PrivateCoursesPricingSection locale={locale} site={SITE} title={offersTitleNode} subtitle={t("offersSubtitle")} />
 
             <div className="bg-neutral-800 color-neutral-100 py-24 px-4 lg:px-8">
                 <div className="max-w-7xl m-auto">
@@ -286,7 +202,7 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
                     <FideFaq
                         variant="thin"
                         title={faqTitleNode}
-                        subtitle={pageContent.faqSubtitle}
+                        subtitle={t("faqSubtitle")}
                         items={faqItems.map((item) => ({
                             title: item.question,
                             content: item.content ?? <p>{item.answer}</p>,

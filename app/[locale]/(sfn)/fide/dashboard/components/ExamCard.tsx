@@ -37,7 +37,7 @@ export const ExamCard = ({ hero, locale, hasPack }: Props) => {
 
     return (
         <Link
-            href={!hasPack ? "/fide#plans" : last ? `/fide/exams?level=${last?.levels[0]}` : `/fide/exams`}
+            href={!hasPack ? "/fide/pack-fide#pack-pricing" : last ? `/fide/exams?level=${last?.levels[0]}` : `/fide/exams`}
             className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4"
         >
             {isKind && (

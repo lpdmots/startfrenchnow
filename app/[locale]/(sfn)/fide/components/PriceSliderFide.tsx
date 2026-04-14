@@ -170,7 +170,7 @@ interface PriceSliderFideProps {
     callbackPath?: string;
 }
 
-export default function PriceSliderFide({ locale, callbackPath = "/fide#plans" }: PriceSliderFideProps) {
+export default function PriceSliderFide({ locale, callbackPath = "/fide/private-courses#plans" }: PriceSliderFideProps) {
     const { data: session } = useSession();
     const [quantity, setQuantity] = useState<number>(7);
     const [previousPurchasedLessons, setPreviousPurchasedLessons] = useState<number | null>(null);
@@ -179,7 +179,7 @@ export default function PriceSliderFide({ locale, callbackPath = "/fide#plans" }
     const max = product?.maxQuantity || 25;
     const min = product?.minQuantity || 1;
     const userId = session?.user._id;
-    const t = useTranslations("PriceSliderFide");
+    const t = useTranslations("Fide.PriceSliderFide");
     //console.log({ max });
     useEffect(() => {
         (async () => {
@@ -282,7 +282,7 @@ const PriceCategory = ({ productData, quantity, slug, callbackPath }: PriceCateg
     const bgColor = `bg-secondary-${color}`;
     const textColor = `text-${color}`;
     const isDiscounted = initialUnitPrice !== unitPrice;
-    const t = useTranslations("PriceSliderFide");
+    const t = useTranslations("Fide.PriceSliderFide");
 
     return (
         <div className="card grid grid-cols-1 md:grid-cols-2 overflow-hidden shadow-2 relative">

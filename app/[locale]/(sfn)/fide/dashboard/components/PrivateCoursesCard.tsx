@@ -19,7 +19,7 @@ const PrivateCoursesCard = ({ hero, locale }: { hero: HeroData | undefined; loca
     const hasNotPurchased = totalPurchasedMinutes === 0;
 
     return (
-        <Link href={hasNotPurchased ? "/fide#plans" : "#private-courses"} className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4">
+        <Link href={hasNotPurchased ? "/fide/private-courses#plans" : "#private-courses"} className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4">
             {isKind && <div className="new-banner py-1 bg-secondary-5 bs">{hero?.kind === "coaching-urgent" ? t("urgent") : t("book")}</div>}
             <div className="flex gap-2">
                 <div className="h-full flex items-center justify-end">

@@ -36,7 +36,7 @@ export function DeferredPackFideReviews() {
     return (
         <div ref={containerRef}>
             {isVisible ? (
-                <NextIntlClientProvider locale={locale} messages={{ ...messages, Fide: messages }}>
+                <NextIntlClientProvider locale={locale} messages={messages}>
                     <ReviewsFide headingSpanClassName="heading-span-secondary-6" />
                 </NextIntlClientProvider>
             ) : (

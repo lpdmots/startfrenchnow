@@ -5,11 +5,13 @@ import type { Locale } from "@/i18n";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import PriceSliderFide from "../../components/PriceSliderFide";
 
 export function CustomHoursModalTrigger({ locale, callbackPath }: { locale: Locale; callbackPath: string }) {
     const [isOpen, setIsOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
+    const t = useTranslations("Fide.PrivateCoursesPricing.customHours");
 
     const close = () => setIsOpen(false);
     useOutsideClick(panelRef, () => setIsOpen(false));
@@ -18,11 +20,11 @@ export function CustomHoursModalTrigger({ locale, callbackPath }: { locale: Loca
         <>
             <div className="text-center text-sm text-neutral-600">
                 <p className="mb-0">
-                    Faites à votre mesure :{" "}
+                    {t("prefix")}{" "}
                     <button type="button" onClick={() => setIsOpen(true)} className="text-secondary-2 cursor-pointer">
-                        choisissez vos heures
+                        {t("cta")}
                     </button>
-                    .
+                    {t("suffix")}
                 </p>
             </div>
 
@@ -35,7 +37,7 @@ export function CustomHoursModalTrigger({ locale, callbackPath }: { locale: Loca
                             <motion.button
                                 className="flex absolute top-4 lg:hidden right-2 items-center justify-center bg-neutral-200 rounded-full h-8 w-8 z-[70] !p-0"
                                 onClick={close}
-                                aria-label="Fermer"
+                                aria-label={t("close")}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1, transition: { delay: 0.2 } }}
                                 exit={{ opacity: 0, transition: { duration: 0.05 } }}
@@ -55,7 +57,7 @@ export function CustomHoursModalTrigger({ locale, callbackPath }: { locale: Loca
                                     <motion.button
                                         className="flex absolute top-4 right-2 items-center justify-center bg-neutral-200 rounded-full h-8 w-8 z-[70] !p-0"
                                         onClick={close}
-                                        aria-label="Fermer"
+                                        aria-label={t("close")}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1, transition: { delay: 0.2 } }}
                                         exit={{ opacity: 0, transition: { duration: 0.05 } }}

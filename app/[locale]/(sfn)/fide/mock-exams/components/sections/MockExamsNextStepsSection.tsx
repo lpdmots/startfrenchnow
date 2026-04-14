@@ -31,7 +31,7 @@ export function MockExamsNextStepsSection() {
                                     <div className="mb-4 flex justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
                                         <Image
                                             src="/images/pack-fide-hero.png"
-                                            alt="Aperçu du Pack FIDE"
+                                            alt={t("pack.imageAlt")}
                                             width={1200}
                                             height={675}
                                             sizes="(min-width: 768px) 420px, 100vw"
@@ -58,7 +58,7 @@ export function MockExamsNextStepsSection() {
                                     <div className="mb-4 flex justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
                                         <Image
                                             src="/images/etudiante-cours.png"
-                                            alt="Aperçu des cours privés FIDE"
+                                            alt={t("private.imageAlt")}
                                             width={1200}
                                             height={675}
                                             sizes="(min-width: 768px) 420px, 100vw"

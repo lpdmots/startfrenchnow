@@ -46,9 +46,9 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <LinkArrow url="https://fide-info.ch/doc/708/fideFR_CompetencesLinguistiques.pdf">{t("de_quel_niveau_besoin.content.link")}</LinkArrow>
                         <span className="text-sm text-neutral-600">
-                            Besoin d'un avis rapide ?{" "}
+                            {t("quickAdvice.prefix")}{" "}
                             <LinkArrow url="#ContactForFIDECourses" target="_self" className="text-sm font-semibold inline-flex">
-                                Prendre un entretien
+                                {t("quickAdvice.cta")}
                             </LinkArrow>
                         </span>
                     </div>
@@ -65,9 +65,9 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
                             {t("ou_et_quand_passer_examen.content.link")}
                         </LinkArrow>
                         <span className="text-sm text-neutral-600">
-                            S'entraîner au format ?{" "}
+                            {t("trainFormat.prefix")}{" "}
                             <LinkArrow url="/fide/mock-exams" target="_self" className="text-sm font-semibold inline-flex">
-                                Voir les examens blancs
+                                {t("trainFormat.cta")}
                             </LinkArrow>
                         </span>
                     </div>
@@ -133,20 +133,20 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
                     <p>{t("preparation_examen.content.part1")}</p>
                     <p>{t("preparation_examen.content.part2")}</p>
                     <p>
-                        Pour un parcours structuré,{" "}
+                        {t("structuredPath.prefix")}{" "}
                         <LinkArrow url="/fide/pack-fide" target="_self" className="font-semibold inline-flex">
-                            découvrez le Pack FIDE
+                            {t("structuredPath.cta")}
                         </LinkArrow>
                         .
                     </p>
                     <p className="mb-0">
-                        Besoin de pratique guidée ?{" "}
+                        {t("guidedPractice.prefix")}{" "}
                         <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
-                            Cours privés
+                            {t("guidedPractice.privateCta")}
                         </LinkArrow>{" "}
-                        ou{" "}
+                        {t("guidedPractice.separator")}{" "}
                         <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
-                            examens blancs
+                            {t("guidedPractice.mockCta")}
                         </LinkArrow>
                         .
                     </p>
@@ -159,13 +159,13 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
                 <>
                     <p>{t("sujets_oral_examen.content.part1")}</p>
                     <p>
-                        Pour vous entraîner à l'oral,{" "}
+                        {t("oralPractice.prefix")}{" "}
                         <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
-                            réservez des cours privés
+                            {t("oralPractice.privateCta")}
                         </LinkArrow>{" "}
-                        ou{" "}
+                        {t("oralPractice.separator")}{" "}
                         <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
-                            testez des examens blancs
+                            {t("oralPractice.mockCta")}
                         </LinkArrow>
                         .
                     </p>

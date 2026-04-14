@@ -54,7 +54,7 @@ export const VideoCard = ({ hero, locale, hasPack }: Props) => {
 
     const badges = [...(statusLabel ? [statusLabel] : []), ...levels];
 
-    const href = !hasPack ? "/fide#plans" : `/fide/videos/${main?.slug}`;
+    const href = !hasPack ? "/fide/pack-fide#pack-pricing" : `/fide/videos/${main?.slug}`;
 
     return (
         <Link href={href} className="group relative no-underline w-full h-full text-neutral-800 flex flex-col gap-4 px-2 py-4">
