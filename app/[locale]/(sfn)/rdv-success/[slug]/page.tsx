@@ -2,10 +2,11 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { createExamReviewFromCalendlyBooking } from "@/app/serverActions/mockExamActions";
+import CalendlySuccessPush from "@/app/components/common/CalendlySuccessPush";
 
 type PageProps = {
     params: Promise<{ slug: string }>;
-    searchParams: Promise<{ event_uri?: string; test?: string; continue_url?: string; session_key?: string; compilation_id?: string }>;
+    searchParams: Promise<{ event_uri?: string; eventUri?: string; test?: string; continue_url?: string; session_key?: string; compilation_id?: string }>;
 };
 
 type CalendlyScheduledEvent = {
@@ -75,7 +76,7 @@ export default async function RdvSuccess(props: PageProps) {
     const searchParams = await props.searchParams;
     const params = await props.params;
     // supporte event_uri (ta route) + eventUri (au cas où)
-    const eventUri = searchParams.event_uri;
+    const eventUri = searchParams.event_uri || searchParams.eventUri;
     const continueUrl = searchParams.continue_url || "/fide";
 
     const scheduled = await fetchScheduledEvent(eventUri);
@@ -97,10 +98,10 @@ export default async function RdvSuccess(props: PageProps) {
         }
     }
 
-    return <RdvSuccessNoAsync slug={params.slug} start={start} continueUrl={continueUrl} />;
+    return <RdvSuccessNoAsync slug={params.slug} start={start} continueUrl={continueUrl} eventUri={eventUri} />;
 }
 
-const RdvSuccessNoAsync = ({ slug, start, continueUrl }: { slug: string; start?: string; continueUrl: string }) => {
+const RdvSuccessNoAsync = ({ slug, start, continueUrl, eventUri }: { slug: string; start?: string; continueUrl: string; eventUri?: string }) => {
     const t = useTranslations("RdvSuccess");
     const dateLabel = start
         ? new Intl.DateTimeFormat("fr-FR", {
@@ -111,6 +112,7 @@ const RdvSuccessNoAsync = ({ slug, start, continueUrl }: { slug: string; start?:
         : null;
     return (
         <main className="my-24 p-2 flex items-center justify-center">
+            <CalendlySuccessPush eventUri={eventUri} value={0} currency="CHF" />
             <div className="max-w-6xl flex flex-col card p-4 lg:p-8 justify-center items-center gap-4">
                 <h1 className="text-4xl font-extrabold mb-0 heading-span-secondary-4">{t("thankYou")}</h1>
                 <h2 className="text-2xl mb-0">{t("successMessage")}</h2>

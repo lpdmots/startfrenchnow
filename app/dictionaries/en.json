@@ -430,19 +430,14 @@
         "refreshing": "Refreshing…",
         "statusCount": "{count, plural, one {# notification} other {# notifications}}",
         "statusNone": "None",
-
         "markAllSeenLabel": "Mark all as seen",
         "markAllSeenShort": "Seen",
         "markAllSeenBusy": "…",
-
         "imageAlt": "Image",
         "defaultTitle": "My FIDE progress",
-
         "moreReplies": "+ {count, plural, one {# more reply} other {# more replies}}",
-
         "empty": "No notifications yet."
     },
-
     "RdvSuccess": {
         "thankYou": "Thank you!",
         "successMessage": "Your appointment has been successfully booked.",
@@ -462,22 +457,16 @@
             "namePlaceholder": "Your name",
             "emailLabel": "Email (optional)",
             "emailPlaceholder": "e.g. you@mail.com",
-
             "askQuestionHeading": "Ask a question",
-
             "postedAsAuthenticatedPrefix": "Posted as",
             "defaultUser": "User",
             "postedAsGuestPrefix": "Posted as",
             "guestLabel": "guest",
-
             "textareaPlaceholder": "Write your message…",
-
             "unknownError": "Unknown error",
-
             "publishing": "Publishing…",
             "publish": "Post",
             "clear": "Clear",
-
             "counter": "{current} / {max}"
         },
         "CommentThread": {
@@ -487,17 +476,13 @@
             },
             "noComments": "No comments yet.",
             "edited": "(edited)",
-
             "tagYou": "You",
             "tagAdmin": "Admin",
             "tagHidden": "Hidden",
             "tagHiddenTitle": "Hidden (visible to staff)",
-
             "reply": "Reply",
             "seen": "Seen",
-
             "delete": "Delete",
-
             "deleteModal": {
                 "title": "Confirm deletion",
                 "messageLine1": "This action will permanently delete the message.",
@@ -506,28 +491,22 @@
                 "ok": "Delete",
                 "cancel": "Cancel"
             },
-
             "seeMessageOf": "View {name}'s message",
-
             "edit": "Edit",
             "hide": "Hide",
             "unhide": "Show again",
             "hideAdmin": "Hide (admin)",
-
             "nameRequired": "Name (required)",
             "emailOptional": "Email (optional)",
             "replyPlaceholder": "Your reply…",
             "unknownError": "Unknown error",
-
             "sending": "Sending…",
             "clear": "Clear",
             "counter": "{current} / {max}",
-
             "saving": "Saving…",
             "save": "Save",
             "cancel": "Cancel",
             "editCounter": "{current} / {max}",
-
             "upvoteTitleOn": "Remove my vote",
             "upvoteTitleOff": "Helpful"
         },
@@ -756,7 +735,8 @@
             "subtitle": "50+ clear lessons, organised from A1 to B1 level, with concrete goals and real-life examples.",
             "openSommaireLabel": "Open the summary",
             "closeButton": "Close",
-            "areYouBeginner": "Beginner Course"
+            "areYouBeginner": "Beginner Course",
+            "title": "A complete video program to <hs6>pass the FIDE</hs6>"
         },
         "InfosVideos": {
             "title": "You get:",
@@ -854,7 +834,6 @@
                 "savePercent": "Save {percent}%",
                 "saveAmount": "Save {amount}"
             },
-
             "card1": {
                 "title": "Self-Study Pack",
                 "description": "Access our FIDE self-study platform from complete beginner to B1 level and progress <b>at your own pace</b>.",
@@ -869,7 +848,6 @@
                 },
                 "labelCTA": "GET THE TRAINING"
             },
-
             "card2": {
                 "title": "Guided Pack",
                 "description": "Prepare for the exam via our <b>self-study platform</b> and then practice FIDE scenarios with 6 hours of <b>private coaching</b>.",
@@ -884,7 +862,6 @@
                 },
                 "labelCTA": "CHOOSE THE HYBRID PLAN"
             },
-
             "card3": {
                 "title": "Private Lessons",
                 "description": "Benefit from <b>1:1 private coaching</b> to boost your confidence before the exam.",
@@ -1089,27 +1066,32 @@
             },
             "quickAdvice": {
                 "prefix": "Need a quick opinion?",
-                "cta": "Book a consultation"
+                "cta": "Book a consultation",
+                "text": "Need a quick opinion? <link>Book a consultation</link>"
             },
             "trainFormat": {
                 "prefix": "Train in the real format?",
-                "cta": "See mock exams"
+                "cta": "See mock exams",
+                "text": "Train in the real format? <link>See mock exams</link>"
             },
             "structuredPath": {
                 "prefix": "For a structured path,",
-                "cta": "discover the FIDE Pack"
+                "cta": "discover the FIDE Pack",
+                "text": "For a structured path, <link>discover the FIDE Pack</link>."
             },
             "guidedPractice": {
                 "prefix": "Need guided practice?",
                 "privateCta": "Private coaching",
                 "separator": "or",
-                "mockCta": "mock exams"
+                "mockCta": "mock exams",
+                "text": "Need guided practice? <private>Private coaching</private> or <mock>mock exams</mock>."
             },
             "oralPractice": {
                 "prefix": "To train your speaking,",
                 "privateCta": "book private coaching",
                 "separator": "or",
-                "mockCta": "try mock exams"
+                "mockCta": "try mock exams",
+                "text": "To train your speaking, <private>book private coaching</private> or <mock>try mock exams</mock>."
             }
         },
         "FidePageHero": {
@@ -1117,20 +1099,9 @@
             "titleHighlight": "FIDE test",
             "subtitle": "Everything you need to know about the FIDE test, with videos for each section.",
             "bullets": {
-                "understand": {
-                    "bold": "Understand the test",
-                    "rest": "and what is really assessed."
-                },
-                "discover": {
-                    "prefix": "Explore each",
-                    "bold": "section in detail",
-                    "suffix": ", step by step."
-                },
-                "apply": {
-                    "prefix": "Apply",
-                    "bold": "practical advice",
-                    "suffix": "and concrete tips for exam day."
-                }
+                "understand": "<b><under6>Understand the test</under6></b> and what is really assessed.",
+                "discover": "Explore each <b><under5>section in detail</under5></b>, step by step.",
+                "apply": "Apply <b><under2>practical advice</under2></b> and concrete tips for exam day."
             },
             "cta": {
                 "primary": "Understand the test",
@@ -1142,7 +1113,8 @@
                 "listening": "LISTENING",
                 "readWrite": "READING & WRITING"
             },
-            "imageAlt": "The FIDE test"
+            "imageAlt": "The FIDE test",
+            "title": "Complete guide to the <hs6>FIDE test</hs6>"
         },
         "FidePageOverview": {
             "titlePrefix": "What is the",
@@ -1161,7 +1133,9 @@
                     "prefix": "You don't choose a level when registering: your result places you between",
                     "strong": "A1 and B1",
                     "suffix": ". Results are split between oral and written, so you can retake only the part you didn't pass."
-                }
+                },
+                "p1Text": "The FIDE test assesses your French in real-life situations in Switzerland. It is notably required for the <b>B permit</b>, <b>C permit</b> or <b>naturalization</b>.",
+                "p2Text": "You don't choose a level when registering: your result places you between <b>A1 and B1</b>. Results are split between oral and written, so you can retake only the part you didn't pass."
             },
             "examParts": {
                 "oral": {
@@ -1197,9 +1171,11 @@
             },
             "ctaLine": {
                 "prefix": "Need speaking support?",
-                "linkLabel": "See private coaching"
+                "linkLabel": "See private coaching",
+                "text": "Need speaking support? <link>See private coaching</link>"
             },
-            "ctaGuide": "Read the full guide"
+            "ctaGuide": "Read the full guide",
+            "title": "What is the <hs6>FIDE test</hs6>?"
         },
         "FidePageStickyExams": {
             "sectionTitleHighlight": "The sections",
@@ -1224,7 +1200,8 @@
                 },
                 "ctaLine": {
                     "prefix": "Need guided training?",
-                    "linkLabel": "Private coaching"
+                    "linkLabel": "Private coaching",
+                    "text": "Need guided training? <link>Private coaching</link>"
                 },
                 "ctaGuide": "Read the full guide"
             },
@@ -1246,7 +1223,8 @@
                 },
                 "ctaLine": {
                     "prefix": "Train in the exact format?",
-                    "linkLabel": "Mock exams"
+                    "linkLabel": "Mock exams",
+                    "text": "Train in the exact format? <link>Mock exams</link>"
                 },
                 "ctaGuide": "Read the full guide"
             },
@@ -1270,7 +1248,8 @@
                 },
                 "ctaLine": {
                     "prefix": "Revise at your own pace?",
-                    "linkLabel": "FIDE Pack"
+                    "linkLabel": "FIDE Pack",
+                    "text": "Revise at your own pace? <link>FIDE Pack</link>"
                 },
                 "ctaGuide": "Read the full guide"
             }
@@ -1278,79 +1257,40 @@
         "FidePageTips": {
             "titleHighlight": "Tips",
             "titleSuffix": "and strategies for exam day",
-            "intro": {
-                "line1": "Preparing for FIDE is mostly about practicing the right situations and adopting a stable method.",
-                "goalLabel": "Goal:",
-                "line2": "arrive calm, understand instructions quickly, and answer precisely in both oral and written parts."
-            },
+            "intro": "Preparing for FIDE is mostly about practicing the right situations and adopting a stable method.<br></br><under5>Goal:</under5> arrive calm, understand instructions quickly, and answer precisely in both oral and written parts.",
             "videoTitle": "The FIDE test: Tips and strategies",
             "tips": {
                 "1": {
                     "label": "Targeted preparation",
-                    "text": {
-                        "prefix": "Prioritize the",
-                        "under1": "everyday topics",
-                        "middle": "with materials based on",
-                        "under2": "concrete scenarios"
-                    }
+                    "text": "Prioritize the <under5>everyday topics</under5>, with materials based on <under5>concrete scenarios</under5>."
                 },
                 "2": {
                     "label": "Exact format",
-                    "text": {
-                        "prefix": "Train with",
-                        "linkLabel": "FIDE mock exams",
-                        "suffixPrefix": "then complete with",
-                        "under": "DELF A1/A2/B1",
-                        "suffix": "to strengthen comprehension and production."
-                    }
+                    "text": "Train with <link>FIDE mock exams</link>, then complete with <under5>DELF A1/A2/B1</under5> to strengthen comprehension and production."
                 },
                 "3": {
                     "label": "Speaking work",
-                    "text": {
-                        "prefix": "Practice with a teacher:",
-                        "under1": "frequent scenarios",
-                        "middle": "possible questions, useful phrasing, and",
-                        "under2": "introductory questions"
-                    }
+                    "text": "Practice with a teacher: <under5>frequent scenarios</under5>, possible questions, useful phrasing, and <under5>introductory questions</under5>."
                 }
             },
             "keyPoints": {
                 "title": "Key points to review",
                 "items": {
-                    "1": {
-                        "under": "Image description and role-play",
-                        "rest": ": prepare simple, reusable structures."
-                    },
-                    "2": {
-                        "under": "Essential tenses",
-                        "rest": ": present, past, imperfect, future and conditional (B1)."
-                    },
-                    "3": {
-                        "under": "Listening comprehension",
-                        "rest": ": use the second listen and focus on dates, times, numbers."
-                    }
+                    "1": "<under5>Image description and role-play</under5>: prepare simple, reusable structures.",
+                    "2": "<under5>Essential tenses</under5>: present, past, imperfect, future and conditional (B1).",
+                    "3": "<under5>Listening comprehension</under5>: use the second listen and focus on dates, times, numbers."
                 }
             },
             "examDay": {
                 "title": "On exam day",
                 "items": {
-                    "1": {
-                        "under": "Stay calm",
-                        "rest": ", articulate, and ask to repeat if needed."
-                    },
-                    "2": {
-                        "prefix": "For the written part,",
-                        "under": "read instructions to the end",
-                        "suffix": "and answer exactly what is asked."
-                    },
-                    "3": {
-                        "prefix": "Keep",
-                        "under": "2 minutes for a final review",
-                        "suffix": "to correct avoidable mistakes."
-                    }
+                    "1": "<under5>Stay calm</under5>, articulate, and ask to repeat if needed.",
+                    "2": "For the written part, <under5>read instructions to the end</under5> and answer exactly what is asked.",
+                    "3": "Keep <under5>2 minutes for a final review</under5> to correct avoidable mistakes."
                 }
             },
-            "ctaArticle": "Read the full article: tips and strategies"
+            "ctaArticle": "Read the full article: tips and strategies",
+            "title": "<hs5>Tips</hs5> and strategies for exam day"
         },
         "FidePageDetailedGuides": {
             "titleHighlight": "Go further",
@@ -1360,7 +1300,8 @@
             "packageTitle": "Free",
             "moduleTitle": "In-depth guides",
             "fallbackTitle": "FIDE guide",
-            "fallbackDescription": "Practical tips and method to succeed in the FIDE test."
+            "fallbackDescription": "Practical tips and method to succeed in the FIDE test.",
+            "title": "<hs6>Go further</hs6> with detailed guides"
         },
         "FidePageHub": {
             "titlePrefix": "Move from",
@@ -1386,10 +1327,12 @@
                     "cta": "See private coaching",
                     "imageAlt": "Preview of private FIDE coaching"
                 }
-            }
+            },
+            "title": "Choose your <hs6>prep format</hs6>"
         },
         "PrivateCoursesHero": {
             "title": {
+                "full": "Prepare for the<br></br>FIDE test with<br></br>private<br></br><hs2>coaching</hs2>",
                 "line1": "Prepare for the",
                 "line2": "FIDE test with",
                 "line3": "private",
@@ -1423,7 +1366,8 @@
                 "prefix": "Tailor your plan:",
                 "cta": "choose your hours",
                 "suffix": ".",
-                "close": "Close"
+                "close": "Close",
+                "text": "Make it your own: <link>choose your hours</link>."
             },
             "plans": {
                 "lastMinute": {
@@ -1431,12 +1375,20 @@
                     "description": {
                         "prefix": "Ideal if your exam is",
                         "bold": "soon",
-                        "suffix": ": immediate focus on your blocking points."
+                        "suffix": ": immediate focus on your blocking points.",
+                        "text": "Ideal if your exam is <b>soon</b>: immediate focus on your blocking points."
                     },
                     "descriptionText": "Ideal if your exam is soon: immediate focus on your blocking points.",
                     "priceFallback": "65 CHF/hour",
-                    "features": ["Quick speaking diagnosis", "1-2 priority scenarios", "Immediate corrections"],
-                    "extras": ["Quick time slots", "7-day action plan"],
+                    "features": [
+                        "Quick speaking diagnosis",
+                        "1-2 priority scenarios",
+                        "Immediate corrections"
+                    ],
+                    "extras": [
+                        "Quick time slots",
+                        "7-day action plan"
+                    ],
                     "ctaLabel": "Reassure before the test"
                 },
                 "scenarios6h": {
@@ -1444,12 +1396,20 @@
                     "description": {
                         "prefix": "The recommended format to master",
                         "bold": "current scenarios",
-                        "suffix": "of the FIDE test."
+                        "suffix": "of the FIDE test.",
+                        "text": "The recommended format to master <b>current scenarios</b> of the FIDE test."
                     },
                     "descriptionText": "The recommended format to master current FIDE test scenarios.",
                     "priceFallback": "390 CHF",
-                    "features": ["Recent A1-A2 / A2-B1 scenarios", "Useful and current vocabulary", "Visible progress session after session"],
-                    "extras": ["Priorities between sessions", "Clear method for exam day"],
+                    "features": [
+                        "Recent A1-A2 / A2-B1 scenarios",
+                        "Useful and current vocabulary",
+                        "Visible progress session after session"
+                    ],
+                    "extras": [
+                        "Priorities between sessions",
+                        "Clear method for exam day"
+                    ],
                     "ctaLabel": "Prepare effectively"
                 },
                 "intensive": {
@@ -1457,12 +1417,20 @@
                     "description": {
                         "prefix": "Stronger",
                         "bold": "support",
-                        "suffix": "if you have a short deadline or an ambitious goal."
+                        "suffix": "if you have a short deadline or an ambitious goal.",
+                        "text": "Stronger <b>support</b> if you have a short deadline or an ambitious goal."
                     },
                     "descriptionText": "Stronger support if you have a short deadline or an ambitious goal.",
                     "priceFallback": "From 10h personalized",
-                    "features": ["Intensive plan based on your date", "Simulations in real conditions", "Coaching speaking + comprehension"],
-                    "extras": ["Close follow-up", "Speaking stress-reduction tips"],
+                    "features": [
+                        "Intensive plan based on your date",
+                        "Simulations in real conditions",
+                        "Coaching speaking + comprehension"
+                    ],
+                    "extras": [
+                        "Close follow-up",
+                        "Speaking stress-reduction tips"
+                    ],
                     "ctaLabel": "BOOK A FREE CONSULTATION"
                 }
             },
@@ -1500,12 +1468,14 @@
                 "title": "FIDE mock exams",
                 "description": "Train in realistic conditions and track your progress before exam day.",
                 "cta": "See mock exams"
-            }
+            },
+            "title": "Complete your <hs2>FIDE preparation</hs2>"
         },
         "PrivateCoursesPage": {
             "offersTitle": {
                 "prefix": "Choose your pace of",
-                "highlight": "private coaching"
+                "highlight": "private coaching",
+                "text": "Choose your pace of <hs2>private coaching</hs2>"
             },
             "offersSubtitle": "Choose a clear plan based on your timeline and current level.",
             "faqTitleSuffix": "for private FIDE coaching",
@@ -1520,6 +1490,9 @@
                 "name": "Private FIDE coaching online",
                 "description": "Personalized one-to-one coaching for FIDE test preparation (A1-A2 / A2-B1).",
                 "brand": "Start French Now"
+            },
+            "faqTitle": {
+                "text": "<hs2>FAQ</hs2> for private FIDE coaching"
             }
         },
         "PrivateCoursesFaq": {
@@ -1569,11 +1542,7 @@
         "PackFideHero": {
             "titlePrefix": "Pass the test with the",
             "titleHighlight": "FIDE Pack",
-            "subtitle": {
-                "prefix": "A clear and complete preparation with guided videos,",
-                "bold": "current scenarios",
-                "suffix": "explained and mock exams."
-            },
+            "subtitle": "A clear and complete preparation with guided videos, <b><under6>current scenarios</under6></b> explained and mock exams.",
             "ctaOffers": {
                 "label": "Offers",
                 "aria": "See the offers"
@@ -1585,33 +1554,25 @@
             "images": {
                 "desktopAlt": "Desktop preview of the FIDE pack",
                 "mobileAlt": "Mobile preview of the FIDE pack"
-            }
+            },
+            "title": "Pass the test with the <hs6>FIDE Pack</hs6>"
         },
         "PackFideWhatIs": {
             "titlePrefix": "What is the",
             "titleHighlight": "FIDE pack",
             "titleSuffix": "?",
             "bullets": {
-                "1": {
-                    "prefix": "Reach your FIDE goals with the",
-                    "bold": "most complete e-learning platform",
-                    "suffix": "for the exam."
-                },
-                "2": {
-                    "prefix": "Practice directly on",
-                    "bold": "current scenarios",
-                    "suffix": "from the exam, always up to date."
-                },
-                "3": {
-                    "prefix": "Benefit from continuous support from a true",
-                    "bold": "FIDE expert"
-                }
+                "1": "Reach your FIDE goals with the <b><under4>most complete e-learning platform</under4></b> for the exam.",
+                "2": "Practice directly on <b><under5>current scenarios</under5></b> from the exam, always up to date.",
+                "3": "Benefit from continuous support from a true <b><under2>FIDE expert</under2></b>."
             },
             "videoSubtitle": "Discover our FIDE preparation",
             "proof": {
                 "prefix": "A",
-                "highlight": "proven method"
-            }
+                "highlight": "proven method",
+                "text": "A <hs6>proven method</hs6>"
+            },
+            "title": "What is the <hs6>FIDE pack</hs6>?"
         },
         "PackFideNextSteps": {
             "badge": "Complete your preparation",
@@ -1630,7 +1591,8 @@
                 "title": "Private FIDE coaching",
                 "description": "Strengthen weak points with 1:1 sessions tailored to your specific needs.",
                 "cta": "See private coaching"
-            }
+            },
+            "title": "Add an extra layer of <hs6>confidence</hs6> before exam day"
         },
         "PackFidePricing": {
             "titleHighlight": "Choose",
@@ -1641,10 +1603,18 @@
                     "title": "Self-Study Pack",
                     "description": {
                         "prefix": "Access our FIDE self-study platform from complete beginner to B1 level and progress",
-                        "bold": "at your own pace"
+                        "bold": "at your own pace",
+                        "text": "Access our FIDE self-study platform from complete beginner to B1 level and progress <b>at your own pace</b>."
                     },
-                    "features": ["14h of FIDE video content, A0 → B1", "100+ scenarios including current topics", "Progress tracking + messaging"],
-                    "extras": ["Regular updates", "Progression guaranteed"],
+                    "features": [
+                        "14h of FIDE video content, A0 → B1",
+                        "100+ scenarios including current topics",
+                        "Progress tracking + messaging"
+                    ],
+                    "extras": [
+                        "Regular updates",
+                        "Progression guaranteed"
+                    ],
                     "cta": "GET THE TRAINING"
                 },
                 "guided": {
@@ -1653,10 +1623,18 @@
                         "prefix": "Prepare for the exam via our",
                         "bold1": "self-study platform",
                         "middle": "then practice FIDE scenarios with 6 hours of",
-                        "bold2": "private coaching"
+                        "bold2": "private coaching",
+                        "text": "Prepare for the exam via our <b>self-study platform</b>, then practice FIDE scenarios with 6 hours of <b>private coaching</b>."
                     },
-                    "features": ["All benefits of the FIDE Essentials", "6 hours of private online lessons", "Expert and personalised advice"],
-                    "extras": ["Save 75 CHF on coaching", "Booking possible within 12h"],
+                    "features": [
+                        "All benefits of the FIDE Essentials",
+                        "6 hours of private online lessons",
+                        "Expert and personalised advice"
+                    ],
+                    "extras": [
+                        "Save 75 CHF on coaching",
+                        "Booking possible within 12h"
+                    ],
                     "cta": "CHOOSE THE HYBRID PLAN"
                 }
             },
@@ -1668,7 +1646,8 @@
                 "2": "Current scenarios",
                 "3": "Direct feedback"
             },
-            "privateCta": "See private lessons"
+            "privateCta": "See private lessons",
+            "title": "<hs6>Choose</hs6> your plan"
         },
         "PackFidePage": {
             "breadcrumbs": {
@@ -1704,27 +1683,32 @@
                     "combine": {
                         "title": "Can I combine the pack with private coaching?",
                         "content": "Yes. Many learners combine e-learning with 1:1 coaching. The guided pack already includes closer support and targeted work on current FIDE scenarios. If you want even more personalized support, you can add private lessons.",
-                        "cta": "See private coaching"
+                        "cta": "See private coaching",
+                        "contentRich": "Yes. Many learners combine e-learning with 1:1 coaching. The guided pack already includes closer support and targeted work on current FIDE scenarios. If you want even more personalized support, you can add private lessons: <link>see private coaching</link>."
                     },
                     "freeOption": {
                         "title": "Is there a free option before purchasing?",
                         "content": "Yes. You can start with free videos and previews to test the method before buying.",
-                        "cta": "Access free videos"
+                        "cta": "Access free videos",
+                        "contentRich": "Yes. You can start with free videos and previews to test the method before buying: <link>access free videos</link>."
                     },
                     "speaking": {
                         "title": "Is the pack enough for speaking preparation as well?",
                         "content": "Yes, the pack covers essential speaking foundations. If you need direct, personalized feedback, add supervised mock exams or private coaching.",
                         "ctaMock": "supervised mock exams",
                         "ctaSeparator": "or",
-                        "ctaPrivate": "private coaching"
+                        "ctaPrivate": "private coaching",
+                        "contentRich": "Yes, the pack covers essential speaking foundations. If you need direct, personalized feedback, add <mock>supervised mock exams</mock> or <private>private coaching</private>."
                     },
                     "choose": {
                         "title": "How should I choose between plans?",
                         "content": "If you are unsure which plan fits you best,",
                         "cta": "book a free consultation",
-                        "tail": "Your teacher can help you define a personalized plan based on your current level, timeline, and target."
+                        "tail": "Your teacher can help you define a personalized plan based on your current level, timeline, and target.",
+                        "contentRich": "If you are unsure which plan fits you best, <link>book a free consultation</link>. Your teacher can help you define a personalized plan based on your current level, timeline, and target."
                     }
-                }
+                },
+                "title": "<hs6>FAQ</hs6> for the FIDE Pack"
             }
         },
         "MockExamsPage": {
@@ -1738,6 +1722,7 @@
                 "regularPriceName": "Regular price"
             },
             "Hero": {
+                "title": "<hs5>Mock exam</hs5> FIDE",
                 "titlePrefix": "Mock exam",
                 "titleHighlight": "FIDE",
                 "subtitle": "Take a full test, get an instant score, and leave with a clear action plan.",
@@ -1780,6 +1765,7 @@
             },
             "Tests": {
                 "badge": "FIDE test sections",
+                "title": "The same <hs5>sections</hs5> as in the FIDE test?",
                 "titlePrefix": "The same",
                 "titleHighlight": "sections",
                 "titleSuffix": "as in the FIDE test?",
@@ -1814,6 +1800,7 @@
             },
             "Online": {
                 "badge": "Online preview",
+                "title": "Taking the FIDE test <hs5>online</hs5>?",
                 "titlePrefix": "Taking the FIDE test",
                 "titleHighlight": "online",
                 "titleSuffix": "?",
@@ -1842,12 +1829,14 @@
             },
             "Reviews": {
                 "badge": "Client feedback",
+                "title": "<hs5>Client experiences</hs5> with FIDE content",
                 "titleHighlight": "Client experiences",
                 "titleSuffix": "with FIDE content",
                 "subtitle": "Read testimonials from learners who used Start French Now FIDE content to improve."
             },
             "Offer": {
                 "badge": "Pricing",
+                "title": "Discovery <hs5>offer</hs5>",
                 "titlePrefix": "Discovery",
                 "titleHighlight": "offer",
                 "subtitle": "Only one purchase is available for now: your first full mock exam at a reduced price.",
@@ -1881,6 +1870,7 @@
             },
             "Faq": {
                 "badge": "Mock-exam FAQ",
+                "title": "Your <hs5>questions</hs5>,<br></br>our answers",
                 "titlePrefix": "Your",
                 "titleHighlight": "questions",
                 "titleSuffix": "our answers",
@@ -1946,6 +1936,7 @@
             },
             "NextSteps": {
                 "badge": "Go further",
+                "title": "Do you want a more <hs5>complete support plan</hs5>?",
                 "titlePrefix": "Do you want a more complete",
                 "titleHighlight": "support plan",
                 "titleSuffix": "?",
@@ -2344,7 +2335,9 @@
                 "savePercent": "Save {percent}%",
                 "saveAmount": "Save {amount}"
             },
-            "OtherCourses": { "title": "See <hs2>other courses</hs2>" },
+            "OtherCourses": {
+                "title": "See <hs2>other courses</hs2>"
+            },
             "LastComments": {
                 "title": "<hs2>Feedback</hs2> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",
@@ -2406,7 +2399,9 @@
                 "savePercent": "Save {percent}%",
                 "saveAmount": "Save {amount}"
             },
-            "OtherCourses": { "title": "See <hs4>other courses</hs4>" },
+            "OtherCourses": {
+                "title": "See <hs4>other courses</hs4>"
+            },
             "LastComments": {
                 "title": "<hs4>Feedback</hs4> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",
@@ -2471,7 +2466,9 @@
                 "savePercent": "Save {percent}%",
                 "saveAmount": "Save {amount}"
             },
-            "OtherCourses": { "title": "See <hs5>other courses</hs5>" },
+            "OtherCourses": {
+                "title": "See <hs5>other courses</hs5>"
+            },
             "LastComments": {
                 "title": "<hs5>Feedback</hs5> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",
@@ -2537,7 +2534,9 @@
                 "level3": "Getting comfortable speaking in the past",
                 "level4": "Tell a story in the past, using the right tenses"
             },
-            "OtherCourses": { "title": "See <hs3>other courses</hs3>" },
+            "OtherCourses": {
+                "title": "See <hs3>other courses</hs3>"
+            },
             "LastComments": {
                 "title": "<hs3>Feedback</hs3> & Experiences",
                 "description": "Here's what our students say about this course. Form your own opinion on the quality of our teaching and the effectiveness of our method.",

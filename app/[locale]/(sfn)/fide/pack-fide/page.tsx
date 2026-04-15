@@ -18,6 +18,7 @@ import { ContactForFide } from "../components/ContactForFide";
 import { DeferredPackFideExamsSection } from "./components/DeferredPackFideExamsSection";
 import { DeferredPackFideReviews } from "./components/DeferredPackFideReviews";
 import { getTranslations } from "next-intl/server";
+import { intelRich } from "@/app/lib/intelRich";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 const queryProductBySlug = groq`*[_type=='product' && slug.current == $slug][0]`;
@@ -33,6 +34,15 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
     const locale = normalizeLocale(params.locale);
     const isFr = locale === "fr";
     const t = await getTranslations({ locale, namespace: "Fide.PackFidePage" });
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+    };
 
     const [autonomieProduct, accompagneProduct] = await Promise.all([
         client.fetch<ProductFetch>(queryProductBySlug, { slug: "pack-fide" }),
@@ -86,11 +96,14 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             answer: t("faq.items.combine.content"),
             content: (
                 <p className="mb-0">
-                    {t("faq.items.combine.content")}{" "}
-                    <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
-                        {t("faq.items.combine.cta")}
-                    </Link>
-                    .
+                    {t.rich("faq.items.combine.contentRich", {
+                        ...rich,
+                        link: (chunks: ReactNode) => (
+                            <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
+                                {chunks}
+                            </Link>
+                        ),
+                    })}
                 </p>
             ),
         },
@@ -99,11 +112,14 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             answer: t("faq.items.freeOption.content"),
             content: (
                 <p className="mb-0">
-                    {t("faq.items.freeOption.content")}{" "}
-                    <Link href="/fide/videos" className="font-semibold text-secondary-6 underline">
-                        {t("faq.items.freeOption.cta")}
-                    </Link>
-                    .
+                    {t.rich("faq.items.freeOption.contentRich", {
+                        ...rich,
+                        link: (chunks: ReactNode) => (
+                            <Link href="/fide/videos" className="font-semibold text-secondary-6 underline">
+                                {chunks}
+                            </Link>
+                        ),
+                    })}
                 </p>
             ),
         },
@@ -112,15 +128,19 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             answer: t("faq.items.speaking.content"),
             content: (
                 <p className="mb-0">
-                    {t("faq.items.speaking.content")}{" "}
-                    <Link href="/fide/mock-exams" className="font-semibold text-secondary-5 underline">
-                        {t("faq.items.speaking.ctaMock")}
-                    </Link>{" "}
-                    {t("faq.items.speaking.ctaSeparator")}{" "}
-                    <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
-                        {t("faq.items.speaking.ctaPrivate")}
-                    </Link>
-                    .
+                    {t.rich("faq.items.speaking.contentRich", {
+                        ...rich,
+                        mock: (chunks: ReactNode) => (
+                            <Link href="/fide/mock-exams" className="font-semibold text-secondary-5 underline">
+                                {chunks}
+                            </Link>
+                        ),
+                        private: (chunks: ReactNode) => (
+                            <Link href="/fide/private-courses" className="font-semibold text-secondary-2 underline">
+                                {chunks}
+                            </Link>
+                        ),
+                    })}
                 </p>
             ),
         },
@@ -129,11 +149,14 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             answer: t("faq.items.choose.content"),
             content: (
                 <p className="mb-0">
-                    {t("faq.items.choose.content")}{" "}
-                    <Link href="/fide/pack-fide#ContactForFIDECourses" className="font-semibold text-secondary-6 underline">
-                        {t("faq.items.choose.cta")}
-                    </Link>
-                    . {t("faq.items.choose.tail")}
+                    {t.rich("faq.items.choose.contentRich", {
+                        ...rich,
+                        link: (chunks: ReactNode) => (
+                            <Link href="/fide/pack-fide#ContactForFIDECourses" className="font-semibold text-secondary-6 underline">
+                                {chunks}
+                            </Link>
+                        ),
+                    })}
                 </p>
             ),
         },
@@ -243,11 +266,7 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
                 <div className="max-w-7xl m-auto">
                     <FideFaq
                         variant="thin"
-                        title={
-                            <>
-                                <span className="heading-span-secondary-6">FAQ</span> {t("faq.titleSuffix")}
-                            </>
-                        }
+                        title={t.rich("faq.title", rich)}
                         subtitle={t("faq.subtitle")}
                         items={faqItems.map((item) => ({
                             title: item.question,

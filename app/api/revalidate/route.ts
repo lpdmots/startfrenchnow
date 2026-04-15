@@ -8,11 +8,15 @@ export const runtime = "nodejs";
 type SanityWebhookPayload = {
     _id?: string;
     _type?: string;
+    _dataset?: string;
+    dataset?: string;
     slug?: string | { current?: string };
     categories?: string[];
     document?: {
         _id?: string;
         _type?: string;
+        _dataset?: string;
+        dataset?: string;
         slug?: string | { current?: string };
         categories?: string[];
     };
@@ -20,6 +24,18 @@ type SanityWebhookPayload = {
 
 function getSecret(request: NextRequest) {
     return request.nextUrl.searchParams.get("secret") || request.headers.get("x-webhook-secret");
+}
+
+function getDataset(request: NextRequest, payload: SanityWebhookPayload): string | undefined {
+    return (
+        request.nextUrl.searchParams.get("dataset") ||
+        request.headers.get("sanity-dataset") ||
+        request.headers.get("x-sanity-dataset") ||
+        payload._dataset ||
+        payload.dataset ||
+        payload.document?._dataset ||
+        payload.document?.dataset
+    )?.trim();
 }
 
 function getSlug(payload: SanityWebhookPayload): string | undefined {
@@ -46,16 +62,21 @@ function isBlogPayload(payload: SanityWebhookPayload) {
 function addPath(paths: Set<string>, path: string, options?: { withFr?: boolean }) {
     const withFr = options?.withFr ?? true;
     paths.add(path);
-    if (!withFr || path.startsWith("/fr")) return;
+    // Keep locale-prefixed internal paths too because cache keys can be /en/... or /fr/... in production.
     if (path === "/") {
-        paths.add("/fr");
+        paths.add("/en");
+        if (withFr) paths.add("/fr");
         return;
     }
-    paths.add(`/fr${path}`);
+
+    if (path.startsWith("/en") || path.startsWith("/fr")) return;
+    paths.add(`/en${path}`);
+    if (withFr) paths.add(`/fr${path}`);
 }
 
 export async function POST(request: NextRequest) {
     const configuredSecret = process.env.SANITY_REVALIDATE_SECRET;
+    const expectedDataset = process.env.SANITY_REVALIDATE_DATASET || "startfrenchnow";
     if (!configuredSecret) {
         return NextResponse.json({ ok: false, message: "SANITY_REVALIDATE_SECRET is missing" }, { status: 500 });
     }
@@ -70,6 +91,19 @@ export async function POST(request: NextRequest) {
         payload = (await request.json()) as SanityWebhookPayload;
     } catch {
         // Some sanity webhook setups may send an empty body for ping checks.
+    }
+
+    const receivedDataset = getDataset(request, payload);
+    if (receivedDataset !== expectedDataset) {
+        return NextResponse.json(
+            {
+                ok: false,
+                message: "Invalid dataset",
+                expectedDataset,
+                receivedDataset: receivedDataset ?? null,
+            },
+            { status: 400 }
+        );
     }
 
     const paths = new Set<string>();
@@ -110,6 +144,14 @@ export async function POST(request: NextRequest) {
     const patterns: string[] = [];
     if (isBlogPayload(payload)) {
         // Defensive invalidation for slug/category changes when webhook payload is incomplete.
+        revalidatePath("/[locale]/blog/post/[slug]", "page");
+        revalidatePath("/[locale]/blog/category/[slug]", "page");
+        patterns.push("/[locale]/blog/post/[slug]", "/[locale]/blog/category/[slug]");
+
+        revalidatePath("/en/blog/post/[slug]", "page");
+        revalidatePath("/en/blog/category/[slug]", "page");
+        patterns.push("/en/blog/post/[slug]", "/en/blog/category/[slug]");
+
         revalidatePath("/blog/post/[slug]", "page");
         revalidatePath("/fr/blog/post/[slug]", "page");
         revalidatePath("/blog/category/[slug]", "page");
@@ -124,6 +166,7 @@ export async function POST(request: NextRequest) {
         received: {
             _id: payload._id ?? payload.document?._id ?? null,
             _type: payload._type ?? payload.document?._type ?? null,
+            dataset: receivedDataset ?? null,
             slug: slug ?? null,
             categories,
         },

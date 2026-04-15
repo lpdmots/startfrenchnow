@@ -8,7 +8,7 @@ import { CATEGORIESTEXTCOLORS } from "@/app/lib/constantes";
 import { cn } from "@/app/lib/schadcn-utils";
 
 interface Props {
-    children: string | JSX.Element;
+    children: React.ReactNode;
     url: string;
     target?: string;
     rel?: string;

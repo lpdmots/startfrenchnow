@@ -25,6 +25,57 @@ type FideFaqProps = {
 
 export function FideFaq({ title, subtitle, items, variant = "default", showHeader = true, className = "", maxWidthClassName = "max-w-5xl" }: FideFaqProps = {}) {
     const t = useTranslations("Fide.FideFAQ");
+    const rich = intelRich();
+    const quickAdviceRich = {
+        ...rich,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="#ContactForFIDECourses" target="_self" className="text-sm font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
+    const trainFormatRich = {
+        ...rich,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/mock-exams" target="_self" className="text-sm font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
+    const structuredPathRich = {
+        ...rich,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/pack-fide" target="_self" className="font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
+    const guidedPracticeRich = {
+        ...rich,
+        private: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+        mock: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
+    const oralPracticeRich = {
+        ...rich,
+        private: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+        mock: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
 
     const data: FideFaqItem[] = items ?? [
         {
@@ -45,12 +96,7 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
                     <p>{t("de_quel_niveau_besoin.content.part2")}</p>
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <LinkArrow url="https://fide-info.ch/doc/708/fideFR_CompetencesLinguistiques.pdf">{t("de_quel_niveau_besoin.content.link")}</LinkArrow>
-                        <span className="text-sm text-neutral-600">
-                            {t("quickAdvice.prefix")}{" "}
-                            <LinkArrow url="#ContactForFIDECourses" target="_self" className="text-sm font-semibold inline-flex">
-                                {t("quickAdvice.cta")}
-                            </LinkArrow>
-                        </span>
+                        <span className="text-sm text-neutral-600">{t.rich("quickAdvice.text", quickAdviceRich)}</span>
                     </div>
                 </>
             ),
@@ -64,12 +110,7 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
                         <LinkArrow url="https://fide-service.ch/en/proofs/fide-test/#:~:text=The%20fide%20test%20assesses%20your,Secretariat%20for%20Migration%20(SEM)">
                             {t("ou_et_quand_passer_examen.content.link")}
                         </LinkArrow>
-                        <span className="text-sm text-neutral-600">
-                            {t("trainFormat.prefix")}{" "}
-                            <LinkArrow url="/fide/mock-exams" target="_self" className="text-sm font-semibold inline-flex">
-                                {t("trainFormat.cta")}
-                            </LinkArrow>
-                        </span>
+                        <span className="text-sm text-neutral-600">{t.rich("trainFormat.text", trainFormatRich)}</span>
                     </div>
                 </div>
             ),
@@ -132,24 +173,8 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
                 <>
                     <p>{t("preparation_examen.content.part1")}</p>
                     <p>{t("preparation_examen.content.part2")}</p>
-                    <p>
-                        {t("structuredPath.prefix")}{" "}
-                        <LinkArrow url="/fide/pack-fide" target="_self" className="font-semibold inline-flex">
-                            {t("structuredPath.cta")}
-                        </LinkArrow>
-                        .
-                    </p>
-                    <p className="mb-0">
-                        {t("guidedPractice.prefix")}{" "}
-                        <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
-                            {t("guidedPractice.privateCta")}
-                        </LinkArrow>{" "}
-                        {t("guidedPractice.separator")}{" "}
-                        <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
-                            {t("guidedPractice.mockCta")}
-                        </LinkArrow>
-                        .
-                    </p>
+                    <p>{t.rich("structuredPath.text", structuredPathRich)}</p>
+                    <p className="mb-0">{t.rich("guidedPractice.text", guidedPracticeRich)}</p>
                 </>
             ),
         },
@@ -158,17 +183,7 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
             content: (
                 <>
                     <p>{t("sujets_oral_examen.content.part1")}</p>
-                    <p>
-                        {t("oralPractice.prefix")}{" "}
-                        <LinkArrow url="/fide/private-courses" target="_self" className="font-semibold inline-flex">
-                            {t("oralPractice.privateCta")}
-                        </LinkArrow>{" "}
-                        {t("oralPractice.separator")}{" "}
-                        <LinkArrow url="/fide/mock-exams" target="_self" className="font-semibold inline-flex">
-                            {t("oralPractice.mockCta")}
-                        </LinkArrow>
-                        .
-                    </p>
+                    <p>{t.rich("oralPractice.text", oralPracticeRich)}</p>
                 </>
             ),
         },

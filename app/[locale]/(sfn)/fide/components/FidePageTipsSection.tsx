@@ -1,21 +1,38 @@
 import { FideLiteYoutubeEmbed } from "./FideLiteYoutubeEmbed";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function FidePageTipsSection() {
     const t = useTranslations("Fide.FidePageTips");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+    };
+    const richWithBreak = {
+        ...rich,
+        br: () => <br />,
+    };
+    const richWithLink = {
+        ...rich,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/mock-exams" target="_self" className="!text-lg font-semibold !text-secondary-5 hover:!text-secondary-5 inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
 
     return (
         <section id="fide-tips" className="py-16 lg:py-24 bg-neutral-800">
             <div className="max-w-7xl m-auto px-4 lg:px-8">
-                <h2 className="display-2 mb-4 text-neutral-100">
-                    <span className="heading-span-secondary-5">{t("titleHighlight")}</span> {t("titleSuffix")}
-                </h2>
-                <p className="mb-0 text-neutral-200 text-justify">
-                    {t("intro.line1")}
-                    <br />
-                    <b className="underline decoration-2 decoration-secondary-5">{t("intro.goalLabel")}</b> {t("intro.line2")}
-                </p>
+                <h2 className="display-2 mb-4 text-neutral-100">{t.rich("title", rich)}</h2>
+                <p className="mb-0 text-neutral-200 text-justify">{t.rich("intro", richWithBreak)}</p>
 
                 <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] items-start">
                     <div>
@@ -25,30 +42,15 @@ export function FidePageTipsSection() {
                     <div className="space-y-6">
                         <div className="pl-4 border-l-4 border-secondary-6">
                             <p className="mb-1 text-sm font-bold uppercase tracking-wide text-neutral-300">{t("tips.1.label")}</p>
-                            <p className="mb-0 text-neutral-200">
-                                {t("tips.1.text.prefix")}
-                                <span className="underline decoration-2 decoration-secondary-5">{t("tips.1.text.under1")}</span>, {t("tips.1.text.middle")}{" "}
-                                <span className="underline decoration-2 decoration-secondary-5">{t("tips.1.text.under2")}</span>.
-                            </p>
+                            <p className="mb-0 text-neutral-200">{t.rich("tips.1.text", rich)}</p>
                         </div>
                         <div className="pl-4 border-l-4 border-secondary-2">
                             <p className="mb-1 text-sm font-bold uppercase tracking-wide text-neutral-300">{t("tips.2.label")}</p>
-                            <p className="mb-0 text-neutral-200">
-                                {t("tips.2.text.prefix")}{" "}
-                                <LinkArrow url="/fide/mock-exams" target="_self" className="!text-lg font-semibold !text-secondary-5 hover:!text-secondary-5 inline-flex">
-                                    {t("tips.2.text.linkLabel")}
-                                </LinkArrow>
-                                , {t("tips.2.text.suffixPrefix")} <span className="underline decoration-2 decoration-secondary-5">{t("tips.2.text.under")}</span>{" "}
-                                {t("tips.2.text.suffix")}
-                            </p>
+                            <p className="mb-0 text-neutral-200">{t.rich("tips.2.text", richWithLink)}</p>
                         </div>
                         <div className="pl-4 border-l-4 border-secondary-5">
                             <p className="mb-1 text-sm font-bold uppercase tracking-wide text-neutral-300">{t("tips.3.label")}</p>
-                            <p className="mb-0 text-neutral-200">
-                                {t("tips.3.text.prefix")}
-                                <span className="underline decoration-2 decoration-secondary-5">{t("tips.3.text.under1")}</span>, {t("tips.3.text.middle")}{" "}
-                                <span className="underline decoration-2 decoration-secondary-5">{t("tips.3.text.under2")}</span>.
-                            </p>
+                            <p className="mb-0 text-neutral-200">{t.rich("tips.3.text", rich)}</p>
                         </div>
                     </div>
                 </div>
@@ -59,24 +61,15 @@ export function FidePageTipsSection() {
                         <ul className="mb-0 list-none pl-0 space-y-3">
                             <li className="flex items-start gap-3 text-neutral-200">
                                 <div className="bullet bg-secondary-6 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                <span>
-                                    <span className="underline decoration-2 decoration-secondary-5">{t("keyPoints.items.1.under")}</span>
-                                    {t("keyPoints.items.1.rest")}
-                                </span>
+                                <span>{t.rich("keyPoints.items.1", rich)}</span>
                             </li>
                             <li className="flex items-start gap-3 text-neutral-200">
                                 <div className="bullet bg-secondary-5 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                <span>
-                                    <span className="underline decoration-2 decoration-secondary-5">{t("keyPoints.items.2.under")}</span>
-                                    {t("keyPoints.items.2.rest")}
-                                </span>
+                                <span>{t.rich("keyPoints.items.2", rich)}</span>
                             </li>
                             <li className="flex items-start gap-3 text-neutral-200">
                                 <div className="bullet bg-secondary-2 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                <span>
-                                    <span className="underline decoration-2 decoration-secondary-5">{t("keyPoints.items.3.under")}</span>
-                                    {t("keyPoints.items.3.rest")}
-                                </span>
+                                <span>{t.rich("keyPoints.items.3", rich)}</span>
                             </li>
                         </ul>
                     </div>
@@ -86,26 +79,15 @@ export function FidePageTipsSection() {
                         <ul className="mb-0 list-none pl-0 space-y-3">
                             <li className="flex items-start gap-3 text-neutral-200">
                                 <div className="bullet bg-secondary-4 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                <span>
-                                    <span className="underline decoration-2 decoration-secondary-5">{t("examDay.items.1.under")}</span>
-                                    {t("examDay.items.1.rest")}
-                                </span>
+                                <span>{t.rich("examDay.items.1", rich)}</span>
                             </li>
                             <li className="flex items-start gap-3 text-neutral-200">
                                 <div className="bullet bg-secondary-1 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                <span>
-                                    {t("examDay.items.2.prefix")}
-                                    <span className="underline decoration-2 decoration-secondary-5">{t("examDay.items.2.under")}</span>
-                                    {t("examDay.items.2.suffix")}
-                                </span>
+                                <span>{t.rich("examDay.items.2", rich)}</span>
                             </li>
                             <li className="flex items-start gap-3 text-neutral-200">
                                 <div className="bullet bg-secondary-6 mt-[1px] md:mt-1 shrink-0 scale-[0.85]"></div>
-                                <span>
-                                    {t("examDay.items.3.prefix")}
-                                    <span className="underline decoration-2 decoration-secondary-5">{t("examDay.items.3.under")}</span>
-                                    {t("examDay.items.3.suffix")}
-                                </span>
+                                <span>{t.rich("examDay.items.3", rich)}</span>
                             </li>
                         </ul>
                     </div>

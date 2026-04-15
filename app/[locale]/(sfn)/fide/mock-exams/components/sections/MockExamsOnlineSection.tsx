@@ -4,9 +4,20 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { VideoFide } from "../../../components/VideoFide";
 import { MockExamCheckoutCTA } from "../checkout/MockExamCheckoutCTA";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function MockExamsOnlineSection() {
     const t = useTranslations("Fide.MockExamsPage.Online");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+    };
 
     return (
         <section id="mock-exams-video" className="py-14 lg:py-24">
@@ -15,7 +26,7 @@ export function MockExamsOnlineSection() {
                     <div className="mx-auto mb-8 max-w-4xl text-center">
                         <p className="mb-2 inline-flex rounded-full bg-secondary-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
                         <h2 className="display-2 mb-3">
-                            {t("titlePrefix")} <span className="heading-span-secondary-5">{t("titleHighlight")}</span> {t("titleSuffix")}
+                            {t.rich("title", rich)}
                         </h2>
                         <p className="mb-0 text-base text-neutral-700 md:text-lg">{t("subtitle")}</p>
                     </div>

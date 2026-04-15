@@ -2,18 +2,27 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight, BookOpen, FileCheck2, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function FidePageHubSection() {
     const t = useTranslations("Fide.FidePageHub");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+    };
 
     return (
         <section id="fide-hub" className="py-16 lg:py-24">
             <div id="plans" className="scroll-mt-24" />
             <div className="max-w-7xl m-auto px-4 lg:px-8">
                 <div className="text-center mb-8">
-                    <h2 className="display-2 mb-4">
-                        {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span> {t("titleSuffix")}
-                    </h2>
+                    <h2 className="display-2 mb-4">{t.rich("title", rich)}</h2>
                     <p className="mb-0">{t("subtitle")}</p>
                 </div>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">

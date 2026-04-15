@@ -1,15 +1,24 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function FidePageHeroSection() {
     const t = useTranslations("Fide.FidePageHero");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+    };
 
     return (
         <div id="HeroFide" className="page-wrapper pt-12 pb-12 lg:pb-24 lg:min-h-[calc(100svh-150px)] lg:flex lg:items-center">
             <div className="max-w-7xl m-auto px-4 lg:px-8">
-                <h1 className="display-1 mb-6 lg:mb-10">
-                    {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span>
-                </h1>
+                <h1 className="display-1 mb-6 lg:mb-10">{t.rich("title", rich)}</h1>
 
                 <div className="grid lg:grid-cols-[1fr_1fr] gap-2 items-center">
                     <div>
@@ -17,22 +26,15 @@ export function FidePageHeroSection() {
                         <div className="flex flex-col gap-4 lg:gap-8 mb-6 lg:mb-8">
                             <div className="flex gap-3 lg:gap-4 items-start">
                                 <div className="bullet bg-secondary-6 mt-[1px] md:mt-1"></div>
-                                <p className="mb-0 text-base lg:text-2xl leading-tight">
-                                    <b className="underline decoration-secondary-6">{t("bullets.understand.bold")}</b> {t("bullets.understand.rest")}
-                                </p>
+                                <p className="mb-0 text-base lg:text-2xl leading-tight">{t.rich("bullets.understand", rich)}</p>
                             </div>
                             <div className="flex gap-3 lg:gap-4 items-start">
                                 <div className="bullet bg-secondary-5 mt-[1px] md:mt-1"></div>
-                                <p className="mb-0 text-base lg:text-2xl leading-tight">
-                                    {t("bullets.discover.prefix")} <b className="underline decoration-2 decoration-secondary-5">{t("bullets.discover.bold")}</b>
-                                    {t("bullets.discover.suffix")}
-                                </p>
+                                <p className="mb-0 text-base lg:text-2xl leading-tight">{t.rich("bullets.discover", rich)}</p>
                             </div>
                             <div className="flex gap-3 lg:gap-4 items-start">
                                 <div className="bullet bg-secondary-2 mt-[1px] md:mt-1"></div>
-                                <p className="mb-0 text-base lg:text-2xl leading-tight">
-                                    {t("bullets.apply.prefix")} <b className="underline decoration-secondary-2">{t("bullets.apply.bold")}</b> {t("bullets.apply.suffix")}
-                                </p>
+                                <p className="mb-0 text-base lg:text-2xl leading-tight">{t.rich("bullets.apply", rich)}</p>
                             </div>
                         </div>
                         <div className="flex flex-wrap gap-3">

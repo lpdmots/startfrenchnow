@@ -2,9 +2,20 @@ import { SlideFromBottom, SlideFromLeft } from "@/app/components/animations/Slid
 import { ChevronRight, CircleCheck, CircleDot, FileText, MessageSquare } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function MockExamsTestsSection() {
     const t = useTranslations("Fide.MockExamsPage.Tests");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+    };
 
     return (
         <section id="mock-exams-tests" className="bg-neutral-800 py-14 text-neutral-100 lg:py-24">
@@ -14,7 +25,7 @@ export function MockExamsTestsSection() {
                         <div className="lg:sticky lg:top-24 lg:self-start">
                             <p className="mb-2 inline-flex rounded-full bg-secondaryShades-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("badge")}</p>
                             <h2 className="display-2 mb-4 text-neutral-100">
-                                {t("titlePrefix")} <span className="heading-span-secondary-5">{t("titleHighlight")}</span> {t("titleSuffix")}
+                                {t.rich("title", rich)}
                             </h2>
                             <p className="mb-4 text-base text-neutral-200 md:text-lg">{t("subtitle")}</p>
                             <div className="space-y-2">

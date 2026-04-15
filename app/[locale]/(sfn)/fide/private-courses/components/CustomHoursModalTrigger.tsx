@@ -4,7 +4,7 @@ import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import type { Locale } from "@/i18n";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
-import { useRef, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import PriceSliderFide from "../../components/PriceSliderFide";
 
@@ -12,6 +12,13 @@ export function CustomHoursModalTrigger({ locale, callbackPath }: { locale: Loca
     const [isOpen, setIsOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
     const t = useTranslations("Fide.PrivateCoursesPricing.customHours");
+    const rich = {
+        link: (chunks: ReactNode) => (
+            <button type="button" onClick={() => setIsOpen(true)} className="text-secondary-2 cursor-pointer">
+                {chunks}
+            </button>
+        ),
+    };
 
     const close = () => setIsOpen(false);
     useOutsideClick(panelRef, () => setIsOpen(false));
@@ -19,13 +26,7 @@ export function CustomHoursModalTrigger({ locale, callbackPath }: { locale: Loca
     return (
         <>
             <div className="text-center text-sm text-neutral-600">
-                <p className="mb-0">
-                    {t("prefix")}{" "}
-                    <button type="button" onClick={() => setIsOpen(true)} className="text-secondary-2 cursor-pointer">
-                        {t("cta")}
-                    </button>
-                    {t("suffix")}
-                </p>
+                <p className="mb-0">{t.rich("text", rich)}</p>
             </div>
 
             <AnimatePresence>

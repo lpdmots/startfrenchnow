@@ -11,6 +11,7 @@ import { DeferredPrivateCoursesReviews } from "./components/DeferredPrivateCours
 import LinkArrow from "@/app/components/common/LinkArrow";
 import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
+import { intelRich } from "@/app/lib/intelRich";
 
 const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
 
@@ -27,19 +28,20 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
     const isFr = locale === "fr";
     const t = await getTranslations({ locale, namespace: "Fide.PrivateCoursesPage" });
     const faqT = await getTranslations({ locale, namespace: "Fide.PrivateCoursesFaq" });
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+    };
     const homePath = isFr ? "/fr" : "/";
     const fidePath = isFr ? "/fr/fide" : "/fide";
     const privateCoursesPath = isFr ? "/fr/fide/private-courses" : "/fide/private-courses";
-    const offersTitleNode = (
-        <>
-            {t("offersTitle.prefix")} <span className="heading-span-secondary-2">{t("offersTitle.highlight")}</span>
-        </>
-    );
-    const faqTitleNode = (
-        <>
-            <span className="heading-span-secondary-2">FAQ</span> {t("faqTitleSuffix")}
-        </>
-    );
+    const offersTitleNode = t.rich("offersTitle.text", rich);
+    const faqTitleNode = t.rich("faqTitle.text", rich);
 
     const faqItems: PrivateCoursesFaqItem[] = [
         {

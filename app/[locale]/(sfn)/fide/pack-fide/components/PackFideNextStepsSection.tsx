@@ -3,9 +3,20 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight, FileCheck2, UserRound } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function PackFideNextStepsSection({ locale }: { locale: string }) {
     const t = useTranslations("Fide.PackFideNextSteps");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+    };
 
     return (
         <section id="pack-fide-next-steps" className="pt-4 pb-14 lg:pt-8 lg:pb-24">
@@ -13,9 +24,7 @@ export function PackFideNextStepsSection({ locale }: { locale: string }) {
                 <SlideFromBottom delay={0.05} duration={0.35}>
                     <div className="mx-auto mb-8 max-w-3xl text-center">
                         <p className="mb-3 inline-flex rounded-full bg-secondary-6 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
-                        <h2 className="display-3 mb-2">
-                            {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span> {t("titleSuffix")}
-                        </h2>
+                        <h2 className="display-3 mb-2">{t.rich("title", rich)}</h2>
                         <p className="mb-0 text-base text-neutral-700 md:text-lg">{t("subtitle")}</p>
                     </div>
                 </SlideFromBottom>

@@ -13,6 +13,8 @@ import { UdemyBeginnerAccordion } from "../dashboard/components/UdemyBeginnerAcc
 import { PiGraduationCap } from "react-icons/pi";
 import { useSession } from "next-auth/react";
 import type { FidePackSommaire } from "@/app/serverActions/productActions";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function VideosSectionClient({
     fidePackSommaire,
@@ -30,15 +32,21 @@ export function VideosSectionClient({
     const effectiveHasPack = hasPack ?? sessionHasPack;
     const effectiveUserId = userId ?? (session?.user?._id as string | undefined);
     const t = useTranslations("Fide.VideosSection");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+    };
 
     return (
         <section id="videosSection" className="max-w-7xl m-auto py-24 px-4 lg:px-8">
             <div className="mx-auto w-full flex flex-col items-center">
                 <header className="mb-6 text-center max-w-5xl">
-                    <h2 className="display-2">
-                        {t("titlePart1")} <span className="heading-span-secondary-6">{t("titleHighlight1")}</span> {t("titlePart2")}{" "}
-                        <span className="heading-span-secondary-6">{t("titleHighlight2")}</span> {t("titlePart3")}
-                    </h2>
+                    <h2 className="display-2">{t.rich("title", rich)}</h2>
                     <p className="">{t("subtitle")}</p>
                 </header>
 

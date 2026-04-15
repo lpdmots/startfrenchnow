@@ -70,6 +70,12 @@ export const Payment = ({ productSlug, quantity, currency, locale, email, sessio
 
     if (!clientSecret || !pricingDetails || !productInfos) return <div>{t("loading")}</div>;
 
+    const productName =
+        (locale === "fr" ? productInfos.title?.fr : productInfos.title?.en)?.trim() ||
+        productInfos.title?.fr?.trim() ||
+        productInfos.title?.en?.trim() ||
+        productSlug;
+
     return (
         <div className="flex items-center w-full justify-center">
             {clientSecret && stripePromise && (
@@ -80,6 +86,8 @@ export const Payment = ({ productSlug, quantity, currency, locale, email, sessio
                         email={email}
                         onSuccessUrl={productInfos.onSuccessUrl}
                         productSlug={productSlug}
+                        productName={productName}
+                        quantity={quantity}
                         locale={locale}
                         onEmailSync={onEmailSync}
                     />

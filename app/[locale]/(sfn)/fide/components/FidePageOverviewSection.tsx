@@ -2,32 +2,38 @@ import { Clock3, Target, CheckCircle2 } from "lucide-react";
 import { FideLiteYoutubeEmbed } from "./FideLiteYoutubeEmbed";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export function FidePageOverviewSection() {
     const t = useTranslations("Fide.FidePageOverview");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/private-courses" target="_self" className="!text-neutral-100 hover:!text-secondary-2 text-sm font-semibold inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
 
     return (
         <section id="fide-overview" className="py-16 lg:py-24 bg-neutral-800">
             <div className="max-w-7xl m-auto px-4 lg:px-8">
-                <h2 className="display-2 mb-8 lg:mb-12 text-neutral-100 text-center">
-                    {t("titlePrefix")} <span className="heading-span-secondary-6">{t("titleHighlight")}</span> {t("titleSuffix")}
-                </h2>
+                <h2 className="display-2 mb-8 lg:mb-12 text-neutral-100 text-center">{t.rich("title", rich)}</h2>
                 <div className="grid gap-8 lg:gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
                     <div className="order-1 mb-8 lg:mb-12">
                         <FideLiteYoutubeEmbed id="Cc78NsVrKNY" title={t("videoTitle")} />
                     </div>
 
                     <div className="order-2">
-                        <p className="mb-4 text-neutral-200">
-                            {t("paragraphs.p1.prefix")}
-                            <strong>{t("paragraphs.p1.strong1")}</strong>, <strong>{t("paragraphs.p1.strong2")}</strong> {t("paragraphs.p1.strong3Prefix")}
-                            <strong>{t("paragraphs.p1.strong3")}</strong>.
-                        </p>
-                        <p className="mb-5 text-neutral-200">
-                            {t("paragraphs.p2.prefix")}
-                            <strong>{t("paragraphs.p2.strong")}</strong>
-                            {t("paragraphs.p2.suffix")}
-                        </p>
+                        <p className="mb-4 text-neutral-200">{t.rich("paragraphs.p1Text", rich)}</p>
+                        <p className="mb-5 text-neutral-200">{t.rich("paragraphs.p2Text", rich)}</p>
 
                         <div className="mb-5">
                             <ul className="mb-0 list-none pl-0 space-y-3">
@@ -88,12 +94,7 @@ export function FidePageOverviewSection() {
                     </div>
                 </div>
                 <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                    <p className="mb-0 text-neutral-300 text-sm">
-                        {t("ctaLine.prefix")}{" "}
-                        <LinkArrow url="/fide/private-courses" target="_self" className="!text-neutral-100 hover:!text-secondary-2 text-sm font-semibold inline-flex">
-                            {t("ctaLine.linkLabel")}
-                        </LinkArrow>
-                    </p>
+                    <p className="mb-0 text-neutral-300 text-sm">{t.rich("ctaLine.text", rich)}</p>
                     <LinkArrow url="/blog/post/1-votre-guide-pratique-pour-reussir-le-test-fide" target="_self" className="!text-neutral-100 hover:!text-secondary-2 !text-xl font-semibold">
                         {t("ctaGuide")}
                     </LinkArrow>

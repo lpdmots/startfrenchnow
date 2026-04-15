@@ -13,11 +13,13 @@ interface CheckoutFormProps {
     setAreReady: React.Dispatch<React.SetStateAction<AreReadyState>>;
     onSuccessUrl: string;
     productSlug: string;
+    productName: string;
+    quantity: string;
     locale: string;
     onEmailSync?: (email: string) => Promise<void> | void;
 }
 
-export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuccessUrl, productSlug, locale, onEmailSync }: CheckoutFormProps) {
+export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuccessUrl, productSlug, productName, quantity, locale, onEmailSync }: CheckoutFormProps) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -43,11 +45,13 @@ export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuc
         const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || window.location.origin || "").replace(/\/$/, "");
         const successUrl = new URL(`${baseUrl}/${locale}/payment-success`);
         successUrl.searchParams.set("productSlug", productSlug);
+        successUrl.searchParams.set("productName", productName);
+        successUrl.searchParams.set("quantity", String(quantity));
         successUrl.searchParams.set("amount", String(pricingDetails?.amount ?? ""));
         successUrl.searchParams.set("currency", String(pricingDetails?.currency ?? ""));
         successUrl.searchParams.set("slug", onSuccessUrl || "/");
         return successUrl.toString();
-    }, [locale, productSlug, pricingDetails?.amount, pricingDetails?.currency, onSuccessUrl]);
+    }, [locale, onSuccessUrl, pricingDetails?.amount, pricingDetails?.currency, productName, productSlug, quantity]);
 
     // PaymentElement : tabs desktop, accordion mobile (ouverture par défaut)
     const paymentElementOptions: StripePaymentElementOptions = useMemo(

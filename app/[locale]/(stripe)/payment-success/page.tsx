@@ -8,6 +8,7 @@ import { authOptions } from "@/app/lib/authOptions";
 import { Locale, normalizeLocale } from "@/i18n";
 import { intelRich } from "@/app/lib/intelRich";
 import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
+import PurchaseDataLayerPush from "@/app/components/stripe/PurchaseDataLayerPush";
 
 export const metadata = {
     robots: { index: false, follow: false },
@@ -18,6 +19,10 @@ type PaymentSuccessProps = {
         amount?: string;
         currency?: string;
         slug?: string;
+        productSlug?: string;
+        productName?: string;
+        quantity?: string;
+        payment_intent?: string;
     }>;
     params: Promise<{ locale: string }>;
 };
@@ -61,10 +66,14 @@ export default async function PaymentSuccess(props: PaymentSuccessProps) {
 }
 
 const PaymentSuccessNoAsync = ({ searchParams, session, locale }: { searchParams: PaymentSuccessSearchParams; session: any; locale: Locale }) => {
-    const { amount = "", currency = "", slug = "" } = searchParams;
+    const { amount = "", currency = "", slug = "", productSlug = "", productName = "", quantity = "", payment_intent = "" } = searchParams;
     const t = useTranslations("Checkout.PaymentSuccess");
     const hasSlug = slug.trim().length > 0;
     const normalizedSlug = normalizeLocalizedPath(slug);
+    const parsedAmount = Number(String(amount).replace(",", "."));
+    const conversionValue = Number.isFinite(parsedAmount) ? parsedAmount : undefined;
+    const parsedQuantity = Number.parseInt(String(quantity || "1"), 10);
+    const itemQuantity = Number.isFinite(parsedQuantity) && parsedQuantity > 0 ? parsedQuantity : 1;
 
     const isLoggedIn = !!session?.user?.email;
 
@@ -76,6 +85,14 @@ const PaymentSuccessNoAsync = ({ searchParams, session, locale }: { searchParams
 
     return (
         <main className="min-h-screen p-2 flex items-center justify-center">
+            <PurchaseDataLayerPush
+                transactionId={payment_intent}
+                value={conversionValue}
+                currency={currency}
+                productSlug={productSlug}
+                productName={productName}
+                quantity={itemQuantity}
+            />
             <div className="max-w-6xl flex flex-col card p-4 lg:p-8 justify-center items-center gap-4">
                 <h1 className="text-4xl font-extrabold mb-0 heading-span-secondary-4">{t("thankYou")}</h1>
                 <h2 className="text-2xl mb-0">{t("successMessage")}</h2>

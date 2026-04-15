@@ -2,9 +2,20 @@ import { Bot, CheckCircle2, Clock3, Target } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { MockExamCheckoutCTA } from "./checkout/MockExamCheckoutCTA";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 export const HeroMockExams = () => {
     const t = useTranslations("Fide.MockExamsPage.Hero");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
+    };
 
     return (
         <section id="hero-mock-exams" className="section hero v1 wf-section relative overflow-x-clip !pt-6 !pb-10 lg:!pb-14">
@@ -12,7 +23,7 @@ export const HeroMockExams = () => {
                 <div className="mx-auto w-full max-w-6xl">
                     <div className="mx-auto w-full">
                         <h1 className="display-1 text-center md:text-left mb-4">
-                            <span className="heading-span-secondary-5">{t("titlePrefix")}</span> {t("titleHighlight")}
+                            {t.rich("title", rich)}
                         </h1>
                         <p className="mb-0 text-center md:text-left text-base text-neutral-700 sm:text-lg">{t("subtitle")}</p>
                     </div>

@@ -3,6 +3,7 @@ import type { PricingDetails } from "@/app/types/sfn/stripe";
 import { PriceCard } from "../../components/PackFideCard";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
 
 type PackFidePricingSectionProps = {
     locale: string;
@@ -29,6 +30,7 @@ type PackCard = {
 export function PackFidePricingSection({ locale, hasPack = false, pricingAutonomie, pricingAccompagne }: PackFidePricingSectionProps) {
     const isFr = locale === "fr";
     const t = useTranslations("Fide.PackFidePricing");
+    const rich = intelRich();
     const callbackPath = isFr ? "/fr/fide/pack-fide#pack-pricing" : "/fide/pack-fide#pack-pricing";
 
     const formatAmount = (value: number) => {
@@ -63,9 +65,7 @@ export function PackFidePricingSection({ locale, hasPack = false, pricingAutonom
             key: "pack-autonomous",
             title: t("cards.autonomy.title"),
             description: (
-                <p className="mb-0" style={{ minHeight: 72 }}>
-                    {t("cards.autonomy.description.prefix")} <b>{t("cards.autonomy.description.bold")}</b>.
-                </p>
+                <p className="mb-0" style={{ minHeight: 72 }}>{t.rich("cards.autonomy.description.text", rich)}</p>
             ),
             price: pricingAutonomie ? formatPrice(pricingAutonomie.amount, pricingAutonomie.currency) : "499 CHF",
             priceContent: buildPriceContent(pricingAutonomie),
@@ -80,10 +80,7 @@ export function PackFidePricingSection({ locale, hasPack = false, pricingAutonom
             key: "pack-accompanied",
             title: t("cards.guided.title"),
             description: (
-                <p className="mb-0" style={{ minHeight: 72 }}>
-                    {t("cards.guided.description.prefix")} <b>{t("cards.guided.description.bold1")}</b> {t("cards.guided.description.middle")}
-                    <b>{t("cards.guided.description.bold2")}</b>.
-                </p>
+                <p className="mb-0" style={{ minHeight: 72 }}>{t.rich("cards.guided.description.text", rich)}</p>
             ),
             price: pricingAccompagne ? formatPrice(pricingAccompagne.amount, pricingAccompagne.currency) : "875 CHF",
             priceContent: buildPriceContent(pricingAccompagne),
@@ -100,9 +97,7 @@ export function PackFidePricingSection({ locale, hasPack = false, pricingAutonom
         <section id="pack-pricing" className="pt-24 pb-24">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="mb-10 text-center">
-                    <h2 className="display-2 mb-4 lg:mb-8">
-                        <span className="heading-span-secondary-6">{t("titleHighlight")}</span> {t("titleSuffix")}
-                    </h2>
+                    <h2 className="display-2 mb-4 lg:mb-8">{t.rich("title", rich)}</h2>
                     <p className="text-lg mb-0">{t("subtitle")}</p>
                 </div>
 

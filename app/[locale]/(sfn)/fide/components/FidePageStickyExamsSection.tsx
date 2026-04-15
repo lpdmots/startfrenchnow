@@ -2,6 +2,7 @@ import { FideLiteYoutubeEmbed } from "./FideLiteYoutubeEmbed";
 import { FideStickyScrollReveal } from "./FideStickyScrollReveal";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 
 export function FidePageStickyExamsSection() {
     const t = useTranslations("Fide.FidePageStickyExams");
@@ -9,6 +10,30 @@ export function FidePageStickyExamsSection() {
         strong: (chunks: any) => <strong>{chunks}</strong>,
         b: (chunks: any) => <strong>{chunks}</strong>,
         i: (chunks: any) => <i>{chunks}</i>,
+    };
+    const speakingCtaRich = {
+        ...rich,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/private-courses" target="_self" className="text-sm font-semibold !text-secondary-2 hover:!text-secondary-2 inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
+    const listeningCtaRich = {
+        ...rich,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/mock-exams" target="_self" className="text-sm font-semibold !text-secondary-5 hover:!text-secondary-5 inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
+    };
+    const readWriteCtaRich = {
+        ...rich,
+        link: (chunks: ReactNode) => (
+            <LinkArrow url="/fide/pack-fide" target="_self" className="text-sm font-semibold !text-secondary-6 hover:!text-secondary-6 inline-flex">
+                {chunks}
+            </LinkArrow>
+        ),
     };
 
     const stickyItems = [
@@ -45,12 +70,7 @@ export function FidePageStickyExamsSection() {
                         <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p4", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
-                        <span className="text-sm text-neutral-600">
-                            {t("speaking.ctaLine.prefix")}{" "}
-                            <LinkArrow url="/fide/private-courses" target="_self" className="text-sm font-semibold !text-secondary-2 hover:!text-secondary-2 inline-flex">
-                                {t("speaking.ctaLine.linkLabel")}
-                            </LinkArrow>
-                        </span>
+                        <span className="text-sm text-neutral-600">{t.rich("speaking.ctaLine.text", speakingCtaRich)}</span>
                         <LinkArrow url="/blog/post/2-le-test-fide-la-partie-orale-parler" target="_self" className="text-lg font-semibold text-secondary-2 hover:!text-secondary-2">
                             {t("speaking.ctaGuide")}
                         </LinkArrow>
@@ -90,12 +110,7 @@ export function FidePageStickyExamsSection() {
                         <p className="mb-0 text-neutral-700 text-justify">{t.rich("listening.paragraphs.p3", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
-                        <span className="text-sm text-neutral-600">
-                            {t("listening.ctaLine.prefix")}{" "}
-                            <LinkArrow url="/fide/mock-exams" target="_self" className="text-sm font-semibold !text-secondary-5 hover:!text-secondary-5 inline-flex">
-                                {t("listening.ctaLine.linkLabel")}
-                            </LinkArrow>
-                        </span>
+                        <span className="text-sm text-neutral-600">{t.rich("listening.ctaLine.text", listeningCtaRich)}</span>
                         <LinkArrow url="/blog/post/3-le-test-fide-la-partie-orale-comprendre" target="_self" className="text-lg font-semibold text-secondary-2 hover:!text-secondary-2">
                             {t("listening.ctaGuide")}
                         </LinkArrow>
@@ -134,12 +149,7 @@ export function FidePageStickyExamsSection() {
                         <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p5", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
-                        <span className="text-sm text-neutral-600">
-                            {t("readWrite.ctaLine.prefix")}{" "}
-                            <LinkArrow url="/fide/pack-fide" target="_self" className="text-sm font-semibold !text-secondary-6 hover:!text-secondary-6 inline-flex">
-                                {t("readWrite.ctaLine.linkLabel")}
-                            </LinkArrow>
-                        </span>
+                        <span className="text-sm text-neutral-600">{t.rich("readWrite.ctaLine.text", readWriteCtaRich)}</span>
                         <LinkArrow url="/blog/post/4-le-test-fide-lire-et-ecrire" target="_self" className="text-lg font-semibold text-secondary-2 hover:!text-secondary-2">
                             {t("readWrite.ctaGuide")}
                         </LinkArrow>

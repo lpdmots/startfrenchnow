@@ -8,6 +8,7 @@ import type { Locale } from "@/i18n";
 import { CustomHoursModalTrigger } from "./CustomHoursModalTrigger";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { getTranslations } from "next-intl/server";
+import { intelRich } from "@/app/lib/intelRich";
 
 const queryProductBySlug = groq`*[_type=='product' && slug.current == $slug][0]`;
 
@@ -33,6 +34,7 @@ type PrivateCourseCard = {
 export async function PrivateCoursesPricingSection({ locale, title, subtitle, site }: { locale: Locale; title: ReactNode; subtitle: string; site: string }) {
     const isFr = locale === "fr";
     const t = await getTranslations({ locale, namespace: "Fide.PrivateCoursesPricing" });
+    const rich = intelRich();
     const privateCoursesPath = isFr ? "/fr/fide/private-courses" : "/fide/private-courses";
 
     const formatAmount = (value: number) => {
@@ -68,12 +70,7 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
         {
             key: "last-minute",
             title: t("plans.lastMinute.title"),
-            description: (
-                <p>
-                    {t("plans.lastMinute.description.prefix")} <b>{t("plans.lastMinute.description.bold")}</b>
-                    {t("plans.lastMinute.description.suffix")}
-                </p>
-            ),
+            description: <p>{t.rich("plans.lastMinute.description.text", rich)}</p>,
             descriptionText: t("plans.lastMinute.descriptionText"),
             priceFallback: t("plans.lastMinute.priceFallback"),
             accentColor: "neutral-300",
@@ -86,12 +83,7 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
         {
             key: "scenarios-6h",
             title: t("plans.scenarios6h.title"),
-            description: (
-                <p>
-                    {t("plans.scenarios6h.description.prefix")} <b>{t("plans.scenarios6h.description.bold")}</b>
-                    {t("plans.scenarios6h.description.suffix")}
-                </p>
-            ),
+            description: <p>{t.rich("plans.scenarios6h.description.text", rich)}</p>,
             descriptionText: t("plans.scenarios6h.descriptionText"),
             priceFallback: t("plans.scenarios6h.priceFallback"),
             accentColor: "secondaryShades-2",
@@ -104,12 +96,7 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
         {
             key: "intensive-mastery",
             title: t("plans.intensive.title"),
-            description: (
-                <p>
-                    {t("plans.intensive.description.prefix")} <b>{t("plans.intensive.description.bold")}</b>
-                    {t("plans.intensive.description.suffix")}
-                </p>
-            ),
+            description: <p>{t.rich("plans.intensive.description.text", rich)}</p>,
             descriptionText: t("plans.intensive.descriptionText"),
             priceFallback: t("plans.intensive.priceFallback"),
             accentColor: "secondary-2",

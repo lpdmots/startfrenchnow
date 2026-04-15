@@ -4,11 +4,23 @@ import { Link } from "@/i18n/navigation";
 import { BookFirstMeeting } from "../../components/BookFirstMeeting";
 import { FideCourseRatings } from "@/app/components/sfn/courses/FideCourseRatings";
 import { useTranslations } from "next-intl";
+import { intelRich } from "@/app/lib/intelRich";
+import type { ReactNode } from "react";
 
 const HERO_IMAGE_SRC = "/images/etudiante-cours.png";
 
 export function HeroPrivateCourses() {
     const t = useTranslations("Fide.PrivateCoursesHero");
+    const rich = {
+        ...intelRich(),
+        hs1: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs2: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs3: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs4: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs5: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        hs6: (chunks: ReactNode) => <span className="heading-span-secondary-2">{chunks}</span>,
+        br: () => <br />,
+    };
 
     return (
         <section
@@ -20,11 +32,7 @@ export function HeroPrivateCourses() {
                     <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(320px,420px)_1fr] lg:gap-12">
                         <div className="flex flex-col gap-5 lg:gap-12">
                             <h1 className="display-1 mb-0 whitespace-nowrap text-center leading-[1.03] lg:text-left" style={{ whiteSpace: "nowrap" }}>
-                                {t("title.line1")}
-                                <br />
-                                {t("title.line2")} <br />
-                                {t("title.line3")}
-                                <br /> <span className="heading-span-secondary-2">{t("title.highlight")}</span>
+                                {t.rich("title.full", rich)}
                             </h1>
                             <p className="mb-0 text-center text-base text-neutral-700 sm:text-lg lg:text-left">
                                 {t("subtitle")}
