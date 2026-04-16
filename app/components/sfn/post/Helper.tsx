@@ -70,24 +70,26 @@ function Helper({ post, locale }: Props) {
                 <div className="flex items-center justify-center gap-4 mb-2">
                     {level && (locale === "fr" || help) ? (
                         <>
-                            <p className="flex items-end mb-0">
-                                {difficultyLabel}:
-                                <AiFillSignal className=" mx-2" style={{ fontSize: "1.5rem", color: level.color }} />
-                                {level.label}
+                            <p className="flex items-center gap-2 mb-0">
+                                <span>{difficultyLabel}:</span>
+                                <span className="inline-flex items-center gap-1 whitespace-nowrap">
+                                    <AiFillSignal className="shrink-0" style={{ fontSize: "1.5rem", color: level.color }} />
+                                    <span>{level.label}</span>
+                                </span>
                             </p>
                             <p className="mb-0"> - </p>
                         </>
                     ) : post.level?.length ? (
                         <>
-                            <p className="flex items-end mb-0">
-                                {difficultyLabel}:
+                            <p className="flex items-center gap-2 mb-0">
+                                <span>{difficultyLabel}:</span>
                                 {post.level.map((lev, index) => {
                                     const level = LEVELDATA[lev];
                                     const lastLevel = index === post.level.length - 1;
                                     return (
-                                        <span key={level.label}>
-                                            <AiFillSignal className=" mx-1" style={{ fontSize: "1.5rem", color: level.color }} />
-                                            {level.label}
+                                        <span key={level.label} className="inline-flex items-center gap-1 whitespace-nowrap">
+                                            <AiFillSignal className="shrink-0" style={{ fontSize: "1.5rem", color: level.color }} />
+                                            <span>{level.label}</span>
                                             {!lastLevel && " / "}
                                         </span>
                                     );

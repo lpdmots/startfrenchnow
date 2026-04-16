@@ -14,11 +14,11 @@ const EXAM_REVIEW_LIST_QUERY = groq`
 *[_type == "examReview"] | order(coalesce(scheduledAt, _createdAt) desc) [0...300]{
   _id,
   _createdAt,
-  userId,
+  "userRef": user._ref,
   status,
   scheduledAt,
   "compilationName": compilationRef->name,
-  "user": *[_type == "user" && _id == ^.userId][0]{
+  "user": user->{
     _id,
     name,
     email
@@ -34,7 +34,7 @@ const EXAM_REVIEW_LIST_QUERY = groq`
 type ExamReviewListItem = {
     _id: string;
     _createdAt?: string;
-    userId?: string;
+    userRef?: string;
     status?: string;
     scheduledAt?: string;
     compilationName?: string;
@@ -94,7 +94,7 @@ export default async function AdminExamReviewsPage() {
                                         </tr>
                                     ) : (
                                         reviews.map((review) => {
-                                            const userName = review.user?.name || review.user?.email || review.userId || "-";
+                                            const userName = review.user?.name || review.user?.email || review.userRef || "-";
                                             const userMeta = review.user?.name && review.user?.email ? review.user.email : null;
                                             const badgeClass = getReviewStatusBadgeClass(review.status);
                                             return (

@@ -635,6 +635,47 @@
             },
             "Questions": {
                 "title": "Mes <b3>Questions</b3>/Réponses"
+            },
+            "DashboardMockExams": {
+                "title": "Mes <hs1>examens blancs</hs1>",
+                "subtitle": "Choisis un examen blanc et lance une nouvelle session quand tu veux.",
+                "cta": {
+                    "useCredit": "Utiliser mon crédit",
+                    "buy": "Acheter un examen blanc"
+                },
+                "status": {
+                    "inProgress": "En cours",
+                    "completed": "Terminée",
+                    "abandoned": "Abandonnée",
+                    "noSession": "Aucune session"
+                },
+                "empty": {
+                    "canUseCredit": {
+                        "title": "Tu as {count, plural, one {# crédit disponible.} other {# crédits disponibles.}}",
+                        "description": "Active ton examen blanc maintenant pour commencer la passation."
+                    },
+                    "hasCreditNoTemplate": {
+                        "title": "Tu as {count, plural, one {# crédit} other {# crédits}}, mais aucun template n'est disponible pour le moment.",
+                        "description": "Reviens un peu plus tard, de nouveaux examens seront ajoutés."
+                    },
+                    "canBuy": {
+                        "title": "Tu n'as pas encore d'examen blanc.",
+                        "description": "Achète ton premier examen blanc pour démarrer ta préparation."
+                    },
+                    "noExamAvailable": {
+                        "title": "Aucun examen blanc disponible pour le moment.",
+                        "description": "Reviens un peu plus tard pour démarrer un examen blanc."
+                    }
+                },
+                "card": {
+                    "badge": "EXAMEN BLANC",
+                    "compilationImageAlt": "Compilation {index}",
+                    "compilationFallback": "Compilation {index}",
+                    "createdAt": "Créée le",
+                    "totalScore": "Score total",
+                    "lastAttempt": "Dernière tentative : {date}",
+                    "seeDetails": "Voir le détail"
+                }
             }
         },
         "FideVideosPage": {
@@ -2073,7 +2114,8 @@
                 "no-user": "Nous ne pouvons pas trouver l'utilisateur correspondant à cette clé d'activation. Veuillez entrer votre adresse e-mail pour recevoir un nouveau lien d'activation. Si l'erreur persiste, contactez-nous.",
                 "already-active": "Le compte correspondant à cette clé a déjà été validé. Vous êtes libre de vous connecter.",
                 "expired": "Désolé, la clé d'activation a expiré. Nous vous avons envoyé un nouvel e-mail pour valider votre compte.",
-                "email-already-used": "Cette adresse e-mail est déjà utilisée. Veuillez entrer une autre adresse e-mail ou changer le mode d'authentification."
+                "email-already-used": "Cette adresse e-mail est déjà utilisée. Veuillez entrer une autre adresse e-mail ou changer le mode d'authentification.",
+                "OAuthSignin": "La connexion avec le fournisseur OAuth a échoué. Veuillez réessayer ou utiliser un autre mode de connexion."
             },
             "btnLogin": "Aller à la page de connexion",
             "btnHome": "Aller à la page d'accueil"

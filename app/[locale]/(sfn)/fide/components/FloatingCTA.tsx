@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiOutlineCalendar } from "react-icons/hi";
-import { PopupModal } from "react-calendly";
 import { useRouter } from "next/navigation";
+import TrackedCalendlyPopupModal from "@/app/components/common/TrackedCalendlyPopupModal";
 
 export default function FloatingCTA() {
     const router = useRouter();
@@ -132,7 +132,13 @@ export default function FloatingCTA() {
                             <span className="hidden md:inline font-semibold !no-underline">Entretien gratuit</span>
                         </button>
 
-                        <PopupModal url="https://calendly.com/yohann-startfrenchnow/15min" onModalClose={() => setIsOpen(false)} open={isOpen} rootElement={rootElement} />
+                        <TrackedCalendlyPopupModal
+                            source="fide_floating_cta"
+                            url="https://calendly.com/yohann-startfrenchnow/15min"
+                            onModalClose={() => setIsOpen(false)}
+                            open={isOpen}
+                            rootElement={rootElement}
+                        />
                     </div>
                 </motion.div>
             )}

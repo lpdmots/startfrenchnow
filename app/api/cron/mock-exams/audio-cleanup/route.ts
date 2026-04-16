@@ -56,9 +56,9 @@ const SCHEDULED_REVIEW_SESSIONS_QUERY = groq`
   *[
     _type == "examReview" &&
     status == "scheduled" &&
-    defined(sessionKey)
+    defined(session._ref)
   ]{
-    sessionKey
+    "sessionId": session._ref
   }
 `;
 
@@ -178,7 +178,7 @@ const cleanupHandler = async (request: NextRequest) => {
 
     const [sessions, scheduledReviewRows] = await Promise.all([
         client.fetch<SessionCandidate[]>(ALL_SESSIONS_WITH_AUDIO_QUERY),
-        client.fetch<Array<{ sessionKey?: string }>>(SCHEDULED_REVIEW_SESSIONS_QUERY),
+        client.fetch<Array<{ sessionId?: string }>>(SCHEDULED_REVIEW_SESSIONS_QUERY),
     ]);
 
     let oldObjectKeys = new Set<string>();
@@ -192,7 +192,7 @@ const cleanupHandler = async (request: NextRequest) => {
         }
     }
 
-    const scheduledSessionKeys = new Set((scheduledReviewRows || []).map((row) => String(row?.sessionKey || "").trim()).filter(Boolean));
+    const scheduledSessionKeys = new Set((scheduledReviewRows || []).map((row) => String(row?.sessionId || "").trim()).filter(Boolean));
     const protectedAudioKeys = new Set<string>();
     const expiredAudioKeysFromSessionData = new Set<string>();
     let skippedScheduledReviewCount = 0;

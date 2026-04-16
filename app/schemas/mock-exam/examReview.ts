@@ -90,9 +90,10 @@ export default defineType({
     type: "document",
     fields: [
         defineField({
-            name: "userId",
-            title: "User ID",
-            type: "string",
+            name: "user",
+            title: "User",
+            type: "reference",
+            to: [{ type: "user" }],
             validation: (Rule) => Rule.required(),
         }),
         defineField({
@@ -103,9 +104,10 @@ export default defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
-            name: "sessionKey",
-            title: "Session Key",
-            type: "string",
+            name: "session",
+            title: "Session",
+            type: "reference",
+            to: [{ type: "mockExamSession" }],
             validation: (Rule) => Rule.required(),
         }),
         defineField({
@@ -334,13 +336,17 @@ export default defineType({
     ],
     preview: {
         select: {
-            userId: "userId",
+            userName: "user.name",
+            userEmail: "user.email",
+            userRef: "user._ref",
             status: "status",
+            compilationRef: "compilationRef._ref",
         },
-        prepare({ userId, status }) {
+        prepare({ userName, userEmail, userRef, status, compilationRef }) {
+            const identity = userName || userEmail || userRef || "Unknown user";
             return {
-                title: userId ? `Exam Review - ${userId}` : "Exam Review",
-                subtitle: status || undefined,
+                title: `Exam Review - ${identity}`,
+                subtitle: [compilationRef, status].filter(Boolean).join(" - ") || undefined,
             };
         },
     },

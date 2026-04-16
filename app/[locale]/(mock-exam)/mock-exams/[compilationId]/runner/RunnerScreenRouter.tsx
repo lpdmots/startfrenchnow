@@ -11,6 +11,7 @@ import {
     evaluateMockExamReadWriteSection,
     evaluateMockExamSpeakA2Section,
     evaluateMockExamSpeakBranchSection,
+    hasAnyExamReviewForCurrentUser,
     type ReadWriteCorrectionSummary,
     saveMockExamListeningScenarioResult,
     saveMockExamReadWriteAnswer,
@@ -29,12 +30,12 @@ import useOutsideClick from "@/app/hooks/useOutsideClick";
 import SpeakingResponsePanel from "./SpeakingResponsePanel";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { PopupModal } from "react-calendly";
 import { client } from "@/app/lib/sanity.client";
 import { groq } from "next-sanity";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { applyDiscountToAmount, roundCurrency } from "@/app/lib/pricing";
 import type { ProductFetch } from "@/app/types/sfn/stripe";
+import TrackedCalendlyPopupModal from "@/app/components/common/TrackedCalendlyPopupModal";
 
 type AdvancePayload = {
     nextState: string;
@@ -101,6 +102,7 @@ const READ_WRITE_MAX_MANUAL_RETRIES = 3;
 const SPEAK_BRANCH_B1_RECOMMENDATION_THRESHOLD = 65;
 const LISTENING_RECOMMENDED_SCENARIO_COUNT = 4;
 const READ_WRITE_AUTO_NEXT_DELAY_MS = 220;
+const FEEDBACK_CALENDLY_ALLOWED_STATES = new Set<string>(["SPEAK_A2_RESULT", "SPEAK_BRANCH_RESULT", "READ_WRITE_RESULT", EXAM_FINAL_SUMMARY]);
 const TASK_TYPE_LABELS: Record<string, string> = {
     IMAGE_DESCRIPTION_A2: "Tâche 1 - Description d'image",
     PHONE_CONVERSATION_A2: "Tâche 2 - Conversation téléphonique",
@@ -1747,6 +1749,8 @@ export default function RunnerScreenRouter({
     const [oralDetailsTab, setOralDetailsTab] = useState<"A2" | "BRANCH" | "LISTENING">("A2");
     const [finalDetailsOpenKey, setFinalDetailsOpenKey] = useState<"ORAL" | "LISTENING" | "READ_WRITE" | null>("ORAL");
     const [isFeedbackCalendlyOpen, setIsFeedbackCalendlyOpen] = useState(false);
+    const [feedbackCalendlySource, setFeedbackCalendlySource] = useState("mock_exam_feedback_offer");
+    const [hasExistingExamReview, setHasExistingExamReview] = useState<boolean | null>(null);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
     const [finalOfferPricingByKey, setFinalOfferPricingByKey] = useState<Record<FinalOfferKey, FinalOfferPricing>>({
         packAutonome: { baseAmount: 499, discountedAmount: 449.1 },
@@ -1777,10 +1781,43 @@ export default function RunnerScreenRouter({
     }, [resume.state]);
 
     useEffect(() => {
+        let cancelled = false;
+
+        const run = async () => {
+            try {
+                const result = await hasAnyExamReviewForCurrentUser();
+                if (cancelled) return;
+                if (!result?.ok) {
+                    setHasExistingExamReview(true);
+                    return;
+                }
+                setHasExistingExamReview(Boolean(result.exists));
+            } catch {
+                if (cancelled) return;
+                setHasExistingExamReview(true);
+            }
+        };
+
+        void run();
+        return () => {
+            cancelled = true;
+        };
+    }, [sessionKey]);
+
+    const canShowProfessorFeedbackCta = hasExistingExamReview === false;
+
+    const openFeedbackCalendly = useCallback((source: string) => {
+        setFeedbackCalendlySource(source);
+        setIsFeedbackCalendlyOpen(true);
+    }, []);
+
+    useEffect(() => {
         if (resume.state !== EXAM_FINAL_SUMMARY) {
             setFinalDetailsOpenKey("ORAL");
-            setIsFeedbackCalendlyOpen(false);
             finalizationRequestedRef.current = false;
+        }
+        if (!FEEDBACK_CALENDLY_ALLOWED_STATES.has(resume.state)) {
+            setIsFeedbackCalendlyOpen(false);
         }
     }, [resume.state]);
 
@@ -1901,7 +1938,7 @@ export default function RunnerScreenRouter({
             const qs = new URLSearchParams();
             qs.set("event_uri", eventUri);
             qs.set("continue_url", "/fide/dashboard");
-            qs.set("session_key", sessionKey);
+            qs.set("session_id", sessionKey);
             qs.set("compilation_id", compilationId);
             router.push(`/rdv-success/your-exam-feedback?${qs.toString()}`);
         };
@@ -2812,9 +2849,20 @@ export default function RunnerScreenRouter({
         );
     }
 
+    const feedbackCalendlyModal = rootElement ? (
+        <TrackedCalendlyPopupModal
+            source={feedbackCalendlySource}
+            url="https://calendly.com/yohann-startfrenchnow/your-exam-feedback"
+            onModalClose={() => setIsFeedbackCalendlyOpen(false)}
+            open={isFeedbackCalendlyOpen}
+            rootElement={rootElement}
+        />
+    ) : null;
+
     if (resume.state === "SPEAK_A2_RESULT") {
         return (
-            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0 overflow-y-auto`}>
+            <>
+                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0 overflow-y-auto`}>
                 <div className="flex flex-col gap-3">
                     <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
                     <h1 className="display-2 font-medium mb-0">Parler A2 terminé</h1>
@@ -2860,6 +2908,15 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
                         <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{globalLevelLabel}</p>
                         <p className="mb-0 text-sm text-neutral-700 text-center">{globalFeedbackText}</p>
+                        {canShowProfessorFeedbackCta ? (
+                            <button
+                                type="button"
+                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                onClick={() => openFeedbackCalendly("mock_exam_speak_a2_result")}
+                            >
+                                Feedback prof gratuit
+                            </button>
+                        ) : null}
                         <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
                             <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
                             <p className="mb-0 text-lg font-semibold text-neutral-800">
@@ -2934,6 +2991,8 @@ export default function RunnerScreenRouter({
                     </button>
                 </div>
             </section>
+                {feedbackCalendlyModal}
+            </>
         );
     }
 
@@ -3040,7 +3099,8 @@ export default function RunnerScreenRouter({
 
     if (resume.state === "SPEAK_BRANCH_RESULT") {
         return (
-            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
+            <>
+                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
                 <div className="flex flex-col gap-3">
                     <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
                     <h1 className="display-2 font-medium mb-0">Parler Branche {inferredBranch} terminée</h1>
@@ -3086,6 +3146,15 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
                         <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{branchGlobalLevelLabel}</p>
                         <p className="mb-0 text-sm text-neutral-700 text-center">{branchGlobalFeedbackText}</p>
+                        {canShowProfessorFeedbackCta ? (
+                            <button
+                                type="button"
+                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                onClick={() => openFeedbackCalendly("mock_exam_speak_branch_result")}
+                            >
+                                Feedback prof gratuit
+                            </button>
+                        ) : null}
                         <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
                             <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
                             <p className="mb-0 text-lg font-semibold text-neutral-800">
@@ -3176,6 +3245,8 @@ export default function RunnerScreenRouter({
                     </button>
                 </div>
             </section>
+                {feedbackCalendlyModal}
+            </>
         );
     }
 
@@ -4272,7 +4343,8 @@ export default function RunnerScreenRouter({
     if (resume.state === "READ_WRITE_RESULT") {
         const comboLabel = selectedWrittenCombo === "A2_B1" ? "A2-B1" : "A1-A2";
         return (
-            <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
+            <>
+                <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
                 <div className="flex flex-col gap-3">
                     <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
                     <h1 className="display-2 font-medium mb-0">Lire/Écrire terminé</h1>
@@ -4363,6 +4435,15 @@ export default function RunnerScreenRouter({
                         <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
                         <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{readWriteGlobalLevelLabel}</p>
                         <p className="mb-0 text-sm text-neutral-700 text-center">{readWriteGlobalFeedback}</p>
+                        {canShowProfessorFeedbackCta ? (
+                            <button
+                                type="button"
+                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                onClick={() => openFeedbackCalendly("mock_exam_read_write_result")}
+                            >
+                                Feedback prof gratuit
+                            </button>
+                        ) : null}
                         <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
                             <div className="grid grid-cols-2 items-end gap-3">
                                 <div>
@@ -4450,6 +4531,8 @@ export default function RunnerScreenRouter({
                     </button>
                 </div>
             </section>
+                {feedbackCalendlyModal}
+            </>
         );
     }
 
@@ -4738,15 +4821,17 @@ export default function RunnerScreenRouter({
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">
                                     Priorité identifiée aujourd&apos;hui: <span className="font-semibold text-neutral-800">{weakestDimension}</span>.
                                 </p>
-                                <div className="mt-4">
-                                    <button
-                                        type="button"
-                                        className="inline-flex items-center justify-center rounded-lg bg-secondary-2 px-4 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
-                                        onClick={() => setIsFeedbackCalendlyOpen(true)}
-                                    >
-                                        Obtenir votre retour personnalisé gratuit
-                                    </button>
-                                </div>
+                                {canShowProfessorFeedbackCta ? (
+                                    <div className="mt-4">
+                                        <button
+                                            type="button"
+                                            className="inline-flex items-center justify-center rounded-lg bg-secondary-2 px-4 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                            onClick={() => openFeedbackCalendly("mock_exam_feedback_offer")}
+                                        >
+                                            Obtenir votre retour personnalisé gratuit
+                                        </button>
+                                    </div>
+                                ) : null}
                             </div>
 
                             <div className="mx-auto w-full max-w-[170px] md:mx-0 md:max-w-[220px]">
@@ -4836,7 +4921,8 @@ export default function RunnerScreenRouter({
                     </div>
                 </div>
                 {rootElement ? (
-                    <PopupModal
+                    <TrackedCalendlyPopupModal
+                        source={feedbackCalendlySource}
                         url="https://calendly.com/yohann-startfrenchnow/your-exam-feedback"
                         onModalClose={() => setIsFeedbackCalendlyOpen(false)}
                         open={isFeedbackCalendlyOpen}

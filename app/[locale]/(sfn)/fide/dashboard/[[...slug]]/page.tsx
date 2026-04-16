@@ -75,6 +75,7 @@ async function DashboardPage(props: { params: Promise<{ locale: string; slug?: s
             <div className="w-full flex flex-col items-center gap-24 mt-8 md:mt-12 p-2 mb-12 lg:mb-24">
                 <DashboardHero hero={hero} locale={locale} hasPack={hasPack} />
                 <DashboardMockExams
+                    locale={locale}
                     compilations={compilations}
                     remainingCredits={mockExamCredits?.remainingCredits ?? null}
                     canPurchase={canCreateMockExam}

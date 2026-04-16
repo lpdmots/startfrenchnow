@@ -246,9 +246,9 @@ export type ReviewStatus = "requested" | "scheduled" | "completed" | "cancelled"
 
 export type ExamReview = {
     _id: string;
-    userId: string;
+    user: Reference;
     compilationRef: Reference;
-    sessionKey: string;
+    session: Reference;
 
     status: ReviewStatus;
     scheduledAt?: string; // ISO (si tu planifies)

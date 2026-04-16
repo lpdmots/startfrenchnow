@@ -635,6 +635,47 @@
             },
             "Questions": {
                 "title": "My <b3>Questions</b3>"
+            },
+            "DashboardMockExams": {
+                "title": "My <hs1>mock exams</hs1>",
+                "subtitle": "Pick a mock exam and start a new session whenever you want.",
+                "cta": {
+                    "useCredit": "Use my credit",
+                    "buy": "Buy a mock exam"
+                },
+                "status": {
+                    "inProgress": "In progress",
+                    "completed": "Completed",
+                    "abandoned": "Abandoned",
+                    "noSession": "No session"
+                },
+                "empty": {
+                    "canUseCredit": {
+                        "title": "You have {count, plural, one {# credit available.} other {# credits available.}}",
+                        "description": "Activate your mock exam now to start the session."
+                    },
+                    "hasCreditNoTemplate": {
+                        "title": "You have {count, plural, one {# credit} other {# credits}}, but no template is available right now.",
+                        "description": "Come back a bit later, new exams will be added."
+                    },
+                    "canBuy": {
+                        "title": "You don't have a mock exam yet.",
+                        "description": "Buy your first mock exam to start your preparation."
+                    },
+                    "noExamAvailable": {
+                        "title": "No mock exam is available right now.",
+                        "description": "Come back a bit later to start a mock exam."
+                    }
+                },
+                "card": {
+                    "badge": "MOCK EXAM",
+                    "compilationImageAlt": "Compilation {index}",
+                    "compilationFallback": "Compilation {index}",
+                    "createdAt": "Created on",
+                    "totalScore": "Total score",
+                    "lastAttempt": "Last attempt: {date}",
+                    "seeDetails": "See details"
+                }
             }
         },
         "FideVideosPage": {
@@ -2067,7 +2108,8 @@
                 "no-user": "We cannot find the user corresponding to this activation key. Please enter your email address to receive a new activation link. If the error persists, contact us.",
                 "already-active": "The account corresponding to this key has already been validated. You are free to log in.",
                 "expired": "Sorry, the activation key has expired. We have sent you a new email to validate your account.",
-                "email-already-used": "This email address is already in use. Please enter another e-mail address or change the authentication mode."
+                "email-already-used": "This email address is already in use. Please enter another e-mail address or change the authentication mode.",
+                "OAuthSignin": "Sign-in with the OAuth provider failed. Please try again or use another sign-in method."
             },
             "btnLogin": "Go to login page",
             "btnHome": "Go to homepage"

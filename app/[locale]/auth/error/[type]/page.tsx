@@ -2,7 +2,7 @@ import { GetNewLink } from "@/app/components/auth/GetNewLink";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 
-type TypeProps = "no-user" | "already-active" | "expired" | "email-already-used";
+type TypeProps = "no-user" | "already-active" | "expired" | "email-already-used" | "OAuthSignin";
 
 function DangerSign({ className = "" }: { className?: string }) {
     return (

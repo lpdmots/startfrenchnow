@@ -6,7 +6,7 @@ import CalendlySuccessPush from "@/app/components/common/CalendlySuccessPush";
 
 type PageProps = {
     params: Promise<{ slug: string }>;
-    searchParams: Promise<{ event_uri?: string; eventUri?: string; test?: string; continue_url?: string; session_key?: string; compilation_id?: string }>;
+    searchParams: Promise<{ event_uri?: string; eventUri?: string; test?: string; continue_url?: string; session_id?: string; compilation_id?: string }>;
 };
 
 type CalendlyScheduledEvent = {
@@ -81,14 +81,14 @@ export default async function RdvSuccess(props: PageProps) {
 
     const scheduled = await fetchScheduledEvent(eventUri);
     const start = scheduled?.start_time;
-    const sessionKey = String(searchParams.session_key || "").trim();
+    const sessionId = String(searchParams.session_id || "").trim();
     const compilationId = String(searchParams.compilation_id || "").trim();
 
-    if (params.slug === "your-exam-feedback" && sessionKey && compilationId) {
+    if (params.slug === "your-exam-feedback" && sessionId && compilationId) {
         try {
             await createExamReviewFromCalendlyBooking({
                 compilationId,
-                sessionKey,
+                sessionId,
                 calendlyEventUri: eventUri,
                 scheduledAt: start,
                 timezone: "Europe/Berlin",

@@ -5,7 +5,8 @@ import { checkIfAlias } from "@/app/serverActions/productActions";
 import { useSfnStore } from "@/app/stores/sfnStore";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, ReactNode } from "react";
-import { PopupModal, useCalendlyEventListener } from "react-calendly";
+import { useCalendlyEventListener } from "react-calendly";
+import TrackedCalendlyPopupModal from "@/app/components/common/TrackedCalendlyPopupModal";
 
 interface BookMeetingProps {
     eventType: keyof typeof EVENT_TYPES;
@@ -18,6 +19,9 @@ export const BookMeeting = ({ eventType, wFull = false, children }: BookMeetingP
     const [isOpen, setIsOpen] = useState(false);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
     const { setPrivateLesson } = useSfnStore();
+    const trackingSource = `book_meeting_${String(eventType)
+        .toLowerCase()
+        .replace(/\s+/g, "_")}`;
 
     useEffect(() => {
         // Exécuter après le montage du composant pour récupérer le root element
@@ -43,7 +47,8 @@ export const BookMeeting = ({ eventType, wFull = false, children }: BookMeetingP
                 {children}
             </div>
 
-            <PopupModal
+            <TrackedCalendlyPopupModal
+                source={trackingSource}
                 url={EVENT_TYPES[eventType as keyof typeof EVENT_TYPES].url}
                 onModalClose={() => setIsOpen(false)}
                 prefill={{

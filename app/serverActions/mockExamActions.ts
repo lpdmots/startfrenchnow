@@ -923,11 +923,18 @@ const MOCK_EXAM_SESSION_REVIEW_SOURCE_QUERY = groq`
 const EXAM_REVIEW_BY_SESSION_QUERY = groq`
   *[
     _type == "examReview" &&
-    userId == $userId &&
-    sessionKey == $sessionKey
+    user._ref == $userId &&
+    session._ref == $sessionId
   ][0]{
     _id
   }
+`;
+
+const EXAM_REVIEW_EXISTS_FOR_USER_QUERY = groq`
+  count(*[
+    _type == "examReview" &&
+    user._ref == $userId
+  ]) > 0
 `;
 
 const BRAVO10_COUPON_CODE = "BRAVO10";
@@ -1508,7 +1515,7 @@ export async function finalizeMockExamSession(params: { compilationId: string; s
 
 export async function createExamReviewFromCalendlyBooking(params: {
     compilationId: string;
-    sessionKey: string;
+    sessionId: string;
     calendlyEventUri?: string;
     scheduledAt?: string;
     timezone?: string;
@@ -1517,12 +1524,12 @@ export async function createExamReviewFromCalendlyBooking(params: {
     const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = String(session?.user?._id || "");
     const compilationId = String(params.compilationId || "");
-    const sessionKey = String(params.sessionKey || "");
-    if (!userId || !compilationId || !sessionKey) {
+    const sessionId = String(params.sessionId || "");
+    if (!userId || !compilationId || !sessionId) {
         return { ok: false as const, error: "Paramètres invalides." };
     }
 
-    const sourceSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_REVIEW_SOURCE_QUERY, { userId, compilationId, sessionKey });
+    const sourceSession = await client.fetch<SessionDocument | null>(MOCK_EXAM_SESSION_REVIEW_SOURCE_QUERY, { userId, compilationId, sessionKey: sessionId });
     if (!sourceSession?._id) {
         return { ok: false as const, error: "Session mock exam introuvable pour la review." };
     }
@@ -1596,9 +1603,9 @@ export async function createExamReviewFromCalendlyBooking(params: {
     const calendlyEventUri = String(params.calendlyEventUri || "").trim();
 
     const reviewPayload = {
-        userId,
+        user: toRef(userId),
         compilationRef: toRef(compilationId),
-        sessionKey,
+        session: toRef(sessionId),
         status: "scheduled" as const,
         ...(scheduledAt ? { scheduledAt } : {}),
         path: {
@@ -1626,7 +1633,7 @@ export async function createExamReviewFromCalendlyBooking(params: {
         ...(calendlyEventUri ? { userNote: `Calendly event: ${calendlyEventUri}` } : {}),
     };
 
-    const existingReview = await client.fetch<{ _id?: string } | null>(EXAM_REVIEW_BY_SESSION_QUERY, { userId, sessionKey });
+    const existingReview = await client.fetch<{ _id?: string } | null>(EXAM_REVIEW_BY_SESSION_QUERY, { userId, sessionId });
     if (existingReview?._id) {
         await client
             .patch(existingReview._id)
@@ -1641,6 +1648,17 @@ export async function createExamReviewFromCalendlyBooking(params: {
     });
 
     return { ok: true as const, reviewId: created?._id as string, upserted: "created" as const };
+}
+
+export async function hasAnyExamReviewForCurrentUser() {
+    const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
+    const userId = String(session?.user?._id || "").trim();
+    if (!userId) {
+        return { ok: false as const, exists: false, error: "Utilisateur introuvable." };
+    }
+
+    const exists = await client.fetch<boolean>(EXAM_REVIEW_EXISTS_FOR_USER_QUERY, { userId });
+    return { ok: true as const, exists: Boolean(exists) };
 }
 
 export async function saveMockExamSpeakingAnswer(params: { compilationId: string; sessionKey: string; taskId: string; activityKey: string; audioUrl: string; transcriptFinal: string }) {

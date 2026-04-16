@@ -4,8 +4,8 @@ import ShimmerButton from "@/app/components/ui/shimmer-button";
 import clsx from "clsx";
 import { NotebookPen } from "lucide-react";
 import { useState, useEffect } from "react";
-import { PopupModal } from "react-calendly";
 import { useRouter } from "next/navigation";
+import TrackedCalendlyPopupModal from "@/app/components/common/TrackedCalendlyPopupModal";
 
 export const BookFirstMeeting = ({
     label,
@@ -81,7 +81,8 @@ export const BookFirstMeeting = ({
                 {label}
             </ShimmerButton>
 
-            <PopupModal
+            <TrackedCalendlyPopupModal
+                source="book_first_meeting"
                 url={test ? "https://calendly.com/yohann-startfrenchnow/test" : "https://calendly.com/yohann-startfrenchnow/15min"}
                 onModalClose={() => setIsOpen(false)}
                 open={isOpen}
@@ -129,7 +130,8 @@ export const BookReservation = ({
                 {label}
             </button>
 
-            <PopupModal
+            <TrackedCalendlyPopupModal
+                source="book_reservation"
                 url={test ? "https://calendly.com/yohann-startfrenchnow/test" : "https://calendly.com/yohann-startfrenchnow/15min"}
                 onModalClose={() => setIsOpen(false)}
                 open={isOpen}

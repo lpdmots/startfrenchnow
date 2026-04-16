@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { CATEGORIESTEXTCOLORS } from "@/app/lib/constantes";
 import { cn } from "@/app/lib/schadcn-utils";
+import { isCalendlyLink, trackCalendlyOpen } from "@/app/lib/calendlyTracking";
 
 interface Props {
     children: React.ReactNode;
@@ -55,7 +56,16 @@ function LinkArrow({ children, url, target = "_blank", rel, category, className 
                 )}
                 target={target}
                 rel={rel}
-                onClick={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                    if (isCalendlyLink(normalizedUrl)) {
+                        trackCalendlyOpen({
+                            source: "link_arrow",
+                            mode: "external_link",
+                            url: normalizedUrl,
+                        });
+                    }
+                    event.stopPropagation();
+                }}
             >
                 <span className="flex items-center justify-between">
                     <span className="link-text underline mr-1">{children}</span>

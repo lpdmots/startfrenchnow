@@ -6,10 +6,10 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineCalendar, HiOutlineQuestionMarkCircle, HiOutlineMail } from "react-icons/hi";
-import { PopupModal } from "react-calendly";
 import BlogLangFixedButton from "../blog/BlogLangFixedButton";
 import { BLOG_HELP_CTA } from "@/app/lib/constantes";
 import { useConsentBannerOffset } from "@/app/hooks/useConsentBannerOffset";
+import TrackedCalendlyPopupModal from "@/app/components/common/TrackedCalendlyPopupModal";
 
 const HELP_CTA_TEST_CONFIG = {
     calendlyUrl: BLOG_HELP_CTA.calendlyUrl,
@@ -303,7 +303,15 @@ export default function BlogFideFloatingHelp({ firstCategory, hasMainVideo = fal
                             </div>
                             <p className="mt-3 text-xs text-neutral-600">{t("reassurance")}</p>
                         </div>
-                        {rootElement && <PopupModal url={HELP_CTA_TEST_CONFIG.calendlyUrl} onModalClose={() => setIsModalOpen(false)} open={isModalOpen} rootElement={rootElement} />}
+                        {rootElement && (
+                            <TrackedCalendlyPopupModal
+                                source="blog_fide_floating_help"
+                                url={HELP_CTA_TEST_CONFIG.calendlyUrl}
+                                onModalClose={() => setIsModalOpen(false)}
+                                open={isModalOpen}
+                                rootElement={rootElement}
+                            />
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>

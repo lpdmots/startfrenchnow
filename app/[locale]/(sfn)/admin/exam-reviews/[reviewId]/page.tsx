@@ -25,8 +25,8 @@ const EXAM_REVIEW_DETAIL_QUERY = groq`
   _id,
   _createdAt,
   _updatedAt,
-  userId,
-  sessionKey,
+  "userRef": user._ref,
+  "sessionId": session._ref,
   status,
   scheduledAt,
   userNote,
@@ -42,10 +42,14 @@ const EXAM_REVIEW_DETAIL_QUERY = groq`
     text,
     deliveredAt
   },
-  "user": *[_type == "user" && _id == ^.userId][0]{
+  "user": user->{
     _id,
     name,
     email
+  },
+  "session": session->{
+    _id,
+    status
   },
   "compilation": compilationRef->{
     _id,
@@ -171,8 +175,8 @@ type ExamReviewDetail = {
     _id: string;
     _createdAt?: string;
     _updatedAt?: string;
-    userId?: string;
-    sessionKey?: string;
+    userRef?: string;
+    sessionId?: string;
     status?: string;
     scheduledAt?: string;
     userNote?: string;
@@ -201,6 +205,10 @@ type ExamReviewDetail = {
         _id?: string;
         name?: string;
         email?: string;
+    } | null;
+    session?: {
+        _id?: string;
+        status?: string;
     } | null;
     compilation?: {
         _id?: string;
@@ -407,7 +415,7 @@ export default async function AdminExamReviewDetailPage(props: { params: Promise
     }
 
     const statusBadgeClass = getReviewStatusBadgeClass(review.status);
-    const userName = review.user?.name || review.user?.email || review.userId || "-";
+    const userName = review.user?.name || review.user?.email || review.userRef || "-";
     const userEmail = review.user?.email || null;
     const speakingA2Answers = Array.isArray(review.answers?.speakA2) ? review.answers?.speakA2 : [];
     const speakingBranchAnswers = Array.isArray(review.answers?.speakBranch) ? review.answers?.speakBranch : [];
@@ -472,8 +480,8 @@ export default async function AdminExamReviewDetailPage(props: { params: Promise
                                             <p className="mb-0 font-medium">{review.compilation?.name || "-"}</p>
                                         </div>
                                         <div>
-                                            <p className="mb-1 text-neutral-500">Session key</p>
-                                            <p className="mb-0 font-medium break-all">{review.sessionKey || "-"}</p>
+                                            <p className="mb-1 text-neutral-500">Session</p>
+                                            <p className="mb-0 font-medium break-all">{review.session?._id || review.sessionId || "-"}</p>
                                         </div>
                                         <div>
                                             <p className="mb-1 text-neutral-500">Parcours oral</p>
