@@ -1421,15 +1421,8 @@
                     },
                     "descriptionText": "Ideal if your exam is soon: immediate focus on your blocking points.",
                     "priceFallback": "65 CHF/hour",
-                    "features": [
-                        "Quick speaking diagnosis",
-                        "1-2 priority scenarios",
-                        "Immediate corrections"
-                    ],
-                    "extras": [
-                        "Quick time slots",
-                        "7-day action plan"
-                    ],
+                    "features": ["Quick speaking diagnosis", "1-2 priority scenarios", "Immediate corrections"],
+                    "extras": ["Quick time slots", "7-day action plan"],
                     "ctaLabel": "Reassure before the test"
                 },
                 "scenarios6h": {
@@ -1442,15 +1435,8 @@
                     },
                     "descriptionText": "The recommended format to master current FIDE test scenarios.",
                     "priceFallback": "390 CHF",
-                    "features": [
-                        "Recent A1-A2 / A2-B1 scenarios",
-                        "Useful and current vocabulary",
-                        "Visible progress session after session"
-                    ],
-                    "extras": [
-                        "Priorities between sessions",
-                        "Clear method for exam day"
-                    ],
+                    "features": ["Recent A1-A2 / A2-B1 scenarios", "Useful and current vocabulary", "Visible progress session after session"],
+                    "extras": ["Priorities between sessions", "Clear method for exam day"],
                     "ctaLabel": "Prepare effectively"
                 },
                 "intensive": {
@@ -1463,15 +1449,8 @@
                     },
                     "descriptionText": "Stronger support if you have a short deadline or an ambitious goal.",
                     "priceFallback": "From 10h personalized",
-                    "features": [
-                        "Intensive plan based on your date",
-                        "Simulations in real conditions",
-                        "Coaching speaking + comprehension"
-                    ],
-                    "extras": [
-                        "Close follow-up",
-                        "Speaking stress-reduction tips"
-                    ],
+                    "features": ["Intensive plan based on your date", "Simulations in real conditions", "Coaching speaking + comprehension"],
+                    "extras": ["Close follow-up", "Speaking stress-reduction tips"],
                     "ctaLabel": "BOOK A FREE CONSULTATION"
                 }
             },
@@ -1647,15 +1626,8 @@
                         "bold": "at your own pace",
                         "text": "Access our FIDE self-study platform from complete beginner to B1 level and progress <b>at your own pace</b>."
                     },
-                    "features": [
-                        "14h of FIDE video content, A0 → B1",
-                        "100+ scenarios including current topics",
-                        "Progress tracking + messaging"
-                    ],
-                    "extras": [
-                        "Regular updates",
-                        "Progression guaranteed"
-                    ],
+                    "features": ["14h of FIDE video content, A0 → B1", "100+ scenarios including current topics", "Progress tracking + messaging"],
+                    "extras": ["Regular updates", "Progression guaranteed"],
                     "cta": "GET THE TRAINING"
                 },
                 "guided": {
@@ -1667,15 +1639,8 @@
                         "bold2": "private coaching",
                         "text": "Prepare for the exam via our <b>self-study platform</b>, then practice FIDE scenarios with 6 hours of <b>private coaching</b>."
                     },
-                    "features": [
-                        "All benefits of the FIDE Essentials",
-                        "6 hours of private online lessons",
-                        "Expert and personalised advice"
-                    ],
-                    "extras": [
-                        "Save 75 CHF on coaching",
-                        "Booking possible within 12h"
-                    ],
+                    "features": ["All benefits of the FIDE Essentials", "6 hours of private online lessons", "Expert and personalised advice"],
+                    "extras": ["Save 75 CHF on coaching", "Booking possible within 12h"],
                     "cta": "CHOOSE THE HYBRID PLAN"
                 }
             },
@@ -2585,6 +2550,47 @@
                 "buyNow": "BUY IT NOW !",
                 "continue": "Continue this course"
             }
+        }
+    },
+    "Account": {
+        "title": "My account",
+        "subtitle": "Find your main profile information and your purchase history.",
+        "profileTitle": "Profile",
+        "securityTitle": "Security",
+        "purchasesTitle": "Purchases",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "username": "Username",
+        "email": "Email",
+        "editProfile": "Edit",
+        "cancelEditProfile": "Cancel",
+        "saveProfile": "Save",
+        "savingProfile": "Saving...",
+        "saveProfileSuccess": "Profile updated.",
+        "saveProfileError": "Unable to update profile.",
+        "usernameRequired": "Username is required.",
+        "resetPasswordDescription": "To update your password, use the secure password reset flow.",
+        "resetPasswordCta": "Change password",
+        "purchasesDescription": "All your purchases are listed below with their related dashboard.",
+        "noPurchases": "No purchase found yet.",
+        "amountUnavailable": "Price unavailable",
+        "dashboard": {
+            "courses": "French Dashboard",
+            "fide": "FIDE Dashboard"
+        },
+        "table": {
+            "product": "Product",
+            "quantity": "Quantity",
+            "price": "Price",
+            "date": "Date",
+            "dashboard": "Dashboard",
+            "status": "Status"
+        },
+        "status": {
+            "paid": "Paid",
+            "assigned": "Assigned",
+            "refunded": "Refunded",
+            "canceled": "Canceled"
         }
     }
 }

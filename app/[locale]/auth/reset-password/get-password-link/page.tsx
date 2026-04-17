@@ -3,8 +3,13 @@ import { GetNewLink } from "@/app/components/auth/GetNewLink";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { use } from "react";
 
-const GetPasswordLink = () => {
+const GetPasswordLink = (props: { searchParams: Promise<{ email?: string; lockEmail?: string }> }) => {
+    const searchParams = use(props.searchParams);
+    const defaultEmail = typeof searchParams?.email === "string" ? searchParams.email : "";
+    const lockEmail = searchParams?.lockEmail === "1";
+
     const t = useTranslations("Auth.GetPasswordLink");
     const tLink = useTranslations("Auth.GetNewLink");
     const tEmail = useTranslations("Auth.Email");
@@ -49,7 +54,7 @@ const GetPasswordLink = () => {
                         <p className="mt-3 text-2xl md:text-3xl font-semibold text-neutral-900">{t("subtitle")}</p>
                         <p className="mt-6 text-lg leading-relaxed text-neutral-700">{t("instruction")}</p>
                         <div className="mt-8 flex justify-center md:justify-start w-full">
-                            <GetNewLink linkFor="resetPassword" messages={messages} />
+                            <GetNewLink linkFor="resetPassword" messages={messages} defaultEmail={defaultEmail} lockEmail={lockEmail} />
                         </div>
                         <div className="mt-8 flex justify-center md:justify-start">
                             <Link href="/auth/signIn" className="btn btn-primary full-width w-button w-full max-w-[360px] text-center">

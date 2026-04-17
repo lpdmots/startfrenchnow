@@ -1,20 +1,30 @@
 "use client";
 
 import { sendNewActivationLink, sendNewPasswordLink } from "@/app/serverActions/authActions";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Spinner from "../common/Spinner";
 
-export const GetNewLink = ({ linkFor = "activate", messages }: { linkFor?: "activate" | "resetPassword"; messages: any }) => {
-    const email = useRef<HTMLInputElement>(null);
+export const GetNewLink = ({
+    linkFor = "activate",
+    messages,
+    defaultEmail = "",
+    lockEmail = false,
+}: {
+    linkFor?: "activate" | "resetPassword";
+    messages: any;
+    defaultEmail?: string;
+    lockEmail?: boolean;
+}) => {
+    const [email, setEmail] = useState(defaultEmail);
     const [message, setMessage] = useState({ error: "", success: "", spinner: false });
     const { error, success } = message;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!email.current?.value) return setMessage({ error: messages.errorEmptyEmail, success: "", spinner: false });
+        if (!email.trim()) return setMessage({ error: messages.errorEmptyEmail, success: "", spinner: false });
         setMessage({ error: "", success: "", spinner: true });
         const response =
-            linkFor === "activate" ? await sendNewActivationLink(email.current?.value, messages.activationEmail) : await sendNewPasswordLink(email.current?.value, messages.ResetPasswordMail);
+            linkFor === "activate" ? await sendNewActivationLink(email, messages.activationEmail) : await sendNewPasswordLink(email, messages.ResetPasswordMail);
         setMessage({ error: response?.error || "", success: response?.success || "", spinner: false });
     };
 
@@ -22,7 +32,17 @@ export const GetNewLink = ({ linkFor = "activate", messages }: { linkFor?: "acti
         <div className="w-form w-full bg-neutral-200" style={{ maxWidth: 500 }}>
             <form onSubmit={handleSubmit}>
                 <div className="position-relative w-full">
-                    <input type="email" ref={email} className="input button-inside w-input" maxLength={256} placeholder={messages.placeholder} autoComplete="on" />
+                    <input
+                        type="email"
+                        className="input button-inside w-input"
+                        maxLength={256}
+                        placeholder={messages.placeholder}
+                        autoComplete="on"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        readOnly={lockEmail}
+                        disabled={lockEmail}
+                    />
                     <button type="submit" className="btn-primary inside-input default w-button" style={{ minWidth: 190 }}>
                         {message.spinner ? <Spinner maxHeight="50px" color="var(--neutral-100)" /> : messages.btnGetLink}
                     </button>

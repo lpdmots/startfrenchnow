@@ -39,6 +39,10 @@ export const ProfilButton = ({ profil, logout }: { profil: string; logout: strin
                             {profil}
                         </span>
                     </div>
+                    <LinkCurrentBlog href="/account" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale={locale}>
+                        <FaCaretRight />
+                        {t("my_account")}
+                    </LinkCurrentBlog>
                     {isAdmin && (
                         <>
                             <LinkCurrentBlog href="/admin/comments" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale="fr">

@@ -1427,15 +1427,8 @@
                     },
                     "descriptionText": "Idéal si votre examen est proche: focus immédiat sur vos points bloquants.",
                     "priceFallback": "65 CHF/heure",
-                    "features": [
-                        "Diagnostic oral rapide",
-                        "1-2 scénarios prioritaires",
-                        "Corrections immédiates"
-                    ],
-                    "extras": [
-                        "Créneaux rapides",
-                        "Plan d'action sur 7 jours"
-                    ],
+                    "features": ["Diagnostic oral rapide", "1-2 scénarios prioritaires", "Corrections immédiates"],
+                    "extras": ["Créneaux rapides", "Plan d'action sur 7 jours"],
                     "ctaLabel": "Se rassurer avant le test"
                 },
                 "scenarios6h": {
@@ -1448,15 +1441,8 @@
                     },
                     "descriptionText": "Le format recommandé pour maîtriser les scénarios actuels du test FIDE.",
                     "priceFallback": "390 CHF",
-                    "features": [
-                        "Scénarios récents A1-A2 / A2-B1",
-                        "Vocabulaire utile et actuel",
-                        "Progression visible séance après séance"
-                    ],
-                    "extras": [
-                        "Priorités entre les séances",
-                        "Méthode claire pour le jour J"
-                    ],
+                    "features": ["Scénarios récents A1-A2 / A2-B1", "Vocabulaire utile et actuel", "Progression visible séance après séance"],
+                    "extras": ["Priorités entre les séances", "Méthode claire pour le jour J"],
                     "ctaLabel": "Se préparer efficacement"
                 },
                 "intensive": {
@@ -1469,15 +1455,8 @@
                     },
                     "descriptionText": "Accompagnement renforcé si vous avez un délai court ou un objectif ambitieux.",
                     "priceFallback": "Dès 10h personnalisées",
-                    "features": [
-                        "Plan intensif selon votre date",
-                        "Simulations en conditions réelles",
-                        "Coaching expression + compréhension"
-                    ],
-                    "extras": [
-                        "Suivi rapproché",
-                        "Conseils anti-stress à l'oral"
-                    ],
+                    "features": ["Plan intensif selon votre date", "Simulations en conditions réelles", "Coaching expression + compréhension"],
+                    "extras": ["Suivi rapproché", "Conseils anti-stress à l'oral"],
                     "ctaLabel": "RÉSERVER UN ENTRETIEN GRATUIT"
                 }
             },
@@ -1653,15 +1632,8 @@
                         "bold": "à votre rythme",
                         "text": "Accédez à notre plateforme d'auto-apprentissage FIDE, de débutant complet au niveau B1, et progressez <b>à votre rythme</b>."
                     },
-                    "features": [
-                        "14h de parcours vidéo FIDE, A0 → B1",
-                        "100+ scénarios dont les sujets actuels",
-                        "Suivi des progrès + Messagerie"
-                    ],
-                    "extras": [
-                        "Mises à jour régulières",
-                        "Progression garantie"
-                    ],
+                    "features": ["14h de parcours vidéo FIDE, A0 → B1", "100+ scénarios dont les sujets actuels", "Suivi des progrès + Messagerie"],
+                    "extras": ["Mises à jour régulières", "Progression garantie"],
                     "cta": "OBTENIR LA FORMATION"
                 },
                 "guided": {
@@ -1673,15 +1645,8 @@
                         "bold2": "coaching privé",
                         "text": "Préparez l'examen via notre plateforme <b>d'auto-apprentissage</b>, puis pratiquez les scénarios FIDE avec 6h de <b>coaching privé</b>."
                     },
-                    "features": [
-                        "Tous les avantages de la formation FIDE",
-                        "6 heures de cours privés en visio",
-                        "Conseils experts et personnalisés"
-                    ],
-                    "extras": [
-                        "1h de coaching offerte",
-                        "Réservation sous 12h possible"
-                    ],
+                    "features": ["Tous les avantages de la formation FIDE", "6 heures de cours privés en visio", "Conseils experts et personnalisés"],
+                    "extras": ["1h de coaching offerte", "Réservation sous 12h possible"],
                     "cta": "CHOISIR L'OFFRE MIXTE"
                 }
             },
@@ -2595,6 +2560,47 @@
                 "buyNow": "ACHETEZ-LE MAINTENANT",
                 "continue": "Continuer ce cours"
             }
+        }
+    },
+    "Account": {
+        "title": "Mon compte",
+        "subtitle": "Retrouvez vos informations principales et l'historique de vos achats.",
+        "profileTitle": "Profil",
+        "securityTitle": "Sécurité",
+        "purchasesTitle": "Achats",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "username": "Pseudo",
+        "email": "Email",
+        "editProfile": "Modifier",
+        "cancelEditProfile": "Annuler",
+        "saveProfile": "Enregistrer",
+        "savingProfile": "Enregistrement...",
+        "saveProfileSuccess": "Profil mis à jour.",
+        "saveProfileError": "Impossible de mettre à jour le profil.",
+        "usernameRequired": "Le pseudo est requis.",
+        "resetPasswordDescription": "Pour modifier votre mot de passe, utilisez le parcours de réinitialisation sécurisé.",
+        "resetPasswordCta": "Changer le mot de passe",
+        "purchasesDescription": "Tous vos achats sont listés ci-dessous avec le dashboard associé.",
+        "noPurchases": "Aucun achat trouvé pour le moment.",
+        "amountUnavailable": "Prix indisponible",
+        "dashboard": {
+            "courses": "Dashboard FR",
+            "fide": "Dashboard FIDE"
+        },
+        "table": {
+            "product": "Produit",
+            "quantity": "Quantité",
+            "price": "Prix",
+            "date": "Date",
+            "dashboard": "Dashboard",
+            "status": "Statut"
+        },
+        "status": {
+            "paid": "Payé",
+            "assigned": "Assigné",
+            "refunded": "Remboursé",
+            "canceled": "Annulé"
         }
     }
 }
