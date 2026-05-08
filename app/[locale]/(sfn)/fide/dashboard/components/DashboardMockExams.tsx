@@ -129,15 +129,13 @@ export const DashboardMockExams = ({
                             >
                                 <div className="relative w-full aspect-[16/10] bg-neutral-200">
                                     <Image
-                                        src={imgUrl || "/images/mock-exam-hero2.png"}
+                                        src={imgUrl || "/images/mock-exam-hero.png"}
                                         alt={t("card.compilationImageAlt", { index: index + 1 })}
                                         fill
                                         sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
                                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
-                                    <div className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide bg-neutral-100/95 text-neutral-800">
-                                        {t("card.badge")}
-                                    </div>
+                                    <div className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide bg-neutral-100/95 text-neutral-800">{t("card.badge")}</div>
                                 </div>
 
                                 <div className="p-5 flex flex-col gap-3">

@@ -56,10 +56,10 @@ export function FidePageOverviewSection() {
                 <div className="mb-5 flex flex-wrap gap-2">
                     <p className="text-lg underline decoration-secondary-2 text-neutral-200">{t("situationsLabel")}</p>
                     <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.housing")}</span>
-                    <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.work")}</span>
                     <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.transport")}</span>
                     <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.health")}</span>
-                    <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.postBank")}</span>
+                    <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.shopping")}</span>
+                    <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.work")}</span>
                 </div>
                 <div className="mt-5 grid gap-3 md:grid-cols-3">
                     <div className="relative overflow-hidden rounded-2xl border border-neutral-600 bg-neutral-200 p-4 shadow-md">

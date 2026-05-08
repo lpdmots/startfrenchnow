@@ -22,16 +22,14 @@ export const HeroMockExams = () => {
             <div className="w-full px-4 lg:px-8">
                 <div className="mx-auto w-full max-w-6xl">
                     <div className="mx-auto w-full">
-                        <h1 className="display-1 text-center md:text-left mb-4">
-                            {t.rich("title", rich)}
-                        </h1>
+                        <h1 className="display-1 text-center md:text-left mb-4">{t.rich("title", rich)}</h1>
                         <p className="mb-0 text-center md:text-left text-base text-neutral-700 sm:text-lg">{t("subtitle")}</p>
                     </div>
 
                     <div className="mt-8 grid grid-cols-1 items-center gap-6 lg:mt-10 lg:grid-cols-[minmax(280px,430px)_1fr] lg:gap-8">
                         <div className="order-2 hidden w-full max-w-[320px] mx-auto sm:block sm:max-w-[440px] md:max-w-[540px] lg:order-1 lg:mx-0 lg:max-w-none">
                             <Image
-                                src="/images/mock-exam-hero2.png"
+                                src="/images/mock-exam-hero.png"
                                 alt={t("imageAlt")}
                                 width={760}
                                 height={680}

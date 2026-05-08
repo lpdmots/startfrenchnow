@@ -5,16 +5,14 @@ import type { Metadata } from "next";
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const params = await props.params;
 
-    const {
-        locale
-    } = params;
+    const { locale } = params;
 
     const t = await getTranslations({ locale: locale, namespace: "Metadata.FideMockExams" });
 
     const path = "/fide/mock-exams";
     const canonical = locale === "fr" ? `/fr${path}` : path;
     const localeTag = locale === "fr" ? "fr_CH" : "en_US";
-    const socialImage = "/images/mock-exam-hero2.png";
+    const socialImage = "/images/mock-exam-hero.png";
 
     return {
         title: t("title"),

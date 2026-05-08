@@ -23,7 +23,7 @@ export const FideCourseRatings = () => {
                     </div>
                 </div>
                 <div className="flex flex-col items-center justify-center">
-                    <CircularProgressMagic max={100} min={0} value={98} gaugePrimaryColor="var(--secondary-5)" gaugeSecondaryColor="var(--neutral-300)" className="h-[55px] w-20" />
+                    <CircularProgressMagic max={100} min={0} value={99} gaugePrimaryColor="var(--secondary-5)" gaugeSecondaryColor="var(--neutral-300)" className="h-[55px] w-20" />
                     <p className="mb-0 font-bold text-lg">Réussite</p>
                 </div>
             </div>

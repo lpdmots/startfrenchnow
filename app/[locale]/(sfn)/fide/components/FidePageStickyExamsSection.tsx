@@ -65,8 +65,6 @@ export function FidePageStickyExamsSection() {
 
                         <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p2", rich)}</p>
 
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p3", rich)}</p>
-
                         <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p4", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -146,7 +144,6 @@ export function FidePageStickyExamsSection() {
                         <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p2", rich)}</p>
                         <p>{t.rich("readWrite.paragraphs.p3", rich)}</p>
                         <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p4", rich)}</p>
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p5", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="text-sm text-neutral-600">{t.rich("readWrite.ctaLine.text", readWriteCtaRich)}</span>

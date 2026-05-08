@@ -37,14 +37,14 @@ export function PrivateCoursesNextStepsSection({ locale }: { locale: string }) {
                                     href="/fide/pack-fide"
                                     className="group block h-full !no-underline rounded-2xl border border-neutral-300 bg-neutral-100 p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-secondary-6 hover:shadow-md"
                                 >
-                                    <div className="mb-4 flex justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
+                                    <div className="mb-4 flex h-52 items-center justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2 md:h-56 lg:h-60">
                                         <Image
                                             src="/images/pack-fide-hero.png"
                                             alt={t("pack.imageAlt")}
                                             width={1200}
                                             height={675}
                                             sizes="(min-width: 768px) 420px, 100vw"
-                                            className="h-auto w-full max-h-96 max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                                            className="h-full w-full max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                                         />
                                     </div>
                                     <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-4">
@@ -64,14 +64,14 @@ export function PrivateCoursesNextStepsSection({ locale }: { locale: string }) {
                                     href="/fide/mock-exams"
                                     className="group block h-full !no-underline rounded-2xl border border-neutral-300 bg-neutral-100 p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-secondary-5 hover:shadow-md"
                                 >
-                                    <div className="mb-4 flex justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
+                                    <div className="mb-4 flex h-52 items-center justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2 md:h-56 lg:h-60">
                                         <Image
-                                            src="/images/mock-exam-hero2.png"
+                                            src="/images/mock-exam-hero.png"
                                             alt={t("mockExams.imageAlt")}
                                             width={1200}
                                             height={675}
                                             sizes="(min-width: 768px) 420px, 100vw"
-                                            className="h-auto w-full max-h-96 max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                                            className="h-full w-full max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                                         />
                                     </div>
                                     <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondaryShades-5">

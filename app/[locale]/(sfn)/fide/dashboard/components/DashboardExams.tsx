@@ -23,13 +23,7 @@ export const DashboardExams = ({ hero, locale, hasPack }: DashboardExamsProps) =
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 w-full">
                 <div className="col-span-1 flex justify-center w-full">
-                    <Image
-                        src="/images/mock-exam-hero2.png"
-                        alt={t("altExamsImage")}
-                        width={400}
-                        height={400}
-                        className="px-8 object-contain w-full overflow-hidden max-w-40 lg:max-w-none h-auto"
-                    />
+                    <Image src="/images/mock-exam-hero.png" alt={t("altExamsImage")} width={400} height={400} className="px-8 object-contain w-full overflow-hidden max-w-40 lg:max-w-none h-auto" />
                 </div>
 
                 <div className="col-span-1 lg:col-span-2 flex flex-col items-center w-full">

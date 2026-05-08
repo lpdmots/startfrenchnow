@@ -59,7 +59,7 @@ export function FidePageHubSection() {
                     >
                         <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
                             <Image
-                                src="/images/mock-exam-hero2.png"
+                                src="/images/mock-exam-hero.png"
                                 alt={t("cards.mockExams.imageAlt")}
                                 width={1200}
                                 height={675}

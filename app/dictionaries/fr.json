@@ -797,8 +797,8 @@
             "flexible": "Flexible & autonome"
         },
         "ExamsSection": {
-            "title": "<hs5>Testez-vous</hs5> avec <under>{exams}+ examens</under> blancs",
-            "subtitle": "Passez des examens proches du jour J, obtenez votre score instantanément et suivez votre progression jusqu’à l’examen.",
+            "title": "<hs5>Testez-vous</hs5> avec <under>{exams} exercices</under> type FIDE",
+            "subtitle": "Passez des épreuves similaires au test FIDE, obtenez votre score instantanément et suivez votre progression jusqu’à l’examen.",
             "benefit1": {
                 "title": "Progression suivie",
                 "desc": "Vos notes et tentatives sont enregistrées dans un tableau de bord, avec des statistiques par niveau."
@@ -1169,20 +1169,8 @@
             "titleSuffix": "?",
             "videoTitle": "Le test FIDE : Présentation Générale",
             "paragraphs": {
-                "p1": {
-                    "prefix": "Le test FIDE évalue votre français dans des situations réelles du quotidien en Suisse. Il est demandé notamment pour le",
-                    "strong1": "permis B",
-                    "strong2": "permis C",
-                    "strong3Prefix": "ou la",
-                    "strong3": "naturalisation"
-                },
-                "p2": {
-                    "prefix": "Vous ne choisissez pas un niveau à l'inscription: le résultat vous positionne entre",
-                    "strong": "A1 et B1",
-                    "suffix": ". Les résultats sont séparés entre oral et écrit, ce qui permet de repasser uniquement la partie non validée."
-                },
                 "p1Text": "Le test FIDE évalue votre français dans des situations réelles du quotidien en Suisse. Il est demandé notamment pour le <b>permis B</b>, <b>permis C</b> ou la <b>naturalisation</b>.",
-                "p2Text": "Vous ne choisissez pas un niveau à l'inscription: le résultat vous positionne entre <b>A1 et B1</b>. Les résultats sont séparés entre oral et écrit, ce qui permet de repasser uniquement la partie non validée."
+                "p2Text": "Deux parties distinctes sont évaluées : L'Oral et l'Ecrit. Vous obtenez un résultat allant du <b>A1 au B1</b>. Les résultats sont séparés, ce qui permet de repasser uniquement la partie non validée."
             },
             "examParts": {
                 "oral": {
@@ -1197,10 +1185,10 @@
             "situationsLabel": "Quelques situations courantes :",
             "situations": {
                 "housing": "logement",
-                "work": "travail",
                 "transport": "transports",
                 "health": "santé",
-                "postBank": "poste / banque"
+                "shopping": "achats",
+                "work": "travail"
             },
             "levels": {
                 "a1": {
@@ -1227,21 +1215,20 @@
         "FidePageStickyExams": {
             "sectionTitleHighlight": "Les épreuves",
             "sectionTitleSuffix": "du test FIDE",
-            "sectionSubtitle": "Trois épreuves, trois formats : découvrez ce qui vous attend et comment vous préparer efficacement.",
+            "sectionSubtitle": "4 compétences évaluées : découvrez ce qui vous attend et comment vous préparer efficacement.",
             "speaking": {
                 "title": "Partie Orale : Parler",
                 "videoTitle": "Le test FIDE : La Partie Orale - Parler",
                 "paragraphs": {
-                    "p1": "La partie <strong>« Parler »</strong> est l'épreuve orale la plus importante et la plus exigeante du test FIDE. Elle dure environ <strong>15 à 20 minutes</strong> avec <strong>deux examinateurs</strong> : l'un pose les questions, l'autre observe et évalue. L'épreuve commence toujours au <strong>niveau A2</strong>, puis vous êtes orienté vers <strong>A1</strong> ou <strong>B1</strong> selon votre performance.",
-                    "p2": "Si le niveau A2 est bien réussi, vous accédez au <strong>niveau B1</strong>. À ce stade, vous choisissez entre deux thèmes et répondez à des questions plus développées : raconter une expérience passée, présenter des avantages et inconvénients, et répondre à des questions hypothétiques (souvent avec le conditionnel).",
-                    "p3": "Les compétences clés à maîtriser sont : <strong>décrire clairement une situation</strong>, interagir dans un contexte courant, parler de soi, raconter un événement passé et développer une réponse nuancée au niveau B1. Cette partie représente une part majeure de l'évaluation orale, donc la préparation est stratégique.",
-                    "p4": "Le conseil principal : s'entraîner avec un professeur, surtout pour sécuriser les tâches A2 qui conditionnent à la fois la note globale et l'accès au niveau B1."
+                    "p1": "La partie <strong>« Parler »</strong> est l'épreuve orale la plus importante du test FIDE. Elle dure environ <strong>15 à 20 minutes</strong> avec <strong>deux examinateurs</strong> : l'un pose les questions, l'autre observe et évalue. L'épreuve commence toujours au <strong>niveau A2</strong>, puis vous êtes orienté vers <strong>A1</strong> ou <strong>B1</strong> selon votre performance.",
+                    "p2": "Si le niveau A2 est bien réussi, vous accédez au <strong>niveau B1</strong>. À ce stade, vous choisissez entre deux thèmes et répondez à des questions plus complexes : raconter une expérience passée, présenter des avantages et inconvénients, et répondre à des questions hypothétiques (souvent avec le conditionnel).",
+                    "p4": "Le conseil principal : s'entraîner avec un professeur, surtout pour bien réussir les tâches A2 et pouvoir poursuivre votre objectif B1."
                 },
                 "a2Tasks": {
                     "title": "Les 3 tâches du niveau A2",
                     "items": {
                         "1": "<strong>Description d'image</strong> : personnes, lieu, actions et problème éventuel.",
-                        "2": "<strong>Jeu de rôle</strong> : souvent une conversation téléphonique (annuler, déplacer un rendez-vous, etc.).",
+                        "2": "<strong>Jeu de rôle</strong> : une conversation téléphonique (annuler, déplacer un rendez-vous, etc.).",
                         "3": "<strong>Questions générales</strong> sur un thème pour parler de vos habitudes, préférences et expériences."
                     }
                 },
@@ -1263,9 +1250,9 @@
                 "levelFormat": {
                     "title": "Format selon le niveau",
                     "items": {
-                        "a1": "<strong>A1</strong> : courts enregistrements liés à des scènes illustrées, 3 questions par situation, réponse en choisissant l'image correcte. Audio écoutable deux fois.",
-                        "a2": "<strong>A2</strong> : format proche du A1, mais avec des situations plus complexes, des enregistrements plus longs et des distracteurs.",
-                        "b1": "<strong>B1</strong> : audios plus naturels et plus longs, réponse orale en phrase complète à partir des informations entendues."
+                        "a1": "<strong>A1</strong> : courts enregistrements sur des scènes du quotidien, 3 questions par situation, réponse en choisissant l'image correcte. Audio écoutable deux fois.",
+                        "a2": "<strong>A2</strong> : Même format que le niveau A1 mais avec des situations plus complexes, des enregistrements plus longs et des distracteurs.",
+                        "b1": "<strong>B1</strong> : audios plus naturels et plus longs, réponse orale par une petite phrase à partir des informations entendues."
                     }
                 },
                 "ctaLine": {
@@ -1279,17 +1266,16 @@
                 "title": "Lire et Écrire",
                 "videoTitle": "Le test FIDE : Lire et Écrire",
                 "paragraphs": {
-                    "p1": "La partie <strong>« Lire et Écrire »</strong> est généralement plus accessible que l'oral, car les tâches sont plus structurées et plus prévisibles. Le niveau maximal attendu est souvent <strong>A2</strong>, ce qui la rend plus abordable pour les candidats qui ont déjà une base en français.",
+                    "p1": "La partie <strong>« Lire et Écrire »</strong> est généralement plus accessible que l'oral, car les tâches sont plus structurées et plus prévisibles. Le niveau B1 n'étant pas nécessaire pour la naturalisation ou le permis C, l'Ecrit ne pose en général pas de problème pour les candidats.",
                     "p2": "Les tâches sont variées mais claires : <i>repérer et recopier des informations, remplir un formulaire, répondre à un email ou rédiger une lettre simple, choisir le bon résumé d'un document</i>.",
                     "p3": "L'objectif est d'évaluer <strong>la compréhension d'écrits pratiques</strong> et la capacité à <strong>produire des messages simples</strong> mais adaptés.",
-                    "p4": "Pour progresser, nous vous conseillons de vous entraîner avec des examens blancs et leurs corrigés, puis de répéter les formats clés : formulaires, extraction d'informations précises et rédaction de messages courts en respectant strictement les consignes.",
-                    "p5": "En résumé, cette partie repose surtout sur la <strong>méthode</strong>, la <strong>compréhension des consignes</strong> et l'<strong>entraînement pratique</strong>, ce qui en fait souvent une épreuve plus facile à réussir que l'oral."
+                    "p4": "Pour progresser, nous vous conseillons de vous entraîner avec des examens blancs et leurs corrigés."
                 },
                 "structure": {
                     "title": "Structure de l'épreuve écrite",
                     "items": {
                         "duration": "<strong>Durée</strong> : environ 60 minutes.",
-                        "modules": "<strong>Modules</strong> : selon le niveau visé, modules 1 à 3 ou modules 4 à 6.",
+                        "modules": "<strong>Modules</strong> : selon le niveau visé A1 à A2 ou A2 à B1, modules 1 à 3 ou modules 4 à 6.",
                         "perModule": "<strong>Dans chaque module</strong> : compréhension écrite + production écrite."
                     }
                 },
@@ -1568,7 +1554,7 @@
         "PackFideHero": {
             "titlePrefix": "Réussissez le test avec le",
             "titleHighlight": "Pack FIDE",
-            "subtitle": "Une préparation claire et complète avec des vidéos guidées, <b><under6>les scénarios actuels</under6></b> expliqués et des examens blancs.",
+            "subtitle": "Une préparation claire et complète avec des vidéos guidées, <b><under6>les scénarios actuels</under6></b> du test FIDE et des examens blancs.",
             "ctaOffers": {
                 "label": "Les offres",
                 "aria": "Voir les offres"
@@ -1601,28 +1587,23 @@
             "title": "Qu'est-ce que le <hs6>pack FIDE</hs6> ?"
         },
         "PackFideNextSteps": {
-            "badge": "Compléter votre préparation",
-            "titlePrefix": "Ajoutez une couche de",
-            "titleHighlight": "confiance",
-            "titleSuffix": "avant l'examen",
-            "subtitle": "Combinez le pack e-learning avec des examens blancs et, si nécessaire, des cours privés ciblés.",
+            "badge": "Complétez votre préparation",
+            "subtitle": "Combinez le pack e-learning avec des examens blancs et, si nécessaire, des cours privés.",
             "mockExams": {
                 "imageAlt": "Aperçu des examens blancs FIDE",
                 "title": "Examens blancs FIDE",
-                "description": "Mesurez votre niveau en conditions proches du test et recevez un plan d'action.",
+                "description": "Passez le test, obtenez un score immédiat et recevez votre plan d'études idéal.",
                 "cta": "Voir les examens blancs"
             },
             "privateCourses": {
                 "imageAlt": "Aperçu des cours privés FIDE",
                 "title": "Cours privés FIDE",
-                "description": "Renforcez vos points faibles avec un coaching 1:1 centré sur vos besoins.",
+                "description": "Améliorez votre français et pratiquez en direct les scénarios de l'examen FIDE avec votre professeur.",
                 "cta": "Voir les cours privés"
             },
-            "title": "Ajoutez une couche de <hs6>confiance</hs6> avant l'examen"
+            "title": "Boostez votre <hs6>confiance</hs6> avant l'examen"
         },
         "PackFidePricing": {
-            "titleHighlight": "Choisissez",
-            "titleSuffix": "votre formule",
             "subtitle": "Deux offres pack selon votre besoin d'autonomie ou d'accompagnement.",
             "cards": {
                 "autonomy": {
@@ -1652,7 +1633,7 @@
             },
             "privateBadge": "Option complémentaire",
             "privateTitle": "Cours privés FIDE",
-            "privateDescription": "Pour un accompagnement 1:1 ciblé: travaillez vos points bloquants, corrigez vos erreurs en direct et gagnez en confiance à l'oral.",
+            "privateDescription": "Pour un accompagnement personnalisé en classe privée avec votre professeur. Pratiquez en direct les scénarios de l'examen FIDE, construisez vos réponses types et gagnez en confiance à l'oral.",
             "privateBullets": {
                 "1": "Coaching individuel",
                 "2": "Scénarios actuels",

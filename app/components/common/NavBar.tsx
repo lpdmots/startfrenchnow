@@ -96,7 +96,7 @@ function NavBar() {
                         <NotificationsMenuServer locale={locale as Locale} />
                         <LocaleSwitcher locale={locale as Locale} />
                         <DarkMode />
-                        <ProfilButton profil={t("profil")} logout={t("logout")} />
+                        <ProfilButton logout={t("logout")} />
                         <Link aria-label="Go to contact page" href="/contact" className="btn-primary small p-[13px] rounded-[12px] text-[24px] leading-[24px] font-normal max-[991px]:mr-[24px] max-[991px]:ml-0 max-[767px]:hidden max-[479px]:mr-[12px] flex items-center !p-2 !mr-2 lg:!mr-0">
                             <FaRegEnvelope style={{ fontSize: 22 }} />
                         </Link>

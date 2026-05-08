@@ -45,8 +45,8 @@
             "description": "Online FIDE mock exam: real test simulation, instant score, detailed correction, PDFs + videos included. Immediate access, A1–A2 or A2–B1 tracks."
         },
         "FidePackFide": {
-            "title": "FIDE e-learning Pack | Videos, mock exams, and guidance | Start French Now",
-            "description": "Swiss FIDE prep online: videos, current scenarios, structured support. Immediate access and a free study plan."
+            "title": "FIDE e-learning Pack | Videos, mock exams, and coaching | Start French Now",
+            "description": "Online Swiss FIDE prep: videos, current scenarios, and structured guidance. Immediate access and a free study plan."
         },
         "FidePrivateCourses": {
             "title": "Private FIDE Coaching Online (1:1) | FIDE Test Prep | Start French Now",
@@ -787,7 +787,7 @@
             "access": "Access on mobile and TV",
             "lifetime": "Lifetime access, updates included",
             "buttonHasPack": "Resume your courses",
-            "buttonNoPack": "Start learning"
+            "buttonNoPack": "Choose my plan"
         },
         "MarqueePackFideContent": {
             "lifetime": "Lifetime access",
@@ -797,7 +797,7 @@
             "flexible": "Flexible & self-paced"
         },
         "ExamsSection": {
-            "title": "<hs5>Test yourself</hs5> with <under>{exams}+ mock exams</under>",
+            "title": "<hs5>Test yourself</hs5> with <under>{exams} FIDE-style exercises</under>",
             "subtitle": "Take practice exams similar to the real test day, get your score instantly and track your progress all the way to the exam.",
             "benefit1": {
                 "title": "Tracked progress",
@@ -822,21 +822,21 @@
             "imageAlt": "Infographic about the exams"
         },
         "WhatIsFide": {
-            "title": "What is the <hs4>FIDE Test</hs4>?",
-            "point1": "Required for <under>Swiss residency</under> (Permis B, C) or <under>citizenship</under>.",
+            "title": "What is the <noWrap><hs4>FIDE test</hs4>?</noWrap>",
+            "point1": "Required in Switzerland to obtain a <under>B or C permit</under> or <under>citizenship</under>.",
             "point2": "Tests <under>French</under>, Italian, or German language skills.",
-            "point3": "Covers <b>speaking</b>, <b>listening</b>, <b>reading</b>, and <b>writing</b>.",
+            "point3": "Includes both <b>oral</b> and <b>written</b> sections.",
             "point4": "Aligned with CEFR levels <hs2>A1 to B1</hs2>.",
             "point5": "Earn a <under>FIDE language passport</under> upon passing.",
-            "fullExplanation": "The Full Explanation",
+            "fullExplanation": "Full explanation!",
             "AskForPdf": {
                 "ask": "Request your <hs4>free guide</hs4> for the FIDE test",
                 "askTitelBand": "Request your free guide",
                 "askDescription": "And learn everything you need to know about the FIDE test.",
                 "imageAlt": "Illustration to get the PDF guide",
                 "emailPlaceholder": "Your email address",
-                "button": "Request",
-                "successMessage": "Your request has been submitted, and a link to the PDF has been sent to your inbox. Please check your spam folder if you don't see our email.",
+                "button": "Send",
+                "successMessage": "Your request has been sent and <under>a link to the PDF has been emailed</under> to you. Please check your spam folder if you do not see our email.",
                 "errorMessage": "Oops! Something went wrong."
             },
             "linkToFAQ": "Check out our FAQ to learn more"
@@ -946,7 +946,7 @@
             "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
             "errorMessage": "Oops! Something went wrong.",
             "placeholder": "Your email address",
-            "button": "Contact us",
+            "button": "Receive an email",
             "imageAlt": "FIDE contact illustration"
         },
         "AdditionalCourses": {
@@ -963,14 +963,14 @@
             }
         },
         "ContactForFideCourses": {
-            "title": "<hs1>Start</hs1> Your Fide",
-            "description1": "Let's create your <textxl><under1>FREE</under1></textxl> personalized <textxl><under1>learning plan</under1></textxl>.",
+            "title": "Decide with <hs1>confidence</hs1>!",
+            "description1": "Let's build your <textxl><under1>FREE</under1></textxl> personalized <textxl><under1>study plan</under1></textxl>.",
             "label": "Email",
             "placeholder": "My email address",
-            "button": "Start now !",
+            "button": "Get started!",
             "or": "OR",
             "ContactFideForm": {
-                "objectifPlaceholder": "Your goal",
+                "objectifPlaceholder": "Goal",
                 "objectifOptions": {
                     "preparationFide": "FIDE preparation",
                     "naturalisation": "Naturalization"
@@ -983,7 +983,7 @@
                     "b1": "B1",
                     "unknown": "I don't know"
                 },
-                "niveauSouhaitePlaceholder": "Level required (oral)",
+                "niveauSouhaitePlaceholder": "Target level (oral)",
                 "niveauSouhaiteOptions": {
                     "a1": "A1",
                     "a2": "A2",
@@ -991,8 +991,8 @@
                     "unknown": "I don't know"
                 },
                 "specificRequestPlaceholder": "Any specific requests?",
-                "emailPlaceholder": "Mon adresse email",
-                "button": "Envoyer",
+                "emailPlaceholder": "My email address",
+                "button": "Send",
                 "successMessage": "Your request has been sent. We will contact you as soon as possible, please check your spam folder if you don't see our email.",
                 "errorMessage": "Oops! Something went wrong.",
                 "subtitle": "Ask us your questions by email"
@@ -1163,20 +1163,8 @@
             "titleSuffix": "?",
             "videoTitle": "The FIDE test: General overview",
             "paragraphs": {
-                "p1": {
-                    "prefix": "The FIDE test assesses your French in real-life situations in Switzerland. It is notably required for the",
-                    "strong1": "B permit",
-                    "strong2": "C permit",
-                    "strong3Prefix": "or",
-                    "strong3": "naturalization"
-                },
-                "p2": {
-                    "prefix": "You don't choose a level when registering: your result places you between",
-                    "strong": "A1 and B1",
-                    "suffix": ". Results are split between oral and written, so you can retake only the part you didn't pass."
-                },
                 "p1Text": "The FIDE test assesses your French in real-life situations in Switzerland. It is notably required for the <b>B permit</b>, <b>C permit</b> or <b>naturalization</b>.",
-                "p2Text": "You don't choose a level when registering: your result places you between <b>A1 and B1</b>. Results are split between oral and written, so you can retake only the part you didn't pass."
+                "p2Text": "Two separate parts are assessed: Oral and Written. You receive a result between <b>A1 and B1</b>. Results are separate, so you only need to retake the part you did not pass."
             },
             "examParts": {
                 "oral": {
@@ -1191,10 +1179,10 @@
             "situationsLabel": "Common situations:",
             "situations": {
                 "housing": "housing",
-                "work": "work",
                 "transport": "transport",
                 "health": "health",
-                "postBank": "post office / bank"
+                "shopping": "shopping",
+                "work": "work"
             },
             "levels": {
                 "a1": {
@@ -1221,15 +1209,14 @@
         "FidePageStickyExams": {
             "sectionTitleHighlight": "The sections",
             "sectionTitleSuffix": "of the FIDE test",
-            "sectionSubtitle": "Three sections, three formats: discover what to expect and how to prepare effectively.",
+            "sectionSubtitle": "4 skills assessed: discover what to expect and how to prepare effectively.",
             "speaking": {
                 "title": "Oral section: Speaking",
                 "videoTitle": "The FIDE test: Oral section - Speaking",
                 "paragraphs": {
                     "p1": "The <strong>“Speaking”</strong> part is the most important and demanding oral section of the FIDE test. It lasts about <strong>15 to 20 minutes</strong> with <strong>two examiners</strong>: one asks questions, the other observes and evaluates. The section always starts at <strong>A2 level</strong>, then you are directed to <strong>A1</strong> or <strong>B1</strong> depending on your performance.",
                     "p2": "If A2 is successful, you access <strong>B1 level</strong>. At this stage, you choose between two topics and answer more developed questions: recount a past experience, present pros and cons, and answer hypothetical questions (often using the conditional).",
-                    "p3": "Key skills to master are: <strong>clearly describing a situation</strong>, interacting in a common context, talking about yourself, recounting a past event, and developing a nuanced response at B1 level. This section represents a major part of oral evaluation, so preparation is strategic.",
-                    "p4": "Main advice: train with a teacher, especially to secure the A2 tasks that condition both your overall score and access to B1."
+                    "p4": "Main advice: train with a teacher, especially to succeed in the A2 tasks and keep moving toward your B1 goal."
                 },
                 "a2Tasks": {
                     "title": "The 3 A2 tasks",
@@ -1273,11 +1260,10 @@
                 "title": "Reading and Writing",
                 "videoTitle": "The FIDE test: Reading and Writing",
                 "paragraphs": {
-                    "p1": "The <strong>“Reading and Writing”</strong> part is generally more accessible than the oral section because tasks are more structured and predictable. The maximum level expected is often <strong>A2</strong>, which makes it more approachable for candidates who already have a base in French.",
+                    "p1": "The <strong>“Reading and Writing”</strong> part is generally more accessible than the oral section because tasks are more structured and predictable. Since B1 is not required for naturalization or the C permit, the written part is usually not a major obstacle for candidates.",
                     "p2": "Tasks are varied but clear: <i>identify and copy information, fill out a form, answer an email or write a short letter, choose the right summary of a document</i>.",
                     "p3": "The goal is to evaluate <strong>practical reading comprehension</strong> and the ability to <strong>produce simple messages</strong> that are still appropriate.",
-                    "p4": "To progress, we recommend practicing with mock exams and their corrections, then repeating key formats: forms, extracting precise information, and writing short messages while strictly following instructions.",
-                    "p5": "In short, this section relies mainly on <strong>method</strong>, <strong>understanding instructions</strong>, and <strong>practical training</strong>, which often makes it easier to pass than the oral section."
+                    "p4": "To improve, we recommend practicing with mock exams and their corrections."
                 },
                 "structure": {
                     "title": "Structure of the written section",
@@ -1369,7 +1355,7 @@
                     "imageAlt": "Preview of private FIDE coaching"
                 }
             },
-            "title": "Choose your <hs6>prep format</hs6>"
+            "title": "Choose your <hs6>preparation format</hs6>"
         },
         "PrivateCoursesHero": {
             "title": {
@@ -1562,14 +1548,14 @@
         "PackFideHero": {
             "titlePrefix": "Pass the test with the",
             "titleHighlight": "FIDE Pack",
-            "subtitle": "A clear and complete preparation with guided videos, <b><under6>current scenarios</under6></b> explained and mock exams.",
+            "subtitle": "A clear and complete preparation with guided videos, <b><under6>current FIDE exam scenarios</under6></b>, and mock exams.",
             "ctaOffers": {
                 "label": "Offers",
                 "aria": "See the offers"
             },
             "ctaSummary": {
-                "label": "Outline",
-                "aria": "See the outline"
+                "label": "Course outline",
+                "aria": "See the course outline"
             },
             "images": {
                 "desktopAlt": "Desktop preview of the FIDE pack",
@@ -1596,28 +1582,23 @@
         },
         "PackFideNextSteps": {
             "badge": "Complete your preparation",
-            "titlePrefix": "Add an extra layer of",
-            "titleHighlight": "confidence",
-            "titleSuffix": "before exam day",
-            "subtitle": "Combine the e-learning pack with mock exams and, when needed, targeted private coaching.",
+            "subtitle": "Combine the e-learning pack with mock exams and, when needed, private coaching.",
             "mockExams": {
                 "imageAlt": "Preview of FIDE mock exams",
                 "title": "FIDE mock exams",
-                "description": "Measure your level in realistic conditions and get a clear action plan.",
+                "description": "Take the test, get an instant score, and receive your ideal study plan.",
                 "cta": "See mock exams"
             },
             "privateCourses": {
                 "imageAlt": "Preview of FIDE private courses",
-                "title": "Private FIDE coaching",
-                "description": "Strengthen weak points with 1:1 sessions tailored to your specific needs.",
-                "cta": "See private coaching"
+                "title": "Private FIDE courses",
+                "description": "Improve your French and practice FIDE exam scenarios live with your teacher.",
+                "cta": "See private courses"
             },
-            "title": "Add an extra layer of <hs6>confidence</hs6> before exam day"
+            "title": "Boost your <hs6>confidence</hs6> before the exam"
         },
         "PackFidePricing": {
-            "titleHighlight": "Choose",
-            "titleSuffix": "your plan",
-            "subtitle": "Two pack offers depending on your need for autonomy or guidance.",
+            "subtitle": "Two pack options depending on how much guidance you need.",
             "cards": {
                 "autonomy": {
                     "title": "Self-Study Pack",
@@ -1627,7 +1608,7 @@
                         "text": "Access our FIDE self-study platform from complete beginner to B1 level and progress <b>at your own pace</b>."
                     },
                     "features": ["14h of FIDE video content, A0 → B1", "100+ scenarios including current topics", "Progress tracking + messaging"],
-                    "extras": ["Regular updates", "Progression guaranteed"],
+                    "extras": ["Regular updates", "Guaranteed progress"],
                     "cta": "GET THE TRAINING"
                 },
                 "guided": {
@@ -1639,21 +1620,21 @@
                         "bold2": "private coaching",
                         "text": "Prepare for the exam via our <b>self-study platform</b>, then practice FIDE scenarios with 6 hours of <b>private coaching</b>."
                     },
-                    "features": ["All benefits of the FIDE Essentials", "6 hours of private online lessons", "Expert and personalised advice"],
-                    "extras": ["Save 75 CHF on coaching", "Booking possible within 12h"],
+                    "features": ["All benefits of the FIDE training", "6 hours of private online lessons", "Expert and personalized advice"],
+                    "extras": ["1 hour of coaching included", "Booking possible within 12h"],
                     "cta": "CHOOSE THE HYBRID PLAN"
                 }
             },
             "privateBadge": "Complementary option",
-            "privateTitle": "Private FIDE lessons",
-            "privateDescription": "For targeted 1:1 support: work on blocking points, fix mistakes live, and build confidence for the speaking part.",
+            "privateTitle": "Private FIDE courses",
+            "privateDescription": "For personalized private support with your teacher. Practice FIDE exam scenarios live, build ready-to-use responses, and gain confidence for the speaking part.",
             "privateBullets": {
                 "1": "1:1 coaching",
                 "2": "Current scenarios",
                 "3": "Direct feedback"
             },
-            "privateCta": "See private lessons",
-            "title": "<hs6>Choose</hs6> your plan"
+            "privateCta": "See private courses",
+            "title": "<hs6>Choose</hs6> your option"
         },
         "PackFidePage": {
             "breadcrumbs": {

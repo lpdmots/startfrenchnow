@@ -9,7 +9,7 @@ import { LinkCurrentBlog } from "../common/LinkCurrentBlog";
 import { useLocale, useTranslations } from "next-intl";
 import { COURSES_PACKAGES_KEYS } from "@/app/lib/constantes";
 
-export const ProfilButton = ({ profil, logout }: { profil: string; logout: string }) => {
+export const ProfilButton = ({ logout }: { logout: string }) => {
     const { data: session } = useSession();
     const pathname = usePathname();
     const isAdmin = session?.user?.isAdmin === true;
@@ -33,12 +33,6 @@ export const ProfilButton = ({ profil, logout }: { profil: string; logout: strin
         content: (
             <div className="card p-4 mt-2">
                 <div className="flex flex-col" style={{ minWidth: 125 }}>
-                    <div>
-                        <span className="flex items-center color-neutral-500 opacity-25 p-1">
-                            <FaCaretRight />
-                            {profil}
-                        </span>
-                    </div>
                     <LinkCurrentBlog href="/account" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale={locale}>
                         <FaCaretRight />
                         {t("my_account")}

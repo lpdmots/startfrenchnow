@@ -16,17 +16,7 @@ import type { FidePackSommaire } from "@/app/serverActions/productActions";
 import { intelRich } from "@/app/lib/intelRich";
 import type { ReactNode } from "react";
 
-export function VideosSectionClient({
-    fidePackSommaire,
-    hasPack,
-    locale,
-    userId,
-}: {
-    fidePackSommaire: FidePackSommaire;
-    hasPack?: boolean;
-    locale: Locale;
-    userId?: string;
-}) {
+export function VideosSectionClient({ fidePackSommaire, hasPack, locale, userId }: { fidePackSommaire: FidePackSommaire; hasPack?: boolean; locale: Locale; userId?: string }) {
     const { data: session } = useSession();
     const sessionHasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
     const effectiveHasPack = hasPack ?? sessionHasPack;
@@ -46,7 +36,7 @@ export function VideosSectionClient({
         <section id="videosSection" className="max-w-7xl m-auto py-24 px-4 lg:px-8">
             <div className="mx-auto w-full flex flex-col items-center">
                 <header className="mb-6 text-center max-w-5xl">
-                    <h2 className="display-2">{t.rich("title", rich)}</h2>
+                    <h2 className="display-2 mb-4">{t.rich("title", rich)}</h2>
                     <p className="">{t("subtitle")}</p>
                 </header>
 
