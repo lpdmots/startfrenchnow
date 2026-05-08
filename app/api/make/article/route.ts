@@ -10,7 +10,6 @@ import sharp from "sharp";
 
 export const dynamic = "force-dynamic";
 
-
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
 
@@ -382,7 +381,7 @@ export const getRules = (imagesIds: string[]) => {
             deserialize(el: any, next: any) {
                 if ((el as HTMLElement).tagName?.toLowerCase() !== "lien") return undefined;
                 const children: string | null = next(el.childNodes);
-                const href: string | null = (el as HTMLElement).getAttribute("href") || "https://www.startfrenchnow.com/";
+                const href: string | null = (el as HTMLElement).getAttribute("href") || "https://startfrenchnow.ch/";
                 const target: boolean = "target" in el.attributes ? true : false;
                 const download: boolean = "download" in el.attributes ? true : false;
                 const isSpan: boolean = "span" in el.attributes ? true : false;

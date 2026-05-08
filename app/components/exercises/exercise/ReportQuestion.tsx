@@ -45,7 +45,7 @@ export const ReportQuestion = ({ open, setOpen, exerciseId, question }: ReportQu
                 email: session?.user.email || "Utilisateur anonyme",
                 subject: "Question report",
                 message: getMailBody(),
-                mailTo: "nicolas@startfrenchnow.com",
+                mailTo: "nicolas@startfrenchnow.ch",
             };
             const resp = await sendContactForm(values);
             if (resp?.success) setMessage("Thank you for your message!");

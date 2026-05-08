@@ -12,7 +12,7 @@ type BuildCouponMessageParams = {
     plansPath?: string | null;
 };
 
-const BASE_URL = (process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
+const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
 const DEFAULT_COUPON_CODE = "BRAVO10";
 const DEFAULT_PLANS_PATH = "/fide/pack-fide#pack-pricing";
 

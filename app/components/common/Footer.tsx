@@ -127,18 +127,18 @@ function Footer() {
                                         <ul role="list" className="mb-0 pl-0 list-none flex flex-col items-start text-sm md:text-base">
                                             <li className="footer-list-item">
                                                 <a
-                                                    href="mailto:yohann@startfrenchnow.com"
+                                                    href="mailto:yohann@startfrenchnow.ch"
                                                     className="inline-block leading-[20px] font-normal flex items-center text-neutral-300 no-underline transition-colors duration-200 hover:text-[var(--secondary-2)] w-inline-block"
                                                 >
-                                                    <div className="link-text">yohann@startfrenchnow.com</div>
+                                                    <div className="link-text">yohann@startfrenchnow.ch</div>
                                                 </a>
                                             </li>
                                             <li className="footer-list-item">
                                                 <a
-                                                    href="mailto:nicolas@startfrenchnow.com"
+                                                    href="mailto:nicolas@startfrenchnow.ch"
                                                     className="inline-block leading-[20px] font-normal flex items-center text-neutral-300 no-underline transition-colors duration-200 hover:text-[var(--secondary-2)] w-inline-block"
                                                 >
-                                                    <div className="link-text">nicolas@startfrenchnow.com</div>
+                                                    <div className="link-text">nicolas@startfrenchnow.ch</div>
                                                 </a>
                                             </li>
                                         </ul>

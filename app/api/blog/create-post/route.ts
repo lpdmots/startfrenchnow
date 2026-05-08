@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 
 export const dynamic = "force-dynamic";
 
-
 export const runtime = "nodejs";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
@@ -359,7 +358,7 @@ const getRules = () => {
                 if ((el as HTMLElement).tagName?.toLowerCase() !== "lien") return undefined;
 
                 const children = next(el.childNodes);
-                const href = (el as HTMLElement).getAttribute("href") || "https://www.startfrenchnow.com/";
+                const href = (el as HTMLElement).getAttribute("href") || "https://startfrenchnow.ch/";
                 const target = "target" in (el as HTMLElement).attributes;
                 const download = "download" in (el as HTMLElement).attributes;
                 const isSpan = "span" in (el as HTMLElement).attributes;

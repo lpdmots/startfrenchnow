@@ -15,7 +15,7 @@ import { FidePageFaqSection } from "./components/FidePageFaqSection";
 import GetPdfBand from "./components/GetPdfBand";
 import { ContactForFideBand } from "./components/ContactForFideBand";
 
-const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
 const FIDE_DETAILED_GUIDE_SLUGS = [
     "fide-test-la-partie-b1-parler",
     "fide-a2-oral-reussir-discussion-tache-3",

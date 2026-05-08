@@ -20,7 +20,7 @@ import { DeferredPackFideReviews } from "./components/DeferredPackFideReviews";
 import { getTranslations } from "next-intl/server";
 import { intelRich } from "@/app/lib/intelRich";
 
-const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
 const queryProductBySlug = groq`*[_type=='product' && slug.current == $slug][0]`;
 
 type FaqItem = {

@@ -14,7 +14,7 @@ type BuildPurchaseMessageParams = {
     dashboardPath?: string | null;
 };
 
-const BASE_URL = (process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
+const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
 
 function getFirstName(nameLike?: string | null, locale: AuthLocale = "fr"): string {
     const name = (nameLike || "").trim();

@@ -22,7 +22,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const locale = normalizeLocale(params.locale);
     if (!locales.includes(locale)) notFound();
 
-    const baseUrl = new URL((process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, ""));
+    const baseUrl = new URL((process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, ""));
 
     return {
         metadataBase: baseUrl,

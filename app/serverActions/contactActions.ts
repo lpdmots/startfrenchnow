@@ -165,12 +165,12 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
   
   <!-- Signature avec flexbox -->
   <div style="display: flex; align-items: center; margin-top: 20px;">
-    <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
+    <img src="https://startfrenchnow.ch/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
 
     <p style="margin: 0;">
       Yohann Coussot<br/>
       Formateur Fide<br/>
-      <a href="https://www.startfrenchnow.com" style="color: #1a73e8; text-decoration: none;">www.startfrenchnow.com</a>
+      <a href="https://startfrenchnow.ch" style="color: #1a73e8; text-decoration: none;">startfrenchnow.ch</a>
     </p>
   </div>
 
@@ -198,12 +198,12 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
         <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
         
         <div style="display: flex; align-items: center; margin-top: 20px;">
-  <img src="https://www.startfrenchnow.com/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
+  <img src="https://startfrenchnow.ch/images/yoh-coussot-red-small.png" alt="Yohann Coussot" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;" />
 
   <p style="margin: 0;">
     Yohann Coussot<br/>
     Formateur Fide<br/>
-    <a href="https://www.startfrenchnow.com" style="color: #1a73e8; text-decoration: none;">www.startfrenchnow.com</a>
+    <a href="https://startfrenchnow.ch" style="color: #1a73e8; text-decoration: none;">startfrenchnow.ch</a>
   </p>
 </div>
         </div></html>

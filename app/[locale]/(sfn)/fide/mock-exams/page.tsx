@@ -4,14 +4,12 @@ import { mockExamFaqItemKeys } from "./faqItemKeys";
 import { getTranslations } from "next-intl/server";
 import { MockExamEligibilityProvider } from "./components/checkout/MockExamEligibilityProvider";
 
-const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
 
 export default async function FideMockExamsPage(props: { params: Promise<{ locale: string }> }) {
     const params = await props.params;
 
-    const {
-        locale
-    } = params;
+    const { locale } = params;
 
     const t = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Page" });
     const faqT = await getTranslations({ locale: locale, namespace: "Fide.MockExamsPage.Faq" });

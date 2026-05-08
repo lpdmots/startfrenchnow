@@ -5,7 +5,7 @@ import { BLOGCATEGORIES } from "@/app/lib/constantes";
 
 export const revalidate = 3600;
 
-const SITE = (process.env.NEXT_PUBLIC_BASE_URL || "https://www.startfrenchnow.com").replace(/\/$/, "");
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
 
 function abs(path: string) {
     return `${SITE}${path.startsWith("/") ? "" : "/"}${path}`;

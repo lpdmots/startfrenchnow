@@ -46,7 +46,7 @@ export function HeroPackFide() {
                             <Safari
                                 imageSrc="/images/hero-desktop-pack-fide.png"
                                 alt={t("images.desktopAlt")}
-                                url="startfrenchnow.com/fr/fide/pack-fide"
+                                url="startfrenchnow.ch/fr/fide/pack-fide"
                                 sizes="(min-width: 1280px) 1050px, (min-width: 1024px) 82vw, (min-width: 640px) 90vw, 94vw"
                                 priority
                                 imageClassName="object-top"

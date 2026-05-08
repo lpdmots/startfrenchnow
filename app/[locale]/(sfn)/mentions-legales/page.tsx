@@ -14,11 +14,7 @@ const CONTENT: Record<Locale, { title: string; subtitle: string; sections: Legal
         sections: [
             {
                 title: "Identité légale",
-                items: [
-                    "Vente en tant que personne physique (Entrepreneur individuel).",
-                    "Nom légal : Yohann COUSSOT.",
-                    "Forme juridique : Entrepreneur individuel (France).",
-                ],
+                items: ["Vente en tant que personne physique (Entrepreneur individuel).", "Nom légal : Yohann COUSSOT.", "Forme juridique : Entrepreneur individuel (France)."],
             },
             {
                 title: "Adresse",
@@ -29,8 +25,8 @@ const CONTENT: Record<Locale, { title: string; subtitle: string; sections: Legal
                 items: [
                     <>
                         Email :{" "}
-                        <a className="underline" href="mailto:yohann@startfrenchnow.com">
-                            yohann@startfrenchnow.com
+                        <a className="underline" href="mailto:yohann@startfrenchnow.ch">
+                            yohann@startfrenchnow.ch
                         </a>
                         .
                     </>,
@@ -68,8 +64,8 @@ const CONTENT: Record<Locale, { title: string; subtitle: string; sections: Legal
                 items: [
                     <>
                         Pour toute demande relative à vos données personnelles, contactez{" "}
-                        <a className="underline" href="mailto:yohann@startfrenchnow.com">
-                            yohann@startfrenchnow.com
+                        <a className="underline" href="mailto:yohann@startfrenchnow.ch">
+                            yohann@startfrenchnow.ch
                         </a>
                         .
                     </>,
@@ -96,8 +92,8 @@ const CONTENT: Record<Locale, { title: string; subtitle: string; sections: Legal
                 items: [
                     <>
                         Email:{" "}
-                        <a className="underline" href="mailto:yohann@startfrenchnow.com">
-                            yohann@startfrenchnow.com
+                        <a className="underline" href="mailto:yohann@startfrenchnow.ch">
+                            yohann@startfrenchnow.ch
                         </a>
                         .
                     </>,
@@ -135,8 +131,8 @@ const CONTENT: Record<Locale, { title: string; subtitle: string; sections: Legal
                 items: [
                     <>
                         For any request regarding your personal data, contact{" "}
-                        <a className="underline" href="mailto:yohann@startfrenchnow.com">
-                            yohann@startfrenchnow.com
+                        <a className="underline" href="mailto:yohann@startfrenchnow.ch">
+                            yohann@startfrenchnow.ch
                         </a>
                         .
                     </>,
@@ -186,7 +182,7 @@ async function MentionsLegales(props: { params: Promise<{ locale: string }> }) {
                                     ))}
                                 </div>
 
-                               <div className="w-full max-w-[400px] mx-auto">
+                                <div className="w-full max-w-[400px] mx-auto">
                                     <Image
                                         src="/images/yoh-coussot.png"
                                         alt={content.imageTitle}

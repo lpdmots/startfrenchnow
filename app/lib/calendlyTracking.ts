@@ -11,7 +11,7 @@ function isCalendlyUrl(url?: string): boolean {
     if (!raw) return false;
 
     try {
-        const parsed = new URL(raw, typeof window !== "undefined" ? window.location.origin : "https://www.startfrenchnow.com");
+        const parsed = new URL(raw, typeof window !== "undefined" ? window.location.origin : "https://startfrenchnow.ch");
         return parsed.hostname.endsWith("calendly.com");
     } catch {
         return false;

@@ -37,10 +37,7 @@ export default async function DialogsPage(props: { params: Promise<{ locale: str
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
 
-    const [dialogsCourseSommaire, product] = await Promise.all([
-        getPackSommaire(locale, "udemy_course_dialogs"),
-        client.fetch<ProductFetch>(queryProduct, { referenceKey: PRODUCT_REFERENCE_KEY }),
-    ]);
+    const [dialogsCourseSommaire, product] = await Promise.all([getPackSommaire(locale, "udemy_course_dialogs"), client.fetch<ProductFetch>(queryProduct, { referenceKey: PRODUCT_REFERENCE_KEY })]);
 
     const hero = buildHeroData(null, dialogsCourseSommaire, []);
     let pricingDetails: PricingDetails | null = null;
@@ -53,14 +50,7 @@ export default async function DialogsPage(props: { params: Promise<{ locale: str
         }
     }
 
-    return (
-        <DialogsPageNoAsync
-            hero={hero}
-            locale={locale}
-            dialogsCourseSommaire={dialogsCourseSommaire}
-            pricingDetails={pricingDetails}
-        />
-    );
+    return <DialogsPageNoAsync hero={hero} locale={locale} dialogsCourseSommaire={dialogsCourseSommaire} pricingDetails={pricingDetails} />;
 }
 
 function DialogsPageNoAsync({
@@ -232,17 +222,7 @@ const YouLearn = () => {
     );
 };
 
-const PricingCallout = ({
-    pricingDetails,
-    locale,
-    align,
-    className,
-}: {
-    pricingDetails: PricingDetails;
-    locale: Locale;
-    align: "left" | "center";
-    className?: string;
-}) => {
+const PricingCallout = ({ pricingDetails, locale, align, className }: { pricingDetails: PricingDetails; locale: Locale; align: "left" | "center"; className?: string }) => {
     const t = useTranslations("Courses.Dialogues.Pricing");
     const formatAmount = (value: number) => {
         const normalized = Math.round(value * 100) / 100;
@@ -260,11 +240,7 @@ const PricingCallout = ({
     const hasDiscount = pricingDetails.amount < pricingDetails.initialAmount;
     const discountAmount = pricingDetails.initialAmount - pricingDetails.amount;
     const isPercentage = pricingDetails.discountType === "percentage" && typeof pricingDetails.discountValue === "number";
-    const discountBadge = hasDiscount
-        ? isPercentage
-            ? t("savePercent", { percent: pricingDetails.discountValue as number })
-            : t("saveAmount", { amount: formatPrice(discountAmount) })
-        : null;
+    const discountBadge = hasDiscount ? (isPercentage ? t("savePercent", { percent: pricingDetails.discountValue as number }) : t("saveAmount", { amount: formatPrice(discountAmount) })) : null;
 
     const alignText = align === "center" ? "text-center" : "text-left";
     const alignRow = align === "center" ? "justify-center" : "justify-start";
@@ -275,28 +251,20 @@ const PricingCallout = ({
             <div className={`${hasDiscount ? "mt-2" : "mt-0"} flex flex-wrap items-baseline gap-x-3 ${alignRow}`}>
                 <span className="text-4xl sm:text-5xl font-extrabold">{formatPrice(pricingDetails.amount)}</span>
                 {hasDiscount && <span className="text-base sm:text-lg text-neutral-500 line-through">{formatPrice(pricingDetails.initialAmount)}</span>}
-                {discountBadge && (
-                    <span className="inline-flex rounded-full bg-secondary-5/10 text-sm font-semibold text-secondary-5">{discountBadge}</span>
-                )}
+                {discountBadge && <span className="inline-flex rounded-full bg-secondary-5/10 text-sm font-semibold text-secondary-5">{discountBadge}</span>}
             </div>
         </div>
     );
 };
 
-const Description = ({
-    dialogsCourseSommaire,
-    hero,
-}: {
-    dialogsCourseSommaire: Awaited<ReturnType<typeof getPackSommaire>>;
-    hero: ReturnType<typeof buildHeroData>;
-}) => {
+const Description = ({ dialogsCourseSommaire, hero }: { dialogsCourseSommaire: Awaited<ReturnType<typeof getPackSommaire>>; hero: ReturnType<typeof buildHeroData> }) => {
     const t = useTranslations("Courses.Dialogues.Description");
     const defaultModuleKeyIndex = dialogsCourseSommaire?.packages[0]?.modules.findIndex((mod) => mod.posts.some((p) => p._id === hero.video?.main?.postId)) ?? 0;
     return (
         <div data-w-id="373dab4e-675b-8306-ad45-ad12f418b14c" className="rich-text-v2 w-richtext">
             <SlideFromBottom>
                 <p>
-                    {t.rich("para1", intelRich())} <LinkArrow url="https://www.startfrenchnow.com/courses/dialogues/">ici</LinkArrow>
+                    {t.rich("para1", intelRich())} <LinkArrow url="https://startfrenchnow.ch/courses/dialogues/">ici</LinkArrow>
                 </p>
             </SlideFromBottom>
             <SlideFromBottom>
@@ -397,7 +365,9 @@ const IsForYou = ({ pricingSlot }: { pricingSlot?: React.ReactNode }) => {
                                             <div className="mg-bottom--32px">
                                                 <div className="rich-text-white w-richtext">
                                                     <SlideFromBottom>
-                                                        <h2 className="display-3 mb-4" style={{ color: "var(--neutral-100)" }}>{t.rich("prerequisitesTitle", intelRich())}</h2>
+                                                        <h2 className="display-3 mb-4" style={{ color: "var(--neutral-100)" }}>
+                                                            {t.rich("prerequisitesTitle", intelRich())}
+                                                        </h2>
                                                     </SlideFromBottom>
                                                     <SlideInOneByOneParent>
                                                         <div className="mg-bottom-40px">
@@ -455,7 +425,9 @@ const IsForYou = ({ pricingSlot }: { pricingSlot?: React.ReactNode }) => {
                                             <div id="w-node-_7d793e39-0063-6541-01fd-68629184b01d-7a543d63" className="mg-bottom--32px">
                                                 <SlideFromBottom>
                                                     <div>
-                                                        <h2 className="display-3 mb-4" style={{ color: "var(--neutral-100)" }}>{t.rich("levelTitle", intelRich())}</h2>
+                                                        <h2 className="display-3 mb-4" style={{ color: "var(--neutral-100)" }}>
+                                                            {t.rich("levelTitle", intelRich())}
+                                                        </h2>
                                                         <p>{t.rich("levelDescription", intelRich())}</p>
                                                     </div>
                                                 </SlideFromBottom>

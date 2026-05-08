@@ -123,7 +123,7 @@ const ContactForm = ({ formData, setFormData, messages }: { formData: FormDataPr
                             <>
                                 <div className="flex">
                                     <SimpleButton>
-                                        <Link href={`mailto:${mailTo}@startfrenchnow.com`} className="no-underline w-inline-block mb-2">
+                                        <Link href={`mailto:${mailTo}@startfrenchnow.ch`} className="no-underline w-inline-block mb-2">
                                             <p className="text-neutral-800 text-[20px] max-md:text-[18px] leading-[1.111em] font-medium underline decoration-dotted">
                                                 {messages["emailTo"]}
                                                 {mailTo.charAt(0).toUpperCase() + mailTo.slice(1)}

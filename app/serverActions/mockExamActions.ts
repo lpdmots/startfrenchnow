@@ -408,11 +408,7 @@ const getReadWriteModuleNumber = (taskType: string, combo: WrittenCombo): number
     return 0;
 };
 
-const buildMockExamTotalScoreSummary = (params: {
-    scores: NonNullable<SessionDocument["scores"]>;
-    oralBranch: OralBranch;
-    readWritePercentage: number;
-}): ScoreSummary | undefined => {
+const buildMockExamTotalScoreSummary = (params: { scores: NonNullable<SessionDocument["scores"]>; oralBranch: OralBranch; readWritePercentage: number }): ScoreSummary | undefined => {
     const speakA2Percentage = Number(params.scores.speakA2?.percentage);
     const speakBranchPercentage = Number(params.scores.speakBranch?.percentage);
     const listeningPercentage = Number(params.scores.listening?.percentage);
@@ -1394,7 +1390,10 @@ async function ensureUserAssignedToBravo10Coupon(userId: string): Promise<{ assi
         }
 
         try {
-            let patch = client.patch(coupon._id).setIfMissing({ assignedUsers: [] }).append("assignedUsers", [{ _type: "reference", _ref: userId }]);
+            let patch = client
+                .patch(coupon._id)
+                .setIfMissing({ assignedUsers: [] })
+                .append("assignedUsers", [{ _type: "reference", _ref: userId }]);
             if (coupon._rev) {
                 patch = patch.ifRevisionId(coupon._rev);
             }
@@ -1414,7 +1413,9 @@ async function notifyBravo10Unlocked(params: { userId: string; userName?: string
     const userId = String(params.userId || "").trim();
     if (!userId) return;
 
-    const couponCode = String(params.couponCode || BRAVO10_COUPON_CODE).trim().toUpperCase();
+    const couponCode = String(params.couponCode || BRAVO10_COUPON_CODE)
+        .trim()
+        .toUpperCase();
     const userName = String(params.userName || "").trim();
     const userEmail = String(params.userEmail || "")
         .trim()
@@ -1444,7 +1445,7 @@ async function notifyBravo10Unlocked(params: { userId: string; userName?: string
             plansPath: COUPON_PLANS_PATH,
         });
         await transporterNico.sendMail({
-            from: "Start French Now <nicolas@startfrenchnow.com>",
+            from: "Start French Now <nicolas@startfrenchnow.ch>",
             to: userEmail,
             html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`,
             subject: mail.subject,
@@ -1513,14 +1514,7 @@ export async function finalizeMockExamSession(params: { compilationId: string; s
     return { ok: true as const, status: "completed" as const, scores: nextScores };
 }
 
-export async function createExamReviewFromCalendlyBooking(params: {
-    compilationId: string;
-    sessionId: string;
-    calendlyEventUri?: string;
-    scheduledAt?: string;
-    timezone?: string;
-    joinUrl?: string;
-}) {
+export async function createExamReviewFromCalendlyBooking(params: { compilationId: string; sessionId: string; calendlyEventUri?: string; scheduledAt?: string; timezone?: string; joinUrl?: string }) {
     const session = await requireSessionAndMockExam({ callbackUrl: "/fide/dashboard", info: "mockExam" });
     const userId = String(session?.user?._id || "");
     const compilationId = String(params.compilationId || "");
@@ -1635,10 +1629,7 @@ export async function createExamReviewFromCalendlyBooking(params: {
 
     const existingReview = await client.fetch<{ _id?: string } | null>(EXAM_REVIEW_BY_SESSION_QUERY, { userId, sessionId });
     if (existingReview?._id) {
-        await client
-            .patch(existingReview._id)
-            .set(reviewPayload)
-            .commit({ autoGenerateArrayKeys: true });
+        await client.patch(existingReview._id).set(reviewPayload).commit({ autoGenerateArrayKeys: true });
         return { ok: true as const, reviewId: existingReview._id, upserted: "updated" as const };
     }
 

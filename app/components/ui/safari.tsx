@@ -11,7 +11,7 @@ type SafariProps = {
     priority?: boolean;
 };
 
-export function Safari({ imageSrc, alt = "Browser preview", url = "startfrenchnow.com", className, imageClassName, sizes = "100vw", priority = false }: SafariProps) {
+export function Safari({ imageSrc, alt = "Browser preview", url = "startfrenchnow.ch", className, imageClassName, sizes = "100vw", priority = false }: SafariProps) {
     return (
         <div className={cn("relative w-full overflow-hidden rounded-[1.35rem] border border-neutral-400 bg-neutral-100 shadow-[0_18px_45px_-28px_rgba(0,0,0,0.45)]", className)}>
             <div className="flex h-10 items-center gap-2 border-b border-neutral-400 bg-neutral-200 px-3">

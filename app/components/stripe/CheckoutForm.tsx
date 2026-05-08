@@ -42,7 +42,7 @@ export default function CheckoutForm({ pricingDetails, email, setAreReady, onSuc
     };
 
     const return_url = useMemo(() => {
-        const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || window.location.origin || "").replace(/\/$/, "");
+        const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || window.location.origin || "").replace(/\/$/, "");
         const successUrl = new URL(`${baseUrl}/${locale}/payment-success`);
         successUrl.searchParams.set("productSlug", productSlug);
         successUrl.searchParams.set("productName", productName);

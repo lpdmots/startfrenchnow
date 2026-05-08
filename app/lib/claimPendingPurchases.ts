@@ -299,7 +299,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     try {
         const mail = buildPurchaseMailMessage(messageParams);
         const info = await transporterNico.sendMail({
-            from: "Start French Now <nicolas@startfrenchnow.com>",
+            from: "Start French Now <nicolas@startfrenchnow.ch>",
             to: user.email,
             html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`,
             subject: mail.subject,
