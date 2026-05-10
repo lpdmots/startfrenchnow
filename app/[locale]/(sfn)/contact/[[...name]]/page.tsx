@@ -1,15 +1,35 @@
-import { use } from "react";
 import { ContactClient } from "@/app/components/sfn/contact/ContactClient";
-import { useTranslations } from "next-intl";
+import { Metadata } from "next";
+import { normalizeLocale } from "@/i18n";
+import { getTranslations } from "next-intl/server";
 
-function Contact(props: { params: Promise<{ name: string }> }) {
-    const params = use(props.params);
+export async function generateMetadata(props: { params: Promise<{ locale: string; name?: string[] }> }): Promise<Metadata> {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+    const t = await getTranslations({ locale, namespace: "Metadata.Contact" });
+    const path = "/contact";
+    const canonical = locale === "fr" ? `/fr${path}` : path;
 
-    const {
-        name: nameList
-    } = params;
+    return {
+        title: t("title"),
+        description: t("description"),
+        alternates: {
+            canonical,
+            languages: {
+                en: path,
+                fr: `/fr${path}`,
+                "x-default": path,
+            },
+        },
+    };
+}
 
-    const t = useTranslations("Contact");
+async function Contact(props: { params: Promise<{ locale: string; name?: string[] }> }) {
+    const params = await props.params;
+    const locale = normalizeLocale(params.locale);
+    const nameList = Array.isArray(params.name) ? params.name[0] || "" : "";
+
+    const t = await getTranslations({ locale, namespace: "Contact" });
     const contactMessages = getContactMessages(t);
     return (
         <div className="page-wrapper">

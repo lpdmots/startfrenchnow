@@ -19,7 +19,6 @@ export default function robots(): MetadataRoute.Robots {
         "/exam/",
         "/rdv-success/",
         "/courses/dashboard/",
-        "/stories/*",
     ];
 
     // EN = sans préfixe, FR = /fr/...

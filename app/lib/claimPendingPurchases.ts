@@ -1,6 +1,6 @@
 // app/lib/claimPendingPurchases.ts
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
-import { transporterNico } from "@/app/lib/nodemailer";
+import { getDefaultMailOptions, htmlToText, transporter } from "@/app/lib/nodemailer";
 import { appendSystemNotification } from "@/app/lib/systemNotifications";
 import { buildPurchaseMailMessage, buildPurchaseSystemNotification } from "@/app/lib/purchaseMessages";
 
@@ -298,10 +298,13 @@ export async function claimPendingPurchases(params: { email: string; userId: str
 
     try {
         const mail = buildPurchaseMailMessage(messageParams);
-        const info = await transporterNico.sendMail({
-            from: "Start French Now <nicolas@startfrenchnow.ch>",
-            to: user.email,
-            html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`,
+        const html = `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`;
+        const info = await transporter.sendMail({
+            ...getDefaultMailOptions({
+                to: user.email,
+                html,
+                text: htmlToText(html),
+            }),
             subject: mail.subject,
         });
         console.info("[PurchaseEmail] SMTP result", {

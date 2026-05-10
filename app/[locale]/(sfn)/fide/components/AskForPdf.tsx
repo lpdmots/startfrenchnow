@@ -2,9 +2,11 @@
 
 import Spinner from "@/app/components/common/Spinner";
 import { sendContactEmail } from "@/app/serverActions/contactActions";
+import { useLocale } from "next-intl";
 import { useState } from "react";
 
 export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withLabel?: boolean }) => {
+    const locale = useLocale() as "fr" | "en";
     const [pending, setPending] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -17,6 +19,7 @@ export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withL
         const formData = new FormData(e.currentTarget);
         const data = {
             email: formData.get("email"),
+            localeLike: locale,
             website: formData.get("website"),
             startedAt: formData.get("startedAt"),
         };

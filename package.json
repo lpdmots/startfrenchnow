@@ -15,7 +15,8 @@
         "apply:webflow-drop": "node scripts/style/applyWebflowDropCandidates.mjs",
         "replace:webflow-classes": "node scripts/style/replaceWebflowClassesWithTailwind.mjs",
         "migrate:mock-exam-task-ref": "node scripts/sanity/migrateMockExamAnswersTaskRef.mjs",
-        "sync:mock-exam-tasks-dev-to-prod": "node scripts/sanity/syncMockExamTasksDevToProd.mjs"
+        "sync:mock-exam-tasks-dev-to-prod": "node scripts/sanity/syncMockExamTasksDevToProd.mjs",
+        "youtube:update-descriptions": "node scripts/youtube/updateChannelDescriptions.mjs"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.438.0",
@@ -54,6 +55,7 @@
         "eslint-config-next": "^16.2.2",
         "framer-motion": "^8.5.5",
         "get-youtube-id": "^1.0.1",
+        "googleapis": "^171.4.0",
         "jsdom": "^26.1.0",
         "jsonrepair": "^3.13.0",
         "ky": "^0.33.3",

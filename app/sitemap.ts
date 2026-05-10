@@ -39,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "/exercises",
         "/test-your-level",
         "/videos",
+        "/mentions-legales",
     ];
 
     const entries: MetadataRoute.Sitemap = [];
@@ -47,7 +48,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         for (const loc of withLocales(p)) {
             entries.push({
                 url: abs(loc),
-                lastModified: new Date(),
             });
         }
     }
@@ -58,7 +58,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         for (const loc of withLocales(path)) {
             entries.push({
                 url: abs(loc),
-                lastModified: new Date(),
             });
         }
     }

@@ -2,9 +2,11 @@
 import Spinner from "@/app/components/common/Spinner";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 import { sendContactEmail } from "@/app/serverActions/contactActions";
+import { useLocale } from "next-intl";
 import { useState } from "react";
 
 export const ContactFideForm = ({ messages }: { messages: any }) => {
+    const locale = useLocale() as "fr" | "en";
     const [pending, setPending] = useState(false);
     const [message, setMessage] = useState<React.ReactElement | null>(null);
     const [startedAt] = useState(() => Date.now());
@@ -24,6 +26,7 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
             niveauSouhaite: formData.get("niveauSouhaite"),
             message: formData.get("message"),
             email: formData.get("email"),
+            localeLike: locale,
 
             website: formData.get("website"),
             startedAt: formData.get("startedAt"),

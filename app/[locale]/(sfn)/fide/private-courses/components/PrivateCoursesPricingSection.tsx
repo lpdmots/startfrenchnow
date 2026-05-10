@@ -25,17 +25,12 @@ type PrivateCourseCard = {
     ctaLabel: string;
     checkoutUrl?: string;
     labelColor?: string;
-    schemaPrice: number;
-    schemaCurrency: PricingDetails["currency"];
-    schemaUrl: string;
-    schemaUnitCode?: string;
 };
 
-export async function PrivateCoursesPricingSection({ locale, title, subtitle, site }: { locale: Locale; title: ReactNode; subtitle: string; site: string }) {
+export async function PrivateCoursesPricingSection({ locale, title, subtitle }: { locale: Locale; title: ReactNode; subtitle: string }) {
     const isFr = locale === "fr";
     const t = await getTranslations({ locale, namespace: "Fide.PrivateCoursesPricing" });
     const rich = intelRich();
-    const privateCoursesPath = isFr ? "/fr/fide/private-courses" : "/fide/private-courses";
 
     const formatAmount = (value: number) => {
         const normalized = Math.round(value * 100) / 100;
@@ -119,10 +114,6 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
         ctaLabel: plan.ctaLabel,
         checkoutUrl: plan.checkoutUrl,
         labelColor: "labelColor" in plan ? plan.labelColor : undefined,
-        schemaPrice: plan.key === "scenarios-6h" ? 390 : 65,
-        schemaCurrency: "CHF",
-        schemaUrl: `${site}${privateCoursesPath}${plan.key === "intensive-mastery" ? "#ContactForFIDECourses" : "#plans"}`,
-        schemaUnitCode: plan.key === "scenarios-6h" ? undefined : "HUR",
     }));
 
     if (fidePreparationClassProduct) {
@@ -130,8 +121,6 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
             const { pricingDetails } = await getAmount(fidePreparationClassProduct, "1", "CHF", undefined);
             const unitPrice = formatPrice(pricingDetails.initialUnitPrice, pricingDetails.currency);
             cardsWithDynamicPrices[0].price = isFr ? `${unitPrice}/heure` : `${unitPrice}/hour`;
-            cardsWithDynamicPrices[0].schemaPrice = pricingDetails.initialUnitPrice;
-            cardsWithDynamicPrices[0].schemaCurrency = pricingDetails.currency;
         } catch (error) {
             console.error("Failed to load pricing for fide-preparation-class (original):", error);
         }
@@ -142,8 +131,6 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
             const { pricingDetails } = await getAmount(fidePreparationClass6HoursProduct, "1", "CHF", undefined);
             cardsWithDynamicPrices[1].price = formatPrice(pricingDetails.amount, pricingDetails.currency);
             cardsWithDynamicPrices[1].priceContent = buildPriceContent(pricingDetails);
-            cardsWithDynamicPrices[1].schemaPrice = pricingDetails.amount;
-            cardsWithDynamicPrices[1].schemaCurrency = pricingDetails.currency;
         } catch (error) {
             console.error("Failed to load pricing for fide-preparation-class-6-hours:", error);
         }
@@ -156,60 +143,10 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
             const masteryQuantity = Math.max(1, masteryPlan?.minimumQuantity || 12);
             const { pricingDetails } = await getAmount(fidePreparationClassProduct, String(masteryQuantity), "CHF", undefined);
             cardsWithDynamicPrices[2].price = `${formatPrice(pricingDetails.unitPrice, pricingDetails.currency)}/${isFr ? "heure" : "hour"}`;
-            cardsWithDynamicPrices[2].schemaPrice = pricingDetails.unitPrice;
-            cardsWithDynamicPrices[2].schemaCurrency = pricingDetails.currency;
         } catch (error) {
             console.error("Failed to load pricing for fide-preparation-class (fide-mastery):", error);
         }
     }
-
-    const offersJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: t("schema.name"),
-        description: t("schema.description"),
-        brand: {
-            "@type": "Organization",
-            name: t("schema.brand"),
-            url: site,
-        },
-        offers: cardsWithDynamicPrices.map((offer) => ({
-            "@type": "Offer",
-            availability: "https://schema.org/InStock",
-            priceCurrency: offer.schemaCurrency,
-            price: Math.round(offer.schemaPrice * 100) / 100,
-            url: offer.schemaUrl,
-            seller: {
-                "@type": "Organization",
-                name: "Start French Now",
-                url: site,
-            },
-            itemOffered: {
-                "@type": "Service",
-                name: offer.title,
-                description: offer.descriptionText,
-                provider: {
-                    "@type": "Organization",
-                    name: "Start French Now",
-                    url: site,
-                },
-            },
-            priceSpecification: offer.schemaUnitCode
-                ? {
-                      "@type": "UnitPriceSpecification",
-                      priceCurrency: offer.schemaCurrency,
-                      price: Math.round(offer.schemaPrice * 100) / 100,
-                      unitCode: offer.schemaUnitCode,
-                      valueAddedTaxIncluded: true,
-                  }
-                : {
-                      "@type": "PriceSpecification",
-                      priceCurrency: offer.schemaCurrency,
-                      price: Math.round(offer.schemaPrice * 100) / 100,
-                      valueAddedTaxIncluded: true,
-                  },
-        })),
-    };
 
     const mobileOrderClassByKey: Record<string, string> = {
         "scenarios-6h": "order-1 xl:order-none",
@@ -219,7 +156,6 @@ export async function PrivateCoursesPricingSection({ locale, title, subtitle, si
 
     return (
         <div id="plans" className="py-20 px-4 lg:px-8">
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(offersJsonLd) }} />
             <div className="max-w-7xl m-auto flex flex-col gap-10">
                 <div className="text-center">
                     <h2 className="display-2 mb-4">{title}</h2>

@@ -182,7 +182,7 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
 
             <ContactForFideBand />
 
-            <PrivateCoursesPricingSection locale={locale} site={SITE} title={offersTitleNode} subtitle={t("offersSubtitle")} />
+            <PrivateCoursesPricingSection locale={locale} title={offersTitleNode} subtitle={t("offersSubtitle")} />
 
             <div className="bg-neutral-800 color-neutral-100 py-24 px-4 lg:px-8">
                 <div className="max-w-7xl m-auto">

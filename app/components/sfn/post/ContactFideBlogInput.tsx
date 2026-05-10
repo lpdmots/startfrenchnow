@@ -1,10 +1,12 @@
 "use client";
 import Spinner from "@/app/components/common/Spinner";
 import { sendContactEmail } from "@/app/serverActions/contactActions";
+import { useLocale } from "next-intl";
 import { useState } from "react";
 import { BsCheckCircle } from "react-icons/bs";
 
 export const ContactFideBlogInput = ({ formMessages }: { formMessages: any }) => {
+    const locale = useLocale() as "fr" | "en";
     const [pending, setPending] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -17,6 +19,7 @@ export const ContactFideBlogInput = ({ formMessages }: { formMessages: any }) =>
         const formData = new FormData(e.currentTarget);
         const data = {
             email: formData.get("email"),
+            localeLike: locale,
         };
 
         try {

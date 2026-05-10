@@ -8,7 +8,7 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import clientOpenai from "@/app/lib/openAi.client";
 import { MOCK_EXAM_COMPILATION_QUERY, MOCK_EXAM_TASKS_BY_IDS_QUERY, MOCK_EXAM_USER_COMPILATIONS_QUERY, USER_MOCK_EXAM_CREDITS_QUERY } from "@/app/lib/groqQueries";
 import { appendSystemNotification } from "@/app/lib/systemNotifications";
-import { transporterNico } from "@/app/lib/nodemailer";
+import { getDefaultMailOptions, htmlToText, transporter } from "@/app/lib/nodemailer";
 import { buildBravoCouponMailMessage, buildBravoCouponSystemNotification } from "@/app/lib/couponMessages";
 import { getAnswerTaskId } from "@/app/types/fide/mock-exam";
 import type { Image } from "@/app/types/sfn/blog";
@@ -1444,10 +1444,13 @@ async function notifyBravo10Unlocked(params: { userId: string; userName?: string
             couponCode,
             plansPath: COUPON_PLANS_PATH,
         });
-        await transporterNico.sendMail({
-            from: "Start French Now <nicolas@startfrenchnow.ch>",
-            to: userEmail,
-            html: `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`,
+        const html = `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">${mail.bodyHtml}</div></html>`;
+        await transporter.sendMail({
+            ...getDefaultMailOptions({
+                to: userEmail,
+                html,
+                text: htmlToText(html),
+            }),
             subject: mail.subject,
         });
     } catch (error) {
