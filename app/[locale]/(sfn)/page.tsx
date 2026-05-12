@@ -2,11 +2,11 @@ import React from "react";
 import BlogHome from "@/app/components/sfn/home/BlogHome";
 import HomeReviews from "@/app/components/sfn/home/HomeReviews";
 import CoreValuesMethod from "@/app/components/sfn/home/CoreValuesMethod";
-import LessonCards from "@/app/components/sfn/home/LessonCards";
-import UdemyBusiness from "@/app/components/sfn/home/UdemyBusiness";
+import WhyFideHome from "@/app/components/sfn/home/WhyFideHome";
 import WhoIAm from "@/app/components/sfn/home/WhoIAm";
 import MarqueeContent from "@/app/components/sfn/home/MarqueeContent";
 import { HeroSfn } from "@/app/components/sfn/home/HeroSfn";
+import { FidePageHubSection } from "./fide/components/FidePageHubSection";
 import { Locale, normalizeLocale } from "@/i18n";
 import Marquee from "@/app/components/ui/marquee";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -19,7 +19,6 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const params = await props.params;
     const locale = normalizeLocale(params.locale);
 
-    
     const t = await getTranslations({ locale: locale, namespace: "Metadata.Home" });
 
     return {
@@ -41,14 +40,12 @@ async function Home(props: { params: Promise<{ locale: string }> }) {
     const locale = normalizeLocale(params.locale);
     setRequestLocale(locale);
 
-    
     return (
         <div className="page-wrapper flex flex-col gap-8 md:gap-12">
             <HeroSfn />
-            <HomeReviews />
-            <LessonCards />
+            <FidePageHubSection />
 
-            <UdemyBusiness />
+            <WhyFideHome />
 
             <section className="section py-0 wf-section">
                 <CoreValuesMethod />
@@ -65,6 +62,7 @@ async function Home(props: { params: Promise<{ locale: string }> }) {
             <section className="section py-0 wf-section">
                 <WhoIAm />
             </section>
+            <HomeReviews />
             <Suspense fallback={<div className="container-default w-container my-12 lg:my-24 min-h-[420px]" />}>
                 <BlogHome locale={locale} />
             </Suspense>

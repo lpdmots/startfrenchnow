@@ -12,6 +12,7 @@ import { ResourcesButton } from "./ResourcesButton";
 import { FideButton } from "./FideButton";
 import NotificationsMenuServer from "../notifications/NotificationsMenuServer";
 import { NavMenuLink } from "./NavMenuLink";
+import Image from "next/image";
 
 function NavBar() {
     const t = useTranslations("Navigation");
@@ -71,11 +72,7 @@ function NavBar() {
                 </NavMenuLink>
             </li>
             <li className="header-nav-list-item middle !px-0">
-                <NavMenuLink
-                    href="/blog"
-                    activeMatch={["/blog", "/videos", "/exercises", "/stories", "/test-your-level", "/fide/videos", "/fide/exams"]}
-                    locale={locale as Locale}
-                >
+                <NavMenuLink href="/blog" activeMatch={["/blog", "/videos", "/exercises", "/stories", "/test-your-level", "/fide/videos", "/fide/exams"]} locale={locale as Locale}>
                     <ResourcesButton locale={locale as Locale} dictionnary={resourcesDict} />
                 </NavMenuLink>
             </li>
@@ -87,7 +84,8 @@ function NavBar() {
             <div className="mx-auto px-6 position-relative" style={{ maxWidth: 1000 }}>
                 <div className="nav shadow-1">
                     <Link aria-label="Go to Homepage" href="/" className="flex items-center">
-                        <Logo className={"h-8 md:h-10"} />
+                        {/* <Logo className={"h-8 md:h-10"} /> */}
+                        <Image src="/images/logo.png" alt="Start French Now logo" width={150} height={150} className="h-10 md:h-12 w-auto" />
                     </Link>
                     <nav>
                         <ul className="onNav z-[1] mb-0 hidden list-none items-center justify-end pl-0 lg:flex">{links}</ul>
@@ -97,7 +95,11 @@ function NavBar() {
                         <LocaleSwitcher locale={locale as Locale} />
                         <DarkMode />
                         <ProfilButton logout={t("logout")} />
-                        <Link aria-label="Go to contact page" href="/contact" className="btn-primary small p-[13px] rounded-[12px] text-[24px] leading-[24px] font-normal max-[991px]:mr-[24px] max-[991px]:ml-0 max-[767px]:hidden max-[479px]:mr-[12px] flex items-center !p-2 !mr-2 lg:!mr-0">
+                        <Link
+                            aria-label="Go to contact page"
+                            href="/contact"
+                            className="btn-primary small p-[13px] rounded-[12px] text-[24px] leading-[24px] font-normal max-[991px]:mr-[24px] max-[991px]:ml-0 max-[767px]:hidden max-[479px]:mr-[12px] flex items-center !p-2 !mr-2 lg:!mr-0"
+                        >
                             <FaRegEnvelope style={{ fontSize: 22 }} />
                         </Link>
                         <Burger messages={{ home: t("home"), learnDict, coursesDict, about: t("about"), contact: t("contact"), resourcesDict, fide: t("fideLong") }} locale={locale as Locale} />

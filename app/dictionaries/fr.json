@@ -160,10 +160,19 @@
         }
     },
     "HeroSfn": {
-        "title": "Apprenez <hs4>le français</hs4> à votre rythme avec des cours de <hs2>qualité</hs2>",
-        "description": "Vous voulez apprendre le français sérieusement tout en vous <noWrap>amusant ?</noWrap> C'est possible !",
-        "btn_resources": "Nos ressources",
-        "btn_beginner_course": "Explorer le premier cours"
+        "title": "Réussissez le <hs6>test FIDE</hs6> en Suisse avec des cours de <hs2>qualité</hs2>",
+        "description": "Vidéos, examens blancs et cours privés pour viser le bon niveau <under6><b>A1, A2 ou B1</b></under6> et arriver prêt le jour de l'examen.",
+        "btn_resources": "Commencer maintenant",
+        "btn_beginner_course": "Préparer mon test FIDE",
+        "btn_primary": "Préparer mon test FIDE",
+        "btn_secondary": "Commencer maintenant",
+        "video_annotation": "FIDE Suisse | A1-A2-B1 | En ligne",
+        "formats_label": "Formats :",
+        "badges": {
+            "swiss": "Cours privés",
+            "levels": "Examens blancs",
+            "online": "E-learning"
+        }
     },
     "LessonCards": {
         "title": "Sélectionnez votre cours et <hs4>commencez</hs4> !",
@@ -195,10 +204,25 @@
             }
         }
     },
-    "UdemyBusiness": {
-        "title": "Rejoignez les étudiants <hs2>du monde entier</hs2>",
-        "paragraph1": "L'un de nos plus grands plaisirs est de voir que nos étudiants viennent de plus de 140 pays différents ! Ils ont tous leur propre objectif envers la langue française et notre mission est de les aider <noWrap>à l'atteindre.</noWrap>",
-        "paragraph2": "Nos cours sont également recommandés aux employés de grandes entreprises via le programme Udemy for Business qui récompense les meilleurs cours en fonction des commentaires des étudiants, de leur pertinence et de leur <noWrap>qualité générale.</noWrap>"
+    "WhyFideHome": {
+        "title": "Le test FIDE, <hs3>pour quoi faire</hs3> ?",
+        "description": "Le test FIDE évalue votre français dans des situations concrètes de la vie en Suisse. Selon votre objectif, le niveau attendu peut être A1, A2 ou B1.",
+        "cta": "Tout savoir sur le test",
+        "imageAlt": "Carte de la Suisse",
+        "points": {
+            "permit": {
+                "title": "Permis B / C",
+                "description": "Un résultat FIDE peut être demandé dans certains dossiers de séjour ou d'établissement."
+            },
+            "naturalization": {
+                "title": "Naturalisation",
+                "description": "Le test aide à prouver votre capacité à communiquer en français dans la vie quotidienne."
+            },
+            "integration": {
+                "title": "Intégration en Suisse",
+                "description": "Les épreuves portent sur des situations pratiques : logement, santé, travail, administration."
+            }
+        }
     },
     "CoreValuesMethod": {
         "title": "Les valeurs fondamentales de <hs4>notre méthode</hs4>",
@@ -277,9 +301,10 @@
         "moreAboutMe": "En savoir plus sur moi"
     },
     "CommentsCarousel": {
-        "title": "Des milliers d'apprenants <hs4>satisfaits</hs4>",
-        "description": "Découvrez ce que nos derniers apprenants disent de nos cours.",
-        "description2": "sur"
+        "title": "Ils ont <hs4>réussi le FIDE</hs4>",
+        "description": "Des retours d'élèves préparés pour le test FIDE en Suisse.",
+        "description2": "sur",
+        "fideScore": "Score FIDE : {score}%"
     },
     "StoriesHome": {
         "title": "Plongez dans la langue française à travers nos <hs1>Histoires interactives</hs1> : une immersion efficace et ludique.",
@@ -290,8 +315,8 @@
         "button": "Voir les histoires"
     },
     "BlogHome": {
-        "title": "<hs1>Articles</hs1> & News",
-        "button": "Tous les articles"
+        "title": "Ressources <hs1>FIDE</hs1> gratuites",
+        "button": "Tous les articles FIDE"
     },
     "Newsletter": {
         "title": "Abonnez-vous à <noWrap>notre newsletter</noWrap>",
@@ -1365,7 +1390,7 @@
                     "imageAlt": "Aperçu des cours privés FIDE"
                 }
             },
-            "title": "Choisir votre <hs6>mode de préparation</hs6>"
+            "title": "Choisissez votre <hs6>mode de préparation</hs6>"
         },
         "PrivateCoursesHero": {
             "title": {

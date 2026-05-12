@@ -13,11 +13,17 @@ import { intelRich } from "@/app/lib/intelRich";
 import { Link } from "@/i18n/navigation";
 import { localizePosts } from "@/app/lib/utils";
 import { Locale } from "@/i18n";
-import { BLOGCATEGORIES } from "@/app/lib/constantes";
 import { unstable_cache } from "next/cache";
 
 const query = groq`
-    *[_type=='post' && dateTime(publishedAt) < dateTime(now()) && isReady == true && count(categories[@ in $categories]) > 0] {
+    *[
+        _type == 'post'
+        && dateTime(publishedAt) < dateTime(now())
+        && isReady == true
+        && 'fide' in categories
+        && defined(mainVideo.url)
+        && mainVideo.url != ''
+    ] {
         ...,
     } | order(publishedAt desc)[0...3]
 `;
@@ -31,14 +37,14 @@ const sanityHomeClient = client.withConfig({
 const getHomePosts = unstable_cache(
     async () => {
         try {
-            return await sanityHomeClient.fetch<Post[]>(query, { categories: BLOGCATEGORIES });
+            return await sanityHomeClient.fetch<Post[]>(query);
         } catch (error) {
-            console.error("[BlogHome] sanity fetch failed, rendering empty posts fallback", error);
+            console.error("[BlogHome] FIDE videos fetch failed, rendering empty posts fallback", error);
             return [] as Post[];
         }
     },
-    ["home-blog-posts"],
-    { revalidate: 1800, tags: ["home-blog-posts"] }
+    ["home-fide-video-posts"],
+    { revalidate: 1800, tags: ["home-fide-video-posts"] }
 );
 
 export default async function BlogHome({ locale }: { locale: Locale }) {
@@ -61,7 +67,7 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
                                 <div data-w-id="a1ac5fbd-201a-a9b1-b1a1-3019f18603fe" className="w-layout-grid grid-2-columns gap-x-[40px] gap-y-[30px] [grid-template-columns:1fr_auto] max-[991px]:[grid-template-columns:1fr] max-[767px]:[grid-template-columns:1fr] _1-col-tablet">
                                     <h2 className="display-2 mg-bottom-0">{t.rich("title", intelRich())}</h2>
                                     <div className="buttons-row max-[991px]:justify-center">
-                                        <Link href="/blog" className="btn-secondary w-button">
+                                        <Link href="/fide/videos" className="btn-secondary w-button">
                                             <span className="flex items-center">
                                                 <BiPencil className="mr-2" />
                                                 {t("button")}

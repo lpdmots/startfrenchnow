@@ -160,10 +160,19 @@
         }
     },
     "HeroSfn": {
-        "title": "<hs4>Learn French</hs4> at Your Own Pace with <hs2>High Quality</hs2> French Lessons",
-        "description": "You want to be serious about learning French? Don't worry, it doesn't have to be boring.",
-        "btn_resources": "Our Resources",
-        "btn_beginner_course": "Explore the first course"
+        "title": "Succeed in the Swiss <hs6>FIDE test</hs6> with <hs2>quality</hs2> preparation",
+        "description": "Videos, mock exams and private lessons to target the right <under6><b>A1, A2 or B1</b></under6> level and arrive ready on exam day.",
+        "btn_resources": "Start now",
+        "btn_beginner_course": "Prepare my FIDE test",
+        "btn_primary": "Prepare my FIDE test",
+        "btn_secondary": "Start now",
+        "video_annotation": "Swiss FIDE | A1-A2-B1 | Online",
+        "formats_label": "Formats:",
+        "badges": {
+            "swiss": "Private lessons",
+            "levels": "Mock exams",
+            "online": "E-learning"
+        }
     },
     "LessonCards": {
         "title": "Find a course that suits you and <hs4>get started</hs4>!",
@@ -195,10 +204,25 @@
             }
         }
     },
-    "UdemyBusiness": {
-        "title": "Join <hs2>students worldwide</hs2>",
-        "paragraph1": "One of our greatest pleasures is to see that our students come from over 140 different countries ! They all have their own objective towards the French language and our mission is to help them in <noWrap>reaching it.</noWrap>",
-        "paragraph2": "Our courses have also been recommended to big companies and their employees via the Udemy for Business programm that rewards the best courses based on the student feedback, their relevance and <noWrap>general quality.</noWrap>"
+    "WhyFideHome": {
+        "title": "What is the <hs2>FIDE test</hs2> for?",
+        "description": "The FIDE test evaluates your French in concrete everyday situations in Switzerland. Depending on your goal, the expected level can be A1, A2 or B1.",
+        "cta": "Learn all about the test",
+        "imageAlt": "Map of Switzerland",
+        "points": {
+            "permit": {
+                "title": "B / C permit",
+                "description": "A FIDE result may be requested for some residence or settlement applications."
+            },
+            "naturalization": {
+                "title": "Naturalization",
+                "description": "The test helps prove your ability to communicate in French in daily life."
+            },
+            "integration": {
+                "title": "Integration in Switzerland",
+                "description": "The tasks focus on practical situations: housing, health, work and administration."
+            }
+        }
     },
     "CoreValuesMethod": {
         "title": "The core values of <hs4>our method</hs4>",
@@ -277,9 +301,10 @@
         "moreAboutMe": "More about me"
     },
     "CommentsCarousel": {
-        "title": "Thousands of <hs4>satisfied</hs4> learners",
-        "description": "See what our latest students have to say about our courses.",
-        "description2": "on"
+        "title": "They <hs4>passed FIDE</hs4>",
+        "description": "Feedback from students prepared for the FIDE test in Switzerland.",
+        "description2": "on",
+        "fideScore": "FIDE score: {score}%"
     },
     "StoriesHome": {
         "title": "Choose Your Path: Engage with our <hs1>Interactive French Stories</hs1> for effective learning.",
@@ -290,8 +315,8 @@
         "button": "Go to stories"
     },
     "BlogHome": {
-        "title": "<hs1>Articles</hs1> & News",
-        "button": "Browse all articles"
+        "title": "Free <hs1>FIDE</hs1> resources",
+        "button": "All FIDE articles"
     },
     "Newsletter": {
         "title": "Subscribe to <noWrap>our newsletter</noWrap>",

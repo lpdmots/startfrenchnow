@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 function Placeholder() {
     return (
         <div className="flex justify-center">
-            <div className="relative w-full overflow-hidden bg-neutral-200 h-[500px] max-[768px]:h-[800px]" style={{ maxWidth: 1300 }} />
+            <div className="relative w-full overflow-hidden bg-neutral-200 h-[620px] max-[768px]:h-[1020px]" style={{ maxWidth: 1300 }} />
         </div>
     );
 }
