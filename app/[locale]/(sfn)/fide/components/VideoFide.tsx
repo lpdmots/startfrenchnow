@@ -133,6 +133,8 @@ export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleE
                     height="auto"
                     width="100%"
                     controls={isPlaying}
+                    preload="none"
+                    playsInline
                     poster={posterUrl}
                     onClick={(e) => e.stopPropagation()}
                     crossOrigin={crossOrigin}

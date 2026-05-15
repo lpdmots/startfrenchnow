@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import React from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import { SlideFromBottom } from "../../animations/Slides";
+import { intelRich } from "@/app/lib/intelRich";
 
 function WhoIAm() {
     const t = useTranslations("WhoIAm");
@@ -12,11 +13,11 @@ function WhoIAm() {
         <div className="container-default w-container">
             <div className="inner-container _600px---tablet center">
                 <div className="inner-container _500px---mbl center">
-                    <div id="whoami" className="w-layout-grid grid-2-columns gap-x-[64px] [grid-template-columns:1fr_1fr] max-[991px]:gap-y-[60px] max-[991px]:[grid-template-columns:1fr]">
-                        <div className="inner-container max-w-[620px] max-[991px]:max-w-full">
+                    <div id="whoami" className="w-layout-grid grid-2-columns gap-x-[64px] [grid-template-columns:0.9fr_1.1fr] max-[991px]:gap-y-[60px] max-[991px]:[grid-template-columns:1fr]">
+                        <div className="inner-container max-w-[560px] max-[991px]:max-w-full">
                             <div className="image-wrapper bg-secondary-4 ml-[13px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[50%] shadow-[-13px_13px_0_0_var(--neutral-800)]">
                                 <SlideFromBottom delay={0.6}>
-                                    <Image src="/images/about-me-image-paperfolio-webflow-template.svg" alt="experience image" priority={false} height={600} width={600} className="image" />
+                                    <Image src="/images/yoh-coussot-red.png" alt="Yohann Coussot" priority={false} height={600} width={600} className="image" />
                                 </SlideFromBottom>
                             </div>
                         </div>
@@ -34,7 +35,7 @@ function WhoIAm() {
                                             </div>
                                         </div>
                                     </div>
-                                    <p className="mg-bottom-32px mt-4">{t("description")}</p>
+                                    <p className="mg-bottom-32px mt-4">{t.rich("description", intelRich())}</p>
                                     <div className="inner-container max-[991px]:max-w-[500px] center">
                                         <div className="inner-container _400px---mbl center max-[479px]:max-w-full">
                                             <div className="mg-bottom-40px">
@@ -71,7 +72,7 @@ function WhoIAm() {
                                                 </div>
                                             </div>
                                             <div className="buttons-row max-[991px]:justify-center">
-                                                <Link href="about" className="btn-primary w-button">
+                                                <Link href="#ContactForFIDECourses" className="btn-primary w-button">
                                                     <div className="flex items-center justify-center">
                                                         <AiOutlineUser className="mr-2" />
                                                         {t("moreAboutMe")}

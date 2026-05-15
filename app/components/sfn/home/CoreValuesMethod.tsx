@@ -1,4 +1,5 @@
 import { intelRich } from "@/app/lib/intelRich";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
@@ -6,27 +7,66 @@ import { SlideInOneByOneChild, SlideInOneByOneParent } from "../../animations/Sl
 
 function CoreValuesMethod() {
     const t = useTranslations("CoreValuesMethod");
+    const linkClassName = "font-semibold text-secondary-5 underline underline-offset-2";
+    const richContent = {
+        ...intelRich(),
+        linkTeacher: (chunks: React.ReactNode) => (
+            <Link href="#whoami" className={linkClassName}>
+                {chunks}
+            </Link>
+        ),
+        linkUdemy: (chunks: React.ReactNode) => (
+            <Link href="https://www.udemy.com/course/french-for-beginners-a1/" className={linkClassName} target="_blank">
+                {chunks}
+            </Link>
+        ),
+        linkContact: (chunks: React.ReactNode) => (
+            <Link href="#ContactForFIDECourses" className={linkClassName}>
+                {chunks}
+            </Link>
+        ),
+        linkScenarios: (chunks: React.ReactNode) => (
+            <Link href="/fide/exams" className={linkClassName}>
+                {chunks}
+            </Link>
+        ),
+        linkMock: (chunks: React.ReactNode) => (
+            <Link href="/fide/mock-exams" className={linkClassName}>
+                {chunks}
+            </Link>
+        ),
+        linkPack: (chunks: React.ReactNode) => (
+            <Link href="/fide/pack-fide" className={linkClassName}>
+                {chunks}
+            </Link>
+        ),
+        linkPrivate: (chunks: React.ReactNode) => (
+            <Link href="/fide/private-courses" className={linkClassName}>
+                {chunks}
+            </Link>
+        ),
+    };
 
     const coreValuesData = [
         {
             image: "/images/hard-work-image-paperfolio-webflow-template.png",
             title: t("coreValues.serious.title"),
-            content: t("coreValues.serious.content"),
+            content: t.rich("coreValues.serious.content", richContent),
         },
         {
             image: "/images/innovation-image-paperfolio-webflow-template.png",
             title: t("coreValues.smartLearning.title"),
-            content: t("coreValues.smartLearning.content"),
+            content: t.rich("coreValues.smartLearning.content", richContent),
         },
         {
             image: "/images/fun-image-paperfolio-webflow-template.png",
             title: t("coreValues.fun.title"),
-            content: t("coreValues.fun.content"),
+            content: t.rich("coreValues.fun.content", richContent),
         },
         {
             image: "/images/growth-image-paperfolio-webflow-template.png",
             title: t("coreValues.fullMethod.title"),
-            content: t("coreValues.fullMethod.content"),
+            content: t.rich("coreValues.fullMethod.content", richContent),
         },
     ];
 

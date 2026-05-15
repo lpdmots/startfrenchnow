@@ -1,8 +1,8 @@
 {
     "Metadata": {
         "Home": {
-            "title": "Learn French online at your own pace | Start French Now",
-            "description": "Clear video lessons, exercises and a structured learning path to improve your French. Also specializing in Swiss FIDE exam prep (A1–B1)."
+            "title": "Swiss FIDE Test Prep (A1–B1) | Start French Now",
+            "description": "Prepare for the Swiss FIDE test with mock exams, a complete FIDE Pack, and private lessons. Current scenarios, a personalized plan, and preparation for A1, A2 or B1."
         },
         "StoriesApp": {
             "title": "Learn French with Start French Now: Interactive Stories & Online Courses",
@@ -45,16 +45,16 @@
             "description": "100+ FIDE mock exams (A1–B1): reading, writing, comprehension, and speaking, current scenarios, PDFs, videos, and interactive training. Start French Now."
         },
         "FideMockExams": {
-            "title": "Online FIDE Test Mock Exam (A1-A2 / A2-B1) | Start French Now",
-            "description": "Online FIDE mock exam: real test simulation, instant score, detailed correction, PDFs + videos included. Immediate access, A1–A2 or A2–B1 tracks."
+            "title": "Online FIDE Mock Exam (A1–A2 / A2–B1) | Start French Now",
+            "description": "Take an online FIDE mock exam with instant scoring, detailed correction, PDFs and videos. A realistic simulation to assess your level before the real test."
         },
         "FidePackFide": {
-            "title": "FIDE e-learning Pack | Videos, mock exams, and coaching | Start French Now",
-            "description": "Online Swiss FIDE prep: videos, current scenarios, and structured guidance. Immediate access and a free study plan."
+            "title": "Complete FIDE Pack (A1–B1) | Videos, Mock Exams and Method | Start French Now",
+            "description": "Prepare for the FIDE test with a complete learning path: videos, current scenarios, mock exams, PDFs and a study plan. Immediate access to progress toward A1, A2 or B1."
         },
         "FidePrivateCourses": {
-            "title": "Private FIDE Coaching Online (1:1) | FIDE Test Prep | Start French Now",
-            "description": "Private FIDE coaching: personalized prep, current scenarios, and a targeted plan for your level. 300+ satisfied students, 99% success rate."
+            "title": "Online Private FIDE Lessons | Personalized A1–B1 Prep | Start French Now",
+            "description": "Prepare for the FIDE test with online private lessons: a personalized plan, current scenarios, and targeted support. 300+ satisfied learners."
         },
         "FideVideos": {
             "title": "Swiss FIDE Videos A1–B1 | Pack FIDE | Start French Now",
@@ -131,6 +131,33 @@
         },
         "fide": "Fide",
         "fideLong": "FIDE Test",
+        "main": {
+            "fideTest": "FIDE Test",
+            "fidePack": "FIDE Pack",
+            "practiceExams": "Practice Exams",
+            "coachingOneToOne": "1:1 Coaching",
+            "coursesResources": "Courses & Resources"
+        },
+        "fideMenu": {
+            "overview": "FIDE Test Overview",
+            "videos": "FIDE Videos",
+            "scenarios": "FIDE Scenarios",
+            "testYourLevel": "Test Your Level"
+        },
+        "coursesResourcesMenu": {
+            "sections": {
+                "courses": "French courses",
+                "resources": "Resources"
+            },
+            "beginnerFrench": "Beginner French",
+            "intermediateFrench": "Intermediate French",
+            "dailyLifeDialogues": "Daily Life Dialogues",
+            "masterPastTenses": "Master the Past Tenses",
+            "allVideos": "All Videos",
+            "blog": "Blog",
+            "exercises": "Exercises",
+            "interactiveStories": "Interactive Stories"
+        },
         "resources": {
             "resourcesTitle": "Our resources",
             "button": "Resources",
@@ -156,16 +183,22 @@
             "fideTest": "The FIDE test",
             "fidePack": "FIDE Pack",
             "fideMockExams": "Mock exams",
-            "fidePrivateCourses": "Private courses"
+            "fidePrivateCourses": "Private courses",
+            "sections": {
+                "fide": "FIDE",
+                "courses": "Courses",
+                "resources": "Resources",
+                "company": "Company"
+            }
         }
     },
     "HeroSfn": {
         "title": "Succeed in the Swiss <hs6>FIDE test</hs6> with <hs2>quality</hs2> preparation",
         "description": "Videos, mock exams and private lessons to target the right <under6><b>A1, A2 or B1</b></under6> level and arrive ready on exam day.",
-        "btn_resources": "Start now",
-        "btn_beginner_course": "Prepare my FIDE test",
-        "btn_primary": "Prepare my FIDE test",
-        "btn_secondary": "Start now",
+        "btn_resources": "See the options",
+        "btn_beginner_course": "Book my consultation",
+        "btn_primary": "Book my consultation",
+        "btn_secondary": "See the options",
         "video_annotation": "Swiss FIDE | A1-A2-B1 | Online",
         "formats_label": "Formats:",
         "badges": {
@@ -225,24 +258,24 @@
         }
     },
     "CoreValuesMethod": {
-        "title": "The core values of <hs4>our method</hs4>",
-        "description": "A <under>well structured</under> method with <under>bite-sized lessons</under> that enables you to acquire the <under>fundamental</under> French language skills.",
+        "title": "Why choose <hs4>our FIDE preparation</hs4>?",
+        "description": "A preparation path <under>focused on the exam</under>, designed to help you progress with a clear plan, current topics and the right level of support.",
         "coreValues": {
             "serious": {
-                "title": "Serious",
-                "content": "A structured and serious method where the student feel guided and supported all along."
+                "title": "A proven method",
+                "content": "A clear, structured teaching method already adopted by <linkUdemy><b>thousands of learners</b></linkUdemy> on Udemy, now fully focused on FIDE preparation."
             },
             "smartLearning": {
-                "title": "Smart learning",
-                "content": "New concepts are well identified, difficulties are isolated, explained, worked on and gradually integrated with your current knowledge."
+                "title": "Personalized plan",
+                "content": "A <linkContact><b>free consultation</b></linkContact> helps define your goal, your current level and the most suitable plan to reach A1, A2 or B1."
             },
             "fun": {
-                "title": "Fun",
-                "content": "Serious but fun! The courses are interactive and entertaining with attractive and modern visuals. Be prepared to actively participate."
+                "title": "Real FIDE scenarios",
+                "content": "You work on <linkScenarios><b>real exam scenarios</b></linkScenarios>, identified through student feedback after they take the FIDE test."
             },
             "fullMethod": {
-                "title": "A full method",
-                "content": "A complete method with access to extensive resources: extra exercises, quizzes, vocabulary sheets, a quality blog and amazing French interactive stories."
+                "title": "Complete preparation",
+                "content": "You can test yourself with <linkMock><b>mock exams</b></linkMock>, train with the <linkPack><b>FIDE Pack</b></linkPack> or speed up your progress with <linkPrivate><b>private lessons</b></linkPrivate>."
             }
         }
     },
@@ -283,22 +316,22 @@
         }
     },
     "WhoIAm": {
-        "description": "I’m a French teacher as a foreign language, expert on teaching online and creating high quality content for beginners and intermediate learners.",
+        "description": "I am a French teacher and FIDE preparation specialist. My online teaching method made me <b>the most popular French instructor on Udemy</b>. Today, that expertise is fully dedicated to helping FIDE candidates target the right A1, A2 or B1 level.",
         "bulletPoints": {
             "nativeCertified": {
-                "title": "A native & certified French teacher",
-                "content": "Born in the beautiful Burgundy region near Dijon, I have a Master’s degree in Education."
+                "title": "FIDE expert",
+                "content": "More than 8 years of experience in FIDE preparation, with practical work on exam expectations and the most recent scenarios."
             },
             "experience": {
-                "title": "10+ years of experience",
-                "content": "I have taught in language schools, universities and business schools all around the world before going online with my students."
+                "title": "300+ students prepared",
+                "content": "More than 300 learners have prepared their FIDE test with Start French Now, with a very high success rate."
             },
             "expertBeginners": {
-                "title": "An expert with beginners",
-                "content": "Where other teachers are often bored or not sure how to deal with total beginners, I love it and I have specifically crafted a method for them."
+                "title": "16 years teaching French as a foreign language",
+                "content": "I have been teaching French to foreigners for more than 16 years, with a strong focus on speaking, confidence and fast progress."
             }
         },
-        "moreAboutMe": "More about me"
+        "moreAboutMe": "Talk with Yohann"
     },
     "CommentsCarousel": {
         "title": "They <hs4>passed FIDE</hs4>",
@@ -317,6 +350,113 @@
     "BlogHome": {
         "title": "Free <hs1>FIDE</hs1> resources",
         "button": "All FIDE articles"
+    },
+    "HomePreparationOptions": {
+        "title": "Which <hs6>FIDE preparation</hs6> is right for you?",
+        "subtitle": "Choose based on your goal: test your level, follow a complete path, or get personal guidance.",
+        "cards": {
+            "mockExams": {
+                "title": "Mock exams",
+                "badge": "Assess your level",
+                "fit": "Best if you want to know where you stand",
+                "description": "Test your level and discover the test flow before choosing your next step.",
+                "cta": "Take a mock exam",
+                "imageAlt": "Preview of FIDE mock exams",
+                "points": {
+                    "point1": "Estimate your A1, A2 or B1 level",
+                    "point2": "Understand the real test format",
+                    "point3": "Get immediate feedback"
+                }
+            },
+            "pack": {
+                "title": "FIDE Pack",
+                "badge": "Complete preparation",
+                "fit": "Best if you want complete preparation",
+                "description": "Move forward with a structured method, videos, PDFs and updated real exam scenarios.",
+                "cta": "See the pack",
+                "imageAlt": "Preview of the FIDE Pack",
+                "points": {
+                    "point1": "Work on real FIDE scenarios",
+                    "point2": "Follow a guided path at your pace",
+                    "point3": "Strengthen speaking, listening, reading and writing"
+                }
+            },
+            "private": {
+                "title": "Private lessons",
+                "badge": "Targeted support",
+                "fit": "Best if you want personal guidance",
+                "description": "Build a targeted plan with a teacher to fix weak points and prepare for your objective.",
+                "cta": "See private lessons",
+                "imageAlt": "Preview of FIDE private lessons",
+                "points": {
+                    "point1": "Define a personalized plan",
+                    "point2": "Correct your speaking weak points",
+                    "point3": "Prepare for a close exam date"
+                }
+            }
+        }
+    },
+    "HomeRitaVideo": {
+        "eyebrow": "Video testimonial",
+        "title": "Rita reached B1 level in the <hs3>FIDE test</hs3>",
+        "cta": "Define my FIDE plan"
+    },
+    "HomeSocialProofBand": {
+        "title": "On YouTube, our FIDE videos have become go-to references",
+        "subtitle": "Our method is followed far beyond this page: an active audience across social platforms and <em>tens of thousands of learners</em> reached online.",
+        "items": {
+            "youtube": {
+                "count": "10K+",
+                "label": "YouTube",
+                "description": "FIDE videos used as reference points before the exam."
+            },
+            "tiktok": {
+                "count": "17K+",
+                "label": "TikTok",
+                "description": "An engaged audience around French learning and preparation."
+            },
+            "instagram": {
+                "count": "21K+",
+                "label": "Instagram",
+                "description": "Weekly content followed by a broad community."
+            },
+            "udemy": {
+                "count": "60K+",
+                "label": "Students",
+                "description": "Thousands of learners trained through a proven method."
+            }
+        }
+    },
+    "HomeFaq": {
+        "badge": "FIDE preparation FAQ",
+        "title": "Your <hs6>questions</hs6>,<br></br>our answers",
+        "subtitle": "Essential answers to choose the FIDE preparation path that fits your goal.",
+        "items": {
+            "choosePreparation": {
+                "title": "Which FIDE preparation should I choose?",
+                "content": "If you first want to assess your level, start with a <linkMock>mock exam</linkMock>. If you want a complete path, choose the <linkPack>FIDE Pack</linkPack>. If you have limited time or specific weak points, <linkPrivate>private lessons</linkPrivate> help build a targeted plan."
+            },
+            "realScenarios": {
+                "title": "Do you really work on real FIDE test scenarios?",
+                "content": "Yes. The <linkScenarios>scenarios</linkScenarios> are updated through student feedback after students take the exam. The goal is to train you on the themes and situations actually encountered during the FIDE test."
+            },
+            "unknownLevel": {
+                "title": "I do not know my level. Where should I start?",
+                "content": "You can start with a <linkMock>mock exam</linkMock> to get a clear estimate of your A1, A2 or B1 level. If you prefer guidance, the <linkContact>free consultation</linkContact> helps define your objective and the best preparation plan."
+            },
+            "levels": {
+                "title": "Is the preparation suitable for A1, A2 and B1 levels?",
+                "content": "Yes. The preparation covers A1, A2 and B1 goals, with content adapted to the target level and the skills you need to work on. The <linkPack>FIDE Pack</linkPack> and <linkPrivate>private lessons</linkPrivate> let you adapt the preparation to your profile."
+            },
+            "online": {
+                "title": "Is the preparation fully online?",
+                "content": "Yes. <linkMock>Mock exams</linkMock>, the <linkPack>FIDE Pack</linkPack> and <linkPrivate>private lessons</linkPrivate> can all be done online. You can train from Switzerland or abroad, at your own pace."
+            },
+            "timeline": {
+                "title": "How long does it take to prepare for the FIDE test?",
+                "content": "It depends on your current level, target level and available time. For a close deadline, a targeted plan with <linkMock>mock exams</linkMock> and <linkPrivate>private lessons</linkPrivate> can be more efficient. For broader progress, the <linkPack>FIDE Pack</linkPack> helps you train regularly over several weeks."
+            }
+        }
     },
     "Newsletter": {
         "title": "Subscribe to <noWrap>our newsletter</noWrap>",

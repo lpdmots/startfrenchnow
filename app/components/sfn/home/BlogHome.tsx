@@ -67,7 +67,7 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
                                 <div data-w-id="a1ac5fbd-201a-a9b1-b1a1-3019f18603fe" className="w-layout-grid grid-2-columns gap-x-[40px] gap-y-[30px] [grid-template-columns:1fr_auto] max-[991px]:[grid-template-columns:1fr] max-[767px]:[grid-template-columns:1fr] _1-col-tablet">
                                     <h2 className="display-2 mg-bottom-0">{t.rich("title", intelRich())}</h2>
                                     <div className="buttons-row max-[991px]:justify-center">
-                                        <Link href="/fide/videos" className="btn-secondary w-button">
+                                        <Link href="/fide/videos?package=free" className="btn-secondary w-button">
                                             <span className="flex items-center">
                                                 <BiPencil className="mr-2" />
                                                 {t("button")}

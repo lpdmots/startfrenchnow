@@ -3,16 +3,41 @@ import React, { useState, useRef } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
-import { LinkCurrentBlog } from "./LinkCurrentBlog";
 import { FaCaretRight } from "react-icons/fa";
 import { Locale } from "@/i18n";
 import { useTranslations } from "next-intl";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { getPrimaryNavigation, isSiteNavActive, SiteNavItem, SiteNavLink } from "./siteNavigation";
+import clsx from "clsx";
 
-const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
+const getMobileAccentClasses = (item: SiteNavLink, isActive: boolean) =>
+    clsx(item.accent === "fide" && "nav-link-fide current-fide", item.accent === "course" && "nav-link-fr current-fr", isActive && "current");
+
+const groupDropdownLinks = (links: SiteNavLink[]) => {
+    const groups: { title?: string; links: SiteNavLink[] }[] = [];
+
+    links.forEach((link) => {
+        if (link.sectionTitle || groups.length === 0) {
+            groups.push({
+                title: link.sectionTitle,
+                links: [link],
+            });
+            return;
+        }
+
+        groups[groups.length - 1].links.push(link);
+    });
+
+    return groups;
+};
+
+const Burger = ({ locale }: { locale: Locale }) => {
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLElement | null>(null);
     const pathname = usePathname();
-    const t = useTranslations("Navigation.fideButton");
+    const t = useTranslations("Navigation");
+    const navigationItems = getPrimaryNavigation(t);
+    const defaultOpenSections = navigationItems.filter((item) => item.items && isSiteNavActive(pathname, item)).map((item) => item.key);
 
     useOutsideClick(ref, () => {
         setOpen(false);
@@ -28,137 +53,13 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
                 className="w-screen nav-width mx-auto px-6 absolute right-0 collapse-parent"
             >
                 <div className="nav burgerCollapse w-full sm:w-none mb-0 flex flex-col items-start">
-                    <ul className="flex-col !items-start list-none pl-0 sm:pl-2 w-full gap-4 flex">
-                        <li className="w-full">
-                            <div className="w-full">
-                                <div onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0 w-full">
-                                    <LinkCurrentBlog href="/fide" className="nav-link header-nav-link nav-link-fide current-fide !p-2 block w-full" locale={locale}>
-                                        {t("buttonLabel")}
-                                    </LinkCurrentBlog>
-                                </div>
-                                <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide" matchPrefix={false} className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {t("fide")}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {t("mockExams")}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide/pack-fide" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {t("packFide")}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide/private-courses" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {t("privateCourses")}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="w-full">
-                            <div className="w-full">
-                                <div className="p-2 font-bold">{messages.coursesDict.coursesTitle}</div>
-                                <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/beginners" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.coursesDict.beginners}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/intermediates" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.coursesDict.intermediates}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/dialogues" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.coursesDict.dialogues}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/courses/past-tenses" className="nav-link header-nav-link nav-link-fr current-fr p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.coursesDict.pastTenses}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="w-full">
-                            <div className="w-full">
-                                <div onClick={() => setOpen(false)} className="header-nav-list-item middle !mb-0 w-full">
-                                    <LinkCurrentBlog href="/blog" className="nav-link header-nav-link !p-2 block w-full" locale={locale}>
-                                        {messages.resourcesDict.resourcesTitle}
-                                    </LinkCurrentBlog>
-                                </div>
-                                <div className="mt-1 flex flex-col gap-1 pl-4 border-l border-neutral-300">
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide/videos" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.resourcesDict.fideVideos}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/fide/exams" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.resourcesDict.fideScenarios}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/videos" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.resourcesDict.videos}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/blog" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.resourcesDict.blog}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/exercises" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.resourcesDict.exercises}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/stories" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.resourcesDict.stories}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                    <div onClick={() => setOpen(false)}>
-                                        <LinkCurrentBlog href="/test-your-level" className="nav-link header-nav-link p-1 m-0 font-medium bs flex items-center pl-0" locale={locale as Locale}>
-                                            <FaCaretRight />
-                                            {messages.resourcesDict.testYourLevel}
-                                        </LinkCurrentBlog>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="header-nav-list-item middle !mb-0" onClick={() => setOpen(false)}>
-                            <Link href="/about" className={`nav-link header-nav-link !p-2 ${pathname === "/about" && "current"}`} onClick={() => setOpen(false)}>
-                                {messages.about}
-                            </Link>
-                        </li>
-                        <li className="header-nav-list-item middle !mb-0" onClick={() => setOpen(false)}>
-                            <Link href="/contact" className={`nav-link header-nav-link !p-2 ${pathname === "/contact" && "current"}`} onClick={() => setOpen(false)}>
-                                {messages.contact}
-                            </Link>
-                        </li>
-                    </ul>
+                    <div className="flex w-full flex-col gap-3 pl-0 sm:pl-2">
+                        <Accordion type="multiple" defaultValue={defaultOpenSections} className="w-full border-b-0">
+                            {navigationItems.map((item) => (
+                                <BurgerNavItem key={item.key} item={item} locale={locale} pathname={pathname} onNavigate={() => setOpen(false)} />
+                            ))}
+                        </Accordion>
+                    </div>
                 </div>
             </div>
         </>
@@ -166,6 +67,69 @@ const Burger = ({ messages, locale }: { messages: any; locale: Locale }) => {
 };
 
 export default Burger;
+
+const BurgerNavItem = ({
+    item,
+    locale,
+    pathname,
+    onNavigate,
+}: {
+    item: SiteNavItem;
+    locale: Locale;
+    pathname: string;
+    onNavigate: () => void;
+}) => {
+    const isActive = isSiteNavActive(pathname, item);
+    const groupedItems = groupDropdownLinks(item.items ?? []);
+
+    if (!item.items || item.items.length === 0) {
+        return (
+            <div className="w-full">
+                <Link
+                    href={item.href}
+                    locale={locale}
+                    className={clsx("nav-link header-nav-link block w-full rounded-xl !p-2", getMobileAccentClasses(item, isActive), item.emphasize && "bg-neutral-100 shadow-sm")}
+                    onClick={onNavigate}
+                >
+                    {item.label}
+                </Link>
+            </div>
+        );
+    }
+
+    return (
+        <AccordionItem value={item.key} className="w-full border-b border-neutral-300">
+            <AccordionTrigger className={clsx("py-3 text-left text-base no-underline hover:no-underline", item.accent === "fide" && "text-[var(--secondary-6)]", item.accent === "course" && "text-[var(--secondary-2)]")}>
+                <span className={clsx("font-semibold", isActive && "underline underline-offset-4")}>{item.label}</span>
+            </AccordionTrigger>
+            <AccordionContent className="pb-2">
+                <div className="flex flex-col gap-1 border-l border-neutral-300 pl-4">
+                    {groupedItems.map((group, groupIndex) => (
+                        <div key={`${group.title ?? "group"}-${groupIndex}`} className={clsx("flex flex-col", groupIndex > 0 && "mt-3 pt-3 border-t border-neutral-300")}>
+                            {group.title && <div className="mb-2 border-b border-neutral-400 pb-1 text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-neutral-600">{group.title}</div>}
+                            {group.links.map((child) => {
+                                const childActive = isSiteNavActive(pathname, child);
+
+                                return (
+                                    <Link
+                                        key={child.key}
+                                        href={child.href}
+                                        locale={locale}
+                                        className={clsx("nav-link header-nav-link m-0 flex items-center gap-2 p-1 pl-0 font-medium", getMobileAccentClasses(child, childActive))}
+                                        onClick={onNavigate}
+                                    >
+                                        <FaCaretRight />
+                                        {child.label}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    ))}
+                </div>
+            </AccordionContent>
+        </AccordionItem>
+    );
+};
 
 const Animation = ({ open, onClick }: { open: boolean; onClick: any }) => {
     return (

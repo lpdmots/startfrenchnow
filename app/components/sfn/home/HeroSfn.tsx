@@ -4,7 +4,7 @@ import { intelRich } from "@/app/lib/intelRich";
 import { FideCourseRatings } from "../courses/FideCourseRatings";
 import { Link } from "@/i18n/navigation";
 import ShimmerButton from "../../ui/shimmer-button";
-import { BadgeCheck } from "lucide-react";
+import { CalendarCheck } from "lucide-react";
 
 export const HeroSfn = () => {
     const t = useTranslations("HeroSfn");
@@ -24,13 +24,13 @@ export const HeroSfn = () => {
                                 <p className="mb-6 text-base lg:text-2xl">{t.rich("description", intelRich())}</p>
                             </div>
                             <div className="buttons-row mb-6 max-[991px]:justify-center flex flex-col sm:gap-4 md:flex-row md:gap-0">
-                                <Link href="/fide#fide-hub" className="no-underline w-full md:w-auto">
+                                <Link href="#ContactForFIDECourses" className="no-underline w-full md:w-auto">
                                     <ShimmerButton className="btn-primary button-row w-button flex w-full items-center justify-center !px-4 md:w-auto">
-                                        <BadgeCheck className="mr-2 h-5 w-5" />
+                                        <CalendarCheck className="mr-2 h-5 w-5" />
                                         {t("btn_beginner_course")}
                                     </ShimmerButton>
                                 </Link>
-                                <Link href="/fide/private-courses#ContactForFIDECourses" className="btn btn-secondary text-center no-underline !px-4 w-full md:w-auto">
+                                <Link href="#fide-hub" className="btn btn-secondary text-center no-underline !px-4 w-full md:w-auto">
                                     {t("btn_resources")}
                                 </Link>
                             </div>

@@ -1,8 +1,8 @@
-export const YoutubeBig = ({ height, width }: { height: number; width: number | string }) => {
+export const YoutubeBig = ({ height, width, fillColor = "var(--neutral-100)" }: { height: number; width: number | string; fillColor?: string }) => {
     return (
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 1200.000000 267.000000" preserveAspectRatio="xMidYMid meet">
             <metadata>Created by potrace 1.16, written by Peter Selinger 2001-2019</metadata>
-            <g transform="translate(0.000000,267.000000) scale(0.100000,-0.100000)" fill="var(--neutral-100)" stroke="none">
+            <g transform="translate(0.000000,267.000000) scale(0.100000,-0.100000)" fill={fillColor} stroke="none">
                 <path
                     d="M1210 2663 c-311 -9 -675 -40 -778 -64 -82 -20 -171 -70 -231 -130
 -104 -103 -142 -219 -178 -532 -25 -222 -25 -985 0 -1207 36 -316 71 -424 173

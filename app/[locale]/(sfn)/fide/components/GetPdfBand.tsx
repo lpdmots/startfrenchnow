@@ -5,7 +5,15 @@ import Image from "next/image";
 import React from "react";
 import { AskForPdf } from "./AskForPdf";
 
-function GetPdfBand({ fullDarkBackground = false, insetDarkPanel = false }: { fullDarkBackground?: boolean; insetDarkPanel?: boolean }) {
+function GetPdfBand({
+    fullDarkBackground = false,
+    insetDarkPanel = false,
+    topLightBottomDark = false,
+}: {
+    fullDarkBackground?: boolean;
+    insetDarkPanel?: boolean;
+    topLightBottomDark?: boolean;
+}) {
     const t = useTranslations("Fide.WhatIsFide");
     const messages = getFormMessages(t);
     return (
@@ -21,6 +29,11 @@ function GetPdfBand({ fullDarkBackground = false, insetDarkPanel = false }: { fu
                     <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[60%]" style={{ backgroundColor: "var(--neutral-800)" }} />
                 ) : fullDarkBackground ? (
                     <div className="h-full" style={{ backgroundColor: "var(--neutral-800)" }} />
+                ) : topLightBottomDark ? (
+                    <>
+                        <div className="h-1/2" style={{ backgroundColor: "var(--neutral-200)" }} />
+                        <div className="h-1/2" style={{ backgroundColor: "var(--neutral-800)" }} />
+                    </>
                 ) : (
                     <>
                         <div className="h-1/2" style={{ backgroundColor: "var(--neutral-800)" }} />

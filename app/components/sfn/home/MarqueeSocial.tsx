@@ -7,8 +7,8 @@ import useMediaQuery from "@/app/hooks/useMediaQuery";
 import { cn } from "@/app/lib/schadcn-utils";
 import { m } from "framer-motion";
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
+import CircularProgressMagic from "../../common/CircularProgressMagic";
 
 type ReviewWithText = {
     userName: string;
@@ -49,13 +49,13 @@ export function MarqueeSocial({ locale }: { locale: string }) {
                 className={cn("relative flex w-full flex-col items-center justify-center overflow-hidden bg-neutral-200", !isMedium ? "h-[620px]" : "h-[1020px]")}
                 style={{ maxWidth: 1300 }}
             >
-                <Marquee vertical={isMedium} pauseOnHover paused={!!selectedReview} className="[--duration:64s] [--gap:1.5rem] md:[--gap:2rem]">
+                <Marquee vertical={isMedium} pauseOnHover paused={!!selectedReview} className="pt-4 pb-5 [--duration:64s] [--gap:1.5rem] md:[--gap:2rem]">
                     {firstRow.map((review, index) => (
                         <CommentCard key={`${review.userName}-${index}`} review={review} locale={locale} onOpen={() => setSelectedReview(review)} />
                     ))}
                 </Marquee>
                 {!isMedium && secondRow.length > 0 && (
-                    <Marquee reverse pauseOnHover paused={!!selectedReview} className="[--duration:64s] [--gap:1.5rem] md:[--gap:2rem]">
+                    <Marquee reverse pauseOnHover paused={!!selectedReview} className="pt-4 pb-5 [--duration:64s] [--gap:1.5rem] md:[--gap:2rem]">
                         {secondRow.map((review, index) => (
                             <CommentCard key={`${review.userName}-${index}`} review={review} locale={locale} onOpen={() => setSelectedReview(review)} />
                         ))}
@@ -73,13 +73,12 @@ export function MarqueeSocial({ locale }: { locale: string }) {
                     </>
                 )}
             </div>
-            {selectedReview && <ReviewModal review={selectedReview} onClose={() => setSelectedReview(null)} />}
+            {selectedReview && <ReviewModal review={selectedReview} locale={locale} onClose={() => setSelectedReview(null)} />}
         </div>
     );
 }
 
 function CommentCard({ review, locale, onOpen }: { review: ReviewWithText; locale: string; onOpen: () => void }) {
-    const tHome = useTranslations("CommentsCarousel");
     const commentText = extractText(review.comment);
     const formattedDate = review.date ? formatDate(review.date, locale) : "";
 
@@ -87,20 +86,11 @@ function CommentCard({ review, locale, onOpen }: { review: ReviewWithText; local
         <div className="w-slide my-4 overflow-visible">
             <div className="max-w-sm overflow-visible md:max-w-md">
                 <m.button type="button" whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} onClick={onOpen} className="w-full overflow-visible text-left">
-                    <div className="card link-card group relative flex h-[16.5rem] flex-col px-4 py-3 md:h-[17.5rem] md:px-5 md:py-4">
+                    <div className="card link-card group relative flex h-[16rem] flex-col px-4 py-3 hover:[transform:none] md:h-[17rem] md:px-5 md:py-4">
                         <div className="mg-bottom-24px mt-[-80px] keep absolute top-14">
                             <Quote />
                         </div>
-                        <div className="mt-8 flex items-start gap-3">
-                            <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full">
-                                <div className="origin-top-left scale-[0.56]">{review.userImage}</div>
-                            </div>
-                            <div className="min-w-0">
-                                <p className="mb-0 font-bold line-clamp-1">{review.userName}</p>
-                                {typeof review.score === "number" && <p className="mb-0 text-sm font-semibold text-secondary-5">{tHome("fideScore", { score: review.score })}</p>}
-                                {formattedDate && <p className="mb-0 text-sm italic">{formattedDate}</p>}
-                            </div>
-                        </div>
+                        <ReviewHeader review={review} formattedDate={formattedDate} compact />
                         <div className="mt-4 min-h-0 flex-1">
                             <div className="line-clamp-4 overflow-hidden text-sm leading-7 text-neutral-700">{commentText}</div>
                         </div>
@@ -111,25 +101,63 @@ function CommentCard({ review, locale, onOpen }: { review: ReviewWithText; local
     );
 }
 
-function ReviewModal({ review, onClose }: { review: ReviewWithText; onClose: () => void }) {
+function ReviewModal({ review, locale, onClose }: { review: ReviewWithText; locale: string; onClose: () => void }) {
     const commentText = extractText(review.comment);
+    const formattedDate = review.date ? formatDate(review.date, locale) : "";
     const data = {
         setOpen: (value: boolean) => {
             if (!value) onClose();
         },
-        title: review.title,
-        message: <p className="mb-0 whitespace-pre-line">{commentText}</p>,
+        message: (
+            <div className="flex flex-col gap-5">
+                <ReviewHeader review={review} formattedDate={formattedDate} />
+                <div>
+                    <p className="mb-3 text-xl font-bold leading-snug text-neutral-800">"{review.title}"</p>
+                    <p className="mb-0 whitespace-pre-line text-base leading-8 text-neutral-700">{commentText}</p>
+                </div>
+            </div>
+        ),
         functionOk: onClose,
         buttonOkStr: "OK",
         clickOutside: true,
         oneButtonOnly: true,
-        className: "max-h-[80vh] overflow-y-auto",
+        className: "max-h-[84vh] max-w-2xl overflow-y-auto rounded-2xl p-6 md:p-8",
     };
 
     return <ModalFromBottomWithPortal data={data} open={true} />;
 }
 
-function formatDate(timestamp: number, locale: string) {
+function ReviewHeader({ review, formattedDate, compact = false }: { review: ReviewWithText; formattedDate?: string; compact?: boolean }) {
+    return (
+        <div className={cn("relative mt-8 flex items-start gap-3", compact && typeof review.score === "number" && "pr-16", !compact && "mt-0 pr-20")}>
+            <div className={cn("shrink-0 overflow-hidden rounded-full bg-neutral-300", compact ? "h-14 w-14" : "h-16 w-16")}>
+                <div className={cn("origin-top-left", compact ? "scale-[0.56]" : "scale-[0.64]")}>{review.userImage}</div>
+            </div>
+            <div className="min-w-0 pt-1">
+                <p className={cn("mb-0 font-bold text-neutral-800", compact ? "line-clamp-1" : "text-lg leading-tight")}>{review.userName}</p>
+                {formattedDate && <p className="mb-0 text-sm italic text-neutral-600">{formattedDate}</p>}
+            </div>
+            {typeof review.score === "number" && (
+                <div className={cn("absolute right-0 top-0 flex flex-col items-center", compact ? "translate-y-[-2px]" : "translate-y-[-6px]")}>
+                    <CircularProgressMagic
+                        max={100}
+                        min={0}
+                        value={review.score}
+                        gaugePrimaryColor="var(--secondary-5)"
+                        gaugeSecondaryColor="var(--neutral-300)"
+                        centerText={`${review.score}%`}
+                        withSize={false}
+                        className={cn("text-sm font-bold", compact ? "size-14" : "size-16")}
+                        fontHeight={compact ? "text-[11px] font-bold" : "text-xs font-bold"}
+                    />
+                    {!compact && <p className="mb-0 mt-1 text-xs font-bold uppercase text-secondary-5">FIDE</p>}
+                </div>
+            )}
+        </div>
+    );
+}
+
+function formatDate(timestamp: number, locale?: string) {
     const date = new Date(timestamp);
     const options: Intl.DateTimeFormatOptions = { day: "numeric", month: "long", year: "numeric" };
     return date.toLocaleDateString(locale, options);
