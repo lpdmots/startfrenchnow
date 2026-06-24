@@ -34,7 +34,7 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
                     }}
                 >
                     <p className="mb-0 text-xl text-center font-bold">{props.value[0]}</p>
-                    <p className="mb-0 text-center">{props.value[0] > 1 ? hours?.plural : hours?.single}</p>
+                    <p className="mb-0 text-center">{props.value[0] === 1 ? hours?.single : hours?.plural}</p>
                 </div>
             )}
         </SliderPrimitive.Thumb>

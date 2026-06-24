@@ -26,7 +26,7 @@ export function LocaleSwitcher({ locale }: { locale: Locale }) {
                         const isActive = localeKey === locale;
                         return (
                             <div key={localeKey} className={`flex items-center hover:cursor-pointer ${isActive && "hover:cursor-default opacity-30"}`} onClick={() => handleClick(localeKey as Locale)}>
-                                <Image src={values.image} className="h-6 sm:h-8 lg:h-9 object-contain p-1" height={35} width={35} alt={values.alt} />
+                                <Image src={values.image} className="h-6 sm:h-8 lg:h-9 object-contain px-1 pt-1 pb-0" height={35} width={35} alt={values.alt} />
                                 <p className="ml-2 mb-0">{values.abreviation}</p>
                             </div>
                         );
@@ -35,8 +35,8 @@ export function LocaleSwitcher({ locale }: { locale: Locale }) {
             </div>
         ),
         button: (
-            <div className={`flex items-center cursor-pointer sm:mr-2 ${isPending && "transition-opacity [&:disabled]:opacity-30"}`}>
-                <Image src={langData[locale].image} className="h-6 sm:h-8 lg:h-9 object-contain p-1" height={35} width={35} alt={langData[locale].image} />
+            <div className={`flex items-end cursor-pointer sm:mr-2 ${isPending && "transition-opacity [&:disabled]:opacity-30"}`}>
+                <Image src={langData[locale].image} className="h-6 sm:h-8 lg:h-9 object-contain px-1 pt-1 pb-0" height={35} width={35} alt={langData[locale].image} />
             </div>
         ),
     };

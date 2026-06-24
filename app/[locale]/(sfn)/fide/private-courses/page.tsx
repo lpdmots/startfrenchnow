@@ -53,10 +53,6 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
             answer: faqT("items.online.content"),
         },
         {
-            question: faqT("items.scenarios.title"),
-            answer: faqT("items.scenarios.content"),
-        },
-        {
             question: faqT("items.hours.title"),
             answer: faqT("items.hours.content"),
             content: (

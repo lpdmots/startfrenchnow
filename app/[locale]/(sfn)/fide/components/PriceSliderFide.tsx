@@ -22,7 +22,7 @@ const PRICECATEGORIES = {
     en: {
         "fide-boost": {
             image: "/images/fide-booster.png",
-            title: "FIDE",
+            title: "TEST",
             subtitle: "BOOST",
             description: (
                 <p className="mb-0">
@@ -39,21 +39,19 @@ const PRICECATEGORIES = {
         },
         "fide-essentials": {
             image: "/images/fide-essentials.png",
-            title: "FIDE",
+            title: "TEST",
             subtitle: "ESSENTIALS",
             description: (
                 <p className="mb-0">
-                    A comprehensive preparation to master both <b>exam scenarios</b> and <b>key topics</b>.
+                    A complete preparation to master the <b>main themes</b> of the FIDE exam and practice <b>oral scenarios</b>.
                 </p>
             ),
             whatYouGet: "What we can do",
-            features: ["Practice all FIDE scenarios", 'Expand "FIDE" vocabulary', "Boost your confidence", "Receive expert tips"],
-            extrasTitle: "+ Exclusive FIDE resources",
+            features: ["Master all the main themes of the FIDE exam", "Build and use vocabulary specific to the FIDE exam", "Boost your confidence", "Receive expert tips"],
+            extrasTitle: "+ Exclusive resources",
             extras: [
-                "Access to all A2 and B1 exam scenarios",
-                <span key="en-1">
-                    Access to <b>last month's</b> FIDE exam topics
-                </span>,
+                "Access to training scenarios: Speaking (A1 to B1)",
+                "Access to training scenarios: Listening (A1 to B1)",
             ],
             color: "2",
             buttonLabelSingular: "Buy {quantity} hour for ",
@@ -61,7 +59,7 @@ const PRICECATEGORIES = {
         },
         "fide-mastery": {
             image: "/images/fide-mastery.png",
-            title: "FIDE",
+            title: "TEST",
             subtitle: "MASTERY",
             description: (
                 <p className="mb-0">
@@ -86,7 +84,7 @@ const PRICECATEGORIES = {
     fr: {
         "fide-boost": {
             image: "/images/fide-booster.png",
-            title: "FIDE",
+            title: "TEST",
             subtitle: "BOOST",
             description: (
                 <p className="mb-0">
@@ -103,29 +101,29 @@ const PRICECATEGORIES = {
         },
         "fide-essentials": {
             image: "/images/fide-essentials.png",
-            title: "FIDE",
+            title: "TEST",
             subtitle: "ESSENTIALS",
             description: (
                 <p className="mb-0">
-                    Une préparation complète pour maîtriser les <b>scénarios</b> et les <b>grands thèmes</b> de l'examen.
+                    Une préparation complète pour maîtriser les grands thèmes de l'examen FIDE et pratiquer les scénarios oraux.
                 </p>
             ),
             whatYouGet: "Objectifs visés",
             features: [
-                "Maîtrisez tous les scénarios et sujets récents",
-                'Élargissez et mettez en pratique le vocabulaire "Fide"',
+                "Maîtrisez tous les thèmes de l'examen FIDE.",
+                "Élargissez et mettez en pratique le vocabulaire spécifique à l'examen FIDE.",
                 "Abordez la partie orale avec confiance",
                 "Recevez des conseils d'expert",
             ],
-            extrasTitle: "+ Ressources exclusives FIDE",
-            extras: ["Accès aux scénarios A2-B1 de l'examen", "Accès à la liste des scénarios récents (mois en cours)"],
+            extrasTitle: "+ Ressources exclusives",
+            extras: ["Accès aux scénarios d'entraînement : Parler (A1 à B1)", "Accès aux scénarios d'entraînement : Écouter (A1 à B1)"],
             color: "2",
             buttonLabelSingular: "Acheter {quantity} heure pour ",
             buttonLabelPlural: "Acheter {quantity} heures pour ",
         },
         "fide-mastery": {
             image: "/images/fide-mastery.png",
-            title: "FIDE",
+            title: "TEST",
             subtitle: "MASTERY",
             description: (
                 <p className="mb-0">
@@ -163,7 +161,68 @@ interface PriceCategory {
 }
 
 type ProductData = PriceCategory & PricingDetails;
-type PlanName = "fide-boost" | "fide-mastery";
+type PlanName = keyof (typeof PRICECATEGORIES)["en"];
+const LOG_PREFIX = "[PriceSliderFide]";
+
+const getFallbackCategory = (locale: Locale): PriceCategory => {
+    const localeCategories = PRICECATEGORIES[locale as keyof typeof PRICECATEGORIES] ?? PRICECATEGORIES.en;
+    console.log(`${LOG_PREFIX} getFallbackCategory`, {
+        locale,
+        availablePlans: Object.keys(localeCategories),
+    });
+    return localeCategories["fide-boost"];
+};
+
+const getCategoryDataForPlan = (locale: Locale, planName?: string): PriceCategory => {
+    const localeCategories = PRICECATEGORIES[locale as keyof typeof PRICECATEGORIES] ?? PRICECATEGORIES.en;
+    const normalizedPlanName = planName?.trim().toLowerCase();
+    console.log(`${LOG_PREFIX} getCategoryDataForPlan:start`, {
+        locale,
+        rawPlanName: planName,
+        normalizedPlanName,
+        availablePlans: Object.keys(localeCategories),
+    });
+
+    if (normalizedPlanName && normalizedPlanName in localeCategories) {
+        console.log(`${LOG_PREFIX} getCategoryDataForPlan:direct-match`, {
+            locale,
+            normalizedPlanName,
+        });
+        return localeCategories[normalizedPlanName as PlanName];
+    }
+
+    if (normalizedPlanName?.includes("boost")) {
+        console.log(`${LOG_PREFIX} getCategoryDataForPlan:boost-fuzzy-match`, {
+            locale,
+            normalizedPlanName,
+        });
+        return localeCategories["fide-boost"];
+    }
+
+    if (normalizedPlanName?.includes("essential")) {
+        console.log(`${LOG_PREFIX} getCategoryDataForPlan:essentials-fuzzy-match`, {
+            locale,
+            normalizedPlanName,
+        });
+        return localeCategories["fide-essentials"];
+    }
+
+    if (normalizedPlanName?.includes("master")) {
+        console.log(`${LOG_PREFIX} getCategoryDataForPlan:mastery-fuzzy-match`, {
+            locale,
+            normalizedPlanName,
+        });
+        return localeCategories["fide-mastery"];
+    }
+
+    console.warn(`${LOG_PREFIX} getCategoryDataForPlan:fallback`, {
+        locale,
+        rawPlanName: planName,
+        normalizedPlanName,
+        availablePlans: Object.keys(localeCategories),
+    });
+    return getFallbackCategory(locale);
+};
 
 interface PriceSliderFideProps {
     locale: Locale;
@@ -176,39 +235,127 @@ export default function PriceSliderFide({ locale, callbackPath = "/fide/private-
     const [previousPurchasedLessons, setPreviousPurchasedLessons] = useState<number | null>(null);
     const [product, setProduct] = useState<ProductFetch | null>(null);
     const [productData, setProductData] = useState<null | ProductData>(null);
-    const max = product?.maxQuantity || 25;
-    const min = product?.minQuantity || 1;
     const userId = session?.user._id;
+    const isLoggedIn = Boolean(userId);
     const t = useTranslations("Fide.PriceSliderFide");
-    //console.log({ max });
-    useEffect(() => {
-        (async () => {
-            if (userId) {
-                const userPurchases = await getUserPurchases(userId, "Fide Preparation Class");
-                setPreviousPurchasedLessons(toHours(userPurchases?.totalPurchasedMinutes || 0));
-            } else {
-                setPreviousPurchasedLessons(0);
-            }
-        })();
-    }, [session]);
+    const purchasedLessons = previousPurchasedLessons ?? 0;
+    const productMaxQuantity = product?.maxQuantity ?? 25;
+    const remainingQuantity = Math.max(0, productMaxQuantity - purchasedLessons);
+    const sliderMax = previousPurchasedLessons === null ? productMaxQuantity : remainingQuantity;
+    const sliderMin = sliderMax === 0 ? 0 : isLoggedIn ? Math.max(product?.minQuantity ?? 1, 1) : 0;
+    const safeQuantity = previousPurchasedLessons === null ? quantity : Math.min(Math.max(quantity, sliderMin), sliderMax);
+
+    console.log(`${LOG_PREFIX} render`, {
+        locale,
+        callbackPath,
+        sessionStatus: session ? "authenticated" : "anonymous",
+        userId,
+        quantity,
+        safeQuantity,
+        previousPurchasedLessons,
+        purchasedLessons,
+        productMaxQuantity,
+        remainingQuantity,
+        sliderMin,
+        sliderMax,
+        productSlug: product?.slug?.current,
+        productLoaded: Boolean(product),
+        productDataLoaded: Boolean(productData),
+    });
 
     useEffect(() => {
         (async () => {
-            const product: ProductFetch = await client.fetch(groq`*[_type == "product" && referenceKey == $referenceKey][0]`, { referenceKey: "Fide Preparation Class" });
-            //console.log("Fetched product:", product);
+            console.log(`${LOG_PREFIX} purchases:fetch:start`, {
+                userId,
+            });
+            if (userId) {
+                const userPurchases = await getUserPurchases(userId, "Fide Preparation Class");
+                console.log(`${LOG_PREFIX} purchases:fetch:success`, {
+                    userId,
+                    totalPurchasedMinutes: userPurchases?.totalPurchasedMinutes || 0,
+                    totalPurchasedHours: toHours(userPurchases?.totalPurchasedMinutes || 0),
+                    userPurchases,
+                });
+                setPreviousPurchasedLessons(toHours(userPurchases?.totalPurchasedMinutes || 0));
+            } else {
+                console.log(`${LOG_PREFIX} purchases:anonymous`, {
+                    userId,
+                });
+                setPreviousPurchasedLessons(0);
+            }
+        })();
+    }, [userId]);
+
+    useEffect(() => {
+        (async () => {
+            const products: ProductFetch[] = await client.fetch(
+                groq`*[_type == "product" && referenceKey == $referenceKey] | order(maxQuantity desc, _updatedAt desc)`,
+                { referenceKey: "Fide Preparation Class" }
+            );
+
+            const product =
+                products.find((candidate) => {
+                    const hasVariableQuantity = (candidate?.maxQuantity || 0) > 1;
+                    const hasMultiplePlans = (candidate?.pricingDetails || []).some((detail) => (detail?.plans || []).length > 1);
+                    return hasVariableQuantity || hasMultiplePlans;
+                }) || products[0] || null;
+
+            console.log(`${LOG_PREFIX} product:fetch:success`, {
+                productsFound: products.length,
+                selectedProduct: product,
+                allProducts: products.map((candidate) => ({
+                    referenceKey: candidate?.referenceKey,
+                    slug: candidate?.slug?.current,
+                    minQuantity: candidate?.minQuantity,
+                    maxQuantity: candidate?.maxQuantity,
+                    planNames: candidate?.pricingDetails?.flatMap((detail) => (detail?.plans || []).map((plan) => plan?.name)) || [],
+                })),
+            });
+
             setProduct(product);
         })();
     }, []);
 
     useEffect(() => {
         if (!product || previousPurchasedLessons === null) return;
-        const pricingDetails = getProductData(product, quantity, previousPurchasedLessons, "CHF");
-        const planName = (pricingDetails?.planName || "fide-mastery") as PlanName;
-        const categoryData = PRICECATEGORIES[locale as keyof typeof PRICECATEGORIES][planName];
+
+        setQuantity((currentQuantity) => {
+            let nextQuantity = currentQuantity;
+            if (remainingQuantity === 0) return 0;
+            if (currentQuantity < sliderMin) nextQuantity = sliderMin;
+            if (currentQuantity > sliderMax) nextQuantity = sliderMax;
+            console.log(`${LOG_PREFIX} quantity:clamp`, {
+                currentQuantity,
+                nextQuantity,
+                remainingQuantity,
+                sliderMin,
+                sliderMax,
+            });
+            return nextQuantity;
+        });
+    }, [product, previousPurchasedLessons, remainingQuantity, sliderMax, sliderMin]);
+
+    useEffect(() => {
+        if (!product || previousPurchasedLessons === null) return;
+        const pricingDetails = getProductData(product, safeQuantity, previousPurchasedLessons, "CHF");
+        const categoryData = getCategoryDataForPlan(locale, pricingDetails?.planName);
+        console.log(`${LOG_PREFIX} pricing:computed`, {
+            locale,
+            safeQuantity,
+            previousPurchasedLessons,
+            pricingDetails,
+            planName: pricingDetails?.planName,
+            categoryData,
+        });
         setProductData({ ...categoryData, ...pricingDetails });
-    }, [product, quantity, previousPurchasedLessons]);
+    }, [locale, product, previousPurchasedLessons, safeQuantity]);
 
     const handleChange = (val: number[]) => {
+        console.log(`${LOG_PREFIX} slider:onValueChange`, {
+            previousQuantity: quantity,
+            nextValue: val[0],
+            rawValue: val,
+        });
         setQuantity(val[0]); // Le slider retourne un tableau, on prend la première valeur
     };
 
@@ -219,8 +366,8 @@ export default function PriceSliderFide({ locale, callbackPath = "/fide/private-
 
     return (
         <>
-            <div id="priceSliderFide" className="max-w-5xl m-auto py-4 px-4 lg:px-8 flex flex-col items-center w-full gap-2">
-                <h3 className="w-full text-center mb-0 text-xl">{t.rich("title", intelRich())}</h3>
+            <div id="priceSliderFide" className="max-w-5xl m-auto pb-4 px-4 lg:px-8 flex flex-col items-center w-full gap-2">
+                {/* <h3 className="w-full text-center mb-0 text-xl">{t.rich("title", intelRich())}</h3> */}
                 {previousPurchasedLessons ? (
                     <p className="mb-0 text-center">
                         {t("purchasedLessons1")}
@@ -233,7 +380,7 @@ export default function PriceSliderFide({ locale, callbackPath = "/fide/private-
                     <p className="mb-0 text-center">{t("session")}</p>
                 ) : (
                     <p className="mb-0 bs text-center">
-                        {t("notConnected")}
+                        {/* {t("notConnected")} */}
                         <LinkArrow url={`/auth/signIn?callbackUrl=${encodeURIComponent(callbackPath)}`} className="inline-block">
                             {t("connectLink")}
                         </LinkArrow>
@@ -243,8 +390,8 @@ export default function PriceSliderFide({ locale, callbackPath = "/fide/private-
                     <div className="w-full">
                         <Slider
                             defaultValue={[quantity]}
-                            max={max}
-                            min={min}
+                            max={sliderMax}
+                            min={sliderMin}
                             step={1}
                             onValueChange={handleChange}
                             value={[quantity]}
@@ -256,7 +403,14 @@ export default function PriceSliderFide({ locale, callbackPath = "/fide/private-
                 </div>
                 <div className="w-full max-w-3xl mt-6 mb-6">
                     {productData ? (
-                        <PriceCategory productData={productData} quantity={quantity} slug={product?.slug.current} callbackPath={callbackPath} />
+                        <PriceCategory
+                            productData={productData}
+                            quantity={quantity}
+                            slug={product?.slug.current}
+                            callbackPath={callbackPath}
+                            canCheckout={quantity >= 1 && Boolean(product?.slug.current)}
+                            hasReachedMaximum={sliderMax === 0}
+                        />
                     ) : (
                         <div className="flex flex-col justify-center items-center w-full gap-4">
                             <FaSpinner className="animate-spin text-neutral-400 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />
@@ -274,15 +428,37 @@ interface PriceCategoryProps {
     quantity: number;
     slug?: string;
     callbackPath: string;
+    canCheckout: boolean;
+    hasReachedMaximum: boolean;
 }
 
-const PriceCategory = ({ productData, quantity, slug, callbackPath }: PriceCategoryProps) => {
+const PriceCategory = ({ productData, quantity, slug, callbackPath, canCheckout, hasReachedMaximum }: PriceCategoryProps) => {
     const { image, title, subtitle, description, features, extras, color, amount, unitPrice, whatYouGet, extrasTitle, buttonLabelPlural, buttonLabelSingular, initialUnitPrice, initialAmount } =
         productData;
     const bgColor = `bg-secondary-${color}`;
     const textColor = `text-${color}`;
     const isDiscounted = initialUnitPrice !== unitPrice;
     const t = useTranslations("Fide.PriceSliderFide");
+    const ctaLabel = quantity > 1 ? buttonLabelPlural : buttonLabelSingular;
+
+    console.log(`${LOG_PREFIX} PriceCategory:render`, {
+        slug,
+        quantity,
+        callbackPath,
+        canCheckout,
+        hasReachedMaximum,
+        title,
+        subtitle,
+        color,
+        unitPrice,
+        amount,
+        initialUnitPrice,
+        initialAmount,
+        ctaLabel,
+        buttonLabelSingular,
+        buttonLabelPlural,
+        productData,
+    });
 
     return (
         <div className="card grid grid-cols-1 md:grid-cols-2 overflow-hidden shadow-2 relative">
@@ -305,14 +481,20 @@ const PriceCategory = ({ productData, quantity, slug, callbackPath }: PriceCateg
                 <p className="mb-0 text-5xl font-bold">
                     CHF {unitPrice}.-<span className="text-2xl font-thin">/{t("purchasedLessonsHour")}</span>
                 </p>
-                <Link href={`/checkout/${slug}?quantity=${quantity}&callbackUrl=${encodeURIComponent(callbackPath)}`} className="btn btn-primary p-4 min-h-[76px] flex items-center">
-                    <div>
-                        {quantity > 1 ? buttonLabelPlural.replace("{quantity}", quantity.toString()) : buttonLabelSingular.replace("{quantity}", quantity.toString())}
-                        <span className={cn("underline underline-offset-4", `decoration-secondary-${color}`)} style={{ whiteSpace: "nowrap" }}>
-                            CHF {amount}.-
-                        </span>
+                {canCheckout ? (
+                    <Link href={`/checkout/${slug}?quantity=${quantity}&callbackUrl=${encodeURIComponent(callbackPath)}`} className="btn btn-primary p-4 min-h-[76px] flex items-center">
+                        <div>
+                            {ctaLabel ? ctaLabel.replace("{quantity}", quantity.toString()) : null}
+                            <span className={cn("underline underline-offset-4", `decoration-secondary-${color}`)} style={{ whiteSpace: "nowrap" }}>
+                                CHF {amount}.-
+                            </span>
+                        </div>
+                    </Link>
+                ) : (
+                    <div className="btn btn-primary p-4 min-h-[76px] flex items-center justify-center pointer-events-none opacity-60">
+                        <div>{hasReachedMaximum ? t("ctaMaxReached") : t("ctaChooseOneHour")}</div>
                     </div>
-                </Link>
+                )}
             </div>
             <div className={cn("h-full p-4 md:p-8 flex flex-col gap-4 justify-center bg-neutral-300")}>
                 <div className="flex flex-col gap-2 grow justify-center">

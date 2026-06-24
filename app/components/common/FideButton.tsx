@@ -6,7 +6,7 @@ import { Locale } from "@/i18n";
 import { FaCaretDown, FaCaretRight } from "react-icons/fa";
 
 export const FideButton = ({ locale }: { locale: Locale }) => {
-    const t = useTranslations("Navigation.fideButton");
+    const t = useTranslations("Navigation");
 
     const dropdownLearn = {
         content: (
@@ -19,26 +19,26 @@ export const FideButton = ({ locale }: { locale: Locale }) => {
                         locale={locale as Locale}
                     >
                         <FaCaretRight />
-                        {t("fide")}
+                        {t("main.fideTest")}
                     </LinkCurrentBlog>
                     <LinkCurrentBlog href="/fide/mock-exams" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
-                        {t("mockExams")}
+                        {t("main.practiceExams")}
                     </LinkCurrentBlog>
                     <LinkCurrentBlog href="/fide/pack-fide" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center " locale={locale as Locale}>
                         <FaCaretRight />
-                        {t("packFide")}
+                        {t("main.fidePack")}
                     </LinkCurrentBlog>
                     <LinkCurrentBlog href="/fide/private-courses" className="nav-link header-nav-link nav-link-fide current-fide p-1 m-0 font-medium pl-8 flex items-center" locale={locale as Locale}>
                         <FaCaretRight />
-                        {t("privateCourses")}
+                        {t("main.coachingOneToOne")}
                     </LinkCurrentBlog>
                 </div>
             </div>
         ),
         button: (
             <div className="font-bold flex items-center p-5">
-                {t("buttonLabel")}
+                {t("fide")}
                 <FaCaretDown className="ml-1" />
             </div>
         ),

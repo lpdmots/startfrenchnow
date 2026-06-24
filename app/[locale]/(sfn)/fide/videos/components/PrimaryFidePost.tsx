@@ -30,7 +30,7 @@ const PrimaryFidePost = ({
     const isLocked = !hasPack && !postIsPreview && !isFree;
 
     const href = isFree ? "/blog/post/" + postSlug.current : isLocked ? "/fide/pack-fide#pack-pricing" : "/fide/videos/" + postSlug.current;
-    const ariaLabel = isLocked ? `${postTitle} — contenu réservé au Pack FIDE. Voir les plans.` : postTitle || "Voir la leçon";
+    const ariaLabel = isLocked ? `${postTitle} — contenu réservé au Pack Exam. Voir les plans.` : postTitle || "Voir la leçon";
 
     return (
         <Link
@@ -67,7 +67,7 @@ const PrimaryFidePost = ({
                 {/* Contenu carte */}
                 <div className={`flex p-[40px_0px_0px] flex-col [flex:1_1] max-[479px]:p-[24px_0px_0px] ${isLocked ? "transition md:group-hover:opacity-70" : ""}`}>
                     <div className="inner-container _350px---mbl flex items-center gap-2 mb-2">
-                        {isLocked && <Image src="/images/cadenas-ferme.png" alt="Contenu réservé au Pack FIDE" width={32} height={32} className="h-8 w-8" />}
+                        {isLocked && <Image src="/images/cadenas-ferme.png" alt="Contenu réservé au Pack Exam" width={32} height={32} className="h-8 w-8" />}
                         <h2 className="blog-card-title display-4 mg-bottom-24px mb-0">{postTitle}</h2>
                     </div>
                     <div className="mt-auto">
@@ -115,12 +115,12 @@ const PrimaryFidePost = ({
                             className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4
                     opacity-0 transition-opacity duration-300 [@media(hover:hover)]:group-hover:opacity-100"
                         >
-                            <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack FIDE" width={64} height={64} className="h-16 w-16 mb-4" />
+                            <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack Exam" width={64} height={64} className="h-16 w-16 mb-4" />
                             <p className="text-base md:text-xl font-medium">
-                                Contenu réservé au <strong>Pack FIDE</strong>
+                                Contenu réservé au <strong>Pack Exam</strong>
                             </p>
 
-                            <button className="mt-4 btn btn-primary small pointer-events-auto transform transition-transform duration-200 hover:-translate-y-0.5">Acheter le Pack FIDE</button>
+                            <button className="mt-4 btn btn-primary small pointer-events-auto transform transition-transform duration-200 hover:-translate-y-0.5">Acheter le Pack Exam</button>
 
                             <span className="sr-only">— lien vers /fide/pack-fide#pack-pricing</span>
                         </div>

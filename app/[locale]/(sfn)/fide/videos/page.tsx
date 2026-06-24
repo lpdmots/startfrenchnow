@@ -43,7 +43,7 @@ function VideosFidePageNoAsync({
 }) {
     const t = useTranslations("Fide.FideVideosPage");
 
-    const { FlatFidePackSommaire, packages } = flattenFidePackSommaire(fidePackSommaire, locale, freeFideVideos);
+    const { FlatFidePackSommaire, packages } = flattenFidePackSommaire(fidePackSommaire, locale, freeFideVideos, hasPack);
 
     // Clés valides = referenceKey des packs Sanity + "free" + "all"
     const validKeys = new Set<string>([...(fidePackSommaire?.packages?.map((p) => p.referenceKey) ?? []), "free", "all"]);
@@ -96,6 +96,7 @@ export interface FlatFidePackItem {
     postLevel?: Level[]; // niveau(s) au niveau du post
     postDurationSec?: number;
     postIsPreview?: boolean; // AJOUTER CATEGORIES
+    postHideFromPackListingWithoutAccess?: boolean;
 }
 
 /**
@@ -109,14 +110,19 @@ const FREE_PACKAGE_COLOR = "var(--neutral-600)" as ColorType;
 function flattenFidePackSommaire(
     data: FidePackSommaire,
     locale: Locale = "fr",
-    freeFideVideos: Post[]
+    freeFideVideos: Post[],
+    hasPack: boolean
 ): { FlatFidePackSommaire: FlatFidePackSommaire; packages: { title: string; packageColor: ColorType; referenceKey: string }[] } {
     const isEn = locale === "en";
     const pick = (fr?: string, en?: string): string => (isEn ? en ?? fr ?? "" : fr ?? en ?? "");
+    const normalizePackageTitle = (referenceKey: string, fallbackTitle: string): string => {
+        if (referenceKey === "pack_fide" || /pack fide|fide pack/i.test(fallbackTitle)) return pick("Pack Exam", "Exam Pack");
+        return fallbackTitle;
+    };
 
     const packages = [
         ...(data?.packages?.map((pack, packIndex) => ({
-            title: pack.title,
+            title: normalizePackageTitle(pack.referenceKey, pack.title),
             packageColor: COLORS[packIndex % COLORS.length] as ColorType,
             referenceKey: pack.referenceKey,
         })) || []),
@@ -126,7 +132,7 @@ function flattenFidePackSommaire(
     const FlatFidePackSommaire: FlatFidePackSommaire = [];
 
     for (const [packIndex, pack] of (data?.packages ?? []).entries()) {
-        const packageTitle = pack.title;
+        const packageTitle = normalizePackageTitle(pack.referenceKey, pack.title);
         const packageColor = COLORS[packIndex % COLORS.length] as ColorType;
 
         for (const mod of pack?.modules ?? []) {
@@ -134,6 +140,8 @@ function flattenFidePackSommaire(
             const moduleSubtitle = mod.subtitle || undefined;
 
             for (const post of mod?.posts ?? []) {
+                if (!hasPack && post.hideFromPackListingWithoutAccess) continue;
+
                 FlatFidePackSommaire.push({
                     packageTitle,
                     packageReferenceKey: pack.referenceKey,
@@ -153,6 +161,7 @@ function flattenFidePackSommaire(
                     postLevel: post.level,
                     postDurationSec: post.durationSec,
                     postIsPreview: post.isPreview,
+                    postHideFromPackListingWithoutAccess: post.hideFromPackListingWithoutAccess,
                 });
             }
         }

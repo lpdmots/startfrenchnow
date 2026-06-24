@@ -1,6 +1,5 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { Safari } from "@/app/components/ui/safari";
-import { Iphone } from "@/app/components/ui/iphone";
 import { FaListUl, FaTags } from "react-icons/fa";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
@@ -41,24 +40,16 @@ export function HeroPackFide() {
                         </div>
                     </div>
 
-                    <div className="relative mx-auto h-[270px] w-full max-w-6xl overflow-hidden sm:h-[240px] md:h-[290px] lg:h-[430px]">
-                        <div className="absolute left-1/2 top-0 w-[94%] -translate-x-1/2 -rotate-[1.3deg] origin-bottom sm:w-[90%] sm:-rotate-[1.6deg] lg:left-[38%] lg:w-[70%] lg:-rotate-[2deg] mt-4">
-                            <Safari
-                                imageSrc="/images/hero-desktop-pack-fide.png"
+                    <div className="mx-auto flex w-full max-w-6xl flex-col items-center pt-0 pb-8 md:pb-10 lg:pb-14">
+                        <div className="w-full max-w-5xl md:max-w-[860px] lg:max-w-[980px]">
+                            <Image
+                                src="/images/pack-fide-hero-5.png"
                                 alt={t("images.desktopAlt")}
-                                url="startfrenchnow.ch/fr/fide/pack-fide"
-                                sizes="(min-width: 1280px) 1050px, (min-width: 1024px) 82vw, (min-width: 640px) 90vw, 94vw"
+                                width={1400}
+                                height={980}
+                                className="h-auto w-full object-contain"
+                                sizes="(min-width: 1280px) 980px, (min-width: 1024px) 78vw, (min-width: 768px) 86vw, 94vw"
                                 priority
-                                imageClassName="object-top"
-                            />
-                        </div>
-                        <div className="absolute right-[2%] top-[4%] hidden w-[34%] rotate-[8deg] sm:right-[4%] sm:top-[6%] sm:w-[26%] lg:right-[4%] lg:top-[8%] lg:block lg:w-[22%] border border-neutral-700 rounded-[2.8rem]">
-                            <Iphone
-                                src="/images/hero-pack-fide-mobile.png"
-                                alt={t("images.mobileAlt")}
-                                sizes="(min-width: 1280px) 250px, (min-width: 1024px) 22vw, (min-width: 640px) 26vw, 34vw"
-                                className="w-full max-w-none !border-neutral-300 !bg-neutral-100"
-                                notchClassName="!bg-neutral-300"
                             />
                         </div>
                     </div>

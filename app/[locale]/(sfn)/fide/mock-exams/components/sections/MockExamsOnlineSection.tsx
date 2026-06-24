@@ -3,12 +3,13 @@ import { SlideFromBottom } from "@/app/components/animations/Slides";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { VideoFide } from "../../../components/VideoFide";
-import { MockExamCheckoutCTA } from "../checkout/MockExamCheckoutCTA";
+import { MockExamSalesPausedCTA } from "../checkout/MockExamSalesPausedCTA";
 import { intelRich } from "@/app/lib/intelRich";
 import type { ReactNode } from "react";
 
 export function MockExamsOnlineSection() {
     const t = useTranslations("Fide.MockExamsPage.Online");
+    const pausedT = useTranslations("Fide.MockExamsPage.PausedCta");
     const rich = {
         ...intelRich(),
         hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
@@ -34,7 +35,7 @@ export function MockExamsOnlineSection() {
 
                 <Fade delay={0.15} duration={0.35}>
                     <div className="mb-4 flex w-full flex-col items-center justify-center gap-2 md:mb-8">
-                        <MockExamCheckoutCTA
+                        {/* <MockExamCheckoutCTA
                             labels={{
                                 cta: t("cta"),
                                 ctaUseCredit: t("ctaUseCredit"),
@@ -48,13 +49,20 @@ export function MockExamsOnlineSection() {
                             disabledClassName="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
                             containerClassName="flex flex-col items-center gap-2"
                             disabledMessageClassName="mb-0 text-center text-xs text-neutral-600"
+                        /> */}
+                        <MockExamSalesPausedCTA
+                            label={pausedT("button")}
+                            message={pausedT("message")}
+                            buttonClassName="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
+                            containerClassName="flex flex-col items-center gap-2"
+                            messageClassName="mb-0 text-center text-xs text-neutral-600"
                         />
                     </div>
                 </Fade>
 
                 <SlideFromBottom delay={0.1} duration={0.4}>
                     <div className="mx-auto w-full max-w-[860px]">
-                        <VideoFide videoKey="mock-exams/videos-presentation/presentation-page-mock-exam.mp4" isAnimated={false} />
+                        <VideoFide videoKey="mock-exams/videos-presentation/presentation-page-mock-exam.mp4" poster="/images/thumbnail-mock-exam.png" isAnimated={false} />
                     </div>
                 </SlideFromBottom>
 

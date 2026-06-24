@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { groq } from "next-sanity";
+import { createHash, randomUUID } from "node:crypto";
 import { authOptions } from "@/app/lib/authOptions";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { buildConversationPrompt } from "@/app/[locale]/(mock-exam)/mock-exams/[compilationId]/runner/prompt-base";
@@ -12,6 +13,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 const model = process.env.OPENAI_REALTIME_MODEL_PHONE_A2 || process.env.OPENAI_REALTIME_MODEL || "gpt-realtime";
+const realtimeTranscriptionModel = "gpt-4o-mini-transcribe";
 
 const MOCK_EXAM_SESSION_ACCESS_QUERY = groq`
   *[
@@ -32,6 +34,27 @@ const MOCK_EXAM_TASK_CONTEXT_QUERY = groq`
     "activityAiVoiceGender": activities[_key == $activityKey][0].aiVoiceGender
   }
 `;
+
+const createSafetyIdentifier = (userId: string) => createHash("sha256").update(`mock-exam:${userId}`).digest("hex");
+
+const truncateForLogs = (value: string, maxLength = 2000) => {
+    if (value.length <= maxLength) return value;
+    return `${value.slice(0, maxLength)}... [truncated ${value.length - maxLength} chars]`;
+};
+
+const extractOpenAiErrorDetails = (rawBody: string) => {
+    try {
+        const parsed = JSON.parse(rawBody) as { error?: { message?: string } | string; message?: string } | null;
+        if (!parsed) return rawBody;
+        if (typeof parsed.error === "string") return parsed.error;
+        if (parsed.error && typeof parsed.error.message === "string") return parsed.error.message;
+        if (typeof parsed.message === "string") return parsed.message;
+    } catch {
+        // Keep the raw response body when OpenAI did not return JSON.
+    }
+
+    return rawBody;
+};
 
 export async function POST(request: NextRequest) {
     try {
@@ -67,6 +90,8 @@ export async function POST(request: NextRequest) {
         }
         const instructions = buildConversationPrompt(activityAiContext);
         const voice = resolveConversationVoice(activityAiVoiceGender);
+        const clientRequestId = request.headers.get("x-client-request-id") || `mock-exam-conversation-${randomUUID()}`;
+        const safetyIdentifier = createSafetyIdentifier(userId);
 
         const contentType = request.headers.get("content-type") || "";
         let sdp = "";
@@ -87,9 +112,25 @@ export async function POST(request: NextRequest) {
         formData.append(
             "session",
             JSON.stringify({
+                type: "realtime",
                 model,
-                voice,
                 instructions,
+                audio: {
+                    input: {
+                        turn_detection: {
+                            type: "server_vad",
+                            silence_duration_ms: 2000,
+                            create_response: true,
+                            interrupt_response: false,
+                        },
+                        transcription: {
+                            model: realtimeTranscriptionModel,
+                        },
+                    },
+                    output: {
+                        voice,
+                    },
+                },
             }),
         );
 
@@ -97,20 +138,63 @@ export async function POST(request: NextRequest) {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${process.env.OPENAI_API_KEY || ""}`,
-                "OpenAI-Beta": "realtime=v1",
+                "OpenAI-Safety-Identifier": safetyIdentifier,
+                "X-Client-Request-Id": clientRequestId,
             },
             body: formData,
         });
 
         const answerSdp = await openAiResponse.text();
+        const openAiRequestId = openAiResponse.headers.get("x-request-id") || "";
+        const processingMs = openAiResponse.headers.get("openai-processing-ms") || "";
+
         if (!openAiResponse.ok) {
-            return NextResponse.json({ error: "OpenAI Realtime a retourne une erreur.", details: answerSdp }, { status: openAiResponse.status });
+            const details = extractOpenAiErrorDetails(answerSdp);
+
+            console.error("Erreur OpenAI conversation/realtime:", {
+                status: openAiResponse.status,
+                openAiRequestId,
+                clientRequestId,
+                processingMs,
+                model,
+                voice,
+                compilationId,
+                sessionKey,
+                taskId,
+                activityKey,
+                details: truncateForLogs(details),
+                rawBody: truncateForLogs(answerSdp),
+            });
+
+            return NextResponse.json(
+                {
+                    error: "OpenAI Realtime a retourne une erreur.",
+                    details,
+                    requestId: openAiRequestId || clientRequestId,
+                    clientRequestId,
+                },
+                { status: openAiResponse.status },
+            );
         }
+
+        console.info("Session OpenAI conversation/realtime creee:", {
+            openAiRequestId,
+            clientRequestId,
+            processingMs,
+            model,
+            voice,
+            compilationId,
+            sessionKey,
+            taskId,
+            activityKey,
+        });
 
         return new NextResponse(answerSdp, {
             status: 200,
             headers: {
                 "Content-Type": "application/sdp",
+                "x-openai-request-id": openAiRequestId,
+                "x-client-request-id": clientRequestId,
             },
         });
     } catch (error) {

@@ -6,30 +6,11 @@ import { Link } from "@/i18n/navigation";
 import { FaCaretRight } from "react-icons/fa";
 import { Locale } from "@/i18n";
 import { useTranslations } from "next-intl";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { getPrimaryNavigation, isSiteNavActive, SiteNavItem, SiteNavLink } from "./siteNavigation";
 import clsx from "clsx";
 
 const getMobileAccentClasses = (item: SiteNavLink, isActive: boolean) =>
     clsx(item.accent === "fide" && "nav-link-fide current-fide", item.accent === "course" && "nav-link-fr current-fr", isActive && "current");
-
-const groupDropdownLinks = (links: SiteNavLink[]) => {
-    const groups: { title?: string; links: SiteNavLink[] }[] = [];
-
-    links.forEach((link) => {
-        if (link.sectionTitle || groups.length === 0) {
-            groups.push({
-                title: link.sectionTitle,
-                links: [link],
-            });
-            return;
-        }
-
-        groups[groups.length - 1].links.push(link);
-    });
-
-    return groups;
-};
 
 const Burger = ({ locale }: { locale: Locale }) => {
     const [open, setOpen] = useState(false);
@@ -37,7 +18,6 @@ const Burger = ({ locale }: { locale: Locale }) => {
     const pathname = usePathname();
     const t = useTranslations("Navigation");
     const navigationItems = getPrimaryNavigation(t);
-    const defaultOpenSections = navigationItems.filter((item) => item.items && isSiteNavActive(pathname, item)).map((item) => item.key);
 
     useOutsideClick(ref, () => {
         setOpen(false);
@@ -54,11 +34,9 @@ const Burger = ({ locale }: { locale: Locale }) => {
             >
                 <div className="nav burgerCollapse w-full sm:w-none mb-0 flex flex-col items-start">
                     <div className="flex w-full flex-col gap-3 pl-0 sm:pl-2">
-                        <Accordion type="multiple" defaultValue={defaultOpenSections} className="w-full border-b-0">
-                            {navigationItems.map((item) => (
-                                <BurgerNavItem key={item.key} item={item} locale={locale} pathname={pathname} onNavigate={() => setOpen(false)} />
-                            ))}
-                        </Accordion>
+                        {navigationItems.map((item) => (
+                            <BurgerNavItem key={item.key} item={item} locale={locale} pathname={pathname} onNavigate={() => setOpen(false)} />
+                        ))}
                     </div>
                 </div>
             </div>
@@ -80,15 +58,19 @@ const BurgerNavItem = ({
     onNavigate: () => void;
 }) => {
     const isActive = isSiteNavActive(pathname, item);
-    const groupedItems = groupDropdownLinks(item.items ?? []);
 
     if (!item.items || item.items.length === 0) {
         return (
-            <div className="w-full">
+            <div className="w-full border-b border-neutral-300 pb-2">
                 <Link
                     href={item.href}
                     locale={locale}
-                    className={clsx("nav-link header-nav-link block w-full rounded-xl !p-2", getMobileAccentClasses(item, isActive), item.emphasize && "bg-neutral-100 shadow-sm")}
+                    className={clsx(
+                        "nav-link header-nav-link block w-full rounded-xl !p-2 text-base font-semibold",
+                        item.priority === "primary-offer" && "font-bold",
+                        getMobileAccentClasses(item, isActive),
+                        item.emphasize && "bg-neutral-100 shadow-sm"
+                    )}
                     onClick={onNavigate}
                 >
                     {item.label}
@@ -98,36 +80,40 @@ const BurgerNavItem = ({
     }
 
     return (
-        <AccordionItem value={item.key} className="w-full border-b border-neutral-300">
-            <AccordionTrigger className={clsx("py-3 text-left text-base no-underline hover:no-underline", item.accent === "fide" && "text-[var(--secondary-6)]", item.accent === "course" && "text-[var(--secondary-2)]")}>
-                <span className={clsx("font-semibold", isActive && "underline underline-offset-4")}>{item.label}</span>
-            </AccordionTrigger>
-            <AccordionContent className="pb-2">
-                <div className="flex flex-col gap-1 border-l border-neutral-300 pl-4">
-                    {groupedItems.map((group, groupIndex) => (
-                        <div key={`${group.title ?? "group"}-${groupIndex}`} className={clsx("flex flex-col", groupIndex > 0 && "mt-3 pt-3 border-t border-neutral-300")}>
-                            {group.title && <div className="mb-2 border-b border-neutral-400 pb-1 text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-neutral-600">{group.title}</div>}
-                            {group.links.map((child) => {
-                                const childActive = isSiteNavActive(pathname, child);
+        <div className="w-full border-b border-neutral-300 pb-3">
+            <Link
+                href={item.href}
+                locale={locale}
+                className={clsx(
+                    "nav-link header-nav-link block w-full rounded-xl !p-2 text-base font-semibold",
+                    item.priority === "primary-offer" && "font-bold",
+                    item.accent === "fide" && "nav-link-fide current-fide",
+                    item.accent === "course" && "nav-link-fr current-fr",
+                    isActive && "current"
+                )}
+                onClick={onNavigate}
+            >
+                {item.label}
+            </Link>
+            <div className="mt-1 flex flex-col gap-1 border-l border-neutral-300 pl-4">
+                {item.items.map((child) => {
+                    const childActive = isSiteNavActive(pathname, child);
 
-                                return (
-                                    <Link
-                                        key={child.key}
-                                        href={child.href}
-                                        locale={locale}
-                                        className={clsx("nav-link header-nav-link m-0 flex items-center gap-2 p-1 pl-0 font-medium", getMobileAccentClasses(child, childActive))}
-                                        onClick={onNavigate}
-                                    >
-                                        <FaCaretRight />
-                                        {child.label}
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    ))}
-                </div>
-            </AccordionContent>
-        </AccordionItem>
+                    return (
+                        <Link
+                            key={child.key}
+                            href={child.href}
+                            locale={locale}
+                            className={clsx("nav-link header-nav-link m-0 flex items-center gap-2 p-1 pl-0 font-medium", getMobileAccentClasses(child, childActive))}
+                            onClick={onNavigate}
+                        >
+                            <FaCaretRight />
+                            {child.label}
+                        </Link>
+                    );
+                })}
+            </div>
+        </div>
     );
 };
 

@@ -1,12 +1,13 @@
 import { Bot, CheckCircle2, Clock3, Target } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { MockExamCheckoutCTA } from "./checkout/MockExamCheckoutCTA";
+import { MockExamSalesPausedCTA } from "./checkout/MockExamSalesPausedCTA";
 import { intelRich } from "@/app/lib/intelRich";
 import type { ReactNode } from "react";
 
 export const HeroMockExams = () => {
     const t = useTranslations("Fide.MockExamsPage.Hero");
+    const pausedT = useTranslations("Fide.MockExamsPage.PausedCta");
     const rich = {
         ...intelRich(),
         hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
@@ -38,7 +39,7 @@ export const HeroMockExams = () => {
                                 priority
                             />
                             <div className="mt-5 mb-4 sm:mb-auto flex items-end w-full justify-center sm:mt-8">
-                                <Image src="/images/fideLogo.png" alt={t("logoAlt")} width={90} height={36} className="object-contain" sizes="90px" />
+                                <Image src="/images/logo.png" alt={t("logoAlt")} width={70} height={28} className="object-contain" sizes="70px" />
                             </div>
                         </div>
 
@@ -61,7 +62,7 @@ export const HeroMockExams = () => {
                                             </div>
                                         </div>
                                         {/* <p className="mb-0 text-center text-sm text-neutral-600 sm:text-left">1 examen complet avec correction et plan d&apos;action.</p> */}
-                                        <MockExamCheckoutCTA
+                                        {/* <MockExamCheckoutCTA
                                             labels={{
                                                 cta: t("cta"),
                                                 ctaUseCredit: t("ctaUseCredit"),
@@ -76,6 +77,13 @@ export const HeroMockExams = () => {
                                             containerClassName="flex flex-col items-center gap-0 sm:items-start"
                                             disabledMessageClassName="mb-0 mt-2 min-h-10 text-center text-xs text-neutral-600 sm:text-left"
                                             reserveMessageSpace
+                                        /> */}
+                                        <MockExamSalesPausedCTA
+                                            label={pausedT("button")}
+                                            message={pausedT("message")}
+                                            buttonClassName="btn btn-secondary inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
+                                            containerClassName="flex flex-col items-center gap-0 sm:items-start"
+                                            messageClassName="mb-0 mt-2 min-h-10 text-center text-xs text-neutral-600 sm:text-left"
                                         />
                                     </div>
                                 </div>
@@ -84,7 +92,7 @@ export const HeroMockExams = () => {
                             <div className="order-2 mx-auto w-full max-w-[280px] sm:hidden">
                                 <Image src="/images/mock-exam-hero.png" alt={t("imageAlt")} width={760} height={680} className="h-auto w-full object-contain" sizes="280px" />
                                 <div className="mt-4 mb-4 sm:mb-auto flex items-end w-full justify-center">
-                                    <Image src="/images/fideLogo.png" alt={t("logoAlt")} width={72} height={29} className="object-contain" sizes="72px" />
+                                    <Image src="/images/logo.png" alt={t("logoAlt")} width={70} height={28} className="object-contain" sizes="70px" />
                                 </div>
                             </div>
 

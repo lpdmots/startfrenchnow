@@ -27,10 +27,13 @@ export const getAmount = async (
 
     const previousPurchasedLessons = totalPurchasedMinutes / (minutesPerLesson || 1);
 
-    if (parseInt(quantity) > product.maxQuantity || parseInt(quantity) < 1) {
+    const parsedQuantity = parseInt(quantity);
+    const remainingQuantity = Math.max(0, product.maxQuantity - previousPurchasedLessons);
+
+    if (parsedQuantity > product.maxQuantity || parsedQuantity < 1 || parsedQuantity > remainingQuantity) {
         throw new Error("Invalid quantity");
     }
 
-    const pricingDetails = getProductData(product, parseInt(quantity), previousPurchasedLessons, currency);
+    const pricingDetails = getProductData(product, parsedQuantity, previousPurchasedLessons, currency);
     return { pricingDetails, productInfos };
 };

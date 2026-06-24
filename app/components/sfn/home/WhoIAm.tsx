@@ -15,7 +15,7 @@ function WhoIAm() {
                 <div className="inner-container _500px---mbl center">
                     <div id="whoami" className="w-layout-grid grid-2-columns gap-x-[64px] [grid-template-columns:0.9fr_1.1fr] max-[991px]:gap-y-[60px] max-[991px]:[grid-template-columns:1fr]">
                         <div className="inner-container max-w-[560px] max-[991px]:max-w-full">
-                            <div className="image-wrapper bg-secondary-4 ml-[13px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[50%] shadow-[-13px_13px_0_0_var(--neutral-800)]">
+                            <div className="image-wrapper bg-secondary-4 ml-0 md:ml-[13px] border-solid border-[3px] border-[var(--neutral-800)] rounded-[50%] shadow-[-13px_13px_0_0_var(--neutral-800)]">
                                 <SlideFromBottom delay={0.6}>
                                     <Image src="/images/yoh-coussot-red.png" alt="Yohann Coussot" priority={false} height={600} width={600} className="image" />
                                 </SlideFromBottom>

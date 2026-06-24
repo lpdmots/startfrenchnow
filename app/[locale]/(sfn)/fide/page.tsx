@@ -287,7 +287,7 @@ async function ExamsPage(props: { params: Promise<{ locale: string }> }) {
                 {
                     "@type": "ListItem",
                     position: 1,
-                    name: isFr ? "Pack FIDE" : "FIDE pack",
+                    name: isFr ? "Pack Exam" : "Exam Pack",
                     url: `${SITE}${localizePath("/fide/pack-fide")}`,
                 },
                 {

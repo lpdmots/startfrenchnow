@@ -231,9 +231,9 @@ const ExamCard = ({
                 <div className="absolute inset-0 z-10 h-full w-full pointer-events-none [@media(hover:none)]:hidden">
                     <div className="absolute inset-0 bg-neutral-300 opacity-0 transition-opacity duration-300 group-hover:opacity-90" />
                     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack FIDE" width={64} height={64} className="h-10 w-10 mb-2" />
+                        <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack Exam" width={64} height={64} className="h-10 w-10 mb-2" />
                         <p className="text-sm font-medium mb-0">
-                            Acheter le <strong>Pack FIDE</strong>
+                            Acheter le <strong>Pack Exam</strong>
                         </p>
                     </div>
                 </div>
@@ -275,9 +275,9 @@ const LinkCard = ({ exam, isLocked, isScenarios = false }: { exam: Exam; isLocke
                 <div className="absolute inset-0 z-10 h-full w-full pointer-events-none [@media(hover:none)]:hidden">
                     <div className="absolute inset-0 bg-neutral-300 opacity-0 transition-opacity duration-300 group-hover:opacity-90" />
                     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack FIDE" width={64} height={64} className="h-10 w-10 mb-2" />
+                        <Image src="/images/cadenas-ouvert.png" alt="Contenu réservé au Pack Exam" width={64} height={64} className="h-10 w-10 mb-2" />
                         <p className="text-sm font-medium mb-0">
-                            Acheter le <strong>Pack FIDE</strong>
+                            Acheter le <strong>Pack Exam</strong>
                         </p>
                     </div>
                 </div>

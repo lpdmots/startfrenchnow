@@ -24,9 +24,7 @@ export function MockExamsTestsSection() {
                     <SlideFromLeft>
                         <div className="lg:sticky lg:top-24 lg:self-start">
                             <p className="mb-2 inline-flex rounded-full bg-secondaryShades-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("badge")}</p>
-                            <h2 className="display-2 mb-4 text-neutral-100">
-                                {t.rich("title", rich)}
-                            </h2>
+                            <h2 className="display-2 mb-4 text-neutral-100">{t.rich("title", rich)}</h2>
                             <p className="mb-4 text-base text-neutral-200 md:text-lg">{t("subtitle")}</p>
                             <div className="space-y-2">
                                 <p className="mb-0 flex items-start gap-2 text-sm text-neutral-200">
@@ -62,12 +60,14 @@ export function MockExamsTestsSection() {
                                         <ChevronRight className="h-6 w-6 text-neutral-400" />
                                     </div>
                                     <div className="min-w-0 rounded-xl border border-solid border-secondary-4 p-3">
-                                        <p className="mb-1 inline-flex rounded-full bg-secondaryShades-4 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("cards.inApp")}</p>
+                                        <p className="mb-1 inline-flex rounded-full bg-secondaryShades-4 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">
+                                            {t("cards.inApp")}
+                                        </p>
                                         <p className="mb-0 text-base text-neutral-200">{t("cards.speaking.appText")}</p>
                                     </div>
                                 </div>
                                 <Image
-                                    src="/images/parler-mock-exam.png"
+                                    src="/images/parler-mock-exam-2.png"
                                     alt={t("cards.speaking.imageAlt")}
                                     width={760}
                                     height={680}
@@ -93,7 +93,9 @@ export function MockExamsTestsSection() {
                                         <ChevronRight className="h-6 w-6 text-neutral-400" />
                                     </div>
                                     <div className="min-w-0 rounded-xl border border-solid border-secondary-2 p-3">
-                                        <p className="mb-1 inline-flex rounded-full bg-secondaryShades-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("cards.inApp")}</p>
+                                        <p className="mb-1 inline-flex rounded-full bg-secondaryShades-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">
+                                            {t("cards.inApp")}
+                                        </p>
                                         <p className="mb-0 text-base text-neutral-200">{t("cards.listening.appText")}</p>
                                     </div>
                                 </div>
@@ -124,7 +126,9 @@ export function MockExamsTestsSection() {
                                         <ChevronRight className="h-6 w-6 text-neutral-400" />
                                     </div>
                                     <div className="min-w-0 rounded-xl border border-solid border-secondary-5 p-3">
-                                        <p className="mb-1 inline-flex rounded-full bg-secondaryShades-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">{t("cards.inApp")}</p>
+                                        <p className="mb-1 inline-flex rounded-full bg-secondaryShades-5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-800">
+                                            {t("cards.inApp")}
+                                        </p>
                                         <p className="mb-0 text-base text-neutral-200">{t("cards.readWrite.appText")}</p>
                                     </div>
                                 </div>

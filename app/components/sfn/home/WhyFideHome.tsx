@@ -5,11 +5,11 @@ import Image from "next/image";
 import { Fade } from "../../animations/Fades";
 import { SlideFromBottom, SlideFromRight } from "../../animations/Slides";
 
-const pointColors = ["bg-secondary-6", "bg-secondary-5", "bg-secondary-2"] as const;
+const pointColors = ["bg-secondary-6", "bg-secondary-2"] as const;
 
 function WhyFideHome() {
     const t = useTranslations("WhyFideHome");
-    const points = ["permit", "naturalization", "integration"] as const;
+    const points = ["permit", "integration"] as const;
 
     return (
         <div className="w-full m-auto bg-neutral-800">
@@ -43,6 +43,16 @@ function WhyFideHome() {
                                         <div className="mt-5">
                                             <LinkArrow url="/fide" target="_self" className="!text-neutral-100 hover:!text-secondary-2 text-xl font-semibold">
                                                 {t("cta")}
+                                            </LinkArrow>
+                                        </div>
+                                        <div className="mt-3">
+                                            <LinkArrow
+                                                url="https://fide-service.ch/fr/home"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="!text-neutral-300 hover:!text-secondary-2 text-base font-medium"
+                                            >
+                                                {t("officialCta")}
                                             </LinkArrow>
                                         </div>
                                     </>

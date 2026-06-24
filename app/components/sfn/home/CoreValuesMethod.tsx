@@ -16,7 +16,7 @@ function CoreValuesMethod() {
             </Link>
         ),
         linkUdemy: (chunks: React.ReactNode) => (
-            <Link href="https://www.udemy.com/course/french-for-beginners-a1/" className={linkClassName} target="_blank">
+            <Link href="#HomeReviews" className={linkClassName}>
                 {chunks}
             </Link>
         ),
@@ -54,11 +54,6 @@ function CoreValuesMethod() {
             content: t.rich("coreValues.serious.content", richContent),
         },
         {
-            image: "/images/innovation-image-paperfolio-webflow-template.png",
-            title: t("coreValues.smartLearning.title"),
-            content: t.rich("coreValues.smartLearning.content", richContent),
-        },
-        {
             image: "/images/fun-image-paperfolio-webflow-template.png",
             title: t("coreValues.fun.title"),
             content: t.rich("coreValues.fun.content", richContent),
@@ -67,6 +62,11 @@ function CoreValuesMethod() {
             image: "/images/growth-image-paperfolio-webflow-template.png",
             title: t("coreValues.fullMethod.title"),
             content: t.rich("coreValues.fullMethod.content", richContent),
+        },
+        {
+            image: "/images/innovation-image-paperfolio-webflow-template.png",
+            title: t("coreValues.smartLearning.title"),
+            content: t.rich("coreValues.smartLearning.content", richContent),
         },
     ];
 
@@ -84,9 +84,6 @@ function CoreValuesMethod() {
                                                 <h2 className="display-2 mg-bottom-0">{t.rich("title", intelRich())}</h2>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="inner-container max-w-[525px] max-[991px]:max-w-full">
-                                        <p className="mg-bottom-0 text-neutral-700">{t.rich("description", intelRich())}</p>
                                     </div>
                                 </div>
                             </div>

@@ -30,6 +30,7 @@ export interface Post extends Base {
     externLinks: { url: string; title: string }[];
     internLink: string;
     isPreview?: boolean;
+    hideFromPackListingWithoutAccess?: boolean;
     durationSec?: number;
     resources?: { title_fr: string; title_en: string; key: string }[];
     isReady?: boolean;

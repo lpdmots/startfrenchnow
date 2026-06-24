@@ -19,7 +19,6 @@ import { Suspense } from "react";
 import { ContactForFideCourses } from "./fide/components/ContactForFideCourses";
 import { ContactForFide } from "./fide/components/ContactForFide";
 
-
 export const dynamic = "force-static";
 export const revalidate = 1800;
 
@@ -99,7 +98,7 @@ async function Home(props: { params: Promise<{ locale: string }> }) {
                     <ContactForFideCourses />
                 </div>
             </div>
-            <Suspense fallback={<div className="container-default w-container my-12 lg:my-24 min-h-[420px]" />}>
+            <Suspense fallback={<div className="container-default w-container lg:my-12 min-h-[420px]" />}>
                 <BlogHome locale={locale} />
             </Suspense>
             <HomeFaqSection />

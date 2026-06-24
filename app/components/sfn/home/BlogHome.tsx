@@ -44,7 +44,7 @@ const getHomePosts = unstable_cache(
         }
     },
     ["home-fide-video-posts"],
-    { revalidate: 1800, tags: ["home-fide-video-posts"] }
+    { revalidate: 1800, tags: ["home-fide-video-posts"] },
 );
 
 export default async function BlogHome({ locale }: { locale: Locale }) {
@@ -58,13 +58,16 @@ const BlogHomeRender = ({ posts }: { posts: Post[] }) => {
     const locale = useLocale();
 
     return (
-        <div className="container-default w-container my-12 lg:my-24">
+        <div className="container-default w-container lg:my-12">
             <div className="inner-container _600px---tablet center">
                 <div className="inner-container _500px---mbl center">
                     <SlideFromBottom>
                         <div className="mb-[56px] max-[767px]:mb-[48px] max-[479px]:mb-[40px]">
                             <div className="text-center---tablet">
-                                <div data-w-id="a1ac5fbd-201a-a9b1-b1a1-3019f18603fe" className="w-layout-grid grid-2-columns gap-x-[40px] gap-y-[30px] [grid-template-columns:1fr_auto] max-[991px]:[grid-template-columns:1fr] max-[767px]:[grid-template-columns:1fr] _1-col-tablet">
+                                <div
+                                    data-w-id="a1ac5fbd-201a-a9b1-b1a1-3019f18603fe"
+                                    className="w-layout-grid grid-2-columns gap-x-[40px] gap-y-[30px] [grid-template-columns:1fr_auto] max-[991px]:[grid-template-columns:1fr] max-[767px]:[grid-template-columns:1fr] _1-col-tablet"
+                                >
                                     <h2 className="display-2 mg-bottom-0">{t.rich("title", intelRich())}</h2>
                                     <div className="buttons-row max-[991px]:justify-center">
                                         <Link href="/fide/videos?package=free" className="btn-secondary w-button">

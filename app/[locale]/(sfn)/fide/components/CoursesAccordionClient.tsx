@@ -57,7 +57,24 @@ export function CoursesAccordionClient({
     const { data: session } = useSession();
     const sessionHasPack = permissionKey ? !!session?.user?.permissions?.some((p) => p.referenceKey === permissionKey) : false;
     const effectiveHasPack = typeof hasPack === "boolean" ? hasPack : sessionHasPack;
-    console.log({ hasPack: effectiveHasPack, fidePackSommaire, expandAll, defaultModuleKeyIndex, currentPostSlug, linkPrefix, noPadding, withPackageName });
+    const visiblePackSommaire = useMemo<FidePackSommaire>(() => {
+        if (effectiveHasPack) return fidePackSommaire;
+
+        return {
+            packages: fidePackSommaire.packages
+                .map((pack) => ({
+                    ...pack,
+                    modules: pack.modules
+                        .map((mod) => ({
+                            ...mod,
+                            posts: mod.posts.filter((post) => !post.hideFromPackListingWithoutAccess),
+                        }))
+                        .filter((mod) => mod.posts.length > 0),
+                }))
+                .filter((pack) => pack.modules.length > 0),
+        };
+    }, [effectiveHasPack, fidePackSommaire]);
+
     const activeSlug = useMemo<string | null>(() => {
         // Sur le dashboard : pas de slug de leçon
         if (pathname?.includes("/fide/dashboard")) return null;
@@ -83,18 +100,18 @@ export function CoursesAccordionClient({
 
     // 0) Clé du premier module (fallback si pas de slug)
     const defaultModuleKey = useMemo(() => {
-        const firstPkg = fidePackSommaire.packages?.[0];
+        const firstPkg = visiblePackSommaire.packages?.[0];
         const firstMod = firstPkg?.modules?.[defaultModuleKeyIndex ?? 0];
         return firstMod?._key as string | undefined;
-    }, [fidePackSommaire]);
+    }, [defaultModuleKeyIndex, visiblePackSommaire]);
 
     // 1) Mémo: fonction pour trouver la clé du module à ouvrir depuis un slug
     const computeOpenModuleKey = useMemo<(slug: string | null | undefined) => string | undefined>(() => {
         return (slug) => {
             if (!slug) return undefined; // on laisse undefined ici, on appliquera le fallback ailleurs
-            return fidePackSommaire.packages.flatMap((p) => p.modules).find((m) => m.posts?.some((p: any) => p.slug.current === slug))?._key as string | undefined;
+            return visiblePackSommaire.packages.flatMap((p) => p.modules).find((m) => m.posts?.some((p: any) => p.slug.current === slug))?._key as string | undefined;
         };
-    }, [fidePackSommaire]);
+    }, [visiblePackSommaire]);
 
     // 2) Etat contrôlé de l’accordéon (SSR -> vide ; client -> on ouvre)
     const [openModuleKeys, setOpenModuleKeys] = useState<string[]>([]);
@@ -104,7 +121,7 @@ export function CoursesAccordionClient({
         if (!mounted) return;
 
         if (expandAll) {
-            setOpenModuleKeys(fidePackSommaire.packages.flatMap((p) => p.modules.map((m) => m._key as string)));
+            setOpenModuleKeys(visiblePackSommaire.packages.flatMap((p) => p.modules.map((m) => m._key as string)));
             return;
         }
 
@@ -113,14 +130,14 @@ export function CoursesAccordionClient({
 
         if (!nextKey) return;
         setOpenModuleKeys((prev) => removeDuplicates([...prev, nextKey]));
-    }, [mounted, expandAll, computeOpenModuleKey, defaultModuleKey, fidePackSommaire, activeSlug]);
+    }, [mounted, expandAll, computeOpenModuleKey, defaultModuleKey, visiblePackSommaire, activeSlug]);
 
     return (
         <>
-            {fidePackSommaire.packages.map((block, idx) => (
+            {visiblePackSommaire.packages.map((block, idx) => (
                 <div key={block.referenceKey} className={clsx("p-0 pb-2 sm:p-4", noPadding && "p-0")}>
                     <div className="mb-3 flex items-center justify-between">
-                        {withPackageName && <h3 className="m-0 text-lg font-semibold text-neutral-800">{block.title}</h3>}
+                        {withPackageName && <h3 className="m-0 text-lg font-semibold text-neutral-800">{block.referenceKey === "pack_fide" ? t("packFide") : block.title}</h3>}
                         <div className="text-sm text-neutral-600">
                             <div className="text-sm text-neutral-600">
                                 {t("summary", {

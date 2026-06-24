@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 const ExamsSection = dynamic(() => import("../../components/ExamsSection"), {
     ssr: false,
@@ -14,6 +15,7 @@ export function DeferredPackFideExamsSection() {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const { data: session } = useSession();
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
+    const t = useTranslations("Fide.PackFidePage");
 
     useEffect(() => {
         const node = containerRef.current;
@@ -35,7 +37,11 @@ export function DeferredPackFideExamsSection() {
 
     return (
         <div ref={containerRef}>
-            {isVisible ? <ExamsSection hasPack={hasPack} headingSpanClassName="heading-span-secondary-6" /> : <div className="h-[980px] w-full bg-neutral-200" />}
+            {isVisible ? (
+                <ExamsSection hasPack={hasPack} headingSpanClassName="heading-span-secondary-6" ctaBuyPackLabel={t("examsCtaBuyPreparation")} />
+            ) : (
+                <div className="h-[980px] w-full bg-neutral-200" />
+            )}
         </div>
     );
 }

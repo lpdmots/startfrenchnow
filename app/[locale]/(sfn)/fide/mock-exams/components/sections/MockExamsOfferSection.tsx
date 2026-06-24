@@ -2,12 +2,13 @@ import { Fade } from "@/app/components/animations/Fades";
 import { SlideFromBottom, SlideFromLeft, SlideFromRight } from "@/app/components/animations/Slides";
 import { CheckCircle2, Clock3, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { MockExamCheckoutCTA } from "../checkout/MockExamCheckoutCTA";
+import { MockExamSalesPausedCTA } from "../checkout/MockExamSalesPausedCTA";
 import { intelRich } from "@/app/lib/intelRich";
 import type { ReactNode } from "react";
 
 export function MockExamsOfferSection() {
     const t = useTranslations("Fide.MockExamsPage.Offer");
+    const pausedT = useTranslations("Fide.MockExamsPage.PausedCta");
     const rich = {
         ...intelRich(),
         hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
@@ -68,7 +69,7 @@ export function MockExamsOfferSection() {
                                 </div>
 
                                 <div className="md:pb-0.5">
-                                    <MockExamCheckoutCTA
+                                    {/* <MockExamCheckoutCTA
                                         labels={{
                                             cta: t("main.cta"),
                                             ctaUseCredit: t("main.ctaUseCredit"),
@@ -82,6 +83,13 @@ export function MockExamsOfferSection() {
                                         disabledClassName="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
                                         containerClassName="flex flex-col gap-2"
                                         disabledMessageClassName="mb-0 mt-2 text-xs text-neutral-600"
+                                    /> */}
+                                    <MockExamSalesPausedCTA
+                                        label={pausedT("button")}
+                                        message={pausedT("message")}
+                                        buttonClassName="btn btn-secondary small inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
+                                        containerClassName="flex flex-col gap-2"
+                                        messageClassName="mb-0 mt-2 text-xs text-neutral-600"
                                     />
                                 </div>
                             </div>

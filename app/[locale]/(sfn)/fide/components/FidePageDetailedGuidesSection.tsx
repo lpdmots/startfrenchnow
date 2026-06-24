@@ -26,14 +26,9 @@ export function FidePageDetailedGuidesSection({ guides, locale }: Props) {
     return (
         <section className="py-16 lg:py-24 bg-neutral-200">
             <div className="max-w-7xl m-auto px-4 lg:px-8">
-                <h2 className="display-2 mb-4">{t.rich("title", rich)}</h2>
-                <p className="mb-8">{t("subtitle")}</p>
+                <h2 className="display-2 mb-8 lg:mb-12">{t.rich("title", rich)}</h2>
 
-                {guides.length === 0 ? (
-                    <p className="mb-0 text-neutral-700">{t("empty")}</p>
-                ) : (
-                    <FideVideoList filteredPackSommaire={guides} locale={locale} hasPack hidePackageBadge />
-                )}
+                {guides.length === 0 ? <p className="mb-0 text-neutral-700">{t("empty")}</p> : <FideVideoList filteredPackSommaire={guides} locale={locale} hasPack hidePackageBadge />}
             </div>
         </section>
     );

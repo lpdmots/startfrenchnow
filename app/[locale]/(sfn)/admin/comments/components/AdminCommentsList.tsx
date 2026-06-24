@@ -14,7 +14,7 @@ export function getResourceTypeLabel(resourceType: string) {
         case "blog":
             return "Article de blog";
         case "pack_fide":
-            return "Pack FIDE";
+            return "Pack Exam";
         case "fide_dashboard":
             return <span className="font-bold text-secondary-6">Tableau de bord FIDE</span>;
         case "french_dashboard":

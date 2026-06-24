@@ -12,8 +12,6 @@ import { useToast } from "@/app/hooks/use-toast";
 import { saveMockExamSpeakingAnswer } from "@/app/serverActions/mockExamActions";
 import type { PortableText as PortableTextType, SpeakingAnswer, TaskType } from "@/app/types/fide/mock-exam";
 import { RecordingIndicator } from "@/app/components/common/AudioOverlayPlayer";
-import { buildConversationPrompt } from "./prompt-base";
-import { resolveConversationVoice } from "./conversation-voice";
 
 type SpeakingResponsePanelProps = {
     compilationId: string;
@@ -44,7 +42,6 @@ const CONVERSATION_MAX_ATTEMPTS = 2;
 const AUTO_STOP_SECONDS = 5 * 60;
 const CONVERSATION_DURATION_SECONDS = 4 * 60;
 const CONVERSATION_WARNING_SECONDS = 30;
-const REALTIME_TRANSCRIPTION_MODEL = "gpt-4o-mini-transcribe";
 const TEXT_WARNING_KEY = "mock_exam_show_text_without_warning";
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 const STEP_RANK: Record<AccordionStep, number> = {
@@ -163,8 +160,6 @@ export default function SpeakingResponsePanel({
 
     const sourceAudio = useMemo(() => audioPreviewUrl || withCloudFrontPrefix(uploadedAudioUrl) || null, [audioPreviewUrl, uploadedAudioUrl]);
     const questionAudio = useMemo(() => withCloudFrontPrefix(questionAudioUrl), [questionAudioUrl]);
-    const conversationPrompt = useMemo(() => buildConversationPrompt(activityAiContext), [activityAiContext]);
-    const conversationVoice = useMemo(() => resolveConversationVoice(activityAiVoiceGender), [activityAiVoiceGender]);
     const hasObservationStep = Boolean(taskType?.startsWith("IMAGE_DESCRIPTION"));
     const isPlayDisabled = !questionAudio || (hasFinishedFirstPlay && !isQuestionPlaying && !playUnlockedByReplay);
     const isReplayDisabled = !questionAudio || !hasFinishedFirstPlay || isQuestionPlaying;
@@ -860,27 +855,9 @@ export default function SpeakingResponsePanel({
             dataChannel.onopen = () => {
                 dataChannel.send(
                     JSON.stringify({
-                        type: "session.update",
-                        session: {
-                            turn_detection: {
-                                type: "server_vad",
-                                silence_duration_ms: 2000,
-                                create_response: true,
-                                interrupt_response: false,
-                            },
-                            input_audio_transcription: {
-                                model: REALTIME_TRANSCRIPTION_MODEL,
-                            },
-                        },
-                    }),
-                );
-                dataChannel.send(
-                    JSON.stringify({
                         type: "response.create",
                         response: {
-                            modalities: ["audio", "text"],
-                            voice: conversationVoice,
-                            instructions: conversationPrompt,
+                            output_modalities: ["audio"],
                         },
                     }),
                 );
@@ -905,8 +882,10 @@ export default function SpeakingResponsePanel({
             });
 
             if (!response.ok) {
-                const payload = (await response.json().catch(() => null)) as { error?: string; details?: string } | null;
-                throw new Error(payload?.error || payload?.details || "Connexion conversation impossible.");
+                const payload = (await response.json().catch(() => null)) as { error?: string; details?: string; requestId?: string; clientRequestId?: string } | null;
+                const detail = payload?.details || payload?.error || "Connexion conversation impossible.";
+                const traceId = payload?.requestId || payload?.clientRequestId;
+                throw new Error(traceId ? `${detail} [trace ${traceId}]` : detail);
             }
 
             const answerSdp = await response.text();

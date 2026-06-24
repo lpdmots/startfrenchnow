@@ -45,7 +45,7 @@ function NavBar() {
                         <Link
                             aria-label="Go to contact page"
                             href="/contact"
-                            className="btn-primary small rounded-[12px] text-[24px] leading-[24px] font-normal max-[991px]:mr-[24px] max-[991px]:ml-0 max-[479px]:mr-[12px] flex items-center !p-2 !mr-1 lg:!mr-0"
+                            className="btn-primary small inline-flex !w-auto shrink-0 rounded-[12px] text-[24px] leading-[24px] font-normal max-[991px]:mr-[24px] max-[991px]:ml-0 max-[479px]:mr-[12px] items-center justify-center !p-2 !px-2 !mr-1 lg:!mr-0"
                         >
                             <FaRegEnvelope style={{ fontSize: 22 }} />
                         </Link>

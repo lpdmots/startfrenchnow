@@ -88,10 +88,6 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             answer: t("faq.items.fromZero.content"),
         },
         {
-            question: t("faq.items.updates.title"),
-            answer: t("faq.items.updates.content"),
-        },
-        {
             question: t("faq.items.combine.title"),
             answer: t("faq.items.combine.content"),
             content: (

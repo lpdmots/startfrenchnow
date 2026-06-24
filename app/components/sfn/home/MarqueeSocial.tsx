@@ -6,22 +6,29 @@ import { sharedFideReviews } from "@/app/[locale]/(sfn)/fide/components/ReviewsF
 import useMediaQuery from "@/app/hooks/useMediaQuery";
 import { cn } from "@/app/lib/schadcn-utils";
 import { m } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import CircularProgressMagic from "../../common/CircularProgressMagic";
+
+const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME ?? "";
 
 type ReviewWithText = {
     userName: string;
     userImage: ReactNode;
     title: string;
     comment: ReactNode;
+    modalComment?: ReactNode;
     score?: number;
+    progressTo?: string;
+    certificat?: string;
     date?: number;
 };
 
 export function MarqueeSocial({ locale }: { locale: string }) {
     const isMedium = useMediaQuery("(max-width: 768px)");
     const [selectedReview, setSelectedReview] = useState<ReviewWithText | null>(null);
+    const t = useTranslations("CommentsCarousel");
 
     const reviews = useMemo<ReviewWithText[]>(
         () =>
@@ -33,7 +40,10 @@ export function MarqueeSocial({ locale }: { locale: string }) {
                     userImage: review.userImage,
                     title: review.title,
                     comment: review.comment,
+                    modalComment: review.modalComment,
                     score: review.score,
+                    progressTo: review.progressTo,
+                    certificat: review.certificat,
                     date: review.date,
                 })),
         [],
@@ -73,7 +83,7 @@ export function MarqueeSocial({ locale }: { locale: string }) {
                     </>
                 )}
             </div>
-            {selectedReview && <ReviewModal review={selectedReview} locale={locale} onClose={() => setSelectedReview(null)} />}
+            {selectedReview && <ReviewModal review={selectedReview} locale={locale} certificateLabel={t("certificateLink")} onClose={() => setSelectedReview(null)} />}
         </div>
     );
 }
@@ -101,9 +111,10 @@ function CommentCard({ review, locale, onOpen }: { review: ReviewWithText; local
     );
 }
 
-function ReviewModal({ review, locale, onClose }: { review: ReviewWithText; locale: string; onClose: () => void }) {
-    const commentText = extractText(review.comment);
+function ReviewModal({ review, locale, certificateLabel, onClose }: { review: ReviewWithText; locale: string; certificateLabel: string; onClose: () => void }) {
+    const commentText = extractText(review.modalComment ?? review.comment);
     const formattedDate = review.date ? formatDate(review.date, locale) : "";
+    const certificateUrl = getCertificateUrl(review.certificat);
     const data = {
         setOpen: (value: boolean) => {
             if (!value) onClose();
@@ -112,9 +123,16 @@ function ReviewModal({ review, locale, onClose }: { review: ReviewWithText; loca
             <div className="flex flex-col gap-5">
                 <ReviewHeader review={review} formattedDate={formattedDate} />
                 <div>
-                    <p className="mb-3 text-xl font-bold leading-snug text-neutral-800">"{review.title}"</p>
+                    <p className="mb-5 text-xl font-bold leading-snug text-neutral-800">"{review.title}"</p>
                     <p className="mb-0 whitespace-pre-line text-base leading-8 text-neutral-700">{commentText}</p>
                 </div>
+                {certificateUrl && (
+                    <div className="border-t border-neutral-300 pt-4">
+                        <a href={certificateUrl} target="_blank" rel="noreferrer" className="font-semibold text-secondary-5 underline underline-offset-2">
+                            {certificateLabel}
+                        </a>
+                    </div>
+                )}
             </div>
         ),
         functionOk: onClose,
@@ -129,7 +147,7 @@ function ReviewModal({ review, locale, onClose }: { review: ReviewWithText; loca
 
 function ReviewHeader({ review, formattedDate, compact = false }: { review: ReviewWithText; formattedDate?: string; compact?: boolean }) {
     return (
-        <div className={cn("relative mt-8 flex items-start gap-3", compact && typeof review.score === "number" && "pr-16", !compact && "mt-0 pr-20")}>
+        <div className={cn("relative mt-8 flex items-start gap-3", compact && (typeof review.score === "number" || review.progressTo) && "pr-32", !compact && "mt-0 pr-36")}>
             <div className={cn("shrink-0 overflow-hidden rounded-full bg-neutral-300", compact ? "h-14 w-14" : "h-16 w-16")}>
                 <div className={cn("origin-top-left", compact ? "scale-[0.56]" : "scale-[0.64]")}>{review.userImage}</div>
             </div>
@@ -137,20 +155,28 @@ function ReviewHeader({ review, formattedDate, compact = false }: { review: Revi
                 <p className={cn("mb-0 font-bold text-neutral-800", compact ? "line-clamp-1" : "text-lg leading-tight")}>{review.userName}</p>
                 {formattedDate && <p className="mb-0 text-sm italic text-neutral-600">{formattedDate}</p>}
             </div>
-            {typeof review.score === "number" && (
-                <div className={cn("absolute right-0 top-0 flex flex-col items-center", compact ? "translate-y-[-2px]" : "translate-y-[-6px]")}>
-                    <CircularProgressMagic
-                        max={100}
-                        min={0}
-                        value={review.score}
-                        gaugePrimaryColor="var(--secondary-5)"
-                        gaugeSecondaryColor="var(--neutral-300)"
-                        centerText={`${review.score}%`}
-                        withSize={false}
-                        className={cn("text-sm font-bold", compact ? "size-14" : "size-16")}
-                        fontHeight={compact ? "text-[11px] font-bold" : "text-xs font-bold"}
-                    />
-                    {!compact && <p className="mb-0 mt-1 text-xs font-bold uppercase text-secondary-5">FIDE</p>}
+            {(review.progressTo || typeof review.score === "number") && (
+                <div className={cn("absolute right-0 top-0 flex items-center gap-2", compact ? "translate-y-[-2px]" : "translate-y-[-6px]")}>
+                    {review.progressTo && (
+                        <div className={cn("leading-none font-extrabold text-neutral-800", compact ? "text-[1.9rem]" : "text-[2.5rem]")}>
+                            {review.progressTo}
+                        </div>
+                    )}
+                    {typeof review.score === "number" && (
+                        <div className="flex flex-col items-center">
+                            <CircularProgressMagic
+                                max={100}
+                                min={0}
+                                value={review.score}
+                                gaugePrimaryColor="var(--secondary-5)"
+                                gaugeSecondaryColor="var(--neutral-300)"
+                                centerText={`${review.score}%`}
+                                withSize={false}
+                                className={cn("text-sm font-bold", compact ? "size-14" : "size-16")}
+                                fontHeight={compact ? "text-[11px] font-bold" : "text-xs font-bold"}
+                            />
+                        </div>
+                    )}
                 </div>
             )}
         </div>
@@ -172,6 +198,13 @@ function extractText(node: ReactNode): string {
         return extractText(props?.children);
     }
     return "";
+}
+
+function getCertificateUrl(certificat?: string) {
+    if (!certificat) return null;
+    if (certificat.startsWith("http://") || certificat.startsWith("https://")) return certificat;
+    if (!cloudFrontDomain) return certificat;
+    return `${cloudFrontDomain}${certificat}`;
 }
 
 const Quote = () => {

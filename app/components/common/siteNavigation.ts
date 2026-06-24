@@ -14,6 +14,7 @@ export type SiteNavLink = {
 export type SiteNavItem = SiteNavLink & {
     items?: SiteNavLink[];
     emphasize?: boolean;
+    priority?: "primary-offer";
 };
 
 export type SiteFooterSection = {
@@ -45,7 +46,7 @@ export const getPrimaryNavigation = (t: Translate): SiteNavItem[] => [
         accent: "fide",
         matchPrefix: false,
         activeExact: ["/fide"],
-        activePrefixes: ["/fide/videos", "/fide/exams", "/test-your-level"],
+        activePrefixes: ["/fide/videos", "/fide/exams"],
         items: [
             {
                 key: "fide-overview",
@@ -69,20 +70,7 @@ export const getPrimaryNavigation = (t: Translate): SiteNavItem[] => [
                 accent: "fide",
                 activePrefixes: ["/fide/exams"],
             },
-            {
-                key: "test-your-level",
-                label: t("fideMenu.testYourLevel"),
-                href: "/test-your-level",
-                activePrefixes: ["/test-your-level"],
-            },
         ],
-    },
-    {
-        key: "fide-pack",
-        label: t("main.fidePack"),
-        href: "/fide/pack-fide",
-        accent: "fide",
-        activePrefixes: ["/fide/pack-fide"],
     },
     {
         key: "practice-exams",
@@ -90,6 +78,15 @@ export const getPrimaryNavigation = (t: Translate): SiteNavItem[] => [
         href: "/fide/mock-exams",
         accent: "fide",
         activePrefixes: ["/fide/mock-exams"],
+        priority: "primary-offer",
+    },
+    {
+        key: "fide-pack",
+        label: t("main.fidePack"),
+        href: "/fide/pack-fide",
+        accent: "fide",
+        activePrefixes: ["/fide/pack-fide"],
+        priority: "primary-offer",
     },
     {
         key: "coaching",
@@ -97,13 +94,14 @@ export const getPrimaryNavigation = (t: Translate): SiteNavItem[] => [
         href: "/fide/private-courses",
         accent: "fide",
         activePrefixes: ["/fide/private-courses"],
+        priority: "primary-offer",
     },
     {
         key: "courses-resources",
         label: t("main.coursesResources"),
         href: "/courses/beginners",
         accent: "course",
-        activePrefixes: ["/courses", "/videos", "/blog", "/exercises", "/stories"],
+        activePrefixes: ["/courses", "/videos", "/blog", "/exercises", "/stories", "/test-your-level"],
         items: [
             {
                 key: "beginner-french",
@@ -154,6 +152,12 @@ export const getPrimaryNavigation = (t: Translate): SiteNavItem[] => [
                 activePrefixes: ["/exercises"],
             },
             {
+                key: "test-your-level",
+                label: t("fideMenu.testYourLevel"),
+                href: "/test-your-level",
+                activePrefixes: ["/test-your-level"],
+            },
+            {
                 key: "interactive-stories",
                 label: t("coursesResourcesMenu.interactiveStories"),
                 href: "/stories",
@@ -176,16 +180,16 @@ export const getFooterNavigation = (t: Translate): SiteFooterSection[] => [
                 activeExact: ["/fide"],
             },
             {
-                key: "footer-fide-pack",
-                label: t("main.fidePack"),
-                href: "/fide/pack-fide",
-                activePrefixes: ["/fide/pack-fide"],
-            },
-            {
                 key: "footer-practice-exams",
                 label: t("main.practiceExams"),
                 href: "/fide/mock-exams",
                 activePrefixes: ["/fide/mock-exams"],
+            },
+            {
+                key: "footer-fide-pack",
+                label: t("main.fidePack"),
+                href: "/fide/pack-fide",
+                activePrefixes: ["/fide/pack-fide"],
             },
             {
                 key: "footer-coaching",

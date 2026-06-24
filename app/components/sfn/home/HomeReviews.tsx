@@ -6,7 +6,7 @@ function HomeReviews() {
     const t = useTranslations("CommentsCarousel");
     const locale = useLocale();
     return (
-        <div className="my-12 w-full flex flex-col items-center">
+        <div id="HomeReviews" className="my-12 w-full flex flex-col items-center">
             <div className="w-full p-2 sm:p-4" style={{ maxWidth: 1500 }}>
                 <div className="flex w-full justify-center">
                     <div className="text-center max-w-5xl">

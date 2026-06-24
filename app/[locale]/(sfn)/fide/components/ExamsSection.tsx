@@ -30,10 +30,12 @@ export default function ExamsSection({
     stats = { totalExams: 100, avgDurationMin: 12, completionRate: 0.82 },
     hasPack,
     headingSpanClassName = "heading-span-secondary-2",
+    ctaBuyPackLabel,
 }: {
     stats?: { totalExams: number; avgDurationMin: number; completionRate: number };
     hasPack?: boolean;
     headingSpanClassName?: string;
+    ctaBuyPackLabel?: string;
 }) {
     const { totalExams, avgDurationMin, completionRate } = stats;
     const t = useTranslations("Fide.ExamsSection");
@@ -76,7 +78,7 @@ export default function ExamsSection({
                 {/* CTAs */}
                 <div className="flex gap-4 justify-center items-center w-full flex-wrap">
                     <Link href="/fide/pack-fide#pack-pricing" className="w-full sm:w-auto !no-underline">
-                        <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto">{t("ctaBuyPack")}</ShimmerButton>
+                        <ShimmerButton className="w-button flex items-center justify-center w-full sm:w-auto">{ctaBuyPackLabel ?? t("ctaBuyPack")}</ShimmerButton>
                     </Link>
                     <LinkArrowToFideExams className="text-xl font-bold text-neutral-700" category="culture">
                         <span className="flex items-center">

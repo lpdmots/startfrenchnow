@@ -131,6 +131,12 @@ export default defineType({
             description: "Si vrai ET que ce post est dans la catégorie pack_fide, la vidéo est accessible à tous.",
         }),
         defineField({
+            name: "hideFromPackListingWithoutAccess",
+            title: "Masquer du listing Pack sans accès",
+            type: "boolean",
+            description: "Si coché, cette vidéo n'apparaît pas dans /fide/videos pour les visiteurs sans Pack Exam. Si vide, elle reste visible.",
+        }),
+        defineField({
             name: "durationSec",
             title: "Durée (sec)",
             type: "number",

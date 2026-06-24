@@ -2,7 +2,7 @@
     "Metadata": {
         "Home": {
             "title": "Préparation test FIDE Suisse (A1–B1) | Start French Now",
-            "description": "Préparez le test FIDE en Suisse avec des examens blancs, un Pack FIDE complet et des cours privés. Scénarios actuels, plan personnalisé et préparation A1, A2 ou B1."
+            "description": "Préparez le test FIDE en Suisse avec des examens blancs, une préparation structurée et des cours privés. Plan personnalisé et objectifs A1, A2 ou B1."
         },
         "StoriesApp": {
             "title": "Apprenez le Français avec Start French Now : Histoires Interactives et Cours en Ligne",
@@ -34,31 +34,31 @@
         },
         "Fide": {
             "title": "Préparation test FIDE Suisse (A1–B1) | Start French Now",
-            "description": "Tout sur le test FIDE en Suisse (A1–B1) : format, épreuves, coûts et préparation. Découvrez nos solutions (pack, examens blancs, cours privés)."
+            "description": "Tout sur le test FIDE en Suisse (A1–B1) : format, épreuves, coûts et préparation. Découvrez nos solutions : programme e-learning, examens blancs et cours privés pour le test."
         },
         "FideDashboard": {
             "title": "Mon espace FIDE – progression & RDV | Start French Now",
             "description": "Votre espace FIDE privé : suivez vos cours vidéo, vos scénarios, vos heures de cours privés, réservez vos RDV et chattez avec votre coach."
         },
         "FideExams": {
-            "title": "Scénarios actuels FIDE : examens blancs A1–B1 | Start French Now",
-            "description": "100+ examens blancs FIDE (A1–B1) : lire, écrire, comprendre et parler, scénarios actuels, PDF, vidéos et entraînement interactif. Start French Now."
+            "title": "Scénarios pratiques pour le test FIDE : examens blancs A1–B1 | Start French Now",
+            "description": "100+ examens blancs FIDE (A1–B1) : lire, écrire, comprendre et parler, scénarios d'entraînement, PDF, vidéos et entraînement interactif. Start French Now."
         },
         "FideMockExams": {
             "title": "Examen blanc FIDE en ligne (A1–A2 / A2–B1) | Start French Now",
             "description": "Passez un examen blanc FIDE en ligne avec score immédiat, correction détaillée, PDF et vidéos. Une simulation réaliste pour évaluer votre niveau avant le vrai test."
         },
         "FidePackFide": {
-            "title": "Pack FIDE complet (A1–B1) | Vidéos, examens blancs et méthode | Start French Now",
-            "description": "Préparez le test FIDE avec un parcours complet : vidéos, scénarios actuels, examens blancs, PDF et plan d’étude. Accès immédiat pour progresser vers A1, A2 ou B1."
+            "title": "Pack Exam complet (A1–B1) | Vidéos, examens blancs et méthode | Start French Now",
+            "description": "Préparez le test FIDE avec un programme e-learning complet : vidéos, exercices d'entraînement, examens blancs, PDF et plan d’étude. Accès immédiat pour progresser vers A1, A2 ou B1."
         },
         "FidePrivateCourses": {
             "title": "Cours privés FIDE en ligne | Préparation personnalisée A1–B1 | Start French Now",
-            "description": "Préparez le test FIDE avec des cours privés en ligne : plan personnalisé, scénarios actuels et accompagnement ciblé. 300+ apprenants satisfaits."
+            "description": "Préparez le test FIDE avec des cours privés en ligne : plan personnalisé, pratique ciblée et accompagnement. 300+ apprenants satisfaits."
         },
         "FideVideos": {
-            "title": "Vidéos FIDE Suisse A1–B1 | Pack FIDE | Start French Now",
-            "description": "Accédez à toutes nos vidéos FIDE Suisse (A1–B1) : vocabulaire, grammaire et situations d’examen. Des leçons claires + previews gratuites. Start French Now."
+            "title": "Vidéos sur l'examen FIDE Suisse A1–B1 | Pack Exam | Start French Now",
+            "description": "Accédez à toutes nos vidéos sur l'examen FIDE Suisse (A1–B1) : vocabulaire, grammaire et situations d’examen. Des leçons claires + previews gratuites. Start French Now."
         },
         "testYourLevel": {
             "title": "Test de niveau de français CECR (A1-C2) | Start French Now",
@@ -133,15 +133,15 @@
         "fideLong": "Test FIDE",
         "main": {
             "fideTest": "Test FIDE",
-            "fidePack": "Pack FIDE",
+            "fidePack": "E-learning",
             "practiceExams": "Examens blancs",
-            "coachingOneToOne": "Coaching 1:1",
+            "coachingOneToOne": "Cours privés",
             "coursesResources": "Cours & Ressources"
         },
         "fideMenu": {
             "overview": "Présentation du test FIDE",
-            "videos": "Vidéos FIDE",
-            "scenarios": "Scénarios FIDE",
+            "videos": "Vidéos sur l'examen FIDE",
+            "scenarios": "Scénarios pratiques",
             "testYourLevel": "Tester mon niveau"
         },
         "coursesResourcesMenu": {
@@ -161,8 +161,8 @@
         "resources": {
             "resourcesTitle": "Nos ressources",
             "button": "Ressources",
-            "fideVideos": "Vidéos FIDE",
-            "fideScenarios": "Scénarios FIDE",
+            "fideVideos": "Vidéos sur l'examen FIDE",
+            "fideScenarios": "Scénarios pratiques",
             "videos": "Toutes nos Vidéos",
             "blog": "Articles & Ressources",
             "exercises": "Flashcards & Exercices",
@@ -172,16 +172,16 @@
         "fideButton": {
             "buttonLabel": "FIDE",
             "fide": "Test FIDE",
-            "packFide": "Pack FIDE",
-            "privateCourses": "Cours privés FIDE",
+            "packFide": "Programme e-learning",
+            "privateCourses": "Cours privés pour le test",
             "dashboard": "Tableau de bord FIDE",
             "videos": "Cours FIDE",
             "mockExams": "Examen blanc FIDE",
-            "exams": "Scénarios FIDE"
+            "exams": "Scénarios pratiques"
         },
         "footer": {
             "fideTest": "Le test FIDE",
-            "fidePack": "Pack FIDE",
+            "fidePack": "E-learning",
             "fideMockExams": "Examens blancs",
             "fidePrivateCourses": "Cours privés",
             "sections": {
@@ -193,8 +193,8 @@
         }
     },
     "HeroSfn": {
-        "title": "Réussissez le <hs6>test FIDE</hs6> en Suisse avec des cours de <hs2>qualité</hs2>",
-        "description": "Vidéos, examens blancs et cours privés pour viser le bon niveau <under6><b>A1, A2 ou B1</b></under6> et arriver prêt le jour de l'examen.",
+        "title": "Réussissez le <hs6>test FIDE</hs6> avec la meilleure <hs2>préparation</hs2> possible",
+        "description": "Vidéos sur le test FIDE, examens blancs et cours privés pour arriver prêt le jour de l'examen et obtenir le niveau souhaité : <under6><b>A1, A2 ou B1</b></under6>.",
         "btn_resources": "Voir les formules",
         "btn_beginner_course": "Réserver mon entretien",
         "btn_primary": "Réserver mon entretien",
@@ -228,8 +228,8 @@
                 "new": "Nouveau !"
             },
             "packFide": {
-                "title": "Pack FIDE (A1 à B1)",
-                "description": "Préparez-vous efficacement au test FIDE avec notre Pack FIDE complet. Accédez à des vidéos, aux examens actuels expliqués et à un suivi personnalisé pour maîtriser les compétences nécessaires et réussir votre test."
+                "title": "Pack Exam (A1 à B1)",
+                "description": "Préparez-vous efficacement au test FIDE avec notre Pack Exam complet. Accédez à des vidéos, aux examens actuels expliqués et à un suivi personnalisé pour maîtriser les compétences nécessaires et réussir votre test."
             },
             "masterPastTenses": {
                 "title": "Maîtrisez les temps du passé",
@@ -241,41 +241,38 @@
         "title": "Le test FIDE, <hs3>pour quoi faire</hs3> ?",
         "description": "Le test FIDE évalue votre français dans des situations concrètes de la vie en Suisse. Selon votre objectif, le niveau attendu peut être A1, A2 ou B1.",
         "cta": "Tout savoir sur le test",
+        "officialCta": "Visitez le site officiel",
         "imageAlt": "Carte de la Suisse",
         "points": {
             "permit": {
-                "title": "Permis B / C",
-                "description": "Un résultat FIDE peut être demandé dans certains dossiers de séjour ou d'établissement."
-            },
-            "naturalization": {
-                "title": "Naturalisation",
-                "description": "Le test aide à prouver votre capacité à communiquer en français dans la vie quotidienne."
+                "title": "Permis B/C et Naturalisation",
+                "description": "Pour vos dossiers de permis de séjour ou de naturalisation, un résultat FIDE sera demandé."
             },
             "integration": {
                 "title": "Intégration en Suisse",
-                "description": "Les épreuves portent sur des situations pratiques : logement, santé, travail, administration."
+                "description": "Le test aide à prouver votre capacité à communiquer en français dans la vie quotidienne."
             }
         }
     },
     "CoreValuesMethod": {
-        "title": "Pourquoi choisir <hs4>notre préparation FIDE</hs4> ?",
+        "title": "Pourquoi choisir <hs4>notre préparation à l'examen FIDE</hs4> ?",
         "description": "Une préparation <under>ciblée sur l'examen</under>, pensée pour vous aider à progresser avec un plan clair, des sujets actuels et le bon niveau d'accompagnement.",
         "coreValues": {
             "serious": {
                 "title": "Une méthode qui a fait ses preuves",
-                "content": "Une pédagogie claire et structurée, déjà adoptée par <linkUdemy><b>des milliers d'apprenants</b></linkUdemy> sur Udemy, aujourd'hui pleinement mise au service de la préparation FIDE."
+                "content": "Une préparation adaptée qui a permis à <linkUdemy><b>des centaines d'étudiants</b></linkUdemy> d'obtenir leur examen FIDE."
             },
             "smartLearning": {
                 "title": "Plan personnalisé",
                 "content": "<linkContact><b>Un entretien gratuit</b></linkContact> permet de définir votre objectif, votre niveau actuel et le plan le plus adapté pour atteindre A1, A2 ou B1."
             },
             "fun": {
-                "title": "Scénarios réels FIDE",
-                "content": "Vous travaillez sur <linkScenarios><b>les scénarios réels de l'examen</b></linkScenarios>, identifiés grâce aux retours des étudiants après leur passage du test FIDE."
+                "title": "Scénarios réalistes de l'examen",
+                "content": "Vous travaillez sur <linkScenarios><b>des situations très proches des compétences évaluées lors du test</b></linkScenarios>, conçues pour vous préparer à la vie quotidienne en Suisse."
             },
             "fullMethod": {
                 "title": "Préparation complète",
-                "content": "Vous pouvez vous tester avec les <linkMock><b>examens blancs</b></linkMock>, vous entraîner avec le <linkPack><b>Pack FIDE</b></linkPack> ou accélérer votre progression avec des <linkPrivate><b>cours privés</b></linkPrivate>."
+                "content": "Préparez-vous intensément avec <linkPack><b>notre préparation à l'examen</b></linkPack>, boostez votre confiance à l'oral avec les <linkPrivate><b>cours privés</b></linkPrivate> ou testez-vous avec nos <linkMock><b>examens blancs</b></linkMock>."
             }
         }
     },
@@ -316,28 +313,29 @@
         }
     },
     "WhoIAm": {
-        "description": "Je suis professeur de français et spécialiste de la préparation au test FIDE. Ma méthode d'enseignement en ligne m'a permis de devenir <b>le formateur de français le plus plébiscité sur Udemy</b>. Aujourd'hui, cette expertise est pleinement mise au service des candidats qui visent le bon niveau A1, A2 ou B1.",
+        "description": "Je suis professeur de français et spécialiste de la préparation au test FIDE. Ma méthode d'enseignement en ligne m'a permis de devenir <b>le formateur de français le plus plébiscité sur Udemy</b>. Aujourd'hui, cette expertise est pleinement mise au service des candidats à l'examen FIDE.",
         "bulletPoints": {
             "nativeCertified": {
-                "title": "Expert FIDE",
-                "content": "Plus de 8 ans d'expérience sur la préparation FIDE, avec un travail concret sur les attentes de l'examen et les scénarios les plus récents."
+                "title": "Expert de l'examen FIDE",
+                "content": "Plus de 8 ans d'expérience sur la préparation au test, avec une connaissance précise de la passation de l'examen."
             },
             "experience": {
-                "title": "300+ étudiants préparés",
-                "content": "Plus de 300 apprenants ont préparé leur test FIDE avec Start French Now, avec un très haut taux de réussite."
+                "title": "300+ étudiants préparés avec succès",
+                "content": "Plus de 300 apprenants ont préparé leur test FIDE avec Start French Now, avec un taux de réussite proche de 100%."
             },
             "expertBeginners": {
-                "title": "16 ans d'enseignement du FLE",
-                "content": "J'enseigne le français aux étrangers depuis plus de 16 ans, avec une attention particulière portée à l'oral, à la confiance et à la progression rapide."
+                "title": "16 ans d'enseignement dans le FLE",
+                "content": "J'enseigne le français aux étrangers depuis plus de 16 ans, auprès d'un public varié et exigeant."
             }
         },
         "moreAboutMe": "Échanger avec Yohann"
     },
     "CommentsCarousel": {
         "title": "Ils ont <hs4>réussi le FIDE</hs4>",
-        "description": "Des retours d'élèves préparés pour le test FIDE en Suisse.",
+        "description": "Des retours d'élèves qui ont suivi notre préparation au test.",
         "description2": "sur",
-        "fideScore": "Score FIDE : {score}%"
+        "fideScore": "Score FIDE : {score}%",
+        "certificateLink": "Voir le certificat"
     },
     "StoriesHome": {
         "title": "Plongez dans la langue française à travers nos <hs1>Histoires interactives</hs1> : une immersion efficace et ludique.",
@@ -348,18 +346,18 @@
         "button": "Voir les histoires"
     },
     "BlogHome": {
-        "title": "Ressources <hs1>FIDE</hs1> gratuites",
-        "button": "Tous les articles FIDE"
+        "title": "Ressources <hs1>sur le test FIDE</hs1> gratuites",
+        "button": "Tous les articles"
     },
     "HomePreparationOptions": {
-        "title": "Quelle <hs6>préparation FIDE</hs6> est faite pour vous ?",
+        "title": "Quelle <hs6>préparation pour le test FIDE</hs6> ?",
         "subtitle": "Choisissez selon votre objectif : vous tester, suivre un parcours complet ou être accompagné personnellement.",
         "cards": {
             "mockExams": {
                 "title": "Examens blancs",
                 "badge": "Pour vous situer",
-                "fit": "Idéal si vous voulez savoir où vous en êtes",
-                "description": "Testez votre niveau et découvrez le déroulé du test avant de choisir la suite.",
+                "fit": "Idéal si vous voulez connaitre votre niveau.",
+                "description": "Découvrez la structure de l'examen FIDE et testez-vous avec nos examens blancs.",
                 "cta": "Passer un examen blanc",
                 "imageAlt": "Aperçu des examens blancs FIDE",
                 "points": {
@@ -369,29 +367,29 @@
                 }
             },
             "pack": {
-                "title": "Pack FIDE",
+                "title": "Préparation à l'examen",
                 "badge": "Préparation complète",
                 "fit": "Idéal si vous voulez une préparation complète",
-                "description": "Avancez avec une méthode structurée, des vidéos, des PDF et des scénarios réels actualisés.",
-                "cta": "Voir le pack",
-                "imageAlt": "Aperçu du Pack FIDE",
+                "description": "Suivez une méthode structurée avec des vidéos sur les thèmes de l'examen FIDE, PDFs et scénarios oraux comme à l'examen.",
+                "cta": "Voir la préparation à l'examen",
+                "imageAlt": "Aperçu du Pack Exam",
                 "points": {
-                    "point1": "Travailler les scénarios réels FIDE",
+                    "point1": "Travailler des scénarios type FIDE",
                     "point2": "Suivre un parcours guidé à votre rythme",
-                    "point3": "Renforcer parler, comprendre, lire et écrire"
+                    "point3": "Améliorer votre Oral et Écrit"
                 }
             },
             "private": {
                 "title": "Cours privés",
                 "badge": "Accompagnement ciblé",
-                "fit": "Idéal si vous voulez être guidé personnellement",
-                "description": "Construisez un plan ciblé avec un professeur pour corriger vos blocages et préparer votre objectif.",
+                "fit": "Idéal si vous voulez être guidé par un expert",
+                "description": "Établissez avec votre professeur le meilleur plan possible pour obtenir votre examen FIDE.",
                 "cta": "Voir les cours privés",
                 "imageAlt": "Aperçu des cours privés FIDE",
                 "points": {
                     "point1": "Définir un plan personnalisé",
-                    "point2": "Corriger vos points faibles à l'oral",
-                    "point3": "Préparer une date d'examen proche"
+                    "point2": "Améliorez votre Oral et Ecrit",
+                    "point3": "Pratiquez des scénarios réalistes"
                 }
             }
         }
@@ -402,18 +400,18 @@
         "cta": "Définir mon plan FIDE"
     },
     "HomeSocialProofBand": {
-        "title": "Sur YouTube, nos vidéos FIDE sont devenues des références",
-        "subtitle": "Notre méthode est suivie bien au-delà de cette page : une communauté active sur les réseaux, et <em>des dizaines de milliers d'apprenants</em> touchés en ligne.",
+        "title": "Sur YouTube, nos vidéos sur l'examen FIDE sont devenues des références",
+        "subtitle": "Notre méthode est suivie bien au-delà de cette page : une communauté active sur les réseaux, et <em>des dizaines de milliers d'apprenants</em>.",
         "items": {
             "youtube": {
                 "count": "10K+",
                 "label": "YouTube",
-                "description": "Des vidéos FIDE consultées comme repères avant l'examen."
+                "description": "Des vidéos sur l'examen FIDE consultées comme repères avant l'examen."
             },
             "tiktok": {
                 "count": "17K+",
                 "label": "TikTok",
-                "description": "Une audience engagée autour du français et de la préparation."
+                "description": "Une audience engagée autour de l'apprentissage du français."
             },
             "instagram": {
                 "count": "21K+",
@@ -423,22 +421,22 @@
             "udemy": {
                 "count": "60K+",
                 "label": "Étudiants",
-                "description": "Des milliers d'apprenants formés grâce à une méthode éprouvée."
+                "description": "Des milliers d'apprenants formés grâce à une méthode efficace."
             }
         }
     },
     "HomeFaq": {
-        "badge": "FAQ préparation FIDE",
+        "badge": "FAQ préparation au test",
         "title": "Vos <hs6>questions</hs6>,<br></br>nos réponses",
         "subtitle": "Les réponses essentielles pour choisir la préparation la plus adaptée à votre objectif FIDE.",
         "items": {
             "choosePreparation": {
-                "title": "Quelle préparation FIDE choisir ?",
-                "content": "Si vous voulez d'abord vous situer, commencez par un <linkMock>examen blanc</linkMock>. Si vous voulez un parcours complet, choisissez le <linkPack>Pack FIDE</linkPack>. Si vous avez peu de temps ou des blocages précis, les <linkPrivate>cours privés</linkPrivate> permettent de construire un plan ciblé."
+                "title": "Quelle préparation choisir ?",
+                "content": "Si vous voulez d'abord vous situer, commencez par un <linkMock>examen blanc</linkMock>. Si vous voulez un parcours complet, choisissez <linkPack>notre préparation à l'examen</linkPack>. Si vous avez peu de temps ou des difficultés précises, les <linkPrivate>cours privés</linkPrivate> permettent de construire un plan ciblé."
             },
             "realScenarios": {
-                "title": "Travaillez-vous vraiment sur les scénarios réels du test FIDE ?",
-                "content": "Oui. Les <linkScenarios>scénarios</linkScenarios> sont mis à jour grâce aux retours des étudiants après leur passage de l'examen. L'objectif est de vous entraîner sur les thèmes et situations réellement rencontrés au test FIDE."
+                "title": "Travaillez-vous vraiment sur des scénarios proches de l'examen FIDE ?",
+                "content": "Oui. Nos <linkScenarios>scénarios</linkScenarios> reprennent les grands thèmes de la vie quotidienne évalués à l'examen FIDE."
             },
             "unknownLevel": {
                 "title": "Je ne connais pas mon niveau, par où commencer ?",
@@ -446,15 +444,15 @@
             },
             "levels": {
                 "title": "La préparation convient-elle aux niveaux A1, A2 et B1 ?",
-                "content": "Oui. La préparation couvre les objectifs A1, A2 et B1, avec des contenus adaptés selon le niveau visé et les compétences à travailler. Le <linkPack>Pack FIDE</linkPack> et les <linkPrivate>cours privés</linkPrivate> permettent d'ajuster la préparation selon votre profil."
+                "content": "Oui. La préparation couvre les objectifs A1, A2 et B1, avec des contenus adaptés selon le niveau visé et les compétences à travailler. <linkPack>La préparation à l'examen</linkPack> et les <linkPrivate>cours privés</linkPrivate> permettent d'ajuster la préparation selon votre profil."
             },
             "online": {
                 "title": "La préparation se fait-elle entièrement en ligne ?",
-                "content": "Oui. Les <linkMock>examens blancs</linkMock>, le <linkPack>Pack FIDE</linkPack> et les <linkPrivate>cours privés</linkPrivate> peuvent être suivis en ligne. Vous pouvez donc vous entraîner depuis la Suisse ou depuis l'étranger, à votre rythme."
+                "content": "Oui. Les <linkMock>examens blancs</linkMock>, <linkPack>la préparation à l'examen</linkPack> et les <linkPrivate>cours privés</linkPrivate> peuvent être suivis en ligne. Vous pouvez donc vous entraîner depuis la Suisse ou depuis l'étranger, à votre rythme."
             },
             "timeline": {
                 "title": "Combien de temps faut-il pour se préparer au FIDE ?",
-                "content": "Cela dépend de votre niveau actuel, du niveau visé et du temps disponible. Pour un objectif proche, un plan ciblé avec <linkMock>examens blancs</linkMock> et <linkPrivate>cours privés</linkPrivate> peut être plus efficace. Pour une progression complète, le <linkPack>Pack FIDE</linkPack> permet de travailler régulièrement sur plusieurs semaines."
+                "content": "Cela dépend de votre niveau actuel, du niveau visé et du temps disponible. Pour un objectif proche, un plan ciblé avec <linkMock>examens blancs</linkMock> et <linkPrivate>cours privés</linkPrivate> peut être plus efficace. Pour une progression complète, <linkPack>la préparation à l'examen</linkPack> permet de travailler régulièrement sur plusieurs semaines."
             }
         }
     },
@@ -616,6 +614,7 @@
     "Fide": {
         "FidePack": {
             "CoursesAccordionClient": {
+                "packFide": "Pack Exam",
                 "summary": "{modules, plural, one {# module} other {# modules}} • {lessons, plural, one {# leçon} other {# leçons}}",
                 "progress": "{watched}/{total} {total, plural, one {leçon} other {leçons}} • {duration}",
                 "freePreview": "Offert"
@@ -690,9 +689,9 @@
                     "views": "vues",
                     "lastActivity": "Dernière activité : {time}",
                     "altVideoThumb": "Miniature de la vidéo",
-                    "lockedOverlayHeadline": "Contenu réservé au Pack FIDE",
-                    "lockedOverlayHeadlineRich": "Contenu réservé au <strong>Pack FIDE</strong>",
-                    "ctaBuyPack": "Acheter le Pack FIDE",
+                    "lockedOverlayHeadline": "Contenu réservé au Pack Exam",
+                    "lockedOverlayHeadlineRich": "Contenu réservé au <strong>Pack Exam</strong>",
+                    "ctaBuyPack": "Acheter le Pack Exam",
                     "status": {
                         "watched": "Vu",
                         "unwatched": "Non vu",
@@ -706,9 +705,9 @@
                     "fallbackTitle": "Louer un appartement",
                     "badgeUnderstand": "Comprendre",
                     "lastActivity": "Dernière activité : {time}",
-                    "lockedOverlayHeadline": "Contenu réservé au Pack FIDE",
-                    "lockedOverlayHeadlineRich": "Contenu réservé au <b>Pack FIDE</b>",
-                    "ctaBuyPack": "Acheter le Pack FIDE"
+                    "lockedOverlayHeadline": "Contenu réservé au Pack Exam",
+                    "lockedOverlayHeadlineRich": "Contenu réservé au <b>Pack Exam</b>",
+                    "ctaBuyPack": "Acheter le Pack Exam"
                 },
                 "PrivateCoursesCard": {
                     "urgent": "Urgent",
@@ -734,9 +733,9 @@
                 "altVideo": "vidéo",
                 "globalProgress": "PROGRESSION GÉNÉRALE",
                 "lastActivityRich": "Dernière activité : <b>{time}</b>",
-                "ctaBuyPack": "Acheter le Pack FIDE",
-                "ctaBuyPackStrong": "Acheter le <b>Pack FIDE</b>",
-                "lockedOverlayHeadline": "Contenu réservé au Pack FIDE",
+                "ctaBuyPack": "Acheter le Pack Exam",
+                "ctaBuyPackStrong": "Acheter le <b>Pack Exam</b>",
+                "lockedOverlayHeadline": "Contenu réservé au Pack Exam",
                 "allVideos": "Toutes les vidéos",
                 "areYouBeginner": "Cours Débutant"
             },
@@ -848,16 +847,16 @@
             }
         },
         "FideVideosPage": {
-            "title": "Toutes nos <hs6>Vidéos FIDE</hs6>",
-            "subtitleRich": "Découvrez notre sélection de vidéos FIDE pour mettre <hs6>toutes les chances de votre côté</hs6> et réussir votre examen.",
+            "title": "Toutes nos <hs6>vidéos sur l'examen FIDE</hs6>",
+            "subtitleRich": "Découvrez notre sélection de vidéos sur l'examen FIDE pour mettre <hs6>toutes les chances de votre côté</hs6> et réussir votre examen.",
             "packageSelect": {
                 "all": "Toutes",
                 "targetedVideos": "Vidéos ciblées"
             }
         },
         "FideExams": {
-            "title": "Tous nos <hs5>Examens FIDE</hs5>",
-            "subtitle": "Préparez chaque épreuve étape par étape : choisissez votre niveau et le type d’épreuve pour des révisions ciblées.",
+            "title": "Tous nos <hs5>Examens</hs5>",
+            "subtitle": "Préparez chaque épreuve étape par étape : choisissez votre niveau et le type d’épreuve que vous voulez pratiquer.",
             "filters": {
                 "level": {
                     "placeholder": "Niveau",
@@ -892,14 +891,14 @@
         "Formateur": {
             "title": "Pourquoi choisir <noWrap><hs4>nos leçons</hs4> ?</noWrap>",
             "competences": {
-                "description1": "Plus de <b>8 ans</b> d'expérience en tant qu'expert FIDE.",
+                "description1": "Plus de <b>8 ans</b> d'expérience en tant qu'expert de l'examen FIDE.",
                 "description2": "Plus de <b>300</b> étudiants qui ont réussi leur test FIDE → <b>98%</b> de réussite.",
                 "description3": "<b>16 ans d'expérience</b> dans l'enseignement du français pour les étrangers.",
                 "description4": "Meilleur formateur de français sur Udemy."
             },
             "formateurName": "Yohann Coussot",
             "formateurTitle": "Votre formateur",
-            "formateurRole": "Professeur de français et expert FIDE.",
+            "formateurRole": "Professeur de français et expert de l'examen FIDE.",
             "point1": "Améliorez votre français et <under2>présentez-vous avec confiance</under2> <noWrap>au test FIDE.</noWrap>",
             "point2": "Explorez tous les thèmes FIDE, <under4>élargissez votre vocabulaire</under4> et anticipez les questions de l'examinateur.",
             "point3": "<under2>Mettez l'accent sur l'oral</under2> et <under2>pratiquez</under2> avec les scénarios du test les <noWrap>plus récents.</noWrap>",
@@ -908,25 +907,25 @@
             "citation": "<under1>L'alternative idéale</under1> pour réussir l'examen FIDE – flexibilité et efficacité",
             "ComparativeTabel": {
                 "titles": {
-                    "FIDE_Expertise": "Expertise FIDE",
+                    "FIDE_Expertise": "Expertise de l'examen",
                     "Personalized_Preparation": "Préparation personnalisée",
                     "Flexible_Scheduling": "Horaires flexibles",
-                    "Latest_Scenarios": "Accès aux derniers scénarios",
+                    "Latest_Scenarios": "Accès aux scénarios",
                     "Continuous_Support": "Accompagnement continu",
                     "Self_Study_Platform": "Plateforme d'auto-apprentissage",
                     "Price_Hour": "Tarif/heure"
                 },
                 "smallTitles": {
-                    "FIDE_Expertise": "Expertise FIDE",
+                    "FIDE_Expertise": "Expertise examen",
                     "Personalized_Preparation": "Préparation personnalisée",
                     "Flexible_Scheduling": "Horaires flexibles",
-                    "Latest_Scenarios": "Derniers scénarios",
+                    "Latest_Scenarios": "Scénarios",
                     "Continuous_Support": "Soutien continu",
                     "Self_Study_Platform": "Auto-apprentissage",
                     "Price_Hour": "Tarif/heure"
                 },
                 "offers": {
-                    "Price_From": "Dès <b5>70</b5> CHF",
+                    "Price_From": "Dès <b5>65</b5> CHF",
                     "Others_Range": "<b4>90</b4> à <b4>120</b4> CHF"
                 },
                 "headings": {
@@ -986,7 +985,7 @@
             },
             "ctaHasPack": "Acheter des cours privés",
             "ctaNoPack": "Choisir ma formule",
-            "ctaBuyPack": "Acheter le Pack FIDE",
+            "ctaBuyPack": "Acheter le Pack Exam",
             "linkAllExams": "Voir tous les examens disponibles",
             "imageAlt": "Infographie sur les examens"
         },
@@ -1014,11 +1013,11 @@
             "steps": {
                 "oralProduction": {
                     "title": "Expression orale",
-                    "description": "Mettez le vocabulaire en pratique grâce à la production orale. Travaillez sur les scénarios FIDE : au niveau A2, l'accent est mis sur les descriptions, les jeux de rôle et les questions simples, tandis qu'au niveau B1, les questions deviennent plus complexes."
+                    "description": "Mettez le vocabulaire en pratique grâce à la production orale. Travaillez sur les scénarios : au niveau A2, l'accent est mis sur les descriptions, les jeux de rôle et les questions simples, tandis qu'au niveau B1, les questions deviennent plus complexes."
                 },
                 "listeningReading": {
                     "title": "Compréhension orale & lecture",
-                    "description": "Approfondissez les sujets liés au FIDE à travers des exercices d'écoute et de lecture. Affinez votre compréhension orale et élargissez votre vocabulaire."
+                    "description": "Approfondissez les sujets liés au test FIDE à travers des exercices d'écoute et de lecture. Affinez votre compréhension orale et élargissez votre vocabulaire."
                 },
                 "homeworkExercises": {
                     "title": "Devoirs & exercices",
@@ -1027,7 +1026,7 @@
             },
             "title1": "À quoi ressemble",
             "title2": "<hs3>un cours</hs3> ?",
-            "videoDescription": "Un exemple de scénario <hs2>FIDE</hs2> avec une étudiante, Jessica.",
+            "videoDescription": "Un exemple de scénario <hs2>Oral A2</hs2> avec une étudiante, Jessica.",
             "videoKey": "fide/apercu-d-une-classe.mp4",
             "posterImage": "/images/jessica-apercu-thumbnail.jpg"
         },
@@ -1100,8 +1099,8 @@
             "moreExams": "Plus d'examens blancs"
         },
         "ReviewsFide": {
-            "title": "<hs3>Retours d'expérience</hs3> clients FIDE",
-            "description": "Découvrez des témoignages d'apprenants ayant utilisé les contenus FIDE pour progresser.",
+            "title": "<hs3>Retours d'expérience</hs3> de nos étudiants",
+            "description": "Découvrez des témoignages d'apprenants ayant utilisé nos services de préparation à l'examen.",
             "circularProgress": {
                 "score": "Score Fide :",
                 "lessons": "Leçons",
@@ -1110,7 +1109,7 @@
             "seeFullComment": "Voir le commentaire complet"
         },
         "ContactForFide": {
-            "title": "Contact préparation FIDE",
+            "title": "Contact préparation au test",
             "description": "Réservez un entretien gratuit avec le professeur pour définir votre plan de formation personnalisé.",
             "successMessage": "Votre demande a été envoyée. Nous vous contacterons dès que possible, veuillez vérifier vos spams si vous ne voyez pas notre e-mail.",
             "errorMessage": "Oups ! Quelque chose a mal tourné.",
@@ -1138,7 +1137,7 @@
             }
         },
         "ContactForFideCourses": {
-            "title": "Décidez en toute <hs1>confiance</hs1> !",
+            "title": "<hs1>Préparez</hs1> votre test FIDE !",
             "description1": "Établissons <textxl><under1>GRATUITEMENT</under1></textxl> votre <textxl><under1>plan d'apprentissage</under1></textxl> personnalisé.",
             "label": "Email",
             "placeholder": "Mon adresse email",
@@ -1147,7 +1146,7 @@
             "ContactFideForm": {
                 "objectifPlaceholder": "Objectif",
                 "objectifOptions": {
-                    "preparationFide": "Préparation FIDE",
+                    "preparationFide": "Préparation au test",
                     "naturalisation": "Naturalisation"
                 },
                 "niveauActuelPlaceholder": "Niveau actuel",
@@ -1250,7 +1249,7 @@
             "preparation_examen": {
                 "title": "Comment préparer le test FIDE au mieux ?",
                 "content": {
-                    "part1": "La meilleure méthode est de travailler avec un professeur qui connaît parfaitement l’examen FIDE. Il vous aidera à établir un plan d’étude précis en fonction de votre niveau actuel et du niveau à atteindre.",
+                    "part1": "La meilleure méthode est de travailler avec un professeur qui connaît l’examen FIDE. Il vous aidera à établir un plan d’étude précis en fonction de votre niveau actuel et du niveau à atteindre.",
                     "part2": "L’examen étant basé sur les situations de la vie quotidienne en Suisse, la préparation doit être spécialisée sur cela. Étudiez les grands thèmes récurrents de l’examen (La santé / Le logement / le travail ...), la grammaire essentielle de l’examen ainsi que les scénarios de l’Oral.",
                     "link1a": "Pour plus de détails, regardez ",
                     "link1b": "cette vidéo",
@@ -1275,7 +1274,7 @@
                         "item1": "une préparation à un coût moins élevé",
                         "item2": "un programme vraiment personnalisé",
                         "item3": "plus de flexibilité dans les horaires",
-                        "item4": "un accès aux scénarios les plus récents/fréquents de l’examen"
+                        "item4": "Une pratique intensive de scénarios comme à l’examen."
                     },
                     "link": "Contactez-moi"
                 }
@@ -1292,8 +1291,8 @@
             },
             "structuredPath": {
                 "prefix": "Pour un parcours structuré,",
-                "cta": "découvrez le Pack FIDE",
-                "text": "Pour un parcours structuré, <link>découvrez le Pack FIDE</link>."
+                "cta": "découvrez notre préparation à l'examen",
+                "text": "Pour un parcours structuré, <link>découvrez notre préparation à l'examen</link>."
             },
             "guidedPractice": {
                 "prefix": "Besoin de pratique guidée ?",
@@ -1450,8 +1449,8 @@
                 },
                 "ctaLine": {
                     "prefix": "Réviser à votre rythme ?",
-                    "linkLabel": "Pack FIDE",
-                    "text": "Réviser à votre rythme ? <link>Pack FIDE</link>"
+                    "linkLabel": "Pack Exam",
+                    "text": "Réviser à votre rythme ? <link>Pack Exam</link>"
                 },
                 "ctaGuide": "Lire le guide complet"
             }
@@ -1459,12 +1458,12 @@
         "FidePageTips": {
             "titleHighlight": "Conseils",
             "titleSuffix": "et stratégies pour le jour J",
-            "intro": "Préparer le FIDE, c'est surtout répéter les bonnes situations et adopter une méthode stable.<br></br><under5>L'objectif :</under5> arriver serein, comprendre rapidement les consignes, et répondre avec précision à l'oral comme à l'écrit.",
+            "intro": "Préparer le FIDE, c'est surtout répéter les scénarios de l'examen et adopter une méthode efficace.<br></br><under5>L'objectif :</under5> arriver serein, comprendre rapidement les consignes, et répondre avec précision à l'oral comme à l'écrit.",
             "videoTitle": "Le test FIDE : Conseils et stratégies",
             "tips": {
                 "1": {
                     "label": "Préparation ciblée",
-                    "text": "Travaillez en priorité les <under5>thèmes du quotidien</under5>, avec des supports basés sur des <under5>scénarios concrets</under5>."
+                    "text": "Travaillez en priorité les <under5>thèmes du quotidien</under5> et des <under5>scénarios concrets</under5>."
                 },
                 "2": {
                     "label": "Format exact",
@@ -1472,7 +1471,7 @@
                 },
                 "3": {
                     "label": "Travail de l'oral",
-                    "text": "Pratiquez avec un professeur : <under5>scénarios fréquents</under5>, questions possibles, formulations utiles et <under5>questions d'introduction</under5>."
+                    "text": "Pratiquez avec un professeur : <under5>Scénarios oraux A2 et B1</under5>, questions possibles, formulations utiles et <under5>questions d'introduction</under5>."
                 }
             },
             "keyPoints": {
@@ -1509,23 +1508,23 @@
             "titlePrefix": "Passez de l'",
             "titleHighlight": "info",
             "titleSuffix": "à la préparation",
-            "subtitle": "Trois formats complémentaires selon votre rythme et votre besoin.",
+            "subtitle": "Trois formats complémentaires selon votre rythme et vos besoins.",
             "cards": {
                 "pack": {
-                    "title": "Pack FIDE",
-                    "description": "Vidéos guidées, méthode et progression à votre rythme.",
+                    "title": "Pack Exam",
+                    "description": "Un programme ultra complet avec vidéos sur l'examen FIDE, PDFs et scénarios comme à l’examen.",
                     "cta": "Voir le pack",
-                    "imageAlt": "Aperçu du Pack FIDE"
+                    "imageAlt": "Aperçu du Pack Exam"
                 },
                 "mockExams": {
                     "title": "Examens blancs",
-                    "description": "Entraînement ciblé sur des scénarios proches de l'examen.",
+                    "description": "Des tests de type FIDE reprenant des scénarios similaires à l'examen.",
                     "cta": "Voir les examens blancs",
                     "imageAlt": "Aperçu des examens blancs FIDE"
                 },
                 "private": {
                     "title": "Cours privés",
-                    "description": "Accompagnement 1:1 pour corriger vos points bloquants.",
+                    "description": "Un coaching sur mesure pour améliorer votre français, gagner en confiance à l'oral et maîtriser les sujets de l'examen FIDE.",
                     "cta": "Voir les cours privés",
                     "imageAlt": "Aperçu des cours privés FIDE"
                 }
@@ -1540,26 +1539,26 @@
                 "line3": "des cours",
                 "highlight": "privés"
             },
-            "subtitle": "Un coaching 1:1 centré sur vos blocages réels pour arriver prêt le jour de l'examen.",
+            "subtitle": "Un coaching privé pour améliorer votre français, gagner en confiance à l'oral et être prêt le jour de l'examen.",
             "ctaPrimary": "Voir les formules",
             "ctaSecondary": "Entretien gratuit",
             "imageAlt": "Cours privé de français",
             "cards": {
                 "plan": {
                     "title": "Plan personnalisé",
-                    "text": "Objectifs clairs dès la 1re séance."
+                    "text": "Un programme clair en fonction de vos objectifs."
                 },
                 "scenarios": {
-                    "title": "Scénarios actuels",
-                    "text": "Pratique orale ciblée A1-A2 / A2-B1."
+                    "title": "Scénarios",
+                    "text": "Pratique orale sur les scénarios possibles de l'examen."
                 },
                 "feedback": {
                     "title": "Feedback direct",
-                    "text": "Corrections concrètes et actionnables."
+                    "text": "Corrections, stratégies et conseils."
                 },
                 "flexible": {
                     "title": "Flexible",
-                    "text": "Réservation possible rapidement."
+                    "text": "Réservation facile et rapide."
                 }
             }
         },
@@ -1570,6 +1569,10 @@
                 "suffix": ".",
                 "close": "Fermer",
                 "text": "Faites à votre mesure : <link>choisissez vos heures</link>."
+            },
+            "contactHint": {
+                "text": "Si vous avez besoin d'une préparation plus spécifique ou d'un accompagnement plus complet,",
+                "cta": "contactez-nous via le formulaire"
             },
             "plans": {
                 "lastMinute": {
@@ -1622,44 +1625,44 @@
             },
             "mix": {
                 "badge": "Option autonomie",
-                "title": "Mix idéal: cours privés + Pack FIDE",
+                "title": "Mix idéal: cours privés + Pack Exam",
                 "description": "Travaillez en autonomie entre les séances grâce à la plateforme e-learning, puis validez vos progrès en cours privés avec un coach.",
                 "bullets": {
                     "1": "Autonomie entre les séances",
                     "2": "Vidéos + examens blancs",
                     "3": "Coaching ciblé"
                 },
-                "cta": "Découvrir le Pack FIDE"
+                "cta": "Découvrir notre préparation"
             }
         },
         "PrivateCoursesNextSteps": {
             "badge": "Aller plus loin",
             "titlePrefix": "Complétez votre",
             "titleHighlight": "préparation",
-            "titleSuffix": "FIDE",
-            "subtitle": "Combinez cours privés, examens blancs et Pack FIDE e-learning pour une progression plus structurée.",
+            "titleSuffix": "",
+            "subtitle": "Combinez cours privés, examens blancs et Pack Exam e-learning pour une progression plus structurée.",
             "pack": {
-                "imageAlt": "Aperçu du Pack FIDE",
-                "title": "Pack FIDE e-learning",
+                "imageAlt": "Aperçu du Pack Exam",
+                "title": "Pack Exam",
                 "description": "Scénarios actuels, vidéos et ressources pour progresser entre vos cours.",
                 "cta": "Voir le pack"
             },
             "mockExams": {
                 "imageAlt": "Aperçu des examens blancs FIDE",
-                "title": "Examens blancs FIDE",
+                "title": "Examens blancs",
                 "description": "Entraînez-vous en conditions proches du test et suivez votre progression.",
                 "cta": "Voir les examens blancs"
             },
-            "title": "Complétez votre <hs2>préparation</hs2> FIDE"
+            "title": "Complétez votre <hs2>préparation</hs2>"
         },
         "PrivateCoursesPage": {
             "offersTitle": {
-                "prefix": "Choisissez votre rythme de",
-                "highlight": "coaching privé",
-                "text": "Choisissez votre rythme de <hs2>coaching privé</hs2>"
+                "prefix": "Choisissez votre",
+                "highlight": "préparation",
+                "text": "Choisissez votre <hs2>préparation</hs2>"
             },
-            "offersSubtitle": "Choisissez une formule claire selon votre délai et votre niveau actuel.",
-            "faqTitleSuffix": "des cours privés FIDE",
+            "offersSubtitle": "Cours de dernière minute, révisions des scénarios ou préparation intensive, nous avons la formule pour vous.",
+            "faqTitleSuffix": "des cours privés",
             "faqSubtitle": "Réponses rapides pour choisir la formule la plus adaptée à votre objectif.",
             "breadcrumbs": {
                 "home": "Accueil",
@@ -1673,22 +1676,18 @@
                 "brand": "Start French Now"
             },
             "faqTitle": {
-                "text": "<hs2>FAQ</hs2> des cours privés FIDE"
+                "text": "<hs2>FAQ</hs2> des cours privés"
             }
         },
         "PrivateCoursesFaq": {
             "items": {
                 "audience": {
-                    "title": "À qui s’adressent les cours privés FIDE ?",
+                    "title": "À qui s’adressent les cours privés ?",
                     "content": "Ces cours s’adressent aux candidats qui préparent le test FIDE (A1-A2 ou A2-B1), que vous partiez de zéro ou que vous souhaitiez consolider votre niveau avant l’examen."
                 },
                 "online": {
                     "title": "Les cours privés sont-ils 100% en ligne ?",
                     "content": "Oui. Les cours se déroulent en visioconférence, avec un accompagnement pas à pas et des horaires flexibles."
-                },
-                "scenarios": {
-                    "title": "Travaillez-vous les scénarios actuels du test FIDE ?",
-                    "content": "Oui. Nous travaillons les scénarios les plus récents du test, basés sur les retours de nos étudiants ayant passé l’examen, pour vous entraîner sur des situations réalistes."
                 },
                 "hours": {
                     "title": "Combien d’heures faut-il prévoir ?",
@@ -1702,9 +1701,9 @@
                     "content": "Oui. Selon les disponibilités, vous pouvez démarrer rapidement, y compris en préparation intensive de dernière minute."
                 },
                 "pack": {
-                    "title": "Puis-je combiner ces cours avec le Pack FIDE ?",
-                    "content": "Oui. Les cours privés complètent parfaitement le Pack FIDE: vous progressez en autonomie entre les séances, puis vous corrigez vos points faibles avec un coach.",
-                    "cta": "Voir le Pack FIDE e-learning"
+                    "title": "Puis-je combiner ces cours avec la plateforme E-learning ?",
+                    "content": "Oui. Les cours privés complètent parfaitement votre apprentissage E-Learning : vous progressez en autonomie entre les séances, puis vous corrigez vos points faibles avec un coach.",
+                    "cta": "Voir la préparation E-learning"
                 },
                 "afterLesson": {
                     "title": "Que se passe-t-il après chaque cours ?",
@@ -1721,9 +1720,9 @@
             }
         },
         "PackFideHero": {
-            "titlePrefix": "Réussissez le test avec le",
-            "titleHighlight": "Pack FIDE",
-            "subtitle": "Une préparation claire et complète avec des vidéos guidées, <b><under6>les scénarios actuels</under6></b> du test FIDE et des examens blancs.",
+            "titlePrefix": "Réussissez le test avec",
+            "titleHighlight": "notre Pack Exam",
+            "subtitle": "Une préparation claire et complète avec des vidéos guidées, <b><under6>des scénarios pratiques comme à l'examen FIDE</under6></b> et des examens blancs.",
             "ctaOffers": {
                 "label": "Les offres",
                 "aria": "Voir les offres"
@@ -1736,38 +1735,38 @@
                 "desktopAlt": "Aperçu desktop du pack FIDE",
                 "mobileAlt": "Aperçu mobile du pack FIDE"
             },
-            "title": "Réussissez le test avec le <hs6>Pack FIDE</hs6>"
+            "title": "Réussissez le test avec notre <hs6>Pack Exam</hs6>"
         },
         "PackFideWhatIs": {
-            "titlePrefix": "Qu'est-ce que le",
-            "titleHighlight": "pack FIDE",
+            "titlePrefix": "Que propose",
+            "titleHighlight": "notre préparation à l'examen",
             "titleSuffix": "?",
             "bullets": {
                 "1": "Atteignez vos objectifs FIDE avec la <b><under4>plateforme e-learning</under4></b> la plus complète sur l'examen.",
-                "2": "Pratiquez directement sur <b><under5>les scénarios actuels</under5></b> de l'examen, toujours à jour.",
-                "3": "Bénéficiez de l'accompagnement continu d'un véritable <b><under2>expert FIDE</under2></b>."
+                "2": "Pratiquez directement sur <b><under5>des scénarios actualisés</under5></b>, similaires à l'examen.",
+                "3": "Bénéficiez de l'accompagnement continu d'un véritable <b><under2>expert de l'examen FIDE</under2></b>."
             },
-            "videoSubtitle": "Découvrez notre préparation FIDE",
+            "videoSubtitle": "Découvrez notre préparation",
             "proof": {
                 "prefix": "Une méthode",
                 "highlight": "validée",
                 "text": "Une méthode <hs6>validée</hs6>"
             },
-            "title": "Qu'est-ce que le <hs6>pack FIDE</hs6> ?"
+            "title": "Que propose <hs6>notre préparation à l'examen</hs6> ?"
         },
         "PackFideNextSteps": {
             "badge": "Complétez votre préparation",
             "subtitle": "Combinez le pack e-learning avec des examens blancs et, si nécessaire, des cours privés.",
             "mockExams": {
-                "imageAlt": "Aperçu des examens blancs FIDE",
-                "title": "Examens blancs FIDE",
+                "imageAlt": "Aperçu des examens blancs",
+                "title": "Examens blancs",
                 "description": "Passez le test, obtenez un score immédiat et recevez votre plan d'études idéal.",
                 "cta": "Voir les examens blancs"
             },
             "privateCourses": {
-                "imageAlt": "Aperçu des cours privés FIDE",
-                "title": "Cours privés FIDE",
-                "description": "Améliorez votre français et pratiquez en direct les scénarios de l'examen FIDE avec votre professeur.",
+                "imageAlt": "Aperçu des cours privés",
+                "title": "Cours privés",
+                "description": "Améliorez votre français et pratiquez en direct des scénarios possibles avec votre professeur.",
                 "cta": "Voir les cours privés"
             },
             "title": "Boostez votre <hs6>confiance</hs6> avant l'examen"
@@ -1778,11 +1777,11 @@
                 "autonomy": {
                     "title": "Pack Autonomie",
                     "description": {
-                        "prefix": "Accédez à notre plateforme d'auto-apprentissage FIDE, de débutant complet au niveau B1, et progressez",
+                        "prefix": "Accédez à notre plateforme d'auto-apprentissage sur l'examen FIDE, de débutant complet au niveau B1, et progressez",
                         "bold": "à votre rythme",
-                        "text": "Accédez à notre plateforme d'auto-apprentissage FIDE, de débutant complet au niveau B1, et progressez <b>à votre rythme</b>."
+                        "text": "Accédez à notre plateforme d'auto-apprentissage sur l'examen FIDE, de débutant complet au niveau B1, et progressez <b>à votre rythme</b>."
                     },
-                    "features": ["14h de parcours vidéo FIDE, A0 → B1", "100+ scénarios dont les sujets actuels", "Suivi des progrès + Messagerie"],
+                    "features": ["14h de vidéos spécifiques au test, A0 → B1", "100+ scénarios", "Suivi des progrès + Messagerie"],
                     "extras": ["Mises à jour régulières", "Progression garantie"],
                     "cta": "OBTENIR LA FORMATION"
                 },
@@ -1791,21 +1790,21 @@
                     "description": {
                         "prefix": "Préparez l'examen via notre plateforme",
                         "bold1": "d'auto-apprentissage",
-                        "middle": "puis pratiquez les scénarios FIDE avec 6h de",
+                        "middle": "puis pratiquez les scénarios comme à l'examen FIDE avec 6h de",
                         "bold2": "coaching privé",
-                        "text": "Préparez l'examen via notre plateforme <b>d'auto-apprentissage</b>, puis pratiquez les scénarios FIDE avec 6h de <b>coaching privé</b>."
+                        "text": "Préparez l'examen via notre plateforme <b>d'auto-apprentissage</b>, puis pratiquez les scénarios comme à l'examen FIDE avec 6h de <b>coaching privé</b>."
                     },
-                    "features": ["Tous les avantages de la formation FIDE", "6 heures de cours privés en visio", "Conseils experts et personnalisés"],
+                    "features": ["Tous les avantages de notre Pack Exam", "6 heures de cours privés en visio", "Conseils experts et personnalisés"],
                     "extras": ["1h de coaching offerte", "Réservation sous 12h possible"],
                     "cta": "CHOISIR L'OFFRE MIXTE"
                 }
             },
             "privateBadge": "Option complémentaire",
-            "privateTitle": "Cours privés FIDE",
-            "privateDescription": "Pour un accompagnement personnalisé en classe privée avec votre professeur. Pratiquez en direct les scénarios de l'examen FIDE, construisez vos réponses types et gagnez en confiance à l'oral.",
+            "privateTitle": "Cours privés",
+            "privateDescription": "Pour un accompagnement personnalisé en classe privée avec votre professeur. Pratiquez en direct des scénarios pratiques comme à l'examen FIDE, construisez vos réponses types et gagnez en confiance à l'oral.",
             "privateBullets": {
                 "1": "Coaching individuel",
-                "2": "Scénarios actuels",
+                "2": "Scénarios pratiques",
                 "3": "Feedback direct"
             },
             "privateCta": "Voir les cours privés",
@@ -1815,52 +1814,49 @@
             "breadcrumbs": {
                 "home": "Accueil",
                 "fide": "FIDE",
-                "current": "Pack FIDE e-learning"
+                "current": "Pack Exam e-learning"
             },
             "schema": {
-                "productName": "Pack FIDE e-learning",
+                "productName": "Pack Exam e-learning",
                 "productDescription": "Programme vidéo FIDE, examens blancs et parcours structuré pour préparer l'examen avec confiance.",
                 "brand": "Start French Now"
             },
+            "examsCtaBuyPreparation": "Acheter notre préparation",
             "faq": {
-                "titleSuffix": "spéciale Pack FIDE",
+                "titleSuffix": "préparation",
                 "subtitle": "Toutes les réponses essentielles pour choisir votre formule e-learning.",
                 "items": {
                     "included": {
-                        "title": "Que contient exactement le Pack FIDE e-learning ?",
-                        "content": "Le pack comprend un parcours vidéo structuré (du niveau débutant jusqu'au B1), des contenus spécifiques à l'examen FIDE (méthode, points clés, conseils pratiques), plus de 100 examens blancs, des supports de travail et des mises à jour régulières. Vous avez aussi un dashboard pour suivre votre progression et un espace d'échange avec votre professeur."
+                        "title": "Que contient exactement la préparation E-learning ?",
+                        "content": "La préparation comprend un parcours vidéo structuré (du niveau débutant jusqu'au B1), des contenus spécifiques à l'examen FIDE (méthode, points clés, conseils pratiques), plus de 100 examens blancs, des supports de travail et des mises à jour régulières. Vous avez aussi un dashboard pour suivre votre progression et un espace d'échange avec votre professeur."
                     },
                     "difference": {
                         "title": "Quelle est la différence entre le pack autonome et le pack accompagné ?",
-                        "content": "Le pack autonome vous donne tous les contenus pour travailler en autonomie. Le pack accompagné ajoute un suivi pédagogique plus étroit, avec des sessions ciblées sur les scénarios FIDE actuels."
+                        "content": "Le pack autonome vous donne tous les contenus pour travailler en autonomie. Le pack accompagné ajoute un suivi pédagogique plus étroit, avec des sessions ciblées sur la pratique de scénarios comme à l'examen."
                     },
                     "fromZero": {
-                        "title": "Le pack convient-il si je pars de zéro ?",
+                        "title": "La préparation convient-elle si je pars de zéro ?",
                         "content": "Oui. Le parcours est progressif et pensé pour vous amener étape par étape vers le niveau attendu au FIDE. Si vous débutez, vous commencez par les bases du français (cours débutant inclus), puis vous montez progressivement jusqu'au B1 avec les contenus spécifiques FIDE."
                     },
-                    "updates": {
-                        "title": "Est-ce que les scénarios sont mis à jour ?",
-                        "content": "Oui. Les contenus sont régulièrement ajustés selon les retours récents de candidats et l'évolution des attentes de l'examen. Quand de nouveaux scénarios apparaissent, nous les intégrons pour que votre préparation reste alignée avec les sujets les plus pertinents."
-                    },
                     "combine": {
-                        "title": "Puis-je combiner le pack avec des cours privés ?",
-                        "content": "Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les scénarios actuels du FIDE. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés.",
+                        "title": "Puis-je combiner la préparation avec des cours privés ?",
+                        "content": "Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les scénarios comme à l'examen. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés.",
                         "cta": "Voir les cours privés",
-                        "contentRich": "Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les scénarios actuels du FIDE. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés : <link>voir les cours privés</link>."
+                        "contentRich": "Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les scénarios comme à l'examen. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés : <link>voir les cours privés</link>."
                     },
                     "freeOption": {
                         "title": "Y a-t-il une option gratuite avant d'acheter ?",
-                        "content": "Oui. Vous pouvez consulter des vidéos gratuites et des aperçus pour tester la méthode avant d'acheter le pack.",
+                        "content": "Oui. Vous pouvez consulter des vidéos gratuites et des aperçus pour tester la méthode avant d'acheter la préparation.",
                         "cta": "Accéder aux vidéos gratuites",
-                        "contentRich": "Oui. Vous pouvez consulter des vidéos gratuites et des aperçus pour tester la méthode avant d'acheter le pack : <link>accéder aux vidéos gratuites</link>."
+                        "contentRich": "Oui. Vous pouvez consulter des vidéos gratuites et des aperçus pour tester la méthode avant d'acheter la préparation : <link>accéder aux vidéos gratuites</link>."
                     },
                     "speaking": {
-                        "title": "Est-ce que le pack suffit pour préparer aussi l'oral ?",
-                        "content": "Oui, le pack couvre les bases indispensables, y compris l'expression orale. Si vous avez besoin de retours directs et personnalisés, ajoutez des examens blancs encadrés ou des cours privés.",
+                        "title": "Est-ce que la préparation suffit pour préparer aussi l'oral ?",
+                        "content": "Oui, la préparation couvre les bases indispensables, y compris l'expression orale. Si vous avez besoin de retours directs et personnalisés, ajoutez des examens blancs encadrés ou des cours privés.",
                         "ctaMock": "examens blancs encadrés",
                         "ctaSeparator": "ou des",
                         "ctaPrivate": "cours privés",
-                        "contentRich": "Oui, le pack couvre les bases indispensables, y compris l'expression orale. Si vous avez besoin de retours directs et personnalisés, ajoutez des <mock>examens blancs encadrés</mock> ou des <private>cours privés</private>."
+                        "contentRich": "Oui, la préparation couvre les bases indispensables, y compris l'expression orale. Si vous avez besoin de retours directs et personnalisés, ajoutez des <mock>examens blancs encadrés</mock> ou des <private>cours privés</private>."
                     },
                     "choose": {
                         "title": "Comment choisir entre les formules ?",
@@ -1870,10 +1866,14 @@
                         "contentRich": "Si vous hésitez entre les formules, <link>réservez un entretien gratuit</link>. Le professeur vous aidera à définir un plan de formation personnalisé selon votre niveau, votre délai et votre objectif."
                     }
                 },
-                "title": "<hs6>FAQ</hs6> spéciale Pack FIDE"
+                "title": "<hs6>FAQ</hs6> préparation"
             }
         },
         "MockExamsPage": {
+            "PausedCta": {
+                "button": "Vente temporairement suspendue",
+                "message": "Les examens blancs sont temporairement indisponibles. Merci pour votre patience."
+            },
             "Page": {
                 "home": "Accueil",
                 "fide": "FIDE",
@@ -1884,12 +1884,12 @@
                 "regularPriceName": "Prix normal"
             },
             "Hero": {
-                "title": "<hs5>Examen blanc</hs5> FIDE",
+                "title": "<hs5>Examen blanc</hs5>",
                 "titlePrefix": "Examen blanc",
-                "titleHighlight": "FIDE",
+                "titleHighlight": "",
                 "subtitle": "Passez le test, recevez un score immédiat et repartez avec un vrai plan d’action.",
                 "imageAlt": "Illustration d'un examen blanc FIDE",
-                "logoAlt": "Logo FIDE",
+                "logoAlt": "Logo Start French Now",
                 "discoveryBadge": "Offre découverte",
                 "discountBadge": "-80%",
                 "oldPricePrefix": "au lieu de",
@@ -1920,18 +1920,18 @@
                 }
             },
             "Marquee": {
-                "completeTest": "Test FIDE complet",
+                "completeTest": "Test complet",
                 "fideFormat": "Format test FIDE",
                 "pdfVideos": "PDF + vidéos",
                 "teacherFeedback": "Retour professeur"
             },
             "Tests": {
-                "badge": "Épreuves test FIDE",
+                "badge": "Les épreuves",
                 "title": "Les mêmes <hs5>épreuves</hs5> que dans le test FIDE ?",
                 "titlePrefix": "Les mêmes",
                 "titleHighlight": "épreuves",
                 "titleSuffix": "que dans le test FIDE ?",
-                "subtitle": "Oui. Vous retrouvez la même logique de passation avec les 4 grandes parties du test FIDE et les mêmes tâches.",
+                "subtitle": "Vous retrouvez la même logique de passation avec les 4 grandes parties du test FIDE et le même type de tâches.",
                 "checks": {
                     "structure": "Même structure globale et progression",
                     "guided": "Interface guidée pour passer chaque partie clairement",
@@ -1962,8 +1962,8 @@
             },
             "Online": {
                 "badge": "Aperçu en ligne",
-                "title": "Passation du test FIDE <hs5>en ligne</hs5> ?",
-                "titlePrefix": "Passation du test FIDE",
+                "title": "Passation de notre examen blanc <hs5>en ligne</hs5> ?",
+                "titlePrefix": "Passation de notre examen blanc",
                 "titleHighlight": "en ligne",
                 "titleSuffix": "?",
                 "subtitle": "Oui, tout se fait en ligne pour vous guider clairement du début à la fin de l'examen blanc.",
@@ -1991,10 +1991,10 @@
             },
             "Reviews": {
                 "badge": "Retours clients",
-                "title": "<hs5>Retours d'expérience</hs5> clients FIDE",
+                "title": "<hs5>Retours d'expérience</hs5> de nos étudiants",
                 "titleHighlight": "Retours d'expérience",
-                "titleSuffix": "clients FIDE",
-                "subtitle": "Découvrez des témoignages d'apprenants ayant utilisé les contenus FIDE pour progresser."
+                "titleSuffix": "de nos étudiants",
+                "subtitle": "Découvrez des témoignages d'apprenants ayant utilisé nos services de préparation à l'examen."
             },
             "Offer": {
                 "badge": "Tarifs",
@@ -2040,7 +2040,7 @@
                 "items": {
                     "format": {
                         "title": "L'examen blanc reprend-il réellement le format du test FIDE ?",
-                        "content": "Oui. L'examen blanc est très fidèle au format du test FIDE, avec des consignes et un déroulé comparables. L'objectif est de vous placer dans des conditions au plus proche du réel, afin de réduire le stress lié à l'inconnu et de vous aider à comprendre précisément ce qui vous attend le jour du test FIDE."
+                        "content": "L'examen blanc est très fidèle au format du test FIDE, avec des consignes et un déroulé comparables. L'objectif est de vous placer dans des conditions au plus proche du réel, afin de réduire le stress lié à l'inconnu et de vous aider à comprendre précisément ce qui vous attend le jour du test FIDE."
                     },
                     "parts": {
                         "title": "Quelles épreuves sont incluses ?",
@@ -2083,8 +2083,8 @@
                         "content": "Oui, autant de fois que vous le souhaitez."
                     },
                     "packDifference": {
-                        "title": "Quelle différence avec le Pack FIDE ?",
-                        "content": "La passation de l'examen blanc s'achète à l'unité. Le Pack FIDE inclut automatiquement tout le contenu Start French Now FIDE, c'est-à-dire : les scénarios actuels du test FIDE, régulièrement mis à jour, ainsi que des dizaines d'entraînements, des cours de français et des cours spécifiques FIDE."
+                        "title": "Quelle différence avec notre préparation à l'examen ?",
+                        "content": "La passation de l'examen blanc s'achète à l'unité. Notre préparation à l'examen inclut automatiquement tout le contenu sur le thème du FIDE, c'est-à-dire : des scénarios similaires à l'examen FIDE, ainsi que des dizaines d'entraînements, des cours de français et des cours spécifiques sur les grands thèmes de l'examen."
                     },
                     "paymentMethods": {
                         "title": "Quels moyens de paiement sont acceptés ?",
@@ -2102,17 +2102,17 @@
                 "titlePrefix": "Vous souhaitez un",
                 "titleHighlight": "accompagnement",
                 "titleSuffix": "plus complet ?",
-                "subtitle": "Le Pack FIDE et les cours privés vous offrent une prise en charge plus structurée, plus complète et plus personnalisée.",
+                "subtitle": "La préparation à l'examen et les cours privés vous offrent une prise en charge plus structurée, plus complète et plus personnalisée.",
                 "pack": {
-                    "imageAlt": "Aperçu du Pack FIDE",
-                    "title": "Pack FIDE complet",
-                    "description": "Scénarios actuels, cours de français, PDF et vidéos pour avancer avec une méthode complète.",
+                    "imageAlt": "Aperçu de la préparation à l'examen",
+                    "title": "La préparation complète",
+                    "description": "Cours de français, PDFs, vidéos et scénarios pratiques pour vous aider à atteindre votre objectif à l'examen.",
                     "cta": "Voir le pack"
                 },
                 "private": {
                     "imageAlt": "Aperçu des cours privés FIDE",
-                    "title": "Cours privés FIDE",
-                    "description": "Un accompagnement ciblé avec un professeur expérimenté pour corriger vos points faibles et vous préparer avec les scénarios actuels.",
+                    "title": "Cours privés",
+                    "description": "Des leçons individuelles avec un professeur expérimenté pour améliorer votre français, étudier les grands thèmes de l’examen FIDE et pratiquer sur des scénarios comme à l’examen.",
                     "cta": "Réserver un entretien"
                 }
             }
@@ -2126,6 +2126,8 @@
             "session": "Déterminez le nombre d'heures dont vous avez besoin et trouvez le forfait idéal.",
             "notConnected": "Déterminez le nombre d'heures dont vous avez besoin et trouvez le forfait idéal. Déjà client ? Pour bénéficier d'un tarif préférentiel, ",
             "connectLink": "connectez-vous",
+            "ctaChooseOneHour": "Choisissez au moins 1 heure",
+            "ctaMaxReached": "Quantité maximale atteinte",
             "slider": {
                 "hours": {
                     "single": "heure",
@@ -2285,7 +2287,8 @@
                 "privateLessons": "Connectez-vous pour accéder à votre suivi.",
                 "checkout": "Connectez-vous pour accéder au paiement.",
                 "storyAccount": "Vous devez vous connecter pour garder le suivi des histoires.",
-                "frenchCourses": "Connectez-vous pour accéder à vos cours de français."
+                "frenchCourses": "Connectez-vous pour accéder à vos cours de français.",
+                "mockExam": "Connectez-vous pour accéder à votre examen blanc."
             }
         },
         "CredentialsForm": {

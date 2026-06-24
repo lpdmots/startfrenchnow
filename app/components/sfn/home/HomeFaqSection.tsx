@@ -52,12 +52,11 @@ export function HomeFaqSection() {
     }));
 
     return (
-        <section id="home-faq" className="pt-8 pb-20 lg:pt-16 lg:pb-24">
+        <section id="home-faq" className="overflow-x-clip pt-8 pb-20 lg:pt-16 lg:pb-24">
             <div className="mx-auto w-full max-w-7xl px-2 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-10">
                     <SlideFromLeft>
                         <div className="lg:sticky lg:top-24 lg:self-start">
-                            <p className="mb-4 md:mb-8 inline-flex rounded-full bg-secondary-6 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-100">{t("badge")}</p>
                             <h2 className="display-2 mb-3">{tRich("title", rich)}</h2>
                             <p className="mb-0 max-w-md text-base text-neutral-700 md:text-lg">{t("subtitle")}</p>
                         </div>

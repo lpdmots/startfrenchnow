@@ -48,12 +48,11 @@ export function HomePreparationOptionsSection() {
     };
 
     return (
-        <section id="fide-hub" className="py-16">
+        <section id="fide-hub" className="pt-8 pb-0 lg:py-16">
             <div id="plans" className="scroll-mt-24" />
             <div className="max-w-7xl m-auto px-4 lg:px-8">
                 <div className="text-center mb-8">
                     <h2 className="display-2 mb-4">{t.rich("title", rich)}</h2>
-                    <p className="mb-0">{t("subtitle")}</p>
                 </div>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
                     {cards.map(({ key, href, image, badgeClassName, linkClassName, ctaClassName, points }) => (

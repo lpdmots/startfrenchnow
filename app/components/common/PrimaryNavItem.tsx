@@ -55,7 +55,8 @@ export const PrimaryNavItem = ({ item, locale }: { item: SiteNavItem; locale: Lo
     const pathname = usePathname();
     const isActive = isSiteNavActive(pathname, item);
     const triggerClasses = clsx(
-        "header-nav-trigger whitespace-nowrap px-3 py-3 text-[0.92rem] font-bold leading-none xl:px-4",
+        "header-nav-trigger whitespace-nowrap px-3 py-3 text-[0.92rem] font-semibold leading-none xl:px-4",
+        item.priority === "primary-offer" && "font-bold",
         getTriggerAccentClasses(item.accent),
         isActive && "current"
     );
@@ -126,11 +127,11 @@ const PrimaryNavDropdown = ({
     );
 
     return (
-        <DropdownMenu content={content}>
-            <div className={clsx(triggerClasses, "gap-2")}>
+        <DropdownMenu content={content} openOnClick={false}>
+            <Link href={item.href} locale={locale} aria-current={isSiteNavActive(pathname, item) ? "page" : undefined} className={clsx(triggerClasses, "gap-2")}>
                 <span>{item.label}</span>
                 <FaCaretDown className="text-sm" />
-            </div>
+            </Link>
         </DropdownMenu>
     );
 };

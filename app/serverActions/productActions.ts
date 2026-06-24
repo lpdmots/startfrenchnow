@@ -141,6 +141,7 @@ export type FidePackSommaire = {
                 level?: Level[];
                 durationSec?: number;
                 isPreview?: boolean;
+                hideFromPackListingWithoutAccess?: boolean;
             }>;
         }>;
     }>;
@@ -170,6 +171,7 @@ export type FidePackSommaireNoLocale = {
                 level?: Level[];
                 durationSec?: number;
                 isPreview?: boolean;
+                hideFromPackListingWithoutAccess?: boolean;
                 resources?: Array<{
                     title: string;
                     url: string;
@@ -204,6 +206,7 @@ const FIDE_TOC_QUERY = groq`
         description_en,
         durationSec,
         isPreview,
+        hideFromPackListingWithoutAccess,
         resources
       }
     }
@@ -284,6 +287,7 @@ function normalizeFidePackSommaire(data: FidePackSommaireNoLocale, locale: Local
                     level: post.level,
                     durationSec: post.durationSec,
                     isPreview: post.isPreview,
+                    hideFromPackListingWithoutAccess: post.hideFromPackListingWithoutAccess,
                     resources: post.resources,
                 })),
             })),

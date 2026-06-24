@@ -6,9 +6,10 @@ interface DropdownProps {
     content: ReactNode;
     children: React.ReactNode;
     position?: "top" | "bottom" | "left" | "right";
+    openOnClick?: boolean;
 }
 
-const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "bottom" }) => {
+const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "bottom", openOnClick = true }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isMouseOverPopover, setIsMouseOverPopover] = useState(false);
     const closeTimer = useRef<NodeJS.Timeout | null>(null);
@@ -32,7 +33,10 @@ const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "
     };
 
     // NOUVELLE FONCTION pour gérer le clic/tap (utile pour les mobiles)
-    const handleTriggerClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleTriggerClick = () => {
+        if (!openOnClick) {
+            return;
+        }
         setIsOpen((prev) => !prev); // Bascule l'état
         // Annuler le timer de fermeture s'il y en a un
         if (closeTimer.current) {
@@ -86,7 +90,7 @@ const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "
         >
             <div
                 className="cursor-pointer"
-                role="button"
+                role={openOnClick ? "button" : undefined}
                 onClick={handleTriggerClick} // Utiliser le clic pour basculer (mobile et bureau)
                 onMouseEnter={handleTriggerMouseEnter} // Maintenir le survol pour le bureau
                 onMouseLeave={handleTriggerMouseLeave} // Maintenir le survol pour le bureau

@@ -17,6 +17,7 @@ type Props = {
 export const VideoPackageSelect = ({ flatFidePackSommaire, packages, locale, hasPack, initialPackageKey }: Props) => {
     const t = useTranslations("Fide.FideVideosPage.packageSelect");
     const allLabel = t("all");
+    const normalizedInitialKey = initialPackageKey && initialPackageKey !== "all" ? initialPackageKey : "all";
 
     const keyToTitle = (key?: string) => {
         if (!key || key === "all") return allLabel;
@@ -24,14 +25,19 @@ export const VideoPackageSelect = ({ flatFidePackSommaire, packages, locale, has
         return pack ? pack.title : allLabel;
     };
 
-    const [selectedPackageName, setSelectedPackageName] = useState<string>(() => keyToTitle(initialPackageKey));
-    const selectedPackage = packages.find((p) => p.title === selectedPackageName) || { packageColor: "var(--neutral-800)" as ColorType };
+    const [selectedPackageKey, setSelectedPackageKey] = useState<string>(normalizedInitialKey);
+    const selectedPackageName = keyToTitle(selectedPackageKey);
+    const selectedPackage = packages.find((p) => p.referenceKey === selectedPackageKey) || { packageColor: "var(--neutral-800)" as ColorType };
 
     const [_, setFideVideosSelectedPackage] = useSfnStore((s) => [s.fideVideosSelectedPackage, s.setFideVideosSelectedPackage]);
 
+    useEffect(() => {
+        setSelectedPackageKey(normalizedInitialKey);
+    }, [normalizedInitialKey]);
+
     const handleChange = (val: string) => {
-        setSelectedPackageName(val);
-        const key = val === allLabel ? "all" : packages.find((p) => p.title === val)?.referenceKey ?? "all";
+        const key = val === "all" ? "all" : val;
+        setSelectedPackageKey(key);
         setFideVideosSelectedPackage(key);
 
         const url = new URL(window.location.href);
@@ -41,17 +47,15 @@ export const VideoPackageSelect = ({ flatFidePackSommaire, packages, locale, has
     };
 
     const filteredPackSommaire = useMemo(() => {
-        if (selectedPackageName === allLabel) return flatFidePackSommaire;
-        const key = packages.find((p) => p.title === selectedPackageName)?.referenceKey;
-        if (!key) return flatFidePackSommaire;
-        return flatFidePackSommaire.filter((item) => item.packageReferenceKey === key);
-    }, [selectedPackageName, allLabel, flatFidePackSommaire, packages]);
+        if (selectedPackageKey === "all") return flatFidePackSommaire;
+        return flatFidePackSommaire.filter((item) => item.packageReferenceKey === selectedPackageKey);
+    }, [selectedPackageKey, flatFidePackSommaire]);
 
     return (
         <div className="flex justify-center w-full">
             <div className="max-w-3xl xl:max-w-none w-full">
                 <div className="flex mb-8">
-                    <Select name="theme" value={selectedPackageName} onValueChange={handleChange}>
+                    <Select name="theme" value={selectedPackageKey} onValueChange={handleChange}>
                         <SelectTrigger className="max-w-96 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--neutral-800)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--neutral-800)] mb-2">
                             <SelectValue>
                                 <p className="flex items-center mb-0">
@@ -59,7 +63,7 @@ export const VideoPackageSelect = ({ flatFidePackSommaire, packages, locale, has
                                     <span
                                         className="font-bold ml-2"
                                         style={{
-                                            color: selectedPackageName === allLabel ? "var(--neutral-800)" : selectedPackage.packageColor,
+                                            color: selectedPackageKey === "all" ? "var(--neutral-800)" : selectedPackage.packageColor,
                                         }}
                                     >
                                         {selectedPackageName}
@@ -70,11 +74,11 @@ export const VideoPackageSelect = ({ flatFidePackSommaire, packages, locale, has
 
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem className="hover:bg-neutral-200" value={allLabel}>
+                                <SelectItem className="hover:bg-neutral-200" value="all">
                                     {allLabel}
                                 </SelectItem>
                                 {packages.map((pack) => (
-                                    <SelectItem key={pack.title} className="hover:bg-neutral-200" value={pack.title}>
+                                    <SelectItem key={pack.referenceKey} className="hover:bg-neutral-200" value={pack.referenceKey}>
                                         {pack.title}
                                     </SelectItem>
                                 ))}

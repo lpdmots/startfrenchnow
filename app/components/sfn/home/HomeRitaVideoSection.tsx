@@ -41,7 +41,7 @@ export function HomeRitaVideoSection() {
     const modalData = {
         setOpen,
         title: "",
-        message: ritaReview.modalComment ?? ritaReview.comment,
+        message: ritaReview.modalComment ?? ritaReview.comment ?? "",
         functionOk: () => setOpen(false),
         buttonOkStr: "OK",
         clickOutside: true,
@@ -59,14 +59,14 @@ export function HomeRitaVideoSection() {
                             </div>
 
                         <div className="relative card m-auto max-w-5xl p-4 md:p-8">
-                            <div className="mg-bottom-24px mt-[-80px] keep absolute top-12">
+                            <div className="mg-bottom-24px mt-[-80px] keep absolute top-12 z-20">
                                 <div className="flex h-[76px] w-[76px] items-center justify-center rounded-full bg-neutral-800 text-neutral-100">
                                     <Quote className="h-9 w-9" />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4 min-h-[390px]">
                                 <div className="grid grid-cols-3 gap-4 lg:gap-8">
-                                    <div className="order-2 col-span-3 max-h-96 mx-auto md:order-2 md:col-span-1">
+                                    <div className="order-2 col-span-3 max-h-96 mx-auto md:order-2 md:col-span-1 relative z-10">
                                         <VideoFide
                                             videoKey={ritaReview.videoUrl}
                                             poster={ritaReview.videoThumbnail}
@@ -102,7 +102,7 @@ export function HomeRitaVideoSection() {
                                                         value={ritaReview.score}
                                                         gaugePrimaryColor="var(--secondary-5)"
                                                         gaugeSecondaryColor="var(--neutral-300)"
-                                                        className="h-[60px] -ml-10 -mr-12"
+                                                        className="h-[60px] md:-ml-10 md:-mr-12"
                                                     />
                                                 </div>
                                             ) : null}

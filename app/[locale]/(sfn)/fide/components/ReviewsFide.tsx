@@ -5,8 +5,28 @@ import { CarouselComments } from "@/app/components/sfn/home/CarouselComments";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import type { ReactNode } from "react";
 
-const reviewsComments = [
+export type SharedFideReview = {
+    isVideo?: boolean;
+    userName: string;
+    userImage: ReactNode;
+    title: string;
+    comment: ReactNode;
+    score?: number;
+    lessons?: number;
+    progressFrom?: string;
+    progressTo?: string;
+    date?: number;
+    videoUrl?: string;
+    videoThumbnail?: string;
+    subtitleENUrl?: string;
+    subtitleFRUrl?: string;
+    modalComment?: ReactNode;
+    certificat?: string;
+};
+
+const reviewsComments: SharedFideReview[] = [
     {
         isVideo: true,
         userName: "Rita",
@@ -483,6 +503,217 @@ const reviewsComments = [
         lessons: 4,
         progressFrom: "A2/B1",
         progressTo: "B1",
+    },
+    {
+        userName: "Orkun",
+        userImage: (
+            <div
+                className="rounded-full w-[100px] h-[100px] md:w-[100px] md:h-[100px] overflow-hidden flex items-center justify-center bg-neutral-200 text-neutral-800 text-3xl font-semibold"
+                style={{ border: "solid 2px var(--neutral-800)" }}
+                aria-label="Avatar Orkun"
+            >
+                <Image src="/images/avatars/homme4.png" height={100} width={100} alt="Orkun" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Your patience, structure, and clear guidance made a significant difference",
+        comment: (
+            <p className="mb-0 text-sm">
+                I wanted to take a moment to sincerely thank you for your support throughout my preparation for the FIDE B1 exam. Your patience, structure, and clear guidance made a significant
+                difference in my learning journey. You always kept the sessions focused and practical, which helped me build confidence step by step.
+            </p>
+        ),
+        score: 92,
+        progressTo: "B1",
+        date: 1776902400000, // 23 avril 2026
+        certificat: "fide/certificats/orkun-certif.png",
+        modalComment: (
+            <p className="mb-0">
+                I wanted to take a moment to sincerely thank you for your support throughout my preparation for the FIDE B1 exam. Your patience, structure, and clear guidance made a significant
+                difference in my learning journey. You always kept the sessions focused and practical, which helped me build confidence step by step, even when I wasn’t sure I would be able to pass
+                the exam.
+                <br />
+                <br />
+                Thanks to your motivating approach and consistent encouragement, I not only passed but achieved a result I’m genuinely proud of. You created a learning environment that pushed me to
+                improve while also making the process enjoyable. I truly appreciate your dedication and the way you adapted your teaching to my needs—it made all the difference.
+            </p>
+        ),
+    },
+    {
+        userName: "Jiahong",
+        userImage: (
+            <div
+                className="rounded-full w-[100px] h-[100px] md:w-[100px] md:h-[100px] overflow-hidden flex items-center justify-center bg-neutral-200 text-neutral-800 text-3xl font-semibold"
+                style={{ border: "solid 2px var(--neutral-800)" }}
+                aria-label="Avatar Jiahong"
+            >
+                <Image src="/images/avatars/femme3.png" height={100} width={100} alt="Jiahong" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Tailor-made teaching and a straight-to-the-point approach to the exam",
+        comment: (
+            <p className="mb-0 text-sm">
+                I discovered Yohann’s introduction to the FIDE exam on YouTube 10 days before my FIDE exam. That introduction was so comprehensive. After four sessions, I felt more confident speaking,
+                and I noticed my progress was rapid. Thanks to Yohann’s tailor-made teaching and straight-to-the-point approach, I was able to pass the Swiss FIDE Exam B1 with flying colours.
+            </p>
+        ),
+        score: 91,
+        lessons: 4,
+        progressTo: "B1",
+        date: 1764892800000, // 5 décembre 2025
+        certificat: "fide/certificats/Passport-Fide-Jiahong.jpg",
+        modalComment: (
+            <p className="mb-0">
+                I discovered Yohann’s introduction to the FIDE exam on YouTube 10 days before my FIDE exam. That introduction was so comprehensive. I contacted Yohann immediately to demand a
+                tailor-made course (for three sessions) since I spoke only broken French and my French language grammar is not solid at all. After attending three sessions, I requested an additional
+                session before the exam. After the four sessions, I felt more confident speaking, and I noticed my progress was rapid. Thanks to Yohann’s tailor-made teaching and straight-to-the-point
+                approach to the exam, I was able to pass the Swiss FIDE Exam B1 with flying colours.
+                <br />
+                <br />
+                我发现网上授课为准备瑞士FIDE法语考试的老师只有Yohann。感谢我最好的法语老师Yohann帮我在最短的时间内复习瑞士FIDE的法语的B1考试。我的烂法语通过Yohann老师三星期前给我量身定制的四节课程和直接就考试题目的练xi和复习指导，我的法语水平极快提高，自信心大涨，所以，临场发挥自如。今日收到了BERD
+                FIDE 发的B1通过的证书。依我看，真对FIDE的法语考试的最好的老师就是Yohann。
+            </p>
+        ),
+    },
+    {
+        userName: "Antonio P.",
+        userImage: (
+            <div
+                className="rounded-full w-[100px] h-[100px] md:w-[100px] md:h-[100px] overflow-hidden flex items-center justify-center bg-neutral-200 text-neutral-800 text-3xl font-semibold"
+                style={{ border: "solid 2px var(--neutral-800)" }}
+                aria-label="Avatar Antonio P."
+            >
+                <Image src="/images/avatars/homme2.png" height={100} width={100} alt="Antonio P." className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "A very clear, calm and easy-going approach",
+        comment: (
+            <p className="mb-0 text-sm">
+                I strongly recommend Yohann. Yohann supported me with my FIDE test, his method of teaching is very clear and very real. He provides you with a very clear understanding of the mechanics
+                of the exam and focuses on real case scenarios for the test.
+            </p>
+        ),
+        progressTo: "B1",
+        date: 1768953600000, // 21 janvier 2026
+        modalComment: (
+            <p className="mb-0">
+                I strongly recommend Yohann. Yohann supported me with my Fide test, his method of teaching is very clear and very real. 1. He provides you with a very clear understanding of the
+                mechanics of the exam so to be prepared and he focuses on real case scenarios for the test. He identifies your strengths and helps you building on them, but more than anything he has a
+                very clear, calm and easy going approach. I took many French lessons courses but with Yohann is what I absorbed the most. Antonio
+            </p>
+        ),
+    },
+    {
+        userName: "Shazia",
+        userImage: (
+            <div
+                className="rounded-full w-[100px] h-[100px] md:w-[100px] md:h-[100px] overflow-hidden flex items-center justify-center bg-neutral-200 text-neutral-800 text-3xl font-semibold"
+                style={{ border: "solid 2px var(--neutral-800)" }}
+                aria-label="Avatar Shazia"
+            >
+                <Image src="/images/avatars/femme1.png" height={100} width={100} alt="Shazia" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Good news!!!",
+        comment: <p className="mb-0 text-sm">Good news!!! Thank you for your help</p>,
+        score: 90,
+        progressTo: "B1",
+        date: 1769040000000, // 22 janvier 2026
+        certificat: "fide/certificats/Shazia-certif.png",
+    },
+    {
+        userName: "Ailan",
+        userImage: (
+            <div
+                className="rounded-full w-[100px] h-[100px] md:w-[100px] md:h-[100px] overflow-hidden flex items-center justify-center bg-neutral-200 text-neutral-800 text-3xl font-semibold"
+                style={{ border: "solid 2px var(--neutral-800)" }}
+                aria-label="Avatar Ailan"
+            >
+                <Image src="/images/avatars/homme3.png" height={100} width={100} alt="Ailan" className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Very targeted preparation helped me pass on the first try",
+        comment: (
+            <p className="mb-0 text-sm">
+                I learned French some time back and didn't use it for the last 5 years. I took a few lessons with Yohann and thanks to his professionalism, support and very targeted preparation I did
+                pass the exam from the first try and received the highest grade B1!
+            </p>
+        ),
+        score: 100,
+        progressTo: "B1",
+        date: 1777680000000, // 2 mai 2026
+        certificat: "fide/certificats/Ailan-certif.jpeg",
+        modalComment: (
+            <p className="mb-0">
+                I learned French some time back and didn't use it for the last 5 years. I took a few lessons with Yohann and thanks to his professionalism, support and very targeted preparation I did
+                pass the exam from the first try and received the highest grade B1! He knows all the requirements and specificities of the exam which helps you to feel confident during the exam! Thank
+                you dear Yohann! Ailan
+            </p>
+        ),
+    },
+    {
+        userName: "Wendy M.",
+        userImage: (
+            <div
+                className="rounded-full w-[100px] h-[100px] md:w-[100px] md:h-[100px] overflow-hidden flex items-center justify-center bg-neutral-200 text-neutral-800 text-3xl font-semibold"
+                style={{ border: "solid 2px var(--neutral-800)" }}
+                aria-label="Avatar Wendy M."
+            >
+                <Image src="/images/avatars/femme4.png" height={100} width={100} alt="Wendy M." className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Yohann Coussot’s FIDE exam preparation coaching made all the difference",
+        comment: (
+            <p className="mb-0 text-sm">
+                I had very little time to prepare for my FIDE exam, and Yohann’s YouTube examples stood out to me as the most helpful. His teaching style, research materials and video scenarios really
+                prepare you for success, focusing only on the content needed for the FIDE exam.
+            </p>
+        ),
+        score: 93,
+        progressTo: "B1",
+        date: 1777334400000, // 28 avril 2026
+        certificat: "fide/certificats/wendy-certif.png",
+        modalComment: (
+            <p className="mb-0">
+                Yohann Coussot’s FIDE exam preparation coaching made all the difference.
+                <br />
+                <br />I had very little time to prepare for my FIDE exam so I searched all the various sites and video clips available online looking for FIDE study and learning materials. It was
+                Yohann Coussot’s YouTube examples for preparation that stood out to me and were the most helpful. Yohann offers flexible learning packages to suit everyone’s level, and in particular,
+                he offers an intensive preparation 1:1 which I identified was the right match for me. Following a 15-minute introductory call I had no hesitation that Yohann was a particularly
+                knowledgeable teacher who knew well the FIDE exam structure and how to prepare for the exam. Yohann is an extremely good teacher, his teaching style, research materials and video
+                scenarios really prepare you for success and it’s unique because there isn’t any time wasted learning what you don’t need to know. Focusing on the content needed for the FIDE exam and
+                going into the exam well prepared made all the difference for me. I can’t thank Yohann enough and would recommend his courses very highly.
+            </p>
+        ),
+    },
+    {
+        userName: "Myra G.",
+        userImage: (
+            <div
+                className="rounded-full w-[100px] h-[100px] md:w-[100px] md:h-[100px] overflow-hidden flex items-center justify-center bg-neutral-200 text-neutral-800 text-3xl font-semibold"
+                style={{ border: "solid 2px var(--neutral-800)" }}
+                aria-label="Avatar Myra G."
+            >
+                <Image src="/images/avatars/femme2.png" height={100} width={100} alt="Myra G." className="aspect-square image object-cover" />
+            </div>
+        ),
+        title: "Professional, patient, and focused on exactly what I needed",
+        comment: (
+            <p className="mb-0 text-sm">
+                I highly recommend Yohann as a FIDE teacher. He is very professional, patient, and explains everything clearly. His lessons were well organized and focused exactly on the skills needed
+                for the FIDE B1 exam.
+            </p>
+        ),
+        score: 83,
+        progressTo: "B1",
+        modalComment: (
+            <p className="mb-0">
+                I highly recommend Yohann as a FIDE teacher. He is very professional, patient, and explains everything clearly. His lessons were well organized and focused exactly on the skills needed
+                for the FIDE B1 exam. Thanks to his preparation and teaching methods, I was able to pass the FIDE B1 exam easily and with confidence.
+                <br />
+                <br />
+                If you are preparing for the FIDE exam, especially the oral part, you MUST get Yohann, he is an excellent teacher!
+            </p>
+        ),
     },
 ];
 

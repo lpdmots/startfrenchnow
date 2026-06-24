@@ -57,7 +57,7 @@ export function buildBravoCouponMailMessage(params: BuildCouponMessageParams = {
 
     return {
         subject: `Votre coupon ${couponCode} est activé`,
-        bodyHtml: `<p>Bonjour ${firstName},</p><p>Bonne nouvelle: votre coupon <strong>${couponCode}</strong> est maintenant actif.</p><p>Vous pouvez l’utiliser sur :</p><ul><li>le Pack FIDE autonome</li><li>le Pack FIDE accompagné</li><li>les cours privés (6h)</li></ul><p>Voir les offres: <a href="${plansUrl}">${plansUrl}</a></p><p>À bientôt,<br/>Yohann Coussot</p>`,
+        bodyHtml: `<p>Bonjour ${firstName},</p><p>Bonne nouvelle: votre coupon <strong>${couponCode}</strong> est maintenant actif.</p><p>Vous pouvez l’utiliser sur :</p><ul><li>le Pack Exam autonome</li><li>le Pack Exam accompagné</li><li>les cours privés (6h)</li></ul><p>Voir les offres: <a href="${plansUrl}">${plansUrl}</a></p><p>À bientôt,<br/>Yohann Coussot</p>`,
     };
 }
 
@@ -77,7 +77,7 @@ export function buildBravoCouponSystemNotification(params: BuildCouponMessagePar
 
     return {
         title: "Coupon activé",
-        body: `Bonjour ${firstName}, votre coupon ${couponCode} est actif sur le Pack FIDE autonome, le Pack FIDE accompagné et les cours privés (6h).`,
+        body: `Bonjour ${firstName}, votre coupon ${couponCode} est actif sur le Pack Exam autonome, le Pack Exam accompagné et les cours privés (6h).`,
         link: plansPath,
     };
 }
