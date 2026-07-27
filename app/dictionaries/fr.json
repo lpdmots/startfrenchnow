@@ -50,7 +50,7 @@
         },
         "FidePackFide": {
             "title": "Pack Exam complet (A1–B1) | Vidéos, examens blancs et méthode | Start French Now",
-            "description": "Préparez le test FIDE avec un programme e-learning complet : vidéos, exercices d'entraînement, examens blancs, PDF et plan d’étude. Accès immédiat pour progresser vers A1, A2 ou B1."
+            "description": "Préparez le test FIDE avec le Pack Exam : vidéos, scénarios, examens blancs, PDF et accès immédiat pour progresser vers A1, A2 ou B1."
         },
         "FidePrivateCourses": {
             "title": "Cours privés FIDE en ligne | Préparation personnalisée A1–B1 | Start French Now",
@@ -206,6 +206,13 @@
             "levels": "Examens blancs",
             "online": "E-learning"
         }
+    },
+    "OfficialFideSourceNotice": {
+        "badge": "Source officielle",
+        "sourceLabel": "Source des documents présentés :",
+        "sourceText": "version blanche officielle du test fide, publiée par le Secrétariat fide pour le compte du Secrétariat d'État aux migrations (SEM).",
+        "officialDocumentLabel": "Document officiel :",
+        "officialDocumentLink": "Voir la page officielle"
     },
     "LessonCards": {
         "title": "Sélectionnez votre cours et <hs4>commencez</hs4> !",
@@ -885,7 +892,7 @@
             "li3": "Bénéficiez de l'accompagnement continu d'un véritable <under2><b>expert Fide</b></under2>.",
             "proof": "Une méthode <hs2>validée</hs2>",
             "buttonPrimary": "Consultation gratuite",
-            "buttonSecondary": "Choisir ma formule",
+            "buttonSecondary": "Voir les préparations",
             "videoSubtitle": "Découvrez notre préparation FIDE"
         },
         "Formateur": {
@@ -950,12 +957,12 @@
         "InfosVideos": {
             "title": "Vous obtenez :",
             "formationComplete": "Une formation complète de A0 à B1",
-            "video": "20h+ de vidéo à la demande",
+            "video": "13h+ de vidéo à la demande",
             "downloads": "Ressources téléchargeables",
             "access": "Accès sur mobiles et TV",
             "lifetime": "Accès à vie, mises à jour incluses",
             "buttonHasPack": "Reprendre les cours",
-            "buttonNoPack": "Choisir ma formule"
+            "buttonNoPack": "Voir le Pack Exam"
         },
         "MarqueePackFideContent": {
             "lifetime": "Accès à vie",
@@ -984,7 +991,7 @@
                 "desc": "Un grand nombre de situations du quotidien couvrant tous les thèmes FIDE possibles."
             },
             "ctaHasPack": "Acheter des cours privés",
-            "ctaNoPack": "Choisir ma formule",
+            "ctaNoPack": "Voir le Pack Exam",
             "ctaBuyPack": "Acheter le Pack Exam",
             "linkAllExams": "Voir tous les examens disponibles",
             "imageAlt": "Infographie sur les examens"
@@ -1724,8 +1731,8 @@
             "titleHighlight": "notre Pack Exam",
             "subtitle": "Une préparation claire et complète avec des vidéos guidées, <b><under6>des scénarios pratiques comme à l'examen FIDE</under6></b> et des examens blancs.",
             "ctaOffers": {
-                "label": "Les offres",
-                "aria": "Voir les offres"
+                "label": "Voir le Pack Exam",
+                "aria": "Voir le Pack Exam"
             },
             "ctaSummary": {
                 "label": "Le sommaire",
@@ -1735,7 +1742,7 @@
                 "desktopAlt": "Aperçu desktop du pack FIDE",
                 "mobileAlt": "Aperçu mobile du pack FIDE"
             },
-            "title": "Réussissez le test avec notre <hs6>Pack Exam</hs6>"
+            "title": "Réussissez le test FIDE avec notre <hs6>Pack Exam</hs6>"
         },
         "PackFideWhatIs": {
             "titlePrefix": "Que propose",
@@ -1744,7 +1751,7 @@
             "bullets": {
                 "1": "Atteignez vos objectifs FIDE avec la <b><under4>plateforme e-learning</under4></b> la plus complète sur l'examen.",
                 "2": "Pratiquez directement sur <b><under5>des scénarios actualisés</under5></b>, similaires à l'examen.",
-                "3": "Bénéficiez de l'accompagnement continu d'un véritable <b><under2>expert de l'examen FIDE</under2></b>."
+                "3": "Préparez-vous avec la méthode d'un véritable <b><under2>expert de l'examen FIDE</under2></b>."
             },
             "videoSubtitle": "Découvrez notre préparation",
             "proof": {
@@ -1772,18 +1779,19 @@
             "title": "Boostez votre <hs6>confiance</hs6> avant l'examen"
         },
         "PackFidePricing": {
-            "subtitle": "Deux offres pack selon votre besoin d'autonomie ou d'accompagnement.",
+            "subtitle": "Une préparation structurée pour travailler les scénarios du test et progresser à votre rythme.",
             "cards": {
                 "autonomy": {
-                    "title": "Pack Autonomie",
+                    "title": "Pack Exam",
                     "description": {
                         "prefix": "Accédez à notre plateforme d'auto-apprentissage sur l'examen FIDE, de débutant complet au niveau B1, et progressez",
                         "bold": "à votre rythme",
                         "text": "Accédez à notre plateforme d'auto-apprentissage sur l'examen FIDE, de débutant complet au niveau B1, et progressez <b>à votre rythme</b>."
                     },
-                    "features": ["14h de vidéos spécifiques au test, A0 → B1", "100+ scénarios", "Suivi des progrès + Messagerie"],
+                    "features": ["13h de vidéos spécifiques au test, A0 → B1", "100+ scénarios", "Suivi des progrès + Messagerie"],
                     "extras": ["Mises à jour régulières", "Progression garantie"],
-                    "cta": "OBTENIR LA FORMATION"
+                    "cta": "OBTENIR LE PACK EXAM",
+                    "ownedCta": "VOUS DISPOSEZ DÉJÀ DU PACK"
                 },
                 "guided": {
                     "title": "Pack Accompagné",
@@ -1808,26 +1816,26 @@
                 "3": "Feedback direct"
             },
             "privateCta": "Voir les cours privés",
-            "title": "<hs6>Choisissez</hs6> votre formule"
+            "title": "Le <hs6>Pack Exam</hs6>"
         },
         "PackFidePage": {
             "breadcrumbs": {
                 "home": "Accueil",
                 "fide": "FIDE",
-                "current": "Pack Exam e-learning"
+                "current": "Pack Exam"
             },
             "schema": {
-                "productName": "Pack Exam e-learning",
-                "productDescription": "Programme vidéo FIDE, examens blancs et parcours structuré pour préparer l'examen avec confiance.",
+                "productName": "Pack Exam",
+                "productDescription": "Préparation FIDE complète avec vidéos, scénarios, examens blancs et PDF pour progresser avec confiance.",
                 "brand": "Start French Now"
             },
             "examsCtaBuyPreparation": "Acheter notre préparation",
             "faq": {
                 "titleSuffix": "préparation",
-                "subtitle": "Toutes les réponses essentielles pour choisir votre formule e-learning.",
+                "subtitle": "Toutes les réponses essentielles sur notre préparation e-learning.",
                 "items": {
                     "included": {
-                        "title": "Que contient exactement la préparation E-learning ?",
+                        "title": "Que contient exactement le Pack Exam ?",
                         "content": "La préparation comprend un parcours vidéo structuré (du niveau débutant jusqu'au B1), des contenus spécifiques à l'examen FIDE (méthode, points clés, conseils pratiques), plus de 100 examens blancs, des supports de travail et des mises à jour régulières. Vous avez aussi un dashboard pour suivre votre progression et un espace d'échange avec votre professeur."
                     },
                     "difference": {
@@ -1840,9 +1848,9 @@
                     },
                     "combine": {
                         "title": "Puis-je combiner la préparation avec des cours privés ?",
-                        "content": "Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les scénarios comme à l'examen. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés.",
+                        "content": "Oui. Beaucoup d'étudiants combinent le Pack Exam avec des cours privés. Le pack vous permet déjà d'avancer à votre rythme sur les contenus et les scénarios. Si vous voulez pratiquer davantage à l'oral et recevoir des retours ciblés en direct, vous pouvez ajouter des cours privés.",
                         "cta": "Voir les cours privés",
-                        "contentRich": "Oui. Beaucoup d'étudiants combinent e-learning et coaching 1:1. Le pack accompagné va déjà dans ce sens, avec un suivi plus rapproché et des sessions ciblées sur les scénarios comme à l'examen. Et si vous voulez un accompagnement encore plus personnalisé, vous pouvez ajouter des cours privés : <link>voir les cours privés</link>."
+                        "contentRich": "Oui. Beaucoup d'étudiants combinent le Pack Exam avec des cours privés. Le pack vous permet déjà d'avancer à votre rythme sur les contenus et les scénarios. Si vous voulez pratiquer davantage à l'oral et recevoir des retours ciblés en direct, vous pouvez ajouter des cours privés : <link>voir les cours privés</link>."
                     },
                     "freeOption": {
                         "title": "Y a-t-il une option gratuite avant d'acheter ?",
@@ -1870,10 +1878,6 @@
             }
         },
         "MockExamsPage": {
-            "PausedCta": {
-                "button": "Vente temporairement suspendue",
-                "message": "Les examens blancs sont temporairement indisponibles. Merci pour votre patience."
-            },
             "Page": {
                 "home": "Accueil",
                 "fide": "FIDE",
@@ -1891,7 +1895,7 @@
                 "imageAlt": "Illustration d'un examen blanc FIDE",
                 "logoAlt": "Logo Start French Now",
                 "discoveryBadge": "Offre découverte",
-                "discountBadge": "-80%",
+                "discountBadge": "-60%",
                 "oldPricePrefix": "au lieu de",
                 "cta": "Acheter l'examen blanc",
                 "ctaUseCredit": "Utiliser mon crédit",
@@ -1967,7 +1971,7 @@
                 "titleHighlight": "en ligne",
                 "titleSuffix": "?",
                 "subtitle": "Oui, tout se fait en ligne pour vous guider clairement du début à la fin de l'examen blanc.",
-                "cta": "Acheter l'examen blanc - 10 CHF",
+                "cta": "Acheter l'examen blanc - 20 CHF",
                 "ctaUseCredit": "Utiliser mon crédit",
                 "ctaDisabled": "Examens épuisés",
                 "disabled": {
@@ -2003,7 +2007,7 @@
                 "titleHighlight": "découverte",
                 "subtitle": "Un seul achat disponible pour le moment : votre premier examen blanc complet à prix réduit.",
                 "main": {
-                    "offerBadge": "Offre active -80%",
+                    "offerBadge": "Offre active -60%",
                     "title": "Premier achat",
                     "oldPricePrefix": "au lieu de",
                     "bullets": {
@@ -2011,7 +2015,7 @@
                         "resources": "Accès immédiat aux PDF et ressources vidéos liées",
                         "feedback": "Feedback automatique sans engagement"
                     },
-                    "cta": "Acheter maintenant - 10 CHF",
+                    "cta": "Acheter maintenant - 20 CHF",
                     "ctaUseCredit": "Utiliser mon crédit",
                     "ctaDisabled": "Examens épuisés"
                 },

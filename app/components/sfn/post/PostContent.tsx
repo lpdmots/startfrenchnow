@@ -13,6 +13,7 @@ import { CategoryBadge } from "../blog/CategoryBadge";
 import { BLOGCATEGORIES, CATEGORIESCOLORS } from "@/app/lib/constantes";
 import { ContactFideCard } from "./ContactFideCard";
 import CourseRecommendationCard from "./CourseRecommendationCard";
+import OfficialFideSourceNotice from "./OfficialFideSourceNotice";
 
 function PostContent({ post }: { post: Post }) {
     const locale = useLocale() as Locale;
@@ -75,6 +76,7 @@ function PostContent({ post }: { post: Post }) {
                                         </ul>
                                     </div>
                                 )}
+                                <OfficialFideSourceNotice categories={categories} />
                             </div>
                             <div id="w-node-_2efa5bda-72aa-9528-9385-590a86804244-6f543d60" className="sticky-top _48px-top">
                                 {firstCategory === "fide" ? <ContactFideCard /> : shouldUseCourseRecommendation ? <CourseRecommendationCard post={post} /> : <NewsletterCard />}

@@ -44,29 +44,16 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
         hs6: (chunks: ReactNode) => <span className="heading-span-secondary-6">{chunks}</span>,
     };
 
-    const [autonomieProduct, accompagneProduct] = await Promise.all([
-        client.fetch<ProductFetch>(queryProductBySlug, { slug: "pack-fide" }),
-        client.fetch<ProductFetch>(queryProductBySlug, { slug: "pack-fide-accompagne" }),
-    ]);
+    const packProduct = await client.fetch<ProductFetch>(queryProductBySlug, { slug: "pack-fide" });
 
-    let pricingAutonomie: PricingDetails | null = null;
-    let pricingAccompagne: PricingDetails | null = null;
+    let pricingPack: PricingDetails | null = null;
 
-    if (autonomieProduct) {
+    if (packProduct) {
         try {
-            const { pricingDetails } = await getAmount(autonomieProduct, "1", "CHF", undefined);
-            pricingAutonomie = pricingDetails;
+            const { pricingDetails } = await getAmount(packProduct, "1", "CHF", undefined);
+            pricingPack = pricingDetails;
         } catch (error) {
             console.error("Failed to load pricing for pack-fide:", error);
-        }
-    }
-
-    if (accompagneProduct) {
-        try {
-            const { pricingDetails } = await getAmount(accompagneProduct, "1", "CHF", undefined);
-            pricingAccompagne = pricingDetails;
-        } catch (error) {
-            console.error("Failed to load pricing for pack-fide-accompagne:", error);
         }
     }
 
@@ -78,10 +65,6 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
         {
             question: t("faq.items.included.title"),
             answer: t("faq.items.included.content"),
-        },
-        {
-            question: t("faq.items.difference.title"),
-            answer: t("faq.items.difference.content"),
         },
         {
             question: t("faq.items.fromZero.title"),
@@ -140,22 +123,6 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
                 </p>
             ),
         },
-        {
-            question: t("faq.items.choose.title"),
-            answer: t("faq.items.choose.content"),
-            content: (
-                <p className="mb-0">
-                    {t.rich("faq.items.choose.contentRich", {
-                        ...rich,
-                        link: (chunks: ReactNode) => (
-                            <Link href="/fide/pack-fide#ContactForFIDECourses" className="font-semibold text-secondary-6 underline">
-                                {chunks}
-                            </Link>
-                        ),
-                    })}
-                </p>
-            ),
-        },
     ];
 
     const faqJsonLd = {
@@ -207,22 +174,13 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             "@type": "Brand",
             name: t("schema.brand"),
         },
-        offers: [
-            {
-                "@type": "Offer",
-                url: `${SITE}${packPath}#pack-pricing`,
-                priceCurrency: pricingAutonomie?.currency ?? "CHF",
-                price: pricingAutonomie?.amount ?? 499,
-                availability: "https://schema.org/InStock",
-            },
-            {
-                "@type": "Offer",
-                url: `${SITE}${packPath}#pack-pricing`,
-                priceCurrency: pricingAccompagne?.currency ?? "CHF",
-                price: pricingAccompagne?.amount ?? 875,
-                availability: "https://schema.org/InStock",
-            },
-        ],
+        offers: {
+            "@type": "Offer",
+            url: `${SITE}${packPath}#pack-pricing`,
+            priceCurrency: pricingPack?.currency ?? "CHF",
+            price: pricingPack?.amount ?? 99,
+            availability: "https://schema.org/InStock",
+        },
     };
 
     return (
@@ -236,7 +194,7 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             </div>
 
             <WhatIsPackFideSection />
-            <PackFidePricingSectionClient locale={locale} pricingAutonomie={pricingAutonomie} pricingAccompagne={pricingAccompagne} />
+            <PackFidePricingSectionClient locale={locale} pricingPack={pricingPack} />
             <ContactForFide />
             <VideosSection locale={locale} />
             <DeferredPackFideExamsSection />

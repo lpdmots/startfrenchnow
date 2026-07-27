@@ -118,7 +118,7 @@ const queryProduct = groq`
     *[_type=='product' && slug.current == $slug][0]
 `;
 
-type FinalOfferKey = "packAutonome" | "packAccompagne" | "private6h";
+type FinalOfferKey = "packExam" | "private6h";
 type CouponMode = "stackable" | "nonStackable";
 type FinalOfferPricing = {
     baseAmount: number;
@@ -133,14 +133,8 @@ type FinalOfferConfig = {
 
 const FINAL_OFFER_CONFIGS: FinalOfferConfig[] = [
     {
-        key: "packAutonome",
+        key: "packExam",
         slug: "pack-fide",
-        quantity: "1",
-        couponMode: "stackable",
-    },
-    {
-        key: "packAccompagne",
-        slug: "pack-fide-accompagne",
         quantity: "1",
         couponMode: "stackable",
     },
@@ -1753,8 +1747,7 @@ export default function RunnerScreenRouter({
     const [hasExistingExamReview, setHasExistingExamReview] = useState<boolean | null>(null);
     const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
     const [finalOfferPricingByKey, setFinalOfferPricingByKey] = useState<Record<FinalOfferKey, FinalOfferPricing>>({
-        packAutonome: { baseAmount: 499, discountedAmount: 449.1 },
-        packAccompagne: { baseAmount: 875, discountedAmount: 787.5 },
+        packExam: { baseAmount: 99, discountedAmount: 89.1 },
         private6h: { baseAmount: 420, discountedAmount: 378 },
     });
     const [isFinalOfferPricingLoading, setIsFinalOfferPricingLoading] = useState(false);
@@ -2863,134 +2856,135 @@ export default function RunnerScreenRouter({
         return (
             <>
                 <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0 overflow-y-auto`}>
-                <div className="flex flex-col gap-3">
-                    <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
-                    <h1 className="display-2 font-medium mb-0">Parler A2 terminé</h1>
-                </div>
+                    <div className="flex flex-col gap-3">
+                        <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
+                        <h1 className="display-2 font-medium mb-0">Parler A2 terminé</h1>
+                    </div>
 
-                <AnimatePresence initial={false}>
-                    {isEvaluatingA2 ? (
-                        <motion.div
-                            key="evaluating-a2"
-                            initial={{ maxHeight: 0, opacity: 0 }}
-                            animate={{ maxHeight: 220, opacity: 1 }}
-                            exit={{ maxHeight: 0, opacity: 0 }}
-                            transition={{ duration: 0.24, ease: "easeOut" }}
-                            className="overflow-hidden shrink-0"
-                        >
-                            <div className="min-h-[72px] rounded-2xl border border-solid border-neutral-600 px-4 py-4 text-neutral-700">
-                                <div className="flex items-center gap-3">
-                                    <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-neutral-700 border-t-neutral-300" />
-                                    <div className="flex flex-col">
-                                        <p className="mb-0 text-sm font-semibold text-neutral-800">{evaluationWaitLabel}</p>
-                                        <p className="mb-0 text-xs text-neutral-600">Temps d'attente: {evaluationWaitSeconds}s</p>
+                    <AnimatePresence initial={false}>
+                        {isEvaluatingA2 ? (
+                            <motion.div
+                                key="evaluating-a2"
+                                initial={{ maxHeight: 0, opacity: 0 }}
+                                animate={{ maxHeight: 220, opacity: 1 }}
+                                exit={{ maxHeight: 0, opacity: 0 }}
+                                transition={{ duration: 0.24, ease: "easeOut" }}
+                                className="overflow-hidden shrink-0"
+                            >
+                                <div className="min-h-[72px] rounded-2xl border border-solid border-neutral-600 px-4 py-4 text-neutral-700">
+                                    <div className="flex items-center gap-3">
+                                        <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-neutral-700 border-t-neutral-300" />
+                                        <div className="flex flex-col">
+                                            <p className="mb-0 text-sm font-semibold text-neutral-800">{evaluationWaitLabel}</p>
+                                            <p className="mb-0 text-xs text-neutral-600">Temps d'attente: {evaluationWaitSeconds}s</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    ) : null}
-                </AnimatePresence>
-
-                {evaluationError && <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{evaluationError}</div>}
-
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
-                    <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
-                        <CircularProgressMagic
-                            max={100}
-                            min={0}
-                            value={globalPercentage}
-                            gaugePrimaryColor={globalGaugePrimaryColor}
-                            gaugeSecondaryColor="var(--neutral-300)"
-                            className="h-40 w-40"
-                            withSize={false}
-                            fontHeight="text-4xl"
-                        />
-                        <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
-                        <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{globalLevelLabel}</p>
-                        <p className="mb-0 text-sm text-neutral-700 text-center">{globalFeedbackText}</p>
-                        {canShowProfessorFeedbackCta ? (
-                            <button
-                                type="button"
-                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
-                                onClick={() => openFeedbackCalendly("mock_exam_speak_a2_result")}
-                            >
-                                Feedback prof gratuit
-                            </button>
+                            </motion.div>
                         ) : null}
-                        <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
-                            <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
-                            <p className="mb-0 text-lg font-semibold text-neutral-800">
-                                {totalRow.score}/{totalRow.max || taskRows.length * 6}
-                            </p>
-                        </div>
-                    </aside>
+                    </AnimatePresence>
 
-                    <div className="flex flex-col gap-3">
-                        {taskRows.map((row, index) => {
-                            const taskPercentage = row.score !== null ? Math.round((Number(row.score) / Number(row.max || 6)) * 100) : 0;
-                            const isOpen = openedTaskId === row.taskId;
-                            const scoreValue = typeof row.score === "number" ? row.score : null;
-                            const taskGaugeColor = scoreValue === null ? "var(--neutral-400)" : scoreValue < 2 ? "var(--secondary-4)" : scoreValue <= 4 ? "var(--secondary-1)" : "var(--secondary-5)";
-                            return (
-                                <article key={row.taskId} className="rounded-2xl border border-solid border-neutral-600 p-4">
-                                    <button type="button" className="w-full text-left" onClick={() => setOpenedTaskId((prev) => (prev === row.taskId ? null : row.taskId))} aria-expanded={isOpen}>
-                                        <div className="flex flex-wrap items-center justify-between gap-2">
-                                            <p className="mb-0 font-semibold text-neutral-800">{row.label || `Tâche ${index + 1}`}</p>
-                                            <p className="mb-0 text-sm font-semibold text-neutral-800">
-                                                {row.isEvaluated ? `${row.score}/${row.max}` : row.hasTranscript ? "En attente" : "Non répondu"}
+                    {evaluationError && <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{evaluationError}</div>}
+
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
+                        <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
+                            <CircularProgressMagic
+                                max={100}
+                                min={0}
+                                value={globalPercentage}
+                                gaugePrimaryColor={globalGaugePrimaryColor}
+                                gaugeSecondaryColor="var(--neutral-300)"
+                                className="h-40 w-40"
+                                withSize={false}
+                                fontHeight="text-4xl"
+                            />
+                            <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
+                            <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{globalLevelLabel}</p>
+                            <p className="mb-0 text-sm text-neutral-700 text-center">{globalFeedbackText}</p>
+                            {canShowProfessorFeedbackCta ? (
+                                <button
+                                    type="button"
+                                    className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                    onClick={() => openFeedbackCalendly("mock_exam_speak_a2_result")}
+                                >
+                                    Feedback prof gratuit
+                                </button>
+                            ) : null}
+                            <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
+                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
+                                <p className="mb-0 text-lg font-semibold text-neutral-800">
+                                    {totalRow.score}/{totalRow.max || taskRows.length * 6}
+                                </p>
+                            </div>
+                        </aside>
+
+                        <div className="flex flex-col gap-3">
+                            {taskRows.map((row, index) => {
+                                const taskPercentage = row.score !== null ? Math.round((Number(row.score) / Number(row.max || 6)) * 100) : 0;
+                                const isOpen = openedTaskId === row.taskId;
+                                const scoreValue = typeof row.score === "number" ? row.score : null;
+                                const taskGaugeColor =
+                                    scoreValue === null ? "var(--neutral-400)" : scoreValue < 2 ? "var(--secondary-4)" : scoreValue <= 4 ? "var(--secondary-1)" : "var(--secondary-5)";
+                                return (
+                                    <article key={row.taskId} className="rounded-2xl border border-solid border-neutral-600 p-4">
+                                        <button type="button" className="w-full text-left" onClick={() => setOpenedTaskId((prev) => (prev === row.taskId ? null : row.taskId))} aria-expanded={isOpen}>
+                                            <div className="flex flex-wrap items-center justify-between gap-2">
+                                                <p className="mb-0 font-semibold text-neutral-800">{row.label || `Tâche ${index + 1}`}</p>
+                                                <p className="mb-0 text-sm font-semibold text-neutral-800">
+                                                    {row.isEvaluated ? `${row.score}/${row.max}` : row.hasTranscript ? "En attente" : "Non répondu"}
+                                                </p>
+                                            </div>
+                                            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-300">
+                                                <div className="h-full rounded-full transition-all" style={{ width: `${row.isEvaluated ? taskPercentage : 0}%`, backgroundColor: taskGaugeColor }} />
+                                            </div>
+                                            <p className="mt-2 mb-0 text-xs text-neutral-600">
+                                                {row.isEvaluated ? `${taskPercentage}%` : row.hasTranscript ? "Analyse en cours" : "Aucune réponse enregistrée"}
                                             </p>
-                                        </div>
-                                        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-300">
-                                            <div className="h-full rounded-full transition-all" style={{ width: `${row.isEvaluated ? taskPercentage : 0}%`, backgroundColor: taskGaugeColor }} />
-                                        </div>
-                                        <p className="mt-2 mb-0 text-xs text-neutral-600">
-                                            {row.isEvaluated ? `${taskPercentage}%` : row.hasTranscript ? "Analyse en cours" : "Aucune réponse enregistrée"}
-                                        </p>
-                                    </button>
+                                        </button>
 
-                                    <AnimatePresence initial={false}>
-                                        {isOpen ? (
-                                            <motion.div
-                                                key={`task-feedback-${row.taskId}`}
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.22, ease: "easeOut" }}
-                                                className="overflow-hidden"
-                                            >
-                                                <div className="mt-3 rounded-xl border border-solid border-neutral-300 bg-neutral-200 p-3">
-                                                    <p className="mb-0 text-sm text-neutral-700">{row.feedback || "Aucun feedback disponible pour l'instant."}</p>
-                                                </div>
-                                            </motion.div>
-                                        ) : null}
-                                    </AnimatePresence>
-                                </article>
-                            );
-                        })}
+                                        <AnimatePresence initial={false}>
+                                            {isOpen ? (
+                                                <motion.div
+                                                    key={`task-feedback-${row.taskId}`}
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: "auto", opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.22, ease: "easeOut" }}
+                                                    className="overflow-hidden"
+                                                >
+                                                    <div className="mt-3 rounded-xl border border-solid border-neutral-300 bg-neutral-200 p-3">
+                                                        <p className="mb-0 text-sm text-neutral-700">{row.feedback || "Aucun feedback disponible pour l'instant."}</p>
+                                                    </div>
+                                                </motion.div>
+                                            ) : null}
+                                        </AnimatePresence>
+                                    </article>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
 
-                <div className="mt-auto mb-3 md:mb-5 flex flex-wrap justify-end gap-3">
-                    <button
-                        type="button"
-                        className="btn btn-secondary small min-w-[220px]"
-                        disabled={isEvaluatingA2 || !canRetryCorrection}
-                        onClick={async () => {
-                            evaluationRequestedRef.current = true;
-                            await runA2Evaluation({ isRetry: true });
-                        }}
-                    >
-                        {isEvaluatingA2
-                            ? `Correction en cours... ${retryButtonSuffix}`
-                            : !canRetryCorrection
-                              ? `Relances IA épuisées ${retryButtonSuffix}`
-                              : `Relancer la correction IA ${retryButtonSuffix}`}
-                    </button>
-                    <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: SPEAK_A2_CORRECTION })} disabled={isAdvancing || isEvaluatingA2}>
-                        {isAdvancing ? "Chargement..." : "Voir la correction A2"}
-                    </button>
-                </div>
-            </section>
+                    <div className="mt-auto mb-3 md:mb-5 flex flex-wrap justify-end gap-3">
+                        <button
+                            type="button"
+                            className="btn btn-secondary small min-w-[220px]"
+                            disabled={isEvaluatingA2 || !canRetryCorrection}
+                            onClick={async () => {
+                                evaluationRequestedRef.current = true;
+                                await runA2Evaluation({ isRetry: true });
+                            }}
+                        >
+                            {isEvaluatingA2
+                                ? `Correction en cours... ${retryButtonSuffix}`
+                                : !canRetryCorrection
+                                  ? `Relances IA épuisées ${retryButtonSuffix}`
+                                  : `Relancer la correction IA ${retryButtonSuffix}`}
+                        </button>
+                        <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: SPEAK_A2_CORRECTION })} disabled={isAdvancing || isEvaluatingA2}>
+                            {isAdvancing ? "Chargement..." : "Voir la correction A2"}
+                        </button>
+                    </div>
+                </section>
                 {feedbackCalendlyModal}
             </>
         );
@@ -3101,150 +3095,152 @@ export default function RunnerScreenRouter({
         return (
             <>
                 <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
-                <div className="flex flex-col gap-3">
-                    <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
-                    <h1 className="display-2 font-medium mb-0">Parler Branche {inferredBranch} terminée</h1>
-                </div>
+                    <div className="flex flex-col gap-3">
+                        <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
+                        <h1 className="display-2 font-medium mb-0">Parler Branche {inferredBranch} terminée</h1>
+                    </div>
 
-                <AnimatePresence initial={false}>
-                    {isEvaluatingBranch ? (
-                        <motion.div
-                            key="evaluating-branch"
-                            initial={{ maxHeight: 0, opacity: 0 }}
-                            animate={{ maxHeight: 220, opacity: 1 }}
-                            exit={{ maxHeight: 0, opacity: 0 }}
-                            transition={{ duration: 0.24, ease: "easeOut" }}
-                            className="overflow-hidden shrink-0"
-                        >
-                            <div className="min-h-[72px] rounded-2xl border border-solid border-neutral-600 px-4 py-4 text-neutral-700">
-                                <div className="flex items-center gap-3">
-                                    <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-neutral-700 border-t-neutral-300" />
-                                    <div className="flex flex-col">
-                                        <p className="mb-0 text-sm font-semibold text-neutral-800">{branchEvaluationWaitLabel}</p>
-                                        <p className="mb-0 text-xs text-neutral-600">Temps d'attente: {branchEvaluationWaitSeconds}s</p>
+                    <AnimatePresence initial={false}>
+                        {isEvaluatingBranch ? (
+                            <motion.div
+                                key="evaluating-branch"
+                                initial={{ maxHeight: 0, opacity: 0 }}
+                                animate={{ maxHeight: 220, opacity: 1 }}
+                                exit={{ maxHeight: 0, opacity: 0 }}
+                                transition={{ duration: 0.24, ease: "easeOut" }}
+                                className="overflow-hidden shrink-0"
+                            >
+                                <div className="min-h-[72px] rounded-2xl border border-solid border-neutral-600 px-4 py-4 text-neutral-700">
+                                    <div className="flex items-center gap-3">
+                                        <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-neutral-700 border-t-neutral-300" />
+                                        <div className="flex flex-col">
+                                            <p className="mb-0 text-sm font-semibold text-neutral-800">{branchEvaluationWaitLabel}</p>
+                                            <p className="mb-0 text-xs text-neutral-600">Temps d'attente: {branchEvaluationWaitSeconds}s</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    ) : null}
-                </AnimatePresence>
-
-                {branchEvaluationError && <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{branchEvaluationError}</div>}
-
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
-                    <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
-                        <CircularProgressMagic
-                            max={100}
-                            min={0}
-                            value={branchGlobalPercentage}
-                            gaugePrimaryColor={branchGlobalGaugePrimaryColor}
-                            gaugeSecondaryColor="var(--neutral-300)"
-                            className="h-40 w-40"
-                            withSize={false}
-                            fontHeight="text-4xl"
-                        />
-                        <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
-                        <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{branchGlobalLevelLabel}</p>
-                        <p className="mb-0 text-sm text-neutral-700 text-center">{branchGlobalFeedbackText}</p>
-                        {canShowProfessorFeedbackCta ? (
-                            <button
-                                type="button"
-                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
-                                onClick={() => openFeedbackCalendly("mock_exam_speak_branch_result")}
-                            >
-                                Feedback prof gratuit
-                            </button>
+                            </motion.div>
                         ) : null}
-                        <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
-                            <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
-                            <p className="mb-0 text-lg font-semibold text-neutral-800">
-                                {branchTotalRow.score}/{branchTotalRow.max || (inferredBranch === "B1" ? Math.max(6, branchRows.length * 6) : Math.max(4, branchRows.length * 4))}
-                            </p>
-                        </div>
-                    </aside>
+                    </AnimatePresence>
 
-                    <div className="flex flex-col gap-3">
-                        {branchRows.length > 0 ? (
-                            branchRows.map((row, index) => {
-                                const rowPercentage = row.score !== null ? Math.round((Number(row.score) / Number(row.max || 1)) * 100) : 0;
-                                const isOpen = openedBranchRowId === row.rowId;
-                                const scoreValue = typeof row.score === "number" ? row.score : null;
-                                const scoreRatio = scoreValue === null ? 0 : Number(scoreValue) / Math.max(1, Number(row.max || 1));
-                                const rowGaugeColor =
-                                    scoreValue === null ? "var(--neutral-400)" : scoreRatio < 0.34 ? "var(--secondary-4)" : scoreRatio <= 0.7 ? "var(--secondary-1)" : "var(--secondary-5)";
-                                return (
-                                    <article key={row.rowId} className="rounded-2xl border border-solid border-neutral-600 p-4">
-                                        <button
-                                            type="button"
-                                            className="w-full text-left"
-                                            onClick={() => setOpenedBranchRowId((prev) => (prev === row.rowId ? null : row.rowId))}
-                                            aria-expanded={isOpen}
-                                        >
-                                            <div className="flex flex-wrap items-center justify-between gap-2">
-                                                <p className="mb-0 font-semibold text-neutral-800">{row.label || `Élément ${index + 1}`}</p>
-                                                <p className="mb-0 text-sm font-semibold text-neutral-800">
-                                                    {row.isEvaluated ? `${row.score}/${row.max}` : row.hasTranscript ? "En attente" : "Non répondu"}
+                    {branchEvaluationError && <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{branchEvaluationError}</div>}
+
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(220px,270px)_minmax(0,1fr)]">
+                        <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
+                            <CircularProgressMagic
+                                max={100}
+                                min={0}
+                                value={branchGlobalPercentage}
+                                gaugePrimaryColor={branchGlobalGaugePrimaryColor}
+                                gaugeSecondaryColor="var(--neutral-300)"
+                                className="h-40 w-40"
+                                withSize={false}
+                                fontHeight="text-4xl"
+                            />
+                            <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
+                            <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{branchGlobalLevelLabel}</p>
+                            <p className="mb-0 text-sm text-neutral-700 text-center">{branchGlobalFeedbackText}</p>
+                            {canShowProfessorFeedbackCta ? (
+                                <button
+                                    type="button"
+                                    className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                    onClick={() => openFeedbackCalendly("mock_exam_speak_branch_result")}
+                                >
+                                    Feedback prof gratuit
+                                </button>
+                            ) : null}
+                            <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
+                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
+                                <p className="mb-0 text-lg font-semibold text-neutral-800">
+                                    {branchTotalRow.score}/{branchTotalRow.max || (inferredBranch === "B1" ? Math.max(6, branchRows.length * 6) : Math.max(4, branchRows.length * 4))}
+                                </p>
+                            </div>
+                        </aside>
+
+                        <div className="flex flex-col gap-3">
+                            {branchRows.length > 0 ? (
+                                branchRows.map((row, index) => {
+                                    const rowPercentage = row.score !== null ? Math.round((Number(row.score) / Number(row.max || 1)) * 100) : 0;
+                                    const isOpen = openedBranchRowId === row.rowId;
+                                    const scoreValue = typeof row.score === "number" ? row.score : null;
+                                    const scoreRatio = scoreValue === null ? 0 : Number(scoreValue) / Math.max(1, Number(row.max || 1));
+                                    const rowGaugeColor =
+                                        scoreValue === null ? "var(--neutral-400)" : scoreRatio < 0.34 ? "var(--secondary-4)" : scoreRatio <= 0.7 ? "var(--secondary-1)" : "var(--secondary-5)";
+                                    return (
+                                        <article key={row.rowId} className="rounded-2xl border border-solid border-neutral-600 p-4">
+                                            <button
+                                                type="button"
+                                                className="w-full text-left"
+                                                onClick={() => setOpenedBranchRowId((prev) => (prev === row.rowId ? null : row.rowId))}
+                                                aria-expanded={isOpen}
+                                            >
+                                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                                    <p className="mb-0 font-semibold text-neutral-800">{row.label || `Élément ${index + 1}`}</p>
+                                                    <p className="mb-0 text-sm font-semibold text-neutral-800">
+                                                        {row.isEvaluated ? `${row.score}/${row.max}` : row.hasTranscript ? "En attente" : "Non répondu"}
+                                                    </p>
+                                                </div>
+                                                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-300">
+                                                    <div className="h-full rounded-full transition-all" style={{ width: `${row.isEvaluated ? rowPercentage : 0}%`, backgroundColor: rowGaugeColor }} />
+                                                </div>
+                                                <p className="mt-2 mb-0 text-xs text-neutral-600">
+                                                    {row.isEvaluated ? `${rowPercentage}%` : row.hasTranscript ? "Analyse en cours" : "Aucune réponse enregistrée"}
                                                 </p>
-                                            </div>
-                                            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-300">
-                                                <div className="h-full rounded-full transition-all" style={{ width: `${row.isEvaluated ? rowPercentage : 0}%`, backgroundColor: rowGaugeColor }} />
-                                            </div>
-                                            <p className="mt-2 mb-0 text-xs text-neutral-600">
-                                                {row.isEvaluated ? `${rowPercentage}%` : row.hasTranscript ? "Analyse en cours" : "Aucune réponse enregistrée"}
-                                            </p>
-                                        </button>
+                                            </button>
 
-                                        <AnimatePresence initial={false}>
-                                            {isOpen ? (
-                                                <motion.div
-                                                    key={`branch-feedback-${row.rowId}`}
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: "auto", opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.22, ease: "easeOut" }}
-                                                    className="overflow-hidden"
-                                                >
-                                                    <div className="mt-3 rounded-xl border border-solid border-neutral-300 bg-neutral-200 p-3">
-                                                        <p className="mb-0 text-sm text-neutral-700">{row.feedback || "Aucun feedback disponible pour l'instant."}</p>
-                                                    </div>
-                                                </motion.div>
-                                            ) : null}
-                                        </AnimatePresence>
-                                    </article>
-                                );
-                            })
-                        ) : (
-                            <div className="rounded-2xl border border-solid border-neutral-300 bg-neutral-100 px-4 py-3 text-sm text-neutral-700">Aucune réponse enregistrée pour cette branche.</div>
-                        )}
+                                            <AnimatePresence initial={false}>
+                                                {isOpen ? (
+                                                    <motion.div
+                                                        key={`branch-feedback-${row.rowId}`}
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: "auto", opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        transition={{ duration: 0.22, ease: "easeOut" }}
+                                                        className="overflow-hidden"
+                                                    >
+                                                        <div className="mt-3 rounded-xl border border-solid border-neutral-300 bg-neutral-200 p-3">
+                                                            <p className="mb-0 text-sm text-neutral-700">{row.feedback || "Aucun feedback disponible pour l'instant."}</p>
+                                                        </div>
+                                                    </motion.div>
+                                                ) : null}
+                                            </AnimatePresence>
+                                        </article>
+                                    );
+                                })
+                            ) : (
+                                <div className="rounded-2xl border border-solid border-neutral-300 bg-neutral-100 px-4 py-3 text-sm text-neutral-700">
+                                    Aucune réponse enregistrée pour cette branche.
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
 
-                <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
-                    <button
-                        type="button"
-                        className="btn btn-secondary small min-w-[220px]"
-                        disabled={isEvaluatingBranch || !canRetryBranchCorrection}
-                        onClick={async () => {
-                            branchEvaluationRequestedRef.current = true;
-                            await runBranchEvaluation({ isRetry: true });
-                        }}
-                    >
-                        {isEvaluatingBranch
-                            ? `Correction en cours... ${branchRetryButtonSuffix}`
-                            : !canRetryBranchCorrection
-                              ? `Relances IA épuisées ${branchRetryButtonSuffix}`
-                              : `Relancer la correction IA ${branchRetryButtonSuffix}`}
-                    </button>
-                    <button
-                        type="button"
-                        className="btn btn-primary small min-w-[220px]"
-                        onClick={() => onAdvance({ nextState: SPEAK_BRANCH_CORRECTION })}
-                        disabled={isAdvancing || isEvaluatingBranch}
-                    >
-                        {isAdvancing ? "Chargement..." : "Voir la correction"}
-                    </button>
-                </div>
-            </section>
+                    <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
+                        <button
+                            type="button"
+                            className="btn btn-secondary small min-w-[220px]"
+                            disabled={isEvaluatingBranch || !canRetryBranchCorrection}
+                            onClick={async () => {
+                                branchEvaluationRequestedRef.current = true;
+                                await runBranchEvaluation({ isRetry: true });
+                            }}
+                        >
+                            {isEvaluatingBranch
+                                ? `Correction en cours... ${branchRetryButtonSuffix}`
+                                : !canRetryBranchCorrection
+                                  ? `Relances IA épuisées ${branchRetryButtonSuffix}`
+                                  : `Relancer la correction IA ${branchRetryButtonSuffix}`}
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-primary small min-w-[220px]"
+                            onClick={() => onAdvance({ nextState: SPEAK_BRANCH_CORRECTION })}
+                            disabled={isAdvancing || isEvaluatingBranch}
+                        >
+                            {isAdvancing ? "Chargement..." : "Voir la correction"}
+                        </button>
+                    </div>
+                </section>
                 {feedbackCalendlyModal}
             </>
         );
@@ -4345,192 +4341,197 @@ export default function RunnerScreenRouter({
         return (
             <>
                 <section className={`w-full h-full ${RUNNER_LAYOUT_MAX_WIDTH} ${RUNNER_LAYOUT_BOTTOM_PADDING} flex flex-col gap-6 px-2 pt-0`}>
-                <div className="flex flex-col gap-3">
-                    <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
-                    <h1 className="display-2 font-medium mb-0">Lire/Écrire terminé</h1>
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <p className="mb-0 text-neutral-700">Parcours {comboLabel}. Vérifie les points détaillés et le feedback IA.</p>
-                        {readWriteModulePdfLinks.length ? (
-                            <div className="relative" ref={readWritePdfMenuRef}>
-                                <button
-                                    type="button"
-                                    className="inline-flex items-center gap-2 px-1 py-0 text-sm font-semibold text-neutral-800 transition hover:text-secondary-2"
-                                    onClick={() => setIsReadWritePdfMenuOpen((previous) => !previous)}
-                                    aria-expanded={isReadWritePdfMenuOpen}
-                                    aria-haspopup="menu"
-                                >
-                                    <FaRegEye className="shrink-0" />
-                                    PDF modules
-                                </button>
-                                <AnimatePresence initial={false}>
-                                    {isReadWritePdfMenuOpen ? (
-                                        <motion.div
-                                            key="read-write-pdf-menu"
-                                            initial={{ opacity: 0, y: -6 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -6 }}
-                                            transition={{ duration: 0.16, ease: "easeOut" }}
-                                            className="absolute right-0 z-20 mt-2 min-w-[280px] rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2 shadow-1"
-                                        >
-                                            <ul className="mb-0 flex list-none flex-col gap-1 p-0">
-                                                {readWriteModulePdfLinks.map((item) => (
-                                                    <li key={`${item.moduleNumber}-${item.url}`}>
-                                                        <a
-                                                            href={item.url}
-                                                            target="_blank"
-                                                            rel="noreferrer noopener"
-                                                            className="block rounded-lg px-3 py-2 text-sm text-neutral-800 transition hover:bg-neutral-200 hover:text-secondary-2 !no-underline"
-                                                            onClick={() => setIsReadWritePdfMenuOpen(false)}
-                                                        >
-                                                            {item.label}
-                                                        </a>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </motion.div>
-                                    ) : null}
-                                </AnimatePresence>
-                            </div>
-                        ) : null}
-                    </div>
-                </div>
-
-                <AnimatePresence initial={false}>
-                    {isEvaluatingReadWrite ? (
-                        <motion.div
-                            key="evaluating-read-write"
-                            initial={{ maxHeight: 0, opacity: 0 }}
-                            animate={{ maxHeight: 220, opacity: 1 }}
-                            exit={{ maxHeight: 0, opacity: 0 }}
-                            transition={{ duration: 0.24, ease: "easeOut" }}
-                            className="overflow-hidden shrink-0"
-                        >
-                            <div className="min-h-[72px] rounded-2xl border border-solid border-neutral-600 px-4 py-4 text-neutral-700">
-                                <div className="flex items-center gap-3">
-                                    <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-neutral-700 border-t-neutral-300" />
-                                    <div className="flex flex-col">
-                                        <p className="mb-0 text-sm font-semibold text-neutral-800">{readWriteEvaluationWaitLabel}</p>
-                                        <p className="mb-0 text-xs text-neutral-600">Temps d'attente: {readWriteEvaluationWaitSeconds}s</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ) : null}
-                </AnimatePresence>
-
-                {readWriteEvaluationError ? <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{readWriteEvaluationError}</div> : null}
-
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
-                    <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
-                        <CircularProgressMagic
-                            max={100}
-                            min={0}
-                            value={readWriteGlobalPercentage}
-                            gaugePrimaryColor={readWriteGlobalGaugePrimaryColor}
-                            gaugeSecondaryColor="var(--neutral-300)"
-                            className="h-40 w-40"
-                            withSize={false}
-                            fontHeight="text-4xl"
-                        />
-                        <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
-                        <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{readWriteGlobalLevelLabel}</p>
-                        <p className="mb-0 text-sm text-neutral-700 text-center">{readWriteGlobalFeedback}</p>
-                        {canShowProfessorFeedbackCta ? (
-                            <button
-                                type="button"
-                                className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
-                                onClick={() => openFeedbackCalendly("mock_exam_read_write_result")}
-                            >
-                                Feedback prof gratuit
-                            </button>
-                        ) : null}
-                        <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
-                            <div className="grid grid-cols-2 items-end gap-3">
-                                <div>
-                                    <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
-                                    <p className="mb-0 text-2xl font-semibold leading-none text-neutral-800">
-                                        {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
-                                    </p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Niveau atteint</p>
-                                    <p className={clsx("mb-0 text-2xl font-semibold leading-none text-neutral-800", readWriteValidatedLevel === "Aucun" && "text-neutral-400")}>
-                                        {readWriteValidatedLevel}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
-
                     <div className="flex flex-col gap-3">
-                        {readWriteModuleRows.map((moduleRow) => {
-                            const modulePercentage = Math.round((Number(moduleRow.score || 0) / Math.max(1, Number(moduleRow.max || 1))) * 100);
-                            const isOpen = openedReadWriteRowId === moduleRow.moduleKey;
-                            const moduleGaugeColor =
-                                moduleRow.score / Math.max(1, moduleRow.max) < 0.35
-                                    ? "var(--secondary-4)"
-                                    : moduleRow.score / Math.max(1, moduleRow.max) < 0.7
-                                      ? "var(--secondary-1)"
-                                      : "var(--secondary-5)";
-
-                            return (
-                                <article key={moduleRow.moduleKey} className="rounded-2xl border border-solid border-neutral-600 p-4">
+                        <p className="text-sm uppercase tracking-wide text-neutral-500 mb-0">RÉSULTAT</p>
+                        <h1 className="display-2 font-medium mb-0">Lire/Écrire terminé</h1>
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                            <p className="mb-0 text-neutral-700">Parcours {comboLabel}. Vérifie les points détaillés et le feedback IA.</p>
+                            {readWriteModulePdfLinks.length ? (
+                                <div className="relative" ref={readWritePdfMenuRef}>
                                     <button
                                         type="button"
-                                        className="w-full text-left"
-                                        onClick={() => setOpenedReadWriteRowId((previous) => (previous === moduleRow.moduleKey ? null : moduleRow.moduleKey))}
-                                        aria-expanded={isOpen}
+                                        className="inline-flex items-center gap-2 px-1 py-0 text-sm font-semibold text-neutral-800 transition hover:text-secondary-2"
+                                        onClick={() => setIsReadWritePdfMenuOpen((previous) => !previous)}
+                                        aria-expanded={isReadWritePdfMenuOpen}
+                                        aria-haspopup="menu"
                                     >
-                                        <div className="flex flex-wrap items-center justify-between gap-2">
-                                            <p className="mb-0 font-semibold text-neutral-800">{`Module ${moduleRow.moduleNumber} • ${moduleRow.moduleTitle}`}</p>
-                                            <p className="mb-0 text-sm font-semibold text-neutral-800">{`${moduleRow.score}/${moduleRow.max}`}</p>
-                                        </div>
-                                        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-300">
-                                            <div className="h-full rounded-full transition-all" style={{ width: `${modulePercentage}%`, backgroundColor: moduleGaugeColor }} />
-                                        </div>
-                                        <p className="mt-2 mb-0 text-xs text-neutral-600">{`${modulePercentage}%`}</p>
+                                        <FaRegEye className="shrink-0" />
+                                        PDF modules
                                     </button>
-
                                     <AnimatePresence initial={false}>
-                                        {isOpen ? (
+                                        {isReadWritePdfMenuOpen ? (
                                             <motion.div
-                                                key={`read-write-feedback-${moduleRow.moduleKey}`}
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.22, ease: "easeOut" }}
-                                                className="overflow-hidden"
+                                                key="read-write-pdf-menu"
+                                                initial={{ opacity: 0, y: -6 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -6 }}
+                                                transition={{ duration: 0.16, ease: "easeOut" }}
+                                                className="absolute right-0 z-20 mt-2 min-w-[280px] rounded-xl border border-solid border-neutral-300 bg-neutral-100 p-2 shadow-1"
                                             >
-                                                <div className="mt-3 rounded-xl border border-solid border-neutral-300 bg-neutral-200 p-3">
-                                                    <p className="mb-0 text-sm text-neutral-700">{moduleRow.feedback || "Aucun feedback disponible pour l'instant."}</p>
-                                                </div>
+                                                <ul className="mb-0 flex list-none flex-col gap-1 p-0">
+                                                    {readWriteModulePdfLinks.map((item) => (
+                                                        <li key={`${item.moduleNumber}-${item.url}`}>
+                                                            <a
+                                                                href={item.url}
+                                                                target="_blank"
+                                                                rel="noreferrer noopener"
+                                                                className="block rounded-lg px-3 py-2 text-sm text-neutral-800 transition hover:bg-neutral-200 hover:text-secondary-2 !no-underline"
+                                                                onClick={() => setIsReadWritePdfMenuOpen(false)}
+                                                            >
+                                                                {item.label}
+                                                            </a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
                                             </motion.div>
                                         ) : null}
                                     </AnimatePresence>
-                                </article>
-                            );
-                        })}
+                                </div>
+                            ) : null}
+                        </div>
                     </div>
-                </div>
 
-                <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
-                    <button
-                        type="button"
-                        className="btn btn-secondary small min-w-[220px]"
-                        onClick={() => void runReadWriteEvaluation({ isRetry: true })}
-                        disabled={isEvaluatingReadWrite || !canRetryReadWriteCorrection}
-                    >
-                        {isEvaluatingReadWrite
-                            ? `Correction en cours... ${readWriteRetryButtonSuffix}`
-                            : !canRetryReadWriteCorrection
-                              ? `Relances IA épuisées ${readWriteRetryButtonSuffix}`
-                              : `Relancer la correction IA ${readWriteRetryButtonSuffix}`}
-                    </button>
-                    <button type="button" className="btn btn-primary small min-w-[220px]" onClick={() => onAdvance({ nextState: EXAM_FINAL_SUMMARY })} disabled={isAdvancing || isEvaluatingReadWrite}>
-                        {isAdvancing ? "Chargement..." : "Terminer"}
-                    </button>
-                </div>
-            </section>
+                    <AnimatePresence initial={false}>
+                        {isEvaluatingReadWrite ? (
+                            <motion.div
+                                key="evaluating-read-write"
+                                initial={{ maxHeight: 0, opacity: 0 }}
+                                animate={{ maxHeight: 220, opacity: 1 }}
+                                exit={{ maxHeight: 0, opacity: 0 }}
+                                transition={{ duration: 0.24, ease: "easeOut" }}
+                                className="overflow-hidden shrink-0"
+                            >
+                                <div className="min-h-[72px] rounded-2xl border border-solid border-neutral-600 px-4 py-4 text-neutral-700">
+                                    <div className="flex items-center gap-3">
+                                        <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-neutral-700 border-t-neutral-300" />
+                                        <div className="flex flex-col">
+                                            <p className="mb-0 text-sm font-semibold text-neutral-800">{readWriteEvaluationWaitLabel}</p>
+                                            <p className="mb-0 text-xs text-neutral-600">Temps d'attente: {readWriteEvaluationWaitSeconds}s</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ) : null}
+                    </AnimatePresence>
+
+                    {readWriteEvaluationError ? <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{readWriteEvaluationError}</div> : null}
+
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
+                        <aside className="rounded-2xl border border-solid border-neutral-600 shadow-1 p-4 md:p-5 flex flex-col items-center gap-4">
+                            <CircularProgressMagic
+                                max={100}
+                                min={0}
+                                value={readWriteGlobalPercentage}
+                                gaugePrimaryColor={readWriteGlobalGaugePrimaryColor}
+                                gaugeSecondaryColor="var(--neutral-300)"
+                                className="h-40 w-40"
+                                withSize={false}
+                                fontHeight="text-4xl"
+                            />
+                            <p className="mb-0 text-xs uppercase tracking-wide text-neutral-600">Global</p>
+                            <p className="mb-0 rounded-full border border-solid border-neutral-300 px-3 py-1 text-xs font-bold text-neutral-700">{readWriteGlobalLevelLabel}</p>
+                            <p className="mb-0 text-sm text-neutral-700 text-center">{readWriteGlobalFeedback}</p>
+                            {canShowProfessorFeedbackCta ? (
+                                <button
+                                    type="button"
+                                    className="inline-flex w-full items-center justify-center rounded-lg bg-secondary-2 px-3 py-2 text-sm font-semibold text-neutral-100 transition hover:brightness-95"
+                                    onClick={() => openFeedbackCalendly("mock_exam_read_write_result")}
+                                >
+                                    Feedback prof gratuit
+                                </button>
+                            ) : null}
+                            <div className="w-full rounded-xl border border-solid border-neutral-300 p-3">
+                                <div className="grid grid-cols-2 items-end gap-3">
+                                    <div>
+                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Points totaux</p>
+                                        <p className="mb-0 text-2xl font-semibold leading-none text-neutral-800">
+                                            {readWriteTotalRow.score}/{readWriteExpectedTotalMax}
+                                        </p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Niveau atteint</p>
+                                        <p className={clsx("mb-0 text-2xl font-semibold leading-none text-neutral-800", readWriteValidatedLevel === "Aucun" && "text-neutral-400")}>
+                                            {readWriteValidatedLevel}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <div className="flex flex-col gap-3">
+                            {readWriteModuleRows.map((moduleRow) => {
+                                const modulePercentage = Math.round((Number(moduleRow.score || 0) / Math.max(1, Number(moduleRow.max || 1))) * 100);
+                                const isOpen = openedReadWriteRowId === moduleRow.moduleKey;
+                                const moduleGaugeColor =
+                                    moduleRow.score / Math.max(1, moduleRow.max) < 0.35
+                                        ? "var(--secondary-4)"
+                                        : moduleRow.score / Math.max(1, moduleRow.max) < 0.7
+                                          ? "var(--secondary-1)"
+                                          : "var(--secondary-5)";
+
+                                return (
+                                    <article key={moduleRow.moduleKey} className="rounded-2xl border border-solid border-neutral-600 p-4">
+                                        <button
+                                            type="button"
+                                            className="w-full text-left"
+                                            onClick={() => setOpenedReadWriteRowId((previous) => (previous === moduleRow.moduleKey ? null : moduleRow.moduleKey))}
+                                            aria-expanded={isOpen}
+                                        >
+                                            <div className="flex flex-wrap items-center justify-between gap-2">
+                                                <p className="mb-0 font-semibold text-neutral-800">{`Module ${moduleRow.moduleNumber} • ${moduleRow.moduleTitle}`}</p>
+                                                <p className="mb-0 text-sm font-semibold text-neutral-800">{`${moduleRow.score}/${moduleRow.max}`}</p>
+                                            </div>
+                                            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-300">
+                                                <div className="h-full rounded-full transition-all" style={{ width: `${modulePercentage}%`, backgroundColor: moduleGaugeColor }} />
+                                            </div>
+                                            <p className="mt-2 mb-0 text-xs text-neutral-600">{`${modulePercentage}%`}</p>
+                                        </button>
+
+                                        <AnimatePresence initial={false}>
+                                            {isOpen ? (
+                                                <motion.div
+                                                    key={`read-write-feedback-${moduleRow.moduleKey}`}
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: "auto", opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.22, ease: "easeOut" }}
+                                                    className="overflow-hidden"
+                                                >
+                                                    <div className="mt-3 rounded-xl border border-solid border-neutral-300 bg-neutral-200 p-3">
+                                                        <p className="mb-0 text-sm text-neutral-700">{moduleRow.feedback || "Aucun feedback disponible pour l'instant."}</p>
+                                                    </div>
+                                                </motion.div>
+                                            ) : null}
+                                        </AnimatePresence>
+                                    </article>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="mt-auto pb-3 md:pb-5 flex flex-wrap justify-end gap-3">
+                        <button
+                            type="button"
+                            className="btn btn-secondary small min-w-[220px]"
+                            onClick={() => void runReadWriteEvaluation({ isRetry: true })}
+                            disabled={isEvaluatingReadWrite || !canRetryReadWriteCorrection}
+                        >
+                            {isEvaluatingReadWrite
+                                ? `Correction en cours... ${readWriteRetryButtonSuffix}`
+                                : !canRetryReadWriteCorrection
+                                  ? `Relances IA épuisées ${readWriteRetryButtonSuffix}`
+                                  : `Relancer la correction IA ${readWriteRetryButtonSuffix}`}
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-primary small min-w-[220px]"
+                            onClick={() => onAdvance({ nextState: EXAM_FINAL_SUMMARY })}
+                            disabled={isAdvancing || isEvaluatingReadWrite}
+                        >
+                            {isAdvancing ? "Chargement..." : "Terminer"}
+                        </button>
+                    </div>
+                </section>
                 {feedbackCalendlyModal}
             </>
         );
@@ -4554,8 +4555,7 @@ export default function RunnerScreenRouter({
         const readWriteLevelRank = levelRank(readWriteValidatedLevel);
         const weakestDimension = oralLevelRank <= readWriteLevelRank ? "oral" : "lire/écrire";
         const branchPointsMax = inferredBranch === "B1" ? 24 : 8;
-        const packAutonomePricing = finalOfferPricingByKey.packAutonome;
-        const packAccompagnePricing = finalOfferPricingByKey.packAccompagne;
+        const packExamPricing = finalOfferPricingByKey.packExam;
         const private6hPricing = finalOfferPricingByKey.private6h;
 
         return (
@@ -4817,7 +4817,10 @@ export default function RunnerScreenRouter({
                                     Entretien gratuit
                                 </div>
                                 <h2 className="mb-2 text-2xl font-semibold text-neutral-800">Obtenez un retour précis sur votre examen</h2>
-                                <p className="mb-0 text-sm text-neutral-700">Durant cet entretien gratuit, votre professeur FIDE commente vos forces, vos points à corriger et vos erreurs clés, puis vous donne des priorités concrètes pour progresser.</p>
+                                <p className="mb-0 text-sm text-neutral-700">
+                                    Durant cet entretien gratuit, votre professeur expert du test FIDE commente vos forces, vos points à corriger et vos erreurs clés, puis vous donne des priorités
+                                    concrètes pour progresser.
+                                </p>
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">
                                     Priorité identifiée aujourd&apos;hui: <span className="font-semibold text-neutral-800">{weakestDimension}</span>.
                                 </p>
@@ -4848,45 +4851,27 @@ export default function RunnerScreenRouter({
                         <div className="rounded-xl border border-solid border-secondary-2 bg-neutral-100 p-3 md:p-4">
                             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-secondary-2">Coupon bien mérité</p>
                             <p className="mb-0 text-sm text-neutral-800">
-                                Vous avez débloqué <span className="font-semibold text-secondary-4">-10%</span> sur les 3 offres ci-dessous avec le code{" "}
+                                Vous avez débloqué <span className="font-semibold text-secondary-4">-10%</span> sur les 2 offres ci-dessous avec le code{" "}
                                 <span className="rounded bg-neutral-200 px-2 py-0.5 font-semibold text-neutral-800">{BRAVO_COUPON_CODE}</span> (à saisir au checkout).
                             </p>
                             {isFinalOfferPricingLoading ? <p className="mt-2 mb-0 text-xs text-neutral-600">Mise à jour des tarifs en cours…</p> : null}
                         </div>
 
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                             <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
-                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack autonome</p>
-                                <p className="mb-0 text-sm font-semibold text-neutral-800">Préparation FIDE en autonomie</p>
+                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack Exam</p>
+                                <p className="mb-0 text-sm font-semibold text-neutral-800">Préparation FIDE complète</p>
                                 <p className="mt-2 mb-0 text-sm text-neutral-700">Vidéos, scénarios et examens blancs pour vous entraîner à votre rythme.</p>
                                 <div className="mt-3 flex items-end gap-2">
-                                    <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packAutonomePricing.baseAmount)}</p>
-                                    <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(packAutonomePricing.discountedAmount)}</p>
+                                    <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packExamPricing.baseAmount)}</p>
+                                    <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(packExamPricing.discountedAmount)}</p>
                                 </div>
                                 <div className="mt-auto pt-3">
                                     <Link
                                         href={`/checkout/pack-fide?quantity=1&callbackUrl=${encodeURIComponent("/fide/pack-fide#pack-pricing")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
                                         className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
                                     >
-                                        {`Choisir le pack autonome - ${formatCurrency(packAutonomePricing.discountedAmount)}`}
-                                    </Link>
-                                </div>
-                            </article>
-
-                            <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
-                                <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">Pack accompagné</p>
-                                <p className="mb-0 text-sm font-semibold text-neutral-800">Programme complet + accompagnement</p>
-                                <p className="mt-2 mb-0 text-sm text-neutral-700">Pack structuré avec coaching 1:1 intégré pour un suivi renforcé.</p>
-                                <div className="mt-3 flex items-end gap-2">
-                                    <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(packAccompagnePricing.baseAmount)}</p>
-                                    <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(packAccompagnePricing.discountedAmount)}</p>
-                                </div>
-                                <div className="mt-auto pt-3">
-                                    <Link
-                                        href={`/checkout/pack-fide-accompagne?quantity=1&callbackUrl=${encodeURIComponent("/fide/pack-fide#pack-pricing")}&couponCode=${encodeURIComponent(BRAVO_COUPON_CODE)}`}
-                                        className="inline-flex w-full items-center justify-center rounded-lg border border-solid border-neutral-500 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:border-neutral-700 no-underline"
-                                    >
-                                        {`Choisir le pack accompagné - ${formatCurrency(packAccompagnePricing.discountedAmount)}`}
+                                        {`Choisir le Pack Exam - ${formatCurrency(packExamPricing.discountedAmount)}`}
                                     </Link>
                                 </div>
                             </article>
@@ -4894,7 +4879,7 @@ export default function RunnerScreenRouter({
                             <article className="flex h-full flex-col rounded-xl border border-solid border-neutral-300 p-3">
                                 <p className="mb-1 text-xs uppercase tracking-wide text-neutral-600">6h cours privés</p>
                                 <p className="mb-0 text-sm font-semibold text-neutral-800">Préparation Scénarios Express</p>
-                                <p className="mt-2 mb-0 text-sm text-neutral-700">6 cours avec votre professeur pour préparer tous les scénarios actuels de l'examen (A1/A2/B1)</p>
+                                <p className="mt-2 mb-0 text-sm text-neutral-700">6 cours avec votre professeur pour préparer tous les scénarios potentiels de l'examen (A1/A2/B1)</p>
                                 <div className="mt-3 flex items-end gap-2">
                                     <p className="mb-0 text-sm text-neutral-600 line-through">{formatCurrency(private6hPricing.baseAmount)}</p>
                                     <p className="mb-0 text-lg font-semibold text-secondary-4">{formatCurrency(private6hPricing.discountedAmount)}</p>

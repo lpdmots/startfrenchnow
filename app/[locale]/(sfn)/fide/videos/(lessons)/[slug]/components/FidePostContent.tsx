@@ -15,6 +15,7 @@ import SommaireModal from "@/app/components/common/SommaireModal";
 import { FidePackSommaire } from "@/app/serverActions/productActions";
 import { CoursesAccordionClient } from "../../../../components/CoursesAccordionClient";
 import clsx from "clsx";
+import OfficialFideSourceNotice from "@/app/components/sfn/post/OfficialFideSourceNotice";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -105,12 +106,15 @@ function FidePostContent({
             </div>
             <div className="mg-bottom-48px">
                 {!!body?.length ? (
-                    <PortableText value={body} components={RichTextComponents(categories[0] as keyof typeof CATEGORIESCOLORS)} />
+                    <>
+                        <PortableText value={body} components={RichTextComponents(categories[0] as keyof typeof CATEGORIESCOLORS)} />
+                    </>
                 ) : (
                     <div className="flex justify-center w-full min-h-96 font-bold text-neutral-400 mt-24">
                         {locale === "fr" ? "Aucun contenu associé à cette vidéo" : "No content associated with this video"}
                     </div>
                 )}
+                <OfficialFideSourceNotice categories={categories} />
             </div>
         </div>
     );

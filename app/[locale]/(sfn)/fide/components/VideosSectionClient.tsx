@@ -91,7 +91,7 @@ const InfosVideos = ({ hasPack }: { hasPack: boolean }) => {
                     <span className="line-rounded-icon link-icon-right">{t("buttonHasPack")}</span>
                 </Link>
             ) : (
-                <Link href="#plans" className="btn-primary full-width project-btn w-inline-block">
+                <Link href="/fide/pack-fide#pack-pricing" className="btn-primary full-width project-btn w-inline-block">
                     <span className="line-rounded-icon link-icon-right">{t("buttonNoPack")}</span>
                 </Link>
             )}

@@ -6,15 +6,13 @@ import type { PricingDetails } from "@/app/types/sfn/stripe";
 
 export function PackFidePricingSectionClient({
     locale,
-    pricingAutonomie,
-    pricingAccompagne,
+    pricingPack,
 }: {
     locale: string;
-    pricingAutonomie?: PricingDetails | null;
-    pricingAccompagne?: PricingDetails | null;
+    pricingPack?: PricingDetails | null;
 }) {
     const { data: session } = useSession();
     const hasPack = !!session?.user?.permissions?.some((p) => p.referenceKey === "pack_fide");
 
-    return <PackFidePricingSection locale={locale} hasPack={hasPack} pricingAutonomie={pricingAutonomie} pricingAccompagne={pricingAccompagne} />;
+    return <PackFidePricingSection locale={locale} hasPack={hasPack} pricingPack={pricingPack} />;
 }

@@ -77,7 +77,7 @@ export default async function FideMockExamsPage(props: { params: Promise<{ local
             "@type": "Offer",
             url: `${SITE}${checkoutPath}`,
             priceCurrency: "CHF",
-            price: "10.00",
+            price: "20.00",
             availability: "https://schema.org/InStock",
             seller: {
                 "@type": "Organization",
@@ -88,7 +88,7 @@ export default async function FideMockExamsPage(props: { params: Promise<{ local
                 {
                     "@type": "UnitPriceSpecification",
                     priceCurrency: "CHF",
-                    price: "10.00",
+                    price: "20.00",
                     name: t("discoveryOfferPriceName"),
                 },
                 {

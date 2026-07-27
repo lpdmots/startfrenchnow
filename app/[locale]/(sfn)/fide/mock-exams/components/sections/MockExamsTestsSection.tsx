@@ -67,7 +67,7 @@ export function MockExamsTestsSection() {
                                     </div>
                                 </div>
                                 <Image
-                                    src="/images/parler-mock-exam-2.png"
+                                    src="/images/mock-exam-img1.png"
                                     alt={t("cards.speaking.imageAlt")}
                                     width={760}
                                     height={680}

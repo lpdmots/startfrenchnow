@@ -51,13 +51,13 @@ export function buildBravoCouponMailMessage(params: BuildCouponMessageParams = {
     if (locale === "en") {
         return {
             subject: `Your ${couponCode} coupon is now active`,
-            bodyHtml: `<p>Hi ${firstName},</p><p>Great news: your coupon <strong>${couponCode}</strong> is now active.</p><p>You can use it on:</p><ul><li>FIDE autonomous pack</li><li>FIDE assisted pack</li><li>Private lessons (6h)</li></ul><p>See plans here: <a href="${plansUrl}">${plansUrl}</a></p><p>See you soon,<br/>Yohann Coussot</p>`,
+            bodyHtml: `<p>Hi ${firstName},</p><p>Great news: your coupon <strong>${couponCode}</strong> is now active.</p><p>You can use it on:</p><ul><li>the Exam Pack</li><li>Private lessons (6h)</li></ul><p>See plans here: <a href="${plansUrl}">${plansUrl}</a></p><p>See you soon,<br/>Yohann Coussot</p>`,
         };
     }
 
     return {
         subject: `Votre coupon ${couponCode} est activé`,
-        bodyHtml: `<p>Bonjour ${firstName},</p><p>Bonne nouvelle: votre coupon <strong>${couponCode}</strong> est maintenant actif.</p><p>Vous pouvez l’utiliser sur :</p><ul><li>le Pack Exam autonome</li><li>le Pack Exam accompagné</li><li>les cours privés (6h)</li></ul><p>Voir les offres: <a href="${plansUrl}">${plansUrl}</a></p><p>À bientôt,<br/>Yohann Coussot</p>`,
+        bodyHtml: `<p>Bonjour ${firstName},</p><p>Bonne nouvelle: votre coupon <strong>${couponCode}</strong> est maintenant actif.</p><p>Vous pouvez l’utiliser sur :</p><ul><li>le Pack Exam</li><li>les cours privés (6h)</li></ul><p>Voir les offres: <a href="${plansUrl}">${plansUrl}</a></p><p>À bientôt,<br/>Yohann Coussot</p>`,
     };
 }
 
@@ -70,14 +70,14 @@ export function buildBravoCouponSystemNotification(params: BuildCouponMessagePar
     if (locale === "en") {
         return {
             title: "Coupon unlocked",
-            body: `Hi ${firstName}, your coupon ${couponCode} is active for the FIDE autonomous pack, assisted pack, and private lessons (6h).`,
+            body: `Hi ${firstName}, your coupon ${couponCode} is active for the Exam Pack and private lessons (6h).`,
             link: plansPath,
         };
     }
 
     return {
         title: "Coupon activé",
-        body: `Bonjour ${firstName}, votre coupon ${couponCode} est actif sur le Pack Exam autonome, le Pack Exam accompagné et les cours privés (6h).`,
+        body: `Bonjour ${firstName}, votre coupon ${couponCode} est actif sur le Pack Exam et les cours privés (6h).`,
         link: plansPath,
     };
 }

@@ -1,13 +1,12 @@
 import { Bot, CheckCircle2, Clock3, Target } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { MockExamSalesPausedCTA } from "./checkout/MockExamSalesPausedCTA";
+import { MockExamCheckoutCTA } from "./checkout/MockExamCheckoutCTA";
 import { intelRich } from "@/app/lib/intelRich";
 import type { ReactNode } from "react";
 
 export const HeroMockExams = () => {
     const t = useTranslations("Fide.MockExamsPage.Hero");
-    const pausedT = useTranslations("Fide.MockExamsPage.PausedCta");
     const rich = {
         ...intelRich(),
         hs1: (chunks: ReactNode) => <span className="heading-span-secondary-5">{chunks}</span>,
@@ -55,14 +54,14 @@ export const HeroMockExams = () => {
                                                 </p>
                                             </div>
                                             <div className="mb-0 flex items-end justify-center gap-2 whitespace-nowrap sm:justify-start sm:gap-3">
-                                                <p className="mb-0 text-3xl font-extrabold leading-none text-secondary-6 sm:text-5xl">10 CHF</p>
+                                                <p className="mb-0 text-3xl font-extrabold leading-none text-secondary-6 sm:text-5xl">20 CHF</p>
                                                 <p className="mb-0 text-base font-semibold text-neutral-500 sm:text-lg">
                                                     {t("oldPricePrefix")} <span className="line-through">50 CHF</span>
                                                 </p>
                                             </div>
                                         </div>
                                         {/* <p className="mb-0 text-center text-sm text-neutral-600 sm:text-left">1 examen complet avec correction et plan d&apos;action.</p> */}
-                                        {/* <MockExamCheckoutCTA
+                                        <MockExamCheckoutCTA
                                             labels={{
                                                 cta: t("cta"),
                                                 ctaUseCredit: t("ctaUseCredit"),
@@ -77,13 +76,6 @@ export const HeroMockExams = () => {
                                             containerClassName="flex flex-col items-center gap-0 sm:items-start"
                                             disabledMessageClassName="mb-0 mt-2 min-h-10 text-center text-xs text-neutral-600 sm:text-left"
                                             reserveMessageSpace
-                                        /> */}
-                                        <MockExamSalesPausedCTA
-                                            label={pausedT("button")}
-                                            message={pausedT("message")}
-                                            buttonClassName="btn btn-secondary inline-flex w-full cursor-not-allowed items-center justify-center gap-2 opacity-75 sm:w-auto"
-                                            containerClassName="flex flex-col items-center gap-0 sm:items-start"
-                                            messageClassName="mb-0 mt-2 min-h-10 text-center text-xs text-neutral-600 sm:text-left"
                                         />
                                     </div>
                                 </div>

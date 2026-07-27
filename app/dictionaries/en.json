@@ -50,7 +50,7 @@
         },
         "FidePackFide": {
             "title": "Complete Exam Pack (A1–B1) | Videos, Mock Exams and Method | Start French Now",
-            "description": "Prepare for the FIDE test with a complete e-learning program: videos, training exercises, mock exams, PDFs and a study plan. Immediate access to progress toward A1, A2 or B1."
+            "description": "Prepare for the FIDE test with the Exam Pack: videos, scenarios, mock exams, PDFs, and immediate access to progress toward A1, A2 or B1."
         },
         "FidePrivateCourses": {
             "title": "Online Private FIDE Lessons | Personalized A1–B1 Prep | Start French Now",
@@ -206,6 +206,13 @@
             "levels": "Mock exams",
             "online": "E-learning"
         }
+    },
+    "OfficialFideSourceNotice": {
+        "badge": "Official source",
+        "sourceLabel": "Source of the presented documents:",
+        "sourceText": "official white version of the fide test, published by the fide Secretariat on behalf of the State Secretariat for Migration (SEM).",
+        "officialDocumentLabel": "Official document:",
+        "officialDocumentLink": "View the official page"
     },
     "LessonCards": {
         "title": "Find a course that suits you and <hs4>get started</hs4>!",
@@ -885,7 +892,7 @@
             "li3": "Benefit from continuous coaching by a genuine <under2><b>FIDE expert</b></under2>.",
             "proof": "A <hs2>proven</hs2> method",
             "buttonPrimary": "Get a free call",
-            "buttonSecondary": "Start learning now",
+            "buttonSecondary": "See the prep options",
             "videoSubtitle": "Discover our FIDE prep"
         },
         "Formateur": {
@@ -950,12 +957,12 @@
         "InfosVideos": {
             "title": "You get:",
             "formationComplete": "A complete training from A0 to B1",
-            "video": "20+ hours of on-demand video",
+            "video": "13+ hours of on-demand video",
             "downloads": "Downloadable resources",
             "access": "Access on mobile and TV",
             "lifetime": "Lifetime access, updates included",
             "buttonHasPack": "Resume your courses",
-            "buttonNoPack": "Choose my plan"
+            "buttonNoPack": "See the Exam Pack"
         },
         "MarqueePackFideContent": {
             "lifetime": "Lifetime access",
@@ -984,7 +991,7 @@
                 "desc": "A large number of everyday situations covering all possible FIDE themes."
             },
             "ctaHasPack": "Buy private lessons",
-            "ctaNoPack": "Start learning",
+            "ctaNoPack": "See the Exam Pack",
             "ctaBuyPack": "Buy the Exam Pack",
             "linkAllExams": "See all available exams",
             "imageAlt": "Infographic about the exams"
@@ -1718,8 +1725,8 @@
             "titleHighlight": "our Exam Pack",
             "subtitle": "A clear and complete preparation with guided videos, <b><under6>practical scenarios like the FIDE exam</under6></b>, and mock exams.",
             "ctaOffers": {
-                "label": "Offers",
-                "aria": "See the offers"
+                "label": "See the Exam Pack",
+                "aria": "See the Exam Pack"
             },
             "ctaSummary": {
                 "label": "Course outline",
@@ -1729,7 +1736,7 @@
                 "desktopAlt": "Desktop preview of the Exam Pack",
                 "mobileAlt": "Mobile preview of the Exam Pack"
             },
-            "title": "Pass the test with our <hs6>Exam Pack</hs6>"
+            "title": "Pass the FIDE test with our <hs6>Exam Pack</hs6>"
         },
         "PackFideWhatIs": {
             "titlePrefix": "What does",
@@ -1738,7 +1745,7 @@
             "bullets": {
                 "1": "Reach your FIDE goals with the <b><under4>most complete e-learning platform</under4></b> for the exam.",
                 "2": "Practice directly with <b><under5>updated scenarios</under5></b> similar to the exam.",
-                "3": "Benefit from continuous support from a true <b><under2>FIDE exam expert</under2></b>."
+                "3": "Prepare with the method of a true <b><under2>FIDE exam expert</under2></b>."
             },
             "videoSubtitle": "Discover our preparation",
             "proof": {
@@ -1766,18 +1773,19 @@
             "title": "Boost your <hs6>confidence</hs6> before the exam"
         },
         "PackFidePricing": {
-            "subtitle": "Two pack options depending on how much guidance you need.",
+            "subtitle": "A structured preparation to work on exam scenarios and progress at your own pace.",
             "cards": {
                 "autonomy": {
-                    "title": "Self-Study Pack",
+                    "title": "Exam Pack",
                     "description": {
                         "prefix": "Access our self-study platform for the FIDE exam from complete beginner to B1 level and progress",
                         "bold": "at your own pace",
                         "text": "Access our self-study platform for the FIDE exam from complete beginner to B1 level and progress <b>at your own pace</b>."
                     },
-                    "features": ["14h of test-specific videos, A0 → B1", "100+ scenarios", "Progress tracking + messaging"],
+                    "features": ["13h of test-specific videos, A0 → B1", "100+ scenarios", "Progress tracking + messaging"],
                     "extras": ["Regular updates", "Guaranteed progress"],
-                    "cta": "GET THE TRAINING"
+                    "cta": "GET THE EXAM PACK",
+                    "ownedCta": "YOU ALREADY HAVE THIS PACK"
                 },
                 "guided": {
                     "title": "Guided Pack",
@@ -1802,26 +1810,26 @@
                 "3": "Direct feedback"
             },
             "privateCta": "See private courses",
-            "title": "<hs6>Choose</hs6> your option"
+            "title": "The <hs6>Exam Pack</hs6>"
         },
         "PackFidePage": {
             "breadcrumbs": {
                 "home": "Home",
                 "fide": "FIDE",
-                "current": "Exam Pack e-learning"
+                "current": "Exam Pack"
             },
             "schema": {
-                "productName": "Exam Pack e-learning",
-                "productDescription": "Structured FIDE video program, mock exams, and guided path to prepare with confidence.",
+                "productName": "Exam Pack",
+                "productDescription": "Complete FIDE preparation with videos, scenarios, mock exams, and PDFs to build confidence before the test.",
                 "brand": "Start French Now"
             },
             "examsCtaBuyPreparation": "Buy our preparation",
             "faq": {
                 "titleSuffix": "preparation",
-                "subtitle": "Essential answers to choose the right e-learning option.",
+                "subtitle": "Essential answers about our e-learning preparation.",
                 "items": {
                     "included": {
-                        "title": "What is included in the e-learning preparation?",
+                        "title": "What is included in the Exam Pack?",
                         "content": "The preparation includes a structured video path (from beginner to B1), FIDE-specific content (method, key exam points, practical tips), 100+ mock exams, study resources, and regular updates. You also get a dashboard to track progress and a messaging space to exchange with your teacher."
                     },
                     "difference": {
@@ -1834,9 +1842,9 @@
                     },
                     "combine": {
                         "title": "Can I combine the preparation with private coaching?",
-                        "content": "Yes. Many learners combine e-learning with 1:1 coaching. The guided pack already includes closer support and targeted work on scenarios like the exam. If you want even more personalized support, you can add private lessons.",
+                        "content": "Yes. Many learners combine the Exam Pack with private coaching. The pack already lets you progress through the content and scenarios at your own pace. If you want more speaking practice and targeted live feedback, you can add private lessons.",
                         "cta": "See private coaching",
-                        "contentRich": "Yes. Many learners combine e-learning with 1:1 coaching. The guided pack already includes closer support and targeted work on scenarios like the exam. If you want even more personalized support, you can add private lessons: <link>see private coaching</link>."
+                        "contentRich": "Yes. Many learners combine the Exam Pack with private coaching. The pack already lets you progress through the content and scenarios at your own pace. If you want more speaking practice and targeted live feedback, you can add private lessons: <link>see private coaching</link>."
                     },
                     "freeOption": {
                         "title": "Is there a free option before purchasing?",
@@ -1864,10 +1872,6 @@
             }
         },
         "MockExamsPage": {
-            "PausedCta": {
-                "button": "Sales temporarily paused",
-                "message": "Mock exams are temporarily unavailable. Thank you for your patience."
-            },
             "Page": {
                 "home": "Home",
                 "fide": "FIDE",
@@ -1885,7 +1889,7 @@
                 "imageAlt": "FIDE mock exam illustration",
                 "logoAlt": "Start French Now logo",
                 "discoveryBadge": "Discovery offer",
-                "discountBadge": "-80%",
+                "discountBadge": "-60%",
                 "oldPricePrefix": "instead of",
                 "cta": "Buy the mock exam",
                 "ctaUseCredit": "Use my credit",
@@ -1961,7 +1965,7 @@
                 "titleHighlight": "online",
                 "titleSuffix": "?",
                 "subtitle": "Yes, everything runs online to guide you clearly from start to finish of your mock exam.",
-                "cta": "Buy the mock exam - CHF 10",
+                "cta": "Buy the mock exam - CHF 20",
                 "ctaUseCredit": "Use my credit",
                 "ctaDisabled": "Exams sold out",
                 "disabled": {
@@ -1997,7 +2001,7 @@
                 "titleHighlight": "offer",
                 "subtitle": "Only one purchase is available for now: your first full mock exam at a reduced price.",
                 "main": {
-                    "offerBadge": "Active offer -80%",
+                    "offerBadge": "Active offer -60%",
                     "title": "First purchase",
                     "oldPricePrefix": "instead of",
                     "bullets": {
@@ -2005,7 +2009,7 @@
                         "resources": "Immediate access to related PDFs and video resources",
                         "feedback": "Automatic no-commitment feedback"
                     },
-                    "cta": "Buy now - CHF 10",
+                    "cta": "Buy now - CHF 20",
                     "ctaUseCredit": "Use my credit",
                     "ctaDisabled": "Exams sold out"
                 },
