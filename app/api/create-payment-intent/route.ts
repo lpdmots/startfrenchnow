@@ -7,6 +7,7 @@ import Stripe from "stripe";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { groq } from "next-sanity";
 import { getUserPurchases } from "@/app/serverActions/productActions";
+import { acquisitionSourceFromCoupon, normalizeAcquisitionSource } from "@/app/lib/acquisition";
 
 export const dynamic = "force-dynamic";
 
@@ -412,7 +413,7 @@ async function getOrCreateCustomer(sessionEmail: string): Promise<string> {
 
 export async function POST(request: NextRequest) {
     try {
-        const { productSlug, quantity, currency, email, sessionEmail, userId, locale, couponCode } = await request.json();
+        const { productSlug, quantity, currency, email, sessionEmail, userId, locale, couponCode, acquisitionSource } = await request.json();
 
         // Email “effectif” : si pas de session (guest), on utilise l’email du form
         const effectiveEmail = (sessionEmail || email || "").trim().toLowerCase();
@@ -473,6 +474,10 @@ export async function POST(request: NextRequest) {
             quantity: requestedQuantity,
             pricingDetails: productPricingDetails,
         });
+        const normalizedAcquisitionSource =
+            acquisitionSourceFromCoupon(couponMetadata.couponCode) ||
+            normalizeAcquisitionSource(acquisitionSource) ||
+            "unknown";
 
         const stripeCustomerId = effectiveEmail ? await getOrCreateCustomer(effectiveEmail) : undefined;
 
@@ -488,6 +493,7 @@ export async function POST(request: NextRequest) {
                 locale: normalizedLocale,
                 ...(effectiveEmail ? { email: effectiveEmail } : {}),
                 ...(userId ? { userId: String(userId) } : {}),
+                acquisitionSource: normalizedAcquisitionSource,
                 ...couponMetadata,
             },
         });

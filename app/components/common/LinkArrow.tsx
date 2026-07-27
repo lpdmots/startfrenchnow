@@ -7,6 +7,7 @@ import { HiOutlineArrowRight } from "react-icons/hi";
 import { CATEGORIESTEXTCOLORS } from "@/app/lib/constantes";
 import { cn } from "@/app/lib/schadcn-utils";
 import { isCalendlyLink, trackCalendlyOpen } from "@/app/lib/calendlyTracking";
+import { withCalendlyAttribution } from "@/app/lib/acquisition.client";
 
 interface Props {
     children: React.ReactNode;
@@ -58,10 +59,12 @@ function LinkArrow({ children, url, target = "_blank", rel, category, className 
                 rel={rel}
                 onClick={(event) => {
                     if (isCalendlyLink(normalizedUrl)) {
+                        const attributedUrl = withCalendlyAttribution(normalizedUrl, "link_arrow");
+                        event.currentTarget.href = attributedUrl;
                         trackCalendlyOpen({
                             source: "link_arrow",
                             mode: "external_link",
-                            url: normalizedUrl,
+                            url: attributedUrl,
                         });
                     }
                     event.stopPropagation();

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AreReadyState } from "./Checkout";
 import CheckoutForm from "./CheckoutForm";
 import { useTranslations } from "next-intl";
+import { getAcquisitionSource } from "@/app/lib/acquisition.client";
 
 interface PaymentProps {
     productSlug: string;
@@ -142,6 +143,7 @@ const usePaymentIntent = (productSlug: string, quantity: string, currency: strin
                         email: emailRef.current,
                         userId,
                         couponCode,
+                        acquisitionSource: getAcquisitionSource(),
                     }),
                 });
 

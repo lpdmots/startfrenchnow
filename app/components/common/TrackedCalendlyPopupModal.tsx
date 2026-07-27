@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, type ComponentProps } from "react";
+import { useEffect, useMemo, useRef, type ComponentProps } from "react";
 import { PopupModal } from "react-calendly";
 import { trackCalendlyOpen } from "@/app/lib/calendlyTracking";
+import { getAcquisitionSource } from "@/app/lib/acquisition.client";
 
 type PopupModalProps = ComponentProps<typeof PopupModal>;
 
@@ -10,8 +11,9 @@ type TrackedCalendlyPopupModalProps = PopupModalProps & {
     source: string;
 };
 
-export default function TrackedCalendlyPopupModal({ source, open, url, ...rest }: TrackedCalendlyPopupModalProps) {
+export default function TrackedCalendlyPopupModal({ source, open, url, utm, ...rest }: TrackedCalendlyPopupModalProps) {
     const wasOpenRef = useRef(false);
+    const acquisitionSource = open ? getAcquisitionSource() : "unknown";
 
     useEffect(() => {
         if (open && !wasOpenRef.current) {
@@ -24,5 +26,16 @@ export default function TrackedCalendlyPopupModal({ source, open, url, ...rest }
         wasOpenRef.current = !!open;
     }, [open, source, url]);
 
-    return <PopupModal open={open} url={url} {...rest} />;
+    const resolvedUtm = useMemo(
+        () => ({
+            utmSource: acquisitionSource,
+            utmMedium: "website",
+            utmCampaign: "startfrenchnow",
+            utmContent: source,
+            ...utm,
+        }),
+        [acquisitionSource, source, utm],
+    );
+
+    return <PopupModal open={open} url={url} utm={resolvedUtm} {...rest} />;
 }

@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/mock-exams/audio-cleanup",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/admin/weekly-report",
+      "schedule": "0 7 * * 1"
     }
   ]
 }

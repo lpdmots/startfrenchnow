@@ -1,4 +1,5 @@
 import { LESSONS_CREDITS_PERMISSIONS } from "@/app/lib/constantes";
+import { ACQUISITION_SOURCE_LABELS, ACQUISITION_SOURCES } from "@/app/lib/acquisition";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
@@ -63,6 +64,38 @@ export default defineType({
             type: "datetime",
             initialValue: () => new Date().toISOString(),
             validation: (Rule) => Rule.required(),
+        }),
+
+        defineField({
+            name: "source",
+            title: "Source d'acquisition",
+            type: "string",
+            options: {
+                list: ACQUISITION_SOURCES.map((value) => ({
+                    value,
+                    title: ACQUISITION_SOURCE_LABELS[value],
+                })),
+            },
+            initialValue: "unknown",
+        }),
+
+        defineField({
+            name: "amountPaid",
+            title: "Montant payé",
+            type: "number",
+        }),
+
+        defineField({
+            name: "currency",
+            title: "Devise",
+            type: "string",
+            options: {
+                list: [
+                    { value: "EUR", title: "EUR" },
+                    { value: "USD", title: "USD" },
+                    { value: "CHF", title: "CHF" },
+                ],
+            },
         }),
 
         defineField({

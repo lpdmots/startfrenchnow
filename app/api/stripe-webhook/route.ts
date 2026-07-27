@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 import { resolveAuthLocale } from "@/app/lib/authMailMessages";
+import { acquisitionSourceFromCoupon, normalizeAcquisitionSource } from "@/app/lib/acquisition";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +76,10 @@ export async function POST(req: NextRequest) {
     const metadataCouponDiscountAmount = paymentIntent.metadata?.couponDiscountAmount;
     const metadataCouponAmountBefore = paymentIntent.metadata?.couponAmountBefore;
     const metadataCouponAmountAfter = paymentIntent.metadata?.couponAmountAfter;
+    const acquisitionSource =
+        acquisitionSourceFromCoupon(metadataCouponCode) ||
+        normalizeAcquisitionSource(paymentIntent.metadata?.acquisitionSource) ||
+        "unknown";
 
     const receiptEmail = paymentIntent.receipt_email || undefined;
     const buyerEmail = (metadataEmail || receiptEmail || "").trim().toLowerCase();
@@ -123,6 +128,9 @@ export async function POST(req: NextRequest) {
             locale,
             purchasedAt: new Date(paymentIntent.created * 1000).toISOString(),
             status: "paid",
+            source: acquisitionSource,
+            amountPaid: Number(paymentIntent.amount_received || paymentIntent.amount || 0) / 100,
+            currency: String(paymentIntent.currency || "").toUpperCase(),
             items: [
                 {
                     _key: uuid(),

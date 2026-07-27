@@ -13,6 +13,7 @@ import { Metadata, Viewport } from "next";
 import { locales, normalizeLocale } from "@/i18n";
 import enMessages from "@/app/dictionaries/en.json";
 import frMessages from "@/app/dictionaries/fr.json";
+import AcquisitionCapture from "@/app/components/common/AcquisitionCapture";
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
@@ -67,6 +68,7 @@ export default async function RootLayout(props: { children: React.ReactNode; par
             </head>
             <body>
                 <ClientBoot gtmId={GTM_ID} clarityId={CLARITY_ID} />
+                <AcquisitionCapture />
                 <main id="root">
                     <NextIntlClientProvider locale={locale} messages={messages}>
                         <Providers>{children}</Providers>

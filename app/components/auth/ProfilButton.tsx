@@ -47,6 +47,10 @@ export const ProfilButton = ({ logout }: { logout: string }) => {
                                 <FaCaretRight />
                                 Exam Reviews (Admin)
                             </LinkCurrentBlog>
+                            <LinkCurrentBlog href="/admin/reports" className="nav-link header-nav-link p-1 m-0 font-medium flex items-center" locale="fr">
+                                <FaCaretRight />
+                                Rapports (Admin)
+                            </LinkCurrentBlog>
                         </>
                     )}
                     {hasFideDashboardAccess && (
