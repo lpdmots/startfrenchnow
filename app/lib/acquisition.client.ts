@@ -1,4 +1,9 @@
-import { AcquisitionSource, acquisitionSourceFromReferrer, normalizeAcquisitionSource } from "./acquisition";
+import {
+    acquisitionSourceFromReferrer,
+    isReplaceableAcquisitionSource,
+    normalizeAcquisitionSource,
+    type AcquisitionSource,
+} from "./acquisition";
 
 const STORAGE_KEY = "sfn_acquisition_source";
 const RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
@@ -69,10 +74,14 @@ export function captureAcquisitionSource(): AcquisitionSource | null {
     if (typeof window === "undefined") return null;
 
     const existing = readStoredAcquisition();
-    if (existing) return existing.source;
+    if (existing && !isReplaceableAcquisitionSource(existing.source)) {
+        return existing.source;
+    }
 
     const detected = sourceFromCurrentPage();
-    if (!detected) return null;
+    if (!detected || (existing && isReplaceableAcquisitionSource(detected))) {
+        return existing?.source || detected;
+    }
 
     try {
         const capturedAt = Date.now();

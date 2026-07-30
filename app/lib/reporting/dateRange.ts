@@ -5,6 +5,11 @@ export type ReportDateRange = {
     endIso: string;
 };
 
+export type MonthToDateComparisonRanges = {
+    current: ReportDateRange;
+    previous: ReportDateRange;
+};
+
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 function formatUtcDate(date: Date): string {
@@ -59,4 +64,20 @@ export function previousCompletedWeekRange(now = new Date()): ReportDateRange {
     previousSunday.setUTCDate(previousSunday.getUTCDate() - 1);
 
     return createReportDateRange(formatUtcDate(previousMonday), formatUtcDate(previousSunday), now);
+}
+
+export function monthToDateComparisonRanges(now = new Date()): MonthToDateComparisonRanges {
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    const currentFrom = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1));
+
+    const previousFrom = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - 1, 1));
+    const previousLastDay = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 0)).getUTCDate();
+    const previousTo = new Date(
+        Date.UTC(previousFrom.getUTCFullYear(), previousFrom.getUTCMonth(), Math.min(today.getUTCDate(), previousLastDay)),
+    );
+
+    return {
+        current: createReportDateRange(formatUtcDate(currentFrom), formatUtcDate(today), now),
+        previous: createReportDateRange(formatUtcDate(previousFrom), formatUtcDate(previousTo), now),
+    };
 }

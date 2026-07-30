@@ -8,7 +8,7 @@ import {
     type AcquisitionSource,
 } from "@/app/lib/acquisition";
 import { fetchCalendlyCommercialLeads, type CalendlyLeadResult } from "./calendly";
-import { fetchChfToEurRate } from "./exchangeRate";
+import { fetchHistoricalChfToEurRates, findHistoricalRate } from "./exchangeRate";
 import { fetchGoogleAdsCost, type GoogleAdsCost } from "./googleAds";
 import type { ReportDateRange } from "./dateRange";
 
@@ -119,6 +119,21 @@ export type PrivateLessonReport = {
     customers: CustomerReportRow[];
 };
 
+export type EuroFinancialSummary = {
+    convertedChfRevenue: number;
+    totalRevenue: number;
+    marketingResult?: number;
+};
+
+export type FinancialSummary = {
+    purchaseCount: number;
+    revenueByCurrency: Record<string, number>;
+    purchasesWithoutAmount: number;
+    googleAds: GoogleAdsCost;
+    euroFinancialSummary?: EuroFinancialSummary;
+    chfConversionUnavailable: boolean;
+};
+
 export type SalesReport = {
     range: ReportDateRange;
     generatedAt: string;
@@ -136,11 +151,7 @@ export type SalesReport = {
     calendly: CalendlyLeadResult;
     calendlyBySource: SourceStat[];
     googleAds: GoogleAdsCost;
-    euroFinancialSummary?: {
-        convertedChfRevenue: number;
-        totalRevenue: number;
-        marketingResult?: number;
-    };
+    euroFinancialSummary?: EuroFinancialSummary;
     chfConversionUnavailable: boolean;
 };
 
@@ -271,6 +282,90 @@ function roundMoney(value: number): number {
     return Math.round(value * 100) / 100;
 }
 
+async function calculateFinancialSummary(
+    publicPurchases: PurchaseRecord[],
+    googleAds: GoogleAdsCost,
+    range: ReportDateRange,
+): Promise<FinancialSummary> {
+    const revenueByCurrency: Record<string, number> = {};
+    let purchasesWithoutAmount = 0;
+    for (const purchase of publicPurchases) {
+        const amount = purchase.amountPaid;
+        const currency = String(purchase.currency || "").toUpperCase();
+        if (typeof amount !== "number" || !Number.isFinite(amount) || !currency) {
+            purchasesWithoutAmount += 1;
+            continue;
+        }
+        revenueByCurrency[currency] = roundMoney((revenueByCurrency[currency] || 0) + amount);
+    }
+
+    const hasEurRevenue = Object.prototype.hasOwnProperty.call(revenueByCurrency, "EUR");
+    const hasChfRevenue = Object.prototype.hasOwnProperty.call(revenueByCurrency, "CHF");
+    const hasAnyRevenue = Object.keys(revenueByCurrency).length > 0;
+    let chfConversionUnavailable = false;
+    let convertedChfRevenue = 0;
+
+    if (hasChfRevenue) {
+        const rates = await fetchHistoricalChfToEurRates(range);
+        if (!rates) {
+            chfConversionUnavailable = true;
+        } else {
+            for (const purchase of publicPurchases) {
+                if (String(purchase.currency || "").toUpperCase() !== "CHF") continue;
+                if (typeof purchase.amountPaid !== "number" || !Number.isFinite(purchase.amountPaid)) continue;
+
+                const rate = findHistoricalRate(rates, purchase.purchasedAt);
+                if (rate === null) {
+                    chfConversionUnavailable = true;
+                    break;
+                }
+                convertedChfRevenue += purchase.amountPaid * rate;
+            }
+            convertedChfRevenue = roundMoney(convertedChfRevenue);
+        }
+    }
+
+    const totalRevenueEur =
+        !hasAnyRevenue
+            ? 0
+            : (hasEurRevenue || hasChfRevenue) && !chfConversionUnavailable
+            ? roundMoney((revenueByCurrency.EUR || 0) + convertedChfRevenue)
+            : undefined;
+    const marketingResult =
+        totalRevenueEur !== undefined && googleAds.status === "available" && googleAds.currency === "EUR"
+            ? roundMoney(totalRevenueEur - googleAds.amount)
+            : undefined;
+    const euroFinancialSummary =
+        totalRevenueEur === undefined
+            ? undefined
+            : {
+                  convertedChfRevenue,
+                  totalRevenue: totalRevenueEur,
+                  marketingResult,
+              };
+
+    return {
+        purchaseCount: publicPurchases.length,
+        revenueByCurrency,
+        purchasesWithoutAmount,
+        googleAds,
+        euroFinancialSummary,
+        chfConversionUnavailable,
+    };
+}
+
+export async function generateFinancialSummary(range: ReportDateRange): Promise<FinancialSummary> {
+    const [periodPurchases, googleAds] = await Promise.all([
+        sanity.fetch<PurchaseRecord[]>(PERIOD_PURCHASES_QUERY, {
+            startIso: range.startIso,
+            endIso: range.endIso,
+        }),
+        fetchGoogleAdsCost(range),
+    ]);
+    const publicPurchases = periodPurchases.filter((purchase) => !purchaseContainsPrivateLesson(purchase));
+    return calculateFinancialSummary(publicPurchases, googleAds, range);
+}
+
 export async function generateSalesReport(range: ReportDateRange): Promise<SalesReport> {
     const [periodPurchases, googleAds, calendly] = await Promise.all([
         sanity.fetch<PurchaseRecord[]>(PERIOD_PURCHASES_QUERY, {
@@ -284,12 +379,14 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
     const emails = Array.from(
         new Set(periodPurchases.map((purchase) => normalizeEmail(purchase.email || purchase.user?.email)).filter(Boolean)),
     );
-    const history = emails.length
-        ? await sanity.fetch<PurchaseRecord[]>(CUSTOMER_HISTORY_QUERY, { emails })
-        : [];
-
     const publicPurchases = periodPurchases.filter((purchase) => !purchaseContainsPrivateLesson(purchase));
     const privatePurchases = periodPurchases.filter(purchaseContainsPrivateLesson);
+    const [history, financialSummary] = await Promise.all([
+        emails.length
+            ? sanity.fetch<PurchaseRecord[]>(CUSTOMER_HISTORY_QUERY, { emails })
+            : Promise.resolve([] as PurchaseRecord[]),
+        calculateFinancialSummary(publicPurchases, googleAds, range),
+    ]);
     const customers = buildCustomerRows(publicPurchases, history);
     const privateCustomers = buildPrivateCustomerRows(privatePurchases);
 
@@ -317,39 +414,6 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
         }
     }
 
-    const revenueByCurrency: Record<string, number> = {};
-    let purchasesWithoutAmount = 0;
-    for (const purchase of publicPurchases) {
-        const amount = purchase.amountPaid;
-        const currency = String(purchase.currency || "").toUpperCase();
-        if (typeof amount !== "number" || !Number.isFinite(amount) || !currency) {
-            purchasesWithoutAmount += 1;
-            continue;
-        }
-        revenueByCurrency[currency] = roundMoney((revenueByCurrency[currency] || 0) + amount);
-    }
-
-    const hasEurRevenue = Object.prototype.hasOwnProperty.call(revenueByCurrency, "EUR");
-    const hasChfRevenue = Object.prototype.hasOwnProperty.call(revenueByCurrency, "CHF");
-    const chfToEurRate = hasChfRevenue ? await fetchChfToEurRate() : null;
-    const chfConversionUnavailable = hasChfRevenue && chfToEurRate === null;
-    const convertedChfRevenue = chfToEurRate === null ? 0 : roundMoney((revenueByCurrency.CHF || 0) * chfToEurRate);
-    const totalRevenueEur =
-        (hasEurRevenue || hasChfRevenue) && (!hasChfRevenue || chfToEurRate !== null)
-            ? roundMoney((revenueByCurrency.EUR || 0) + convertedChfRevenue)
-            : undefined;
-    const marketingResult =
-        totalRevenueEur !== undefined && googleAds.status === "available" && googleAds.currency === "EUR"
-            ? roundMoney(totalRevenueEur - googleAds.amount)
-            : undefined;
-    const euroFinancialSummary =
-        totalRevenueEur === undefined
-            ? undefined
-            : {
-                  convertedChfRevenue,
-                  totalRevenue: totalRevenueEur,
-                  marketingResult,
-              };
     const calendlyBySource = sourceStats(calendly.leads.map((lead) => lead.source));
 
     return {
@@ -358,8 +422,8 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
         summary: {
             purchaseCount: publicPurchases.length,
             newCustomerCount: newCustomerSources.length,
-            revenueByCurrency,
-            purchasesWithoutAmount,
+            revenueByCurrency: financialSummary.revenueByCurrency,
+            purchasesWithoutAmount: financialSummary.purchasesWithoutAmount,
         },
         newCustomersBySource: sourceStats(newCustomerSources),
         purchasesBySource: sourceStats(publicPurchases.map(purchaseSource)),
@@ -373,7 +437,7 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
         calendly,
         calendlyBySource,
         googleAds,
-        euroFinancialSummary,
-        chfConversionUnavailable,
+        euroFinancialSummary: financialSummary.euroFinancialSummary,
+        chfConversionUnavailable: financialSummary.chfConversionUnavailable,
     };
 }

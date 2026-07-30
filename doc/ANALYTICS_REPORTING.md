@@ -13,13 +13,19 @@ contenu et le même destinataire que le cron hebdomadaire.
 - `?src=youtube`
 - `?src=tiktok`
 - `?src=instagram`
+- `?src=udemy`
+- `?src=italki`
 - Google Ads via `gclid`, `gbraid` ou `wbraid`
 - recherche Google via le referrer
-- coupons contenant `YOUTUBE`, `TIKTOK`, `INSTAGRAM` ou `INSTA`
+- coupon `PACKFIDE10` pour YouTube
+- coupon `INSTAGRAM10` pour Instagram
+- coupon `TIKTOK10` pour TikTok
 - accès sans referrer classé comme `Direct`
 - autre lien externe ou source UTM non reconnue classé comme `Autre`
 
-La première source identifiable est conservée 30 jours dans le navigateur.
+La première source précise est conservée 30 jours dans le navigateur et n'est
+pas remplacée par une autre plateforme. Une valeur `Direct`, `Autre` ou
+`Inconnue` peut en revanche être remplacée plus tard par une source précise.
 L'absence de source n'empêche jamais un paiement.
 
 Exemples de liens :
@@ -28,7 +34,12 @@ Exemples de liens :
 https://startfrenchnow.ch/fr/fide?src=youtube
 https://startfrenchnow.ch/fr/fide?src=instagram
 https://startfrenchnow.ch/fr/fide?src=tiktok
+https://startfrenchnow.ch/fr/fide?src=udemy
+https://startfrenchnow.ch/fr/fide?src=italki
 ```
+
+La variante `?src=italky` est également acceptée et enregistrée comme
+`italki`.
 
 ## Email hebdomadaire
 
@@ -38,6 +49,11 @@ permet Nodemailer.
 
 Le cron Vercel s'exécute le lundi à 07:00 UTC et nécessite le `CRON_SECRET` déjà
 utilisé par les autres crons du projet.
+
+Chaque email contient aussi un bilan du mois en cours, du premier jour jusqu'au
+jour de génération. Il est comparé à la même durée du mois précédent afin de ne
+pas opposer un mois incomplet à un mois complet. La différence porte sur le
+résultat marketing estimé en EUR.
 
 ## Configuration Google Ads
 
@@ -83,9 +99,10 @@ Documentation officielle :
   section discrète dédiée à leur source.
 - Les remboursements ne sont pas gérés par le rapport.
 - Les revenus restent séparés par devise.
-- Les revenus CHF sont automatiquement convertis en EUR avec le dernier taux
-  BCE disponible via Frankfurter. Le taux est conservé en cache pendant 24
-  heures et n'est pas affiché dans le rapport.
+- Chaque achat CHF est automatiquement converti en EUR avec le taux BCE
+  historique de sa date via Frankfurter. Pour un week-end ou jour férié, le
+  dernier taux ouvré disponible est utilisé. Les taux sont conservés en cache
+  pendant 24 heures et ne sont pas affichés dans le rapport.
 - Le total final additionne les revenus EUR et les revenus CHF convertis, puis
   retire les dépenses Google Ads lorsqu'elles sont en EUR.
 - Ce résultat ne déduit pas les frais Stripe, taxes ou autres coûts.

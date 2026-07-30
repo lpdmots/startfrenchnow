@@ -1,4 +1,15 @@
-export const ACQUISITION_SOURCES = ["youtube", "tiktok", "instagram", "google_ads", "google_organic", "direct", "unknown", "other"] as const;
+export const ACQUISITION_SOURCES = [
+    "youtube",
+    "tiktok",
+    "instagram",
+    "udemy",
+    "italki",
+    "google_ads",
+    "google_organic",
+    "direct",
+    "unknown",
+    "other",
+] as const;
 
 export type AcquisitionSource = (typeof ACQUISITION_SOURCES)[number];
 
@@ -6,6 +17,8 @@ export const ACQUISITION_SOURCE_LABELS: Record<AcquisitionSource, string> = {
     youtube: "YouTube",
     tiktok: "TikTok",
     instagram: "Instagram",
+    udemy: "Udemy",
+    italki: "italki",
     google_ads: "Google Ads",
     google_organic: "Google (recherche)",
     direct: "Direct",
@@ -22,6 +35,10 @@ const SOURCE_ALIASES: Record<string, AcquisitionSource> = {
     instagram: "instagram",
     insta: "instagram",
     ig: "instagram",
+    udemy: "udemy",
+    italki: "italki",
+    italky: "italki",
+    i_talki: "italki",
     google_ads: "google_ads",
     googleads: "google_ads",
     adwords: "google_ads",
@@ -43,15 +60,18 @@ export function normalizeAcquisitionSource(value?: string | null): AcquisitionSo
     return SOURCE_ALIASES[normalized] || null;
 }
 
+export function isReplaceableAcquisitionSource(source: AcquisitionSource): boolean {
+    return source === "direct" || source === "unknown" || source === "other";
+}
+
 export function acquisitionSourceFromCoupon(couponCode?: string | null): AcquisitionSource | null {
     const normalized = String(couponCode || "")
         .trim()
         .toUpperCase();
 
-    if (!normalized) return null;
-    if (normalized.includes("YOUTUBE")) return "youtube";
-    if (normalized.includes("TIKTOK")) return "tiktok";
-    if (normalized.includes("INSTAGRAM") || normalized.includes("INSTA")) return "instagram";
+    if (normalized === "PACKFIDE10") return "youtube";
+    if (normalized === "TIKTOK10") return "tiktok";
+    if (normalized === "INSTAGRAM10") return "instagram";
     return null;
 }
 
@@ -64,6 +84,8 @@ export function acquisitionSourceFromReferrer(referrer?: string | null): Acquisi
         if (hostname === "youtu.be" || hostname.endsWith(".youtube.com") || hostname === "youtube.com") return "youtube";
         if (hostname.endsWith(".tiktok.com") || hostname === "tiktok.com") return "tiktok";
         if (hostname.endsWith(".instagram.com") || hostname === "instagram.com") return "instagram";
+        if (hostname.endsWith(".udemy.com") || hostname === "udemy.com") return "udemy";
+        if (hostname.endsWith(".italki.com") || hostname === "italki.com") return "italki";
         if (/^(google\.[a-z.]+)$/.test(hostname) || hostname.endsWith(".google.com")) return "google_organic";
     } catch {
         return null;
