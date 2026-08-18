@@ -3,8 +3,10 @@ import { MockExamsPageSections } from "./components/MockExamsPageSections";
 import { mockExamFaqItemKeys } from "./faqItemKeys";
 import { getTranslations } from "next-intl/server";
 import { MockExamEligibilityProvider } from "./components/checkout/MockExamEligibilityProvider";
+import { getEntityIds } from "@/app/lib/seo/entityGraph.mjs";
 
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
+const ENTITY_IDS = getEntityIds(SITE);
 
 export default async function FideMockExamsPage(props: { params: Promise<{ locale: string }> }) {
     const params = await props.params;
@@ -17,8 +19,8 @@ export default async function FideMockExamsPage(props: { params: Promise<{ local
     const homePath = isFr ? "/fr" : "/";
     const fidePath = isFr ? "/fr/fide" : "/fide";
     const mockExamsPath = isFr ? "/fr/fide/mock-exams" : "/fide/mock-exams";
-    const callbackPath = "/fide/mock-exams";
-    const checkoutPath = `/checkout/mock_exam?quantity=1&callbackUrl=${encodeURIComponent(callbackPath)}`;
+    const checkoutBasePath = isFr ? "/fr/checkout/mock_exam" : "/checkout/mock_exam";
+    const checkoutPath = `${checkoutBasePath}?quantity=1&callbackUrl=${encodeURIComponent(mockExamsPath)}`;
     const faqItems = mockExamFaqItemKeys.map((itemKey) => ({
         question: faqT(`items.${itemKey}.title` as never),
         answer: faqT(`items.${itemKey}.content` as never),
@@ -80,9 +82,7 @@ export default async function FideMockExamsPage(props: { params: Promise<{ local
             price: "20.00",
             availability: "https://schema.org/InStock",
             seller: {
-                "@type": "Organization",
-                name: "Start French Now",
-                url: SITE,
+                "@id": ENTITY_IDS.organization,
             },
             priceSpecification: [
                 {

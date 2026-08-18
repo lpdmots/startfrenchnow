@@ -3,8 +3,7 @@ import React, { useState, useRef } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
-import { FaCaretRight } from "react-icons/fa";
-import { Locale } from "@/i18n";
+import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { getPrimaryNavigation, isSiteNavActive, SiteNavItem, SiteNavLink } from "./siteNavigation";
 import clsx from "clsx";
@@ -12,7 +11,7 @@ import clsx from "clsx";
 const getMobileAccentClasses = (item: SiteNavLink, isActive: boolean) =>
     clsx(item.accent === "fide" && "nav-link-fide current-fide", item.accent === "course" && "nav-link-fr current-fr", isActive && "current");
 
-const Burger = ({ locale }: { locale: Locale }) => {
+const Burger = () => {
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLElement | null>(null);
     const pathname = usePathname();
@@ -25,18 +24,22 @@ const Burger = ({ locale }: { locale: Locale }) => {
 
     return (
         <>
-            <Animation open={open} onClick={() => setOpen(!open)} />
+            <Animation open={open} onClick={() => setOpen((current) => !current)} label={open ? t("closeMenu") : t("openMenu")} />
 
             <div
                 ref={ref as React.RefObject<HTMLDivElement>}
-                style={open ? { height: ref?.current?.scrollHeight + "px", zIndex: 1000, top: "90px" } : { height: "0px", zIndex: 1000, top: "90px" }}
-                className="w-screen nav-width mx-auto px-6 absolute right-0 collapse-parent"
+                id="mobile-navigation"
+                aria-hidden={!open}
+                className={clsx(
+                    "nav-width absolute right-0 top-[90px] z-[1000] grid w-screen px-6 transition-[grid-template-rows,opacity] duration-200 ease-out lg:hidden",
+                    open ? "pointer-events-auto grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0",
+                )}
             >
-                <div className="nav burgerCollapse w-full sm:w-none mb-0 flex flex-col items-start">
-                    <div className="flex w-full flex-col gap-3 pl-0 sm:pl-2">
-                        {navigationItems.map((item) => (
-                            <BurgerNavItem key={item.key} item={item} locale={locale} pathname={pathname} onNavigate={() => setOpen(false)} />
-                        ))}
+                <div className="min-h-0 overflow-hidden">
+                    <div className="nav burgerCollapse mb-0 flex w-full flex-col items-start sm:w-none">
+                        <div className="flex w-full flex-col gap-3 pl-0 sm:pl-2">
+                            {open && navigationItems.map((item) => <BurgerNavItem key={item.key} item={item} pathname={pathname} onNavigate={() => setOpen(false)} />)}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,12 +51,10 @@ export default Burger;
 
 const BurgerNavItem = ({
     item,
-    locale,
     pathname,
     onNavigate,
 }: {
     item: SiteNavItem;
-    locale: Locale;
     pathname: string;
     onNavigate: () => void;
 }) => {
@@ -64,9 +65,9 @@ const BurgerNavItem = ({
             <div className="w-full border-b border-neutral-300 pb-2">
                 <Link
                     href={item.href}
-                    locale={locale}
+                    aria-current={isActive ? "page" : undefined}
                     className={clsx(
-                        "nav-link header-nav-link block w-full rounded-xl !p-2 text-base font-semibold",
+                        "nav-link header-nav-link flex min-h-11 w-full items-center rounded-xl !p-2 text-base font-semibold",
                         item.priority === "primary-offer" && "font-bold",
                         getMobileAccentClasses(item, isActive),
                         item.emphasize && "bg-neutral-100 shadow-sm"
@@ -83,9 +84,9 @@ const BurgerNavItem = ({
         <div className="w-full border-b border-neutral-300 pb-3">
             <Link
                 href={item.href}
-                locale={locale}
+                aria-current={isActive ? "page" : undefined}
                 className={clsx(
-                    "nav-link header-nav-link block w-full rounded-xl !p-2 text-base font-semibold",
+                    "nav-link header-nav-link flex min-h-11 w-full items-center rounded-xl !p-2 text-base font-semibold",
                     item.priority === "primary-offer" && "font-bold",
                     item.accent === "fide" && "nav-link-fide current-fide",
                     item.accent === "course" && "nav-link-fr current-fr",
@@ -103,11 +104,11 @@ const BurgerNavItem = ({
                         <Link
                             key={child.key}
                             href={child.href}
-                            locale={locale}
-                            className={clsx("nav-link header-nav-link m-0 flex items-center gap-2 p-1 pl-0 font-medium", getMobileAccentClasses(child, childActive))}
+                            aria-current={childActive ? "page" : undefined}
+                            className={clsx("nav-link header-nav-link m-0 flex min-h-11 items-center gap-2 p-1 pl-0 font-medium", getMobileAccentClasses(child, childActive))}
                             onClick={onNavigate}
                         >
-                            <FaCaretRight />
+                            <ChevronRight aria-hidden="true" className="size-4 shrink-0" strokeWidth={2} />
                             {child.label}
                         </Link>
                     );
@@ -117,52 +118,34 @@ const BurgerNavItem = ({
     );
 };
 
-const Animation = ({ open, onClick }: { open: boolean; onClick: any }) => {
+const Animation = ({ open, onClick, label }: { open: boolean; onClick: () => void; label: string }) => {
     return (
-        <div
-            className="flex lg:hidden"
-            style={{
-                width: "2.3rem",
-                height: "2.3rem",
-                cursor: "pointer",
-                flexDirection: "column",
-                justifyContent: "space-around",
-            }}
+        <button
+            type="button"
+            aria-label={label}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
+            className="relative flex size-11 items-center justify-center rounded-xl transition-transform duration-150 ease-out active:scale-[0.96] lg:hidden"
             onClick={onClick}
         >
-            <div
-                style={{
-                    width: "2.3rem",
-                    height: "3px",
-                    backgroundColor: "var(--neutral-800)",
-                    borderRadius: "10px",
-                    transformOrigin: "1px",
-                    transition: "all 0.2s linear",
-                    transform: open ? "rotate(45deg)" : "rotate(0)",
-                }}
+            <span
+                aria-hidden="true"
+                className={clsx(
+                    "absolute h-0.5 w-7 rounded-full bg-neutral-800 transition-transform duration-200 ease-out",
+                    open ? "rotate-45" : "-translate-y-[7px]",
+                )}
             />
-            <div
-                style={{
-                    width: "2.3rem",
-                    height: "3px",
-                    backgroundColor: "var(--neutral-800)",
-                    borderRadius: "10px",
-                    transformOrigin: "1px",
-                    transition: "all 0.2s linear",
-                    opacity: open ? 0 : 1,
-                }}
+            <span
+                aria-hidden="true"
+                className={clsx("absolute h-0.5 w-7 rounded-full bg-neutral-800 transition-opacity duration-150 ease-out", open ? "opacity-0" : "opacity-100")}
             />
-            <div
-                style={{
-                    width: "2.3rem",
-                    height: "3px",
-                    backgroundColor: "var(--neutral-800)",
-                    borderRadius: "10px",
-                    transformOrigin: "1px",
-                    transition: "all 0.2s linear",
-                    transform: open ? "rotate(-45deg)" : "rotate(0)",
-                }}
+            <span
+                aria-hidden="true"
+                className={clsx(
+                    "absolute h-0.5 w-7 rounded-full bg-neutral-800 transition-transform duration-200 ease-out",
+                    open ? "-rotate-45" : "translate-y-[7px]",
+                )}
             />
-        </div>
+        </button>
     );
 };

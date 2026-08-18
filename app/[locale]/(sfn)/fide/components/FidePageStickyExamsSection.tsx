@@ -7,9 +7,9 @@ import type { ReactNode } from "react";
 export function FidePageStickyExamsSection() {
     const t = useTranslations("Fide.FidePageStickyExams");
     const rich = {
-        strong: (chunks: any) => <strong>{chunks}</strong>,
-        b: (chunks: any) => <strong>{chunks}</strong>,
-        i: (chunks: any) => <i>{chunks}</i>,
+        strong: (chunks: ReactNode) => <strong>{chunks}</strong>,
+        b: (chunks: ReactNode) => <strong>{chunks}</strong>,
+        i: (chunks: ReactNode) => <i>{chunks}</i>,
     };
     const speakingCtaRich = {
         ...rich,
@@ -43,9 +43,9 @@ export function FidePageStickyExamsSection() {
                 <>
                     <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">{t("speaking.title")}</h3>
                     <div className="space-y-4">
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p1", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("speaking.paragraphs.p1", rich)}</p>
 
-                        <div className="rounded-2xl border border-neutral-300 bg-neutral-50 p-4 shadow-sm">
+                        <div className="rounded-xl bg-neutral-100 p-4">
                             <p className="mb-2 font-bold text-neutral-800">{t("speaking.a2Tasks.title")}</p>
                             <ul className="mb-0 list-none pl-0 space-y-2">
                                 <li className="flex items-start gap-2 text-neutral-700">
@@ -63,9 +63,9 @@ export function FidePageStickyExamsSection() {
                             </ul>
                         </div>
 
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p2", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("speaking.paragraphs.p2", rich)}</p>
 
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("speaking.paragraphs.p4", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("speaking.paragraphs.p4", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="text-sm text-neutral-600">{t.rich("speaking.ctaLine.text", speakingCtaRich)}</span>
@@ -83,9 +83,9 @@ export function FidePageStickyExamsSection() {
                 <>
                     <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">{t("listening.title")}</h3>
                     <div className="space-y-4">
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("listening.paragraphs.p1", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("listening.paragraphs.p1", rich)}</p>
 
-                        <div className="rounded-2xl border border-neutral-300 bg-neutral-50 p-4 shadow-sm">
+                        <div className="rounded-xl bg-neutral-100 p-4">
                             <p className="mb-2 font-bold text-neutral-800">{t("listening.levelFormat.title")}</p>
                             <ul className="mb-0 list-none pl-0 space-y-2">
                                 <li className="flex items-start gap-2 text-neutral-700">
@@ -103,9 +103,9 @@ export function FidePageStickyExamsSection() {
                             </ul>
                         </div>
 
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("listening.paragraphs.p2", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("listening.paragraphs.p2", rich)}</p>
 
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("listening.paragraphs.p3", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("listening.paragraphs.p3", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="text-sm text-neutral-600">{t.rich("listening.ctaLine.text", listeningCtaRich)}</span>
@@ -123,8 +123,8 @@ export function FidePageStickyExamsSection() {
                 <>
                     <h3 className="text-2xl md:text-4xl font-bold leading-tight mb-4">{t("readWrite.title")}</h3>
                     <div className="space-y-4">
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p1", rich)}</p>
-                        <div className="rounded-2xl border border-neutral-300 bg-neutral-50 p-4 shadow-sm">
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("readWrite.paragraphs.p1", rich)}</p>
+                        <div className="rounded-xl bg-neutral-100 p-4">
                             <p className="mb-2 font-bold text-neutral-800">{t("readWrite.structure.title")}</p>
                             <ul className="mb-0 list-none pl-0 space-y-2">
                                 <li className="flex items-start gap-2 text-neutral-700">
@@ -141,9 +141,9 @@ export function FidePageStickyExamsSection() {
                                 </li>
                             </ul>
                         </div>
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p2", rich)}</p>
-                        <p>{t.rich("readWrite.paragraphs.p3", rich)}</p>
-                        <p className="mb-0 text-neutral-700 text-justify">{t.rich("readWrite.paragraphs.p4", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("readWrite.paragraphs.p2", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("readWrite.paragraphs.p3", rich)}</p>
+                        <p className="mb-0 text-left text-neutral-700">{t.rich("readWrite.paragraphs.p4", rich)}</p>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="text-sm text-neutral-600">{t.rich("readWrite.ctaLine.text", readWriteCtaRich)}</span>
@@ -158,7 +158,7 @@ export function FidePageStickyExamsSection() {
     ];
 
     return (
-        <section id="whatIsFIDE" className="py-16 lg:py-24 bg-neutral-200">
+        <section id="whatIsFIDE" className="bg-neutral-200 !py-16 lg:!py-24">
             <FideStickyScrollReveal
                 items={stickyItems}
                 activationOffset={0.04}

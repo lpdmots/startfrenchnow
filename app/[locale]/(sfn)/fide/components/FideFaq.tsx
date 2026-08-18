@@ -1,7 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem } from "@/app/components/ui/accordion";
 import * as RadixAccordion from "@radix-ui/react-accordion";
 import { Plus } from "lucide-react";
-import { AccordionButton } from "@/app/components/common/Accordion/AccordionButton";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import LinkArrow from "@/app/components/common/LinkArrow";
 import { useTranslations } from "next-intl";
@@ -227,28 +226,39 @@ export function FideFaq({ title, subtitle, items, variant = "default", showHeade
             <Accordion type="multiple" className={`w-full flex flex-col ${isThin ? "gap-2 md:gap-3" : "gap-2 md:gap-4"} ${maxWidthClassName}`.trim()}>
                 {data.map((item, index) => (
                     <div key={index} className={isThin ? "w-full rounded-2xl border border-neutral-300 bg-neutral-100 shadow-sm" : "card link-card w-full"}>
-                        <AccordionItem key={index} value={`item-${index}`}>
-                            <RadixAccordion.Trigger className="w-full flex flex-col p-0" style={{ backgroundColor: "transparent" }}>
-                                <AccordionButton>
+                        <AccordionItem value={`item-${index}`}>
+                            <RadixAccordion.Trigger className="group flex w-full flex-col p-0" style={{ backgroundColor: "transparent" }}>
+                                <div className="w-full p-4">
                                     <div className="flex w-full justify-between items-center color-neutral-800 gap-6">
-                                        <h3 className={isThin ? "font-bold text-lg md:text-xl mb-0 color-neutral-800 text-left" : "font-bold text-lg md:text-2xl mb-0 color-neutral-800 text-left"}>
+                                        <h3
+                                            className={
+                                                isThin
+                                                    ? "mb-0 text-left text-lg font-bold color-neutral-800 group-hover:underline md:text-xl"
+                                                    : "mb-0 text-left text-lg font-bold color-neutral-800 group-hover:underline md:text-2xl"
+                                            }
+                                        >
                                             {item.title}
                                         </h3>
                                         <div
+                                            aria-hidden="true"
                                             className={
                                                 isThin
-                                                    ? "btn btn-secondary small border !border-neutral-300 !p-2 w-[44px] h-[44px] flex items-center justify-center"
-                                                    : "btn btn-secondary small border-[3px] !p-2 w-[50px] h-[50px] flex items-center justify-center"
+                                                    ? "btn btn-secondary small flex h-[44px] w-[44px] shrink-0 items-center justify-center border !border-neutral-300 !p-2"
+                                                    : "btn btn-secondary small flex h-[50px] w-[50px] shrink-0 items-center justify-center border-[3px] !p-2"
                                             }
                                         >
-                                            <Plus />
+                                            <Plus
+                                                aria-hidden="true"
+                                                className="transition-transform duration-150 ease-out group-data-[state=open]:rotate-45 motion-reduce:transition-none"
+                                                strokeWidth={2}
+                                            />
                                         </div>
                                     </div>
-                                    <AccordionContent className={isThin ? "text-base color-neutral-800 text-left pt-3 pb-0" : "text-lg color-neutral-800 text-left pt-4 pb-0"}>
-                                        {item.content}
-                                    </AccordionContent>
-                                </AccordionButton>
+                                </div>
                             </RadixAccordion.Trigger>
+                            <AccordionContent className={isThin ? "px-4 pb-4 pt-0 text-left text-base color-neutral-800" : "px-4 pb-4 pt-0 text-left text-lg color-neutral-800"}>
+                                {item.content}
+                            </AccordionContent>
                         </AccordionItem>
                     </div>
                 ))}

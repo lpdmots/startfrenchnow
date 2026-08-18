@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { themeChange } from "theme-change";
-import { MdDarkMode, MdWbSunny } from "react-icons/md";
+import { Moon, Sun } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 function DarkMode() {
     const [toggle, setToggle] = useState<string>("");
+    const t = useTranslations("Navigation");
     useEffect(() => {
         themeChange(false);
         // 👆 false parameter is required for react project
@@ -30,14 +32,28 @@ function DarkMode() {
     }, []);
 
     return (
-        <div className="flex items-end justify-center pt-2 pb-0">
+        <div className="flex items-center justify-center">
             {!["light", ""].includes(toggle) ? (
-                <button aria-label="Light mode" data-set-theme="" data-act-class="ACTIVECLASS" onClick={() => handleClick("light")} className="btn p-0 flex items-center bg-neutral-100">
-                    <MdWbSunny className="fill-neutral-800 text-2xl sm:text-3xl hover:fill-secondary-2 duration-300" />
+                <button
+                    type="button"
+                    aria-label={t("switchToLight")}
+                    data-set-theme=""
+                    data-act-class="ACTIVECLASS"
+                    onClick={() => handleClick("light")}
+                    className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-800 transition-[color,transform] duration-150 ease-out hover:text-secondary-2 active:scale-[0.96]"
+                >
+                    <Sun aria-hidden="true" className="size-6" strokeWidth={2} />
                 </button>
             ) : (
-                <button aria-label="Dark mode" data-set-theme="dark" data-act-class="ACTIVECLASS" onClick={() => handleClick("dark")} className="btn p-0 flex items-center bg-neutral-100">
-                    <MdDarkMode className="fill-neutral-800 text-2xl sm:text-3xl hover:fill-secondary-2 duration-300" />
+                <button
+                    type="button"
+                    aria-label={t("switchToDark")}
+                    data-set-theme="dark"
+                    data-act-class="ACTIVECLASS"
+                    onClick={() => handleClick("dark")}
+                    className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-800 transition-[color,transform] duration-150 ease-out hover:text-secondary-2 active:scale-[0.96]"
+                >
+                    <Moon aria-hidden="true" className="size-6" strokeWidth={2} />
                 </button>
             )}
         </div>

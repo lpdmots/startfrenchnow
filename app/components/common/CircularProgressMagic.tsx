@@ -30,7 +30,7 @@ export default function CircularProgressMagic({
 
     return (
         <div
-            className={cn("relative text-2xl font-semibold", withSize && "size-40", className)}
+            className={cn("relative text-2xl font-semibold tabular-nums", withSize && "size-40", className)}
             style={
                 {
                     "--circle-size": "100px",
@@ -64,7 +64,10 @@ export default function CircularProgressMagic({
                                 "--offset-factor-secondary": "calc(1 - var(--offset-factor))",
                                 strokeDasharray: "calc(var(--stroke-percent) * var(--percent-to-px)) var(--circumference)",
                                 transform: "rotate(calc(1turn - 90deg - (var(--gap-percent) * var(--percent-to-deg) * var(--offset-factor-secondary)))) scaleY(-1)",
-                                transition: "all var(--transition-length) ease var(--delay)",
+                                transitionDuration: "var(--transition-length)",
+                                transitionTimingFunction: "ease",
+                                transitionDelay: "var(--delay)",
+                                transitionProperty: "stroke-dasharray, transform",
                                 transformOrigin: "calc(var(--circle-size) / 2) calc(var(--circle-size) / 2)",
                             } as React.CSSProperties
                         }
@@ -84,8 +87,10 @@ export default function CircularProgressMagic({
                             stroke: gaugePrimaryColor,
                             "--stroke-percent": currentPercent,
                             strokeDasharray: "calc(var(--stroke-percent) * var(--percent-to-px)) var(--circumference)",
-                            transition: "var(--transition-length) ease var(--delay),stroke var(--transition-length) ease var(--delay)",
-                            transitionProperty: "stroke-dasharray,transform",
+                            transitionDuration: "var(--transition-length)",
+                            transitionTimingFunction: "ease",
+                            transitionDelay: "var(--delay)",
+                            transitionProperty: "stroke-dasharray, transform",
                             transform: "rotate(calc(-90deg + var(--gap-percent) * var(--offset-factor) * var(--percent-to-deg)))",
                             transformOrigin: "calc(var(--circle-size) / 2) calc(var(--circle-size) / 2)",
                         } as React.CSSProperties

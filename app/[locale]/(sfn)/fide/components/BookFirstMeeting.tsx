@@ -68,26 +68,27 @@ export const BookFirstMeeting = ({
         return () => window.removeEventListener("message", onMessage);
     }, [router, test]);
 
-    if (!rootElement) return null; // Assure que rien n'est rendu si rootElement n'est pas prêt
-
     return (
         <div className={clsx("w-full sm:w-auto", className)}>
             <ShimmerButton
-                className={clsx("w-button flex items-center justify-center w-full sm:w-auto", { small: small }, buttonClassName)}
+                type="button"
+                className={clsx("w-button flex w-full items-center justify-center sm:w-auto", { small: small }, buttonClassName)}
                 variant={variant}
                 onClick={() => setIsOpen(true)}
             >
-                <NotebookPen className="mr-2 text-xl" />
+                <NotebookPen aria-hidden="true" className="mr-2 size-5" strokeWidth={2} />
                 {label}
             </ShimmerButton>
 
-            <TrackedCalendlyPopupModal
-                source="book_first_meeting"
-                url={test ? "https://calendly.com/yohann-startfrenchnow/test" : "https://calendly.com/yohann-startfrenchnow/15min"}
-                onModalClose={() => setIsOpen(false)}
-                open={isOpen}
-                rootElement={rootElement}
-            />
+            {rootElement ? (
+                <TrackedCalendlyPopupModal
+                    source="book_first_meeting"
+                    url={test ? "https://calendly.com/yohann-startfrenchnow/test" : "https://calendly.com/yohann-startfrenchnow/15min"}
+                    onModalClose={() => setIsOpen(false)}
+                    open={isOpen}
+                    rootElement={rootElement}
+                />
+            ) : null}
         </div>
     );
 };

@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { m } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { HiOutlineArrowRight } from "react-icons/hi";
+import { ArrowRight } from "lucide-react";
 import { CATEGORIESTEXTCOLORS } from "@/app/lib/constantes";
 import { cn } from "@/app/lib/schadcn-utils";
 import { isCalendlyLink, trackCalendlyOpen } from "@/app/lib/calendlyTracking";
@@ -19,21 +18,6 @@ interface Props {
 }
 
 function LinkArrow({ children, url, target = "_blank", rel, category, className = "" }: Props) {
-    const ParentVariants = {
-        visible: {
-            transition: {
-                delayChildren: 0,
-            },
-        },
-    };
-
-    const childrenVariant = {
-        visible: {
-            x: 3,
-            transition: { duration: 0.5 },
-        },
-    };
-
     const hoverColor = "hover:!" + CATEGORIESTEXTCOLORS[(category || "tips") as keyof typeof CATEGORIESTEXTCOLORS];
     const normalizedUrl = (() => {
         if (url.startsWith("#") || url.startsWith("http") || url.startsWith("mailto:") || url.startsWith("tel:")) {
@@ -45,18 +29,19 @@ function LinkArrow({ children, url, target = "_blank", rel, category, className 
         }
         return url;
     })();
+    const resolvedRel = rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
 
     return (
-        <m.span variants={ParentVariants} whileHover="visible">
+        <span>
             <Link
                 href={normalizedUrl}
                 className={cn(
-                    "inline-block text-[var(--neutral-800)] leading-[20px] font-normal flex items-center text-[var(--neutral-700)] no-underline hover:text-[var(--secondary-2)] w-inline-block",
+                    "group inline-flex items-center font-normal leading-5 text-[var(--neutral-700)] no-underline transition-colors duration-150 ease-out hover:text-[var(--secondary-2)]",
                     hoverColor,
                     className,
                 )}
                 target={target}
-                rel={rel}
+                rel={resolvedRel}
                 onClick={(event) => {
                     if (isCalendlyLink(normalizedUrl)) {
                         const attributedUrl = withCalendlyAttribution(normalizedUrl, "link_arrow");
@@ -70,15 +55,17 @@ function LinkArrow({ children, url, target = "_blank", rel, category, className 
                     event.stopPropagation();
                 }}
             >
-                <span className="flex items-center justify-between">
-                    <span className="link-text underline mr-1">{children}</span>
-                    <m.span className="flex items-center" variants={childrenVariant} style={{ width: 20 }}>
-                        <HiOutlineArrowRight />
-                    </m.span>
-                    <span style={{ width: 15 }}></span>
+                <span className="flex items-center justify-between gap-1">
+                    <span className="link-text underline">{children}</span>
+                    <ArrowRight
+                        aria-hidden="true"
+                        className="size-5 shrink-0 transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transform-none"
+                        strokeWidth={2}
+                    />
+                    <span aria-hidden="true" className="w-2" />
                 </span>
             </Link>
-        </m.span>
+        </span>
     );
 }
 

@@ -16,9 +16,11 @@ export function FidePageHeroSection() {
     };
 
     return (
-        <div id="HeroFide" className="page-wrapper pt-12 pb-12 lg:pb-24 lg:min-h-[calc(100svh-150px)] lg:flex lg:items-center">
+        <section id="HeroFide" aria-labelledby="fide-page-title" className="page-wrapper scroll-mt-24 !pt-12 !pb-12 lg:!pb-24 lg:min-h-[calc(100svh-150px)] lg:flex lg:items-center">
             <div className="max-w-7xl m-auto px-4 lg:px-8">
-                <h1 className="display-1 mb-6 lg:mb-10">{t.rich("title", rich)}</h1>
+                <h1 id="fide-page-title" className="display-1 mb-6 lg:mb-10">
+                    {t.rich("title", rich)}
+                </h1>
 
                 <div className="grid lg:grid-cols-[1fr_1fr] gap-2 items-center">
                     <div>
@@ -61,10 +63,19 @@ export function FidePageHeroSection() {
                         </div>
                     </div>
                     <div className="">
-                        <Image src="/images/hero-fide4.png" alt={t("imageAlt")} width={600} height={380} className="w-full !h-auto m-auto max-w-[500px] lg:max-w-[600px]" priority />
+                        <Image
+                            src="/images/hero-fide4.avif"
+                            alt={t("imageAlt")}
+                            width={1418}
+                            height={1104}
+                            className="w-full !h-auto m-auto max-w-[500px] lg:max-w-[600px]"
+                            sizes="(min-width: 1024px) 600px, (min-width: 640px) 500px, calc(100vw - 32px)"
+                            priority
+                            fetchPriority="high"
+                        />
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

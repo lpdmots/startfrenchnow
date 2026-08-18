@@ -48,7 +48,7 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
                 className={cn(
                     isSecondary && "border-neutral-100",
                     "group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden whitespace-nowrap",
-                    "transform-gpu transition-transform duration-300 ease-in-out active:translate-y-px",
+                    "transform-gpu transition-transform duration-150 ease-out active:scale-[0.96] motion-reduce:transform-none",
                     className,
                     isSecondary ? "btn-secondary hover:bg-secondary-2 hover:border-secondary-2 hover:text-neutral-800 hover:border-2" : "btn-primary"
                 )}
@@ -58,9 +58,9 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
                 {/* spark container */}
                 <div className={cn("-z-30 blur-[2px]", "absolute inset-0 overflow-visible [container-type:size]")}>
                     {/* spark */}
-                    <div className="absolute inset-0 h-[100cqh] animate-shimmer-slide [aspect-ratio:1] [border-radius:0] [mask:none]">
+                    <div className="absolute inset-0 h-[100cqh] animate-shimmer-slide [aspect-ratio:1] [border-radius:0] [mask:none] motion-reduce:[animation-play-state:paused]">
                         {/* spark before */}
-                        <div className="animate-spin-around absolute -inset-full w-auto rotate-0 [background:conic-gradient(from_calc(270deg-(var(--spread)*0.5)),transparent_0,var(--shimmer-color)_var(--spread),transparent_var(--spread))] [translate:0_0]" />
+                        <div className="animate-spin-around absolute -inset-full w-auto rotate-0 [background:conic-gradient(from_calc(270deg-(var(--spread)*0.5)),transparent_0,var(--shimmer-color)_var(--spread),transparent_var(--spread))] [translate:0_0] motion-reduce:[animation-play-state:paused]" />
                     </div>
                 </div>
                 {children}
@@ -73,7 +73,7 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
                         "rounded-2xl px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#ffffff1f]",
 
                         // transition
-                        "transform-gpu transition-all duration-300 ease-in-out",
+                        "transform-gpu transition-[box-shadow] duration-150 ease-out",
 
                         // on hover
                         "group-hover:shadow-[inset_0_-6px_10px_#ffffff3f]",

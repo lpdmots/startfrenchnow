@@ -7,6 +7,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import { Fade } from "@/app/components/animations/Fades";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
+import AboutProfessionalProof from "@/app/components/sfn/about/AboutProfessionalProof";
 
 function About() {
     const t = useTranslations("About");
@@ -24,7 +25,7 @@ function About() {
                             className="image-wrapper max-w-[270px] mr-[-71px] mb-[199px] ml-[-52px] max-[991px]:ml-[-71px] max-[767px]:max-w-[225px] max-[767px]:mr-0 max-[767px]:mb-0 max-[767px]:ml-0 left"
                         >
                             <Fade>
-                                <Image src="/images/about-hero-left-image-paperfolio-webflow-template.png" width={270} height={273} alt="about teacher image" className="object-contain" />
+                                <Image src="/images/about-hero-left-image-paperfolio-webflow-template.png" width={270} height={273} alt="" className="object-contain" />
                             </Fade>
                         </div>
 
@@ -58,13 +59,14 @@ function About() {
                             className="image-wrapper max-w-[270px] mr-[-71px] mb-[199px] ml-[-52px] max-[991px]:ml-[-71px] max-[767px]:max-w-[225px] max-[767px]:mr-0 max-[767px]:mb-0 max-[767px]:ml-0 mr-[-71px] mb-[199px] max-[767px]:max-w-[225px] max-[767px]:mr-0 max-[767px]:mb-0"
                         >
                             <Fade>
-                                <Image src="/images/about-hero-rigth-image-paperfolio-webflow-template.png" width={270} height={273} alt="about pencil" className="object-contain" />
+                                <Image src="/images/about-hero-rigth-image-paperfolio-webflow-template.png" width={270} height={273} alt="" className="object-contain" />
                             </Fade>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="My-Story" className="section pd-top-0 wf-section">
+            <AboutProfessionalProof />
+            <div id="My-Story" className="section wf-section">
                 <div className="container-default w-container">
                     <div className="inner-container _600px---tablet center">
                         <div className="inner-container _500px---mbl center">
@@ -82,7 +84,7 @@ function About() {
                                     <div className="inner-container max-w-[553px] _100---tablet">
                                         <div className="image-wrapper">
                                             <Fade delay={0.6}>
-                                                <Image src="/images/my-story-image-paperfolio-webflow-template.png" alt="my story image" height={500} width={500} className="image" loading="lazy" />
+                                                <Image src="/images/my-story-image-paperfolio-webflow-template.png" alt="" height={500} width={500} className="image" loading="lazy" />
                                             </Fade>
                                         </div>
                                     </div>

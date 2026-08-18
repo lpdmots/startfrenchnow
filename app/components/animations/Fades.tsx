@@ -1,5 +1,5 @@
 "use client";
-import { m } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 
 interface Props {
     children: JSX.Element;
@@ -8,13 +8,14 @@ interface Props {
 }
 
 export const Fade = ({ duration, delay, children }: Props) => {
+    const shouldReduceMotion = useReducedMotion();
     const slidefromBottom = {
-        hidden: { opacity: 0 },
+        hidden: { opacity: shouldReduceMotion ? 1 : 0 },
         visible: {
             opacity: 1,
             transition: {
-                delay: delay || 0.3,
-                duration: duration || 0.3,
+                delay: shouldReduceMotion ? 0 : delay || 0.3,
+                duration: shouldReduceMotion ? 0 : duration || 0.3,
             },
         },
     };

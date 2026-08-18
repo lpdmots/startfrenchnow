@@ -68,7 +68,7 @@ export function MockExamsNextStepsSection() {
                                 >
                                     <div className="mb-4 flex h-52 items-center justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2 md:h-56 lg:h-60">
                                         <Image
-                                            src="/images/etudiante-cours.png"
+                                            src="/images/etudiante-cours.avif"
                                             alt={t("private.imageAlt")}
                                             width={1200}
                                             height={675}

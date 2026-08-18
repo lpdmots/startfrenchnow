@@ -14,6 +14,7 @@ import { BLOGCATEGORIES, CATEGORIESCOLORS } from "@/app/lib/constantes";
 import { ContactFideCard } from "./ContactFideCard";
 import CourseRecommendationCard from "./CourseRecommendationCard";
 import OfficialFideSourceNotice from "./OfficialFideSourceNotice";
+import PostAuthorMeta from "./PostAuthorMeta";
 
 function PostContent({ post }: { post: Post }) {
     const locale = useLocale() as Locale;
@@ -36,6 +37,7 @@ function PostContent({ post }: { post: Post }) {
                         <div className="text-center">
                             <div className="inner-container max-w-[1015px] max-[991px]:max-w-full center">
                                 <h1 className="display-1 mg-bottom-12px">{title}</h1>
+                                <PostAuthorMeta locale={locale} publishedAt={post.publishedAt} updatedAt={post._updatedAt} />
                             </div>
                         </div>
                     </div>

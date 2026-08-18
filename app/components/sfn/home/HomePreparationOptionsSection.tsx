@@ -9,9 +9,8 @@ const cards = [
     {
         key: "mockExams",
         href: "/fide/mock-exams",
-        image: "/images/mock-exam-hero.png",
+        image: "/images/mock-exam-hero.avif",
         badgeClassName: "bg-secondaryShades-5 text-secondary-5",
-        linkClassName: "hover:border-secondary-5",
         ctaClassName: "text-secondary-5",
         points: ["point1", "point2", "point3"],
     },
@@ -20,16 +19,14 @@ const cards = [
         href: "/fide/pack-fide",
         image: "/images/pack-fide-hero.png",
         badgeClassName: "bg-secondaryShades-4 text-secondary-6",
-        linkClassName: "hover:border-secondary-6",
         ctaClassName: "text-secondary-6",
         points: ["point1", "point2", "point3"],
     },
     {
         key: "private",
         href: "/fide/private-courses",
-        image: "/images/etudiante-cours.png",
+        image: "/images/etudiante-cours.avif",
         badgeClassName: "bg-secondaryShades-2 text-secondary-2",
-        linkClassName: "hover:border-secondary-2",
         ctaClassName: "text-secondary-2",
         points: ["point1", "point2", "point3"],
     },
@@ -51,24 +48,25 @@ export function HomePreparationOptionsSection() {
         <section id="fide-hub" className="pt-8 pb-0 lg:py-16">
             <div id="plans" className="scroll-mt-24" />
             <div className="max-w-7xl m-auto px-4 lg:px-8">
-                <div className="text-center mb-8">
+                <div className="mx-auto mb-10 max-w-3xl text-center">
                     <h2 className="display-2 mb-4">{t.rich("title", rich)}</h2>
+                    <p className="mx-auto mb-0 max-w-2xl text-base text-neutral-700 md:text-lg">{t("subtitle")}</p>
                 </div>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-                    {cards.map(({ key, href, image, badgeClassName, linkClassName, ctaClassName, points }) => (
+                    {cards.map(({ key, href, image, badgeClassName, ctaClassName, points }) => (
                         <Link
                             key={key}
                             href={href}
-                            className={`group flex h-full flex-col rounded-2xl border border-neutral-300 bg-neutral-100 p-5 !no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md ${linkClassName}`}
+                            className="home-elevated-card group flex h-full flex-col rounded-2xl bg-neutral-100 p-5 !no-underline transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5 active:scale-[0.96] motion-reduce:transform-none"
                         >
-                            <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2">
+                            <div className="mb-4 flex h-56 justify-center overflow-hidden rounded-xl bg-neutral-200 p-2">
                                 <Image
                                     src={image}
                                     alt={t(`cards.${key}.imageAlt` as never)}
                                     width={1200}
                                     height={675}
                                     sizes="(min-width: 992px) 380px, (min-width: 768px) 33vw, 100vw"
-                                    className="h-full w-full max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                                    className="home-image-outline h-full w-full max-w-[420px] rounded object-contain outline outline-1 -outline-offset-1 outline-black/10 transition-transform duration-150 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
                                 />
                             </div>
                             <div className="flex flex-1 flex-col">
@@ -81,14 +79,14 @@ export function HomePreparationOptionsSection() {
                                 <ul className="mb-5 grid list-none gap-2 pl-0">
                                     {points.map((point) => (
                                         <li key={point} className="flex items-start gap-2 text-sm text-neutral-700">
-                                            <CheckCircle2 className={`mt-0.5 h-4 w-4 shrink-0 ${ctaClassName}`} />
+                                            <CheckCircle2 aria-hidden="true" className={`mt-0.5 h-4 w-4 shrink-0 ${ctaClassName}`} strokeWidth={2} />
                                             <span>{t(`cards.${key}.points.${point}` as never)}</span>
                                         </li>
                                     ))}
                                 </ul>
                                 <p className={`mb-0 mt-auto inline-flex items-center gap-2 text-sm font-semibold ${ctaClassName}`}>
                                     {t(`cards.${key}.cta` as never)}
-                                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                                    <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transform-none" strokeWidth={2} />
                                 </p>
                             </div>
                         </Link>

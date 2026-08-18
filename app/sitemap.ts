@@ -53,7 +53,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // 2) /blog/category/[slug] depuis BLOGCATEGORIES (sans fetch)
-    for (const cat of BLOGCATEGORIES) {
+    // La catégorie FIDE utilise le hub dédié /fide et n'a pas de route de catégorie.
+    for (const cat of BLOGCATEGORIES.filter((category) => category !== "fide")) {
         const path = `/blog/category/${cat}`;
         for (const loc of withLocales(path)) {
             entries.push({
@@ -63,10 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // 3) /blog/post/[slug]
-    // -> tous les posts qui ont AU MOINS une catégorie dans BLOGCATEGORIES sauf "fide"
-    // -> si un post a ["fide", "tips"], il est gardé (car il a "tips")
-    const blogCatsNoFide = BLOGCATEGORIES.filter((c) => c !== "fide");
-
+    // Tous les articles publiés appartenant à une catégorie de blog, y compris FIDE.
     const blogPosts: { slug: string; updatedAt: string }[] = await client.fetch(
         `*[
         _type == "post"
@@ -77,7 +75,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "slug": slug.current,
         "updatedAt": coalesce(_updatedAt, _createdAt)
       }`,
-        { blogCats: blogCatsNoFide },
+        { blogCats: BLOGCATEGORIES },
     );
 
     for (const p of blogPosts) {
@@ -223,5 +221,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    return entries;
+    const uniqueEntries = new Map<string, MetadataRoute.Sitemap[number]>();
+
+    for (const entry of entries) {
+        const existing = uniqueEntries.get(entry.url);
+        if (!existing) {
+            uniqueEntries.set(entry.url, entry);
+            continue;
+        }
+
+        const existingTimestamp = existing.lastModified ? new Date(existing.lastModified).getTime() : 0;
+        const candidateTimestamp = entry.lastModified ? new Date(entry.lastModified).getTime() : 0;
+        if (candidateTimestamp > existingTimestamp) {
+            uniqueEntries.set(entry.url, entry);
+        }
+    }
+
+    return [...uniqueEntries.values()];
 }

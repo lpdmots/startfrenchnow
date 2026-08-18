@@ -15,8 +15,12 @@ import { localizePosts } from "@/app/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { BLOGCATEGORIES } from "@/app/lib/constantes";
 import BlogComments from "@/app/components/comments/BlogComments";
+import urlFor from "@/app/lib/urlFor";
+import { buildBlogPostingJsonLd, getLocalizedArticleMetadata, serializeJsonLd } from "@/app/lib/seo/entityGraph.mjs";
 
 export const revalidate = 3600;
+
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
 
 const query = groq`
         *[_type=='post' && slug.current == $slug][0] 
@@ -72,8 +76,27 @@ async function Post(props: { params: Promise<{ locale: string; slug: string }> }
         latestPostsRaw.filter((p) => p.slug.current !== slug),
         locale
     );
+    const articleImageUrl = localizedPost.mainImage?.asset?._ref
+        ? urlFor(localizedPost.mainImage).width(1200).height(630).fit("crop").url()
+        : `${SITE}/images/fide-presentation-thumbnail.png`;
+    const articleMetadata = getLocalizedArticleMetadata(post, locale);
+    const articleJsonLd = buildBlogPostingJsonLd({
+        locale,
+        slug,
+        title: articleMetadata.title,
+        description: articleMetadata.description,
+        publishedAt: localizedPost.publishedAt,
+        updatedAt: localizedPost._updatedAt,
+        imageUrl: articleImageUrl,
+        siteUrl: SITE,
+    });
 
-    return <PostNoAsync post={localizedPost} latestPosts={latestPosts} />;
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleJsonLd) }} />
+            <PostNoAsync post={localizedPost} latestPosts={latestPosts} />
+        </>
+    );
 }
 
 export default Post;

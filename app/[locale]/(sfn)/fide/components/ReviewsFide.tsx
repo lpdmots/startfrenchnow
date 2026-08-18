@@ -2,12 +2,14 @@ import { Fade } from "@/app/components/animations/Fades";
 import { SlideFromBottom } from "@/app/components/animations/Slides";
 import { CarouselReviews } from "@/app/components/common/CarouselReviews.tsx/CarouselReviews";
 import { CarouselComments } from "@/app/components/sfn/home/CarouselComments";
+import { sortFideReviews } from "@/app/lib/fideReviews.mjs";
 import { intelRich } from "@/app/lib/intelRich";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import type { ReactNode } from "react";
 
 export type SharedFideReview = {
+    featured?: boolean;
     isVideo?: boolean;
     userName: string;
     userImage: ReactNode;
@@ -27,6 +29,136 @@ export type SharedFideReview = {
 };
 
 const reviewsComments: SharedFideReview[] = [
+    {
+        featured: true,
+        userName: "Paula",
+        userImage: (
+            <div className="h-[100px] w-[100px] overflow-hidden rounded-full" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/fide/reviews/paula.webp" height={100} width={100} alt="Paula" className="h-full w-full object-cover object-[50%_22%]" />
+            </div>
+        ),
+        title: "Just a few sessions were enough to boost my confidence",
+        comment: (
+            <p className="mb-0 text-sm">
+                Just a few sessions with Yohann and his expertise were enough to understand the logic of the exam and boost my confidence before the big day! Thank you for your invaluable guidance.
+            </p>
+        ),
+        score: 100,
+        progressTo: "B1",
+        date: 1778112000000, // 7 mai 2026
+        certificat: "/images/fide/reviews/paula.webp",
+    },
+    {
+        userName: "Jessica",
+        userImage: (
+            <div className="h-[100px] w-[100px] overflow-hidden rounded-full" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/avatars/femme1.png" height={100} width={100} alt="Jessica" className="h-full w-full object-cover" />
+            </div>
+        ),
+        title: "Yohann is an exceptional teacher",
+        comment: (
+            <p className="mb-0 text-sm">
+                I first discovered Yohann through his YouTube videos, where I found his explanations of the FIDE exam incredibly easy to follow. From beginning to end, he was incredibly supportive
+                and guided me through the entire process.
+            </p>
+        ),
+        score: 95,
+        progressTo: "B1",
+        date: 1783296000000, // 6 juillet 2026
+        modalComment: (
+            <p className="mb-0">
+                Yohann is an exceptional teacher. I first discovered him through his YouTube videos, where I found his explanations of the FIDE exam incredibly easy to follow. Because of that, I
+                decided to book some sessions with him, and I was not disappointed. From beginning to end, Yohann was incredibly supportive and guided me through the entire process, even though I
+                had very limited time before my exam. The notes we made together during our sessions were encouraging and useful for review. I highly recommend him to anyone who needs an expert who
+                knows the ins and outs of the FIDE.
+            </p>
+        ),
+    },
+    {
+        userName: "Javier",
+        userImage: (
+            <div className="h-[100px] w-[100px] overflow-hidden rounded-full" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/avatars/homme3.png" height={100} width={100} alt="Javier" className="h-full w-full object-cover" />
+            </div>
+        ),
+        title: "Les exercices m’ont donné la confiance nécessaire",
+        comment: (
+            <p className="mb-0 text-sm">
+                Bonne nouvelle : comme on dit au Mexique, tu as eu la voix d’un prophète et j’ai réussi à obtenir le B1, même à l’écrit. Les exercices que nous avons faits m’ont donné la confiance et
+                la pratique nécessaires pour passer l’examen.
+            </p>
+        ),
+        score: 100,
+        progressTo: "B1",
+        date: 1783036800000, // 3 juillet 2026
+        certificat: "/images/fide/reviews/javier-result.webp",
+        modalComment: (
+            <p className="mb-0">
+                Cher Yohann,
+                <br />
+                <br />
+                J’espère que tu vas bien. Je viens de recevoir le résultat de mon examen et je veux le partager avec toi.
+                <br />
+                <br />
+                Bonne nouvelle. Comme on dit au Mexique, tu as eu la voix d’un prophète et j’ai réussi à obtenir le B1, même à l’écrit.
+                <br />
+                <br />
+                Merci beaucoup pour ton aide et tes conseils. Les exercices que nous avons faits m’ont donné la confiance et la pratique nécessaires pour passer l’examen.
+                <br />
+                <br />
+                Je suis très heureux.
+            </p>
+        ),
+    },
+    {
+        userName: "Selahattin",
+        userImage: (
+            <div className="h-[100px] w-[100px] overflow-hidden rounded-full" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/avatars/homme1.png" height={100} width={100} alt="Selahattin" className="h-full w-full object-cover" />
+            </div>
+        ),
+        title: "J’ai progressé rapidement et gagné beaucoup de confiance",
+        comment: (
+            <p className="mb-0 text-sm">
+                La réussite de mon examen est en grande partie grâce à Yohann. C’est un professeur très professionnel, calme et toujours à l’écoute. Sa méthode de travail est extrêmement efficace et
+                orientée vers l’objectif.
+            </p>
+        ),
+        progressTo: "B1",
+        date: 1780876800000, // 8 juin 2026
+        certificat: "/images/fide/reviews/selahattin-result.webp",
+        modalComment: (
+            <p className="mb-0">
+                La réussite de mon examen est en grande partie grâce à Yohann. C’est un professeur très professionnel, calme et toujours à l’écoute. Sa méthode de travail est extrêmement efficace et
+                orientée vers l’objectif.
+                <br />
+                <br />
+                Grâce à son accompagnement, j’ai réussi à obtenir le niveau B1 à l’examen FIDE. J’ai progressé rapidement en français, notamment à l’oral, et j’ai gagné beaucoup de confiance pour
+                communiquer au quotidien.
+                <br />
+                <br />
+                Je ne le remercierai jamais assez pour son aide et son soutien. Je le recommande à toute personne qui souhaite réussir son examen et améliorer son français. Si vous voulez vraiment
+                atteindre vos objectifs, je vous conseille vivement de travailler avec Yohann.
+            </p>
+        ),
+    },
+    {
+        userName: "Murat",
+        userImage: (
+            <div className="h-[100px] w-[100px] overflow-hidden rounded-full" style={{ border: "solid 2px var(--neutral-800)" }}>
+                <Image src="/images/avatars/homme2.png" height={100} width={100} alt="Murat" className="h-full w-full object-cover" />
+            </div>
+        ),
+        title: "You are truly great",
+        comment: (
+            <p className="mb-0 text-sm">
+                Hi Yohann — I got B1 :) With this opportunity, I would like to thank you once more. You are truly great :)
+            </p>
+        ),
+        progressTo: "B1",
+        date: 1780531200000, // 4 juin 2026
+        certificat: "/images/fide/reviews/murat-result.webp",
+    },
     {
         isVideo: true,
         userName: "Rita",
@@ -51,7 +183,7 @@ const reviewsComments: SharedFideReview[] = [
         progressTo: "B1",
         date: 1762963200000, // 12 novembre 2025
         videoUrl: "fide/reviews/Rita.mp4",
-        videoThumbnail: "fide/reviews/Rita-thumbnail.jpg",
+        videoThumbnail: "/images/rita-thumbnail.webp",
         subtitleENUrl: "fide/reviews/Rita.vtt",
         modalComment: (
             <p className="mb-0">
@@ -748,7 +880,7 @@ export const ReviewsFide = ({ headingSpanClassName = "heading-span-secondary-2" 
             </SlideFromBottom>
             <Fade delay={0.6}>
                 <div className="relative min-h-[470px]">
-                    <CarouselReviews comments={[...sharedFideReviews].sort((a, b) => (b.date ?? 0) - (a.date ?? 0))} />
+                    <CarouselReviews comments={sortFideReviews(sharedFideReviews)} />
                     <div className="h-20 lg:hidden"></div>
                 </div>
             </Fade>

@@ -100,17 +100,12 @@ export function FideStickyScrollReveal({
                             >
                                 <div className="mb-5 lg:hidden">{item.mobileMedia ?? item.media}</div>
 
-                                <motion.div
-                                    initial={false}
-                                    animate={{
-                                        opacity: isActive ? 1 : 0.45,
-                                        y: reduceMotion ? 0 : isActive ? 0 : 6,
-                                    }}
-                                    transition={{ duration: reduceMotion ? 0 : 0.25, ease: "easeOut" }}
-                                    className={`pl-4 md:pl-6 border-l-4 ${isActive ? "border-secondary-6" : "border-neutral-300"}`}
+                                <div
+                                    data-active={isActive ? "true" : undefined}
+                                    className={`border-l pl-4 transition-colors duration-150 ease-out md:pl-6 ${isActive ? "border-secondary-6" : "border-neutral-400"}`}
                                 >
                                     {item.content}
-                                </motion.div>
+                                </div>
                             </article>
                         );
                     })}

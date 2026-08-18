@@ -25,16 +25,16 @@
             "description": "Explorez notre collection de vidéos éducatives pour apprendre le français. Que vous soyez débutant ou intermédiaire, nos vidéos ludiques et informatives vous guideront à chaque étape de votre apprentissage."
         },
         "About": {
-            "title": "Rencontrez Yohann : Votre guide expert pour apprendre le français à partir de zéro",
-            "description": "Découvrez le parcours de Yohann, de professeur des écoles à expert mondial dans l'enseignement du français aux débutants. Commencez votre propre voyage d'apprentissage du français avec nous !"
+            "title": "Yohann Coussot | Professeur de français et préparation FIDE",
+            "description": "Découvrez le parcours de Yohann Coussot, professeur de français langue étrangère depuis plus de 16 ans et spécialiste de la préparation au test FIDE depuis plus de 8 ans."
         },
         "Contact": {
             "title": "Contacter Start French Now | Cours de français et préparation FIDE",
             "description": "Contactez Start French Now pour vos cours de français, votre préparation au test FIDE Suisse, un accompagnement privé ou pour choisir le parcours le plus adapté à votre niveau."
         },
         "Fide": {
-            "title": "Préparation test FIDE Suisse (A1–B1) | Start French Now",
-            "description": "Tout sur le test FIDE en Suisse (A1–B1) : format, épreuves, coûts et préparation. Découvrez nos solutions : programme e-learning, examens blancs et cours privés pour le test."
+            "title": "Test FIDE Suisse : guide complet A1–B1 | Start French Now",
+            "description": "Comprenez le test FIDE suisse de A1 à B1 : format, épreuves, niveaux, coûts et préparations, avec examens blancs et cours privés."
         },
         "FideDashboard": {
             "title": "Mon espace FIDE – progression & RDV | Start French Now",
@@ -45,15 +45,15 @@
             "description": "100+ examens blancs FIDE (A1–B1) : lire, écrire, comprendre et parler, scénarios d'entraînement, PDF, vidéos et entraînement interactif. Start French Now."
         },
         "FideMockExams": {
-            "title": "Examen blanc FIDE en ligne (A1–A2 / A2–B1) | Start French Now",
+            "title": "Examen blanc FIDE en ligne A1–B1 | Start French Now",
             "description": "Passez un examen blanc FIDE en ligne avec score immédiat, correction détaillée, PDF et vidéos. Une simulation réaliste pour évaluer votre niveau avant le vrai test."
         },
         "FidePackFide": {
-            "title": "Pack Exam complet (A1–B1) | Vidéos, examens blancs et méthode | Start French Now",
+            "title": "Pack Exam FIDE A1–B1 | Start French Now",
             "description": "Préparez le test FIDE avec le Pack Exam : vidéos, scénarios, examens blancs, PDF et accès immédiat pour progresser vers A1, A2 ou B1."
         },
         "FidePrivateCourses": {
-            "title": "Cours privés FIDE en ligne | Préparation personnalisée A1–B1 | Start French Now",
+            "title": "Cours privés FIDE en ligne A1–B1 | Start French Now",
             "description": "Préparez le test FIDE avec des cours privés en ligne : plan personnalisé, pratique ciblée et accompagnement. 300+ apprenants satisfaits."
         },
         "FideVideos": {
@@ -103,6 +103,11 @@
         "legal_mentions": "Informations légales",
         "reseaux_sociaux": "Réseaux sociaux",
         "logout": "Se déconnecter",
+        "openMenu": "Ouvrir le menu",
+        "closeMenu": "Fermer le menu",
+        "switchToLight": "Activer le mode clair",
+        "switchToDark": "Activer le mode sombre",
+        "languageSelector": "Changer de langue",
         "contact_us": "Contactez-nous",
         "videos": "Vidéos",
         "stories": "Jouer",
@@ -193,12 +198,13 @@
         }
     },
     "HeroSfn": {
-        "title": "Réussissez le <hs6>test FIDE</hs6> avec la meilleure <hs2>préparation</hs2> possible",
+        "title": "Préparez le <hs6>test FIDE</hs6> avec un parcours <hs2>structuré</hs2>",
         "description": "Vidéos sur le test FIDE, examens blancs et cours privés pour arriver prêt le jour de l'examen et obtenir le niveau souhaité : <under6><b>A1, A2 ou B1</b></under6>.",
         "btn_resources": "Voir les formules",
         "btn_beginner_course": "Réserver mon entretien",
         "btn_primary": "Réserver mon entretien",
         "btn_secondary": "Voir les formules",
+        "play_video": "Lire la vidéo",
         "video_annotation": "FIDE Suisse | A1-A2-B1 | En ligne",
         "formats_label": "Formats :",
         "badges": {
@@ -266,8 +272,8 @@
         "description": "Une préparation <under>ciblée sur l'examen</under>, pensée pour vous aider à progresser avec un plan clair, des sujets actuels et le bon niveau d'accompagnement.",
         "coreValues": {
             "serious": {
-                "title": "Une méthode qui a fait ses preuves",
-                "content": "Une préparation adaptée qui a permis à <linkUdemy><b>des centaines d'étudiants</b></linkUdemy> d'obtenir leur examen FIDE."
+                "title": "Une méthode structurée",
+                "content": "Une préparation adaptée utilisée par <linkUdemy><b>des centaines d'apprenants</b></linkUdemy> pour préparer leur test FIDE."
             },
             "smartLearning": {
                 "title": "Plan personnalisé",
@@ -320,15 +326,15 @@
         }
     },
     "WhoIAm": {
-        "description": "Je suis professeur de français et spécialiste de la préparation au test FIDE. Ma méthode d'enseignement en ligne m'a permis de devenir <b>le formateur de français le plus plébiscité sur Udemy</b>. Aujourd'hui, cette expertise est pleinement mise au service des candidats à l'examen FIDE.",
+        "description": "Je suis professeur de français et spécialiste de la préparation au test FIDE. Plus de <b>60 000 apprenants suivent mes cours de français sur Udemy</b>. Aujourd'hui, cette expérience est mise au service des candidats au test FIDE.",
         "bulletPoints": {
             "nativeCertified": {
-                "title": "Expert de l'examen FIDE",
-                "content": "Plus de 8 ans d'expérience sur la préparation au test, avec une connaissance précise de la passation de l'examen."
+                "title": "8 ans de préparation au test FIDE",
+                "content": "Plus de 8 ans d'expérience dans la préparation, avec une connaissance précise du format et des critères publics du test."
             },
             "experience": {
-                "title": "300+ étudiants préparés avec succès",
-                "content": "Plus de 300 apprenants ont préparé leur test FIDE avec Start French Now, avec un taux de réussite proche de 100%."
+                "title": "300+ apprenants accompagnés",
+                "content": "Plus de 300 apprenants ont préparé leur test FIDE avec Start French Now, avec un taux de réussite de 98%."
             },
             "expertBeginners": {
                 "title": "16 ans d'enseignement dans le FLE",
@@ -389,8 +395,8 @@
             "private": {
                 "title": "Cours privés",
                 "badge": "Accompagnement ciblé",
-                "fit": "Idéal si vous voulez être guidé par un expert",
-                "description": "Établissez avec votre professeur le meilleur plan possible pour obtenir votre examen FIDE.",
+                "fit": "Idéal si vous voulez être guidé par un professeur spécialisé",
+                "description": "Établissez avec votre professeur un plan personnalisé selon votre niveau, votre objectif et la date du test.",
                 "cta": "Voir les cours privés",
                 "imageAlt": "Aperçu des cours privés FIDE",
                 "points": {
@@ -404,7 +410,8 @@
     "HomeRitaVideo": {
         "eyebrow": "Témoignage vidéo",
         "title": "Rita a atteint le niveau B1 au <hs3>test FIDE</hs3>",
-        "cta": "Définir mon plan FIDE"
+        "cta": "Définir mon plan FIDE",
+        "play_video": "Lire le témoignage vidéo"
     },
     "HomeSocialProofBand": {
         "title": "Sur YouTube, nos vidéos sur l'examen FIDE sont devenues des références",
@@ -513,8 +520,65 @@
         "storyParagraph2": "Très tôt, je me suis spécialisé dans l'enseignement aux débutants car j'ai toujours aimé voir mes élèves progresser rapidement, passant d'un niveau zéro à un niveau de confiance qui leur permet de s'épanouir dans leur environnement et de faire face à toutes les situations du quotidien. <noWrap>C'est très gratifiant.</noWrap>",
         "storyParagraph3": "En créant des cours et des exercices en ligne, je suis très heureux de voir que mes élèves viennent maintenant du monde entier. Cela me pousse à toujours faire de mon mieux pour leur apporter des réponses et les guider vers <noWrap>leurs objectifs.</noWrap>",
         "storyParagraph4": "J'espère que vous apprécierez mes cours et j'attends avec impatience vos retours. N'hésitez pas à m'envoyer un <noWrap>message.</noWrap>",
+        "professional": {
+            "title": "L'expérience derrière <hs3>Start French Now</hs3>",
+            "description": "Après avoir commencé comme professeur des écoles, j'ai enseigné le français langue étrangère en Chine, en Angleterre et en Nouvelle-Zélande, notamment à l'Alliance française, en université et en école de commerce. Aujourd'hui, je mets cette expérience au service des candidats au test FIDE.",
+            "role": "Yohann Coussot — Professeur de français spécialisé dans la préparation au test FIDE",
+            "imageAlt": "Portrait de Yohann Coussot, professeur de français",
+            "stats": {
+                "teaching": {
+                    "value": "16+",
+                    "label": "années d'enseignement du français langue étrangère"
+                },
+                "fide": {
+                    "value": "8+",
+                    "label": "années de préparation des apprenants au test FIDE"
+                },
+                "results": {
+                    "value": "300+",
+                    "label": "apprenants préparés, avec 98 % de réussite"
+                },
+                "udemy": {
+                    "value": "60 000+",
+                    "label": "apprenants inscrits aux cours de français sur Udemy"
+                }
+            },
+            "socialTitle": "Cours et contenus publics",
+            "cta": "Découvrir la préparation FIDE"
+        },
         "Hobbies": {
             "title": "Voici <hs4>mes loisirs</hs4> préférés",
+            "intro": "Parce qu'un professeur ne se résume pas à ses cours, voici ce qui m'occupe quand je ne prépare pas de nouvelles ressources.",
+            "items": {
+                "languages": {
+                    "title": "Langues",
+                    "description": "J'adore apprendre de nouvelles langues, et pas seulement parce que je suis professeur de français. Voyager et pouvoir s'exprimer dans la langue du pays permet de rencontrer plus facilement les gens et de partager davantage avec eux. Je parle français, anglais, espagnol et un peu mandarin."
+                },
+                "travel": {
+                    "title": "Voyages",
+                    "description": "Je voyage une grande partie de l'année, mais rarement pour des vacances. Je vis quelques mois dans un endroit avant de partir vers une nouvelle destination. Le terme « nomade numérique » me correspond peut-être : j'aime découvrir de nouveaux paysages et de nouvelles cultures, même s'il faut souvent recréer une routine et de nouveaux repères."
+                },
+                "running": {
+                    "title": "Course à pied",
+                    "description": "Sportif depuis toujours, j'ai commencé par la gymnastique puis le handball. Avec mon mode de vie, je me suis ensuite tourné vers la course à pied et un peu d'escalade. Ce que je préfère, c'est le trail dans la nature et en montagne. Je pratique aussi le padel, le tennis et le football."
+                },
+                "mountains": {
+                    "title": "Montagne",
+                    "description": "Je ne suis peut-être pas un vrai montagnard, mais c'est là que je me sens le mieux. J'aime particulièrement les volcans et les îles volcaniques : leurs paysages sont uniques, et je prends beaucoup de plaisir à y courir ou à y faire de longues randonnées."
+                },
+                "films": {
+                    "title": "Séries & Films",
+                    "description": "Selon les périodes, je peux regarder une série entière en quelques jours. J'aime tous les genres, avec une préférence pour la science-fiction et le fantastique. Je connais aussi mes classiques du cinéma français et partage volontiers mes séries et films français préférés."
+                },
+                "croissants": {
+                    "title": "Croissants",
+                    "description": "Ce n'est pas très surprenant, mais oui, j'adore les croissants. J'aime les viennoiseries et les pâtisseries françaises, et trouver une bonne boulangerie locale à l'autre bout du monde peut devenir une vraie mission. Les croissants, c'est quand même la base !"
+                },
+                "goingOut": {
+                    "title": "Sorties",
+                    "description": "J'aime sortir boire un café ou un verre en terrasse avec des amis. J'apprécie la bière belge, les bières artisanales et, grâce à mes origines bourguignonnes, je connais aussi un peu le vin. Je suis en revanche un très mauvais danseur et vais rarement en boîte."
+                }
+            },
             "button": "Contactez-moi"
         }
     },
@@ -619,6 +683,10 @@
         "successImageAlt": "Succès"
     },
     "Fide": {
+        "CourseRatings": {
+            "learners": "apprenants préparés",
+            "successRate": "Taux de réussite"
+        },
         "FidePack": {
             "CoursesAccordionClient": {
                 "packFide": "Pack Exam",
@@ -887,10 +955,10 @@
         },
         "HeroFide": {
             "title": "Réussissez <hs6>l'examen FIDE</hs6>",
-            "li1": "Atteignez vos objectifs Fide avec la <under4><b>plateforme E-learning</b></under4> la plus complète <noWrap>sur l'examen.</noWrap>",
-            "li2": "Pratiquez directement sur <under5><b>les scénarios actuels</b></under5> de l’examen, <noWrap>toujours à jour.</noWrap>",
-            "li3": "Bénéficiez de l'accompagnement continu d'un véritable <under2><b>expert Fide</b></under2>.",
-            "proof": "Une méthode <hs2>validée</hs2>",
+            "li1": "Atteignez vos objectifs FIDE avec une <under4><b>plateforme e-learning structurée</b></under4> <noWrap>pour l'examen.</noWrap>",
+            "li2": "Pratiquez avec <under5><b>des scénarios d'entraînement</b></under5> inspirés de situations quotidiennes en Suisse.",
+            "li3": "Bénéficiez de l'accompagnement continu d'un enseignant <under2><b>spécialisé dans la préparation au test FIDE</b></under2>.",
+            "proof": "Une méthode <hs2>structurée</hs2>",
             "buttonPrimary": "Consultation gratuite",
             "buttonSecondary": "Voir les préparations",
             "videoSubtitle": "Découvrez notre préparation FIDE"
@@ -898,20 +966,20 @@
         "Formateur": {
             "title": "Pourquoi choisir <noWrap><hs4>nos leçons</hs4> ?</noWrap>",
             "competences": {
-                "description1": "Plus de <b>8 ans</b> d'expérience en tant qu'expert de l'examen FIDE.",
+                "description1": "Plus de <b>8 ans</b> d'expérience dans la préparation des apprenants au test FIDE.",
                 "description2": "Plus de <b>300</b> étudiants qui ont réussi leur test FIDE → <b>98%</b> de réussite.",
                 "description3": "<b>16 ans d'expérience</b> dans l'enseignement du français pour les étrangers.",
-                "description4": "Meilleur formateur de français sur Udemy."
+                "description4": "Formateur de français suivi par plus de 60 000 apprenants sur Udemy."
             },
             "formateurName": "Yohann Coussot",
             "formateurTitle": "Votre formateur",
-            "formateurRole": "Professeur de français et expert de l'examen FIDE.",
+            "formateurRole": "Professeur de français spécialisé dans la préparation au test FIDE.",
             "point1": "Améliorez votre français et <under2>présentez-vous avec confiance</under2> <noWrap>au test FIDE.</noWrap>",
             "point2": "Explorez tous les thèmes FIDE, <under4>élargissez votre vocabulaire</under4> et anticipez les questions de l'examinateur.",
-            "point3": "<under2>Mettez l'accent sur l'oral</under2> et <under2>pratiquez</under2> avec les scénarios du test les <noWrap>plus récents.</noWrap>",
+            "point3": "<under2>Mettez l'accent sur l'oral</under2> et <under2>pratiquez</under2> avec des scénarios inspirés du test FIDE.",
             "point4": "Obtenez des <under4>conseils et des stratégies efficaces</under4> pour exceller lors du test.",
-            "point5": "Bénéficiez d'un <under2><b>plan d'étude personnalisé</b></under2> conçu pour garantir <noWrap>votre succès.</noWrap>",
-            "citation": "<under1>L'alternative idéale</under1> pour réussir l'examen FIDE – flexibilité et efficacité",
+            "point5": "Bénéficiez d'un <under2><b>plan d'étude personnalisé</b></under2> conçu pour soutenir <noWrap>votre préparation.</noWrap>",
+            "citation": "Une <under1>alternative flexible</under1> aux écoles de langue pour préparer l'examen FIDE",
             "ComparativeTabel": {
                 "titles": {
                     "FIDE_Expertise": "Expertise de l'examen",
@@ -1060,7 +1128,7 @@
                 },
                 "extras": {
                     "e1": "Mises à jour régulières",
-                    "e2": "Progression garantie"
+                    "e2": "Parcours progressif"
                 },
                 "labelCTA": "OBTENIR LA FORMATION"
             },
@@ -1189,9 +1257,9 @@
             "de_quel_niveau_besoin": {
                 "title": "De quel niveau j'ai besoin ?",
                 "content": {
-                    "part1": "Pour une demande d’autorisation de séjour (permis B), d’autorisation d’établissement (permis C) ou de naturalisation, les exigences sont différentes :",
+                    "part1": "Selon la demande et votre situation, les exigences linguistiques sont différentes :",
                     "list": {
-                        "item1": "un niveau A1 Oral pour le permis B.",
+                        "item1": "Un niveau A1 oral lorsque la preuve linguistique est requise pour un permis B, notamment dans certaines situations de regroupement familial.",
                         "item2": "Un niveau A2 Oral et A1 Écrit pour le permis C.",
                         "item3": "Un niveau B1 Oral et A1 Écrit pour le permis C anticipé.",
                         "item4": "Un niveau B1 Oral et A2 Écrit pour la naturalisation."
@@ -1387,6 +1455,33 @@
             "ctaGuide": "Lire le guide complet",
             "title": "Qu'est-ce que le <hs6>test FIDE</hs6> ?"
         },
+        "FidePermitPath": {
+            "title": "<highlight>Quel niveau</highlight> de français pour votre démarche ?",
+            "intro": "Les exigences ci-dessous sont les minimums fédéraux généralement appliqués. Votre situation et votre canton peuvent prévoir d’autres conditions.",
+            "cards": {
+                "permitB": {
+                    "title": "Permis B / regroupement familial",
+                    "level": "A1 oral",
+                    "text": "Dans les situations où une preuve linguistique est requise, le minimum demandé est généralement A1 à l’oral.",
+                    "preparation": "Priorité : comprendre et parler dans des situations courantes."
+                },
+                "permitC": {
+                    "title": "Permis C",
+                    "level": "A2 oral + A1 écrit",
+                    "text": "Pour l’octroi ordinaire. Pour un permis C anticipé, le minimum fédéral est B1 oral + A1 écrit.",
+                    "preparation": "Préparez l’oral et les bases de lecture-écriture."
+                },
+                "naturalization": {
+                    "title": "Naturalisation",
+                    "level": "B1 oral + A2 écrit",
+                    "text": "Minimum fédéral pour la naturalisation ordinaire ou facilitée. Un canton peut demander davantage.",
+                    "preparation": "Visez un oral autonome et un écrit fonctionnel."
+                }
+            },
+            "caveat": "Ces niveaux sont des repères, pas une décision juridique. Vérifiez la lettre de l’autorité compétente et les règles de votre canton.",
+            "officialSource": "Consulter les exigences du SEM",
+            "cta": "Choisir ma préparation"
+        },
         "FidePageStickyExams": {
             "sectionTitleHighlight": "Les épreuves",
             "sectionTitleSuffix": "du test FIDE",
@@ -1509,6 +1604,32 @@
             "moduleTitle": "Guides détaillés",
             "fallbackTitle": "Guide FIDE",
             "fallbackDescription": "Conseils pratiques et méthode pour réussir le test FIDE.",
+            "guides": {
+                "fideTestB1Speaking": {
+                    "title": "Test FIDE : la partie B1 parler",
+                    "description": "Comprenez les tâches orales B1, les réponses attendues et la méthode pour vous préparer efficacement."
+                },
+                "a2DiscussionTask3": {
+                    "title": "FIDE A2 oral : réussir la discussion de la tâche 3",
+                    "description": "Apprenez à participer à la discussion A2, à répondre naturellement et à faire avancer l'échange."
+                },
+                "a2RolePlay": {
+                    "title": "Examen FIDE : simulation d'un jeu de rôle A2",
+                    "description": "Entraînez-vous avec un jeu de rôle A2 réaliste et les expressions utiles attendues pendant l'interaction."
+                },
+                "a2PictureTask1": {
+                    "title": "FIDE A2 oral : décrire une image dans la tâche 1",
+                    "description": "Utilisez une structure claire et un vocabulaire précis pour décrire une image pendant l'oral A2."
+                },
+                "a2SpeakingDetail": {
+                    "title": "Le test FIDE : l'oral A2 en détail",
+                    "description": "Découvrez chaque tâche de l'oral A2, son format et les stratégies de préparation les plus efficaces."
+                },
+                "b1SpeakingDetail": {
+                    "title": "Le test FIDE : l'oral B1 en détail",
+                    "description": "Découvrez le format de l'oral B1, les questions complexes et les compétences nécessaires pour répondre avec confiance."
+                }
+            },
             "title": "<hs6>Aller plus loin</hs6> avec les guides détaillés"
         },
         "FidePageHub": {
@@ -1599,14 +1720,14 @@
                 "scenarios6h": {
                     "title": "Scénarios Express 6h",
                     "description": {
-                        "prefix": "Le format recommandé pour maîtriser",
-                        "bold": "les scénarios actuels",
+                        "prefix": "Un format ciblé pour travailler",
+                        "bold": "des scénarios type FIDE",
                         "suffix": "du test FIDE.",
-                        "text": "Le format recommandé pour maîtriser <b>les scénarios actuels</b> du test FIDE."
+                        "text": "Un format ciblé pour travailler <b>des scénarios type FIDE</b>."
                     },
-                    "descriptionText": "Le format recommandé pour maîtriser les scénarios actuels du test FIDE.",
+                    "descriptionText": "Un format ciblé pour travailler des scénarios type FIDE.",
                     "priceFallback": "390 CHF",
-                    "features": ["Scénarios récents A1-A2 / A2-B1", "Vocabulaire utile et actuel", "Progression visible séance après séance"],
+                    "features": ["Scénarios d'entraînement A1-A2 / A2-B1", "Vocabulaire utile pour la vie en Suisse", "Objectifs définis séance après séance"],
                     "extras": ["Priorités entre les séances", "Méthode claire pour le jour J"],
                     "ctaLabel": "Se préparer efficacement"
                 },
@@ -1651,7 +1772,7 @@
             "pack": {
                 "imageAlt": "Aperçu du Pack Exam",
                 "title": "Pack Exam",
-                "description": "Scénarios actuels, vidéos et ressources pour progresser entre vos cours.",
+                "description": "Scénarios type FIDE, vidéos et ressources pour travailler entre vos cours.",
                 "cta": "Voir le pack"
             },
             "mockExams": {
@@ -1749,15 +1870,15 @@
             "titleHighlight": "notre préparation à l'examen",
             "titleSuffix": "?",
             "bullets": {
-                "1": "Atteignez vos objectifs FIDE avec la <b><under4>plateforme e-learning</under4></b> la plus complète sur l'examen.",
+                "1": "Atteignez vos objectifs FIDE avec une <b><under4>plateforme e-learning structurée</under4></b> pour l'examen.",
                 "2": "Pratiquez directement sur <b><under5>des scénarios actualisés</under5></b>, similaires à l'examen.",
-                "3": "Préparez-vous avec la méthode d'un véritable <b><under2>expert de l'examen FIDE</under2></b>."
+                "3": "Préparez-vous avec la méthode d'un enseignant <b><under2>spécialisé dans la préparation au test FIDE</under2></b>."
             },
             "videoSubtitle": "Découvrez notre préparation",
             "proof": {
                 "prefix": "Une méthode",
-                "highlight": "validée",
-                "text": "Une méthode <hs6>validée</hs6>"
+                "highlight": "structurée",
+                "text": "Une méthode <hs6>structurée</hs6>"
             },
             "title": "Que propose <hs6>notre préparation à l'examen</hs6> ?"
         },
@@ -1789,7 +1910,7 @@
                         "text": "Accédez à notre plateforme d'auto-apprentissage sur l'examen FIDE, de débutant complet au niveau B1, et progressez <b>à votre rythme</b>."
                     },
                     "features": ["13h de vidéos spécifiques au test, A0 → B1", "100+ scénarios", "Suivi des progrès + Messagerie"],
-                    "extras": ["Mises à jour régulières", "Progression garantie"],
+                    "extras": ["Mises à jour régulières", "Parcours progressif"],
                     "cta": "OBTENIR LE PACK EXAM",
                     "ownedCta": "VOUS DISPOSEZ DÉJÀ DU PACK"
                 },

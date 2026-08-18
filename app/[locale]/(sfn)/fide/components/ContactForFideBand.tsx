@@ -8,8 +8,10 @@ export const ContactForFideBand = () => {
     const tbutton = useTranslations("Fide.HeroFide");
 
     return (
-        <div
-            className="footer-newsletter mb-[-1px]"
+        <section
+            data-fide-promo-band
+            data-fide-contact-band
+            className="footer-newsletter mb-[-1px] !py-0"
             style={{
                 backgroundImage: "linear-gradient(180deg, var(--neutral-800) 0%, var(--neutral-800) 50%, var(--neutral-200) 50%, var(--neutral-200) 100%)",
             }}
@@ -20,12 +22,12 @@ export const ContactForFideBand = () => {
                         <div className="image-wrapper newsletter-image-wrapper position-relative">
                             <Image src="/images/newsletter-image-paperfolio-webflow-template.svg" height={189} width={190} alt={t("imageAlt")} className="image" />
                         </div>
-                        <div className="newsletter-wrapper">
+                        <div className="newsletter-wrapper !min-h-[140px] !py-5 max-[767px]:!min-h-[190px] max-[767px]:!pb-5 max-[767px]:!pt-16">
                             <div className="max-[767px]:text-center">
-                                <p className="display-4 color-neutral-800 mb-0 text-center md:text-left">{t("title")}</p>
+                                <h2 className="display-4 color-neutral-800 mb-0 text-center md:text-left">{t("title")}</h2>
                                 <p className="color-neutral-700 mb-0 text-center md:text-left">{t("description")}</p>
                             </div>
-                            <div className="flex w-full max-w-[470px] min-h-[72px] mb-0 flex-col justify-center max-[991px]:max-w-full max-[767px]:max-w-[470px] max-[767px]:min-h-[60px] max-[479px]:min-h-[138px] w-form">
+                            <div className="flex w-full max-w-[470px] min-h-[72px] mb-0 flex-col justify-center max-[991px]:max-w-full max-[767px]:max-w-[470px] max-[767px]:min-h-[60px] max-[479px]:min-h-[72px] w-form">
                                 <div className="flex w-full justify-center">
                                     <BookFirstMeeting label={tbutton("buttonPrimary")} variant="primary" />
                                 </div>
@@ -34,6 +36,6 @@ export const ContactForFideBand = () => {
                     </div>
                 </SlideFromLeft>
             </div>
-        </div>
+        </section>
     );
 };

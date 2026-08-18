@@ -12,8 +12,10 @@ import LinkArrow from "@/app/components/common/LinkArrow";
 import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { intelRich } from "@/app/lib/intelRich";
+import { getEntityIds } from "@/app/lib/seo/entityGraph.mjs";
 
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
+const ENTITY_IDS = getEntityIds(SITE);
 
 type PrivateCoursesFaqItem = {
     question: string;
@@ -153,9 +155,7 @@ export default async function FidePrivateCoursesPage(props: { params: Promise<{ 
         name: t("schema.name"),
         description: t("schema.description"),
         provider: {
-            "@type": "Organization",
-            name: t("schema.brand"),
-            url: SITE,
+            "@id": ENTITY_IDS.organization,
         },
         areaServed: "CH",
         availableLanguage: ["fr", "en"],

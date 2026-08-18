@@ -23,7 +23,7 @@ export function FidePageOverviewSection() {
     };
 
     return (
-        <section id="fide-overview" className="py-16 lg:py-24 bg-neutral-800">
+        <section id="fide-overview" className="bg-neutral-800 !py-16 lg:!py-24">
             <div className="max-w-7xl m-auto px-4 lg:px-8">
                 <h2 className="display-2 mb-8 lg:mb-12 text-neutral-100 text-center">{t.rich("title", rich)}</h2>
                 <div className="grid gap-8 lg:gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
@@ -54,39 +54,36 @@ export function FidePageOverviewSection() {
                     </div>
                 </div>
                 <div className="mb-5 flex flex-wrap gap-2">
-                    <p className="text-lg underline decoration-secondary-2 text-neutral-200">{t("situationsLabel")}</p>
-                    <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.housing")}</span>
+                    <p className="mb-0 self-center text-lg text-neutral-200 underline decoration-secondary-2">{t("situationsLabel")}</p>
+                    <span className="rounded-full border border-neutral-100 bg-neutral-200 px-3 py-1 text-sm font-bold text-neutral-700">{t("situations.housing")}</span>
                     <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.transport")}</span>
                     <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.health")}</span>
                     <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.shopping")}</span>
                     <span className="rounded-full border border-neutral-100 bg-neutral-200 font-bold px-3 py-1 text-sm text-neutral-700">{t("situations.work")}</span>
                 </div>
                 <div className="mt-5 grid gap-3 md:grid-cols-3">
-                    <div className="relative overflow-hidden rounded-2xl border border-neutral-600 bg-neutral-200 p-4 shadow-md">
-                        <div className="absolute inset-y-0 left-0 w-1 bg-secondary-6" />
+                    <div className="fide-surface relative overflow-hidden rounded-2xl bg-neutral-200 p-4">
                         <div className="mb-2 flex items-center gap-2">
                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-6">
-                                <Clock3 className="h-4 w-4 text-secondary-6" />
+                                <Clock3 aria-hidden="true" className="size-4 text-secondary-6" strokeWidth={2} />
                             </span>
                             <p className="mb-0 font-semibold text-neutral-800">{t("levels.a1.title")}</p>
                         </div>
                         <p className="mb-0 text-neutral-700">{t("levels.a1.text")}</p>
                     </div>
-                    <div className="relative overflow-hidden rounded-2xl border border-neutral-600 bg-neutral-200 p-4 shadow-md">
-                        <div className="absolute inset-y-0 left-0 w-1 bg-secondary-5" />
+                    <div className="fide-surface relative overflow-hidden rounded-2xl bg-neutral-200 p-4">
                         <div className="mb-2 flex items-center gap-2">
                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-5">
-                                <Target className="h-4 w-4 text-secondary-5" />
+                                <Target aria-hidden="true" className="size-4 text-secondary-5" strokeWidth={2} />
                             </span>
                             <p className="mb-0 font-semibold text-neutral-800">{t("levels.a2.title")}</p>
                         </div>
                         <p className="mb-0 text-neutral-700">{t("levels.a2.text")}</p>
                     </div>
-                    <div className="relative overflow-hidden rounded-2xl border border-neutral-600 bg-neutral-200 p-4 shadow-md">
-                        <div className="absolute inset-y-0 left-0 w-1 bg-secondary-2" />
+                    <div className="fide-surface relative overflow-hidden rounded-2xl bg-neutral-200 p-4">
                         <div className="mb-2 flex items-center gap-2">
                             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-secondaryShades-2">
-                                <CheckCircle2 className="h-4 w-4 text-secondary-2" />
+                                <CheckCircle2 aria-hidden="true" className="size-4 text-secondary-2" strokeWidth={2} />
                             </span>
                             <p className="mb-0 font-semibold text-neutral-800">{t("levels.b1.title")}</p>
                         </div>

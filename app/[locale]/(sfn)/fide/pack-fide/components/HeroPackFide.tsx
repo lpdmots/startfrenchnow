@@ -24,7 +24,7 @@ export function HeroPackFide() {
                     <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-12 sm:gap-5 pb-6 text-center lg:pb-10">
                         <h1 className="display-1 mb-0 leading-[1.03] mt-12 sm:mt-6">{t.rich("title", rich)}</h1>
                         <p className="mb-0 max-w-3xl text-base text-neutral-700 sm:text-lg">{t.rich("subtitle", rich)}</p>
-                        <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
+                        <div className="flex min-h-[132px] w-full flex-col items-center justify-center gap-3 sm:min-h-[64px] sm:flex-row sm:justify-center sm:gap-4">
                             <Link href="#pack-pricing" aria-label={t("ctaOffers.aria")} className="btn btn-primary w-full text-center sm:w-auto inline-flex items-center justify-center gap-2">
                                 <FaTags className="text-sm" />
                                 {t("ctaOffers.label")}
@@ -43,10 +43,10 @@ export function HeroPackFide() {
                     <div className="mx-auto flex w-full max-w-6xl flex-col items-center pt-0 pb-8 md:pb-10 lg:pb-14">
                         <div className="w-full max-w-5xl md:max-w-[860px] lg:max-w-[980px]">
                             <Image
-                                src="/images/pack-fide-hero-5.png"
+                                src="/images/pack-fide-hero-5.avif"
                                 alt={t("images.desktopAlt")}
-                                width={1400}
-                                height={980}
+                                width={1147}
+                                height={614}
                                 className="h-auto w-full object-contain"
                                 sizes="(min-width: 1280px) 980px, (min-width: 1024px) 78vw, (min-width: 768px) 86vw, 94vw"
                                 priority

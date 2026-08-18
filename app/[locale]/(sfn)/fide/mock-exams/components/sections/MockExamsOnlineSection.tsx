@@ -54,7 +54,7 @@ export function MockExamsOnlineSection() {
 
                 <SlideFromBottom delay={0.1} duration={0.4}>
                     <div className="mx-auto w-full max-w-[860px]">
-                        <VideoFide videoKey="mock-exams/videos-presentation/presentation-page-mock-exam.mp4" poster="/images/thumbnail-mock-exam.png" isAnimated={false} />
+                        <VideoFide videoKey="mock-exams/videos-presentation/presentation-page-mock-exam.mp4" poster="/images/thumbnail-mock-exam.webp" isAnimated={false} />
                     </div>
                 </SlideFromBottom>
 

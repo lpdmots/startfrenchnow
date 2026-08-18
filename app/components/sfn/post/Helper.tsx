@@ -77,7 +77,6 @@ function Helper({ post, locale }: Props) {
                                     <span>{level.label}</span>
                                 </span>
                             </p>
-                            <p className="mb-0"> - </p>
                         </>
                     ) : post.level?.length ? (
                         <>
@@ -95,11 +94,8 @@ function Helper({ post, locale }: Props) {
                                     );
                                 })}
                             </p>
-                            <p className="mb-0"> - </p>
                         </>
                     ) : null}
-                    <p className="hidden md:block mb-0">{new Date(post.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })}</p>
-                    <p className="block md:hidden mb-0">{new Date(post.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "numeric", year: "numeric" })}</p>
                 </div>
             </div>
         </>

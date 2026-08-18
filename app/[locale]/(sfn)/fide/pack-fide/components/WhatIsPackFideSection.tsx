@@ -41,7 +41,7 @@ export function WhatIsPackFideSection() {
                         <VideoFide
                             videoKey="fide/videopresentation-soustitres-encode.mp4"
                             subtitle={t("videoSubtitle")}
-                            poster="/images/fide-presentation-thumbnail.png"
+                            poster="/images/fide-presentation-thumbnail.webp"
                             isAnimated={false}
                         />
                     </div>

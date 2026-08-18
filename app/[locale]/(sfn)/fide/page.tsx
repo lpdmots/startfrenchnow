@@ -6,6 +6,7 @@ import type { FlatFidePackSommaire } from "./videos/page";
 import { normalizeLocale } from "@/i18n";
 import { FidePageHeroSection } from "./components/FidePageHeroSection";
 import { FidePageOverviewSection } from "./components/FidePageOverviewSection";
+import { FidePermitPathSection } from "./components/FidePermitPathSection";
 import { FidePageStickyExamsSection } from "./components/FidePageStickyExamsSection";
 import { FidePageTipsSection } from "./components/FidePageTipsSection";
 import { FidePageDetailedGuidesSection } from "./components/FidePageDetailedGuidesSection";
@@ -25,6 +26,14 @@ const FIDE_DETAILED_GUIDE_SLUGS = [
     "6-le-test-fide-l-oral-b1-en-detail",
 ] as const;
 const FIDE_DEV_EXTRA_GUIDE_SLUGS = ["test-scenarios-a1", "la-sante-dialogues-et-vocabulaire"] as const;
+const FIDE_DETAILED_GUIDE_TRANSLATION_KEYS: Partial<Record<(typeof FIDE_DETAILED_GUIDE_SLUGS)[number], string>> = {
+    "fide-test-la-partie-b1-parler": "fideTestB1Speaking",
+    "fide-a2-oral-reussir-discussion-tache-3": "a2DiscussionTask3",
+    "fide-exam-jeu-de-role-simulation-a2": "a2RolePlay",
+    "fide-a2-reussir-description-image-oral-tache-1": "a2PictureTask1",
+    "5-le-test-fide-l-oral-a2-en-detail": "a2SpeakingDetail",
+    "6-le-test-fide-l-oral-b1-en-detail": "b1SpeakingDetail",
+};
 const IS_DEV = process.env.NODE_ENV === "development";
 const GUIDE_PACKAGE_COLORS = ["var(--secondary-6)", "var(--secondary-5)", "var(--secondary-2)", "var(--secondary-4)"] as const;
 
@@ -76,24 +85,29 @@ async function ExamsPage(props: { params: Promise<{ locale: string }> }) {
     const detailedGuides = await getDetailedGuidesBySlugs(detailedGuideSlugs);
     const detailedGuideCards: FlatFidePackSommaire = detailedGuides
         .filter((post) => post.slug?.current && post.mainImage)
-        .map((post, index) => ({
-            packageTitle: tGuides("packageTitle"),
-            packageReferenceKey: "free-guides",
-            packageColor: GUIDE_PACKAGE_COLORS[index % GUIDE_PACKAGE_COLORS.length],
-            moduleKey: `guide-${post._id}`,
-            moduleTitle: tGuides("moduleTitle"),
-            moduleSubtitle: undefined,
-            moduleLevel: undefined,
-            postId: post._id,
-            postSlug: { _type: "slug", current: post.slug?.current ?? "" },
-            postMainVideo: undefined,
-            postMainImage: post.mainImage!,
-            postTitle: post.title ?? tGuides("fallbackTitle"),
-            postDescription: post.description ?? tGuides("fallbackDescription"),
-            postLevel: undefined,
-            postDurationSec: undefined,
-            postIsPreview: true,
-        }));
+        .map((post, index) => {
+            const slug = post.slug?.current as (typeof FIDE_DETAILED_GUIDE_SLUGS)[number];
+            const translationKey = FIDE_DETAILED_GUIDE_TRANSLATION_KEYS[slug];
+
+            return {
+                packageTitle: tGuides("packageTitle"),
+                packageReferenceKey: "free-guides",
+                packageColor: GUIDE_PACKAGE_COLORS[index % GUIDE_PACKAGE_COLORS.length],
+                moduleKey: `guide-${post._id}`,
+                moduleTitle: tGuides("moduleTitle"),
+                moduleSubtitle: undefined,
+                moduleLevel: undefined,
+                postId: post._id,
+                postSlug: { _type: "slug", current: post.slug?.current ?? "" },
+                postMainVideo: undefined,
+                postMainImage: post.mainImage!,
+                postTitle: translationKey ? tGuides(`guides.${translationKey}.title` as never) : post.title ?? tGuides("fallbackTitle"),
+                postDescription: translationKey ? tGuides(`guides.${translationKey}.description` as never) : post.description ?? tGuides("fallbackDescription"),
+                postLevel: undefined,
+                postDurationSec: undefined,
+                postIsPreview: true,
+            };
+        });
 
     const stripTags = (value: string) => value.replace(/<[^>]*>/g, "").trim();
     const faqText = <K extends Parameters<typeof tFaq.raw>[0]>(key: K) => {
@@ -307,12 +321,13 @@ async function ExamsPage(props: { params: Promise<{ locale: string }> }) {
     };
 
     return (
-        <div className="w-full mb-24">
+        <div className="fide-page mb-24 w-full">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubItemListJsonLd) }} />
             <FidePageHeroSection />
             <FidePageOverviewSection />
+            <FidePermitPathSection locale={locale} />
             <FidePageStickyExamsSection />
             <GetPdfBand insetDarkPanel />
             <FidePageHubSection />

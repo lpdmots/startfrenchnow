@@ -40,7 +40,7 @@ const PrivateCoursesCard = ({ hero, locale }: { hero: HeroData | undefined; loca
 
             <div className="overflow-hidden w-full rounded-xl flex justify-center bg-neutral-300">
                 <Image
-                    src="/images/etudiante-cours.png"
+                    src="/images/etudiante-cours.avif"
                     width={300}
                     height={200}
                     alt={t("altThumb")}

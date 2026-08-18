@@ -17,19 +17,19 @@ export async function PreviewsSection() {
         // Ce contenu sera fetch quand il sera créé
         A1: {
             videoKey: "fide/video-presentation-fide.mp4",
-            poster: "/images/fide-presentation-thumbnail.png",
+            poster: "/images/fide-presentation-thumbnail.webp",
             subtitleFRUrl: "/fide/video-presentation-fide.vtt",
             subtitleENUrl: "/fide/video-presentation-fide-en.vtt",
         },
         A2: {
             videoKey: "fide/video-presentation-fide.mp4",
-            poster: "/images/fide-presentation-thumbnail.png",
+            poster: "/images/fide-presentation-thumbnail.webp",
             subtitleFRUrl: "/fide/video-presentation-fide.vtt",
             subtitleENUrl: "/fide/video-presentation-fide-en.vtt",
         },
         B1: {
             videoKey: "fide/video-presentation-fide.mp4",
-            poster: "/images/fide-presentation-thumbnail.png",
+            poster: "/images/fide-presentation-thumbnail.webp",
             subtitleFRUrl: "/fide/video-presentation-fide.vtt",
             subtitleENUrl: "/fide/video-presentation-fide-en.vtt",
         },

@@ -4,15 +4,13 @@ import HomeReviews from "@/app/components/sfn/home/HomeReviews";
 import CoreValuesMethod from "@/app/components/sfn/home/CoreValuesMethod";
 import WhyFideHome from "@/app/components/sfn/home/WhyFideHome";
 import WhoIAm from "@/app/components/sfn/home/WhoIAm";
-import MarqueeContent from "@/app/components/sfn/home/MarqueeContent";
 import { HeroSfn } from "@/app/components/sfn/home/HeroSfn";
 import { HomeFaqSection } from "@/app/components/sfn/home/HomeFaqSection";
 import { homeFaqItemKeys } from "@/app/components/sfn/home/homeFaqItemKeys";
 import { HomePreparationOptionsSection } from "@/app/components/sfn/home/HomePreparationOptionsSection";
 import { HomeRitaVideoSection } from "@/app/components/sfn/home/HomeRitaVideoSection";
 import { HomeSocialProofBand } from "@/app/components/sfn/home/HomeSocialProofBand";
-import { Locale, normalizeLocale } from "@/i18n";
-import Marquee from "@/app/components/ui/marquee";
+import { normalizeLocale } from "@/i18n";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -27,17 +25,36 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const locale = normalizeLocale(params.locale);
 
     const t = await getTranslations({ locale: locale, namespace: "Metadata.Home" });
+    const title = t("title");
+    const description = t("description");
+    const canonical = locale === "fr" ? "/fr" : "/";
+    const socialImage = "/images/fide-presentation-thumbnail.png";
 
     return {
-        title: t("title"),
-        description: t("description"),
+        title,
+        description,
         alternates: {
-            canonical: locale === "fr" ? "/fr" : "/",
+            canonical,
             languages: {
                 en: "/",
                 fr: "/fr",
                 "x-default": "/",
             },
+        },
+        openGraph: {
+            title,
+            description,
+            url: canonical,
+            type: "website",
+            locale: locale === "fr" ? "fr_CH" : "en_US",
+            alternateLocale: locale === "fr" ? ["en_US"] : ["fr_CH"],
+            images: [socialImage],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
+            images: [socialImage],
         },
     };
 }
@@ -74,7 +91,7 @@ async function Home(props: { params: Promise<{ locale: string }> }) {
     };
 
     return (
-        <div className="page-wrapper flex flex-col gap-8 md:gap-12">
+        <div className="home-page page-wrapper flex flex-col gap-8 md:gap-12">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
             <HeroSfn />
             <HomePreparationOptionsSection />

@@ -3,7 +3,9 @@
 import { ModalFromBottomWithPortal } from "@/app/components/animations/ModalFromBottomWithPortal";
 import Marquee from "@/app/components/ui/marquee";
 import { sharedFideReviews } from "@/app/[locale]/(sfn)/fide/components/ReviewsFide";
+import { ReviewAvatar } from "@/app/components/common/ReviewAvatar.mjs";
 import useMediaQuery from "@/app/hooks/useMediaQuery";
+import { getFideReviewCertificateUrl, sortFideReviews } from "@/app/lib/fideReviews.mjs";
 import { cn } from "@/app/lib/schadcn-utils";
 import { m } from "framer-motion";
 import { useTranslations } from "next-intl";
@@ -32,9 +34,8 @@ export function MarqueeSocial({ locale }: { locale: string }) {
 
     const reviews = useMemo<ReviewWithText[]>(
         () =>
-            [...sharedFideReviews]
+            sortFideReviews(sharedFideReviews)
                 .filter((review) => !review.isVideo)
-                .sort((a, b) => (b.date ?? 0) - (a.date ?? 0))
                 .map((review) => ({
                     userName: review.userName,
                     userImage: review.userImage,
@@ -95,7 +96,13 @@ function CommentCard({ review, locale, onOpen }: { review: ReviewWithText; local
     return (
         <div className="w-slide my-4 overflow-visible">
             <div className="max-w-sm overflow-visible md:max-w-md">
-                <m.button type="button" whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} onClick={onOpen} className="w-full overflow-visible text-left">
+                <m.button
+                    type="button"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={onOpen}
+                    className="w-full overflow-visible rounded-3xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-2 focus-visible:ring-offset-4"
+                >
                     <div className="card link-card group relative flex h-[16rem] flex-col px-4 py-3 hover:[transform:none] md:h-[17rem] md:px-5 md:py-4">
                         <div className="mg-bottom-24px mt-[-80px] keep absolute top-14">
                             <Quote />
@@ -114,7 +121,7 @@ function CommentCard({ review, locale, onOpen }: { review: ReviewWithText; local
 function ReviewModal({ review, locale, certificateLabel, onClose }: { review: ReviewWithText; locale: string; certificateLabel: string; onClose: () => void }) {
     const commentText = extractText(review.modalComment ?? review.comment);
     const formattedDate = review.date ? formatDate(review.date, locale) : "";
-    const certificateUrl = getCertificateUrl(review.certificat);
+    const certificateUrl = getFideReviewCertificateUrl(review.certificat, cloudFrontDomain);
     const data = {
         setOpen: (value: boolean) => {
             if (!value) onClose();
@@ -148,9 +155,7 @@ function ReviewModal({ review, locale, certificateLabel, onClose }: { review: Re
 function ReviewHeader({ review, formattedDate, compact = false }: { review: ReviewWithText; formattedDate?: string; compact?: boolean }) {
     return (
         <div className={cn("relative mt-8 flex items-start gap-3", compact && (typeof review.score === "number" || review.progressTo) && "pr-32", !compact && "mt-0 pr-36")}>
-            <div className={cn("shrink-0 overflow-hidden rounded-full bg-neutral-300", compact ? "h-14 w-14" : "h-16 w-16")}>
-                <div className={cn("origin-top-left", compact ? "scale-[0.56]" : "scale-[0.64]")}>{review.userImage}</div>
-            </div>
+            <ReviewAvatar size={compact ? "compact" : "modal"}>{review.userImage}</ReviewAvatar>
             <div className="min-w-0 pt-1">
                 <p className={cn("mb-0 font-bold text-neutral-800", compact ? "line-clamp-1" : "text-lg leading-tight")}>{review.userName}</p>
                 {formattedDate && <p className="mb-0 text-sm italic text-neutral-600">{formattedDate}</p>}
@@ -198,13 +203,6 @@ function extractText(node: ReactNode): string {
         return extractText(props?.children);
     }
     return "";
-}
-
-function getCertificateUrl(certificat?: string) {
-    if (!certificat) return null;
-    if (certificat.startsWith("http://") || certificat.startsWith("https://")) return certificat;
-    if (!cloudFrontDomain) return certificat;
-    return `${cloudFrontDomain}${certificat}`;
 }
 
 const Quote = () => {

@@ -7,8 +7,50 @@
 @tailwind components;
 @tailwind utilities;
 
+.home-page :is(h1, h2, h3) {
+    text-wrap: balance;
+}
+
+.home-page :is(p, li) {
+    text-wrap: pretty;
+}
+
+.home-page :is(a, button, summary, [role="button"]):focus-visible {
+    outline: 3px solid var(--secondary-2);
+    outline-offset: 4px;
+}
+
+.fide-page :is(h1, h2, h3) {
+    text-wrap: balance;
+}
+
+.fide-page :is(p, li) {
+    text-wrap: pretty;
+}
+
+.fide-page :is(a, button, summary, [role="button"]):focus-visible {
+    outline: 3px solid var(--secondary-2);
+    outline-offset: 4px;
+}
+
+[data-theme="dark"] .home-image-outline {
+    outline-color: rgb(255 255 255 / 0.1);
+}
+
+[data-theme="dark"] .fide-image-outline {
+    outline-color: rgb(255 255 255 / 0.1);
+}
+
+@keyframes typing-reveal {
+    from {
+        clip-path: inset(0 100% 0 0);
+    }
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
 :root {
-    --font-poppins: "Poppins";
     --primary: #ffc431;
     --secondary-1: #ffc224;
     --secondary-2: #1c92ff;
@@ -76,6 +118,22 @@
     --border-rgb: var(--neutral-300-rgb);
     --input-rgb: var(--neutral-300-rgb);
     --ring-rgb: var(--secondary-2-rgb);
+    --home-surface-shadow:
+        0 0 0 1px oklch(0 0 0 / 0.06),
+        0 1px 2px -1px oklch(0 0 0 / 0.06),
+        0 8px 24px -16px oklch(0 0 0 / 0.22);
+    --home-surface-shadow-hover:
+        0 0 0 1px oklch(0 0 0 / 0.09),
+        0 2px 4px -1px oklch(0 0 0 / 0.08),
+        0 16px 32px -18px oklch(0 0 0 / 0.28);
+    --fide-surface-shadow:
+        0 0 0 1px oklch(0 0 0 / 0.06),
+        0 1px 2px -1px oklch(0 0 0 / 0.06),
+        0 8px 24px -16px oklch(0 0 0 / 0.22);
+    --fide-surface-shadow-hover:
+        0 0 0 1px oklch(0 0 0 / 0.09),
+        0 2px 4px -1px oklch(0 0 0 / 0.08),
+        0 16px 32px -18px oklch(0 0 0 / 0.28);
 
     --sm: 480px; /* A MODIFIER AUSSI DANS TAILWIND CONFIG */
     --md: 768px; /* A MODIFIER AUSSI DANS WithMediaQuery component (components/stories/) */
@@ -135,5 +193,29 @@
     --border-rgb: var(--neutral-300-rgb);
     --input-rgb: var(--neutral-300-rgb);
     --ring-rgb: var(--secondary-2-rgb);
+    --home-surface-shadow: 0 0 0 1px oklch(1 0 0 / 0.08);
+    --home-surface-shadow-hover: 0 0 0 1px oklch(1 0 0 / 0.13);
+    --fide-surface-shadow: 0 0 0 1px oklch(1 0 0 / 0.08);
+    --fide-surface-shadow-hover: 0 0 0 1px oklch(1 0 0 / 0.13);
 }
 /*! purgecss end ignore */
+
+.home-elevated-card {
+    box-shadow: var(--home-surface-shadow);
+}
+
+.home-elevated-card:hover {
+    box-shadow: var(--home-surface-shadow-hover);
+}
+
+.fide-elevated-card {
+    box-shadow: var(--fide-surface-shadow);
+}
+
+.fide-elevated-card:hover {
+    box-shadow: var(--fide-surface-shadow-hover);
+}
+
+.fide-surface {
+    box-shadow: var(--fide-surface-shadow);
+}

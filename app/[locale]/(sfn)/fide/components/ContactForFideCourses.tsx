@@ -25,7 +25,9 @@ export const ContactForFideCourses = () => {
 
     return (
         <div className="flex flex-col items-center justify-center color-neutral-100">
-            <h2 className="display-2 color-neutral-100 text-center pb-4 lg:pb-8">{t.rich("title", intelRichContact())}</h2>
+            <h2 id="fide-contact-title" className="display-2 color-neutral-100 text-center pb-4 lg:pb-8">
+                {t.rich("title", intelRichContact())}
+            </h2>
             <p className="text-center mb-12">{t.rich("description1", intelRich())}</p>
             <div className="flex flex-col gap-4 md:gap-8">
                 <div className="flex justify-center">

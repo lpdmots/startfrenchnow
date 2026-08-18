@@ -6,18 +6,19 @@ import { Locale } from "@/i18n";
 import { ImPlay2 } from "react-icons/im";
 import { FlatFidePackItem } from "../page";
 import { Link } from "@/i18n/navigation";
-import { ScaleChildren } from "@/app/components/animations/ParentToChildrens";
 
 const SecondaryFidePost = ({
     post,
     locale,
     hasPack,
     hidePackageBadge = false,
+    headingLevel = "h2",
 }: {
     post: FlatFidePackItem;
     locale: Locale;
     hasPack: boolean;
     hidePackageBadge?: boolean;
+    headingLevel?: "h2" | "h3";
 }) => {
     const { packageTitle, packageColor, moduleTitle, moduleLevel, postSlug, postMainVideo, postMainImage, postTitle, postDescription, postLevel, postDurationSec, postIsPreview } = post;
 
@@ -29,6 +30,7 @@ const SecondaryFidePost = ({
 
     const href = isFree ? "/blog/post/" + postSlug.current : isLocked ? "/fide/pack-fide#pack-pricing" : "/fide/videos/" + postSlug.current;
     const ariaLabel = isLocked ? `${postTitle} — contenu réservé au Pack Exam. Voir les plans.` : postTitle || "Voir la leçon";
+    const Heading = headingLevel;
 
     return (
         <Link href={href} aria-label={ariaLabel} className="!no-underline group" data-analytics={isLocked ? "click_buy_pack_from_catalog_secondary" : undefined}>
@@ -36,17 +38,15 @@ const SecondaryFidePost = ({
                 {/* Image + badge pack */}
                 <div className="blog-card-image-wrapper inside-card flex max-h-[242px] max-w-[274px] justify-center items-center self-start [flex:1_1] max-[991px]:max-w-[222px] max-[767px]:max-h-[none] max-[767px]:max-w-[199%] flex flex-col gap-4 h-full" style={{ maxHeight: "none", overflow: "visible" }}>
                     <div className="rounded-2xl sm:rounded-3xl" style={{ overflow: "hidden" }}>
-                        <ScaleChildren>
-                            <Image
-                                src={urlFor(postMainImage).url()}
-                                width={350}
-                                height={200}
-                                loading="lazy"
-                                alt={postTitle || "no title"}
-                                className={`w-full h-full object-cover object-contain transition duration-200 ${isLocked ? "group-hover:opacity-60" : ""}`}
-                                style={{ width: "auto", height: "auto", maxHeight: "200px", minHeight: 150 }}
-                            />
-                        </ScaleChildren>
+                        <Image
+                            src={urlFor(postMainImage).url()}
+                            width={350}
+                            height={200}
+                            loading="lazy"
+                            alt={postTitle || "no title"}
+                            className={`fide-image-outline h-full w-full object-contain outline outline-1 -outline-offset-1 outline-black/10 transition-[opacity,transform] duration-150 group-hover:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none ${isLocked ? "group-hover:opacity-60" : ""}`}
+                            style={{ width: "auto", height: "auto", maxHeight: "200px", minHeight: 150 }}
+                        />
                     </div>
 
                     {!hidePackageBadge && (
@@ -63,7 +63,7 @@ const SecondaryFidePost = ({
                     <div>
                         <div className="flex gap-2 items-center mb-2">
                             {isLocked && <Image src="/images/cadenas-ferme.png" alt="Contenu réservé au Pack Exam" width={32} height={32} className="h-8 w-8 mt-0.5 shrink-0" />}
-                            <h2 className="bl font-extrabold mb-0">{postTitle || "Pas de titre"}</h2>
+                            <Heading className="bl mb-0 font-extrabold">{postTitle || "Pas de titre"}</Heading>
                         </div>
                         <p className="mg-bottom-0 line-clamp-5">{postDescription || "Pas de description"}</p>
                     </div>

@@ -3,7 +3,7 @@
 import Spinner from "@/app/components/common/Spinner";
 import { sendContactEmail } from "@/app/serverActions/contactActions";
 import { useLocale } from "next-intl";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withLabel?: boolean }) => {
     const locale = useLocale() as "fr" | "en";
@@ -11,10 +11,16 @@ export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withL
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [startedAt] = useState(() => Date.now());
+    const fieldId = useId();
+    const websiteId = `${fieldId}-website`;
+    const emailId = `${fieldId}-email`;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (pending) return;
+
         setPending(true);
+        setError(false);
 
         const formData = new FormData(e.currentTarget);
         const data = {
@@ -43,9 +49,9 @@ export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withL
     return (
         <>
             {success ? (
-                <p className="card p-4 md:p-8 w-full">{messages["successMessage"]}</p>
-            ) : error ? (
-                <p className="card p-4 md:p-8 w-full">{messages["errorMessage"]}</p>
+                <p role="status" aria-live="polite" className="w-full rounded-xl bg-neutral-100 p-4 md:p-8">
+                    {messages["successMessage"]}
+                </p>
             ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col items-center">
                     <input type="hidden" name="startedAt" value={startedAt} />
@@ -61,26 +67,39 @@ export const AskForPdf = ({ messages, withLabel = true }: { messages: any; withL
                             overflow: "hidden",
                         }}
                     >
-                        <label htmlFor="website">Website</label>
-                        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                        <label htmlFor={websiteId}>Website</label>
+                        <input id={websiteId} name="website" type="text" tabIndex={-1} autoComplete="off" />
                     </div>
                     {withLabel && <p>{messages["ask"]}</p>}
                     <div className="position-relative w-full md:w-auto md:min-w-full">
-                        <input type="email" name="email" className="input button-inside w-input" placeholder={messages["emailPlaceholder"]} id="Email" required />
-                        <button type="submit" className="btn-primary border border-neutral-100 sm:border-0 inside-input default w-button" style={{ minWidth: 145 }}>
-                            {pending ? <Spinner radius maxHeight="40px" /> : messages["button"]}
+                        <label htmlFor={emailId} className="sr-only">
+                            {messages["emailPlaceholder"]}
+                        </label>
+                        <input type="email" name="email" className="input button-inside w-input" placeholder={messages["emailPlaceholder"]} id={emailId} required />
+                        <button
+                            type="submit"
+                            disabled={pending}
+                            aria-busy={pending}
+                            aria-label={messages["button"]}
+                            className="btn-primary inside-input default w-button border border-neutral-100 transition-[background-color,border-color,color,transform,opacity] duration-150 ease-out active:scale-[0.96] disabled:cursor-wait disabled:opacity-70 motion-reduce:transform-none sm:border-0"
+                            style={{ minWidth: 145 }}
+                        >
+                            {pending ? (
+                                <span aria-hidden="true">
+                                    <Spinner radius maxHeight="40px" />
+                                </span>
+                            ) : (
+                                messages["button"]
+                            )}
                         </button>
                     </div>
+                    {error ? (
+                        <p role="alert" className="mt-3 w-full rounded-xl bg-secondaryShades-6 p-3 text-sm font-semibold text-neutral-800">
+                            {messages["errorMessage"]}
+                        </p>
+                    ) : null}
                 </form>
             )}
         </>
     );
 };
-
-/* 
-
-            <Link className="btn-primary w-button" href={cloudFrontDomain + "fide/fide-exam-presentation.pdf"} target="_blank" rel="noreferrer noopener">
-                <FaFileDownload className="mr-2" />
-                {t("downloadPdf")}
-            </Link>
-*/

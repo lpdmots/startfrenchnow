@@ -5,125 +5,75 @@ import { ImFilm } from "react-icons/im";
 import { MdOutlineEmail } from "react-icons/md";
 import { Link } from "@/i18n/navigation";
 import { SlideFromBottom } from "../../animations/Slides";
-import { Scale } from "../../animations/Scale";
 import { useTranslations } from "next-intl";
 import { intelRich } from "@/app/lib/intelRich";
 
 const HOBBIES = [
     {
+        key: "languages",
         icon: <IoLanguageSharp style={{ fontSize: "79px" }} />,
-        title: "Langues",
-        description: (
-            <p>
-                J’adore apprendre de nouvelles langues et pas seulement parce que je suis professeur de français. Être capable de voyager et s’exprimer dans la langue du pays, c’est génial. Cela
-                permet de rencontrer plus facilement les gens et de partager beaucoup plus de choses avec eux. Je parle français, anglais, espagnol et{" "}
-                <span className="text-no-wrap">un peu mandarin.</span>
-            </p>
-        ),
         background: "bg-secondary-1",
     },
     {
+        key: "travel",
         icon: <SiYourtraveldottv style={{ fontSize: "79px" }} />,
-        title: "Voyages",
-        description: (
-            <p>
-                Je voyage une grande partie de l’année mais rarement pour des vacances. Disons que je vis quelques mois dans un endroit puis me dirige vers une nouvelle destination. On parle beaucoup
-                de « Digital Nomad » ou nomade numérique, peut-être que cela me définit. Ce qui est sûr c’est que j’adore voyager, découvrir de nouveaux paysages, de nouvelles cultures. Et même si je
-                dois bien souvent tout recommencer à zéro pour m’adapter au nouveau pays, me créer une routine et me faire des amis, ça <span className="text-no-wrap">vaut le coup!</span>
-            </p>
-        ),
         background: "bg-neutral-200",
     },
     {
+        key: "running",
         icon: <GiRunningShoe style={{ fontSize: "79px" }} />,
-        title: "Course à pied",
-        description: (
-            <p>
-                Sportif depuis toujours, j’ai commencé par la gymnastique puis le handball quand j’étais adolescent. À l’âge adulte et avec mon mode de vie, il était plus facile de pratiquer des
-                activités individuelles donc je me suis naturellement orienté vers la course à pied et un peu l’escalade. En course à pied, ce que je préfère vraiment c’est le « trail », c’est-à-dire
-                courir dans la nature, dans les montagnes et avoir accès à des paysages magnifiques. Je dois dire que le choix de chaque nouvelle destination est fortement influencé par cette passion.
-                Je pratique aussi le padel, le tennis, le football et tout ce qui me
-                <span className="text-no-wrap"> semble intéressant.</span>
-            </p>
-        ),
         background: "bg-neutral-200",
     },
     {
+        key: "mountains",
         icon: <GiMountainRoad style={{ fontSize: "79px" }} />,
-        title: "Montagne",
-        description: (
-            <p>
-                Je ne suis peut-être pas un vrai montagnard (une personne née ou qui passe tout son temps dans la montagne) mais c’est vraiment là où je me sens le mieux. La mer ? Pas trop, juste pour
-                la vue ! Et plus que la montagne, j’adore les volcans et les îles volcaniques, je trouve que les paysages sont uniques et je me régale à courir ou faire de longues randonnées dans ces
-                environnements <span className="text-no-wrap"> si particuliers.</span>
-            </p>
-        ),
         background: "bg-neutral-200",
     },
     {
+        key: "films",
         icon: <ImFilm style={{ fontSize: "79px" }} />,
-        title: "Séries & Films",
-        description: (
-            <p>
-                Cela dépend vraiment des périodes mais parfois je peux regarder une série entière en quelques jours. J’aime tous les genres cependant j’ai une préférence pour la science-fiction et le
-                fantastique. Je connais aussi bien sûr mes classiques du cinéma français et me ferai un plaisir de vous partager mes meilleurs séries et{" "}
-                <span className="text-no-wrap">films français !</span>
-            </p>
-        ),
         background: "bg-neutral-200",
     },
     {
+        key: "croissants",
         icon: <GiCroissant style={{ fontSize: "79px" }} />,
-        title: "Croissants",
-        description: (
-            <p>
-                Ce n’est pas très surprenant mais oui, j’adore les croissants. En fait, j’adore les viennoiseries et les pâtisseries françaises et je me retrouve parfois dans une situation de profonde
-                tristesse lorsque je ne trouve pas ma petite boulangerie locale à l’autre bout du monde. Peut-être que j’exagère un peu mais les croissants, c’est quand{" "}
-                <span className="text-no-wrap">même la base !</span>
-            </p>
-        ),
         background: "bg-neutral-200",
     },
     {
+        key: "goingOut",
         icon: <IoBeer style={{ fontSize: "79px" }} />,
-        title: "Sorties",
-        description: (
-            <p>
-                Comme beaucoup, j’adore sortir boire un café ou un verre en terrasse avec des amis. J’adore la bière belge et les bières artisanales mais j’ai bien sûr aussi une petite connaissance du
-                vin de par mes origines bourguignonnes ! Je suis un très mauvais danseur et il est assez rare de me voir dans les clubs ou « boîtes » <span className="text-no-wrap">en français.</span>
-            </p>
-        ),
         background: "bg-neutral-200",
     },
-];
+] as const;
 
 function Hobbies() {
     const t = useTranslations("About.Hobbies");
     return (
-        <div className="section wf-section pt-0">
+        <section className="section wf-section pt-0" data-about-hobbies>
             <div className="container-default w-container">
                 <div className="inner-container _500px---mbl center">
                     <SlideFromBottom>
-                        <h2 className="display-2 text-center mb-[56px] max-[767px]:mb-[48px] max-[479px]:mb-[40px]">{t.rich("title", intelRich())}</h2>
-                    </SlideFromBottom>
-                    <div className="inner-container max-w-[935px] center">
-                        <div className="grid-1-column gap-x-[32px] gap-y-[32px] mg-bottom-64px">
-                            {HOBBIES.map(({ title, description, icon, background }) => (
-                                <Scale className="card flex overflow-hidden justify-start items-center max-[767px]:flex-col-reverse max-[479px]:flex-col-reverse" key={title}>
-                                    <>
-                                        <div className={`flex h-full max-w-[200px] min-w-[200px] p-[64px_35px] justify-center items-center [border-right:3px_solid_var(--neutral-800)] bg-[var(--neutral-200)] max-[991px]:flex max-[991px]:max-w-[180px] max-[991px]:min-w-[180px] max-[991px]:p-[45px_24px] max-[991px]:justify-center max-[991px]:items-center max-[767px]:w-full max-[767px]:max-w-full max-[767px]:p-[35px_24px] max-[767px]:justify-start max-[767px]:[border-top:3px_solid_var(--neutral-800)] max-[767px]:border-r-0 ${background} justify-center`}>
-                                            <div className="text-[var(--neutral-800)] text-[24px] leading-[1.5em] font-bold max-[991px]:text-[22px] max-[767px]:text-[18px]">{icon}</div>
-                                        </div>
-                                        <div className="flex w-full p-[45px_40px] justify-between items-center gap-x-[34px] max-[767px]:p-[35px_24px] max-[767px]:gap-x-[24px] max-[767px]:gap-y-[24px] max-[479px]:flex-wrap-reverse">
-                                            <div className="inner-container ">
-                                                <h3 className="display-4">{title}</h3>
-                                                {description}
-                                            </div>
-                                        </div>
-                                    </>
-                                </Scale>
-                            ))}
+                        <div className="mx-auto mb-12 max-w-[720px] text-center md:mb-14">
+                            <h2 className="display-2 mb-4">{t.rich("title", intelRich())}</h2>
+                            <p className="mb-0">{t("intro")}</p>
                         </div>
+                    </SlideFromBottom>
+                    <div className="inner-container max-w-[1100px] center">
+                        <SlideFromBottom delay={0.1}>
+                            <div className="mb-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                {HOBBIES.map(({ key, icon, background }) => (
+                                    <article className="card grid h-full grid-cols-[76px_1fr] overflow-hidden md:grid-cols-[96px_1fr]" key={key}>
+                                        <div className={`flex items-center justify-center [border-right:3px_solid_var(--neutral-800)] ${background}`} aria-hidden="true">
+                                            <div className="scale-[0.62] text-neutral-800 md:scale-75">{icon}</div>
+                                        </div>
+                                        <div className="p-6 md:p-8">
+                                            <h3 className="display-4 mb-3">{t(`items.${key}.title`)}</h3>
+                                            <p className="mb-0 text-sm leading-relaxed md:text-base">{t(`items.${key}.description`)}</p>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        </SlideFromBottom>
                     </div>
                     <div className="buttons-row center">
                         <Link href="/contact" className="btn-primary button-row w-button">
@@ -135,7 +85,7 @@ function Hobbies() {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 

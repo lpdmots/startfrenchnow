@@ -7,9 +7,10 @@ interface DropdownProps {
     children: React.ReactNode;
     position?: "top" | "bottom" | "left" | "right";
     openOnClick?: boolean;
+    ariaLabel?: string;
 }
 
-const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "bottom", openOnClick = true }) => {
+const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "bottom", openOnClick = true, ariaLabel }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isMouseOverPopover, setIsMouseOverPopover] = useState(false);
     const closeTimer = useRef<NodeJS.Timeout | null>(null);
@@ -63,6 +64,19 @@ const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "
         }
     };
 
+    const handleTriggerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!openOnClick) return;
+
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handleTriggerClick();
+        }
+
+        if (event.key === "Escape") {
+            setIsOpen(false);
+        }
+    };
+
     const contentWithHandlers = (
         // Les événements mouseEnter/mouseLeave restent pour permettre la transition entre le déclencheur et le contenu sur desktop
         <div onMouseEnter={handleContentMouseEnter} onMouseLeave={handleContentMouseLeave}>
@@ -91,7 +105,12 @@ const DropdownMenu: React.FC<DropdownProps> = ({ content, children, position = "
             <div
                 className="cursor-pointer"
                 role={openOnClick ? "button" : undefined}
+                tabIndex={openOnClick ? 0 : undefined}
+                aria-label={openOnClick ? ariaLabel : undefined}
+                aria-haspopup={openOnClick ? "menu" : undefined}
+                aria-expanded={openOnClick ? isOpen : undefined}
                 onClick={handleTriggerClick} // Utiliser le clic pour basculer (mobile et bureau)
+                onKeyDown={handleTriggerKeyDown}
                 onMouseEnter={handleTriggerMouseEnter} // Maintenir le survol pour le bureau
                 onMouseLeave={handleTriggerMouseLeave} // Maintenir le survol pour le bureau
             >

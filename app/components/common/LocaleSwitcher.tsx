@@ -4,10 +4,12 @@ import { langData } from "@/app/lib/constantes";
 import { Locale } from "@/i18n";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useTransition } from "react";
 import DropdownMenu from "./DropdownMenu";
 
 export function LocaleSwitcher({ locale }: { locale: Locale }) {
+    const t = useTranslations("Navigation");
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
     const pathname = usePathname();
@@ -42,7 +44,7 @@ export function LocaleSwitcher({ locale }: { locale: Locale }) {
     };
 
     return (
-        <DropdownMenu content={dropdownProfil.content}>
+        <DropdownMenu content={dropdownProfil.content} ariaLabel={t("languageSelector")}>
             <div>{dropdownProfil.button}</div>
         </DropdownMenu>
     );

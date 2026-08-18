@@ -9,6 +9,7 @@ import { VideoFide } from "@/app/[locale]/(sfn)/fide/components/VideoFide";
 import { LuMaximize2 } from "react-icons/lu";
 import { ModalFromBottom } from "../../animations/Modals";
 import { ModalFromBottomWithPortal } from "../../animations/ModalFromBottomWithPortal";
+import { ReviewAvatar } from "../ReviewAvatar.mjs";
 
 export const CarouselReviews = ({ comments }: any) => {
     const [slideIndex, setSlideIndex] = useState(0);
@@ -68,29 +69,33 @@ const CommentSlide = ({ selectedSlide }: { selectedSlide: any }) => {
                     <p className="text-2xl font-bold mb-0 mt-8">"{title}"</p>
                     <div className="flex items-center min-h-32">{comment}</div>
                     <div className="flex items-center gap-4 w-full">
-                        {userImage}
+                        <ReviewAvatar>{userImage}</ReviewAvatar>
                         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 w-full">
                             <div className="flex flex-col justify-center">
                                 <p className="text-lg font-bold mb-0">
                                     <span className="inline-block">{userName.toUpperCase()}</span>{" "}
-                                    <span className="inline-block">
-                                        ({lessons} {t("lessons")})
-                                    </span>
+                                    {typeof lessons === "number" && (
+                                        <span className="inline-block">
+                                            ({lessons} {t("lessons")})
+                                        </span>
+                                    )}
                                 </p>
                                 <p className="mb-0">{!!progressFrom && t("progress", { progressFrom, progressTo })}</p>
                                 <p className="mb-0 italic">{!!date && getDate()}</p>
                             </div>
-                            <div className="flex items-center md:justify-end">
-                                <p className="text-xl mb-0 font-bold">{t("score")}</p>
-                                <CircularProgressMagic
-                                    max={100}
-                                    min={0}
-                                    value={score}
-                                    gaugePrimaryColor="var(--secondary-5)"
-                                    gaugeSecondaryColor="var(--neutral-300)"
-                                    className="h-[60px] -ml-10 -mr-12"
-                                />
-                            </div>
+                            {typeof score === "number" && (
+                                <div className="flex items-center md:justify-end">
+                                    <p className="text-xl mb-0 font-bold">{t("score")}</p>
+                                    <CircularProgressMagic
+                                        max={100}
+                                        min={0}
+                                        value={score}
+                                        gaugePrimaryColor="var(--secondary-5)"
+                                        gaugeSecondaryColor="var(--neutral-300)"
+                                        className="h-[60px] -ml-10 -mr-12"
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -152,9 +157,11 @@ const VideoSlide = ({ selectedSlide }: { selectedSlide: any }) => {
                                 <div className="flex flex-col justify-center">
                                     <p className="text-lg font-bold mb-0">
                                         <span className="inline-block">{userName.toUpperCase()}</span>{" "}
-                                        <span className="inline-block">
-                                            ({lessons} {t("lessons")})
-                                        </span>
+                                        {typeof lessons === "number" && (
+                                            <span className="inline-block">
+                                                ({lessons} {t("lessons")})
+                                            </span>
+                                        )}
                                     </p>
                                     <p className="mb-0">{!!progressFrom && t("progress", { progressFrom, progressTo })}</p>
                                     <p className="mb-0 italic">{!!date && getDate()}</p>

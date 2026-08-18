@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NextIntlClientProvider, useLocale, useMessages } from "next-intl";
+import { sortFideReviews } from "@/app/lib/fideReviews.mjs";
 import { sharedFideReviews } from "../../components/ReviewsFide";
 
 const CarouselReviews = dynamic(() => import("@/app/components/common/CarouselReviews.tsx/CarouselReviews").then((module) => module.CarouselReviews), {
@@ -34,7 +35,7 @@ export function DeferredMockExamsReviewsCarousel() {
         return () => observer.disconnect();
     }, [isVisible]);
 
-    const sortedComments = useMemo(() => [...sharedFideReviews].sort((a, b) => (b.date ?? 0) - (a.date ?? 0)), []);
+    const sortedComments = useMemo(() => sortFideReviews(sharedFideReviews), []);
 
     return (
         <div ref={containerRef} className="relative mt-8 min-h-[470px]">

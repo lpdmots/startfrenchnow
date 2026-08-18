@@ -1,0 +1,43 @@
+# Start French Now
+
+> Start French Now is a bilingual French-learning website focused on online preparation for the Swiss FIDE test and structured French courses for adult learners. The official canonical domain is https://startfrenchnow.ch.
+
+## Swiss FIDE test — French
+
+- [Guide complet du test FIDE](https://startfrenchnow.ch/fr/fide): Présentation du test FIDE en Suisse, des niveaux A1 à B1, des compétences évaluées et des solutions de préparation.
+- [Pack Exam FIDE](https://startfrenchnow.ch/fr/fide/pack-fide): Parcours e-learning consacré à la préparation du test FIDE.
+- [Examens blancs FIDE](https://startfrenchnow.ch/fr/fide/mock-exams): Examens d'entraînement en ligne pour se familiariser avec les épreuves.
+- [Cours privés FIDE](https://startfrenchnow.ch/fr/fide/private-courses): Accompagnement individuel en ligne adapté au niveau et à l'objectif de l'apprenant.
+- [Vidéos sur le test FIDE](https://startfrenchnow.ch/fr/fide/videos): Ressources vidéo consacrées aux différentes épreuves.
+
+## Swiss FIDE test — English
+
+- [Swiss FIDE test guide](https://startfrenchnow.ch/fide): Overview of the Swiss FIDE test, A1 to B1 levels, assessed skills, and preparation options.
+- [FIDE Exam Pack](https://startfrenchnow.ch/fide/pack-fide): Self-paced e-learning pathway for FIDE test preparation.
+- [FIDE mock exams](https://startfrenchnow.ch/fide/mock-exams): Online practice exams designed to familiarize learners with the test.
+- [Private FIDE lessons](https://startfrenchnow.ch/fide/private-courses): Individual online support based on the learner's level and objective.
+- [FIDE test videos](https://startfrenchnow.ch/fide/videos): Video resources covering the different test sections.
+
+## French courses and learning resources
+
+- [Beginner French courses](https://startfrenchnow.ch/courses/beginners): Structured French courses for complete beginners.
+- [Intermediate French courses](https://startfrenchnow.ch/courses/intermediates): Courses for learners progressing beyond the beginner level.
+- [Daily-life dialogues](https://startfrenchnow.ch/courses/dialogues): French practice through everyday dialogues.
+- [French learning blog](https://startfrenchnow.ch/blog): Articles about French learning and the FIDE test.
+- [French exercises](https://startfrenchnow.ch/exercises): Online practice activities.
+- [Interactive stories](https://startfrenchnow.ch/stories): French practice through interactive stories.
+- [French videos](https://startfrenchnow.ch/videos): Educational videos for French learners.
+
+## About and contact
+
+- [About Yohann Coussot](https://startfrenchnow.ch/about): Professional background and personal story of the French teacher behind Start French Now.
+- [À propos de Yohann Coussot](https://startfrenchnow.ch/fr/about): Parcours professionnel et présentation personnelle du professeur de français derrière Start French Now.
+- [Contact](https://startfrenchnow.ch/contact): Contact page for course and FIDE preparation questions.
+
+## Official profiles
+
+- [YouTube](https://www.youtube.com/@startfrenchnow)
+- [Udemy](https://www.udemy.com/user/yohann-coussot/)
+- [Instagram](https://www.instagram.com/startfrenchnow/)
+- [TikTok](https://www.tiktok.com/@startfrenchnow)
+

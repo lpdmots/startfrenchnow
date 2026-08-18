@@ -1,8 +1,5 @@
-import "@fontsource/poppins/400.css";
-import "@fontsource/poppins/500.css";
-import "@fontsource/poppins/600.css";
-import "@fontsource/poppins/700.css";
 import "@/app/styles/globals.css";
+import { poppins } from "@/app/fonts";
 import Link from "next/link";
 
 function DangerSign({ className = "" }: { className?: string }) {
@@ -17,7 +14,7 @@ function DangerSign({ className = "" }: { className?: string }) {
 
 export default function GlobalNotFound() {
     return (
-        <html lang="en">
+        <html lang="en" className={poppins.variable}>
             <body className="font-sans">
                 <main className="min-h-screen bg-[#F5F5F5] flex items-center">
                     <div className="relative w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 lg:py-28 min-h-[640px] md:min-h-[760px]">

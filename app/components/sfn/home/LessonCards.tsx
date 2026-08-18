@@ -57,7 +57,7 @@ function LessonCards() {
         },
         {
             title: t("lessons.packFide.title"),
-            image: "/images/fide-presentation-thumbnail.png",
+            image: "/images/fide-presentation-thumbnail.webp",
             description: t("lessons.packFide.description"),
             price: 499,
             reduction: 0,

@@ -19,8 +19,10 @@ import { DeferredPackFideExamsSection } from "./components/DeferredPackFideExams
 import { DeferredPackFideReviews } from "./components/DeferredPackFideReviews";
 import { getTranslations } from "next-intl/server";
 import { intelRich } from "@/app/lib/intelRich";
+import { getEntityIds } from "@/app/lib/seo/entityGraph.mjs";
 
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || "https://startfrenchnow.ch").replace(/\/$/, "");
+const ENTITY_IDS = getEntityIds(SITE);
 const queryProductBySlug = groq`*[_type=='product' && slug.current == $slug][0]`;
 
 type FaqItem = {
@@ -172,7 +174,7 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
         image: [`${SITE}/images/pack-fide-hero.png`],
         brand: {
             "@type": "Brand",
-            name: t("schema.brand"),
+            name: "Start French Now",
         },
         offers: {
             "@type": "Offer",
@@ -180,6 +182,9 @@ export default async function PackFidePage(props: { params: Promise<{ locale: st
             priceCurrency: pricingPack?.currency ?? "CHF",
             price: pricingPack?.amount ?? 99,
             availability: "https://schema.org/InStock",
+            seller: {
+                "@id": ENTITY_IDS.organization,
+            },
         },
     };
 

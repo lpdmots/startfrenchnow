@@ -38,7 +38,7 @@ export function PackFideNextStepsSection({ locale }: { locale: string }) {
                             >
                                 <div className="mb-4 flex h-52 items-center justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2 md:h-56 lg:h-60">
                                     <Image
-                                        src="/images/mock-exam-hero.png"
+                                        src="/images/mock-exam-hero.avif"
                                         alt={t("mockExams.imageAlt")}
                                         width={1200}
                                         height={675}
@@ -65,7 +65,7 @@ export function PackFideNextStepsSection({ locale }: { locale: string }) {
                             >
                                 <div className="mb-4 flex h-52 items-center justify-center overflow-hidden rounded-xl border border-neutral-300 bg-neutral-200 p-2 md:h-56 lg:h-60">
                                     <Image
-                                        src="/images/etudiante-cours.png"
+                                        src="/images/etudiante-cours.avif"
                                         alt={t("privateCourses.imageAlt")}
                                         width={1200}
                                         height={675}

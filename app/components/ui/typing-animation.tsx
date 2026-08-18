@@ -1,32 +1,28 @@
-"use client";
-
 import { cn } from "@/app/lib/schadcn-utils";
-import { useEffect, useState } from "react";
 
 interface TypingAnimationProps {
     text: string;
     duration?: number;
     className?: string;
+    as?: "p" | "span";
 }
 
-export default function TypingAnimation({ text, duration = 200, className }: TypingAnimationProps) {
-    const [displayedText, setDisplayedText] = useState<string>("");
-    const [i, setI] = useState<number>(0);
+export default function TypingAnimation({ text, duration = 200, className, as: Component = "p" }: TypingAnimationProps) {
+    const animationDuration = `${Math.max(400, duration * text.length)}ms`;
 
-    useEffect(() => {
-        const typingEffect = setInterval(() => {
-            if (i < text.length) {
-                setDisplayedText(text.substring(0, i + 1));
-                setI(i + 1);
-            } else {
-                clearInterval(typingEffect);
-            }
-        }, duration);
-
-        return () => {
-            clearInterval(typingEffect);
-        };
-    }, [duration, i]);
-
-    return <h1 className={cn("font-display text-center text-4xl font-bold leading-[5rem] tracking-[-0.02em] drop-shadow-sm", className)}>{displayedText ? displayedText : text}</h1>;
+    return (
+        <Component className={cn("font-display text-center text-4xl font-bold leading-[5rem] tracking-[-0.02em] drop-shadow-sm", className)}>
+            <span
+                className="inline-block motion-reduce:![animation:none]"
+                style={{
+                    animationName: "typing-reveal",
+                    animationDuration,
+                    animationTimingFunction: `steps(${Math.max(text.length, 1)}, end)`,
+                    animationFillMode: "both",
+                }}
+            >
+                {text}
+            </span>
+        </Component>
+    );
 }

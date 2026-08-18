@@ -25,16 +25,16 @@
             "description": "Explore our collection of educational videos to learn French. Whether you're a beginner or intermediate, our fun and informative videos will guide you through every step of your learning journey."
         },
         "About": {
-            "title": "Meet Yohann: Your Expert Guide to Learning French from Scratch",
-            "description": "Discover Yohann's journey from a primary school teacher to a global expert in teaching French to beginners. Start your own French learning journey with us!"
+            "title": "Yohann Coussot | French Teacher and FIDE Preparation",
+            "description": "Discover Yohann Coussot's journey as a teacher of French as a foreign language for more than 16 years and a FIDE test preparation specialist for more than 8 years."
         },
         "Contact": {
             "title": "Contact Start French Now | French Courses and FIDE Prep",
             "description": "Contact Start French Now for French courses, Swiss FIDE preparation, private coaching, or questions about the best learning path for your level."
         },
         "Fide": {
-            "title": "Swiss FIDE Test Prep (A1–B1) | Start French Now",
-            "description": "All about the Swiss FIDE test (A1–B1): format, sections, costs, and preparation. Explore our solutions: e-learning program, mock exams, and private lessons for the test."
+            "title": "Swiss FIDE Test: Complete A1–B1 Guide | Start French Now",
+            "description": "Understand the Swiss FIDE test from A1 to B1: format, sections, levels, costs and preparation options, including mock exams and private lessons."
         },
         "FideDashboard": {
             "title": "FIDE Student Dashboard | Start French Now",
@@ -45,15 +45,15 @@
             "description": "100+ FIDE mock exams (A1–B1): reading, writing, comprehension, and speaking, training scenarios, PDFs, videos, and interactive practice. Start French Now."
         },
         "FideMockExams": {
-            "title": "Online FIDE Mock Exam (A1–A2 / A2–B1) | Start French Now",
+            "title": "Online FIDE Mock Exam A1–B1 | Start French Now",
             "description": "Take an online FIDE mock exam with instant scoring, detailed correction, PDFs and videos. A realistic simulation to assess your level before the real test."
         },
         "FidePackFide": {
-            "title": "Complete Exam Pack (A1–B1) | Videos, Mock Exams and Method | Start French Now",
+            "title": "FIDE Exam Pack A1–B1 | Start French Now",
             "description": "Prepare for the FIDE test with the Exam Pack: videos, scenarios, mock exams, PDFs, and immediate access to progress toward A1, A2 or B1."
         },
         "FidePrivateCourses": {
-            "title": "Online Private FIDE Lessons | Personalized A1–B1 Prep | Start French Now",
+            "title": "Online Private FIDE Lessons A1–B1 | Start French Now",
             "description": "Prepare for the FIDE test with online private lessons: a personalized plan, targeted practice, and support. 300+ satisfied learners."
         },
         "FideVideos": {
@@ -101,6 +101,11 @@
         "fideLessons": "My FIDE lessons",
         "my_account": "My Account",
         "logout": "Log out",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu",
+        "switchToLight": "Switch to light mode",
+        "switchToDark": "Switch to dark mode",
+        "languageSelector": "Change language",
         "legal_mentions": "Legal / Terms",
         "reseaux_sociaux": "Social media",
         "contact_us": "Contact us",
@@ -193,12 +198,13 @@
         }
     },
     "HeroSfn": {
-        "title": "Succeed in the <hs6>FIDE test</hs6> with the best <hs2>preparation</hs2> possible",
+        "title": "Prepare for the <hs6>FIDE test</hs6> with a <hs2>structured</hs2> pathway",
         "description": "Videos about the FIDE test, mock exams and private lessons to arrive ready on exam day and achieve your target level: <under6><b>A1, A2 or B1</b></under6>.",
         "btn_resources": "See the options",
         "btn_beginner_course": "Book my consultation",
         "btn_primary": "Book my consultation",
         "btn_secondary": "See the options",
+        "play_video": "Play video",
         "video_annotation": "Swiss FIDE | A1-A2-B1 | Online",
         "formats_label": "Formats:",
         "badges": {
@@ -266,8 +272,8 @@
         "description": "A preparation path <under>focused on the exam</under>, designed to help you progress with a clear plan, current topics and the right level of support.",
         "coreValues": {
             "serious": {
-                "title": "A proven method",
-                "content": "A tailored preparation that has helped <linkUdemy><b>hundreds of students</b></linkUdemy> pass their FIDE exam."
+                "title": "A structured method",
+                "content": "A tailored preparation used by <linkUdemy><b>hundreds of learners</b></linkUdemy> preparing for their FIDE exam."
             },
             "smartLearning": {
                 "title": "Personalized plan",
@@ -320,15 +326,15 @@
         }
     },
     "WhoIAm": {
-        "description": "I am a French teacher and FIDE preparation specialist. My online teaching method made me <b>the most popular French instructor on Udemy</b>. Today, this expertise is fully dedicated to serving FIDE exam candidates.",
+        "description": "I am a French teacher and FIDE preparation specialist. More than <b>60,000 learners follow my French courses on Udemy</b>. Today, this experience supports candidates preparing for the FIDE test.",
         "bulletPoints": {
             "nativeCertified": {
-                "title": "FIDE exam expert",
-                "content": "More than 8 years of experience in test preparation, with precise knowledge of exam administration."
+                "title": "8 years of FIDE test preparation",
+                "content": "More than 8 years of preparation experience, with detailed knowledge of the test format and its public criteria."
             },
             "experience": {
-                "title": "300+ students successfully prepared",
-                "content": "More than 300 learners have prepared their FIDE test with Start French Now, with a success rate close to 100%."
+                "title": "300+ learners supported",
+                "content": "More than 300 learners have prepared their FIDE test with Start French Now, with a 98% success rate."
             },
             "expertBeginners": {
                 "title": "16 years teaching French as a foreign language",
@@ -389,8 +395,8 @@
             "private": {
                 "title": "Private lessons",
                 "badge": "Targeted support",
-                "fit": "Best if you want guidance from an expert",
-                "description": "Build with your teacher the best possible plan to pass your FIDE exam.",
+                "fit": "Best if you want guidance from a specialist teacher",
+                "description": "Build a personalized plan with your teacher based on your level, target and test date.",
                 "cta": "See private lessons",
                 "imageAlt": "Preview of FIDE private lessons",
                 "points": {
@@ -404,7 +410,8 @@
     "HomeRitaVideo": {
         "eyebrow": "Video testimonial",
         "title": "Rita reached B1 level in the <hs3>FIDE test</hs3>",
-        "cta": "Define my FIDE plan"
+        "cta": "Define my FIDE plan",
+        "play_video": "Play the video testimonial"
     },
     "HomeSocialProofBand": {
         "title": "On YouTube, our videos about the FIDE exam have become go-to references",
@@ -428,7 +435,7 @@
             "udemy": {
                 "count": "60K+",
                 "label": "Students",
-                "description": "Thousands of learners trained through a proven method."
+                "description": "More than 60,000 learners enrolled in our French courses."
             }
         }
     },
@@ -513,8 +520,65 @@
         "storyParagraph2": "Very early on, I specialized in teaching beginners as I always enjoyed seeing my students progress rapidly, being able to go from knowing no French to a level of confidence which allows them to survive in their environment and manage everyday situations. <noWrap>It's very rewarding.</noWrap>",
         "storyParagraph3": "In creating courses and materials online, I'm very happy to see that now my students come from different parts of the world. This drives me to always do my best to bring them answers and guide them toward <noWrap>their objectives.</noWrap>",
         "storyParagraph4": "I hope you will enjoy my courses and I look forward to hearing from you. Feel free to drop me a <noWrap>message anytime.</noWrap>",
+        "professional": {
+            "title": "The experience behind <hs3>Start French Now</hs3>",
+            "description": "After starting as a primary school teacher, I taught French as a foreign language in China, England and New Zealand, including at the Alliance Française, universities and business schools. Today, I use this experience to support candidates preparing for the FIDE test.",
+            "role": "Yohann Coussot — French teacher specializing in FIDE test preparation",
+            "imageAlt": "Portrait of Yohann Coussot, French teacher",
+            "stats": {
+                "teaching": {
+                    "value": "16+",
+                    "label": "years teaching French as a foreign language"
+                },
+                "fide": {
+                    "value": "8+",
+                    "label": "years preparing learners for the FIDE test"
+                },
+                "results": {
+                    "value": "300+",
+                    "label": "learners prepared, with a 98% success rate"
+                },
+                "udemy": {
+                    "value": "60,000+",
+                    "label": "learners enrolled in French courses on Udemy"
+                }
+            },
+            "socialTitle": "Public courses and content",
+            "cta": "Explore FIDE preparation"
+        },
         "Hobbies": {
             "title": "Take a look at my <hs4>hobbies</hs4>",
+            "intro": "A teacher is more than their lessons, so here is what keeps me busy when I am not preparing new learning resources.",
+            "items": {
+                "languages": {
+                    "title": "Languages",
+                    "description": "I love learning new languages, and not only because I am a French teacher. Travelling and being able to speak the local language makes it easier to meet people and share more with them. I speak French, English, Spanish and some Mandarin."
+                },
+                "travel": {
+                    "title": "Travel",
+                    "description": "I travel for much of the year, but rarely for holidays. I tend to live somewhere for a few months before moving to a new destination. The term “digital nomad” may describe me: I love discovering new landscapes and cultures, even though it often means building a new routine and finding my bearings again."
+                },
+                "running": {
+                    "title": "Running",
+                    "description": "I have always enjoyed sport, starting with gymnastics and then handball. My lifestyle later led me towards running and a little climbing. Trail running in nature and in the mountains is what I enjoy most. I also play padel, tennis and football."
+                },
+                "mountains": {
+                    "title": "Mountains",
+                    "description": "I may not be a true mountain person, but that is where I feel most at home. I especially love volcanoes and volcanic islands: their landscapes are unique, and I enjoy running or taking long hikes through them."
+                },
+                "films": {
+                    "title": "Series & films",
+                    "description": "Depending on the time of year, I can watch an entire series in just a few days. I enjoy every genre, with a preference for science fiction and fantasy. I also know the classics of French cinema and am always happy to share my favourite French series and films."
+                },
+                "croissants": {
+                    "title": "Croissants",
+                    "description": "It may not be surprising, but yes, I love croissants. I enjoy French pastries and baked goods, and finding a good local bakery on the other side of the world can become a real mission. Croissants are still an essential part of life!"
+                },
+                "goingOut": {
+                    "title": "Going out",
+                    "description": "I enjoy going out for a coffee or a drink on a terrace with friends. I like Belgian beer, craft beer and, thanks to my Burgundian roots, I also know a little about wine. I am, however, a very bad dancer and rarely go to clubs."
+                }
+            },
             "button": "Get in touch"
         }
     },
@@ -619,6 +683,10 @@
         "successImageAlt": "Success"
     },
     "Fide": {
+        "CourseRatings": {
+            "learners": "learners prepared",
+            "successRate": "Success rate"
+        },
         "FidePack": {
             "CoursesAccordionClient": {
                 "packFide": "Exam Pack",
@@ -887,10 +955,10 @@
         },
         "HeroFide": {
             "title": "Succeed the <hs6>FIDE Exam</hs6>",
-            "li1": "Achieve your FIDE goals with the most comprehensive <under4><b>E-learning platform</b></under4> <noWrap>for the exam.</noWrap>",
-            "li2": "Practice directly on <under5><b>current exam scenarios</b></under5>, <noWrap>always up-to-date.</noWrap>",
-            "li3": "Benefit from continuous coaching by a genuine <under2><b>FIDE expert</b></under2>.",
-            "proof": "A <hs2>proven</hs2> method",
+            "li1": "Achieve your FIDE goals with a <under4><b>structured e-learning platform</b></under4> <noWrap>designed for the exam.</noWrap>",
+            "li2": "Practice with <under5><b>training scenarios</b></under5> based on everyday situations in Switzerland.",
+            "li3": "Benefit from continuous guidance by a teacher <under2><b>specializing in FIDE test preparation</b></under2>.",
+            "proof": "A <hs2>structured</hs2> method",
             "buttonPrimary": "Get a free call",
             "buttonSecondary": "See the prep options",
             "videoSubtitle": "Discover our FIDE prep"
@@ -898,20 +966,20 @@
         "Formateur": {
             "title": "Why choose <hs4>our FIDE lessons</hs4>?",
             "competences": {
-                "description1": "Over <b>8 years</b> of experience as a FIDE exam expert.",
+                "description1": "Over <b>8 years</b> of experience preparing learners for the FIDE exam.",
                 "description2": "Over <b>300</b> students passed their FIDE test with a <b>98%</b> success rate.",
                 "description3": "Over <b>16 years</b> of experience in teaching French to foreigners.",
-                "description4": "Best French instructor on Udemy."
+                "description4": "French instructor followed by more than 60,000 learners on Udemy."
             },
             "formateurTitle": "Formateur",
             "formateurName": "Yohann Coussot",
-            "formateurRole": "French teacher and FIDE exam expert.",
+            "formateurRole": "French teacher specializing in FIDE test preparation.",
             "point1": "Improve your French and <under2>gain the confidence</under2> to pass the FIDE test.",
             "point2": "Cover all FIDE topics, <under4>expand your vocabulary</under4>, and be ready for the examiner's questions.",
-            "point3": "<under2>Focus on the oral</under2> section and <under2>practice</under2> on the latest test scenarios.",
+            "point3": "<under2>Focus on the oral</under2> section and <under2>practice</under2> with FIDE-style scenarios.",
             "point4": "Gain <under4>valuable tips and strategies</under4> to perform your best.",
             "point5": "Receive a <under2><b>tailored study plan</b></under2> designed to help you succeed.",
-            "citation": "Helping busy professionals succeed in their FIDE exam – your <under1>best alternative</under1> to traditional language schools",
+            "citation": "A <under1>flexible alternative</under1> to traditional language schools for busy professionals preparing for the FIDE exam",
             "ComparativeTabel": {
                 "titles": {
                     "FIDE_Expertise": "Exam expertise",
@@ -1060,7 +1128,7 @@
                 },
                 "extras": {
                     "e1": "Regular updates",
-                    "e2": "Progression guaranteed"
+                    "e2": "Step-by-step learning path"
                 },
                 "labelCTA": "GET THE TRAINING"
             },
@@ -1183,9 +1251,9 @@
             "de_quel_niveau_besoin": {
                 "title": "What level do I need?",
                 "content": {
-                    "part1": "For a residence permit application (permit B), settlement permit (permit C), or naturalization, the requirements are different:",
+                    "part1": "Language requirements differ depending on the application and your situation:",
                     "list": {
-                        "item1": "A1 Oral level for permit B.",
+                        "item1": "A1 speaking where proof of language skills is required for a B permit, including certain family reunification situations.",
                         "item2": "A2 Oral level and A1 Written for permit C.",
                         "item3": "B1 Oral level and A1 Written for early permit C.",
                         "item4": "B1 Oral level and A2 Written for naturalization."
@@ -1381,6 +1449,33 @@
             "ctaGuide": "Read the full guide",
             "title": "What is the <hs6>FIDE test</hs6>?"
         },
+        "FidePermitPath": {
+            "title": "<highlight>What French level</highlight> does your application require?",
+            "intro": "The requirements below are the federal minimums generally applied. Your situation and canton may impose other conditions.",
+            "cards": {
+                "permitB": {
+                    "title": "Permit B / family reunification",
+                    "level": "A1 speaking",
+                    "text": "Where proof of language skills is required, the minimum is generally A1 for speaking.",
+                    "preparation": "Priority: understand and speak in everyday situations."
+                },
+                "permitC": {
+                    "title": "Permit C",
+                    "level": "A2 speaking + A1 writing",
+                    "text": "For ordinary settlement. For an early C permit, the federal minimum is B1 speaking + A1 writing.",
+                    "preparation": "Prepare your speaking and basic reading-writing skills."
+                },
+                "naturalization": {
+                    "title": "Naturalization",
+                    "level": "B1 speaking + A2 writing",
+                    "text": "Federal minimum for ordinary or simplified naturalization. A canton may require a higher level.",
+                    "preparation": "Aim for independent speaking and functional writing."
+                }
+            },
+            "caveat": "These levels are guidance, not a legal decision. Check the letter from the competent authority and your canton’s rules.",
+            "officialSource": "Read the SEM requirements",
+            "cta": "Choose my preparation"
+        },
         "FidePageStickyExams": {
             "sectionTitleHighlight": "The sections",
             "sectionTitleSuffix": "of the FIDE test",
@@ -1503,6 +1598,32 @@
             "moduleTitle": "In-depth guides",
             "fallbackTitle": "FIDE guide",
             "fallbackDescription": "Practical tips and method to succeed in the FIDE test.",
+            "guides": {
+                "fideTestB1Speaking": {
+                    "title": "FIDE Test: The B1 Speaking Section",
+                    "description": "Understand the B1 speaking tasks, the expected answers and the method to prepare effectively."
+                },
+                "a2DiscussionTask3": {
+                    "title": "FIDE A2 Speaking: Succeed in Discussion Task 3",
+                    "description": "Learn how to take part in the A2 discussion, respond naturally and keep the exchange moving."
+                },
+                "a2RolePlay": {
+                    "title": "FIDE Exam: A2 Role-Play Simulation",
+                    "description": "Practice a realistic A2 role-play and learn the useful phrases expected during the interaction."
+                },
+                "a2PictureTask1": {
+                    "title": "FIDE A2 Speaking: Describe a Picture in Task 1",
+                    "description": "Use a clear structure and precise vocabulary to describe an image during the A2 speaking test."
+                },
+                "a2SpeakingDetail": {
+                    "title": "The FIDE Test: A2 Speaking in Detail",
+                    "description": "Review every A2 speaking task, its format and the most effective preparation strategies."
+                },
+                "b1SpeakingDetail": {
+                    "title": "The FIDE Test: B1 Speaking in Detail",
+                    "description": "Review the B1 speaking format, complex questions and the skills needed to answer with confidence."
+                }
+            },
             "title": "<hs6>Go further</hs6> with detailed guides"
         },
         "FidePageHub": {
@@ -1593,14 +1714,14 @@
                 "scenarios6h": {
                     "title": "Express Scenarios 6h",
                     "description": {
-                        "prefix": "The recommended format to master",
-                        "bold": "current scenarios",
+                        "prefix": "A focused format for practising",
+                        "bold": "FIDE-style scenarios",
                         "suffix": "of the FIDE test.",
-                        "text": "The recommended format to master <b>current scenarios</b> of the FIDE test."
+                        "text": "A focused format for practising <b>FIDE-style scenarios</b>."
                     },
-                    "descriptionText": "The recommended format to master current FIDE test scenarios.",
+                    "descriptionText": "A focused format for practising FIDE-style scenarios.",
                     "priceFallback": "390 CHF",
-                    "features": ["Recent A1-A2 / A2-B1 scenarios", "Useful and current vocabulary", "Visible progress session after session"],
+                    "features": ["A1-A2 / A2-B1 training scenarios", "Useful vocabulary for daily life in Switzerland", "Session-by-session learning goals"],
                     "extras": ["Priorities between sessions", "Clear method for exam day"],
                     "ctaLabel": "Prepare effectively"
                 },
@@ -1645,7 +1766,7 @@
             "pack": {
                 "imageAlt": "Preview of the Exam Pack",
                 "title": "Exam Pack",
-                "description": "Current scenarios, videos, and resources to improve between private lessons.",
+                "description": "FIDE-style scenarios, videos, and resources to work on between private lessons.",
                 "cta": "See the pack"
             },
             "mockExams": {
@@ -1743,15 +1864,15 @@
             "titleHighlight": "our exam preparation",
             "titleSuffix": "?",
             "bullets": {
-                "1": "Reach your FIDE goals with the <b><under4>most complete e-learning platform</under4></b> for the exam.",
+                "1": "Reach your FIDE goals with a <b><under4>structured e-learning platform</under4></b> designed for the exam.",
                 "2": "Practice directly with <b><under5>updated scenarios</under5></b> similar to the exam.",
-                "3": "Prepare with the method of a true <b><under2>FIDE exam expert</under2></b>."
+                "3": "Prepare with the method of a teacher <b><under2>specializing in FIDE test preparation</under2></b>."
             },
             "videoSubtitle": "Discover our preparation",
             "proof": {
                 "prefix": "A",
-                "highlight": "proven method",
-                "text": "A <hs6>proven method</hs6>"
+                "highlight": "structured method",
+                "text": "A <hs6>structured method</hs6>"
             },
             "title": "What does <hs6>our exam preparation</hs6> offer?"
         },
@@ -1783,7 +1904,7 @@
                         "text": "Access our self-study platform for the FIDE exam from complete beginner to B1 level and progress <b>at your own pace</b>."
                     },
                     "features": ["13h of test-specific videos, A0 → B1", "100+ scenarios", "Progress tracking + messaging"],
-                    "extras": ["Regular updates", "Guaranteed progress"],
+                    "extras": ["Regular updates", "Step-by-step learning path"],
                     "cta": "GET THE EXAM PACK",
                     "ownedCta": "YOU ALREADY HAVE THIS PACK"
                 },

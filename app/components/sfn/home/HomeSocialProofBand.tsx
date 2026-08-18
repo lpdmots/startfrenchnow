@@ -57,11 +57,14 @@ export function HomeSocialProofBand() {
                                 key={key}
                                 href={href}
                                 target="_blank"
-                                className="flex min-h-[168px] flex-col justify-between rounded-xl border border-neutral-700 bg-neutral-900/60 p-5 text-neutral-100 no-underline transition duration-200 hover:border-secondary-5 hover:bg-neutral-900"
+                                rel="noopener noreferrer"
+                                className="flex min-h-[168px] flex-col justify-between rounded-xl border border-neutral-700 bg-neutral-900/60 p-5 text-neutral-100 no-underline transition-[background-color,border-color,transform] duration-150 ease-out hover:-translate-y-0.5 hover:border-secondary-5 hover:bg-neutral-900 active:scale-[0.96] motion-reduce:transform-none"
                             >
-                                <div className="flex h-7 items-center">{logo}</div>
+                                <div aria-hidden="true" className="flex h-7 items-center">
+                                    {logo}
+                                </div>
                                 <div className="mt-6">
-                                    <p className="mb-1 text-3xl font-bold leading-none lg:text-4xl">{t(`items.${key}.count` as never)}</p>
+                                    <p className="mb-1 text-3xl font-bold leading-none tabular-nums lg:text-4xl">{t(`items.${key}.count` as never)}</p>
                                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.16em] text-neutral-300">{t(`items.${key}.label` as never)}</p>
                                     <p className="mb-0 text-sm leading-relaxed text-neutral-400">{t(`items.${key}.description` as never)}</p>
                                 </div>

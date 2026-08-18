@@ -1,5 +1,5 @@
 "use client";
-import { m } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 
 interface Props {
     children: JSX.Element;
@@ -11,15 +11,16 @@ interface Props {
 }
 
 export const SlideFromBottom = ({ duration, delay, children }: Props) => {
+    const shouldReduceMotion = useReducedMotion();
     const slidefromBottom = {
-        hidden: { y: 50, opacity: 0 },
+        hidden: shouldReduceMotion ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
-                delay: delay || 0.3,
+                delay: shouldReduceMotion ? 0 : delay || 0.3,
                 ease: "easeOut",
-                duration: duration || 0.3,
+                duration: shouldReduceMotion ? 0 : duration || 0.3,
             },
         },
     };
@@ -32,15 +33,16 @@ export const SlideFromBottom = ({ duration, delay, children }: Props) => {
 };
 
 export const SlideFromRight = ({ duration, delay, children }: Props) => {
+    const shouldReduceMotion = useReducedMotion();
     const slidefromRight = {
-        hidden: { x: 50, opacity: 0 },
+        hidden: shouldReduceMotion ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 },
         visible: {
             opacity: 1,
             x: 0,
             transition: {
-                delay: delay || 0.3,
+                delay: shouldReduceMotion ? 0 : delay || 0.3,
                 ease: "easeOut",
-                duration: duration || 0.3,
+                duration: shouldReduceMotion ? 0 : duration || 0.3,
             },
         },
     };
@@ -53,15 +55,16 @@ export const SlideFromRight = ({ duration, delay, children }: Props) => {
 };
 
 export const SlideFromLeft = ({ duration, delay, children }: Props) => {
+    const shouldReduceMotion = useReducedMotion();
     const slidefromRight = {
-        hidden: { x: -50, opacity: 0 },
+        hidden: shouldReduceMotion ? { x: 0, opacity: 1 } : { x: -50, opacity: 0 },
         visible: {
             opacity: 1,
             x: 0,
             transition: {
-                delay: delay || 0.3,
+                delay: shouldReduceMotion ? 0 : delay || 0.3,
                 ease: "easeOut",
-                duration: duration || 0.3,
+                duration: shouldReduceMotion ? 0 : duration || 0.3,
             },
         },
     };
@@ -74,15 +77,16 @@ export const SlideFromLeft = ({ duration, delay, children }: Props) => {
 };
 
 export const SlideInOneByOneParent = ({ duration = 0.5, delay = 0.3, delayChildren = 1, onVisible, children }: Props) => {
+    const shouldReduceMotion = useReducedMotion();
     const fadeInOneByOneParent = {
-        hidden: { opacity: 0 },
+        hidden: { opacity: shouldReduceMotion ? 1 : 0 },
         visible: {
             opacity: 1,
             transition: {
-                delay,
-                duration,
-                delayChildren,
-                staggerChildren: 0.1,
+                delay: shouldReduceMotion ? 0 : delay,
+                duration: shouldReduceMotion ? 0 : duration,
+                delayChildren: shouldReduceMotion ? 0 : delayChildren,
+                staggerChildren: shouldReduceMotion ? 0 : 0.1,
                 onComplete: () => {
                     if (onVisible) {
                         onVisible(true);
@@ -100,13 +104,14 @@ export const SlideInOneByOneParent = ({ duration = 0.5, delay = 0.3, delayChildr
 };
 
 export const SlideInOneByOneChild = ({ duration = 0.5, width = "100%", children }: Props) => {
+    const shouldReduceMotion = useReducedMotion();
     const fadeInOneByOneItem = {
-        hidden: { y: 50, opacity: 0 },
+        hidden: shouldReduceMotion ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 },
         visible: {
             y: 0,
             opacity: 1,
             transition: {
-                duration,
+                duration: shouldReduceMotion ? 0 : duration,
                 ease: "easeOut",
             },
         },

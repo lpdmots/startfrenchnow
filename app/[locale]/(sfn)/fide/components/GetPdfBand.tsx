@@ -17,8 +17,10 @@ function GetPdfBand({
     const t = useTranslations("Fide.WhatIsFide");
     const messages = getFormMessages(t);
     return (
-        <div
-            className={`footer-newsletter mb-[-1px] relative overflow-hidden py-6 ${insetDarkPanel ? "bg-neutral-200" : ""}`}
+        <section
+            data-fide-pdf-band
+            data-fide-promo-band
+            className={`footer-newsletter mb-[-1px] relative overflow-hidden !py-6 ${insetDarkPanel ? "bg-neutral-200" : ""}`}
             style={{
                 background: "none",
                 backgroundImage: "none",
@@ -49,7 +51,7 @@ function GetPdfBand({
                         </div>
                         <div className="newsletter-wrapper">
                             <div className="max-[767px]:text-center">
-                                <p className="display-4 mb-0">{t.rich("AskForPdf.askTitelBand", intelRich())}</p>
+                                <h2 className="display-4 mb-0">{t.rich("AskForPdf.askTitelBand", intelRich())}</h2>
                                 <div className="flex items-center">
                                     <p className="mb-0 mr-2">{t("AskForPdf.askDescription")}</p>
                                 </div>
@@ -61,7 +63,7 @@ function GetPdfBand({
                     </div>
                 </SlideFromLeft>
             </div>
-        </div>
+        </section>
     );
 }
 

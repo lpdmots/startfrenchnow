@@ -6,11 +6,10 @@ import CircularProgressMagic from "@/app/components/common/CircularProgressMagic
 import { VideoFide } from "@/app/[locale]/(sfn)/fide/components/VideoFide";
 import { sharedFideReviews } from "@/app/[locale]/(sfn)/fide/components/ReviewsFide";
 import { m } from "framer-motion";
-import { Quote } from "lucide-react";
+import { Maximize2, Quote } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { LuMaximize2 } from "react-icons/lu";
 import { intelRich } from "@/app/lib/intelRich";
 
 type HomeVideoReview = (typeof sharedFideReviews)[number] & {
@@ -53,15 +52,15 @@ export function HomeRitaVideoSection() {
         <section className="px-4 py-12 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <SlideFromBottom>
-                        <div>
-                            <div className="mx-auto mb-10 max-w-4xl text-center">
-                                <h2 className="display-3 mb-3">{t.rich("title", intelRich())}</h2>
-                            </div>
+                    <div>
+                        <div className="mx-auto mb-10 max-w-4xl text-center">
+                            <h2 className="display-3 mb-3">{t.rich("title", intelRich())}</h2>
+                        </div>
 
                         <div className="relative card m-auto max-w-5xl p-4 md:p-8">
                             <div className="mg-bottom-24px mt-[-80px] keep absolute top-12 z-20">
                                 <div className="flex h-[76px] w-[76px] items-center justify-center rounded-full bg-neutral-800 text-neutral-100">
-                                    <Quote className="h-9 w-9" />
+                                    <Quote aria-hidden="true" className="h-9 w-9" strokeWidth={2} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4 min-h-[390px]">
@@ -75,10 +74,11 @@ export function HomeRitaVideoSection() {
                                             subtitleFRUrl={ritaReview.subtitleFRUrl}
                                             videoClassName="max-h-96 w-auto"
                                             className="shadow-none"
+                                            playLabel={t("play_video")}
                                         />
                                     </div>
                                     <div className="order-3 col-span-3 flex flex-col gap-4 md:order-1 md:col-span-2">
-                                        <p className="text-lg md:text-2xl font-bold mb-0 mt-8 text-justify">"{ritaReview.title}"</p>
+                                        <p className="mb-0 mt-8 text-left text-lg font-bold md:text-2xl">"{ritaReview.title}"</p>
                                         <CommentPreview comment={ritaReview.comment} onClick={() => setOpen(true)} />
                                         <div className="flex w-full justify-between gap-4">
                                             <div className="flex flex-col justify-center">
@@ -127,14 +127,14 @@ function CommentPreview({ comment, onClick }: { comment?: ReactNode; onClick: ()
             type="button"
             onClick={onClick}
             whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
-            className="relative w-full text-left p-0 group cursor-pointer rounded-lg border border-transparent transition-colors"
+            whileTap={{ scale: 0.96 }}
+            className="group relative w-full cursor-pointer rounded-lg border border-transparent p-0 text-left transition-[border-color,box-shadow] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-2 focus-visible:ring-offset-4"
         >
             <div className="min-h-32 text-sm text-neutral-600 line-clamp-5">{comment}</div>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white via-white/80 to-transparent group-hover:from-neutral-50 group-hover:via-neutral-50/80" />
             <div className="pointer-events-none absolute inset-x-0 bottom-1 flex justify-end pr-2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-neutral-300 px-2.5 py-0.5 text-sm font-bold text-neutral-600 shadow-sm ring-1 ring-neutral-200 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all">
-                    <LuMaximize2 className="h-3 w-3" />
+                <span className="inline-flex translate-y-1 items-center gap-1 rounded-full bg-neutral-300 px-2.5 py-0.5 text-sm font-bold text-neutral-600 opacity-0 shadow-sm ring-1 ring-neutral-200 transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                    <Maximize2 aria-hidden="true" className="size-3" strokeWidth={2} />
                     {t("seeFullComment")}
                 </span>
             </div>

@@ -13,9 +13,10 @@ type Props = {
     locale: string;
     hasPack: boolean;
     hidePackageBadge?: boolean;
+    headingLevel?: "h2" | "h3";
 };
 
-function VideoList({ filteredPackSommaire, locale, hasPack, hidePackageBadge = false }: Props) {
+function VideoList({ filteredPackSommaire, locale, hasPack, hidePackageBadge = false, headingLevel = "h2" }: Props) {
     const chunkedPosts = splitArrayIntoChunks(filteredPackSommaire, 3);
 
     return (
@@ -27,7 +28,7 @@ function VideoList({ filteredPackSommaire, locale, hasPack, hidePackageBadge = f
                             <div role="listitem" className="height-100 w-dyn-item">
                                 {chunk.length > 0 && (
                                     <ParentToChildrens>
-                                        <PrimaryFidePost post={chunk[0]} locale={locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} />
+                                        <PrimaryFidePost post={chunk[0]} locale={locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} headingLevel={headingLevel} />
                                     </ParentToChildrens>
                                 )}
                             </div>
@@ -39,14 +40,14 @@ function VideoList({ filteredPackSommaire, locale, hasPack, hidePackageBadge = f
                             <div role="listitem" className="w-dyn-item">
                                 {chunk.length > 1 && (
                                     <ParentToChildrens>
-                                        <SecondaryFidePost post={chunk[1]} locale={locale as Locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} />
+                                        <SecondaryFidePost post={chunk[1]} locale={locale as Locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} headingLevel={headingLevel} />
                                     </ParentToChildrens>
                                 )}
                             </div>
                             <div role="listitem" className="w-dyn-item">
                                 {chunk.length > 2 && (
                                     <ParentToChildrens>
-                                        <SecondaryFidePost post={chunk[2]} locale={locale as Locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} />
+                                        <SecondaryFidePost post={chunk[2]} locale={locale as Locale} hasPack={hasPack} hidePackageBadge={hidePackageBadge} headingLevel={headingLevel} />
                                     </ParentToChildrens>
                                 )}
                             </div>

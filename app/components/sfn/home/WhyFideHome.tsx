@@ -62,12 +62,12 @@ function WhyFideHome() {
                                 <SlideFromRight delay={0.8}>
                                     <div className="inner-container w-full">
                                         <Image
-                                            src="/images/hero-fide4.png"
+                                            src="/images/hero-fide4.avif"
                                             alt={t("imageAlt")}
-                                            className="object-contain"
+                                            className="home-image-outline rounded-2xl object-contain outline outline-1 -outline-offset-1 outline-black/10"
                                             width={705}
                                             height={500}
-                                            style={{ border: "solid 4px #0b0b0b", borderRadius: "32px", objectFit: "contain", height: "auto", maxHeight: 450, maxWidth: "100%" }}
+                                            style={{ objectFit: "contain", height: "auto", maxHeight: 450, maxWidth: "100%" }}
                                             loading="lazy"
                                         />
                                     </div>

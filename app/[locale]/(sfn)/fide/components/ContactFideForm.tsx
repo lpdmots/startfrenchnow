@@ -8,7 +8,7 @@ import { useState } from "react";
 export const ContactFideForm = ({ messages }: { messages: any }) => {
     const locale = useLocale() as "fr" | "en";
     const [pending, setPending] = useState(false);
-    const [message, setMessage] = useState<React.ReactElement | null>(null);
+    const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
     const [startedAt] = useState(() => Date.now());
     const [objectif, setObjectif] = useState<string>("");
     const [niveauActuel, setNiveauActuel] = useState<string>("");
@@ -16,7 +16,10 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (pending) return;
+
         setPending(true);
+        setStatus("idle");
 
         // Rassemble les données du formulaire
         const formData = new FormData(e.currentTarget);
@@ -36,13 +39,13 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
             const response = await sendContactEmail(data);
 
             if (response.status === "success") {
-                setMessage(<p className="card p-4 md:p-8 w-full border border-dashed border-secondary-5 bg-neutral-800 max-w-4xl mb-0">{messages["successMessage"]}</p>);
+                setStatus("success");
             } else {
-                setMessage(<p className="card p-4 md:p-8 w-full border border-dashed border-secondary-4 bg-neutral-800 max-w-4xl mb-0">{messages["errorMessage"]}</p>);
+                setStatus("error");
             }
         } catch (error) {
             console.error("Erreur lors de l'envoi du formulaire :", error);
-            setMessage(<p className="card p-4 md:p-8 w-full border border-dashed border-secondary-4 bg-neutral-800 max-w-4xl mb-0">{messages["errorMessage"]}</p>);
+            setStatus("error");
         } finally {
             setPending(false);
         }
@@ -67,13 +70,16 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
                     overflow: "hidden",
                 }}
             >
-                <label htmlFor="website">Website</label>
-                <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                <label htmlFor="fide-contact-website">Website</label>
+                <input id="fide-contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
             </div>
             <h3 className="text-neutral-100">{messages["subtitle"]}</h3>
             <div className="w-full max-w-4xl grid grid-cols-3 gap-4 md:gap-8">
                 <Select value={objectif} onValueChange={setObjectif}>
-                    <SelectTrigger className="col-span-3 md:col-span-1 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]">
+                    <SelectTrigger
+                        aria-label={messages["objectifPlaceholder"]}
+                        className="card color-neutral-800 col-span-3 min-h-11 rounded-xl p-4 transition-[box-shadow,transform] duration-150 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] active:scale-[.96] motion-reduce:transition-none md:col-span-1 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]"
+                    >
                         <SelectValue className="color-neutral-800" placeholder={messages["objectifPlaceholder"]} />
                     </SelectTrigger>
                     <SelectContent>
@@ -90,7 +96,10 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
                 </Select>
 
                 <Select value={niveauActuel} onValueChange={setNiveauActuel}>
-                    <SelectTrigger className="col-span-3 md:col-span-1 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]">
+                    <SelectTrigger
+                        aria-label={messages["niveauActuelPlaceholder"]}
+                        className="card color-neutral-800 col-span-3 min-h-11 rounded-xl p-4 transition-[box-shadow,transform] duration-150 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] active:scale-[.96] motion-reduce:transition-none md:col-span-1 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]"
+                    >
                         <SelectValue className="color-neutral-800" placeholder={messages["niveauActuelPlaceholder"]} />
                     </SelectTrigger>
                     <SelectContent>
@@ -116,7 +125,10 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
                 </Select>
 
                 <Select value={niveauSouhaite} onValueChange={setNiveauSouhaite}>
-                    <SelectTrigger className="col-span-3 md:col-span-1 card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]">
+                    <SelectTrigger
+                        aria-label={messages["niveauSouhaitePlaceholder"]}
+                        className="card color-neutral-800 col-span-3 min-h-11 rounded-xl p-4 transition-[box-shadow,transform] duration-150 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] active:scale-[.96] motion-reduce:transition-none md:col-span-1 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]"
+                    >
                         <SelectValue className="color-neutral-800" placeholder={messages["niveauSouhaitePlaceholder"]} />
                     </SelectTrigger>
                     <SelectContent>
@@ -139,30 +151,58 @@ export const ContactFideForm = ({ messages }: { messages: any }) => {
                 </Select>
             </div>
 
+            <label htmlFor="fide-contact-message" className="sr-only">
+                {messages["specificRequestPlaceholder"]}
+            </label>
             <textarea
-                id="message"
+                id="fide-contact-message"
                 name="message"
                 placeholder={messages["specificRequestPlaceholder"]}
-                className="max-w-4xl w-full card rounded-xl p-4 transition-shadow duration-300 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] color-neutral-800 data-[state=open]:!shadow-[5px_5px_0_0_var(--secondary-1)]"
+                className="card color-neutral-800 w-full max-w-4xl rounded-xl p-4 transition-shadow duration-150 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] focus:!shadow-[5px_5px_0_0_var(--secondary-1)] motion-reduce:transition-none"
                 maxLength={5000}
             ></textarea>
 
-            {message ? (
-                message
+            {status === "success" ? (
+                <p role="status" aria-live="polite" className="mb-0 w-full max-w-4xl rounded-xl bg-neutral-700 p-4 md:p-8">
+                    {messages["successMessage"]}
+                </p>
             ) : (
-                <div className="relative max-w-lg w-full">
-                    <input
-                        type="email"
-                        name="email"
-                        className="input button-inside w-input !bg-neutral-100 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] focus:!shadow-[5px_5px_0_0_var(--secondary-1)]"
-                        placeholder={messages["emailPlaceholder"]}
-                        id="Email"
-                        required
-                    />
-                    <button type="submit" className="btn-primary border border-neutral-100 sm:border-0 inside-input default w-button" style={{ minWidth: 145 }}>
-                        {pending ? <Spinner radius maxHeight="40px" /> : messages["button"]}
-                    </button>
-                </div>
+                <>
+                    <div className="relative max-w-lg w-full">
+                        <label htmlFor="fide-contact-email" className="sr-only">
+                            {messages["emailPlaceholder"]}
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            className="input button-inside w-input !bg-neutral-100 hover:!shadow-[5px_5px_0_0_var(--secondary-1)] focus:!shadow-[5px_5px_0_0_var(--secondary-1)]"
+                            placeholder={messages["emailPlaceholder"]}
+                            id="fide-contact-email"
+                            required
+                        />
+                        <button
+                            type="submit"
+                            disabled={pending}
+                            aria-busy={pending}
+                            aria-label={messages["button"]}
+                            className="btn-primary inside-input default w-button border border-neutral-100 transition-[transform,box-shadow] duration-150 active:scale-[.96] disabled:cursor-wait disabled:opacity-70 motion-reduce:transition-none sm:border-0"
+                            style={{ minWidth: 145 }}
+                        >
+                            {pending ? (
+                                <span aria-hidden="true">
+                                    <Spinner radius maxHeight="40px" />
+                                </span>
+                            ) : (
+                                messages["button"]
+                            )}
+                        </button>
+                    </div>
+                    {status === "error" && (
+                        <p role="alert" className="mb-0 w-full max-w-4xl rounded-xl bg-neutral-700 p-4 md:p-8">
+                            {messages["errorMessage"]}
+                        </p>
+                    )}
+                </>
             )}
         </form>
     );

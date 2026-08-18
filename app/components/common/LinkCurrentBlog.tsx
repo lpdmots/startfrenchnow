@@ -7,6 +7,8 @@ import LinkToFideVideos from "./LinkToFideVideos";
 import LinkToFideExams from "./LinkToFideExams";
 import clsx from "clsx";
 import { isActivePath } from "./navActive";
+import { useLocale } from "next-intl";
+import { getExplicitLinkLocale } from "@/app/lib/i18n/linkLocale.mjs";
 
 interface Props {
     href: string;
@@ -19,6 +21,7 @@ interface Props {
 
 export const LinkCurrentBlog = ({ href, className, children, locale, withParams, matchPrefix = true }: Props) => {
     const pathname = usePathname();
+    const currentLocale = useLocale() as Locale;
     const isActive = isActivePath(pathname, href, matchPrefix);
 
     if (withParams === "fide-videos") {
@@ -28,7 +31,7 @@ export const LinkCurrentBlog = ({ href, className, children, locale, withParams,
     }
 
     return (
-        <Link href={href} className={clsx(className, isActive && "current")} locale={locale}>
+        <Link href={href} locale={getExplicitLinkLocale(currentLocale, locale)} className={clsx(className, isActive && "current")}>
             {children}
         </Link>
     );

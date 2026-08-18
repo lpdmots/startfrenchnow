@@ -1,8 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { FaCaretDown, FaCaretRight } from "react-icons/fa";
-import { Locale } from "@/i18n";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { SiteNavAccent, SiteNavItem, SiteNavLink, isSiteNavActive } from "./siteNavigation";
 import DropdownMenu from "./DropdownMenu";
@@ -51,7 +50,7 @@ const groupDropdownLinks = (links: SiteNavLink[]) => {
     return groups;
 };
 
-export const PrimaryNavItem = ({ item, locale }: { item: SiteNavItem; locale: Locale }) => {
+export const PrimaryNavItem = ({ item }: { item: SiteNavItem }) => {
     const pathname = usePathname();
     const isActive = isSiteNavActive(pathname, item);
     const triggerClasses = clsx(
@@ -65,7 +64,6 @@ export const PrimaryNavItem = ({ item, locale }: { item: SiteNavItem; locale: Lo
         return (
             <Link
                 href={item.href}
-                locale={locale}
                 aria-current={isActive ? "page" : undefined}
                 className={triggerClasses}
             >
@@ -74,17 +72,15 @@ export const PrimaryNavItem = ({ item, locale }: { item: SiteNavItem; locale: Lo
         );
     }
 
-    return <PrimaryNavDropdown item={item} locale={locale} pathname={pathname} triggerClasses={triggerClasses} />;
+    return <PrimaryNavDropdown item={item} pathname={pathname} triggerClasses={triggerClasses} />;
 };
 
 const PrimaryNavDropdown = ({
     item,
-    locale,
     pathname,
     triggerClasses,
 }: {
     item: SiteNavItem;
-    locale: Locale;
     pathname: string;
     triggerClasses: string;
 }) => {
@@ -107,7 +103,6 @@ const PrimaryNavDropdown = ({
                                 <Link
                                     key={child.key}
                                     href={child.href}
-                                    locale={locale}
                                     className={clsx(
                                         "nav-link header-nav-link m-0 flex items-center gap-2 whitespace-nowrap p-1 pl-6 font-medium",
                                         getLinkAccentClasses(child.accent),
@@ -115,7 +110,7 @@ const PrimaryNavDropdown = ({
                                     )}
                                     aria-current={childActive ? "page" : undefined}
                                 >
-                                    <FaCaretRight />
+                                    <ChevronRight aria-hidden="true" className="size-4" strokeWidth={2} />
                                     {child.label}
                                 </Link>
                             );
@@ -128,9 +123,9 @@ const PrimaryNavDropdown = ({
 
     return (
         <DropdownMenu content={content} openOnClick={false}>
-            <Link href={item.href} locale={locale} aria-current={isSiteNavActive(pathname, item) ? "page" : undefined} className={clsx(triggerClasses, "gap-2")}>
+            <Link href={item.href} aria-current={isSiteNavActive(pathname, item) ? "page" : undefined} className={clsx(triggerClasses, "gap-2")}>
                 <span>{item.label}</span>
-                <FaCaretDown className="text-sm" />
+                <ChevronDown aria-hidden="true" className="size-4" strokeWidth={2} />
             </Link>
         </DropdownMenu>
     );

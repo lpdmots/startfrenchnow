@@ -4,8 +4,7 @@ import TypingAnimation from "@/app/components/ui/typing-animation";
 import { useSfnStore } from "@/app/stores/sfnStore";
 import clsx from "clsx";
 import { useState, useRef, useEffect } from "react";
-import { FaPlay } from "react-icons/fa";
-import { PiArrowBendLeftUpDuotone } from "react-icons/pi";
+import { CornerLeftUp, Play } from "lucide-react";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -19,9 +18,20 @@ interface VideoFideProps {
     isAnimated?: boolean;
     className?: string; // Pour le wrapper (motion.div)
     videoClassName?: string; // Pour la balise <video>
+    playLabel?: string;
 }
 
-export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleENUrl, isAnimated = true, className = "", videoClassName = "" }: VideoFideProps) => {
+export const VideoFide = ({
+    videoKey,
+    poster,
+    subtitle,
+    subtitleFRUrl,
+    subtitleENUrl,
+    isAnimated = true,
+    className = "",
+    videoClassName = "",
+    playLabel = "Play video",
+}: VideoFideProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const posterUrl = !poster ? undefined : poster?.startsWith("/images") ? poster : cloudFrontDomain + poster;
@@ -123,12 +133,15 @@ export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleE
         <>
             <div
                 id="hero-video"
-                className={`group cms-featured-image-wrapper image-wrapper radius-lg mx-auto p-0 bg-neutral-800 ${className}`}
+                className={`group relative cms-featured-image-wrapper image-wrapper radius-lg mx-auto p-0 bg-neutral-800 ${className}`}
                 style={{ lineHeight: 0 }}
             >
                 <video
                     ref={videoRef}
-                    className={clsx("image-wrapper radius-lg w-full", videoClassName)}
+                    className={clsx(
+                        "home-image-outline image-wrapper radius-lg w-full outline outline-1 -outline-offset-1 outline-black/10",
+                        videoClassName,
+                    )}
                     src={cloudFrontDomain + videoKey}
                     height="auto"
                     width="100%"
@@ -144,28 +157,25 @@ export const VideoFide = ({ videoKey, poster, subtitle, subtitleFRUrl, subtitleE
                 </video>
 
                 {!isPlaying && (
-                    <div
-                        className="absolute w-full h-full top-0 left-0 cursor-pointer"
+                    <button
+                        type="button"
+                        aria-label={playLabel}
+                        className="group/play absolute inset-0 flex cursor-pointer items-center justify-center rounded-[inherit] focus-visible:outline-none"
                         onClick={(e) => {
                             e.stopPropagation();
                             handlePlayPause();
                         }}
                     >
-                        <div className="relative w-full h-full">
-                            <button
-                                className="absolute flex items-center justify-center text-neutral-100 rounded-full p-4 opacity-80 group-hover:opacity-100 transition-colors transition-opacity duration-100 bg-[rgba(229,2,6,0.8)] group-hover:bg-[rgba(229,2,6,1)]"
-                                style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-                            >
-                                <FaPlay size={32} />
-                            </button>
-                        </div>
-                    </div>
+                        <span className="flex size-16 items-center justify-center rounded-full bg-[rgba(229,2,6,0.88)] text-neutral-100 opacity-90 shadow-lg transition-[background-color,opacity,transform,box-shadow] duration-150 ease-out group-hover/play:bg-[rgba(229,2,6,1)] group-hover/play:opacity-100 group-focus-visible/play:ring-4 group-focus-visible/play:ring-secondary-2/60 group-active/play:scale-[0.96]">
+                            <Play aria-hidden="true" className="ml-0.5 size-8" fill="currentColor" strokeWidth={2.5} />
+                        </span>
+                    </button>
                 )}
             </div>
             {!!subtitle && (
                 <div className="w-full mt-6 justify-end hidden sm:flex">
                     <div className="flex justify-end items-center">
-                        <PiArrowBendLeftUpDuotone className="text-2xl md:text-4xl mr-2 mb-2 lg:mb-4" />
+                        <CornerLeftUp aria-hidden="true" className="mr-2 mb-2 size-6 md:size-8 lg:mb-4" strokeWidth={2} />
                         <TypingAnimation className="text-lg md:text-xl xl:text-2xl mb-0 min-w-48 xl:min-w-60 text-left" text={subtitle} duration={50} />
                     </div>
                 </div>

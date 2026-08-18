@@ -22,14 +22,10 @@ export default function NotificationsMenuServer({ locale }: { locale?: Locale })
     if (!count) return null;
 
     return (
-        <DropdownMenu content={<NotificationsMenuClient locale={locale} count={count} onCountChange={handleCountChange} />}>
-            <button
-                type="button"
-                className="relative inline-flex items-center justify-center rounded-xl p-2 pb-0 hover:bg-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
-                aria-label={`Notifications (${count})`}
-            >
+        <DropdownMenu content={<NotificationsMenuClient locale={locale} count={count} onCountChange={handleCountChange} />} ariaLabel={`Notifications (${count})`}>
+            <span className="relative inline-flex size-11 items-center justify-center rounded-xl hover:bg-neutral-200">
                 <NotificationBellClient count={count} />
-            </button>
+            </span>
         </DropdownMenu>
     );
 }
