@@ -25,10 +25,16 @@ const queryFideExamProgress = groq`
 `;
 
 export const getFideExamProgress = async (userId: string, type: string) => {
+    if (!userId) return null;
     return (await client.fetch(queryFideExamProgress, { userId, type })) as UserProps | null;
 };
 
-export const updateUserProgress = async (progressType: string, logType: "examLogs" | "videoLogs", examId: string, newScore: number, userId?: string) => {
+// Keep the optional last argument compatible with already-open clients, but never trust it for writes.
+export const updateUserProgress = async (progressType: string, logType: "examLogs" | "videoLogs", examId: string, newScore: number, _userId?: string) => {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?._id;
+    if (typeof userId !== "string" || !userId.trim()) return null;
+
     const query = groq`
       *[_type == "user" && _id == $userId][0] {
         learningProgress[ type == $progressType ]
@@ -36,13 +42,14 @@ export const updateUserProgress = async (progressType: string, logType: "examLog
     `;
 
     const user: UserProps | null = await client.fetch(query, { userId, progressType });
+    if (!user) return null;
     const logs = user?.learningProgress?.[0]?.[logType] as VideoLog[] | ExamLog | undefined;
 
     if (logType === "examLogs") return updateExamLogs(userId, examId, newScore, logs as ExamLog[] | undefined, progressType);
     return updateVideoLogs(userId, examId, newScore, logs as VideoLog[] | undefined, progressType);
 };
 
-const updateExamLogs = async (userId: string | undefined, examId: string, newScore: number, logs: ExamLog[] | undefined, progressType: string) => {
+const updateExamLogs = async (userId: string, examId: string, newScore: number, logs: ExamLog[] | undefined, progressType: string) => {
     if (logs) {
         // Si le log pour l'examen existe déjà il faut l'update, sinon il faut le créer
         const existingLogIndex = logs?.findIndex((log) => log.exam._ref === examId);
@@ -70,7 +77,7 @@ const updateExamLogs = async (userId: string | undefined, examId: string, newSco
         }
         // Mettre à jour la progression de l'utilisateur
         await client
-            .patch(userId || "")
+            .patch(userId)
             .set({
                 [`learningProgress[type == "${progressType}"].examLogs`]: logs,
             })
@@ -90,7 +97,7 @@ const updateExamLogs = async (userId: string | undefined, examId: string, newSco
         const logs: ExamLog[] = [newLog];
         // Créer une nouvelle progression de l'utilisateur
         await client
-            .patch(userId || "")
+            .patch(userId)
             .setIfMissing({ learningProgress: [] })
             .insert("after", "learningProgress[-1]", [
                 {

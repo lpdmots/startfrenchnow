@@ -1,5 +1,5 @@
 import { applyDiscountToAmount, roundCurrency } from "@/app/lib/pricing";
-import { convertToSubcurrency } from "@/app/lib/utils";
+import { parsePaymentQuantity, PaymentValidationError, validatePaymentAmount } from "@/app/lib/paymentValidation";
 import { getAmount } from "@/app/serverActions/stripeActions";
 import { CouponFeedback, CurrencyCode, DiscountRounding, DiscountType, PricingDetails, ProductFetch } from "@/app/types/sfn/stripe";
 import { NextRequest, NextResponse } from "next/server";
@@ -413,7 +413,17 @@ async function getOrCreateCustomer(sessionEmail: string): Promise<string> {
 
 export async function POST(request: NextRequest) {
     try {
-        const { productSlug, quantity, currency, email, sessionEmail, userId, locale, couponCode, acquisitionSource } = await request.json();
+        const data = await request.json().catch(() => null);
+        if (!data || typeof data !== "object" || Array.isArray(data)) {
+            return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+        }
+        const { productSlug, quantity, currency, email, sessionEmail, userId, locale, couponCode, acquisitionSource } = data;
+        const requestedQuantity = parsePaymentQuantity(quantity);
+        if (typeof productSlug !== "string" || !productSlug.trim()) throw new PaymentValidationError("Missing productSlug");
+        if (!["EUR", "USD", "CHF"].includes(currency)) throw new PaymentValidationError("Invalid currency");
+        if ((email != null && typeof email !== "string") || (sessionEmail != null && typeof sessionEmail !== "string")) {
+            throw new PaymentValidationError("Invalid email");
+        }
 
         // Email “effectif” : si pas de session (guest), on utilise l’email du form
         const effectiveEmail = (sessionEmail || email || "").trim().toLowerCase();
@@ -421,7 +431,7 @@ export async function POST(request: NextRequest) {
         const normalizedLocale = String(locale || "").trim().toLowerCase().startsWith("en") ? "en" : "fr";
 
         const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch & { _id?: string };
-        const requestedQuantity = Number.parseInt(String(quantity || "1"), 10) || 1;
+        if (!product) throw new PaymentValidationError("Product not found", 404);
 
         if (product?.referenceKey === "mock_exam") {
             const activeCompilationCount = Number(await client.fetch<number>(queryActiveMockExamCompilationCount));
@@ -462,7 +472,7 @@ export async function POST(request: NextRequest) {
         // ✅ Guest-safe : si pas de userId, on considère “pas d’achats précédents”
         const userPurchasedLesson = userId ? ((await getUserPurchases(userId, product.referenceKey)) ?? undefined) : undefined;
 
-        const { pricingDetails: productPricingDetails, productInfos } = await getAmount(product, quantity, currency, userPurchasedLesson);
+        const { pricingDetails: productPricingDetails, productInfos } = await getAmount(product, String(requestedQuantity), currency, userPurchasedLesson);
 
         const { pricingDetails, couponFeedback, metadata: couponMetadata } = await evaluateCouponForPricing({
             couponCode,
@@ -479,17 +489,18 @@ export async function POST(request: NextRequest) {
             normalizeAcquisitionSource(acquisitionSource) ||
             "unknown";
 
+        const amount = validatePaymentAmount(pricingDetails.amount);
         const stripeCustomerId = effectiveEmail ? await getOrCreateCustomer(effectiveEmail) : undefined;
 
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: convertToSubcurrency(pricingDetails.amount),
+            amount,
             currency: pricingDetails.currency,
             ...(effectiveEmail ? { receipt_email: effectiveEmail } : {}),
             ...(stripeCustomerId ? { customer: stripeCustomerId } : {}),
             automatic_payment_methods: { enabled: true },
             metadata: {
                 productSlug,
-                quantity,
+                quantity: String(requestedQuantity),
                 locale: normalizedLocale,
                 ...(effectiveEmail ? { email: effectiveEmail } : {}),
                 ...(userId ? { userId: String(userId) } : {}),
@@ -506,6 +517,10 @@ export async function POST(request: NextRequest) {
             couponFeedback: couponFeedback || null,
         });
     } catch (error) {
+        if (error instanceof PaymentValidationError) {
+            if (error.status >= 500) console.error("[create-payment-intent] Invalid product pricing", { message: error.message });
+            return NextResponse.json({ error: error.message }, { status: error.status });
+        }
         console.error("Internal Error:", error);
         return NextResponse.json({ error: `Internal Server Error: ${error}` }, { status: 500 });
     }

@@ -616,6 +616,7 @@
         "yourPurchaseTitle": "Your Purchase",
         "paymentTitle": "Payment",
         "loading": "Loading...",
+        "loadError": "We couldn't load your order. Please go back to the previous page and try again.",
         "coupon": {
             "title": "Coupon code",
             "placeholder": "Code Coupon",

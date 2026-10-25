@@ -31,6 +31,7 @@ type PendingPurchase = {
 
 type UserDoc = {
     _id: string;
+    _rev: string;
     email: string;
     name?: string;
     isActive?: boolean;
@@ -57,13 +58,30 @@ function maxIso(a?: string | null, b?: string | null) {
 }
 
 export async function claimPendingPurchases(params: { email: string; userId: string }) {
+    for (let attempt = 1; ; attempt++) {
+        try {
+            return await claimPendingPurchasesOnce(params);
+        } catch (error) {
+            const status = (error as { statusCode?: number; response?: { statusCode?: number } })?.statusCode ??
+                (error as { response?: { statusCode?: number } })?.response?.statusCode;
+            if (status !== 409 || attempt >= 3) {
+                console.error("[PurchaseClaim] Failed to assign purchases", { userId: params.userId, attempt, status });
+                throw error;
+            }
+            console.warn("[PurchaseClaim] Concurrent update; reloading before retry", { userId: params.userId, attempt });
+            await new Promise((resolve) => setTimeout(resolve, 100 * attempt));
+        }
+    }
+}
+
+async function claimPendingPurchasesOnce(params: { email: string; userId: string }) {
     const email = toLowerEmail(params.email);
     const userId = params.userId;
 
     // 1) Récup user (avec _key des arrays)
     const user = (await client.fetch(
         `*[_type=="user" && _id==$userId][0]{
-    _id, email, name, isActive, stripeCustomerId,
+    _id, _rev, email, name, isActive, stripeCustomerId,
     permissions[]{_key, referenceKey, grantedAt, expiresAt},
     credits[]{_key, referenceKey, totalCredits, remainingCredits},
     lessons[]{_key, eventType, totalPurchasedMinutes}
@@ -235,7 +253,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
     let tx: any = client.transaction();
 
     tx = tx.patch(userId, (p: any) => {
-        let patch = p;
+        let patch = p.ifRevisionId(user._rev);
 
         // arrays exist
         patch = patch.setIfMissing({ credits: [], lessons: [], permissions: [] });
@@ -267,17 +285,7 @@ export async function claimPendingPurchases(params: { email: string; userId: str
         });
     }
 
-    try {
-        await tx.commit({ autoGenerateArrayKeys: true });
-    } catch (error) {
-        console.error("[PurchaseClaim] commit failed", {
-            userId,
-            email,
-            pendingIds: pendings.map((p) => p._id),
-            error,
-        });
-        return { claimed: false, reason: "claim_conflict" as const, assignedPurchases: 0 };
-    }
+    await tx.commit({ autoGenerateArrayKeys: true });
 
     const pendingsSorted = [...pendings].sort((a, b) => {
         const aTs = a.purchasedAt ? Date.parse(a.purchasedAt) : 0;

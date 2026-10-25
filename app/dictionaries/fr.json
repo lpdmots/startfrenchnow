@@ -616,6 +616,7 @@
         "yourPurchaseTitle": "Votre achat",
         "paymentTitle": "Paiement",
         "loading": "Chargement...",
+        "loadError": "Impossible de charger votre commande. Veuillez revenir à la page précédente et réessayer.",
         "coupon": {
             "title": "Code coupon",
             "placeholder": "Code Coupon",

@@ -7,6 +7,7 @@ import { useSfnStore } from "@/app/stores/sfnStore";
 // ⬇️ Ajuste ce chemin si besoin
 import { syncVideoMilestone, markVideoCompleted } from "@/app/serverActions/fideExamActions";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUD_FRONT_DOMAIN_NAME;
 
@@ -56,6 +57,11 @@ export default function VideoProgressPlayer({
     onCompleted,
 }: Props) {
     const videoRef = React.useRef<HTMLVideoElement | null>(null);
+
+    // Visiteur non connecté (vidéo en aperçu) → progression locale uniquement, pas de synchro serveur
+    const { status: sessionStatus } = useSession();
+    const isAuthenticatedRef = React.useRef(false);
+    isAuthenticatedRef.current = sessionStatus === "authenticated";
 
     // Store actions/selectors
     const setVideoTimestamp = useSfnStore((s) => s.setVideoTimestamp);
@@ -122,13 +128,15 @@ export default function VideoProgressPlayer({
             // App local (callback) puis synchro serveur
             onMilestone?.(m);
             // Pas d'await pour ne pas bloquer l'UI
-            syncVideoMilestone({
-                kind: "milestone",
-                progressType,
-                postId: postId,
-                milestone: m as 0.2 | 0.4 | 0.6 | 0.8 | 1,
-                progress: p,
-            }).catch(() => {});
+            if (isAuthenticatedRef.current) {
+                syncVideoMilestone({
+                    kind: "milestone",
+                    progressType,
+                    postId: postId,
+                    milestone: m as 0.2 | 0.4 | 0.6 | 0.8 | 1,
+                    progress: p,
+                }).catch(() => {});
+            }
             if (m === 1 || p >= 0.9) addWatchedVideo(postId);
         };
 
@@ -213,11 +221,13 @@ export default function VideoProgressPlayer({
             // Callback local + synchro "completed"
             onMilestone?.(1);
             onCompleted?.();
-            markVideoCompleted({
-                kind: "completed",
-                progressType,
-                postId: postId,
-            }).catch(() => {});
+            if (isAuthenticatedRef.current) {
+                markVideoCompleted({
+                    kind: "completed",
+                    progressType,
+                    postId: postId,
+                }).catch(() => {});
+            }
             addWatchedVideo(postId);
         };
 

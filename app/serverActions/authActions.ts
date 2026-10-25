@@ -5,6 +5,8 @@ import { getTokenExpiration } from "../lib/constantes";
 import { getDefaultMailOptions, htmlToText, transporter } from "../lib/nodemailer";
 import { SanityServerClient as client } from "../lib/sanity.clientServerDev";
 import { getActivateToken, isStrongPassword, isValidEmail, replaceInString } from "../lib/utils";
+import { after } from "next/server";
+import { mailerLiteNetworkCode, upsertMailerLiteSubscriber } from "../lib/mailerlite";
 
 export const handleSignup = async (formData: SignupFormData, mailMessages: any, antiBot?: { website?: string; startedAt?: number }) => {
     const debugId = `signup-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -84,8 +86,16 @@ export const handleSignup = async (formData: SignupFormData, mailMessages: any, 
     }
 
     if (formData.subscribeNewsletter) {
-        // NE BLOQUE PAS le signup si MailerLite échoue
-        subscribeMailerLite(email).catch((err) => console.error("MailerLite subscribe error:", err));
+        // Keep the background task alive after the signup response on Vercel.
+        after(async () => {
+            try {
+                const response = await upsertMailerLiteSubscriber(email);
+                if (!response.ok) console.error("[AuthSignup] MailerLite rejected subscription", { upstreamStatus: response.status });
+                await response.body?.cancel();
+            } catch (error) {
+                console.error("[AuthSignup] MailerLite subscription failed", { code: mailerLiteNetworkCode(error) });
+            }
+        });
     }
 
     return { success: "Account created. Please check your email to activate it.", status: 201 };
@@ -211,25 +221,3 @@ export const updateUserPassword = async (password: string, token: string) => {
         return { error: "Something went wrong, please contact us.", status: 500 };
     }
 };
-
-const mailerToken = process.env.MAILERLITE_API_ACCESS_TOKEN;
-const MAILERLITE_GROUP_ID = "79392045100173113";
-
-async function subscribeMailerLite(email: string) {
-    if (!mailerToken) throw new Error("Missing MAILERLITE_API_ACCESS_TOKEN");
-
-    const res = await fetch("https://connect.mailerlite.com/api/subscribers", {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${mailerToken}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: JSON.stringify({ email, groups: [MAILERLITE_GROUP_ID] }),
-    });
-
-    if (!res.ok) {
-        const txt = await res.text().catch(() => "");
-        throw new Error(txt || "MailerLite subscribe failed");
-    }
-}

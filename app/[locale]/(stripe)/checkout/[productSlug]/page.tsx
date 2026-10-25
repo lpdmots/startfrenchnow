@@ -48,6 +48,8 @@ export default function CheckoutPage(props: Props) {
 
     const t = useTranslations("Checkout");
     const normalizedCallbackUrl = normalizeLocalizedPath(callbackUrl);
+    // Lien sans ?quantity= (favori, lien externe…) → 1 par défaut
+    const normalizedQuantity = typeof quantity === "string" && /^[1-9]\d*$/.test(quantity) ? quantity : "1";
 
     return (
         <div className="w-full flex flex-col items-center min-h-screen">
@@ -59,7 +61,7 @@ export default function CheckoutPage(props: Props) {
                     <h1 className="heading-3 inline-block">{t("checkout")}</h1>
                 </div>
                 <div className="flex grow h-full">
-                    <Checkout productSlug={productSlug} locale={locale} quantity={quantity} defaultCurrency={currency} prefilledCouponCode={couponCode} />
+                    <Checkout productSlug={productSlug} locale={locale} quantity={normalizedQuantity} defaultCurrency={currency} prefilledCouponCode={couponCode} />
                 </div>
             </div>
         </div>

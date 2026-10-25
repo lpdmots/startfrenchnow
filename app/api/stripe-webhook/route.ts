@@ -201,12 +201,8 @@ export async function POST(req: NextRequest) {
 
         // 5) Optionnel : si user existe déjà et actif → claim immédiatement
         if (dbUser?._id && dbUser?.isActive === true) {
-            try {
-                const res = await claimPendingPurchases({ email: buyerEmail, userId: dbUser._id });
-                console.log("[webhook] claim result:", res);
-            } catch (e) {
-                console.error("claimPendingPurchases (webhook) failed:", e);
-            }
+            const res = await claimPendingPurchases({ email: buyerEmail, userId: dbUser._id });
+            console.log("[webhook] claim result:", res);
         }
 
         return new NextResponse("Webhook traité avec succès", { status: 200 });

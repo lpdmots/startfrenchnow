@@ -111,6 +111,8 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     try {
         await transporter.sendMail({
             ...getMailOptions("yohann"),
+            // "Répondre" écrit directement au visiteur
+            replyTo: emailStr,
             subject:
                 type === "input"
                     ? "Demande de contact FIDE envoyée depuis le bandeau."
@@ -140,12 +142,12 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
 
     const infosFr =
         type === "form"
-            ? `<p><strong>Voici un resume des informations que vous avez envoyees :</strong></p>
+            ? `<p><strong>Voici un résumé des informations que vous avez envoyées :</strong></p>
         <ul style="padding-left: 20px;">
-            <li><strong>Objectif :</strong> ${objectif ? objectif : "Non specifie"}</li>
-            <li><strong>Niveau actuel :</strong> ${niveauActuel ? niveauActuel : "Non specifie"}</li>
-            <li><strong>Niveau vise :</strong> ${niveauSouhaite ? niveauSouhaite : "Non specifie"}</li>
-            <li><strong>Message :</strong> ${message ? message : "Non specifie"}</li>
+            <li><strong>Objectif :</strong> ${objectif ? objectif : "Non spécifié"}</li>
+            <li><strong>Niveau actuel :</strong> ${niveauActuel ? niveauActuel : "Non spécifié"}</li>
+            <li><strong>Niveau visé :</strong> ${niveauSouhaite ? niveauSouhaite : "Non spécifié"}</li>
+            <li><strong>Message :</strong> ${message ? message : "Non spécifié"}</li>
         </ul>`
             : "";
 
@@ -153,22 +155,22 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     const pdfUserHtmlContentFr = `<html><div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto;">
   <p>Salut, c'est Yohann.</p>
   
-  <p>Merci pour votre demande. Vous pouvez telecharger votre guide gratuit en cliquant sur le lien ci-dessous :</p>
+  <p>Merci pour votre demande. Vous pouvez télécharger votre guide gratuit en cliquant sur le lien ci-dessous :</p>
   
   <p>
-    <a href="${cloudFrontDomain + "fide/fide-exam-presentation.pdf"}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Telecharger le guide</a>
+    <a href="${cloudFrontDomain + "fide/fide-exam-presentation.pdf"}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">Télécharger le guide</a>
   </p>
 
   <p style="margin-top: 30px;"><strong>Envie d'aller plus loin ?</strong></p>
   
-  <p>Je vous propose un echange rapide, gratuit et sans engagement pour parler de vos objectifs en francais. Ensemble, nous pourrons construire un plan clair et adapte a votre situation. Vous pouvez <a href="https://calendly.com/yohann-startfrenchnow/15min" style="color: #1a73e8; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center;">
-    <span style="margin-right: 5px;">reserver ici</span> &#x27A1;
-  </a>, c'est tres simple.
+  <p>Je vous propose un échange rapide, gratuit et sans engagement pour parler de vos objectifs en français. Ensemble, nous pourrons construire un plan clair et adapté à votre situation. Vous pouvez <a href="https://calendly.com/yohann-startfrenchnow/15min" style="color: #1a73e8; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center;">
+    <span style="margin-right: 5px;">réserver ici</span> &#x27A1;
+  </a>, c'est très simple.
   </p>
   
-  <p>N'hesitez pas a repondre a cet email si vous avez des questions.</p>
+  <p>N'hésitez pas à répondre à cet email si vous avez des questions.</p>
   
-  <p>A bientot,<br/>Yohann</p>
+  <p>À bientôt,<br/>Yohann</p>
 
   <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
   
@@ -263,17 +265,17 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
         <p>Salut, c'est Yohann.</p>
         
         <p>
-  Merci beaucoup pour votre demande. Je vais vous repondre des que possible. Si vous le souhaitez, nous pouvons aussi faire un echange rapide et gratuit pour mieux comprendre vos objectifs et construire un plan d'apprentissage personnalise. Vous pouvez
+  Merci beaucoup pour votre demande. Je vais vous répondre dès que possible. Si vous le souhaitez, nous pouvons aussi faire un échange rapide et gratuit pour mieux comprendre vos objectifs et construire un plan d'apprentissage personnalisé. Vous pouvez
   <a href="https://calendly.com/yohann-startfrenchnow/15min" style="color: #1a73e8; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center;">
-    <span style="margin-right: 5px;">reserver ici</span> &#x27A1;
+    <span style="margin-right: 5px;">réserver ici</span> &#x27A1;
   </a>.
 </p>
         
         ${infosFr}
         
-        <p>N'hesitez pas a repondre a cet email si vous avez des questions.</p>
+        <p>N'hésitez pas à répondre à cet email si vous avez des questions.</p>
         
-        <p>A bientot,<br/>Yohann</p>
+        <p>À bientôt,<br/>Yohann</p>
         
         <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
         
@@ -292,16 +294,16 @@ export const sendContactEmail = async (data: ContactFromFideFormData, type: stri
     const pdfUserTextContentFr = `
     Salut, c'est Yohann.
 
-Merci pour votre demande. Vous pouvez telecharger votre guide gratuit ici :
+Merci pour votre demande. Vous pouvez télécharger votre guide gratuit ici :
 ${cloudFrontDomain + "fide/fide-exam-presentation.pdf"}
 
-Si vous voulez aller plus loin, je vous propose un echange rapide, gratuit et sans engagement pour parler de vos objectifs en francais et construire un plan adapte.
-Reservation :
+Si vous voulez aller plus loin, je vous propose un échange rapide, gratuit et sans engagement pour parler de vos objectifs en français et construire un plan adapté.
+Réservation :
 https://calendly.com/yohann-startfrenchnow/15min
 
-N'hesitez pas a repondre a cet email si vous avez des questions.
+N'hésitez pas à répondre à cet email si vous avez des questions.
 
-A bientot,
+À bientôt,
 Yohann
   `;
 
@@ -324,23 +326,28 @@ Yohann
     const userTextContentEn = `
     Salut, c'est Yohann.
 
-Merci pour votre intérêt. Je vais vous répondre au plus vite et je vous proposerai, si vous le souhaitez, une entrevue rapide et gratuite pour mieux comprendre vos objectifs et élaborer ensemble un plan personnalisé qui vous convient parfaitement.
+Thanks a lot for trusting me and sending your request. I'll get back to you as soon as possible, and if you're interested, we can set up a quick, free chat to better understand your goals and create a personalized plan that works for you.
 
-À bientôt,
+Book here:
+https://calendly.com/yohann-startfrenchnow/15min
+
+Feel free to reply to this email if you have any questions in the meantime.
+
+Talk to you soon,
 Yohann
   `;
 
     const userTextContentFr = `
     Salut, c'est Yohann.
 
-Merci beaucoup pour votre demande. Je vais vous repondre des que possible. Si vous le souhaitez, nous pouvons aussi faire un echange rapide et gratuit pour mieux comprendre vos objectifs et construire un plan d'apprentissage personnalise.
+Merci beaucoup pour votre demande. Je vais vous répondre dès que possible. Si vous le souhaitez, nous pouvons aussi faire un échange rapide et gratuit pour mieux comprendre vos objectifs et construire un plan d'apprentissage personnalisé.
 
-Reservation :
+Réservation :
 https://calendly.com/yohann-startfrenchnow/15min
 
-N'hesitez pas a repondre a cet email si vous avez des questions.
+N'hésitez pas à répondre à cet email si vous avez des questions.
 
-A bientot,
+À bientôt,
 Yohann
   `;
 
@@ -349,6 +356,8 @@ Yohann
         await transporter.sendMail({
             ...getDefaultMailOptions({
                 to: emailStr,
+                // L'email est signé Yohann : les réponses doivent lui arriver
+                ...(process.env.EMAILYOH ? { replyTo: process.env.EMAILYOH } : {}),
             }),
             subject:
                 type === "pdf"

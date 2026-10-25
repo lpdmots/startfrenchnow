@@ -58,6 +58,7 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
     const [couponInput, setCouponInput] = useState(() => normalizeCouponCode(prefilledCouponCode));
     const [appliedCouponCode, setAppliedCouponCode] = useState<string | undefined>(() => normalizeCouponCode(prefilledCouponCode) || undefined);
     const [couponFeedback, setCouponFeedback] = useState<CouponFeedback | null>(null);
+    const [loadError, setLoadError] = useState(false);
 
     const amount = pricingDetails?.amount;
     const initialAmount = pricingDetails?.initialAmount;
@@ -93,16 +94,23 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
         let cancelled = false;
 
         (async () => {
-            const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch;
+            try {
+                const product = (await client.fetch(queryProduct, { slug: productSlug })) as ProductFetch;
 
-            const sessionUserId = session?.user?._id;
-            const userPurchasedLesson = sessionUserId ? await getUserPurchases(sessionUserId, product.referenceKey) : undefined;
+                const sessionUserId = session?.user?._id;
+                const userPurchasedLesson = sessionUserId ? await getUserPurchases(sessionUserId, product.referenceKey) : undefined;
 
-            const data = await getAmount(product, quantity, currency, userPurchasedLesson ?? undefined);
+                const data = await getAmount(product, quantity, currency, userPurchasedLesson ?? undefined);
 
-            if (cancelled) return;
-            setPricingDetails(data.pricingDetails);
-            setProductInfos(data.productInfos);
+                if (cancelled) return;
+                setPricingDetails(data.pricingDetails);
+                setProductInfos(data.productInfos);
+                setLoadError(false);
+            } catch (error) {
+                if (cancelled) return;
+                console.error("Failed to load checkout pricing:", error);
+                setLoadError(true);
+            }
         })();
 
         return () => {
@@ -110,7 +118,8 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
         };
     }, [productSlug, quantity, currency, session?.user?._id]);
 
-    const isLoading = !pricingDetails || !productInfos;
+    const hasPricing = !!pricingDetails && !!productInfos;
+    const isLoading = !hasPricing && !loadError;
     const getIsReady = (name: string) => {
         return areReady[name as keyof AreReadyState];
     };
@@ -179,7 +188,8 @@ export default function Checkout({ locale, productSlug, quantity: originalQuanti
                             {isLoading && <FaSpinner className="animate-spin text-secondary-2 h-6 w-6 lg:h-8 lg:w-8" style={{ animationDuration: "2s" }} />}
                         </div>
                         <div className="w-full mb-4">
-                            {!isLoading && (
+                            {loadError && <p className="mb-0 text-secondary-4">{t("loadError")}</p>}
+                            {hasPricing && (
                                 <YourPurchase
                                     productInfos={productInfos as ProductInfos}
                                     pricingDetails={pricingDetails as PricingDetails}

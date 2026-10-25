@@ -68,6 +68,7 @@ export default function AudioOverlayPlayer({
     const showNextButton = !isClickableResponse || isNextButtonForced;
     const isRecordingRef = useRef(false);
     const completionNotifiedRef = useRef(false);
+    const progressSaveStartedRef = useRef(false);
 
     const togglePlay = (stop = false) => {
         const audio = audioRef.current;
@@ -185,16 +186,25 @@ export default function AudioOverlayPlayer({
     }, [currentTrackData, isPlayingFollowUp, isPlayingSituationIntro, clickedResponse]);
 
     useEffect(() => {
+        if (totalAnswers !== 3) {
+            progressSaveStartedRef.current = false;
+            return;
+        }
+        if (!userId || progressSaveStartedRef.current) return;
+        progressSaveStartedRef.current = true;
+
         (async () => {
-            if (totalAnswers === 3) {
-                const newLogs = await updateUserProgress("pack_fide", "examLogs", exam._id, correctAnswers, userId);
-                console.log("User progress updated:", newLogs);
+            try {
+                const newLogs = await updateUserProgress("pack_fide", "examLogs", exam._id, correctAnswers);
                 if (newLogs) {
                     setLogs(newLogs);
                 }
+            } catch (error) {
+                progressSaveStartedRef.current = false;
+                console.error("Unable to save exam progress:", error);
             }
         })();
-    }, [totalAnswers]);
+    }, [totalAnswers, userId, exam._id, correctAnswers, setLogs]);
 
     useEffect(() => {
         if (totalAnswers !== 3) {
