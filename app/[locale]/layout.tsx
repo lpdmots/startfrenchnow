@@ -29,7 +29,11 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
         metadataBase: baseUrl,
         title: "Start French Now",
         robots: { index: true, follow: true },
-        icons: { icon: "/favicon.ico" },
+        icons: {
+            icon: "/favicon.ico",
+            apple: { url: "/images/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+        },
+        appleWebApp: { title: "Start French Now" },
     };
 }
 

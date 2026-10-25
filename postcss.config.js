@@ -16,7 +16,8 @@ module.exports = {
             ? {
                   "@fullhuman/postcss-purgecss": {
                       content: ["./app/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}", "./lib/**/*.{js,jsx,ts,tsx}", "./modules/**/*.{js,jsx,ts,tsx}"],
-                      defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+                      // Keep dots so fractional utilities (h-0.5, py-1.5...) survive; also emit dot-split parts as before.
+                      defaultExtractor: (content) => (content.match(/[\w-/:.]+(?<!:)/g) || []).flatMap((token) => [token, ...token.split(".")]),
                       safelist: [/^!/, /\bCircular\w*/, "html", "body", /\[.*\]/],
                   },
               }
