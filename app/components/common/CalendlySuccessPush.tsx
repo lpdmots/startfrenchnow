@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { trackMetaEvent } from "@/app/lib/metaPixel.client";
 
 declare global {
     interface Window {
@@ -62,6 +63,8 @@ export default function CalendlySuccessPush({ eventUri, currency = "CHF", value 
                 event_uri: normalizedEventUri,
             },
         });
+
+        trackMetaEvent("Schedule", { value, currency }, `calendly_${eventId}`);
     }, [currency, eventUri, value]);
 
     return null;
