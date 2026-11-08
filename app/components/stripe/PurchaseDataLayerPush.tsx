@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { trackMetaEvent } from "@/app/lib/metaPixel.client";
 
 declare global {
     interface Window {
@@ -64,6 +65,20 @@ export default function PurchaseDataLayerPush({ transactionId, value, currency, 
                 ],
             },
         });
+
+        // Même eventID que l'API Conversions (webhook Stripe) pour que Meta ne compte l'achat qu'une fois.
+        trackMetaEvent(
+            "Purchase",
+            {
+                value: amount,
+                currency: normalizedCurrency,
+                content_ids: [itemId],
+                content_name: itemName,
+                content_type: "product",
+                num_items: safeQuantity,
+            },
+            txId,
+        );
 
         window.__sfnTrackedPurchaseIds = [...trackedPurchaseIds, txId];
     }, [currency, productName, productSlug, quantity, transactionId, value]);

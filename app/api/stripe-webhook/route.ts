@@ -4,6 +4,7 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 import { resolveAuthLocale } from "@/app/lib/authMailMessages";
 import { acquisitionSourceFromCoupon, normalizeAcquisitionSource } from "@/app/lib/acquisition";
+import { sendMetaPurchaseEvent } from "@/app/lib/metaConversions";
 
 export const dynamic = "force-dynamic";
 
@@ -204,6 +205,18 @@ export async function POST(req: NextRequest) {
             const res = await claimPendingPurchases({ email: buyerEmail, userId: dbUser._id });
             console.log("[webhook] claim result:", res);
         }
+
+        // 6) API Conversions Meta (même event_id que le pixel : Meta déduplique, y compris en cas de retry Stripe)
+        await sendMetaPurchaseEvent({
+            eventId: stripePaymentId,
+            eventTime: paymentIntent.created,
+            email: buyerEmail,
+            value: pendingDoc.amountPaid,
+            currency: pendingDoc.currency,
+            productSlug,
+            quantity: qty,
+            metadata: paymentIntent.metadata,
+        });
 
         return new NextResponse("Webhook traité avec succès", { status: 200 });
     } catch (error) {

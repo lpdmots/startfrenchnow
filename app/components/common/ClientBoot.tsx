@@ -16,9 +16,10 @@ declare global {
 type Props = {
     gtmId: string;
     clarityId?: string | null;
+    metaPixelId?: string | null;
 };
 
-export default function ClientBoot({ gtmId, clarityId }: Props) {
+export default function ClientBoot({ gtmId, clarityId, metaPixelId }: Props) {
     useEffect(() => {
         if (typeof window === "undefined") return;
         if (window.__sfnConsentBootstrapped) return;
@@ -162,6 +163,13 @@ export default function ClientBoot({ gtmId, clarityId }: Props) {
                 tac.job.push("clarity");
             }
 
+            if (metaPixelId) {
+                tac.user = tac.user || {};
+                tac.user.facebookpixelId = metaPixelId;
+                tac.job = tac.job || [];
+                tac.job.push("facebookpixel");
+            }
+
             tac.services.sfn_ga4 = {
                 key: "sfn_ga4",
                 type: "analytic",
@@ -238,7 +246,7 @@ export default function ClientBoot({ gtmId, clarityId }: Props) {
         tacScript.setAttribute("data-sfn-tac", "1");
         tacScript.onload = initTarteaucitronAndGtm;
         document.head.appendChild(tacScript);
-    }, [gtmId, clarityId]);
+    }, [gtmId, clarityId, metaPixelId]);
 
     return null;
 }

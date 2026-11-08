@@ -8,6 +8,7 @@ import { SanityServerClient as client } from "@/app/lib/sanity.clientServerDev";
 import { groq } from "next-sanity";
 import { getUserPurchases } from "@/app/serverActions/productActions";
 import { acquisitionSourceFromCoupon, normalizeAcquisitionSource } from "@/app/lib/acquisition";
+import { collectMetaPaymentMetadata } from "@/app/lib/metaConversions";
 
 export const dynamic = "force-dynamic";
 
@@ -506,6 +507,7 @@ export async function POST(request: NextRequest) {
                 ...(userId ? { userId: String(userId) } : {}),
                 acquisitionSource: normalizedAcquisitionSource,
                 ...couponMetadata,
+                ...collectMetaPaymentMetadata(request),
             },
         });
 

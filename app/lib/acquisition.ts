@@ -5,6 +5,7 @@ export const ACQUISITION_SOURCES = [
     "udemy",
     "italki",
     "google_ads",
+    "meta_ads",
     "google_organic",
     "direct",
     "unknown",
@@ -20,6 +21,7 @@ export const ACQUISITION_SOURCE_LABELS: Record<AcquisitionSource, string> = {
     udemy: "Udemy",
     italki: "italki",
     google_ads: "Google Ads",
+    meta_ads: "Meta Ads (Instagram/Facebook)",
     google_organic: "Google (recherche)",
     direct: "Direct",
     unknown: "Inconnue",
@@ -43,6 +45,13 @@ const SOURCE_ALIASES: Record<string, AcquisitionSource> = {
     googleads: "google_ads",
     adwords: "google_ads",
     google_cpc: "google_ads",
+    meta_ads: "meta_ads",
+    metaads: "meta_ads",
+    meta: "meta_ads",
+    facebook_ads: "meta_ads",
+    fb_ads: "meta_ads",
+    instagram_ads: "meta_ads",
+    ig_ads: "meta_ads",
     google_organic: "google_organic",
     google: "google_organic",
     organic_google: "google_organic",
@@ -62,6 +71,10 @@ export function normalizeAcquisitionSource(value?: string | null): AcquisitionSo
 
 export function isReplaceableAcquisitionSource(source: AcquisitionSource): boolean {
     return source === "direct" || source === "unknown" || source === "other";
+}
+
+export function isPaidAcquisitionSource(source: AcquisitionSource): boolean {
+    return source === "google_ads" || source === "meta_ads";
 }
 
 export function acquisitionSourceFromCoupon(couponCode?: string | null): AcquisitionSource | null {

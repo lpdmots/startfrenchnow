@@ -1,5 +1,6 @@
 import {
     acquisitionSourceFromReferrer,
+    isPaidAcquisitionSource,
     isReplaceableAcquisitionSource,
     normalizeAcquisitionSource,
     type AcquisitionSource,
@@ -48,10 +49,19 @@ function sourceFromCurrentPage(): AcquisitionSource | null {
     }
     if (params.has("src")) return "other";
 
-    const utmSource = normalizeAcquisitionSource(params.get("utm_source"));
+    const rawUtmSource = String(params.get("utm_source") || "")
+        .trim()
+        .toLowerCase();
+    const utmSource = normalizeAcquisitionSource(rawUtmSource);
     const utmMedium = String(params.get("utm_medium") || "").toLowerCase();
-    if (utmSource === "google_organic" && /(cpc|ppc|paid|ads?)/.test(utmMedium)) {
+    const isPaidMedium = /(cpc|ppc|paid|ads?)/.test(utmMedium);
+    if (utmSource === "google_organic" && isPaidMedium) {
         return "google_ads";
+    }
+    // Pubs Meta : utm_source=meta|facebook|fb|instagram|ig (ou {{site_source_name}}) + utm_medium payant.
+    // Un simple fbclid ne suffit pas : Meta l'ajoute aussi aux liens organiques.
+    if (isPaidMedium && /^(meta|facebook|fb|instagram|ig|an|msg)$/.test(rawUtmSource)) {
+        return "meta_ads";
     }
     if (utmSource && utmSource !== "unknown") {
         return utmSource;
@@ -74,11 +84,14 @@ export function captureAcquisitionSource(): AcquisitionSource | null {
     if (typeof window === "undefined") return null;
 
     const existing = readStoredAcquisition();
-    if (existing && !isReplaceableAcquisitionSource(existing.source)) {
+    const detected = sourceFromCurrentPage();
+
+    // Un clic sur une pub (Google ou Meta) prend le dessus sur une source organique déjà mémorisée.
+    const detectedIsPaid = !!detected && isPaidAcquisitionSource(detected);
+    if (existing && !isReplaceableAcquisitionSource(existing.source) && !detectedIsPaid) {
         return existing.source;
     }
 
-    const detected = sourceFromCurrentPage();
     if (!detected || (existing && isReplaceableAcquisitionSource(detected))) {
         return existing?.source || detected;
     }
