@@ -40,6 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "/test-your-level",
         "/videos",
         "/mentions-legales",
+        "/politique-de-confidentialite",
     ];
 
     const entries: MetadataRoute.Sitemap = [];

@@ -299,6 +299,12 @@ export const getFooterNavigation = (t: Translate): SiteFooterSection[] => [
                 href: "/mentions-legales",
                 activePrefixes: ["/mentions-legales"],
             },
+            {
+                key: "footer-privacy",
+                label: t("privacy_policy"),
+                href: "/politique-de-confidentialite",
+                activePrefixes: ["/politique-de-confidentialite"],
+            },
         ],
     },
 ];
