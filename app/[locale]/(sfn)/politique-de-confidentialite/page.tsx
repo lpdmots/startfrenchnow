@@ -125,7 +125,7 @@ const CONTENT: Record<Locale, PrivacyContent> = {
                 title: "7. Durée de conservation",
                 items: [
                     "Compte et progression : tant que votre compte existe. Vous pouvez demander sa suppression à tout moment.",
-                    "Enregistrements audio des examens blancs : tant que votre compte existe.",
+                    "Enregistrements audio des examens blancs : supprimés automatiquement après 7 jours. La transcription écrite est conservée avec vos résultats tant que votre compte existe.",
                     "Justificatifs de paiement : 10 ans (obligation comptable).",
                     "Newsletter : jusqu'à votre désinscription.",
                     "Messages envoyés via le formulaire de contact : 3 ans maximum.",
@@ -257,7 +257,7 @@ const CONTENT: Record<Locale, PrivacyContent> = {
                 title: "7. Retention",
                 items: [
                     "Account and progress: as long as your account exists. You can request its deletion at any time.",
-                    "Mock exam audio recordings: as long as your account exists.",
+                    "Mock exam audio recordings: automatically deleted after 7 days. The written transcription is kept with your results as long as your account exists.",
                     "Payment records: 10 years (accounting obligation).",
                     "Newsletter: until you unsubscribe.",
                     "Contact form messages: 3 years maximum.",
