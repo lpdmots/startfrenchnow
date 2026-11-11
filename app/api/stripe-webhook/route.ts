@@ -5,6 +5,7 @@ import { claimPendingPurchases } from "@/app/lib/claimPendingPurchases";
 import { resolveAuthLocale } from "@/app/lib/authMailMessages";
 import { acquisitionSourceFromCoupon, normalizeAcquisitionSource } from "@/app/lib/acquisition";
 import { sendMetaPurchaseEvent } from "@/app/lib/metaConversions";
+import { sendPurchaseNotification, shouldNotifyPurchase } from "@/app/lib/purchaseNotification";
 
 export const dynamic = "force-dynamic";
 
@@ -149,6 +150,9 @@ export async function POST(req: NextRequest) {
             ],
         };
 
+        // Sert à n'envoyer la notification interne qu'au premier passage (Stripe peut renvoyer l'événement)
+        const isFirstDelivery = !(await client.getDocument(pendingId));
+
         // Si Stripe envoie 2 fois en parallèle, un seul doc sera créé
         await client.createIfNotExists(pendingDoc);
 
@@ -166,6 +170,22 @@ export async function POST(req: NextRequest) {
 
         if (dbUser?._id) {
             console.log("[webhook] isActive:", dbUser.isActive);
+        }
+
+        // Notification interne pour les achats pack exam / examens blancs (ne lève jamais)
+        if (isFirstDelivery && shouldNotifyPurchase(productSlug)) {
+            await sendPurchaseNotification({
+                productSlug,
+                quantity: qty,
+                buyerEmail,
+                amountPaid: pendingDoc.amountPaid,
+                currency: pendingDoc.currency,
+                purchasedAt: pendingDoc.purchasedAt,
+                stripePaymentId,
+                acquisitionSource,
+                couponCode: metadataCouponCode,
+                hasAccount: Boolean(dbUser?._id),
+            });
         }
 
         // 4) Journal de consommation coupon (si coupon appliqué)
