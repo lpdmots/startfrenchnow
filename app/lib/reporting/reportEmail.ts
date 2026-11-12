@@ -75,9 +75,11 @@ function financialRevenue(summary: FinancialSummary): string {
 }
 
 function financialAds(summary: FinancialSummary): string {
-    return summary.googleAds.status === "available"
-        ? formatMoney(summary.googleAds.amount, summary.googleAds.currency)
-        : "Indisponible";
+    return summary.adsSpendEur !== undefined ? formatMoney(summary.adsSpendEur, "EUR") : "Indisponible";
+}
+
+function adsCostLabel(cost: SalesReport["googleAds"]): string {
+    return cost.status === "available" ? formatMoney(cost.amount, cost.currency) : cost.message;
 }
 
 function financialResult(summary: FinancialSummary): string {
@@ -114,10 +116,8 @@ export function buildSalesReportEmail(
     const revenue = Object.entries(report.summary.revenueByCurrency)
         .map(([currency, amount]) => formatMoney(amount, currency))
         .join(" · ");
-    const adsCost =
-        report.googleAds.status === "available"
-            ? formatMoney(report.googleAds.amount, report.googleAds.currency)
-            : report.googleAds.message;
+    const googleAdsCost = adsCostLabel(report.googleAds);
+    const metaAdsCost = adsCostLabel(report.metaAds);
     const totalRevenueEur = report.euroFinancialSummary
         ? formatMoney(report.euroFinancialSummary.totalRevenue, "EUR")
         : "Non calculable";
@@ -148,7 +148,7 @@ export function buildSalesReportEmail(
                   <tr>
                     <th style="padding:12px 8px;text-align:left;color:#6b7280">Période</th>
                     <th style="padding:12px 8px;text-align:right;color:#6b7280">Revenus</th>
-                    <th style="padding:12px 8px;text-align:right;color:#6b7280">Google Ads</th>
+                    <th style="padding:12px 8px;text-align:right;color:#6b7280">Publicité</th>
                     <th style="padding:12px 8px;text-align:right;color:#6b7280">Résultat</th>
                   </tr>
                 </thead>
@@ -224,7 +224,8 @@ export function buildSalesReportEmail(
                         <h2 style="margin:0 0 10px;font-size:18px">Résumé financier</h2>
                         <p style="margin:5px 0">Revenus originaux : <strong>${escapeHtml(revenue || "Aucun montant")}</strong></p>
                         <p style="margin:5px 0">Total après conversion CHF → EUR : <strong>${escapeHtml(totalRevenueEur)}</strong></p>
-                        <p style="margin:5px 0">Dépenses Google Ads : <strong>${escapeHtml(adsCost)}</strong></p>
+                        <p style="margin:5px 0">Dépenses Google Ads : <strong>${escapeHtml(googleAdsCost)}</strong></p>
+                        <p style="margin:5px 0">Dépenses Meta Ads : <strong>${escapeHtml(metaAdsCost)}</strong></p>
                         <p style="margin:5px 0">Nouveaux clients : <strong>${report.summary.newCustomerCount}</strong></p>
                         <p style="margin:5px 0">Entretiens gratuits Calendly : <strong>${report.calendly.leads.length}</strong></p>
                       </div>
@@ -278,7 +279,7 @@ export function buildSalesReportEmail(
                       <div style="text-align:center;margin:28px 0">
                         <a href="${escapeHtml(reportUrl)}" style="display:inline-block;padding:13px 22px;background:#4c1d95;color:#ffffff;text-decoration:none;font-weight:700;border-radius:9px">Ouvrir le rapport administratif</a>
                       </div>
-                      <p style="margin:0;text-align:center;color:#6b7280;font-size:12px;line-height:1.5">Les cours privés sont exclus. Le résultat estimé correspond aux revenus numériques en EUR après conversion historique des CHF, moins Google Ads. Hors frais Stripe, taxes et autres coûts.</p>
+                      <p style="margin:0;text-align:center;color:#6b7280;font-size:12px;line-height:1.5">Les cours privés sont exclus. Le résultat estimé correspond aux revenus numériques en EUR après conversion historique des CHF, moins Google Ads et Meta Ads. Hors frais Stripe, taxes et autres coûts.</p>
                     </td>
                   </tr>
                 </table>

@@ -10,6 +10,7 @@ import {
 import { fetchCalendlyCommercialLeads, type CalendlyLeadResult } from "./calendly";
 import { fetchHistoricalChfToEurRates, findHistoricalRate } from "./exchangeRate";
 import { fetchGoogleAdsCost, type GoogleAdsCost } from "./googleAds";
+import { fetchMetaAdsCost, type MetaAdsCost } from "./metaAds";
 import type { ReportDateRange } from "./dateRange";
 
 const PRIVATE_LESSON_REFERENCE_KEY = "Fide Preparation Class";
@@ -130,6 +131,9 @@ export type FinancialSummary = {
     revenueByCurrency: Record<string, number>;
     purchasesWithoutAmount: number;
     googleAds: GoogleAdsCost;
+    metaAds: MetaAdsCost;
+    /** Total Google Ads + Meta Ads en EUR (sources non configurées comptées à 0). */
+    adsSpendEur?: number;
     euroFinancialSummary?: EuroFinancialSummary;
     chfConversionUnavailable: boolean;
 };
@@ -151,6 +155,8 @@ export type SalesReport = {
     calendly: CalendlyLeadResult;
     calendlyBySource: SourceStat[];
     googleAds: GoogleAdsCost;
+    metaAds: MetaAdsCost;
+    adsSpendEur?: number;
     euroFinancialSummary?: EuroFinancialSummary;
     chfConversionUnavailable: boolean;
 };
@@ -282,9 +288,21 @@ function roundMoney(value: number): number {
     return Math.round(value * 100) / 100;
 }
 
+/** Somme des dépenses pub en EUR ; undefined si une source configurée est indisponible ou dans une autre devise. */
+function totalAdsSpendEur(costs: GoogleAdsCost[]): number | undefined {
+    let total = 0;
+    for (const cost of costs) {
+        if (cost.status === "not_configured") continue;
+        if (cost.status !== "available" || cost.currency !== "EUR") return undefined;
+        total += cost.amount;
+    }
+    return roundMoney(total);
+}
+
 async function calculateFinancialSummary(
     publicPurchases: PurchaseRecord[],
     googleAds: GoogleAdsCost,
+    metaAds: MetaAdsCost,
     range: ReportDateRange,
 ): Promise<FinancialSummary> {
     const revenueByCurrency: Record<string, number> = {};
@@ -331,10 +349,9 @@ async function calculateFinancialSummary(
             : (hasEurRevenue || hasChfRevenue) && !chfConversionUnavailable
             ? roundMoney((revenueByCurrency.EUR || 0) + convertedChfRevenue)
             : undefined;
+    const adsSpendEur = totalAdsSpendEur([googleAds, metaAds]);
     const marketingResult =
-        totalRevenueEur !== undefined && googleAds.status === "available" && googleAds.currency === "EUR"
-            ? roundMoney(totalRevenueEur - googleAds.amount)
-            : undefined;
+        totalRevenueEur !== undefined && adsSpendEur !== undefined ? roundMoney(totalRevenueEur - adsSpendEur) : undefined;
     const euroFinancialSummary =
         totalRevenueEur === undefined
             ? undefined
@@ -349,30 +366,34 @@ async function calculateFinancialSummary(
         revenueByCurrency,
         purchasesWithoutAmount,
         googleAds,
+        metaAds,
+        adsSpendEur,
         euroFinancialSummary,
         chfConversionUnavailable,
     };
 }
 
 export async function generateFinancialSummary(range: ReportDateRange): Promise<FinancialSummary> {
-    const [periodPurchases, googleAds] = await Promise.all([
+    const [periodPurchases, googleAds, metaAds] = await Promise.all([
         sanity.fetch<PurchaseRecord[]>(PERIOD_PURCHASES_QUERY, {
             startIso: range.startIso,
             endIso: range.endIso,
         }),
         fetchGoogleAdsCost(range),
+        fetchMetaAdsCost(range),
     ]);
     const publicPurchases = periodPurchases.filter((purchase) => !purchaseContainsPrivateLesson(purchase));
-    return calculateFinancialSummary(publicPurchases, googleAds, range);
+    return calculateFinancialSummary(publicPurchases, googleAds, metaAds, range);
 }
 
 export async function generateSalesReport(range: ReportDateRange): Promise<SalesReport> {
-    const [periodPurchases, googleAds, calendly] = await Promise.all([
+    const [periodPurchases, googleAds, metaAds, calendly] = await Promise.all([
         sanity.fetch<PurchaseRecord[]>(PERIOD_PURCHASES_QUERY, {
             startIso: range.startIso,
             endIso: range.endIso,
         }),
         fetchGoogleAdsCost(range),
+        fetchMetaAdsCost(range),
         fetchCalendlyCommercialLeads(range),
     ]);
 
@@ -385,7 +406,7 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
         emails.length
             ? sanity.fetch<PurchaseRecord[]>(CUSTOMER_HISTORY_QUERY, { emails })
             : Promise.resolve([] as PurchaseRecord[]),
-        calculateFinancialSummary(publicPurchases, googleAds, range),
+        calculateFinancialSummary(publicPurchases, googleAds, metaAds, range),
     ]);
     const customers = buildCustomerRows(publicPurchases, history);
     const privateCustomers = buildPrivateCustomerRows(privatePurchases);
@@ -437,6 +458,8 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
         calendly,
         calendlyBySource,
         googleAds,
+        metaAds,
+        adsSpendEur: financialSummary.adsSpendEur,
         euroFinancialSummary: financialSummary.euroFinancialSummary,
         chfConversionUnavailable: financialSummary.chfConversionUnavailable,
     };

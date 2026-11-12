@@ -133,7 +133,7 @@ export default async function AdminReportsPage({ params, searchParams }: PagePro
                             </form>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
                             <div className="card p-4">
                                 <p className="mb-1 text-sm text-neutral-600">Achats numériques</p>
                                 <p className="mb-0 text-3xl font-bold">{report.summary.purchaseCount}</p>
@@ -154,14 +154,19 @@ export default async function AdminReportsPage({ params, searchParams }: PagePro
                                     ))
                                 )}
                             </div>
-                            <div className="card p-4">
-                                <p className="mb-1 text-sm text-neutral-600">Dépenses Google Ads</p>
-                                {report.googleAds.status === "available" ? (
-                                    <p className="mb-0 text-3xl font-bold">{formatMoney(report.googleAds.amount, report.googleAds.currency)}</p>
-                                ) : (
-                                    <p className="mb-0 text-sm text-neutral-600">{report.googleAds.message}</p>
-                                )}
-                            </div>
+                            {[
+                                { label: "Dépenses Google Ads", cost: report.googleAds },
+                                { label: "Dépenses Meta Ads", cost: report.metaAds },
+                            ].map(({ label, cost }) => (
+                                <div className="card p-4" key={label}>
+                                    <p className="mb-1 text-sm text-neutral-600">{label}</p>
+                                    {cost.status === "available" ? (
+                                        <p className="mb-0 text-3xl font-bold">{formatMoney(cost.amount, cost.currency)}</p>
+                                    ) : (
+                                        <p className="mb-0 text-sm text-neutral-600">{cost.message}</p>
+                                    )}
+                                </div>
+                            ))}
                         </div>
 
                         {report.euroFinancialSummary ? (
@@ -186,7 +191,7 @@ export default async function AdminReportsPage({ params, searchParams }: PagePro
                                         </div>
                                     ) : null}
                                 </div>
-                                <p className="mb-0 mt-3 text-xs text-neutral-500">Revenus numériques en EUR, après conversion des CHF, moins dépenses Google Ads. Hors cours privés, frais Stripe, taxes et autres coûts.</p>
+                                <p className="mb-0 mt-3 text-xs text-neutral-500">Revenus numériques en EUR, après conversion des CHF, moins dépenses Google Ads et Meta Ads. Hors cours privés, frais Stripe, taxes et autres coûts.</p>
                             </div>
                         ) : null}
 
