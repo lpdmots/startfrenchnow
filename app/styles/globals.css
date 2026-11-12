@@ -219,3 +219,30 @@
 .fide-surface {
     box-shadow: var(--fide-surface-shadow);
 }
+
+/*! purgecss start ignore */
+/* Jetons des graphiques admin (rapports). Palette validée daltonisme, clair et sombre. */
+.admin-viz {
+    --viz-purchases: #2a78d6;
+    --viz-customers: #eb6834;
+    --viz-calendly: #1baf7a;
+    --viz-money: #6250d6;
+    --viz-cost: #878787;
+    --viz-grid: #ebe9e5;
+    --viz-axis: #5e5e5f;
+    --viz-hatch: #c9c7c3;
+}
+[data-theme="dark"] .admin-viz {
+    --viz-purchases: #3987e5;
+    --viz-customers: #d95926;
+    --viz-calendly: #199e70;
+    --viz-money: #9085e9;
+    --viz-cost: #878787;
+    --viz-grid: #2a2a2a;
+    --viz-axis: #c9c8c5;
+    --viz-hatch: #4a4a4a;
+}
+.admin-viz-hatch {
+    background-image: repeating-linear-gradient(135deg, var(--viz-hatch) 0 2px, transparent 2px 7px);
+}
+/*! purgecss end ignore */

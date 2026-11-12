@@ -81,3 +81,30 @@ export function monthToDateComparisonRanges(now = new Date()): MonthToDateCompar
         previous: createReportDateRange(formatUtcDate(previousFrom), formatUtcDate(previousTo), now),
     };
 }
+
+export type ReportRangePresetKey = "last7Days" | "last30Days" | "monthToDate" | "previousMonth";
+
+export type ReportRangePreset = {
+    key: ReportRangePresetKey;
+    from: string;
+    to: string;
+};
+
+/** Raccourcis de période proposés sur la page admin des rapports (jours UTC, comme createReportDateRange). */
+export function reportRangePresets(now = new Date()): ReportRangePreset[] {
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    const daysAgo = (days: number) => {
+        const date = new Date(today);
+        date.setUTCDate(date.getUTCDate() - days);
+        return formatUtcDate(date);
+    };
+    const previousMonthStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - 1, 1));
+    const previousMonthEnd = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 0));
+
+    return [
+        { key: "last7Days", from: daysAgo(6), to: formatUtcDate(today) },
+        { key: "last30Days", from: daysAgo(29), to: formatUtcDate(today) },
+        { key: "monthToDate", from: formatUtcDate(new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1))), to: formatUtcDate(today) },
+        { key: "previousMonth", from: formatUtcDate(previousMonthStart), to: formatUtcDate(previousMonthEnd) },
+    ];
+}

@@ -138,6 +138,24 @@ export type FinancialSummary = {
     chfConversionUnavailable: boolean;
 };
 
+export type TimelineGranularity = "day" | "week" | "month";
+
+export type TimelinePoint = {
+    /** Premier jour du regroupement (AAAA-MM-JJ, même découpage UTC que la période). */
+    from: string;
+    /** Dernier jour inclus du regroupement, borné à la fin de la période. */
+    to: string;
+    purchaseCount: number;
+    newCustomerCount: number;
+    /** Revenus EUR (EUR + CHF converti), undefined si les revenus EUR ne sont pas calculables. */
+    revenueEur?: number;
+};
+
+export type SalesTimeline = {
+    granularity: TimelineGranularity;
+    points: TimelinePoint[];
+};
+
 export type SalesReport = {
     range: ReportDateRange;
     generatedAt: string;
@@ -152,6 +170,7 @@ export type SalesReport = {
     products: ProductStat[];
     customers: CustomerReportRow[];
     privateLessons: PrivateLessonReport;
+    timeline: SalesTimeline;
     calendly: CalendlyLeadResult;
     calendlyBySource: SourceStat[];
     googleAds: GoogleAdsCost;
@@ -299,12 +318,18 @@ function totalAdsSpendEur(costs: GoogleAdsCost[]): number | undefined {
     return roundMoney(total);
 }
 
+type FinancialComputation = {
+    summary: FinancialSummary;
+    /** Montant EUR de chaque achat compté dans les revenus EUR, par _id. */
+    eurAmountById: Map<string, number>;
+};
+
 async function calculateFinancialSummary(
     publicPurchases: PurchaseRecord[],
     googleAds: GoogleAdsCost,
     metaAds: MetaAdsCost,
     range: ReportDateRange,
-): Promise<FinancialSummary> {
+): Promise<FinancialComputation> {
     const revenueByCurrency: Record<string, number> = {};
     let purchasesWithoutAmount = 0;
     for (const purchase of publicPurchases) {
@@ -322,6 +347,12 @@ async function calculateFinancialSummary(
     const hasAnyRevenue = Object.keys(revenueByCurrency).length > 0;
     let chfConversionUnavailable = false;
     let convertedChfRevenue = 0;
+    const eurAmountById = new Map<string, number>();
+    for (const purchase of publicPurchases) {
+        if (String(purchase.currency || "").toUpperCase() !== "EUR") continue;
+        if (typeof purchase.amountPaid !== "number" || !Number.isFinite(purchase.amountPaid)) continue;
+        eurAmountById.set(purchase._id, purchase.amountPaid);
+    }
 
     if (hasChfRevenue) {
         const rates = await fetchHistoricalChfToEurRates(range);
@@ -338,6 +369,7 @@ async function calculateFinancialSummary(
                     break;
                 }
                 convertedChfRevenue += purchase.amountPaid * rate;
+                eurAmountById.set(purchase._id, purchase.amountPaid * rate);
             }
             convertedChfRevenue = roundMoney(convertedChfRevenue);
         }
@@ -362,15 +394,108 @@ async function calculateFinancialSummary(
               };
 
     return {
-        purchaseCount: publicPurchases.length,
-        revenueByCurrency,
-        purchasesWithoutAmount,
-        googleAds,
-        metaAds,
-        adsSpendEur,
-        euroFinancialSummary,
-        chfConversionUnavailable,
+        summary: {
+            purchaseCount: publicPurchases.length,
+            revenueByCurrency,
+            purchasesWithoutAmount,
+            googleAds,
+            metaAds,
+            adsSpendEur,
+            euroFinancialSummary,
+            chfConversionUnavailable,
+        },
+        eurAmountById,
     };
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function utcDateKey(value: Date): string {
+    return value.toISOString().slice(0, 10);
+}
+
+function timelineGranularity(range: ReportDateRange): TimelineGranularity {
+    const days = Math.round((Date.parse(range.endIso) - Date.parse(range.startIso)) / DAY_MS);
+    if (days > 366) return "month";
+    if (days > 62) return "week";
+    return "day";
+}
+
+/** Début du regroupement contenant la date, borné au début de la période. */
+function bucketStart(date: Date, granularity: TimelineGranularity, rangeStart: Date): Date {
+    let start = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    if (granularity === "week") {
+        start.setUTCDate(start.getUTCDate() - ((start.getUTCDay() + 6) % 7));
+    } else if (granularity === "month") {
+        start = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
+    }
+    return start.getTime() < rangeStart.getTime() ? new Date(rangeStart) : start;
+}
+
+function nextBucketStart(start: Date, granularity: TimelineGranularity): Date {
+    if (granularity === "month") return new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 1));
+    const next = new Date(start);
+    if (granularity === "week") {
+        next.setUTCDate(next.getUTCDate() + 7 - ((next.getUTCDay() + 6) % 7));
+    } else {
+        next.setUTCDate(next.getUTCDate() + 1);
+    }
+    return next;
+}
+
+function buildTimeline(
+    range: ReportDateRange,
+    publicPurchases: PurchaseRecord[],
+    newCustomerDates: string[],
+    eurAmountById: Map<string, number>,
+    revenueEurAvailable: boolean,
+): SalesTimeline {
+    const granularity = timelineGranularity(range);
+    const rangeStart = new Date(range.startIso);
+    const rangeEnd = new Date(range.endIso);
+    const points: TimelinePoint[] = [];
+    const indexByKey = new Map<string, number>();
+
+    for (let start = new Date(rangeStart); start.getTime() < rangeEnd.getTime(); start = nextBucketStart(start, granularity)) {
+        const end = nextBucketStart(start, granularity);
+        const lastDay = new Date(Math.min(end.getTime(), rangeEnd.getTime()) - DAY_MS);
+        indexByKey.set(utcDateKey(start), points.length);
+        points.push({
+            from: utcDateKey(start),
+            to: utcDateKey(lastDay),
+            purchaseCount: 0,
+            newCustomerCount: 0,
+            revenueEur: revenueEurAvailable ? 0 : undefined,
+        });
+    }
+
+    const pointFor = (value?: string): TimelinePoint | undefined => {
+        const date = new Date(String(value || ""));
+        if (Number.isNaN(date.getTime())) return undefined;
+        const index = indexByKey.get(utcDateKey(bucketStart(date, granularity, rangeStart)));
+        return index === undefined ? undefined : points[index];
+    };
+
+    for (const purchase of publicPurchases) {
+        const point = pointFor(purchase.purchasedAt);
+        if (!point) continue;
+        point.purchaseCount += 1;
+        const eurAmount = eurAmountById.get(purchase._id);
+        if (point.revenueEur !== undefined && eurAmount !== undefined) {
+            point.revenueEur += eurAmount;
+        }
+    }
+
+    for (const date of newCustomerDates) {
+        const point = pointFor(date);
+        if (point) point.newCustomerCount += 1;
+    }
+
+    for (const point of points) {
+        if (point.revenueEur !== undefined) point.revenueEur = roundMoney(point.revenueEur);
+    }
+
+    return { granularity, points };
 }
 
 export async function generateFinancialSummary(range: ReportDateRange): Promise<FinancialSummary> {
@@ -383,7 +508,8 @@ export async function generateFinancialSummary(range: ReportDateRange): Promise<
         fetchMetaAdsCost(range),
     ]);
     const publicPurchases = periodPurchases.filter((purchase) => !purchaseContainsPrivateLesson(purchase));
-    return calculateFinancialSummary(publicPurchases, googleAds, metaAds, range);
+    const { summary } = await calculateFinancialSummary(publicPurchases, googleAds, metaAds, range);
+    return summary;
 }
 
 export async function generateSalesReport(range: ReportDateRange): Promise<SalesReport> {
@@ -402,7 +528,7 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
     );
     const publicPurchases = periodPurchases.filter((purchase) => !purchaseContainsPrivateLesson(purchase));
     const privatePurchases = periodPurchases.filter(purchaseContainsPrivateLesson);
-    const [history, financialSummary] = await Promise.all([
+    const [history, { summary: financialSummary, eurAmountById }] = await Promise.all([
         emails.length
             ? sanity.fetch<PurchaseRecord[]>(CUSTOMER_HISTORY_QUERY, { emails })
             : Promise.resolve([] as PurchaseRecord[]),
@@ -421,6 +547,7 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
     }
 
     const newCustomerSources: AcquisitionSource[] = [];
+    const newCustomerDates: string[] = [];
     for (const customer of customers) {
         const firstPurchase = historyByEmail.get(customer.email)?.[0];
         const firstPurchaseTime = Date.parse(String(firstPurchase?.purchasedAt || ""));
@@ -432,6 +559,7 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
             !purchaseContainsPrivateLesson(firstPurchase)
         ) {
             newCustomerSources.push(purchaseSource(firstPurchase));
+            newCustomerDates.push(String(firstPurchase.purchasedAt));
         }
     }
 
@@ -455,6 +583,13 @@ export async function generateSalesReport(range: ReportDateRange): Promise<Sales
             sources: sourceStats(privatePurchases.map(purchaseSource)),
             customers: privateCustomers,
         },
+        timeline: buildTimeline(
+            range,
+            publicPurchases,
+            newCustomerDates,
+            eurAmountById,
+            financialSummary.euroFinancialSummary !== undefined,
+        ),
         calendly,
         calendlyBySource,
         googleAds,
